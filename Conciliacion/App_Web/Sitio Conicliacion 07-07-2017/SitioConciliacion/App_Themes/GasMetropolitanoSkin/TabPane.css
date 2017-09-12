@@ -1,0 +1,55 @@
+﻿body
+{
+}
+/*Modificacion Estilo a TabPane*/
+.tabEstilo .ajax__tab_header
+{
+    font-family: 'Segoe UI' , 'Tahoma Bold' , 'Arial Bold' , 'Helvetica Bold' , sans-serif;
+    font-size: 14px;
+    display: block;
+    border-bottom-color: #d7d7d7;
+}
+.tabEstilo .ajax__tab_header .ajax__tab_outer
+{
+    border-color: #222;
+    color: #222;
+    padding-left: 10px;
+    margin-right: 3px;
+    border: solid 1px #d7d7d7;
+    cursor: hand;
+}
+.tabEstilo .ajax__tab_header .ajax__tab_inner
+{
+    border-color: #666;
+    color: #78c141;
+    padding: 10px 10px 10px 30px;
+    cursor: hand;
+}
+.tabEstilo .ajax__tab_hover .ajax__tab_outer
+{
+    background-color: #9c3;
+}
+.tabEstilo .ajax__tab_hover .ajax__tab_inner
+{
+    color: #878686;
+}
+.tabEstilo .ajax__tab_active .ajax__tab_outer
+{
+    border-bottom-color: #ffffff;
+    background-color: #d7d7d7;
+}
+.tabEstilo .ajax__tab_active .ajax__tab_inner
+{
+    border-color: #333;
+    color: #41b2c1;
+    background: url(../App_Themes/GasMetroPolitanoSkin/Imagenes/activo.png) left center no-repeat;
+    background-repeat: no-repeat;
+}
+.tabEstilo .ajax__tab_body
+{
+    font-family: verdana,tahoma,helvetica;
+    font-size: 10pt;
+    background-color: #fff;
+    border-top-width: 0;
+    border: solid 1px #d7d7d7;
+}

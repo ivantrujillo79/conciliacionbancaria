@@ -1,0 +1,105 @@
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\BECORU\Escritorio\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Documents and Settings\BECORU\Escritorio\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\BECORU\Escritorio\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\BECORU\Escritorio\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Documents and Settings\BECORU\Escritorio\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\bin\Release\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\bin\Release\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\obj\Release\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\SigametFacturacion\SeguridadWeb\obj\Release\SeguridadWeb.pdb
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\bin\Release\SeguridadWeb.dll
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\bin\Release\SeguridadWeb.pdb
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\obj\Release\SeguridadWeb.dll
+C:\Documents and Settings\OSTECH\Escritorio\SigametFacturacion\SeguridadWeb\obj\Release\SeguridadWeb.pdb
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\SeguridadWeb.dll
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\SeguridadWeb.pdb
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Release\ResolveAssemblyReference.cache
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Release\SeguridadWeb.dll
+D:\01. DESARROLLO\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Release\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Release\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Release\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\ControlDeFolios.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\CantidadEnLetra.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\FacturaElectronica.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\DataManager.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\SGDAC.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\FacturaElectronica.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\DataManager.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\ControlDeFolios.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Release\SGDAC.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\CantidadEnLetra.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\CantidadEnLetra.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.pdb
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Documents and Settings\HEMOPA\Mis documentos\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\CantidadEnLetra.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.pdb
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.pdb
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.pdb
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.pdb
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Users\hemopa\Documents\Respaldo\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\CantidadEnLetra.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\FacturaElectronica.pdb
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\DataManager.pdb
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\ControlDeFolios.pdb
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\bin\Debug\SGDAC.pdb
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Users\hemopa\Documents\Proyectos\42. ComprobanteFiscalDigital\SeguridadWeb\obj\Debug\SeguridadWeb.pdb

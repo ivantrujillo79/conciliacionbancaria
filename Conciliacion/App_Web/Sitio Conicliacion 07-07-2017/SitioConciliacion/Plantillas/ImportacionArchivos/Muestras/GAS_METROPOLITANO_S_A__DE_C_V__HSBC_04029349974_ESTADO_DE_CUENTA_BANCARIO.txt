@@ -1,0 +1,21 @@
+Fecha	Transaccion	Concepto	Retiro	Abono	SaldoFinal	Moviento	C1	C2	Referencia	C3	C4	C5	C6
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1507.38	38057.38	1003	6877	                	                                        	1066	0	0	91907
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1134	39191.38	1003	6878	                	                                        	1066	0	0	92012
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	700	39891.38	1003	6879	                	                                        	1066	0	0	92056
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1880	41771.38	1003	6880	                	                                        	1066	0	0	92158
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	2082.08	43853.46	1003	6881	                	                                        	1066	0	0	92305
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	2641.3	46494.76	1003	6882	                	                                        	1066	0	0	92419
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	800	47294.76	1003	6883	                	                                        	1066	0	0	92514
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	679	47973.76	1003	6884	                	                                        	1066	0	0	92610
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	225	48198.76	1003	6885	                	                                        	1066	0	0	92819
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1400	49598.76	1003	6886	                	                                        	1066	0	0	92933
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1398.74	50997.5	1003	6887	                	                                        	1066	0	0	93137
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1004.92	52002.42	1003	6888	                	                                        	1066	0	0	93341
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1000	53002.42	1003	6889	                	                                        	1066	0	0	93441
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1000	54002.42	1003	6890	                	                                        	1066	0	0	93543
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	943.81	54946.23	1003	6891	                	                                        	1066	0	0	93655
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	1358	56304.23	1003	6892	                	                                        	1066	0	0	93805
+22-Oct-13	0	DEPOSITO CON DOCUMENTOS                 	0	5408	61712.23	1003	6893	                	                                        	1066	0	0	93857
+22-Oct-13	8276	CGO TRASPASO A CTA.CONCENTRADORA DE HSBC	25162.23	0	36550	5209	6894	                	                                        	802	0	0	105959
+22-Oct-13	0	00 COMISION SPEI 00827620131022HSBC00827	8	0	36542	1357	6895	                	                                        	802	   	  	223845
+22-Oct-13	0	I.V.A.                                  	1.28	0	36540.72	1501	6896	                	                                        	802	   	  	223845

@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{76A968E3-B770-48FA-B4E1-30EB653757E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Conciliacion.Migracion.Runtime</RootNamespace>
+    <AssemblyName>Conciliacion.Migracion.Runtime</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="EmisorMensajes.cs" />
+    <Compile Include="IMensajesImplementacion.cs" />
+    <Compile Include="MensajeImplemantacionForm.cs" />
+    <Compile Include="MensajeImplementacionConsola.cs" />
+    <Compile Include="MensajeImplementacionWeb.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReglasNegocio\BancoFinanciero.cs" />
+    <Compile Include="ReglasNegocio\Caja.cs" />
+    <Compile Include="ReglasNegocio\ConceptoBanco.cs" />
+    <Compile Include="ReglasNegocio\ConceptoBancoGrupo.cs" />
+    <Compile Include="ReglasNegocio\ConciliacionArchivo.cs" />
+    <Compile Include="ReglasNegocio\CuentaFinanciero.cs" />
+    <Compile Include="ReglasNegocio\DestinoDetalleComparador.cs" />
+    <Compile Include="ReglasNegocio\FuenteInformacionDetalleEtiqueta.cs" />
+    <Compile Include="ReglasNegocio\ImportacionAplicacion.cs" />
+    <Compile Include="ReglasNegocio\LectoresImplementaciones\LectorEstadoCuenta.cs" />
+    <Compile Include="ReglasNegocio\IExtractorImplementacion.cs" />
+    <Compile Include="ReglasNegocio\ImportacionController.cs" />
+    <Compile Include="ReglasNegocio\IObjetoBase.cs" />
+    <Compile Include="ReglasNegocio\LectoresImplementaciones\LectorEstadoCuentaCSV.cs" />
+    <Compile Include="ReglasNegocio\LectoresImplementaciones\LectorEstadoCuentaTXT.cs" />
+    <Compile Include="ReglasNegocio\LectoresImplementaciones\LectorEstadoCuentaXLS.cs" />
+    <Compile Include="ReglasNegocio\LectoresImplementaciones\LectorEstadoCuentaXLSX.cs" />
+    <Compile Include="ReglasNegocio\MotivoNoConciliado.cs" />
+    <Compile Include="ReglasNegocio\ObjetoBase.cs" />
+    <Compile Include="ReglasNegocio\Etiqueta.cs" />
+    <Compile Include="ReglasNegocio\StatusConcepto.cs" />
+    <Compile Include="ReglasNegocio\StatusConciliacion.cs" />
+    <Compile Include="ReglasNegocio\TablaDestino.cs" />
+    <Compile Include="ReglasNegocio\Consultas.cs" />
+    <Compile Include="ReglasNegocio\Corporativo.cs" />
+    <Compile Include="ReglasNegocio\Destino.cs" />
+    <Compile Include="ReglasNegocio\Frecuencia.cs" />
+    <Compile Include="ReglasNegocio\FuenteInformacion.cs" />
+    <Compile Include="ReglasNegocio\FuenteInformacionDetalle.cs" />
+    <Compile Include="ReglasNegocio\Separador.cs" />
+    <Compile Include="ReglasNegocio\Sucursal.cs" />
+    <Compile Include="ReglasNegocio\TablaDestinoDetalle.cs" />
+    <Compile Include="ReglasNegocio\TipoArchivo.cs" />
+    <Compile Include="ReglasNegocio\TipoConciliacion.cs" />
+    <Compile Include="ReglasNegocio\TipoDato.cs" />
+    <Compile Include="ReglasNegocio\TipoFuente.cs" />
+    <Compile Include="ReglasNegocio\TipoFuenteInformacion.cs" />
+    <Compile Include="SqlDatos\BancoFinancieroDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\ConceptoBancoDatos.cs" />
+    <Compile Include="SqlDatos\ConsultasDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\StatusConceptoDatos.cs" />
+    <Compile Include="SqlDatos\CorporativoDatos.cs" />
+    <Compile Include="SqlDatos\CuentaFinancieroDatos.cs" />
+    <Compile Include="SqlDatos\DestinoDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\EtiquetaDatos.cs" />
+    <Compile Include="SqlDatos\FrecuenciaDatos.cs" />
+    <Compile Include="SqlDatos\FuenteInformacionDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\FuenteInformacionDetalleDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\FuenteInformacionDetalleEtiquetaDatos.cs" />
+    <Compile Include="SqlDatos\ImportacionAplicacionDatos.cs" />
+    <Compile Include="SqlDatos\SeparadorDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\StatusConciliacionDatos.cs" />
+    <Compile Include="SqlDatos\SucursalDatos.cs" />
+    <Compile Include="SqlDatos\TablaDestinoDatos.cs" />
+    <Compile Include="SqlDatos\TablaDestinoDetalleDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\TipoArchivoDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlDatos\TipoDatoDatos.cs" />
+    <Compile Include="SqlDatos\TipoFuenteInformacionDatos.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Conciliacion.RunTime\Conciliacion.RunTime.csproj">
+      <Project>{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}</Project>
+      <Name>Conciliacion.RunTime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

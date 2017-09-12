@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Sitio.master.cs" Inherits="Sitio" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="titulo" runat="server">
+        </asp:ContentPlaceHolder>
+    </title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    
+</head>
+<body>
+    <form id="formPrincipal" runat="server" onload="Page_Load">
+    <div id="areaTrabajoAcceso">
+        <div id="areaMenuPrincipal">
+            <asp:SiteMapDataSource runat="server" ID="dataSouceMenu" SiteMapProvider="SiteMapPrincipal" />
+            <asp:Menu runat="server" DataSourceID="dataSouceMenu" ID="menuPrincipal"
+                SkinID="menuPrincipal" onmenuitemdatabound="menuPrincipal_MenuItemDataBound" 
+                onmenuitemclick="menuPrincipal_MenuItemClick"/>
+            &nbsp;
+        </div>
+        <div id="contAcceso">
+            <div id="areaCentralAcceso">
+                <div id="columnaCentralAcceso">
+                    <div id="pathAcceso">
+                        &nbsp;</div>
+                    <div id="tituloPagina">
+                        <asp:SiteMapPath runat="server" ID="smPath" SiteMapProvider="SiteMapPrincipal" />
+                    </div>
+                    <div>
+                        <asp:ContentPlaceHolder ID="contenidoPrincipal" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="piePaginaAcceso">
+            <asp:Label ID="lblInformacion" runat="server" Width="750px" CssClass="etiqueta"></asp:Label>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

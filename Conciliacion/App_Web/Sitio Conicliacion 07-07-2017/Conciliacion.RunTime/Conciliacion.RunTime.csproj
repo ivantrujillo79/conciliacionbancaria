@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Conciliacion.RunTime</RootNamespace>
+    <AssemblyName>Conciliacion.RunTime</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="DatosSQL\CobranzaDatos.cs" />
+    <Compile Include="DatosSQL\CobroDatos.cs" />
+    <Compile Include="DatosSQL\ConciliacionDatos.cs" />
+    <Compile Include="DatosSQL\Conexion.cs" />
+    <Compile Include="DatosSQL\ConsultaDatos.cs" />
+    <Compile Include="DatosSQL\DatosArchivoDatos.cs" />
+    <Compile Include="DatosSQL\DatosArchivoDetalleDatos.cs" />
+    <Compile Include="DatosSQL\FlujoProyectadoDatos.cs" />
+    <Compile Include="DatosSQL\FuenteInformacionDatos.cs" />
+    <Compile Include="DatosSQL\GrupoConciliacionDiasDiferenciaDatos.cs" />
+    <Compile Include="DatosSQL\MovimientoCajaDatos.cs" />
+    <Compile Include="DatosSQL\PedidoCobranzaDatos.cs" />
+    <Compile Include="DatosSQL\ReferenciaConciliadaCompartidaDatos.cs" />
+    <Compile Include="DatosSQL\ReferenciaConciliadaDatos.cs" />
+    <Compile Include="DatosSQL\ReferenciaConciliadaPedidoDatos.cs" />
+    <Compile Include="DatosSQL\ReferenciaNoConciliadaDatos.cs" />
+    <Compile Include="DatosSQL\ReferenciaNoConciliadaPedidoDatos.cs" />
+    <Compile Include="DatosSQL\TransferenciaBancariaOrigenDatos.cs" />
+    <Compile Include="DatosSQL\TransferenciaBancariasDatos.cs" />
+    <Compile Include="DatosSQL\TransferenciaBancariasDetalleDatos.cs" />
+    <Compile Include="EmisorMensajes.cs" />
+    <Compile Include="IMensajesImplementacion.cs" />
+    <Compile Include="MensajeImplemantacionForm.cs" />
+    <Compile Include="MensajeImplementacionConsola.cs" />
+    <Compile Include="MensajeImplementacionWeb.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReglasDeNegocio\Cobranza.cs" />
+    <Compile Include="ReglasDeNegocio\Cobro.cs" />
+    <Compile Include="ReglasDeNegocio\Conciliacion.cs" />
+    <Compile Include="ReglasDeNegocio\Consultas.cs" />
+    <Compile Include="ReglasDeNegocio\DatosArchivo.cs" />
+    <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />
+    <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
+    <Compile Include="ReglasDeNegocio\FuenteInformacion.cs" />
+    <Compile Include="ReglasDeNegocio\GrupoConciliacionDiasDiferencia.cs" />
+    <Compile Include="ReglasDeNegocio\IConciliacion.cs" />
+    <Compile Include="ReglasDeNegocio\ImportacionAplicacion.cs" />
+    <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
+    <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
+    <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
+    <Compile Include="ReglasDeNegocio\Referencia.cs" />
+    <Compile Include="ReglasDeNegocio\ReferenciaConciliada.cs" />
+    <Compile Include="ReglasDeNegocio\ReferenciaConciliadaCompartida.cs" />
+    <Compile Include="ReglasDeNegocio\ReferenciaConciliadaPedido.cs" />
+    <Compile Include="ReglasDeNegocio\ReferenciaNoConciliada.cs" />
+    <Compile Include="ReglasDeNegocio\ReferenciaNoConciliadaPedido.cs" />
+    <Compile Include="ReglasDeNegocio\TransferenciaBancariaOrigen.cs" />
+    <Compile Include="ReglasDeNegocio\TransferenciaBancarias.cs" />
+    <Compile Include="ReglasDeNegocio\TransferenciaBancariasDetalle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

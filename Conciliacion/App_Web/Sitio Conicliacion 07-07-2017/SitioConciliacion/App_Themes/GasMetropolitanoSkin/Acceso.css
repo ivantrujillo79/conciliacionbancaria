@@ -1,0 +1,87 @@
+﻿body
+{
+}
+.div.centradoPrincipal, td.centradoPrincipal
+{
+    text-align: center;
+}
+div.centro, table.centro
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+h1.cssSubHeader
+{
+    font-size: 2.55em;
+    line-height: 110%;
+    margin-bottom: 30px;
+}
+
+#pie
+{
+    overflow: hidden;
+    padding: 19px 15px 19px 10px;
+}
+#pie h1
+{
+    color: #fff;
+    font-family: 'Segoe UI Light' , 'Segoe UI' , Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 25px;
+    font-weight: 100;
+    margin-bottom: 5px;
+    line-height: 30px;
+}
+
+#pie p
+{
+    float: right;
+    clear: both;
+    color: #fff;
+    font-size: 12px;
+    line-height: 24px;
+}
+#pie .encabezadoAcceso
+{
+    float: right;
+    width: 350px;
+    clear: both;
+    color: #fff;
+    text-align: right;
+    
+    }
+  
+#pie .additional-info
+{
+    clear: none;
+    color: #e4e6e6;
+    float: right;
+    font-size: 12px;
+    line-height: 18px;
+    width: 282px;
+    text-align: right;
+}
+
+#pie nav a
+{
+    color: #64ddff;
+}
+
+#pie li
+{
+    float: left;
+}
+
+
+#pie .acciones
+{
+    float: left;
+    margin-top: 30px;
+    width: auto;
+}
+
+
+.pieBannerLogin
+{
+    background: #44ac4b url(Imagenes/logotipoCB0.png) left bottom no-repeat;
+}

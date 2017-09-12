@@ -1,0 +1,91 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion", "SitioConciliacion\", "{7A5FA135-BF53-4A16-AC90-49DC4884C944}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		ProjectReferences = "{76a968e3-b770-48fa-b4e1-30eb653757e7}|Conciliacion.Migracion.Runtime.dll;{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}|Conciliacion.RunTime.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/SitioConciliacion"
+		Debug.AspNetCompiler.PhysicalPath = "SitioConciliacion\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\SitioConciliacion\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/SitioConciliacion"
+		Release.AspNetCompiler.PhysicalPath = "SitioConciliacion\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\SitioConciliacion\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "18469"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogoConciliacion", "CatalogoConciliacion\CatalogoConciliacion.csproj", "{F77FCEA1-5442-48A2-8FE4-43A655788CDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conciliacion.Migracion.Runtime", "Conciliacion.Migracio.Runtime\Conciliacion.Migracion.Runtime.csproj", "{76A968E3-B770-48FA-B4E1-30EB653757E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conciliacion.RunTime", "Conciliacion.RunTime\Conciliacion.RunTime.csproj", "{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeguridadCB", "SeguridadCB\SeguridadCB.csproj", "{C924B2CB-B08E-4786-9E41-77F9278A8372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeguridadWeb", "SeguridadWeb\SeguridadWeb.csproj", "{3A19B75E-4312-4871-8368-72562FE91241}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A5FA135-BF53-4A16-AC90-49DC4884C944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5FA135-BF53-4A16-AC90-49DC4884C944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5FA135-BF53-4A16-AC90-49DC4884C944}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A5FA135-BF53-4A16-AC90-49DC4884C944}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5FA135-BF53-4A16-AC90-49DC4884C944}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7A5FA135-BF53-4A16-AC90-49DC4884C944}.Release|x86.ActiveCfg = Debug|Any CPU
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Debug|x86.ActiveCfg = Debug|x86
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Debug|x86.Build.0 = Debug|x86
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Release|x86.ActiveCfg = Release|x86
+		{F77FCEA1-5442-48A2-8FE4-43A655788CDD}.Release|x86.Build.0 = Release|x86
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Debug|x86.ActiveCfg = Debug|x86
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Debug|x86.Build.0 = Debug|x86
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Release|x86.ActiveCfg = Release|x86
+		{76A968E3-B770-48FA-B4E1-30EB653757E7}.Release|x86.Build.0 = Release|x86
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Debug|x86.ActiveCfg = Debug|x86
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Debug|x86.Build.0 = Debug|x86
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Release|x86.ActiveCfg = Release|x86
+		{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}.Release|x86.Build.0 = Release|x86
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Debug|x86.ActiveCfg = Debug|x86
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Debug|x86.Build.0 = Debug|x86
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Release|x86.ActiveCfg = Release|x86
+		{C924B2CB-B08E-4786-9E41-77F9278A8372}.Release|x86.Build.0 = Release|x86
+		{3A19B75E-4312-4871-8368-72562FE91241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A19B75E-4312-4871-8368-72562FE91241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A19B75E-4312-4871-8368-72562FE91241}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3A19B75E-4312-4871-8368-72562FE91241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A19B75E-4312-4871-8368-72562FE91241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A19B75E-4312-4871-8368-72562FE91241}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1131 @@
+﻿/* Establece los elementos como márgenes, relleno, y las fronteras a 0 para equilibrar las diferencias entre navegadores al momento de añadir más tarde los valores deseados */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+{
+    border-style: none;
+    border-color: inherit;
+    border-width: 0;
+    font-family: "Segoe UI" , helvetica, arial, sans-serif;
+    background: transparent;
+    font-size: 100%;
+    padding: 0;
+    vertical-align: baseline;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+}
+html
+{
+    font-family: "Segoe UI" , helvetica, arial, sans-serif;
+    background: transparent;
+    height: 100%;
+}
+body
+{
+    text-align: center;
+    background-color: #848484;
+    background-image: url(Imagenes/bkgwhite.png);
+    background-repeat: repeat;
+    font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+    font-size: 0.78em;
+}
+
+/* ==============================================================================
+   Typography
+
+  styles adapted from 
+    Metro UI CSS
+    * (c) 2012-2013 by Sergey Pimenov
+    * LiceLicensed under the MIT License and Commercial 
+  
+   ============================================================================== */
+
+h1
+{
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+h2
+{
+    font-size: 1.5em;
+    margin: 0.83em 0;
+}
+h3
+{
+    font-size: 1.17em;
+    margin: 1em 0;
+}
+h4
+{
+    font-size: 1em;
+    margin: 1.33em 0;
+}
+h5
+{
+    font-size: 0.83em;
+    margin: 1.67em 0;
+}
+h6
+{
+    font-size: 0.75em;
+    margin: 2.33em 0;
+}
+p
+{
+    margin: 1em 0;
+}
+
+a
+{
+    text-decoration: underline;
+}
+
+a:hover
+{
+    text-decoration: none;
+}
+
+#areaTrabajo
+{
+    width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 3px;
+    /* border: 1px solid #9f9f9f; */
+    text-align: left;
+    /* background-color: #E4E4E4;
+    background-image: url(Imagenes/fondoAreaTrabajo.png);
+    background-repeat: repeat-y;
+    background-position: top center;*/
+    background: white;
+}
+
+/*----------------------------------*/
+#encabezado
+{
+    height: 70px;
+    position: relative;
+    background-image: url(Imagenes/fondoEncabezado.png);
+    background-repeat: repeat-x;
+    background-color: #F2F2F2;
+}
+
+#areaMenuPrincipal
+{
+    padding: 0px 0px;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 1px solid #00B12C;
+    background-color: #F2F2F2;
+    height: 26px;
+}
+
+#areaMenuPrincipal .item
+{
+    padding: 10px 2px;
+    border-width: 1px 0 0 1px;
+    height: 26px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    background-color: #DADADA;
+    color: #333333;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+}
+
+
+#areaMenuPrincipal .itemSubMenu
+{
+    padding: 10px 2px;
+    border-width: 1px 1px 1px 1px;
+    height: 26px;
+    border-style: solid;
+    border-color: #FFFFFF;
+    background-color: #DADADA;
+    color: #333333;
+    cursor: pointer;
+    text-indent: 10px;
+    text-align: left;
+    font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+}
+
+#areaMenuPrincipal .selected
+{
+    background-color: #F6D200;
+    color: #FFFFFF;
+}
+#areaMenuPrincipal .hover
+{
+    color: #FFFFFF;
+    background-color: #00B12C;
+    text-decoration: underline;
+}
+
+#piePagina
+{
+    clear: both;
+    padding: 10px 10px;
+    background-color: #535655;
+    font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+.etiqueta
+{
+    color: #666;
+    font-size: 11px;
+}
+.etiquetaScroll {
+    overflow-y: scroll;
+    height: 20px;
+    border: 1px solid #d1d0d0;
+}
+.marcaAgua
+{
+   color: #cccccc;  
+   font-size: 8px;
+   font-style: oblique;
+}
+.datos-estilo
+{
+    margin-left: 10px;
+    margin-right: 15px;
+}
+.cajaTexto
+{
+    margin-top: 5px;
+    padding: 4px;
+    font-size: 14px;
+    border: 1px solid #D6D3D1;
+}
+.cajaTextoError
+{
+    margin-top: 5px;
+    width: 255px;
+    padding: 4px;
+    font-size: 14px;
+    border: 1px solid #b00615;
+}
+.dropDown
+{
+    margin-top: 5px;
+    padding: 4px;
+    font-size: 10px;
+    border: 1px solid #D6D3D1;
+}
+.dropDownPequeño
+{
+    margin-top: 2px;
+    vertical-align: middle;
+    padding: 4px;
+    font-size: 10px;
+    border: 1px solid #D6D3D1;
+}
+.botonPequeño
+{
+    background-color: #ccc;
+    margin-top: 2px;
+    border: 1px transparent solid;
+    color: #353535;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Segoe UI' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    vertical-align: middle;
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+  
+}
+
+.cajaTextoPequeño
+{
+    margin-top: 2px;
+    width: 150px;
+    padding: 4px;
+    font-size: 10px;
+    border: 1px solid #D6D3D1;
+}
+.cajaTextoPequeñoError
+{
+    margin-top: 2px;
+    width: 150px;
+    padding: 4px;
+    font-size: 10px;
+    border: 1px solid #bd050e;
+}
+.lineaHorizontal
+{
+    border-bottom: 1px rgb(201, 201, 201);
+    border-style: solid;
+    width: 100%
+}
+.lineaVertical
+{
+     border-right: 1px rgb(201, 201, 201);
+     border-style: solid;
+     height: 100%
+}
+
+.lineaVerticalIzquierda 
+{
+     border-left: 1px rgb(201, 201, 201);
+     border-style: solid;
+     height: 100%
+}
+.boton
+{
+    background-color: #ccc;
+    border: 1px transparent solid;
+    color: #353535;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Segoe UI' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    font-weight: 400;
+    height: 32px;
+    padding: 4px 8px 4px 8px;
+    margin: 5px 5px 5px 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.atras-boton
+{
+    background-image: url(Imagenes/atras.png);
+    display:block;
+    padding: 0px 0px 5px 5px;
+    height: 32px;
+    width: 32px;
+    background-repeat: no-repeat;
+    
+}
+.activo 
+{
+    background-color:#99b433;
+}
+.activo:hover {
+    background-color:#999797;
+}
+.inactivo 
+{
+    background-color:#999797;
+}
+.inactivo:hover {
+    background-color:#99b433;
+}
+
+/*Alineacion*/
+
+.centrado{ text-align:center;}
+
+.centradoMedio
+{
+    vertical-align: middle;
+    text-align:center;
+}
+.centradoJustificado
+{
+    vertical-align: middle;
+    text-align:justify;
+}
+.centradoDerecha
+{
+    vertical-align: middle;
+    text-align:right;
+}
+.centradoIzquierda
+{
+    vertical-align: middle;
+    text-align:left;
+}
+div.floatIzquierda
+{
+    float: left;
+}
+div.floatDerecha
+{
+    float: right;
+}
+
+/* Columna 1*/
+
+.Filtrado
+{
+    background-color: #EAEAEA;
+    width: 280px; 
+    border-style: none;
+    
+}
+.tiraAmarilla
+{
+    background-color: #F6D200;
+    height: 5px;
+}
+.tiraVerdeClaro
+{
+    background-color: #99b433;
+    height: 5px;
+}
+.titulo
+{
+    position: relative;
+    font-size: 24px;
+    font-weight: lighter;
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+.tituloMediano
+{
+    font-family: "Segoe UI" , helvetica, arial, sans-serif;
+    position: relative;
+    font-size:18px;
+    font-weight: normal;
+    color: #8e8e8e;
+    padding: 5px 5px 5px 5px
+    
+    }
+.Filtrado .datos-estilo
+{
+    margin-left: 10px;
+    margin-right: 15px;
+}
+/* Estilo Barra de Estado */
+
+.BarraEstado {
+    padding: 5px 5px 5px 5px;
+    font-family:"Segoe UI" , helvetica, arial, sans-serif;
+    font-weight: normal;
+    width: 100%;
+}
+
+.BarraEstado .DatoConciliacion 
+{
+    width: 15%;
+}
+.BarraEstado .DatoGenerales 
+{
+   
+    width: 85%;
+}
+.BarraEstado .Normal 
+{
+   width: 15%;
+}
+.BarraEstado .Grande 
+{
+   width: 30%;
+}
+.BarraEstado .Estadistica 
+{
+   width: 10%;
+}
+.BarraEstado .DatoGenerales .Info
+{
+  
+   border-right: #d1d0d0;
+   border-bottom: #d1d0d0;
+}
+.BarraEstado .FuenteDato 
+{
+    padding: 2px 2px 2px 2px;
+    color: #c6c6c6;
+}
+.BarraEstado .FuenteDato .InfoPrincipal
+{
+    font-size: 22px;
+    color: #c6c6c6;
+}
+.BarraEstado .FuenteDato .InfoSecundaria
+{
+    font-size: 12px;
+    color: #c6c6c6;
+}
+.BarraEstado .FuenteDato .Descripcion {
+    font-size: 10px;
+    color: #ffffff;
+}
+.BarraEstado .icono{
+    padding: 5px 5px 5px 5px;
+    float: left;
+    
+}
+.BarraEstado .icono .Principal{
+   width: 32px;
+    
+}
+.BarraEstado .icono .Secundario{
+  
+   width: 25px;
+    
+}
+.filaEncima {
+    background: #999999;
+    color: white;
+    cursor: pointer;
+}
+.filaNormal {
+    background: #ffffff;
+}
+.filaNormal .Freeze {
+    background: #ffffff;
+}
+.filaSeleccionada {
+  background-color: #999999; 
+  color: #FFFFFF; 
+}
+.filaSeleccionada .Freeze {
+   background-color: #999999; 
+}
+/*Tabla-GridView*/
+.grvResultadoConsultaCss
+{
+    border: 1px solid #abb0b5; 
+    clear: both;
+    font-family:"Segoe UI" , helvetica, arial, sans-serif;
+    font-style: normal;
+}
+
+.grvResultadoConsultaCss th
+{
+   
+    background: #ebecec;
+    font-size: 12px;
+    font-style:normal;
+    padding: 2px;
+    cursor: pointer;
+    text-align: center;
+}
+.grvResultadoConsultaCss th:hover
+{
+     background: #9e9e9e;
+     color: #ffffff;
+}
+
+.grvResultadoConsultaCss tr, .ie7 table td, .ie7 table th
+{
+    border-top: 1px solid #abb0b5;
+}
+
+.grvResultadoConsultaCss td
+{
+   
+    font-size: 10px;
+    line-height: 24px;
+    padding: 2px;
+    vertical-align: text-top;
+}
+
+
+.grvResultadoConsultaCss th:first-child ~ td
+{
+    color: #868686;
+}
+
+.grvResultadoConsultaCss tbody th:first-child
+{
+    width: 120px;
+}
+/* grvResultaConsultaCssVerde*/
+.grvResultadoConsultaCssVerde
+{
+    border:none; 
+    clear: both;
+    font-family:"Segoe UI" , helvetica, arial, sans-serif;
+    font-style: normal;
+}
+
+.grvResultadoConsultaCssVerde th
+{
+    color: #cac9c9;
+    font-size: 12px;
+    padding: 2px;
+}
+
+.grvResultadoConsultaCssVerde tr, .ie7 table td, .ie7 table th
+{
+    border-top: 1px solid #c5c5c5;
+}
+
+.grvResultadoConsultaCssVerde td
+{
+    font-size: 10px;
+    line-height: 24px;
+    padding: 2px;
+    vertical-align: text-top;
+    color: #a6a6a6;
+}
+.grvResultadoConsultaCssVerde tr:hover
+{
+    background: #49b181;
+    color: #ffffff;
+}
+
+.grvResultadoConsultaCssVerde th:first-child ~ td
+{
+    color: #868686;
+}
+
+.grvResultadoConsultaCssVerde tbody th:first-child
+{
+    width: 120px;
+}
+
+.estiloPaginacion
+{
+	font-size:x-small;
+	text-align:right;
+    background-position: bottom center;
+            
+}
+.irPagina 
+{
+            font-size:x-small;
+            width:15px;
+}
+
+.pagAnterior
+{
+            background:transparent url(Imagenes/anterior.png) no-repeat scroll center;
+            height:20px;
+            width:20px;
+            cursor:pointer;
+            border:0px;
+}
+        
+.pagSiguiente
+{
+            background:transparent url(Imagenes/siguiente.png) no-repeat scroll center;
+            height:20px;
+            width:20px;
+            cursor:pointer;
+            border:0px;
+}
+
+.pagInicial
+{
+            background:transparent url(Imagenes/primero.png) no-repeat scroll center;
+            height:20px;
+            width:20px;
+            cursor:pointer;
+            border:0px;
+}
+        
+.pagUltima
+{
+            background:transparent url(Imagenes/ultimo.png) no-repeat scroll center;
+            height:20px;
+            width:20px;
+            cursor:pointer;
+            border:0px;
+}
+        
+.grvPaginacionScroll
+{ 
+    font-family: "Segoe UI" , helvetica, arial, sans-serif;
+    padding-top: 3px; 
+    font-size: 14px; 
+    padding-left: 5px; 
+    padding-right: 5px; 
+} 
+.grvPaginacionScroll A 
+{ 
+    color: #666666; 
+}
+.grvPaginacionScroll SPAN
+{
+    font-size: 16px;
+    font-weight: bold;
+
+}
+/*Tabla Folios Agregados*/
+.grvTabla
+{
+    border: 1px solid #abb0b5; 
+    clear: both;
+
+}
+
+.grvTabla th
+{
+    background: #ebecec;
+    color: #1f2834;
+    font-family: 'Segoe UI' , 'Tahoma Bold' , 'Arial Bold' , 'Helvetica Bold' , sans-serif;
+    font-size: 14px;
+    padding: 2px;
+}
+
+.grvTabla tr, .ie7 table td, .ie7 table th
+{
+    border-top: 1px solid #abb0b5;
+    border-bottom: 1px solid #abb0b5;
+    border-style: solid;
+}
+
+.grvTabla td
+{
+    font-size: 12px;
+    line-height: 24px;
+    padding: 2px;
+    vertical-align: text-top;
+}
+
+
+.grvTabla th:first-child ~ td
+{
+    color: #868686;
+}
+
+.grvTabla tbody th:first-child
+{
+    width: 120px;
+}
+
+
+
+        
+/* Colores: Background, Border, ForeColor*/
+/*
+ * Metro UI CSS v 0.1.1
+ * Copyright 2012 Sergey Pimenov
+ * Licensed under the MIT Lilcense
+ *
+ */
+
+.fg-color-azul
+{
+    color: #2d89ef !important;
+}
+
+.fg-color-azulClaro
+{
+    color: #44a3aa !important;
+}
+
+.fg-color-azulOscuro
+{
+    color: #0a5ac2 !important;
+}
+
+.fg-color-verde
+{
+    color: #00a300 !important;
+}
+
+.fg-color-verdeClaro
+{
+    color: #99b433 !important;
+}
+
+.fg-color-verdeOscuro
+{
+    color: #005200 !important;
+}
+
+.fg-color-rojo
+{
+    color: #b91d47 !important;
+}
+
+.fg-color-amarillo
+{
+    color: #ffc40d !important;
+}
+
+.fg-color-naranja
+{
+    color: #e3a21a !important;
+}
+
+.fg-color-naranjaOscuro
+{
+    color: #da532c !important;
+}
+
+.fg-color-rosa
+{
+    color: #c3325f !important;
+}
+
+.fg-color-rosaFuerte
+{
+    color: #9f00a7 !important;
+}
+
+.fg-color-purpura
+{
+    color: #603cba !important;
+}
+
+.fg-color-negro
+{
+    color: #1d1d1d !important;
+}
+
+.fg-color-blanco
+{
+    color: #ffffff !important;
+}
+
+.fg-color-grisoscuro
+{
+    color: #525252 !important;
+}
+
+.fg-color-grisClaro
+{
+    color: #d1d0d0 !important;
+}
+
+.bg-color-azul
+{
+    background-color: #2d89ef !important;
+}
+
+.bg-color-verdeClaro01 {
+   background-color: rgb(147, 203, 125) !important;
+}
+.bg-color-amarilloClaro
+{
+    background-color: #ffd44d !important;
+}
+.bg-color-azulClaro01
+{
+    background-color: #4ecdc2 !important;
+}
+
+.bg-color-azulOscuro
+{
+    background-color: #022347 !important;
+}
+
+.bg-color-azulClaro
+{
+    background-color: #44a2a9 !important;
+}
+
+.bg-color-azulOscuro
+{
+    background-color: #0a5ac2 !important;
+}
+
+.bg-color-verdeOscuro
+{
+    background-color: #005200 !important;
+}
+
+.bg-color-rojo
+{
+    background-color: #a40004 !important;
+}
+.bg-color-rojo01
+{
+    background-color: rgba(228, 73, 77, 0.75) !important;
+}
+
+.bg-color-amarillo
+{
+    background-color: #ffc40d !important;
+}
+
+.bg-color-naranja
+{
+    background-color: #e3a21a !important;
+}
+
+.bg-color-naranjaOscuro
+{
+    background-color: #da532c !important;
+}
+
+.bg-color-rosa
+{
+    background-color: #c3325f !important;
+}
+
+.bg-color-rosaOscuro
+{
+    background-color: #9f00a7 !important;
+}
+
+.bg-color-purpura
+{
+    background-color: #603cba !important;
+}
+
+.bg-color-negro
+{
+    background-color: #1d1d1d !important;
+}
+
+.bg-color-blanco
+{
+    background-color: #ffffff !important;
+}
+
+.bg-color-grisOscuro
+{
+    background-color: #525252 !important;
+}
+.bg-color-verdeAgua
+{
+    background-color: #08ae9f !important;
+}
+
+.bg-color-verdeFuerte
+{
+    background-color: #099b74 !important;
+}
+
+.bg-color-grisClaro
+{
+    background-color: #999797 !important;
+}
+
+.bg-color-grisClaro01
+{
+    background-color: #d1d0d0 !important;
+}
+.bg-color-grisClaro02
+{
+    background-color: #cccccc !important;
+}
+.bg-color-grisClaro03
+{
+    background-color: #ebecec !important;
+}
+
+.bg-color-verdeClaro
+{
+    background-color: #99b433 !important;
+}
+
+
+[class*=border-color] { border: 1px solid; }
+
+.border-color-azul
+{
+    border-color: #2d89ef !important;
+}
+
+.border-color-azulClaro
+{
+    border-color: #44a3aa !important;
+}
+
+.border-color-azulOscuro
+{
+    border-color: #0a5ac2 !important;
+}
+
+.border-color-verde
+{
+    border-color: #00a300 !important;
+}
+
+.border-color-verdeClaro
+{
+    border-color: #99b433 !important;
+}
+
+.border-color-verdeOscuro
+{
+    border-color: #005200 !important;
+}
+
+.border-color-rojo
+{
+    border-color: #b91d47 !important;
+}
+
+.border-color-amarillo
+{
+    border-color: #ffc40d !important;
+}
+
+.border-color-naranja
+{
+    border-color: #e3a21a !important;
+}
+
+.border-color-naranjaOscuro
+{
+    border-color: #da532c !important;
+}
+
+.border-color-rosa
+{
+    border-color: #c3325f !important;
+}
+
+.border-color-rosaFuerte
+{
+    border-color: #9f00a7 !important;
+}
+
+.border-color-purpura
+{
+    border-color: #603cba !important;
+}
+
+.border-color-negro
+{
+    border-color: #1d1d1d !important;
+}
+
+.border-color-blanco
+{
+    border-color: #ffffff !important;
+}
+
+.border-color-grisOscuro
+{
+    border-color: #525252 !important;
+}
+
+.border-color-grisClaro
+{
+    border-color: #d1d0d0 !important;
+}
+/*------------------------------------------*/
+/*ModalExtender*/
+.ModalBackground
+{
+    background-color: Gray;
+    filter: alpha(opacity=70);
+    opacity: 0.7;
+    position:absolute;  
+    z-index: 0 ;
+}
+.ModalPopup
+{
+    background-color: #ffffff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: Gray;
+    padding: 3px;
+    font-size: small;
+}
+.deshabilitar
+{
+   
+    opacity: 0.7;
+    position:absolute;  
+    z-index: 0 ;
+    cursor: inherit;
+}
+/*Ocultar*/
+.ocultar 
+{
+    
+    display:none;
+   
+}
+.icono 
+{
+    padding: 5px 5px 5px 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.iconoPequeño 
+{
+    padding: 5px 5px 5px 5px;
+    vertical-align: middle;
+    text-align: center;
+    width: 10px;
+    height: 10px;
+}
+.iconoBoton 
+{
+    padding: 8px 8px 8px 8px;
+    vertical-align: middle;
+    text-align: center;
+    background: #909291;
+    
+}
+.iconoBoton:hover {
+    background: #32bc6b;
+    
+}
+.opcionBarra
+{
+    vertical-align:middle;
+    text-align: justify;
+    background: #909291;
+    color: #c6c6c6;
+    height: 32px;
+    
+}
+.opcionBarra .iconoOpcion {
+    padding: 8px 8px 8px 8px;
+    vertical-align: middle;
+    text-align: center; 
+    
+   }
+.opcionBarra:hover {
+    background: #32bc6b;
+    color: #FFFFFF;
+}
+/*Iconos ACTIVOS-INACTIVO*/
+.Desconciliar 
+{
+    background: url(Iconos/DesconciliarInactivo.png) no-repeat center ;
+    padding: 4px 4px 4px 4px;
+    border: 1px solid #b9b9b9;
+    
+}
+.Desconciliar:hover {
+   background: url(Iconos/DesconciliarActivo.png) no-repeat center ;
+}
+.Detalle {
+    background: url(Iconos/Detalle.png) no-repeat center;
+    padding: 4px 4px 4px 4px;
+    border: 1px solid #b9b9b9;
+    
+}
+.Agregar
+{
+    background: url(Iconos/AgregarInactivo.png) no-repeat center;
+    background-size:15px 15px;
+    padding: 4px 4px 4px 4px;
+    border: 1px transparent solid;
+    cursor: pointer;
+    display: inline-block;
+   }
+.Agregar:hover {
+   background: url(Iconos/AgregarActivo.png) no-repeat center ;
+    background-size:15px 15px;
+}
+.Quitar
+{
+    background: url(Iconos/QuitarInactivo.png) no-repeat center ;
+    padding: 4px 4px 4px 4px;
+    
+}
+.Quitar:hover {
+   background: url(Iconos/QuitarActivo.png) no-repeat center ;
+}
+/* Estilo  Resaltar Busqueda*/
+.marcarBusqueda
+{
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+  background: yellow;
+}
+.parrafoTexto
+{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      width:150px;
+}
+.Espera
+{
+    opacity:0.5;
+    filter:alpha(opacity=40); 
+    width: 100%;
+    height:350px; 
+    text-align: center;
+    background-color: #cccccc !important;
+    
+}

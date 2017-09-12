@@ -1,0 +1,90 @@
+<%-- Logotipo de grupo metropolitano --%>
+<asp:Image runat="server" SkinID="logotipoEmpresa" 
+           Width="216px" 
+           Height="61px" 
+           BorderColor="#00B12C" 
+           ImageUrl="Imagenes/logotipoEmpresa.png" />
+
+<%-- Imagen Consultar--%>
+<asp:Image runat="server" SkinID="imgConsultar" 
+           Width="216px" 
+           Height="61px" 
+           BorderColor="#00B12C" 
+           ImageUrl="Imagenes/BuscarItem.png" />
+
+<%-- Logotipo de FHCorporativo metropolitano --%>
+<asp:Image runat="server" SkinID="logotipoCB"
+           Width="191" 
+           Height="56" 
+           BorderColor="#00B12C" 
+           ImageUrl="Imagenes/logotipoCB.png" />
+
+<%-- Menu Top Horizontal MENU PRINCIPAL --%>
+<asp:Menu runat="server"  SkinID="menuPrincipal" 
+          Orientation="Horizontal" 
+          StaticDisplayLevels="2" 
+          MaximumDynamicDisplayLevels="2" 
+          StaticSubMenuIndent="0" 
+          Width="100%"
+          DynamicHorizontalOffset="1"
+          DynamicVerticalOffset="1">
+    
+    <StaticMenuStyle BackColor="Transparent" />
+	<StaticMenuItemStyle CssClass="item" ItemSpacing="0" />
+	<StaticHoverStyle CssClass="hover" />
+	<StaticSelectedStyle CssClass="selected" />					
+
+    <DynamicMenuItemStyle CssClass="itemSubMenu" width="250px"/>
+    <DynamicHoverStyle CssClass="hover" width="250px"/>   
+    <DynamicSelectedStyle CssClass="selected" width="250px"/>					
+</asp:Menu>
+
+<%-- Menu Top Vertical MENUS SECUNDARIOS --%>
+<asp:Menu runat="server"  SkinID="menuSecundario" 
+          Orientation="Vertical" 
+          StaticDisplayLevels="2" 
+          MaximumDynamicDisplayLevels="0" 
+          StaticSubMenuIndent="0"          
+          Width="135px"
+          DynamicHorizontalOffset="1"
+          DynamicVerticalOffset="1">
+    
+    <StaticMenuStyle BackColor="Transparent" />
+	<StaticMenuItemStyle CssClass="item" ItemSpacing="0" />
+	<StaticHoverStyle CssClass="hover" />
+	<StaticSelectedStyle CssClass="selected" />					
+</asp:Menu>
+
+
+
+<%-- Path Acceso --%>
+<asp:SiteMapPath runat="server" PathSeparator="&nbsp;&raquo;&nbsp;" />
+
+<%-- Panel Encabezado --%>
+<asp:Panel runat="server" SkinID="pnlTituloPrincipal" Height="18px" Width= "100%" BorderColor="#FFFFFF" BackColor="#46AE4D" BorderStyle="Outset" BorderWidth="2px" HorizontalAlign="Center"/>
+
+<%-- Label Titulo Encabezado --%>
+<asp:Label runat="server" SkinID="lblTituloPrincipal" Height="18px" Width="100%" Font-Bold="True" Font-Size="Larger" ForeColor="White"/>
+
+
+<asp:DropDownList SkinID="Qddl" cssclass="testDDL" BorderColor="Gray" BorderStyle="Inset" BorderWidth="1px" Width="300px"  runat="server"></asp:DropDownList>
+
+
+<%-- Label General --%>
+<asp:Label SkinId="Label" BorderStyle="Solid" BorderWidth="1px" BorderColor="Black" Width="98%" runat="server"></asp:Label>
+<%-- TextBox Inhabilitado--%>
+<asp:TextBox SkinID="TextBoxDisabled" BorderStyle="solid" BorderWidth="1px" BorderColor="Black" Width="98%" runat="server"></asp:TextBox>
+<%-- TextBox General --%>
+<asp:TextBox SkinID="TextBox" BorderStyle="Ridge" BorderWidth="1px" BorderColor="green" Width="98%" runat="server"></asp:TextBox>
+<%-- TextBox multiline --%>
+<asp:TextBox SkinID="TextBoxMulti" BorderStyle="Ridge" BorderWidth="1px" BorderColor="green" Width="98%" Height="100px" runat="server"></asp:TextBox>
+<%-- DropDownList General --%>
+<asp:DropDownList SkinID="DropDownList" BorderStyle="Solid" BorderWidth="1px" BorderColor="Black" Width="99%" runat="server"></asp:DropDownList>
+<%-- ListBox General --%>
+<asp:ListBox SkinID="ListBox" BorderStyle="Solid" BorderWidth="1px" BorderColor="Black" Width="98%" runat="server"></asp:ListBox>
+<%-- Button General --%>
+<asp:Button SkinID="Button" BorderStyle="Solid" BorderWidth="1px" BorderColor="Black" runat="server" BackColor="Green" Font-Names="Verdana" Font-Size="10pt" ForeColor="Yellow" aling="center"></asp:Button>
+<%-- TextBox General Sin Tamaño --%>
+<asp:TextBox SkinID="TextBoxEstandar" BorderStyle="Ridge" BorderWidth="1px" BorderColor="green" runat="server"></asp:TextBox>
+<%-- Label General Sin Tamaño --%>
+<asp:TextBox SkinID="LabelEstandar" runat="server" Font-Size="4pt"></asp:TextBox>

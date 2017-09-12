@@ -1,0 +1,9 @@
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\bin\Release\CatalogoConciliacion.dll
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\bin\Release\CatalogoConciliacion.pdb
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\bin\Release\Conciliacion.Migracion.Runtime.dll
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\bin\Release\Conciliacion.RunTime.dll
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\bin\Release\Conciliacion.Migracion.Runtime.pdb
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\bin\Release\Conciliacion.RunTime.pdb
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.csprojResolveAssemblyReference.cache
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.dll
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.pdb

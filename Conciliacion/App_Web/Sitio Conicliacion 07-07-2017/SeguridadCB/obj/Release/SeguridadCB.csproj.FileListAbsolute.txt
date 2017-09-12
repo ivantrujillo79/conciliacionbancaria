@@ -1,0 +1,5 @@
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\bin\Release\SeguridadCB.dll
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\bin\Release\SeguridadCB.pdb
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\obj\Release\SeguridadCB.dll
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\obj\Release\SeguridadCB.pdb
+C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\obj\Release\SeguridadCB.csprojResolveAssemblyReference.cache

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Conciliacion.RunTime.App">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiAQAAAgAAAAQIAAAACIAEQAAABEAIABAAEAAAIQgAA=</HashCode>
+      <FileName>App.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.EmisorMensajes">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EmisorMensajes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.MensajeImplemantacionForm" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABABAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MensajeImplemantacionForm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Conciliacion.RunTime.MensajeImplementacionConsola" BaseTypeListCollapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABABAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MensajeImplementacionConsola.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Conciliacion.RunTime.MensajeImplementacionWeb" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAABABAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MensajeImplementacionWeb.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Conciliacion.RunTime.DatosSQL.ConsultaDatos">
+    <Position X="17.25" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAJAAAAAADGAAAQAAACAAAAggAACABBAQAAAAgAgAA=</HashCode>
+      <FileName>DatosSQL\ConsultaDatos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.cConciliacion">
+    <Position X="2.75" Y="2.75" Width="2.25" />
+    <NestedTypes>
+      <Enum Name="Conciliacion.RunTime.ReglasDeNegocio.cConciliacion.Operacion" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ReglasDeNegocio\Conciliacion.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gGtIwIAAAADAAAhDACAEAwBggkAGAgABAAKAZRQphCQ=</HashCode>
+      <FileName>ReglasDeNegocio\Conciliacion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.Consultas">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ReglasDeNegocio\Consultas.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ReglasDeNegocio\Consultas.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Conciliacion.RunTime.ReglasDeNegocio.Consultas.Configuracion" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ReglasDeNegocio\Consultas.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ReglasDeNegocio\Consultas.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAAJAAAAAADGAAAQAAACAAAAggAACIBBAQAAAAgAgAA=</HashCode>
+      <FileName>ReglasDeNegocio\Consultas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.DatosArchivo">
+    <Position X="0.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEEQAAhAAhAIAAAAMAAAACBmgAAApABAACBISQBgCw=</HashCode>
+      <FileName>ReglasDeNegocio\DatosArchivo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.Referencia">
+    <Position X="5.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAUAQAAEAAQAgAAEOIgAABAIAhAAAIARQACAJQQBgCA=</HashCode>
+      <FileName>ReglasDeNegocio\Referencia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.ReferenciaConciliada">
+    <Position X="5.5" Y="9.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAgAAIAAAoIAAACCgAAAgAAAIIIAAAACAAgAEA=</HashCode>
+      <FileName>ReglasDeNegocio\ReferenciaConciliada.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.DatosSQL.DatosArchivoDatos">
+    <Position X="0.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABCgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DatosSQL\DatosArchivoDatos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.DatosSQL.ReferenciaConciliadaDatos">
+    <Position X="5.75" Y="14.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAACAAAAAAAAgAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>DatosSQL\ReferenciaConciliadaDatos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.DatosSQL.ConciliacionDatos">
+    <Position X="3" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABBAAAAA=</HashCode>
+      <FileName>DatosSQL\ConciliacionDatos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.ListaCombo">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAACBAAAAgAAAACAAAAAgAAA=</HashCode>
+      <FileName>ReglasDeNegocio\ListaCombo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.ReglasDeNegocio.ReferenciaNoConciliada">
+    <Position X="14.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAQAAEAAQAgAAEOIgAABAIAhAAAIARQACAJQQBgCA=</HashCode>
+      <FileName>ReglasDeNegocio\ReferenciaNoConciliada.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conciliacion.RunTime.DatosSQL.ReferenciaNoConciliadaDatos">
+    <Position X="14.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAACAAAAAAAAgAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>DatosSQL\ReferenciaNoConciliadaDatos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Conciliacion.RunTime.IMensajesImplementacion">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMensajesImplementacion.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Conciliacion.RunTime.ReglasDeNegocio.IConciliacion">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGlAwAAAAADAAAABACAAAgAgggAEAAABAAKABAAABCA=</HashCode>
+      <FileName>ReglasDeNegocio\IConciliacion.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

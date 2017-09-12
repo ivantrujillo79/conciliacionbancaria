@@ -1,0 +1,56 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Debug="true" CodeFile="Principal.master.cs"
+    Inherits="Principal" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="titulo" runat="server">
+        </asp:ContentPlaceHolder>
+    </title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="formPrincipal" runat="server" onload="Page_Load">
+    <div id="areaTrabajo" style="width: 1200px">
+        <div id="encabezado">
+            <div id="logotipoEmpresa" style="vertical-align: middle;">
+                <asp:Image ID="imagenLogotipoEmpresa" SkinID="logotipoEmpresa" runat="server" AlternateText="Grupo Metropolitano"
+                    ImageAlign="Right" />
+            </div>
+            <div id="logotipoFHCorporativo" style="vertical-align: middle;">
+                <asp:Image ID="imagenLogotipoCB" SkinID="logotipoCB" runat="server" AlternateText="Conciliación Bancaria"
+                    ImageAlign="Left" />
+            </div>
+        </div>
+        <div id="areaMenuPrincipal">
+            <asp:SiteMapDataSource runat="server" ID="dataSouceMenu" SiteMapProvider="SiteMapPrincipal" />
+            <asp:Menu runat="server" DataSourceID="dataSouceMenu" ID="menuPrincipal" SkinID="menuPrincipal"
+                OnMenuItemDataBound="menuPrincipal_MenuItemDataBound" OnMenuItemClick="menuPrincipal_MenuItemClick" />
+        </div>
+        <div id="cont">
+            <div id="areaCentral">
+                <div id="columnaCentral">
+                    <div id="pathAcceso">
+                        &nbsp;</div>
+                    <div id="tituloPagina">
+                        <asp:SiteMapPath runat="server" ID="smPath" SiteMapProvider="SiteMapPrincipal" />
+                        <%--<asp:Panel ID="pnlTitulo" runat="server" SkinID="pnlTituloPrincipal">
+                            <asp:Label ID="lblTitulo" runat="server" SkinID="lblTituloPrincipal"></asp:Label>
+                        </asp:Panel>--%>
+                    </div>
+                    <div>
+                        <asp:ContentPlaceHolder ID="contenidoPrincipal" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="piePagina">
+            <asp:Label ID="lblInformacion" runat="server" Width="100%" CssClass="etiqueta fg-color-blanco"></asp:Label>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
