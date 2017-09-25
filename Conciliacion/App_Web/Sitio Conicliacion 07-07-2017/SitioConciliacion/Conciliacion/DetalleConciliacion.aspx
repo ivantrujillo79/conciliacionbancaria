@@ -1009,13 +1009,13 @@
                             </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
+                                 <%-- <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedido" runat="server" Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>' />
                                     </ItemTemplate>
                                     <ItemStyle BackColor="#ebecec" HorizontalAlign="Center" Width="100px" />
                                     <HeaderStyle HorizontalAlign="Center" Width="100px" />
-                                </asp:TemplateField>
+                                </asp:TemplateField> --%>
                                 <%-- <asp:TemplateField HeaderText="Celula" SortExpression="Celula">
                                     <ItemTemplate>
                                         <asp:Label ID="lblCelula" runat="server" Text='<%# resaltarBusqueda(Eval("Celula").ToString()) %>' />
