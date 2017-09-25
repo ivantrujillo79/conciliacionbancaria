@@ -803,7 +803,7 @@
                                 <tr>
                                     <td rowspan="2" style="vertical-align: top; width: 12%;">
                                         <asp:Label ID="lblFOperacion" runat="server" Text="FOperación" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
-                                        <asp:Label ID="lblFSuminstro" runat="server" Text="FSuminstro" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
+                                        <asp:Label ID="lblFSuminstro" runat="server" Text="FSuministro" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
                                     </td>
                                     <td style="width: 12%;">
                                         <asp:TextBox ID="txtFOInicio" runat="server" Width="80px" CssClass="cajaTextoPequeño"
