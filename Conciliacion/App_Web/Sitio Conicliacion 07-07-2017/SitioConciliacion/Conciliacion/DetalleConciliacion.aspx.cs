@@ -781,7 +781,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
         ViewState["TAB_INTERNOS"] = tblReferenciaInternas;
     }
-    private void LlenaGridViewPedidos()//Llena el gridview dePedidos
+    private void LlenaGridViewPedidos()//Llena el gridview de Pedidos
     {
         DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
         grvPedidos.DataSource = tablaReferenciasP;

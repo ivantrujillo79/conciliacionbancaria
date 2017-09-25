@@ -252,7 +252,7 @@
                             <div class="InfoSecundaria">
                                 <asp:Label ID="lblCuenta" runat="server"></asp:Label></div>
                             <div class="Descripcion">
-                                Cuenta Bancaría</div>
+                                Cuenta Bancaria</div>
                         </div>
                     </td>
                     <td class="Info Normal " style="vertical-align: top">
