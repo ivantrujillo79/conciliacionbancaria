@@ -8,15 +8,24 @@
     ACCESO
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
-    <script type="text/javascript" language="javascript">
-        var modalId = '<%:mpeLoading.ClientID%>';        
-    </script>
     <script src="../App_Scripts/jsModalUpdateProgress.js" type="text/javascript"></script>
-    <%--<script type="text/javascript">
-        function pageLoad() {
-            return ValidaEnvio();
-        }
-    </script>--%>
+    <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    
+     <script type="text/javascript" language="javascript">
+         var modalId = '<%:mpeLoading.ClientID%>';
+
+         $(document).ready(function () {
+             console.log('Documento cargado');
+         });
+
+         $(window).on("load", function () {
+             var txtUsr = document.getElementById('ctl00_contenidoPrincipal_Login_txtUsuario');
+             txtUsr.focus();
+             console.log('Ventana cargada');
+         });
+
+    </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
     <asp:ScriptManager ID="smAcceso" runat="server" AsyncPostBackTimeout="600">
