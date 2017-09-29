@@ -68,3 +68,10 @@ C:\Entrega Proyectos 17-07-2017\MEGA\Conciliacion\App_Web\Sitio Conicliacion 07-
 C:\Entrega Proyectos 17-07-2017\MEGA\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csprojResolveAssemblyReference.cache
 C:\Entrega Proyectos 17-07-2017\MEGA\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
 C:\Entrega Proyectos 17-07-2017\MEGA\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.dll
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.pdb
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csprojResolveAssemblyReference.cache
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb
