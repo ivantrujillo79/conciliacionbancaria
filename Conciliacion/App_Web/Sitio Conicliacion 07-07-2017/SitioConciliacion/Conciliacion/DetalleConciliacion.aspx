@@ -803,7 +803,7 @@
                                 <tr>
                                     <td rowspan="2" style="vertical-align: top; width: 12%;">
                                         <asp:Label ID="lblFOperacion" runat="server" Text="FOperación" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
-                                        <asp:Label ID="lblFSuminstro" runat="server" Text="FSuminstro" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
+                                        <asp:Label ID="lblFSuminstro" runat="server" Text="FSuministro" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
                                     </td>
                                     <td style="width: 12%;">
                                         <asp:TextBox ID="txtFOInicio" runat="server" Width="80px" CssClass="cajaTextoPequeño"
@@ -1009,13 +1009,13 @@
                             </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
+                                 <%-- <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedido" runat="server" Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>' />
                                     </ItemTemplate>
                                     <ItemStyle BackColor="#ebecec" HorizontalAlign="Center" Width="100px" />
                                     <HeaderStyle HorizontalAlign="Center" Width="100px" />
-                                </asp:TemplateField>
+                                </asp:TemplateField> --%>
                                 <%-- <asp:TemplateField HeaderText="Celula" SortExpression="Celula">
                                     <ItemTemplate>
                                         <asp:Label ID="lblCelula" runat="server" Text='<%# resaltarBusqueda(Eval("Celula").ToString()) %>' />

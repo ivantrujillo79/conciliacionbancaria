@@ -15,18 +15,19 @@ using System.IO;
 using System.Text;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
+using SeguridadCB.Public;
 
 public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 {
-    #region "Propiedades Globales"
+    #region "Propiedades Globales / afortunadamente no son globales, hay que remover éstos miembros *Iván Trujillo"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
     private SeguridadCB.Public.Parametros parametros;
-    public List<ReferenciaConciliada> listaReferenciaConciliada = new List<ReferenciaConciliada>();
-    public List<ReferenciaNoConciliada> listaReferenciaArchivosInternos = new List<ReferenciaNoConciliada>();
+    private List<ReferenciaConciliada> listaReferenciaConciliada = new List<ReferenciaConciliada>();
+    private List<ReferenciaNoConciliada> listaReferenciaArchivosInternos = new List<ReferenciaNoConciliada>();
 
-    public List<ReferenciaNoConciliada> listaReferenciaExternas = new List<ReferenciaNoConciliada>();
-    public List<ReferenciaNoConciliadaPedido> listaReferenciaPedidos = new List<ReferenciaNoConciliadaPedido>();
+    private List<ReferenciaNoConciliada> listaReferenciaExternas = new List<ReferenciaNoConciliada>();
+    private List<ReferenciaNoConciliadaPedido> listaReferenciaPedidos = new List<ReferenciaNoConciliadaPedido>();
     private List<ListaCombo> listMotivosNoConciliados = new List<ListaCombo>();
 
     private List<ListaCombo> listFormasConciliacion = new List<ListaCombo>();
@@ -34,27 +35,29 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     private List<ListaCombo> listSucursales = new List<ListaCombo>();
     private List<ListaCombo> listStatusConcepto = new List<ListaCombo>();
 
-    public DataTable tblReferenciaExternas;
-    public DataTable tblReferenciaInternas;
-    public DataTable tblDetalleTransaccionConciliada;
+    private DataTable tblReferenciaExternas;
+    private DataTable tblReferenciaInternas;
+    private DataTable tblDetalleTransaccionConciliada;
 
-    public List<ReferenciaNoConciliada> listaTransaccionesConciliadas = new List<ReferenciaNoConciliada>();
+    private List<ReferenciaNoConciliada> listaTransaccionesConciliadas = new List<ReferenciaNoConciliada>();
 
     private DataTable tblTransaccionesConciliadas;
-    public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
+    private List<ListaCombo> listCamposDestino = new List<ListaCombo>();
 
     private DatosArchivo datosArchivoInterno;
     private List<ListaCombo> listTipoFuenteInformacionExternoInterno = new List<ListaCombo>();
-    public List<ListaCombo> listFoliosInterno = new List<ListaCombo>();
-    public List<DatosArchivo> listArchivosInternos = new List<DatosArchivo>();
+    private List<ListaCombo> listFoliosInterno = new List<ListaCombo>();
+    private List<DatosArchivo> listArchivosInternos = new List<DatosArchivo>();
 
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
     #endregion
 
-    public int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno, sucursalConciliacion;
-    public short mesConciliacion, tipoConciliacion;
-    public string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
+    private int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno, sucursalConciliacion;
+    private short mesConciliacion;
+    private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
+    public short tipoConciliacion;
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -1370,6 +1373,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     {
         //Leer info Actual de la Conciliacion
         cargarInfoConciliacionActual();
+        
 
         Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToSByte(ddlCriteriosConciliacion.SelectedItem.Value), tipoConciliacion);
         GenerarTablaConciliados();

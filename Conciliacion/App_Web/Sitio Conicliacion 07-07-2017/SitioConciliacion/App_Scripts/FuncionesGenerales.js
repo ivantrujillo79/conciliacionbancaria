@@ -313,9 +313,8 @@ function ComparaFechas(FInicio, FFin)
  */
 
 
-function SeleccionarTexto(campo)
-{
-    campo.select()
+function SeleccionarTexto(campo) {
+    campo.select();
 }
 
 /*

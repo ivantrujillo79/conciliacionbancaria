@@ -33,7 +33,7 @@ public partial class Acceso_Login : System.Web.UI.UserControl
     {
         if (!Page.IsPostBack)
             txtUsuario.Focus();
-
+        
         txtUsuario.Attributes.Add("onFocus", "ChangeColor('" + txtUsuario.ClientID + "', '#FFFDE8');");
         txtUsuario.Attributes.Add("onBlur", "ChangeColor('" + txtUsuario.ClientID + "', '#FFFFFF');");
         txtClave.Attributes.Add("onFocus", "ChangeColor('" + txtClave.ClientID + "', '#FFFDE8');");
