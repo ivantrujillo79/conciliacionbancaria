@@ -16,6 +16,7 @@ using System.Text;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using SeguridadCB.Public;
+using System.Data.OleDb;
 
 public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 {
@@ -67,7 +68,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-       
+
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         //try
         //{
@@ -746,7 +747,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         try
         {
-            listaReferenciaPedidos = Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(Consultas.BusquedaPedido.Todos, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, 0, 0, 0, celula, "-1",false);//@ClientePadre=FALSE : Solo mandar los PEDIDOS del Cliente.
+            listaReferenciaPedidos = Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(Consultas.BusquedaPedido.Todos, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, 0, 0, 0, celula, "-1", false);//@ClientePadre=FALSE : Solo mandar los PEDIDOS del Cliente.
             Session["POR_CONCILIAR_INTERNO"] = listaReferenciaPedidos;
         }
         catch (Exception ex)
@@ -1373,7 +1374,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     {
         //Leer info Actual de la Conciliacion
         cargarInfoConciliacionActual();
-        
+
 
         Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToSByte(ddlCriteriosConciliacion.SelectedItem.Value), tipoConciliacion);
         GenerarTablaConciliados();
@@ -2118,4 +2119,75 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
 
+    protected void btnSeleccionarArchivo_Click(object sender, EventArgs e)
+    {
+        string ruta = System.IO.Path.GetFullPath(Server.MapPath("~/"));
+        if (fupSeleccionar.HasFile)
+        {
+            try
+            {
+                //lblArchivo.Text = "Archivo: " + fupSeleccionar.PostedFile.file;
+            }
+            catch (Exception ex)
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Error al cargar el archivo.\r\nError: " + ex.Message);
+            }
+        }
+    }
+    
+    private void LeerDatos()
+    {
+        OleDbConnection oledbConn = new OleDbConnection();
+        OleDbCommand cmd;
+        OleDbDataAdapter oleda;
+        DataSet ds;
+        try
+        {
+            //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
+            string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro2.xls"));
+
+            //lblRuta.Text = path + "<br/>";
+
+            if (File.Exists(path))
+            {
+                //lblExiste.Text = "Existe";
+                if (Path.GetExtension(path) == ".xls")
+                {
+                    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
+                        "Data Source = " + path +
+                        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
+                }
+                else if (Path.GetExtension(path) == ".xlsx")
+                {
+                    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+                    "Data Source=" + path +
+                    ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
+                }
+                /*cmd.Connection = oledbConn;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT * FROM [Hoja1$]";*/
+
+                oledbConn.Open();
+                cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
+                oleda = new OleDbDataAdapter();
+                ds = new DataSet();
+
+                oleda.SelectCommand = cmd;
+                oleda.Fill(ds, "Registros");
+
+                grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
+                grvDetalleConciliacionManual.DataBind();
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            //lblExiste.Text = ex.ToString();
+        }
+        finally
+        {
+            oledbConn.Close();
+        }
+    }
 }

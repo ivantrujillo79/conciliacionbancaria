@@ -999,6 +999,113 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+
+                        <!--    POPUP CARGA ARCHIVO    -->
+                        <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
+                        <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
+                            DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
+                            CancelControlID="btnCerrarCargaArchivo">
+                        </asp:ModalPopupExtender>
+                        <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" Width="400px" Style="display: none">
+                            <table style="width: 80%;">
+                                <tr class="bg-color-grisOscuro">
+                                    <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                                        <div class="floatIzquierda">
+                                            <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                                CssClass="iconoPequeño bg-color-rojo" />
+                                        </div>
+                                        <!--<div class="fg-color-blanco">
+                                            Buscar
+                                        </div>  -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 5px 5px 5px; width: 85%">
+                                        <!--<div class="etiqueta">
+                                            Valor
+                                        </div>
+                                        <asp:TextBox ID="TextBox1" runat="server" CssClass="cajaTexto" Font-Size="12px"
+                                            Width="95%">
+                                        </asp:TextBox>-->
+                                        <asp:FileUpload ID="fupSeleccionar" runat="server" />
+                                        <asp:Button ID="btnSeleccionarArchivo" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                            Text="Seleccionar archivo..." OnClick="btnSeleccionarArchivo_Click" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>  <!--  style="width: 5%"   -->
+                                        <!--<asp:Button ID="Button1" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                            Text="BUSCAR" OnClick="btnIrBuscar_Click" /> -->
+                                        <asp:Label ID="lblArchivo" runat="server" CssClass="etiqueta " Font-Size="10px" Text="Archivo: " />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-color-grisClaro01" colspan="4">
+                                        <asp:Label ID="lblRegistros" runat="server" CssClass="etiqueta " Font-Size="10px" 
+                                            Text="Total de registros a cargar: " />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center">
+                                        <asp:GridView ID="grvDetalleConciliacionManual" runat="server" AutoGenerateColumns="False"
+                                            AllowPaging="True" ShowHeader="True" Width="850px" CssClass="grvResultadoConsultaCss"
+                                            PageSize="15" ShowHeaderWhenEmpty="True" ShowFooter="False" DataKeyNames="SecuenciaInterno, FolioInterno">
+                                            <!--<EmptyDataTemplate>
+                                                <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
+                                                    Text="No se encontraron referencias internas"></asp:Label>
+                                            </EmptyDataTemplate>-->
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <Columns>
+                                                <asp:TemplateField>
+                                                    <ItemTemplate>
+                                                        <asp:Image ID="img" runat="server" CssClass="icono bg-color-verdeClaro centradoMedio"
+                                                            Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png" Width="15px">
+                                                        </asp:Image>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
+                                                        BackColor="#ebecec" Width="30px"></ItemStyle>
+                                                    <HeaderStyle HorizontalAlign="Center" Width="30px"></HeaderStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Documento" SortExpression="">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblDocumento" runat="server" Text='<%# Bind("Documento") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ControlStyle CssClass="centradoMedio" />
+                                                    <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px">
+                                                    </ItemStyle>
+                                                    <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Cuenta" SortExpression="">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblCuenta" runat="server" Text='<%# Bind("Cuenta") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ControlStyle CssClass="centradoMedio" />
+                                                    <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
+                                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Monto" SortExpression="monto">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblMonto" runat="server" Text='<%# Bind("Monto","{0:c2}") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnCargaArchivoAceptar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                            Text="Aceptar" OnClick="btnCargarArchivoAceptar_Click" />
+                                        <asp:Button ID="btnCargaArchivCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
+                                            Text="Cancelar" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
+                        <!--    FIN POPUP CARGA ARCHIVO    -->
+
                         <asp:GridView ID="grvPedidos" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                             CssClass="grvResultadoConsultaCss" DataKeyNames="Celula,Pedido,AñoPed,Cliente"
                             AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging"
