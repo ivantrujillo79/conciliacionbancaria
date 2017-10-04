@@ -2119,75 +2119,94 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
 
-    protected void btnSeleccionarArchivo_Click(object sender, EventArgs e)
-    {
-        string ruta = System.IO.Path.GetFullPath(Server.MapPath("~/"));
-        if (fupSeleccionar.HasFile)
-        {
-            try
-            {
-                //lblArchivo.Text = "Archivo: " + fupSeleccionar.PostedFile.file;
-            }
-            catch (Exception ex)
-            {
-                App.ImplementadorMensajes.MostrarMensaje("Error al cargar el archivo.\r\nError: " + ex.Message);
-            }
-        }
-    }
-    
-    private void LeerDatos()
+    protected void btnSubirArchivo_Click(object sender, EventArgs e)
     {
         OleDbConnection oledbConn = new OleDbConnection();
         OleDbCommand cmd;
         OleDbDataAdapter oleda;
         DataSet ds;
-        try
+        string sArchivo = "";
+
+        if (fupSeleccionar.HasFile)
         {
-            //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
-            string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro2.xls"));
-
-            //lblRuta.Text = path + "<br/>";
-
-            if (File.Exists(path))
+            try
             {
-                //lblExiste.Text = "Existe";
-                if (Path.GetExtension(path) == ".xls")
+                if (ValidarExtension(fupSeleccionar.FileName))
                 {
-                    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                        "Data Source = " + path +
-                        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
-                }
-                else if (Path.GetExtension(path) == ".xlsx")
-                {
-                    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
-                    "Data Source=" + path +
-                    ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
-                }
-                /*cmd.Connection = oledbConn;
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM [Hoja1$]";*/
+                    /*  Subir archivo   */
+                    sArchivo = System.IO.Path.GetFullPath(Server.MapPath("~/")) + fupSeleccionar.FileName;
+                    fupSeleccionar.SaveAs(sArchivo);
+                    //lblRuta.Text = "Archivo: " + sArchivo;
 
-                oledbConn.Open();
-                cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
-                oleda = new OleDbDataAdapter();
-                ds = new DataSet();
+                    /*  Leer archivo    */
+                    //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
+                    //lblRuta.Text = sArchivo + "<br/>";
 
-                oleda.SelectCommand = cmd;
-                oleda.Fill(ds, "Registros");
+                    if (File.Exists(sArchivo))
+                    {
+                        //lblExiste.Text = "Existe";
+                        if (Path.GetExtension(sArchivo) == ".xls")
+                        {
+                            oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
+                                "Data Source = " + sArchivo +
+                                ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
+                        }
+                        else if (Path.GetExtension(sArchivo) == ".xlsx")
+                        {
+                            oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+                            "Data Source=" + sArchivo +
+                            ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
+                        }
+                        /*cmd.Connection = oledbConn;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT * FROM [Hoja1$]";*/
 
-                grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
-                grvDetalleConciliacionManual.DataBind();
+                        oledbConn.Open();
+                        cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
+                        oleda = new OleDbDataAdapter();
+                        ds = new DataSet();
 
+                        oleda.SelectCommand = cmd;
+                        oleda.Fill(ds, "Registros");
+                        /*
+                        grvLibro1.DataSource = ds.Tables[0].DefaultView;
+                        grvLibro1.DataBind();
+                        */
+                    }
+                }// Validar extension
             }
+            catch (Exception ex)
+            {
+                //lblLibro2.Text = ex.ToString();
+            }
+        }// fupSeleccionar.HasFile
 
-        }
-        catch (Exception ex)
+    }
+
+    private bool ValidarExtension(string archivo)
+    {
+        const string ERROR_EXT = "El archivo a cargar debe ser de formato Excel, con extensión de archivo .XLS o .XLSX";
+
+        bool bResultado = false;
+        string[] extensionesValidas = { ".xls", ".xlsx" };
+        string ext = Path.GetExtension(archivo).ToLower();
+
+        for (int i = 0; i < extensionesValidas.Length; i++)
         {
-            //lblExiste.Text = ex.ToString();
+            if (ext == extensionesValidas[i])
+            {
+                bResultado = true;
+                break;
+            }
         }
-        finally
+        if (!bResultado)
         {
-            oledbConn.Close();
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(),
+                "Error",
+                "alert('" + ERROR_EXT + "');", true);
+            //App.ImplementadorMensajes.MostrarMensaje("Error al cargar el archivo.\r\nError: " + ex.Message);
         }
+
+        return bResultado;
     }
 }

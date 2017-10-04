@@ -1028,8 +1028,8 @@
                                             Width="95%">
                                         </asp:TextBox>-->
                                         <asp:FileUpload ID="fupSeleccionar" runat="server" />
-                                        <asp:Button ID="btnSeleccionarArchivo" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                            Text="Seleccionar archivo..." OnClick="btnSeleccionarArchivo_Click" />
+                                        <asp:Button ID="btnSubirArchivo" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                            Text="Seleccionar archivo..." OnClick="btnSubirArchivo_Click" />
                                     </td>
                                 </tr>
                                 <tr>
