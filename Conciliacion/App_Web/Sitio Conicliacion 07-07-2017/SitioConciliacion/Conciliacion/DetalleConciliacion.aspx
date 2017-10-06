@@ -1050,10 +1050,10 @@
                                         <asp:GridView ID="grvDetalleConciliacionManual" runat="server" AutoGenerateColumns="False"
                                             AllowPaging="True" ShowHeader="True" Width="850px" CssClass="grvResultadoConsultaCss"
                                             PageSize="15" ShowHeaderWhenEmpty="True" ShowFooter="False" DataKeyNames="SecuenciaInterno, FolioInterno">
-                                            <!--<EmptyDataTemplate>
+                                            <%--<EmptyDataTemplate>
                                                 <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
                                                     Text="No se encontraron referencias internas"></asp:Label>
-                                            </EmptyDataTemplate>-->
+                                            </EmptyDataTemplate>--%>
                                             <HeaderStyle HorizontalAlign="Center" />
                                             <Columns>
                                                 <asp:TemplateField>
@@ -1097,7 +1097,7 @@
                                 <tr>
                                     <td>
                                         <asp:Button ID="btnCargaArchivoAceptar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                            Text="Aceptar" OnClick="btnCargarArchivoAceptar_Click" />
+                                            Text="Aceptar" />
                                         <asp:Button ID="btnCargaArchivCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
                                             Text="Cancelar" />
                                     </td>
