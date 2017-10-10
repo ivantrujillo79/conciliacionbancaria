@@ -288,6 +288,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract ListaCombo ConsultaDatosCliente(int cliente);
         public abstract bool ClienteValido(string cliente);
+        public abstract bool VerificaPedidoReferenciaExiste(string PedidoReferencia);
 
         public abstract Consultas CrearObjeto();
 
