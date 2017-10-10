@@ -5626,6 +5626,38 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override bool VerificaPedidoReferenciaExiste(string PedidoReferencia)
+        {
+            Boolean resultado = true;
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBVerificaPedidoReferenciaExiste", cnn);
+                    comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
+
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        resultado = Convert.ToInt32(reader["TotalRegistros"]) > 0;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                    resultado = false;
+                }
+                return resultado;
+            }
+        }
+
         /*********
                  * Consulta externos con transferencia
                  *********/
