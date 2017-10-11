@@ -215,7 +215,7 @@ namespace ValidacionArchivosConciliacion
 
         }
 
-    }
+    }//end DetalleValidacion
     #endregion
 
     #region ValidadorCyC
@@ -228,9 +228,9 @@ namespace ValidacionArchivosConciliacion
         public int CuentaBancaria { get; set; }
         public int DocumentoReferencia { get; set; }
 
-        private const int colDoc = 1;
-        private const int colCta = 2;
-        private const int colMon = 3;
+        private const int colDoc = 0;
+        private const int colCta = 1;
+        private const int colMon = 2;
 
         private const string strEncabezado = "DocumentoCuentaMonto";
         private const int layoutColumnas = 3;
@@ -300,13 +300,15 @@ namespace ValidacionArchivosConciliacion
             DetalleValidacion detallevalidacion = new DetalleValidacion();
             bool Exito = true;
             string ValoresInvalidos = "";
+            int RowNo = 1;
 
             foreach (DataRow row in dtArchivo.Rows)
             {
-                if (int.Parse(row[colCta].ToString()) != CuentaBancaria)
+                RowNo = RowNo + 1;
+                if (row[colCta].ToString() != CuentaBancaria.ToString())
                 {
                     Exito = false;
-                    ValoresInvalidos = ValoresInvalidos + row[colCta].ToString() + ", ";
+                    ValoresInvalidos = ValoresInvalidos + RowNo.ToString() + ", ";
                 }
             }
 
@@ -319,7 +321,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erCtaBan_EncontroCuentaDistinta;
-                detallevalidacion.Mensaje = "ERROR: Se espera numero de cuenta: " + CuentaBancaria.ToString() + ". Corriga los siguientes valores: " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Se espera cuenta bancaria: " + CuentaBancaria.ToString() + ". Corriga la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -332,6 +334,8 @@ namespace ValidacionArchivosConciliacion
             bool Exito = true;
             string ValoresInvalidos = "";
             double Monto;
+            double Dec;
+            string strDec;
             int rowNo = 1;
 
             foreach (DataRow row in dtArchivo.Rows)
@@ -339,12 +343,16 @@ namespace ValidacionArchivosConciliacion
                 rowNo = rowNo + 1;
                 if (double.TryParse(row[colMon].ToString().Trim(), out Monto))
                 {
-                    if (Monto <= 0 & Monto - Math.Truncate(Monto) > 0.99)
+                    Dec = Monto - Math.Truncate(Monto);
+                    strDec = Dec.ToString();
+                    if (Monto <= 0 || strDec.Length > 4)
                     {
                         Exito = false;
                         ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
                     }
                 }
+                else
+                    ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
             }
 
             if (Exito)
@@ -368,8 +376,18 @@ namespace ValidacionArchivosConciliacion
 
             bool Exito = true;
             string ValoresInvalidos = "";
+            int rowNo = 1;
 
-            
+            foreach (DataRow row in dtArchivo.Rows)
+            {
+                rowNo = rowNo + 1;
+
+                if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
+                {
+                    Exito = false;
+                    ValoresInvalidos = ValoresInvalidos + rowNo.ToString() + ", ";
+                }
+            }
 
             if (Exito)
             {
@@ -380,13 +398,9 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erDocRef_EncontroDocRefDistinto;
-                detallevalidacion.Mensaje = "ERROR: Se espera Referencia Documento: " + DocumentoReferencia.ToString() + ". Corriga los siguientes valores: " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Se espera Referencia Documento: " + DocumentoReferencia.ToString() + ". Corriga la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
-
-            detallevalidacion.CodigoError = 0;
-            detallevalidacion.Mensaje = "EXITO";
-            detallevalidacion.VerificacionValida = true;
 
             return detallevalidacion;
         }
@@ -395,9 +409,7 @@ namespace ValidacionArchivosConciliacion
         {
             DetalleValidacion detallevalidacion = new DetalleValidacion();
 
-            DataRow rowEncabezado = dtArchivo.Rows[0];
-
-            if (string.Compare(GeneraMD5(strEncabezado), GeneraMD5(rowEncabezado[0].ToString().Trim() + rowEncabezado[1].ToString().Trim() + rowEncabezado[2].ToString().Trim())) == 0)
+            if (string.Compare(GeneraMD5(strEncabezado), GeneraMD5(dtArchivo.Columns[0].ColumnName + dtArchivo.Columns[1].ColumnName + dtArchivo.Columns[2].ColumnName)) == 0)
             {
                 detallevalidacion.CodigoError = 0;
                 detallevalidacion.Mensaje = "EXITO";
@@ -446,18 +458,16 @@ namespace ValidacionArchivosConciliacion
             DetalleValidacion detallevalidacion = new DetalleValidacion();
             bool Exito = true;
             string ValoresInvalidos = "";
-            //int rowNo = 0;
 
             if (dtArchivo.Columns.Count != layoutColumnas)
             {
                 Exito = false;
-                ValoresInvalidos = "Numero de columnas no es el esperado. Se esperan 3 columnas.";
+                ValoresInvalidos = "Se esperan 3 columnas.";
             }
-            else
             if (dtArchivo.Rows.Count < 2)
             {
                 Exito = false;
-                ValoresInvalidos = "Numero de filas insuficientes. Se esperan al menos 2 filas.";
+                ValoresInvalidos = ValoresInvalidos + "Se esperan al menos 2 filas.";
             }
             //else
             //{
@@ -481,7 +491,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erLayOut_NoEsElEsperado;
-                detallevalidacion.Mensaje = "ERROR: El layout no corresponde con el esperado. Se esperan tres columnas iniciando desde la columna A. " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: El layout no corresponde con el esperado. " + ValoresInvalidos;
                 //detallevalidacion.Mensaje = "ERROR: El layout no corresponde con el esperado. Se esperan tres columnas iniciando desde la columna A. Corriga las celda(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
@@ -494,9 +504,9 @@ namespace ValidacionArchivosConciliacion
             DetalleValidacion detallevalidacion = new DetalleValidacion();
             bool Exito = true;
             string ValoresInvalidos = "";
-            int rowNo = 0;
+            int rowNo = 1;
 
-            for (int colNo = 0; colNo <= 3; colNo++)
+            for (int colNo = 0; colNo <= layoutColumnas-1; colNo++)
             {
                 foreach (DataRow row in dtArchivo.Rows)
                 {
@@ -504,9 +514,10 @@ namespace ValidacionArchivosConciliacion
                     if (string.Compare(row[colNo].ToString().Trim(), string.Empty) == 0)
                     {
                         Exito = false;
-                        ValoresInvalidos = ValoresInvalidos + "Columna: " + colNo + " Fila: " + rowNo + ", ";
+                        ValoresInvalidos = ValoresInvalidos + rowNo.ToString() + ", ";
                     }
                 }
+                rowNo = 1;
             }
 
             if (Exito)
@@ -518,7 +529,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erCelda_Vacia;
-                detallevalidacion.Mensaje = "ERROR: Celda invalida. Una o mas celdas estan vacias. Corriga las celda(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Celda invalida. Una o mas celdas estan vacias. Corriga la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -530,12 +541,12 @@ namespace ValidacionArchivosConciliacion
             bool existe;
             DetalleValidacion ValidoExcel = new DetalleValidacion();
 
-            existe = (NombreArchivo.Trim() == string.Empty & TipoMIME.Trim() == string.Empty & RutaArchivo.Trim() == string.Empty) & (!File.Exists(RutaArchivo + NombreArchivo));
+            existe = (NombreArchivo.Trim() != string.Empty & TipoMIME.Trim() != string.Empty & RutaArchivo.Trim() != string.Empty) & (File.Exists(RutaArchivo + NombreArchivo));
 
             if (existe)
             {
                 ValidoExcel = ValidaFormatoExcel();
-                return ValidoExcel.CodigoError > 0;
+                return ValidoExcel.CodigoError == 0;
             }
             else
                 return false;
@@ -571,12 +582,19 @@ namespace ValidacionArchivosConciliacion
                 if (oledbConn != null)
                 {
                     oledbConn.Open();
-                    cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
-                    oleda = new OleDbDataAdapter();
-                    ds = new DataSet();
-                    oleda.SelectCommand = cmd;
-                    oleda.Fill(ds, "Registros");
-                    dtArchivo = ds.Tables[0];
+                    try
+                    {
+                        cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
+                        oleda = new OleDbDataAdapter();
+                        ds = new DataSet();
+                        oleda.SelectCommand = cmd;
+                        oleda.Fill(ds, "Registros");
+                        dtArchivo = ds.Tables[0];
+                    }
+                    finally
+                    {
+                        oledbConn.Close();
+                    }
                 }
             }
             catch (Exception ex)
@@ -584,7 +602,7 @@ namespace ValidacionArchivosConciliacion
                 //lblLibro2.Text = ex.ToString();
             }
             if (dtArchivo != null)
-                return dtArchivo.Rows.Count > 0;
+                return true;
             else
                 return false;
         }
