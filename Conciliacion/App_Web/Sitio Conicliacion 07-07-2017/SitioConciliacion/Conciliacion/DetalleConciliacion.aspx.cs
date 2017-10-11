@@ -58,6 +58,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     private short mesConciliacion;
     private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
     public short tipoConciliacion;
+    private string NombreArchivo = "";
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -68,7 +69,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         //try
         //{
@@ -81,6 +82,15 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
                 HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
             }
         }
+
+        if (Page.IsPostBack)
+        {
+            /*if (fupSeleccionar.HasFile)
+            {
+                NombreArchivo = fupSeleccionar.FileName;
+            }*/
+        }
+
         if (!Page.IsPostBack)
         {
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -1784,11 +1794,12 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     //------------------------------INICIO MODULO "AGREGAR NUEVO INTERNO"---------------------------------
     protected void imgImportar_Click(object sender, ImageClickEventArgs e)
     {
-        Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
-        limpiarVistaImportarInterno();
-        enlazarComboFolioInterno();
-        LlenaGridViewFoliosAgregados();
-        popUpImportarArchivos.Show();
+        //Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
+        //limpiarVistaImportarInterno();
+        //enlazarComboFolioInterno();
+        //LlenaGridViewFoliosAgregados();
+        //popUpImportarArchivos.Show();
+
     }
     public void limpiarVistaImportarInterno()
     {
@@ -2119,63 +2130,61 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
 
-    protected void btnSubirArchivo_Click(object sender, EventArgs e)
-    {
-        OleDbConnection oledbConn = new OleDbConnection();
-        OleDbCommand cmd;
-        OleDbDataAdapter oleda;
-        DataSet ds;
-        string sArchivo = "";
+    //protected void btnSubirArchivo_Click(object sender, EventArgs e)
+    //{
+    //    OleDbConnection oledbConn = new OleDbConnection();
+    //    OleDbCommand cmd;
+    //    OleDbDataAdapter oleda;
+    //    DataSet ds;
+    //    string sArchivo = "";
 
-        if (fupSeleccionar.HasFile)
-        {
-            try
-            {
-                /*  Subir archivo   */
-                sArchivo = System.IO.Path.GetFullPath(Server.MapPath("~/")) + fupSeleccionar.FileName;
-                fupSeleccionar.SaveAs(sArchivo);
-                //lblArchivo.Text = "Archivo: " + sArchivo;
+    //    //lblArchivo.Text = NombreArchivo;
+    //    //if (fupSeleccionar.HasFile)
+    //    //{
+    //    try
+    //        {
+    //            /*      Subir archivo       */
+    //            //sArchivo = System.IO.Path.GetFullPath(Server.MapPath("~/")) + fupSeleccionar.FileName;
+    //            //fupSeleccionar.SaveAs(sArchivo);
+    //            //lblArchivo.Text = "Archivo: " + fupSeleccionar.FileName;
 
-                /*  Leer archivo    */
-                //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
-                //lblRuta.Text = sArchivo + "<br/>";
+    //            /*      Leer archivo        */
+    //            //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
+    //            //lblRuta.Text = sArchivo + "<br/>";
 
-                if (File.Exists(sArchivo))
-                {
-                    //lblExiste.Text = "Existe";
-                    if (Path.GetExtension(sArchivo) == ".xls")
-                    {
-                        oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                            "Data Source = " + sArchivo +
-                            ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
-                    }
-                    else if (Path.GetExtension(sArchivo) == ".xlsx")
-                    {
-                        oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
-                        "Data Source=" + sArchivo +
-                        ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
-                    }
-                    /*cmd.Connection = oledbConn;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "SELECT * FROM [Hoja1$]";*/
+    //            if (File.Exists(sArchivo))
+    //            {
+    //                //lblExiste.Text = "Existe";
+    //                if (Path.GetExtension(sArchivo) == ".xls")
+    //                {
+    //                    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
+    //                        "Data Source = " + sArchivo +
+    //                        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
+    //                }
+    //                else if (Path.GetExtension(sArchivo) == ".xlsx")
+    //                {
+    //                    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+    //                    "Data Source=" + sArchivo +
+    //                    ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
+    //                }
+    //                /*      Cargar datos en el Grid     */
+    //                oledbConn.Open();
+    //                cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
+    //                oleda = new OleDbDataAdapter();
+    //                ds = new DataSet();
 
-                    oledbConn.Open();
-                    cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
-                    oleda = new OleDbDataAdapter();
-                    ds = new DataSet();
+    //                oleda.SelectCommand = cmd;
+    //                oleda.Fill(ds, "Registros");
 
-                    oleda.SelectCommand = cmd;
-                    oleda.Fill(ds, "Registros");
+    //                //grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
+    //                //grvDetalleConciliacionManual.DataBind();
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            //lblLibro2.Text = ex.ToString();
+    //        }
+    //    //}// fupSeleccionar.HasFile
 
-                    grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
-                    grvDetalleConciliacionManual.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                //lblLibro2.Text = ex.ToString();
-            }
-        }// fupSeleccionar.HasFile
-
-    }
+    //}
 }
