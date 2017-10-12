@@ -2131,49 +2131,45 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         {
             try
             {
-                if (ValidarExtension(fupSeleccionar.FileName))
+                /*  Subir archivo   */
+                sArchivo = System.IO.Path.GetFullPath(Server.MapPath("~/")) + fupSeleccionar.FileName;
+                fupSeleccionar.SaveAs(sArchivo);
+                //lblArchivo.Text = "Archivo: " + sArchivo;
+
+                /*  Leer archivo    */
+                //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
+                //lblRuta.Text = sArchivo + "<br/>";
+
+                if (File.Exists(sArchivo))
                 {
-                    /*  Subir archivo   */
-                    sArchivo = System.IO.Path.GetFullPath(Server.MapPath("~/")) + fupSeleccionar.FileName;
-                    fupSeleccionar.SaveAs(sArchivo);
-                    //lblRuta.Text = "Archivo: " + sArchivo;
-
-                    /*  Leer archivo    */
-                    //string path = System.IO.Path.GetFullPath(Server.MapPath("~/Libro1.xlsx"));
-                    //lblRuta.Text = sArchivo + "<br/>";
-
-                    if (File.Exists(sArchivo))
+                    //lblExiste.Text = "Existe";
+                    if (Path.GetExtension(sArchivo) == ".xls")
                     {
-                        //lblExiste.Text = "Existe";
-                        if (Path.GetExtension(sArchivo) == ".xls")
-                        {
-                            oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                                "Data Source = " + sArchivo +
-                                ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
-                        }
-                        else if (Path.GetExtension(sArchivo) == ".xlsx")
-                        {
-                            oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
-                            "Data Source=" + sArchivo +
-                            ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
-                        }
-                        /*cmd.Connection = oledbConn;
-                        cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT * FROM [Hoja1$]";*/
-
-                        oledbConn.Open();
-                        cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
-                        oleda = new OleDbDataAdapter();
-                        ds = new DataSet();
-
-                        oleda.SelectCommand = cmd;
-                        oleda.Fill(ds, "Registros");
-                        /*
-                        grvLibro1.DataSource = ds.Tables[0].DefaultView;
-                        grvLibro1.DataBind();
-                        */
+                        oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
+                            "Data Source = " + sArchivo +
+                            ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
                     }
-                }// Validar extension
+                    else if (Path.GetExtension(sArchivo) == ".xlsx")
+                    {
+                        oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+                        "Data Source=" + sArchivo +
+                        ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
+                    }
+                    /*cmd.Connection = oledbConn;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "SELECT * FROM [Hoja1$]";*/
+
+                    oledbConn.Open();
+                    cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
+                    oleda = new OleDbDataAdapter();
+                    ds = new DataSet();
+
+                    oleda.SelectCommand = cmd;
+                    oleda.Fill(ds, "Registros");
+
+                    grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
+                    grvDetalleConciliacionManual.DataBind();
+                }
             }
             catch (Exception ex)
             {
@@ -2181,32 +2177,5 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
             }
         }// fupSeleccionar.HasFile
 
-    }
-
-    private bool ValidarExtension(string archivo)
-    {
-        const string ERROR_EXT = "El archivo a cargar debe ser de formato Excel, con extensión de archivo .XLS o .XLSX";
-
-        bool bResultado = false;
-        string[] extensionesValidas = { ".xls", ".xlsx" };
-        string ext = Path.GetExtension(archivo).ToLower();
-
-        for (int i = 0; i < extensionesValidas.Length; i++)
-        {
-            if (ext == extensionesValidas[i])
-            {
-                bResultado = true;
-                break;
-            }
-        }
-        if (!bResultado)
-        {
-            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(),
-                "Error",
-                "alert('" + ERROR_EXT + "');", true);
-            //App.ImplementadorMensajes.MostrarMensaje("Error al cargar el archivo.\r\nError: " + ex.Message);
-        }
-
-        return bResultado;
     }
 }
