@@ -3,6 +3,8 @@
     MaintainScrollPositionOnPostback="false" %>
     
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
@@ -178,7 +180,6 @@
     </asp:ScriptManager>
     <script src="../../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript">
-        
         //M ó O
         function ModalPopupBuscar(operacion) {
             if (operacion == 'M') {
@@ -200,6 +201,22 @@
 
         function HideModalPopupInterno() {
             $find("ModalBehaviourInterno").hide();
+        }
+
+        
+        function ShowModalPopupCargar(operacion) {
+            if (operacion == 'M') {
+                var varBuscar=document.getElementById("<%=txtBuscar.ClientID%>");
+                $find("mpeBuscar").show();
+                varBuscar.value = "";
+            } else {
+                $find("mpeBuscar").hide();
+            }
+        }
+
+        function VisibleCargarArchivo() {
+            var visible = document.getElementById("<%=hdfVisibleCargaArchivo.ClientID%>");
+            visible.value = "1";
         }
     </script>
     <script type="text/javascript" language="javascript">
@@ -710,6 +727,10 @@
                                         <asp:Label ID="lblArchivosInternos" Text="Archivos Internos" runat="server" Visible="false"></asp:Label>
                                         <asp:Label ID="lblPedidos" Text="Pedidos" runat="server" Visible="false"></asp:Label>
                                     </b>
+                                </td>
+                                <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
+                                    <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
+                                        ToolTip="CARGAR ARCHIVO" Width="20px" OnClick="imgCargar_Click" OnClientClick="VisibleCargarArchivo();"></asp:ImageButton>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -2248,6 +2269,19 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </asp:Panel>
+
+    <!--        POPUP CARGA ARCHIVO     -->
+    <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
+    <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" />
+    <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo">
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" Style="display: none; max-width:400px;">  
+    <div>
+        <uc1:WebUserControl runat="server" ID="wucCargaManualExcelCyC" />
+    </div>
+    </asp:Panel>
+    <!--        FIN POPUP CARGA ARCHIVO     -->
 
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>

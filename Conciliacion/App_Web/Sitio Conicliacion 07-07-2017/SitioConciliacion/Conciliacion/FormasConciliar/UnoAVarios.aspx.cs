@@ -123,8 +123,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+            
             if (!Page.IsPostBack)
             {
+                
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -211,6 +213,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 Carga_TipoFuenteInformacionInterno(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
+            }
+            else
+            {
+                if (hdfVisibleCargaArchivo.Value == "1")
+                {
+                    hdfVisibleCargaArchivo.Value = "0";
+                    mpeCargaArchivoConciliacionManual.Show();
+                }
             }
         }
         catch (SqlException ex)
@@ -4509,5 +4519,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void cboCuentaBanco_SelectedIndexChanged(object sender, EventArgs e)
     {
         CargarDatadatepicker(dateMin);
+    }
+
+    protected void imgCargar_Click(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            mpeCargaArchivoConciliacionManual.Show();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 }

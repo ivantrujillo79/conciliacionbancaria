@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Conciliacion.RunTime;
 
 namespace ValidacionArchivosConciliacion
 {
@@ -17,7 +18,7 @@ namespace ValidacionArchivosConciliacion
 
         public CuentaBancariaExisteException()
         {
-
+            
         }
 
         ~CuentaBancariaExisteException()
@@ -341,21 +342,32 @@ namespace ValidacionArchivosConciliacion
             foreach (DataRow row in dtArchivo.Rows)
             {
                 rowNo = rowNo + 1;
+                //if (double.TryParse(row[colMon].ToString().Trim(), out Monto))
+                //{
+                //    Dec = Monto - Math.Truncate(Monto); 
+                //    strDec = Dec.ToString();
+                //    if (Monto <= 0 || strDec.Length > 4)
+                //    {
+                //        Exito = false;
+                //        ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
+                //    }
+                //}
+
                 if (double.TryParse(row[colMon].ToString().Trim(), out Monto))
                 {
-                    Dec = Monto - Math.Truncate(Monto);
-                    strDec = Dec.ToString();
-                    if (Monto <= 0 || strDec.Length > 4)
+                    Monto = Convert.ToDouble(string.Format("{0:C}", Monto).Replace("$", ""));
+                    if (Monto <= 0)
                     {
                         Exito = false;
                         ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
                     }
                 }
-                //else
-                //{
-                //    Exito = false;
-                //    ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
-                //}
+                else
+                if (Convert.ToString(row[colMon]) != string.Empty)
+                {
+                    Exito = false;
+                    ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
+                }
             }
 
             if (Exito)
@@ -604,7 +616,7 @@ namespace ValidacionArchivosConciliacion
             }
             catch (Exception ex)
             {
-                //lblLibro2.Text = ex.ToString();
+                App.ImplementadorMensajes.MostrarMensaje(ex.Message);
             }
             if (ds.Tables.Count > 0)
                 return ds.Tables[0];
