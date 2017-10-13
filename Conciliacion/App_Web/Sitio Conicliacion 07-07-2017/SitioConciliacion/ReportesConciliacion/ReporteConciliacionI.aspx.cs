@@ -1912,9 +1912,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             ReferenciaConciliadaCompartida rfc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
             lblMontoExterno.Text = lblMontoResto.Text = rfc.MontoExterno.ToString("C2");//Colocar el monto seleccionado en el label del MOdal
 
-            //Consulta_Pedidos(rfc.CorporativoConciliacion, rfc.SucursalConciliacion, rfc.AñoConciliacion, rfc.MesConciliacion,
-            //    rfc.FolioConciliacion,
-            //    rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rdbTipoCliente.SelectedItem.Value.Equals("PADRE"));
+            Consulta_Pedidos(rfc.CorporativoConciliacion, rfc.SucursalConciliacion, rfc.AñoConciliacion, rfc.MesConciliacion,
+                rfc.FolioConciliacion,
+                rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rdbTipoCliente.SelectedItem.Value.Equals("PADRE"));
 
             GenerarTablaPedidos();
             LlenaGridViewPedidos();

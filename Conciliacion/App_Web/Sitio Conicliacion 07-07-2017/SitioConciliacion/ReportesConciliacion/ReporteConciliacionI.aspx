@@ -749,7 +749,7 @@
         BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
     <%--Style="display: none"--%>
-<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="600px">
+<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="400px">
         <asp:UpdatePanel ID="upConciliarMovPedido" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -857,21 +857,21 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Ped.Referencia" SortExpression="PedReferencia">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# Eval("PedReferencia") %>' />
+                                                <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Remisión" SortExpression="Remision">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblRemision" runat="server" Text='<%# Eval("Remision") %>' />
+                                                <asp:Label ID="lblRemision" runat="server" Text='' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Factura" SortExpression="Factura">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblFactura" runat="server" Text='<%# Eval("Factura") %>' />
+                                                <asp:Label ID="lblFactura" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
@@ -886,7 +886,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Litros" SortExpression="Litros">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblLitros" runat="server" Text='<%# Eval("Litros") %>' />
+                                                <asp:Label ID="lblLitros" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
@@ -894,7 +894,7 @@
                                         <asp:TemplateField HeaderText="Monto" SortExpression="Total">
                                             <ItemTemplate>
                                                 <b>
-                                                    <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total") %>'></asp:Label></b>
+                                                    <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("PedidoReferencia") %>'></asp:Label></b>
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
@@ -936,21 +936,21 @@
                                     <PagerStyle CssClass="grvPaginacionScroll" />
                                 </asp:GridView>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="centradoMedio">
+                
+                    
+                <td class="centradoMedio">
                             <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
                                 Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
                             <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro01 fg-color-blanco"
                                 Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
-                        </td>
-                    </tr>
-                    <tr>
+                </td>
+                
+                                    <tr>
                         <td class="bg-color-grisClaro01" colspan="2">
                         </td>
                     </tr>
                 </table>
+                    
             </ContentTemplate>
         </asp:UpdatePanel>
     </asp:Panel>
