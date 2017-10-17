@@ -801,7 +801,7 @@
                             </table>
                         </div>
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
-                            OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
+                            OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             AllowPaging="True" PageSize="100" DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion"
                             AllowSorting="True" CssClass="grvResultadoConsultaCss" OnSorting="grvExternos_Sorting"
                             OnPageIndexChanging="grvExternos_PageIndexChanging">
@@ -2276,9 +2276,21 @@
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
         DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo">
     </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" Style="display: none; max-width:400px;">  
-    <div>
-        <uc1:WebUserControl runat="server" ID="wucCargaManualExcelCyC" />
+    <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" style="display: none;">  
+    <div> <!--  style="width:400px; overflow:scroll;"   -->
+        <table style="width:100%; box-sizing:border-box;">
+            <tr class="bg-color-grisOscuro">
+                <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
+                    <div class="floatDerecha">
+                        <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                            CssClass="iconoPequeño bg-color-rojo"  OnClientClick="HideModalPopup();"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <uc1:WebUserControl runat="server" ID="wucCargaManualExcelCyC" />
+            </tr>
+        </table>
     </div>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->

@@ -21,15 +21,43 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
     }
     public int RegistrosCargados { get; set; }
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
+
+    /*      Componentes interfaz gráfica        */
+    public FileUpload fuSeleccionar
+    {
+        get { return fupSeleccionar; }
+    }
+    public Button bnSubir
+    {
+        get { return btnSubirArchivo; }
+    }
     #endregion
 
     string NombreArchivo;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        //if (this.Session["FileUpload1"] == null && fupSeleccionar.HasFile)
+        //{
+        //    this.Session["FileUpload1"] = fupSeleccionar;
+        //}
+        //else if (this.Session["FileUpload1"] != null && fupSeleccionar.HasFile)
+        //{
+        //    fupSeleccionar = (FileUpload)this.Session["FileUpload1"];
+        //}
+        //else if (fupSeleccionar.HasFile)
+        //{
+        //    this.Session["FileUpload1"] = fupSeleccionar;
+        //}
+
         if (Page.IsPostBack)
         {
-            NombreArchivo = fupSeleccionar.FileName;
+            NombreArchivo = fupSeleccionar.HasFile ? fupSeleccionar.PostedFile.FileName : "";
+        }
+        else
+        {
+            grvDetalleConciliacionManual.DataSource = null;
+            grvDetalleConciliacionManual.DataBind();
         }
     }
     
@@ -110,6 +138,13 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
                         //oleda.Fill(ds, "Registros");
                         //grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
                         #endregion
+
+
+                        //if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
+                        //{
+                        //    grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                        //    grvDetalleConciliacionManual.DataBind();
+                        //}
 
                         grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
                         grvDetalleConciliacionManual.DataBind();

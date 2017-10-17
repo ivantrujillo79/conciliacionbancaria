@@ -220,6 +220,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     hdfVisibleCargaArchivo.Value = "0";
                     mpeCargaArchivoConciliacionManual.Show();
+                    mpeCargaArchivoConciliacionManual.Focus();
                 }
             }
         }
