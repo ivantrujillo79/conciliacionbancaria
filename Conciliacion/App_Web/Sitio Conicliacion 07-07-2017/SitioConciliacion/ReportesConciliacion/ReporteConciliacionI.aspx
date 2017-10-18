@@ -30,11 +30,6 @@
             //FInicio - FFinal
             activarDatePickers();
             CargarEventoCheckBox();
-            //alert("Este es un mensaje");
-        }
-        
-        function showAccordion(sender, e) {
-            alert("Se mostro el PopUP!");
         }
 
         function activarDatePickers() {
@@ -77,43 +72,6 @@
             });
 
         }
-
-        <%--function gridviewScroll() {
-            $('#<%=grvDetalleConciliacionManual.ClientID%>').gridviewScroll({
-                //width: 595,
-                //height: 370,
-                freezesize: 3,
-                arrowsize: 30,
-                varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                //harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                //harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                headerrowcount: 1,
-                startVertical: $("#<%=hfConciliacionManualSV.ClientID%>").val(),
-                onScrollVertical: function (delta) { $("#<%=hfConciliacionManualSV.ClientID%>").val(delta); }
-            
-            });
-        }
-
-        function gridviewScroll() {
-	        var grid = document.getElementById('<%=wucCargaExcelCyC.FindControl("grvDetalleConciliacionManual").ClientID %>');
-	        var hfScrollV = document.getElementById('<%=wucCargaExcelCyC.FindControl("hfConciliacionManualSV").ClientID %>');
-
-	        $(grid).gridviewScroll({
-		        //width: 595,
-		        //height: 370,
-		        freezesize: 3,
-		        arrowsize: 30,
-		        varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-		        varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-		        //harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-		        //harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-		        headerrowcount: 1,
-		        startVertical: hfScrollV.val(),
-		        onScrollVertical: function (delta) { hfScrollV.val(delta); }
-	
-	        });
-        }--%>
 
         function gridviewScroll() {
             $('#<%=grvConciliacionCompartida.ClientID%>').gridviewScroll({
@@ -798,9 +756,6 @@
     <%--Style="display: none"--%>
 	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="500px">
         <asp:UpdatePanel ID="upConciliarMovPedido" runat="server" >
-            <%--<Triggers>
-                <asp:PostBackTrigger ControlID="wucCargaExcelCyC." />
-            </Triggers>--%>
             <ContentTemplate>
                 <table style="width: 100%;">
                     <tr class="bg-color-grisOscuro">
@@ -1022,6 +977,7 @@
 
                             <%--        AJAX Accordion        --%>
                             <div style="width:100%; margin-top:5px;">  
+                            <asp:Button ID="btnDummy" runat="server" Visible="false"/>
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
                                     <Panes>

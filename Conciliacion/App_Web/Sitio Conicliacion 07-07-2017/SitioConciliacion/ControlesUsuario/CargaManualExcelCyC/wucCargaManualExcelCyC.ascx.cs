@@ -58,6 +58,7 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         {
             grvDetalleConciliacionManual.DataSource = null;
             grvDetalleConciliacionManual.DataBind();
+            
         }
     }
     
@@ -138,7 +139,6 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
                         //oleda.Fill(ds, "Registros");
                         //grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
                         #endregion
-
 
                         //if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                         //{

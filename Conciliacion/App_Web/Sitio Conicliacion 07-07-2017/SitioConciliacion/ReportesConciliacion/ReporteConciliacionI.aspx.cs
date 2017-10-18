@@ -70,6 +70,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
+            /*      Registrar PostBackControl en la página para 
+             *      bug de FileUpload Control dentro de Update Panel    */
+            ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
+
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
@@ -90,12 +94,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 //listaConciliaciones = new List<cConciliacion>();
 
                 if (ddlEmpresa.Items.Count == 0) Carga_Corporativo();
-
-
+                
                 GrupoConciliacionUsuario gcu = LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim());
                 Carga_StatusConcepto(gcu.GrupoConciliacionId);
                 this.ddlEmpresa.Focus();
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
+                
             }
         }
 

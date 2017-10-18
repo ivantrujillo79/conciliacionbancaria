@@ -70,15 +70,14 @@
         <tr> 
             <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center; box-sizing:border-box;">
                 <div style="margin: 5px 5px 5px 3px;">
-                    <%--    Barras de Scroll    --%>
+                    <%--    Barra de Scroll    --%>
                     <asp:HiddenField ID="hfConciliacionManualSV" runat="server" />
-                    <%--<asp:HiddenField ID="hfConciliacionManualSH" runat="server" />--%>
-                        <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
-                            CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
-                            ViewStateMode="Enabled" >
-                            <PagerStyle CssClass="grvPaginacionScroll" />
-                            <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
-                        </asp:GridView>
+                    <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
+                        CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
+                        ViewStateMode="Enabled" >
+                        <PagerStyle CssClass="grvPaginacionScroll" />
+                        <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
+                    </asp:GridView>
                 </div>
             </td>
         </tr>
