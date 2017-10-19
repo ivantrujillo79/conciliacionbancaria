@@ -71,7 +71,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             /*      Registrar PostBackControl en la página para 
-             *      bug de FileUpload Control dentro de Update Panel    */
+             *      arreglar bug de FileUpload Control dentro de Update Panel    */
             ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
 
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;

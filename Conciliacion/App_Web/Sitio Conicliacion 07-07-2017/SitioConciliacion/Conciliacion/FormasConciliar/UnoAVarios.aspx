@@ -35,8 +35,6 @@
             });
         }
 
-        
-
         function pageLoad() {
             gridviewScroll();
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
@@ -44,8 +42,26 @@
                 $("#dvAgregados").slideToggle();
             });
             activarDatePickers();
+
+            //$find('mpeCargaArchivo').add_shown(mpeOnShow);
+            //$find('mpeCargaArchivo').add_hiding(mpeOnHidding);
         }
 
+        <%--function mpeOnHidding() {
+            var visible = $('#<%= hdfVisibleCargaArchivo.ClientID%>');
+            visible.value = "0";
+            /*      Limpiar GrifView    */
+            document.getElementById("wuc");
+            //alert(visible.value);
+        }
+        
+        function mpeOnShow() {
+            var visible = document.getElementById("<%=hdfVisibleCargaArchivo.ClientID%>");
+            var visible = $('#<%= hdfVisibleCargaArchivo.ClientID%>');
+            visible.value = "1";
+            //alert(visible.value);
+        }--%>
+        
         function activarDatePickers() {
             //DataPicker Rango-Fechas 
             if (<%= tipoConciliacion %> != 2) {
@@ -214,10 +230,10 @@
             }
         }
 
-        function VisibleCargarArchivo() {
+        <%--function VisibleCargarArchivo() {
             var visible = document.getElementById("<%=hdfVisibleCargaArchivo.ClientID%>");
             visible.value = "1";
-        }
+        }--%>
     </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
@@ -730,7 +746,7 @@
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
-                                        ToolTip="CARGAR ARCHIVO" Width="20px" OnClick="imgCargar_Click" OnClientClick="VisibleCargarArchivo();"></asp:ImageButton>
+                                        ToolTip="CARGAR ARCHIVO" Width="20px" OnClick="imgCargar_Click"  OnClientClick="PopupVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -2274,7 +2290,8 @@
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
     <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" />
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
-        DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo">
+        DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
+        BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" style="display: none;">  
     <div> <!--  style="width:400px; overflow:scroll;"   -->
@@ -2283,12 +2300,12 @@
                 <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                     <div class="floatDerecha">
                         <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo"  OnClientClick="HideModalPopup();"/>
+                            CssClass="iconoPequeño bg-color-rojo"/> <%--OnClientClick="HideModalPopup();"--%>
                     </div>
                 </td>
             </tr>
             <tr>
-                <uc1:WebUserControl runat="server" ID="wucCargaManualExcelCyC" />
+                <uc1:WebUserControl runat="server" ID="wucCargaExcelCyC" />
             </tr>
         </table>
     </div>

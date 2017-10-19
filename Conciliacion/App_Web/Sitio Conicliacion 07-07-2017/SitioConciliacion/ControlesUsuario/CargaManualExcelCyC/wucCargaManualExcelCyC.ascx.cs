@@ -21,44 +21,16 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
     }
     public int RegistrosCargados { get; set; }
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
-
-    /*      Componentes interfaz gráfica        */
-    public FileUpload fuSeleccionar
-    {
-        get { return fupSeleccionar; }
-    }
-    public Button bnSubir
-    {
-        get { return btnSubirArchivo; }
-    }
     #endregion
 
     string NombreArchivo;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //if (this.Session["FileUpload1"] == null && fupSeleccionar.HasFile)
-        //{
-        //    this.Session["FileUpload1"] = fupSeleccionar;
-        //}
-        //else if (this.Session["FileUpload1"] != null && fupSeleccionar.HasFile)
-        //{
-        //    fupSeleccionar = (FileUpload)this.Session["FileUpload1"];
-        //}
-        //else if (fupSeleccionar.HasFile)
-        //{
-        //    this.Session["FileUpload1"] = fupSeleccionar;
-        //}
-
-        if (Page.IsPostBack)
-        {
-            NombreArchivo = fupSeleccionar.HasFile ? fupSeleccionar.PostedFile.FileName : "";
-        }
-        else
+        if (!Page.IsPostBack)
         {
             grvDetalleConciliacionManual.DataSource = null;
             grvDetalleConciliacionManual.DataBind();
-            
         }
     }
     
@@ -69,12 +41,6 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
 
     protected void btnSubirArchivo_Click(object sender, EventArgs e)
     {
-        #region Código antigüo
-        //OleDbConnection oledbConn = new OleDbConnection();
-        //OleDbCommand cmd;
-        //OleDbDataAdapter oleda;
-        //DataSet ds;
-        #endregion
         DataTable dtTabla = new DataTable();
         ValidacionArchivosConciliacion.ValidadorCyC Validador = new ValidacionArchivosConciliacion.ValidadorCyC();
         ValidacionArchivosConciliacion.IValidadorExcel iValidador = Validador;
@@ -115,39 +81,13 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
                             DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
                         }
 
-                        #region Código antigüo
-                        //lblExiste.Text = "Existe";
-                        //if (ext == ".xls")
-                        //{
-                        //    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                        //        "Data Source = " + sArchivo +
-                        //        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
-                        //}
-                        //else if (ext == ".xlsx")
-                        //{
-                        //    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
-                        //        "Data Source=" + sArchivo +
-                        //        ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;READONLY=TRUE'; ");
-                        //}
-                        ///*      Cargar datos en el Grid     */
-                        //oledbConn.Open();
-                        //cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
-                        //oleda = new OleDbDataAdapter();
-                        //ds = new DataSet();
-
-                        //oleda.SelectCommand = cmd;
-                        //oleda.Fill(ds, "Registros");
-                        //grvDetalleConciliacionManual.DataSource = ds.Tables[0].DefaultView;
-                        #endregion
-
-                        //if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
-                        //{
-                        //    grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                        //    grvDetalleConciliacionManual.DataBind();
-                        //}
-
-                        grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                        grvDetalleConciliacionManual.DataBind();
+                        if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
+                        {
+                            grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                            grvDetalleConciliacionManual.DataBind();
+                        }
+                        //grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                        //grvDetalleConciliacionManual.DataBind();
 
                         sbMensaje = new StringBuilder();
                         foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)

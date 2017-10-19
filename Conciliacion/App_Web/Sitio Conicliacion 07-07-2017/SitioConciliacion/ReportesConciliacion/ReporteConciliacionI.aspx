@@ -754,7 +754,7 @@
         BackgroundCssClass="ModalBackground" >
     </asp:ModalPopupExtender>
     <%--Style="display: none"--%>
-	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="500px">
+	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="95%">
         <asp:UpdatePanel ID="upConciliarMovPedido" runat="server" >
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -769,31 +769,6 @@
                             </div>
                         </td>
                     </tr>
-                    <%--        jQuery Accordion        --%>  
-                    <%--<tr>
-                        <td class="datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
-                            <div id="accordion" style="width:600px;">      <!--     class="etiqueta"      -->
-                                <h3>Section 1</h3>
-                                <div>
-                                    <p>
-                                    Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-                                    ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-                                    amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-                                    odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
-                                    </p>
-                                </div>
-                                <h3>Section 2</h3>
-                                <div>
-                                    <p>
-                                    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-                                    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-                                    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
-                                    suscipit faucibus urna.
-                                    </p>
-                                </div>
-                            </div>   
-                        </td>
-                    </tr>--%>
                     <tr>
                         <td class="datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
                             <div class="etiqueta lineaHorizontal">
@@ -866,115 +841,6 @@
                                 </table>
                             </div>
                             <br />
-                            <%--<div class="etiqueta">
-                                PEDIDOS
-                            </div>
-                            <div>
-                                <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                                    CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" AllowPaging="False"
-                                    PageSize="10" OnPageIndexChanging="grvPedidos_PageIndexChanging">
-                                  
-                                    <HeaderStyle HorizontalAlign="Center" />
-                                    <Columns>
-                                        <asp:TemplateField>
-                                            <ItemTemplate>
-                                                <asp:CheckBox runat="server" ID="chkSeleccionado" />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblPedido" runat="server" Text='<%# Eval("Pedido") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Ped.Referencia" SortExpression="PedReferencia">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Remisión" SortExpression="Remision">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblRemision" runat="server" Text='' />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Factura" SortExpression="Factura">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblFactura" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="FSuministro" SortExpression="FSuministro">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro","{0:d}") %>'></asp:Label>
-                                            </ItemTemplate>
-                                            <ControlStyle CssClass="centradoMedio" />
-                                            <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Litros" SortExpression="Litros">
-                                            <ItemTemplate>
-                                                <asp:Label ID="lblLitros" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Monto" SortExpression="Total">
-                                            <ItemTemplate>
-                                                <b>
-                                                    <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("PedidoReferencia") %>'></asp:Label>
-												</b>
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
-                                            <ItemTemplate>
-                                                <div class="parrafoTexto">
-                                                    <asp:Label ID="lblCliente" runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
-                                                </div>
-                                                <asp:HoverMenuExtender ID="hmeCliente" runat="server" TargetControlID="lblCliente"
-                                                    PopupControlID="pnlPopUpCliente" PopDelay="20" OffsetX="-30" OffsetY="-10">
-                                                </asp:HoverMenuExtender>
-                                                <asp:Panel ID="pnlPopUpCliente" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                                    Width="250px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
-                                                    <asp:Label ID="lblToolTipCliente" runat="server" Text='<%#Eval("Nombre") %>' CssClass="etiqueta "
-                                                        Font-Size="10px" />
-												</asp:Panel>
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Justify" Width="150px"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
-                                            <ItemTemplate>
-                                                <div class="parrafoTexto">
-                                                    <asp:Label ID="lblConcepto" runat="server" Text='<%# Eval("Concepto") %>'></asp:Label>
-                                                </div>
-                                                <asp:HoverMenuExtender ID="hmeConcepto" runat="server" TargetControlID="lblConcepto"
-                                                    PopupControlID="pnlPopUpConcepto" PopDelay="20" OffsetX="-30" OffsetY="-10">
-                                                </asp:HoverMenuExtender>
-                                                <asp:Panel ID="pnlPopUpConcepto" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                                    Width="120px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
-                                                    <asp:Label ID="lblToolTipConcepto" runat="server" Text='<%# Eval("Concepto") %>'
-                                                        CssClass="etiqueta " Font-Size="10px" />
-												</asp:Panel>
-                                            </ItemTemplate>
-                                            <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
-                                            <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
-                                        </asp:TemplateField>
-                                    </Columns>
-                                    <PagerStyle CssClass="grvPaginacionScroll" />
-                                </asp:GridView>
-                            </div>--%>          
-
                             <%--        AJAX Accordion        --%>
                             <div style="width:100%; margin-top:5px;">  
                             <asp:Button ID="btnDummy" runat="server" Visible="false"/>

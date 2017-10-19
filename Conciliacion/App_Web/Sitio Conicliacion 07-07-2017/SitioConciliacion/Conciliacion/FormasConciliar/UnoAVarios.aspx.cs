@@ -123,10 +123,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
-            
+
             if (!Page.IsPostBack)
             {
-                
+
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);

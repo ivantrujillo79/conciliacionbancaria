@@ -2,34 +2,6 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<!-- Script GridView Scroll -->
-<link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
-    type="text/css" />
-<script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-    <%--function pageLoad() {
-        gridviewScroll();
-    }
-
-    function gridviewScroll() {
-        $('#<%=grvDetalleConciliacionManual.ClientID%>').gridviewScroll({
-            //width: 595,
-            //height: 370,
-            freezesize: 3,
-            arrowsize: 30,
-            varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-            varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-            //harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-            //harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-            headerrowcount: 1,
-            startVertical: $("#<%=hfConciliacionManualSV.ClientID%>").val(),
-            onScrollVertical: function (delta) { $("#<%=hfConciliacionManualSV.ClientID%>").val(delta); }
-            
-        });
-    }--%>
-</script>
-
 <div style="width:inherit;">
     <table style="width:100%; box-sizing:border-box;">
         <%--<tr class="bg-color-grisOscuro">
@@ -69,12 +41,12 @@
         </tr>
         <tr> 
             <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center; box-sizing:border-box;">
-                <div style="margin: 5px 5px 5px 3px;">
+                <div style="margin: 5px 5px 5px 3px; max-height: 200px; overflow: auto;">
                     <%--    Barra de Scroll    --%>
                     <asp:HiddenField ID="hfConciliacionManualSV" runat="server" />
                     <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
                         CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
-                        ViewStateMode="Enabled" >
+                        ViewStateMode="Enabled" BehaviourID="gridView1">
                         <PagerStyle CssClass="grvPaginacionScroll" />
                         <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                     </asp:GridView>
