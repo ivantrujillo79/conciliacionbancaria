@@ -15,8 +15,8 @@
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
-    <!-- Estilo para AJAX Accordion-->
-    <link rel="stylesheet" href="accordion/css/accordion.css" />
+    <!-- Estilo de AJAX Accordion-->
+    <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
     <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
@@ -30,6 +30,14 @@
             //FInicio - FFinal
             activarDatePickers();
             CargarEventoCheckBox();
+        }
+
+        function popUpVisible() {
+            $('#<%= hfVisibleConciliar.ClientID %>').val("1");
+        }
+
+        function popUpNoVisible() {
+            $('#<%= hfVisibleConciliar.ClientID %>').val("0");
         }
 
         function activarDatePickers() {
@@ -541,7 +549,7 @@
                                                     <ItemTemplate>
                                                         <asp:ImageButton runat="server" ID="btnBuscarPedido" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                             Width="15px" Height="15px" Visible="True" Enabled="True" CssClass="icono bg-color-grisOscuro centradoMedio"
-                                                            ToolTip="BUSCAR PEDIDOS" OnClick="btnBuscarPedido_Click" ValidationGroup="Cliente" />
+                                                            ToolTip="BUSCAR PEDIDOS" OnClick="btnBuscarPedido_Click" OnClientClick="popUpVisible();" ValidationGroup="Cliente" />
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
                                                     <ItemStyle HorizontalAlign="Center" Width="30px" />
@@ -749,6 +757,7 @@
     <asp:HiddenField runat="server" ID="hdfConciliarMovPedido" />
     <asp:HiddenField ID="hfPedidoSV" runat="server" />
     <asp:HiddenField ID="hfPedidoSH" runat="server" />
+    <asp:HiddenField ID="hfVisibleConciliar" runat="server" />
     <asp:ModalPopupExtender ID="popUpConciliarMovPedido" runat="server" PopupControlID="pnlConciliarMovPedido"
         TargetControlID="hdfConciliarMovPedido" BehaviorID="ModalBehaviourConciliarMovPedido"
         BackgroundCssClass="ModalBackground" >
@@ -762,7 +771,7 @@
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
                             <div class="floatDerecha">
                                 <asp:ImageButton runat="server" ID="img_cerrarConciliarMovPedido" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupConciliarMovPedido();" /><%--OnClick="imgCerrarImportar_Click"--%>
+                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" /><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
                                 CONCILIAR MOVIMIENTO.
@@ -787,10 +796,6 @@
 											Width="90%">
 											</asp:TextBox>
 										</td>
-										
-										<!--		//		COMPONENTE SIN ETIQUETA ABIERTA	
-										</td>
-										-->
 									
 										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="3">
 											Factura:
@@ -825,25 +830,30 @@
                                             <%--Width="25px"--%>
                                         </td>
                                     </tr>
-									
-									<!--            //          POR ARREGLAR
-                                    </table>
+                                    
                                     <table width="100%">
                                     <tr>
-
-
+                                        <td>
+                                            <asp:ImageButton runat="server" ID="btnBusquFact" 
+                                            Width="150px" Height="25px" Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
+                                            ToolTip="BUSCAR FACTURAS" OnClick="btnBuscarFactura_Click" />
+                                        </td>
+                                    </tr>
+									
+									<!--            //          POR ARREGLAR        -->
+                                    <%--</table>
+                                    <table width="100%">
+                                    <tr>
                                         <asp:ImageButton runat="server" ID="btnBusquFact" 
                                         Width="150px" Height="25px" Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
                                         ToolTip="BUSCAR FACTURAS" OnClick="btnBuscarFactura_Click" />
-                                    </tr>
-									-->
+                                    </tr>--%>
 									
                                 </table>
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
-                            <div style="width:100%; margin-top:5px;">  
-                            <asp:Button ID="btnDummy" runat="server" Visible="false"/>
+                            <div style="width:100%; margin-top:5px; max-height:400px; overflow:auto">  <%-- max-height:400px; overflow:auto--%>
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
                                     <Panes>
@@ -960,32 +970,26 @@
                                                         </Columns>
                                                         <PagerStyle CssClass="grvPaginacionScroll" />
                                                     </asp:GridView>
-                                                </div>
+                                                </div>                                                
+                                                <table width="100%">
+                                                    <tr>
+						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
+							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
+								                                Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
+							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro01 fg-color-blanco"
+								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
+						                                </td>	
+                                                    </tr>
+                                                </table>
                                             </Content>
                                         </ajaxToolkit:AccordionPane>
                                     </Panes>
                                 </asp:Accordion>
-                            </div>
-
-                            
-                            <!--
-							<td class="centradoMedio">
-								<asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
-									Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
-								<asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro01 fg-color-blanco"
-									Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
-							</td>
-                            -->
-
-						<!--		// 			COMPONENTES FUERA DE LUGAR
-                                    <tr>
-                        <td class="bg-color-grisClaro01" colspan="2">
-						-->
-						
-                        </td>						
+                            </div>						
+                        </td>			
                     </tr>
-                </table>
-                    
+                    </div>
+                </table>                    
             </ContentTemplate>
         </asp:UpdatePanel>
     </asp:Panel>

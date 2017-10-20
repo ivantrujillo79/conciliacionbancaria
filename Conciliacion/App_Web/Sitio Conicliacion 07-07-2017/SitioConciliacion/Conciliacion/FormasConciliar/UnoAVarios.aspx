@@ -42,25 +42,15 @@
                 $("#dvAgregados").slideToggle();
             });
             activarDatePickers();
-
-            //$find('mpeCargaArchivo').add_shown(mpeOnShow);
-            //$find('mpeCargaArchivo').add_hiding(mpeOnHidding);
         }
 
-        <%--function mpeOnHidding() {
-            var visible = $('#<%= hdfVisibleCargaArchivo.ClientID%>');
-            visible.value = "0";
-            /*      Limpiar GrifView    */
-            document.getElementById("wuc");
-            //alert(visible.value);
+        function popUpVisible() {
+            $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
-        
-        function mpeOnShow() {
-            var visible = document.getElementById("<%=hdfVisibleCargaArchivo.ClientID%>");
-            var visible = $('#<%= hdfVisibleCargaArchivo.ClientID%>');
-            visible.value = "1";
-            //alert(visible.value);
-        }--%>
+
+        function popUpNoVisible() {
+            $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
+        }
         
         function activarDatePickers() {
             //DataPicker Rango-Fechas 
@@ -746,7 +736,7 @@
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
-                                        ToolTip="CARGAR ARCHIVO" Width="20px" OnClick="imgCargar_Click"  OnClientClick="PopupVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
+                                        ToolTip="CARGAR ARCHIVO" Width="20px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -2288,7 +2278,7 @@
 
     <!--        POPUP CARGA ARCHIVO     -->
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
-    <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" />
+    <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" value="0"/>
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
         DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
         BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
@@ -2300,7 +2290,7 @@
                 <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                     <div class="floatDerecha">
                         <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo"/> <%--OnClientClick="HideModalPopup();"--%>
+                            CssClass="iconoPequeño bg-color-rojo" OnClientClick="popUpNoVisible()"/> <%--OnClientClick="HideModalPopup();"--%>
                     </div>
                 </td>
             </tr>

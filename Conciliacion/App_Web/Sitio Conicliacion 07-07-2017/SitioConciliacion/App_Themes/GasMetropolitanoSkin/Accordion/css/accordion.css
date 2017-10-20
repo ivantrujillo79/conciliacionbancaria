@@ -1,18 +1,4 @@
 /*  Estilo acordeon     */
-.accordion .h3 {
-	display: block;
-	cursor: pointer;
-	position: relative;
-	margin: 2px 0 0 0;
-	padding: .5em .5em .5em .7em;
-	font-size: 100%;
-}
-.accordion .content {
-	padding: 1em 2.2em;
-	border-top: 0;
-	overflow: auto;
-}
-
 .accordion {
 	padding: 5px 5px 5px 5px;
 }
@@ -32,6 +18,6 @@
 .accordion-selected {
 	vertical-align: middle; 
 	padding: 5px 5px 5px 5px;
-	background-color: #99B433;
+	background-color: #44A2A9;
 	color: white;
 }

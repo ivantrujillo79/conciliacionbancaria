@@ -101,11 +101,28 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
                 
             }
+            else
+            {
+                MostrarPopUp_ConciliarPedido();
+            }
         }
 
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Metodo para mostrar de nuevo el ModalPopUp "popUpConciliarMovPedido"
+    /// despues de que se cierra con el PostBack 
+    /// </summary>
+    private void MostrarPopUp_ConciliarPedido()
+    {
+        if (hfVisibleConciliar.Value == "1")
+        {
+            popUpConciliarMovPedido.Show();
+            popUpConciliarMovPedido.Focus();
         }
     }
 

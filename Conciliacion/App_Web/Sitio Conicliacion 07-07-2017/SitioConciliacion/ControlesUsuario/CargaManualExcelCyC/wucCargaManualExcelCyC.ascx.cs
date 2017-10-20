@@ -23,7 +23,8 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
     #endregion
 
-    string NombreArchivo;
+    private const string ARCHIVO   = "Archivo: ";
+    private const string REGISTROS = "Total de registros a cargar: ";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -52,6 +53,7 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         string[] MIME = {"application/vnd.ms-excel" ,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
+        LimpiarCampos();        
         sExt = Path.GetExtension(fupSeleccionar.FileName).ToLower();
         try
         {
@@ -67,8 +69,6 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
 
                     if (File.Exists(sArchivo))
                     {
-                        lblArchivo.Text = "Archivo: " + sArchivo;
-
                         iValidador.CuentaBancaria = 7703;
                         //iValidador.DocumentoReferencia = 2;
                         iValidador.RutaArchivo = sRutaArchivo;
@@ -79,36 +79,38 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
                         {
                             dtTabla = iValidador.CargaArchivo(sRutaArchivo, Path.GetFileName(sArchivo));
                             DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
-                        }
 
-                        if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
-                        {
-                            grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                            grvDetalleConciliacionManual.DataBind();
-                        }
-                        //grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                        //grvDetalleConciliacionManual.DataBind();
-
-                        sbMensaje = new StringBuilder();
-                        foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
-                        {
-                            if (!detalle.VerificacionValida)
+                            if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                             {
-                                if (detalle.CodigoError > 0)
+                                grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                                grvDetalleConciliacionManual.DataBind();
+                                totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
+
+                                lblArchivo.Text = ARCHIVO + sArchivo;
+                                lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
+                            }
+
+                            sbMensaje = new StringBuilder();
+                            foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
+                            {
+                                if (!detalle.VerificacionValida)
                                 {
-                                    sbMensaje.Append(detalle.Mensaje + "\n");
-                                }
-                                else
-                                {
-                                    sbMensaje.Append("ERROR: el código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
+                                    if (detalle.CodigoError > 0)
+                                    {
+                                        sbMensaje.Append(detalle.Mensaje + "\n");
+                                    }
+                                    else
+                                    {
+                                        sbMensaje.Append("ERROR: el código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
+                                    }
                                 }
                             }
-                        }
-                        if (sbMensaje.Length > 0)
-                        {
-                            App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
-                        }
-                    }
+                            if (sbMensaje.Length > 0)
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
+                            }
+                        } // if ArchivoValido
+                    } // if File.Exists
                 }
                 else
                 {
@@ -120,5 +122,13 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
+    }
+
+    private void LimpiarCampos()
+    {
+        grvDetalleConciliacionManual.DataSource = null;
+        grvDetalleConciliacionManual.DataBind();
+        lblArchivo.Text = ARCHIVO;
+        lblRegistros.Text = REGISTROS;
     }
 }

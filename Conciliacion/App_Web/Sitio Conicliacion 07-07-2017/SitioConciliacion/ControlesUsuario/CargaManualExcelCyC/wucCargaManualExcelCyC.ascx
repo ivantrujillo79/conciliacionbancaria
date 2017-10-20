@@ -26,8 +26,8 @@
         <tr>
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
-                    <asp:Label ID="lblArchivo" runat="server" CssClass="etiqueta" Font-Size="1em" Text="Archivo: "
-                        style="color:red; display:inline-block;"/> <!--   width:200px;     -->
+                    <asp:Label ID="lblArchivo" runat="server" CssClass="etiqueta fg-color-negro" Font-Size="1em" Text="Archivo: "
+                        style="display:inline-block;"/> <!--   width:200px;     -->
                 </div>
             </td>
         </tr>
@@ -41,9 +41,7 @@
         </tr>
         <tr> 
             <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center; box-sizing:border-box;">
-                <div style="margin: 5px 5px 5px 3px; max-height: 200px; overflow: auto;">
-                    <%--    Barra de Scroll    --%>
-                    <asp:HiddenField ID="hfConciliacionManualSV" runat="server" />
+                <div style="margin: 5px 5px 5px 3px; max-height: 169px; overflow: auto;">
                     <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
                         CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
                         ViewStateMode="Enabled" BehaviourID="gridView1">
@@ -53,14 +51,16 @@
                 </div>
             </td>
         </tr>
-        <%--<tr>
+        <tr>
             <td style="padding-left:7px; box-sizing:border-box;">
-                <asp:Button ID="btnCargaArchivoAceptar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                    Text="Aceptar" OnClientClick="Saluda();" OnClick="btnSubirArchivo_Click" />
-                <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                    Text="Cancelar" OnClick="btnCargaArchivoCancelar_Click"/>                                        
+                <div class="centradoMedio">
+                    <asp:Button ID="btnCargaArchivoAceptar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                        Text="Aceptar" style="margin-right:10px;"/>
+                    <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
+                        Text="Cancelar" />                                        
+                </div>
             </td>
-        </tr>--%>
+        </tr>
     </table>
 
 </div>

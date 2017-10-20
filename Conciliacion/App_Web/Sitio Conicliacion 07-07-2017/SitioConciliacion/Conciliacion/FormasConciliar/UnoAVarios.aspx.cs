@@ -216,12 +216,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
-                if (hdfVisibleCargaArchivo.Value == "1")
-                {
-                    hdfVisibleCargaArchivo.Value = "0";
-                    mpeCargaArchivoConciliacionManual.Show();
-                    mpeCargaArchivoConciliacionManual.Focus();
-                }
+                MostrarPopUp_ConciliacionManual();
             }
         }
         catch (SqlException ex)
@@ -236,6 +231,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Metodo para mostrar de nuevo el ModalPopUp "mpeCargaArchivoConciliacionManual"
+    /// despues de que se cierra con el PostBack 
+    /// </summary>
+    private void MostrarPopUp_ConciliacionManual()
+    {
+        if (hdfVisibleCargaArchivo.Value == "1")
+        {
+            mpeCargaArchivoConciliacionManual.Show();
+            mpeCargaArchivoConciliacionManual.Focus();
         }
     }
 
