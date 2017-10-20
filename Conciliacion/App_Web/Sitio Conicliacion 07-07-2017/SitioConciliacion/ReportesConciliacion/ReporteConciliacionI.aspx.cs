@@ -1380,7 +1380,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     );
                 GenerarTablaConciliacionCompartida();
                 LlenaGridViewConciliacionCompartida();
-
+                ActualizarPopUp_CargaArchivo();
             }
 
             else
@@ -1391,6 +1391,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             App.ImplementadorMensajes.MostrarMensaje("Error al Consultar los Movimientos:\n" + ex.Message);
         }
+    }
+
+    private void ActualizarPopUp_CargaArchivo()
+    {
+        wucCargaExcelCyC.CuentaBancaria = Convert.ToInt32(ddlCuentaBancaria.SelectedItem.Text.Trim());
     }
 
     protected void btnGuardarVista_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -1873,7 +1878,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             }
             BuscarPedidosClientes();
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
-
+            
         }
         catch (Exception ex)
         {

@@ -21,6 +21,18 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
     }
     public int RegistrosCargados { get; set; }
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
+
+    private string cuentaBancaria;
+    public int CuentaBancaria {
+        get
+        {
+            if (ViewState["cuentaBancaria"] == null)
+                return int.MinValue;
+            else
+                return (int)ViewState["cuentaBancaria"];
+        }
+        set { ViewState["cuentaBancaria"] = value; }
+    }
     #endregion
 
     private const string ARCHIVO   = "Archivo: ";
@@ -69,7 +81,7 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
 
                     if (File.Exists(sArchivo))
                     {
-                        iValidador.CuentaBancaria = 7703;
+                        iValidador.CuentaBancaria = this.CuentaBancaria;
                         //iValidador.DocumentoReferencia = 2;
                         iValidador.RutaArchivo = sRutaArchivo;
                         iValidador.NombreArchivo = Path.GetFileName(sArchivo);

@@ -60,6 +60,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public bool statusFiltro;
     public string tipoFiltro;
     public DateTime dateMin;
+    private int cuentaBancaria;
 
     public ReferenciaNoConciliada tranDesconciliar;
     public ReferenciaNoConciliada tranExternaAnteriorSeleccionada;
@@ -420,6 +421,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblMontoTotalInterno.Text = c.MontoTotalInterno.ToString("C2");
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
+
+            cuentaBancaria = Convert.ToInt32(c.CuentaBancaria);
+            ActualizarPopUp_CargaArchivo();
         }
         catch (SqlException ex)
         {
@@ -429,8 +433,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             throw ex;
         }
+    }
 
-        
+    private void ActualizarPopUp_CargaArchivo()
+    {
+        wucCargaExcelCyC.CuentaBancaria = cuentaBancaria;
     }
 
     /// <summary>

@@ -831,15 +831,7 @@
                                         </td>
                                     </tr>
                                     
-                                    <table width="100%">
-                                    <tr>
-                                        <td>
-                                            <asp:ImageButton runat="server" ID="btnBusquFact" 
-                                            Width="150px" Height="25px" Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
-                                            ToolTip="BUSCAR FACTURAS" OnClick="btnBuscarFactura_Click" />
-                                        </td>
-                                    </tr>
-									
+                                    
 									<!--            //          POR ARREGLAR        -->
                                     <%--</table>
                                     <table width="100%">
@@ -970,8 +962,8 @@
                                                         </Columns>
                                                         <PagerStyle CssClass="grvPaginacionScroll" />
                                                     </asp:GridView>
-                                                </div>                                                
-                                                <table width="100%">
+                                                </div>
+                                                <%--<table width="100%">
                                                     <tr>
 						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
 							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
@@ -980,7 +972,7 @@
 								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
 						                                </td>	
                                                     </tr>
-                                                </table>
+                                                </table>--%>
                                             </Content>
                                         </ajaxToolkit:AccordionPane>
                                     </Panes>
@@ -988,7 +980,6 @@
                             </div>						
                         </td>			
                     </tr>
-                    </div>
                 </table>                    
             </ContentTemplate>
         </asp:UpdatePanel>

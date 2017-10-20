@@ -52,14 +52,14 @@
             </td>
         </tr>
         <tr>
-            <td style="padding-left:7px; box-sizing:border-box;">
+            <%--<td style="padding-left:7px; box-sizing:border-box;">
                 <div class="centradoMedio">
                     <asp:Button ID="btnCargaArchivoAceptar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
                         Text="Aceptar" style="margin-right:10px;"/>
                     <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
                         Text="Cancelar" />                                        
                 </div>
-            </td>
+            </td>--%>
         </tr>
     </table>
 
