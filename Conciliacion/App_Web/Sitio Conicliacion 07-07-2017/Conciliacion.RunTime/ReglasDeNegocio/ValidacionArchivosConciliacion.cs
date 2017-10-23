@@ -397,11 +397,11 @@ namespace ValidacionArchivosConciliacion
             {
                 rowNo = rowNo + 1;
 
-                //if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
-                //{
-                //    Exito = false;
-                //    ValoresInvalidos = ValoresInvalidos + rowNo.ToString() + ", ";
-                //}
+                if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
+                {
+                    Exito = false;
+                    ValoresInvalidos = ValoresInvalidos + rowNo.ToString() + ", ";
+                }
             }
 
             if (Exito)
@@ -413,7 +413,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erDocRef_EncontroDocRefDistinto;
-                detallevalidacion.Mensaje = "ERROR: Se espera Referencia Documento: " + DocumentoReferencia.ToString() + ". Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: No existe la Referencia Documento. Corrija la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
