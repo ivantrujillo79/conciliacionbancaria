@@ -106,8 +106,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
     }
 
-
-
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -183,10 +181,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
 
                         Carga_CelulaCorporativo(corporativo);
-                         
+						
                         /**Modifico: CNSM 
-                        Fecha: 08/06/2017
-                        ConsultarPedidosInternos();**/
+                        Fecha: 08/06/2017**/
+                        ConsultarPedidosInternos();
 
                         ConsultaInicialPedidosInternos();
 
@@ -916,6 +914,42 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+	    public void ActualizarTotalesAgregados_GridAgregados() 
+    {
+        Decimal MontoConciliado;
+        try
+        {
+            //GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];            
+            //if (grvAgregadosPedidosPrima != null)
+            //{
+            //DataTable dt = (DataTable)grvAgregadosPedidosPrima.DataSource;
+            DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
+            if (dt.Rows.Count > 0)
+                {
+                    MontoConciliado = 0;
+                    foreach (DataRow gvRow in dt.Rows)
+                    {
+                        if (gvRow[7].ToString().Trim() != string.Empty)
+                            MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow[7]);
+                    }
+
+                    lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
+                    lblAgregadosInternos.Text = dt.Rows.Count.ToString();
+                    //lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+                }
+                else
+                {
+                    lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
+                    lblAgregadosInternos.Text = "0";
+                    lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
+                }
+            //}
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
     protected void grvInternos_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         try
@@ -1401,6 +1435,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof (DateTime));
                 tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof (decimal));
                 tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof (string));
+                tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));																					  
                 //Llena GridView con lista de Agregados del Externo (PEDIDOS)
                 foreach (ReferenciaConciliadaPedido rc in refExternaSelec.ListaReferenciaConciliada)
                 {
@@ -1418,6 +1453,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
+                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                wucBuscaClientesFacturas.GridRelacionado = grvAgregadosPedidos;								
             }
             else
             {
@@ -4547,5 +4584,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
+    }
+    protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
+    {
+        GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];
+        grvAgregadosPedidos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvAgregadosPedidosPrima);
+        grvAgregadosPedidos.DataBind();
+        grvAgregadosPedidos.DataBind();
+        ActualizarTotalesAgregados_GridAgregados();
+    }
+
+    protected void ImageButton2_Click(object sender, ImageClickEventArgs e)
+    {
+        //GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];
+        //grvAgregadosPedidos = wucBuscaClientesFacturas.ResaltaFactura(grvAgregadosPedidosPrima);
+        ////UpdatePanel1.Update();
     }
 }

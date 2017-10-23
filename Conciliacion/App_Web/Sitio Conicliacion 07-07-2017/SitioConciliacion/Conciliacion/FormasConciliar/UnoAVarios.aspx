@@ -4,6 +4,7 @@
     
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
+<%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
@@ -1083,6 +1084,28 @@
                                     </td>
                                 </tr>
                             </table>
+							<div class="lineaHorizontal">
+                            </div>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="width: 50%;">
+
+                                        <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
+
+                                    </td>
+                                    <%--<td class="lineaVertical" rowspan="2"></td>--%>
+                                    <td style="width: 50%;">
+                                        <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
+                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                            ToolTip="FILTRAR FMovimiento" Width="16px"
+                                            OnClick="btnFiltraCliente_Click" />
+                                        <%--<asp:ImageButton ID="ImageButton2" runat="server" CssClass="icono bg-color-verdeClaro"
+                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                            ToolTip="RESALTAR Factura" Width="16px"
+                                            OnClick="ImageButton2_Click" />--%>
+                                    </td>
+                                </tr>
+                            </table>		
                         </div>
                         <table style="width: 100%;" class="lineaVertical bg-color-grisClaro01">
                             <tr>
@@ -1115,6 +1138,8 @@
                             </tr>
                         </table>
                         <div id="dvAgregados" style="display: none">
+                            <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>--%>							 
                             <asp:GridView ID="grvAgregadosPedidos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging="False" ShowHeader="False" Width="100%" CssClass="grvResultadoConsultaCss"
                                 PageSize="10" OnRowDataBound="grvAgregadosPedidos_RowDataBound" ShowHeaderWhenEmpty="False"
@@ -1197,6 +1222,9 @@
                                     </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
+						    <%--</ContentTemplate>
+                        </asp:UpdatePanel>--%>		
+						
                             <asp:GridView ID="grvAgregadosInternos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging="False" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
                                 PageSize="10" ShowHeaderWhenEmpty="False" ShowFooter="False" DataKeyNames="Folio,Secuencia,Año,Sucursal"
