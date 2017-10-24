@@ -585,9 +585,13 @@ namespace ValidacionArchivosConciliacion
 
                 if (Path.GetExtension(sArchivo) == ".xls")
                 {
-                    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                        "Data Source = " + sArchivo +
-                        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
+                    //oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
+                    //    "Data Source = " + sArchivo +
+                    //    ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
+
+                    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+                    "Data Source=" + sArchivo +
+                    ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
                 }
                 else
                 if (Path.GetExtension(sArchivo) == ".xlsx")
