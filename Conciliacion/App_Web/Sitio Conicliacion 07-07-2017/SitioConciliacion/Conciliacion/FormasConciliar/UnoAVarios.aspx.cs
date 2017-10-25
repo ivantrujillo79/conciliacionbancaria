@@ -420,7 +420,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
 
-            cuentaBancaria = Convert.ToInt32(c.CuentaBancaria);
+            cuentaBancaria = Convert.ToInt32(c.CuentaBancaria.ToString().Replace(" ","").Trim());
             ActualizarPopUp_CargaArchivo();
         }
         catch (SqlException ex)
