@@ -332,7 +332,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erMonto_Invalido;
-                detallevalidacion.Mensaje = "ERROR: Monto invalido. No es un valor numerico, es menor a $1 o excede dos decimales. Corrija los valores en la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Monto invalido. No es un valor numérico, es menor a $1 o excede dos decimales. Corrija los valores en la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
             return detallevalidacion;
@@ -486,7 +486,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erCelda_Vacia;
-                detallevalidacion.Mensaje = "ERROR: Celda vacia. Una o mas celdas estan vacias. Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Celda vacía. Una o mas celdas estan vacías. Corrija la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -521,19 +521,10 @@ namespace ValidacionArchivosConciliacion
             try
             {
                 sArchivo = RutaArchivo + NombreArchivo;
-                if (Path.GetExtension(sArchivo) == ".xls")
-                {
-                    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                        "Data Source = " + sArchivo +
-                        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
-                }
-                else
-                if (Path.GetExtension(sArchivo) == ".xlsx")
-                {
-                    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
+
+                oledbConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" +
                     "Data Source=" + sArchivo +
                     ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
-                }
 
                 if (oledbConn != null)
                 {
@@ -560,12 +551,8 @@ namespace ValidacionArchivosConciliacion
                 return ds.Tables[0];
             else
                 return null;
-            //if (dtArchivo != null)
-            //    return true;
-            //else
-            //    return false;
         }
-    }//end ValidadorCyC
+    }
     #endregion
 
 }
