@@ -26,11 +26,6 @@ namespace ValidacionArchivosConciliacion
 
         }
 
-        //public override void Dispose()
-        //{
-
-        //}
-
     }
     #endregion CuentaBancariaExisteException
 
@@ -49,12 +44,7 @@ namespace ValidacionArchivosConciliacion
         {
 
         }
-
-        //public override void Dispose()
-        //{
-
-        //}
-
+        
     }
     #endregion DocumentoReferenciaExisteException
 
@@ -73,12 +63,7 @@ namespace ValidacionArchivosConciliacion
         {
 
         }
-
-        //public override void Dispose()
-        //{
-
-        //}
-
+        
     }
     #endregion EncabezadoExisteException
 
@@ -98,11 +83,6 @@ namespace ValidacionArchivosConciliacion
 
         }
 
-        //public override void Dispose()
-        //{
-
-        //}
-
     }
     #endregion MontoValidoException
 
@@ -121,12 +101,7 @@ namespace ValidacionArchivosConciliacion
         {
 
         }
-
-        //public override void Dispose()
-        //{
-
-        //}
-
+        
     }
     #endregion LineaVaciaException
 
@@ -146,11 +121,6 @@ namespace ValidacionArchivosConciliacion
 
         }
 
-        //public override void Dispose()
-        //{
-
-        //}
-
     }
     #endregion
 
@@ -169,12 +139,7 @@ namespace ValidacionArchivosConciliacion
         {
 
         }
-
-        //public override void Dispose()
-        //{
-
-        //}
-
+        
     }
     #endregion FormatoExcelException 
 
@@ -216,7 +181,7 @@ namespace ValidacionArchivosConciliacion
 
         }
 
-    }//end DetalleValidacion
+    }
     #endregion
 
     #region ValidadorCyC
@@ -335,23 +300,11 @@ namespace ValidacionArchivosConciliacion
             bool Exito = true;
             string ValoresInvalidos = "";
             double Monto;
-            double Dec;
-            string strDec;
             int rowNo = 1;
 
             foreach (DataRow row in dtArchivo.Rows)
             {
                 rowNo = rowNo + 1;
-                //if (double.TryParse(row[colMon].ToString().Trim(), out Monto))
-                //{
-                //    Dec = Monto - Math.Truncate(Monto); 
-                //    strDec = Dec.ToString();
-                //    if (Monto <= 0 || strDec.Length > 4)
-                //    {
-                //        Exito = false;
-                //        ValoresInvalidos = ValoresInvalidos + rowNo + ", ";
-                //    }
-                //}
 
                 if (double.TryParse(row[colMon].ToString().Trim(), out Monto))
                 {
@@ -486,18 +439,6 @@ namespace ValidacionArchivosConciliacion
                 Exito = false;
                 ValoresInvalidos = ValoresInvalidos + "Se esperan al menos 2 filas.";
             }
-            //else
-            //{
-            //    foreach (DataRow row in dtArchivo.Rows)
-            //    {
-            //        rowNo = rowNo + 1;
-            //        if (string.Compare(row[layoutColumnas + 1].ToString().Trim(), string.Empty) != 0)
-            //        {
-            //            Exito = false;
-            //            ValoresInvalidos = ValoresInvalidos + " Fila: " + rowNo + ", ";
-            //        }
-            //    }
-            //}
 
             if (Exito)
             {
@@ -534,7 +475,6 @@ namespace ValidacionArchivosConciliacion
                         break;
                     }
                 }
-                //rowNo = 1;
             }
 
             if (Exito)
@@ -580,9 +520,7 @@ namespace ValidacionArchivosConciliacion
 
             try
             {
-                //sArchivo = System.IO.Path.GetFullPath(Server.MapPath("~/")) + RutaArchivo + NombreArchivo;
                 sArchivo = RutaArchivo + NombreArchivo;
-
                 if (Path.GetExtension(sArchivo) == ".xls")
                 {
                     //oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
