@@ -108,7 +108,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -1454,7 +1454,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
                 Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                wucBuscaClientesFacturas.GridRelacionado = grvAgregadosPedidos;								
+                wucBuscaClientesFacturas.GridRelacionado = grvAgregadosPedidos;
+                wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
             }
             else
             {

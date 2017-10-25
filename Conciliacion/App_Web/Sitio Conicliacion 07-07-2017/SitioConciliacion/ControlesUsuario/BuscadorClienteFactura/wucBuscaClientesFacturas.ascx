@@ -2,13 +2,15 @@
 
 <script type="text/javascript">
 
-    function ResaltaFactura(numfactura) {
+    //function ResaltaFactura(numfactura) {
+    function ResaltaFactura() {
         /*Método que resaltará la columna Factura (efecto de  marca textos) en el grid provisto por la propiedad "GridRelacionado" 
          * para todos los registros que cuenten con la cadena provista por el usuario a través de la propiedad "NumeroFacturaResaltar". 
          * IMPORTANTE La factura se compone por una Serie consistente en una cadena de caracteres (máximo 10) 
          * y un Folio de tipo entero según se define en la tabla Factura de la base de datos del sistema Sigamet.*/
-        var gv = document.getElementById("ctl00_contenidoPrincipal_grvAgregadosPedidos");
-        debugger;
+        //var gv = document.getElementById("ctl00_contenidoPrincipal_grvAgregadosPedidos");        
+        var gv = document.getElementById('<%= HtmlIdGridRelacionado %>');
+        var numfactura = document.getElementById('ctl00_contenidoPrincipal_wucBuscaClientesFacturas_txtFactura').value;
         if (gv != null && numfactura != "")
         {
             var gvRowCount = gv.rows.length;
@@ -51,18 +53,12 @@
             <asp:TextBox ID="txtFactura" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
         </td>
         <td style="width: 20%;">
-            <%--<asp:Button ID="Button1" runat="server" 
-                CssClass="icono bg-color-verdeClaro"
-                Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                ToolTip="RESALTA Factura" Width="16px"
-                OnClientClick="javascript:ResaltaFactura(document.getElementById('wucBuscaClientesFacturas_txtFactura')); return false;"
-                />--%>
             <asp:ImageButton ID="btnFiltraCliente" runat="server" 
                 CssClass="icono bg-color-verdeClaro"
                 Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                 ToolTip="FILTRAR FMovimiento" Width="16px"
-                    OnClientClick="javascript:ResaltaFactura(document.getElementById('ctl00_contenidoPrincipal_wucBuscaClientesFacturas_txtFactura').value); return false;" />
-
+                    OnClientClick="javascript:ResaltaFactura(); return false;" 
+                />
         </td>
         <td style="width: 20%;">
             <asp:Label ID="Label1" runat="server" Text="Cliente" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>

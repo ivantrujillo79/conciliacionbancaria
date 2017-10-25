@@ -17,12 +17,13 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
       get { return _GridRelacionado; }
       set { _GridRelacionado = GridRelacionado; }
     }
-    private UpdatePanel _updatep;
-    public UpdatePanel UpdatePanelConciliacion
-    {
-        get { return _updatep; }
-        set { _updatep = UpdatePanelConciliacion; }
-    }
+    public string HtmlIdGridRelacionado;
+    //private string _HtmlIdGridRelacionado;// = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+    //public string HtmlIdGridRelacionado
+    //{
+    //    get { return _HtmlIdGridRelacionado; }
+    //    set { _HtmlIdGridRelacionado = HtmlIdGridRelacionado; }
+    //}
 
     private string NumeroClienteFiltrar;
     private string NumeroFacturaResaltar;
