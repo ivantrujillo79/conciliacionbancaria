@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucCargaManualExcelCyC.ascx.cs" Inherits="Conciliacion_WebUserControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucCargaManualExcelCyC.ascx.cs" Inherits="wucCargaManualExcelCyC" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -52,14 +52,14 @@
             </td>
         </tr>
         <tr>
-            <%--<td style="padding-left:7px; box-sizing:border-box;">
+            <td style="padding-left:7px; box-sizing:border-box;">
                 <div class="centradoMedio">
-                    <asp:Button ID="btnCargaArchivoAceptar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                        Text="Aceptar" style="margin-right:10px;"/>
+                    <asp:Button ID="btnCargaArchivoAceptar" style="margin-right:10px;" runat="server" OnClick="btnAceptar_Click" 
+                        CssClass="boton fg-color-blanco bg-color-azulClaro" Text="Aceptar"  />
                     <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
                         Text="Cancelar" />                                        
                 </div>
-            </td>--%>
+            </td>
         </tr>
     </table>
 
