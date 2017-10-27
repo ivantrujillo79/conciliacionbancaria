@@ -108,7 +108,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -161,6 +160,32 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 ActualizarTotalesAgregados();
                 if (grvExternos.Rows.Count > 0)
                 {
+                    if (tipoConciliacion == 2)
+                    {
+                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                        {
+                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                            wucBuscaClientesFacturas.HtmlIdGridCeldaID = 1;
+                            wucBuscaClientesFacturas.HtmlIdGridCNodoID = 1;
+                        }
+                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                        {
+                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvPedidos";
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                        {
+                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
+                            wucBuscaClientesFacturas.HtmlIdGridCeldaID = 4;
+                            wucBuscaClientesFacturas.HtmlIdGridCNodoID = 0;
+                        }
+                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                        {
+                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvPedidos";
+                        }
+                    }
                     //Obtener el la referencia externa seleccionada
                     if (tipoConciliacion == 2)
                     {
@@ -1454,7 +1479,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
                 Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                wucBuscaClientesFacturas.GridRelacionado = grvAgregadosPedidos;
+                //wucBuscaClientesFacturas.GridRelacionado = grvAgregadosPedidos;
                 wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
             }
             else
@@ -3221,6 +3246,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
 
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
 
         //Cargar Info Actual Conciliacion
         cargarInfoConciliacionActual();
@@ -4600,5 +4626,38 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];
         //grvAgregadosPedidos = wucBuscaClientesFacturas.ResaltaFactura(grvAgregadosPedidosPrima);
         ////UpdatePanel1.Update();
+    }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string criterioConciliacion = ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
+            ? "CantidadConcuerda"
+            //: ddlCriteriosConciliacion.SelectedItem.Text.Equals(
+            //    "CANTIDAD Y REFERENCIA CONCUERDAN")
+            //      ? "CantidadYReferenciaConcuerdan"
+            : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
+                ? "CantidadYReferenciaConcuerdanEdificios"
+                : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS")
+                    ? "CantidadYReferenciaConcuerdan"
+                    : ddlCriteriosConciliacion.SelectedItem.Text.Equals("UNO A VARIOS")
+                        ? "UnoAVarios"
+                        : ddlCriteriosConciliacion.SelectedItem.Text.Equals("VARIOS A UNO")
+                            ? "VariosAUno"
+                            : ddlCriteriosConciliacion.SelectedItem.Text.Equals(
+                                "COPIA DE CONCILIACION")
+                                ? "CopiaDeConciliacion"
+                                : "Manual";
+
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
+
+        //Cargar Info Actual Conciliacion
+        cargarInfoConciliacionActual();
+        //Eliminar variables de Session
+        limpiarVariablesSession();
+        Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
+                          ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
+                          "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
+                          mes + "&TipoConciliacion=" + tipoConciliacion);
+
     }
 }

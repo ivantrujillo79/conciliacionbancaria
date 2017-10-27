@@ -12,18 +12,10 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 {
 
     private GridView _GridRelacionado = new GridView();
-    public GridView GridRelacionado
-    {
-      get { return _GridRelacionado; }
-      set { _GridRelacionado = GridRelacionado; }
-    }
+    //public GridView GridRelacionado { get { return _GridRelacionado; } set { _GridRelacionado = GridRelacionado; } }
     public string HtmlIdGridRelacionado;
-    //private string _HtmlIdGridRelacionado;// = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
-    //public string HtmlIdGridRelacionado
-    //{
-    //    get { return _HtmlIdGridRelacionado; }
-    //    set { _HtmlIdGridRelacionado = HtmlIdGridRelacionado; }
-    //}
+    public int HtmlIdGridCeldaID;
+    public int HtmlIdGridCNodoID;
 
     private string NumeroClienteFiltrar;
     private string NumeroFacturaResaltar;

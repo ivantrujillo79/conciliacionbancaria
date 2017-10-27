@@ -11,13 +11,18 @@
         //var gv = document.getElementById("ctl00_contenidoPrincipal_grvAgregadosPedidos");        
         var gv = document.getElementById('<%= HtmlIdGridRelacionado %>');
         var numfactura = document.getElementById('ctl00_contenidoPrincipal_wucBuscaClientesFacturas_txtFactura').value;
+        var celdaid = document.getElementById('<%= HtmlIdGridCeldaID %>');
+        var cnodoid = document.getElementById('<%= HtmlIdGridCNodoID %>');
+        debugger;
         if (gv != null && numfactura != "")
         {
             var gvRowCount = gv.rows.length;
             var rwIndex = 0;
             var encontrado = false;
-            for (rwIndex; rwIndex <= gvRowCount - 1; rwIndex++) {             
-                if (gv.rows[rwIndex].cells[1].childNodes[1].innerHTML.localeCompare(numfactura) == 0) {
+            for (rwIndex; rwIndex <= gvRowCount - 1; rwIndex++) {
+                //if (gv.rows[rwIndex].cells[1].childNodes[1].innerText.localeCompare(numfactura) == 0) {
+                //  gv.rows[rwIndex].cells[4].childNodes[0].innerText // Tipo: != 2, Criterio:Uno a Varios -> ctl00_contenidoPrincipal_grvInternos
+                if (gv.rows[rwIndex].cells[celdaid].childNodes[cnodoid].innerText.localeCompare(numfactura) == 0) {
                     encontrado = true;
                     if (window.getSelection) {  // all browsers, except IE before version 9
                         var selection = window.getSelection();
@@ -56,7 +61,7 @@
             <asp:ImageButton ID="btnFiltraCliente" runat="server" 
                 CssClass="icono bg-color-verdeClaro"
                 Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                ToolTip="FILTRAR FMovimiento" Width="16px"
+                ToolTip="Resalta factura" Width="16px"
                     OnClientClick="javascript:ResaltaFactura(); return false;" 
                 />
         </td>

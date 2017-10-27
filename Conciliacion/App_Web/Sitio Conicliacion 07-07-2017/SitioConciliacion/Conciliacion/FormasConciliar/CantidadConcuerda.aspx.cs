@@ -1317,6 +1317,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
 
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Eliminar las variables de Session utilizadas en la Vista
         limpiarVariablesSession();
 

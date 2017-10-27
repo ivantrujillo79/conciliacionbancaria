@@ -367,6 +367,7 @@
                                 <td class="iconoOpcion bg-color-verdeClaro" rowspan="2">
                                     <asp:ImageButton ID="imgAutomatica" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Automatica.png"
                                         ToolTip="CONSULTAR FORMA AUTOMATICA" Width="25px" OnClick="imgAutomatica_Click" />
+                                   
                                 </td>
                                 <td>Conciliación Automatica
                                 </td>
@@ -559,7 +560,7 @@
 
     <table width="100%">
                 <tr>
-                    <td style="width: 100%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-azulClaro">
+                    <td style="width: 50%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-azulClaro">
                         Transacciones Conciliadas
                     </td>
                 </tr>
@@ -1089,20 +1090,13 @@
                             <table style="width: 100%">
                                 <tr>
                                     <td style="width: 50%;">
-
                                         <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
-
                                     </td>
-                                    <%--<td class="lineaVertical" rowspan="2"></td>--%>
                                     <td style="width: 50%;">
                                         <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
                                             Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                             ToolTip="FILTRAR FMovimiento" Width="16px"
                                             OnClick="btnFiltraCliente_Click" />
-                                        <%--<asp:ImageButton ID="ImageButton2" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                            ToolTip="RESALTAR Factura" Width="16px"
-                                            OnClick="ImageButton2_Click" />--%>
                                     </td>
                                 </tr>
                             </table>		

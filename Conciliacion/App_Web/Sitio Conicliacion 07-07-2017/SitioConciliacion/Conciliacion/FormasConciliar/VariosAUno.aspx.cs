@@ -69,7 +69,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
-      
+        wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -1923,6 +1923,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                             : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Leer info actual de la conciliación.
         cargarInfoConciliacionActual();
 
@@ -2619,4 +2620,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
 
+
+    protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
+    {
+
+    }
 }

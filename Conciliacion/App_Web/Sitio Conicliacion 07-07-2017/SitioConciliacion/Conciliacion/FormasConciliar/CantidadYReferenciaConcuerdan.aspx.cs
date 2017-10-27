@@ -1668,6 +1668,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                             : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Limpian variables de Session
         limpiarVariablesSession();
 
