@@ -689,6 +689,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
             tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("SerieFactura", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("ClienteReferencia", typeof(string));
 
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPedidos)
             {
@@ -714,7 +716,9 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     rc.Cliente,
                     rc.Nombre,
                     rc.Total,
-                    rc.ConceptoPedido
+                    rc.ConceptoPedido,
+                    "HOLA FACTURA",
+                    "CLIENTE REF"
                     );
             }
             HttpContext.Current.Session["TAB_REF_CONCILIAR"] = tblReferenciasAConciliar;
