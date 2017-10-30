@@ -1489,6 +1489,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                           Convert.ToDecimal(reader["RetiroInt"]),
                                                           Convert.ToInt32(reader["AñoConciliacion"]),
                                                           Convert.ToInt32(reader["AñoConciliacion"]),
+                                                          "HOLAFACTURA",
+                                                          "CLINTE REF = 6757473478",
                                                           this.implementadorMensajes);
                         datos.Add(dato);
                     }
