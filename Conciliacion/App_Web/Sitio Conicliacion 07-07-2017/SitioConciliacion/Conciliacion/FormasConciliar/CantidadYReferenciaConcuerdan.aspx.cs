@@ -1630,16 +1630,28 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                             ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
                 GenerarTablaReferenciasAConciliarPedidos();
             }
-
             else
             {
-                Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
-                                                              Convert.ToSByte(txtDias.Text),
-                                                              Convert.ToDecimal(txtDiferencia.Text),
-                                                              ddlCampoExterno.SelectedItem.Text,
-                                                              ddlCampoInterno.SelectedItem.Text,
-                                                              Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-                GenerarTablaReferenciasAConciliarArchivos();
+                if (tipoConciliacion != 6)
+                {
+                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
+                        Convert.ToSByte(txtDias.Text),
+                        Convert.ToDecimal(txtDiferencia.Text),
+                        ddlCampoExterno.SelectedItem.Text,
+                        ddlCampoInterno.SelectedItem.Text,
+                        Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaReferenciasAConciliarArchivos();
+                }
+                else
+                {
+                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
+                        Convert.ToSByte(txtDias.Text),
+                        Convert.ToDecimal(txtDiferencia.Text),
+                        ddlCampoExterno.SelectedItem.Text,
+                        ddlCampoInterno.SelectedItem.Text,
+                        Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaReferenciasAConciliarArchivos();
+                }
 
             }
             LlenaGridViewReferenciasConciliadas(tipoConciliacion);
