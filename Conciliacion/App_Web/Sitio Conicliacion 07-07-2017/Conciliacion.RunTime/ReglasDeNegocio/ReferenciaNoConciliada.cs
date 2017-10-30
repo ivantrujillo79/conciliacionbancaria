@@ -66,6 +66,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int? añotraspaso;
         int? foliotraspaso;
 
+        public int cliente = 1;
+        
 
         private List<cReferencia> listareferenciaconciliada = new List<cReferencia>();
         private List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida = new List<ReferenciaConciliadaCompartida>();

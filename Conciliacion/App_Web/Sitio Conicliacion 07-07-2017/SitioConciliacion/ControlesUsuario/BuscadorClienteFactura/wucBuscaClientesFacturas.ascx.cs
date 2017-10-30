@@ -10,12 +10,13 @@ using System.Windows.Forms;
 
 public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFacturas : System.Web.UI.UserControl
 {
+    protected string MyString = "This is my string";
 
     private GridView _GridRelacionado = new GridView();
     //public GridView GridRelacionado { get { return _GridRelacionado; } set { _GridRelacionado = GridRelacionado; } }
     public string HtmlIdGridRelacionado;
-    public int HtmlIdGridCeldaID;
-    public int HtmlIdGridCNodoID;
+    public string HtmlIdGridCeldaID;
+    public string HtmlIdGridCNodoID;
 
     private string NumeroClienteFiltrar;
     private string NumeroFacturaResaltar;
@@ -44,20 +45,24 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         //propiedad "NumeroClienteFiltrar".
 
         DataView dv = null;
-        DataTable dtDatos = (DataTable)GridView.DataSource;
-        NumeroClienteFiltrar = txtCliente.Text.Trim();
-        if (NumeroClienteFiltrar != string.Empty)
-        {            
-            dv = new DataView(dtDatos);
-            dv.RowFilter = "Cliente = " + NumeroClienteFiltrar;
+        if (GridView.DataSource != null)
+        {
+            DataTable dtDatos = (DataTable)GridView.DataSource;
+            NumeroClienteFiltrar = txtCliente.Text.Trim();
+            if (NumeroClienteFiltrar != string.Empty)
+            {
+                dv = new DataView(dtDatos);
+                dv.RowFilter = "Cliente = " + NumeroClienteFiltrar;
+            }
+            if (dv == null)
+                return dtDatos;
+            else
+                return dv.ToTable();
         }
-        if (dv == null)
-            return dtDatos;
         else
-            return dv.ToTable();
-
+            return null;
     }
-    
+
     protected void btnBuscar_Click(object sender, ImageClickEventArgs e)
     {        
         //if (Session["TABLADEAGREGADOS"] != null)

@@ -1435,6 +1435,13 @@
                                     <ItemStyle HorizontalAlign="Justify"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label ID="lblCliente" runat="server" Text='<%# resaltarBusqueda(Eval("Cliente").ToString()) %>'></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
