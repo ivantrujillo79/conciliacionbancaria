@@ -779,14 +779,14 @@
                                     <ItemStyle HorizontalAlign="Left" Width="120px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="120px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura">
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                          <div class="parrafoTexto" style="width: 100px">
                                             <asp:Label ID="lblSerieFactura" runat="server" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                      </ItemTemplate>  
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia">
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                          <div class="parrafoTexto" style="width: 100px">
                                             <asp:Label ID="lblClienteReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>

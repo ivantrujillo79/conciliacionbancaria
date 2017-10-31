@@ -903,7 +903,7 @@
                                     <ItemStyle Width="120px"></ItemStyle>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Ped. Referencia" SortExpression="PedidoReferencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
                                     </ItemTemplate>
@@ -964,17 +964,17 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField  HeaderText="SerieFactura" >
+                                <asp:TemplateField  HeaderText="SerieFactura" SortExpression="SerieFactura" >
                                     <ItemTemplate>
-                                        <div>
-                                            ´<asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'> </asp:Label>
+                                        <div class="parrafoTexto" style="width: 80px">
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'> </asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField  HeaderText="ClienteReferencia" >
+                                <asp:TemplateField  HeaderText="ClienteReferencia" SortExpression="ClienteReferencia" >
                                     <ItemTemplate>
-                                        <div>
-                                            ´<asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'> </asp:Label>
+                                        <div class="parrafoTexto" style="width: 80px">
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'> </asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
