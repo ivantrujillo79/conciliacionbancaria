@@ -18,7 +18,9 @@
             var gvRowCount = gv.rows.length;
             var rwIndex = 0;
             var encontrado = false;
-            debugger;
+            
+            debugger; //IMPORTANTE QUITAR
+
             for (rwIndex; rwIndex <= gvRowCount - 1; rwIndex++) {
                 //if (gv.rows[rwIndex].cells[1].childNodes[1].innerText.localeCompare(numfactura) == 0) {
                 //  gv.rows[rwIndex].cells[4].childNodes[0].innerText // Tipo: != 2, Criterio:Uno a Varios -> ctl00_contenidoPrincipal_grvInternos

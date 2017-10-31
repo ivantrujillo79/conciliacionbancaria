@@ -168,10 +168,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             wucBuscaClientesFacturas.HtmlIdGridCeldaID = "1";
                             wucBuscaClientesFacturas.HtmlIdGridCNodoID = "1";
                         }
-                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                        {
-                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvPedidos";
-                        }
                     }
                     else
                     {
@@ -180,10 +176,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
                             wucBuscaClientesFacturas.HtmlIdGridCeldaID = "4";
                             wucBuscaClientesFacturas.HtmlIdGridCNodoID = "0";
-                        }
-                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                        {
-                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvPedidos";
                         }
                     }
                     //Obtener el la referencia externa seleccionada
@@ -4636,15 +4628,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
                 grvPrima = (GridView)Session["TABLADEINTERNOS"];
-            //else
-            //if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-            //  grvAgregadosPedidosPrima = (GridView)Session[""];
+            else
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                grvPrima = (GridView)Session["TABLADEINTERNOS"];
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
             grvInternos.DataBind();
             grvInternos.DataBind();
             //ActualizarTotalesAgregados_GridAgregados();
         }
-
     }
 
 }

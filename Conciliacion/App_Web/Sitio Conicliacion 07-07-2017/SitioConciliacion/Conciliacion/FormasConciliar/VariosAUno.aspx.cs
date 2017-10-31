@@ -108,6 +108,24 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 ocultarOpciones("INTERNO");
 
                 if (tipoConciliacion == 2)
+                {   //PENDIENTE
+                    if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                    {
+                        //wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvPedidos";
+                        wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                        wucBuscaClientesFacturas.HtmlIdGridCeldaID = "1";
+                    }
+                }
+                else
+                {
+                    if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                    {
+                        wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
+                        wucBuscaClientesFacturas.HtmlIdGridCeldaID = "3";
+                    }
+                }
+
+                if (tipoConciliacion == 2)
                 {
                     lblSucursalCelula.Text = "Celula Interna";
                     ddlCelula.Visible = lblPedidos.Visible = lblVer.Visible = rdbTodosMenoresIn.Visible = true;
@@ -876,6 +894,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         tblReferenciaInternas.Columns.Add("Cheque", typeof(string));
         tblReferenciaInternas.Columns.Add("StatusConciliacion", typeof(string));
         tblReferenciaInternas.Columns.Add("UbicacionIcono", typeof(string));
+        tblReferenciaInternas.Columns.Add("Cliente", typeof(int));
 
         foreach (ReferenciaNoConciliada rc in listaReferenciaArchivosInternos)
         {
@@ -896,7 +915,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 rc.NombreTercero,
                 rc.Cheque,
                 rc.StatusConciliacion,
-                rc.UbicacionIcono
+                rc.UbicacionIcono,
+                1
                 );
         }
 
@@ -908,13 +928,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         DataTable tablaReferenciasAi = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
         grvInternos.DataSource = tablaReferenciasAi;
         grvInternos.DataBind();
+        Session["TABLADEINTERNOS"] = grvInternos;
     }
     private void LlenaGridViewArchivosInternosTemporal()//Llena el gridview con las Referencias Externas
     {
         DataTable tablaReferenciasAi = (DataTable)HttpContext.Current.Session["TAB_INTER_RESP"];
         grvInternos.DataSource = tablaReferenciasAi;
         grvInternos.DataBind();
-
     }
     public void Consulta_ArchivosInternos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int sucursalinterno, short dias, decimal diferencia, int statusConcepto, bool esDepositoRetiro, decimal montoExterno, DateTime fmaxima, DateTime fminima)
     {
@@ -2623,6 +2643,20 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
-
+        GridView grvPrima = null;
+        if (tipoConciliacion == 2)
+        {
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                grvPrima = (GridView)Session["TABLADEAGREGADOS"];
+        }
+        else
+        {
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                grvPrima = (GridView)Session["TABLADEINTERNOS"];
+            grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+            grvInternos.DataBind();
+            grvInternos.DataBind();
+            //ActualizarTotalesAgregados_GridAgregados();
+        }
     }
 }
