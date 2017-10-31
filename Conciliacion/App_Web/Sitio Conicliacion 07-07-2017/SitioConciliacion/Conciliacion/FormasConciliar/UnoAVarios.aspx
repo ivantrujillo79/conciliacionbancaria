@@ -1442,6 +1442,20 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text="HolaFactura"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text="HolaCliente"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
