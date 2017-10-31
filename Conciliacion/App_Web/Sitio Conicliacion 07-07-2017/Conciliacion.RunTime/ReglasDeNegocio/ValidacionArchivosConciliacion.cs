@@ -494,13 +494,6 @@ namespace ValidacionArchivosConciliacion
             return detallevalidacion;
         }
 
-        static List<T> CrearListaGenerica<T>(T value)
-        {
-            var list = new List<T>();
-            list.Add(value);
-            return list;
-        }
-
         public DetalleValidacion ValidaParentezco()
         {
             DetalleValidacion detallevalidacion = new DetalleValidacion();
@@ -615,6 +608,15 @@ namespace ValidacionArchivosConciliacion
             else
                 return null;
         }
+
+        static List<T> CrearListaGenerica<T>(T value)
+        {
+            var list = new List<T>();
+            list.Add(value);
+            return list;
+        }
+
+
     }
     #endregion
 
