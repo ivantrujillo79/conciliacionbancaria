@@ -494,11 +494,20 @@ namespace ValidacionArchivosConciliacion
             return detallevalidacion;
         }
 
+        static List<T> CrearListaGenerica<T>(T value)
+        {
+            var list = new List<T>();
+            list.Add(value);
+            return list;
+        }
+
         public DetalleValidacion ValidaParentezco()
         {
             DetalleValidacion detallevalidacion = new DetalleValidacion();
             string Pedidoreferencia = "";
-            List<string> ListaCliente = new List<string>();
+            var ListaPedidoCliente = CrearListaGenerica(new {PedidoReferencia = "", Cliente = ""});
+            ListaPedidoCliente.Clear();
+            
             bool ResultadoValidacion = true;
             string DetalleError = "";
 
@@ -507,25 +516,24 @@ namespace ValidacionArchivosConciliacion
                 foreach (DataRow row in dtArchivo.Rows)
                 {
                     Pedidoreferencia = row[colDoc].ToString();
-                    DataTable dtDetallePedido =
-                        Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                    DataTable dtDetallePedido = Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
                     if (dtDetallePedido.Rows.Count > 0)
                     {
-                        ListaCliente.Add(dtDetallePedido.Rows[0]["Cliente"].ToString());
+                        ListaPedidoCliente.Add(new { PedidoReferencia = dtDetallePedido.Rows[0]["PedidoReferencia"].ToString().Trim(), Cliente = dtDetallePedido.Rows[0]["Cliente"].ToString().Trim() });
                     }
                 }
             }
 
-            DataTable dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaCliente[0]));
+            DataTable dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaPedidoCliente[0].Cliente));
             
             List<string> ListaFamilia = (from DataRow row in dtClienteFamilia.Rows select row["Cliente"].ToString()).Distinct().ToList();
 
-
-            foreach (string Cliente in ListaCliente)
+            foreach (var Cliente in ListaPedidoCliente)
             {
-                if (!ListaFamilia.Exists(e => e.Contains(Cliente)))
+                if (!ListaFamilia.Exists(e => e.Contains(Cliente.Cliente)))
                 {
-                    DetalleError += " " + Cliente;
+                    var ListaPedidos = ListaPedidoCliente.Where(x => x.Cliente == Cliente.Cliente).ToList();
+                    ListaPedidos.ForEach(x => DetalleError += " \n " + x.PedidoReferencia.ToString().Trim()+ " del cliente: " + x.Cliente.ToString().Trim());
                     ResultadoValidacion = false;
                 }
             }
@@ -539,7 +547,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = 500;
-                detallevalidacion.Mensaje = "Los clientes " + DetalleError  + " no están emparentados, por favor corrija.";
+                detallevalidacion.Mensaje = "Los pedidos " + DetalleError  + "\n no están emparentados y no serán cargados. \n ¿Desea continuar?";
                 detallevalidacion.VerificacionValida = false;
             }
 
