@@ -1536,6 +1536,21 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblSerieFacturaPedido">TEST</asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblClienteReferencia">TEST</asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
