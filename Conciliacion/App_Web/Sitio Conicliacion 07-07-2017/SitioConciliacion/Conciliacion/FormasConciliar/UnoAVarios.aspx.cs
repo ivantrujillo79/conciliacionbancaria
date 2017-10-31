@@ -1178,6 +1178,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("StatusConciliacion", typeof(string));
             tblReferenciaInternas.Columns.Add("UbicacionIcono", typeof(string));
             tblReferenciaInternas.Columns.Add("Cliente", typeof(int));
+            tblReferenciaInternas.Columns.Add("SerieFactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
             foreach (
@@ -1203,7 +1205,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Cheque,
                     rc.StatusConciliacion,
                     rc.UbicacionIcono,
-                    rc.cliente
+                    rc.cliente,
+                    "HOLA DT SF",
+                    "HOL DT CR"
+
                     );
             }
 
@@ -1364,6 +1369,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
             tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
             tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
+            tblReferenciaInternas.Columns.Add("Seriefactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
             foreach (
@@ -1380,7 +1387,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Nombre,
                     rc.FMovimiento,
                     rc.Total,
-                    rc.Concepto
+                    rc.Concepto,
+                    "HOLA DT SF",
+                    "HOLA DT CR"
                     );
             }
             HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
