@@ -256,6 +256,7 @@ namespace ValidacionArchivosConciliacion
                 listDetalleValidacion.Add(ValidaCuentaBancaria());
                 listDetalleValidacion.Add(ValidaDocumentoReferencia());
                 listDetalleValidacion.Add(ValidaMonto());
+                listDetalleValidacion.Add(ValidaParentezco());
             }
 
             return listDetalleValidacion;
@@ -489,10 +490,64 @@ namespace ValidacionArchivosConciliacion
                 detallevalidacion.Mensaje = "ERROR: Celda vacía. Una o mas celdas estan vacías. Corrija la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
+            
+            return detallevalidacion;
+        }
+
+        public DetalleValidacion ValidaParentezco()
+        {
+            DetalleValidacion detallevalidacion = new DetalleValidacion();
+            string Pedidoreferencia = "";
+            List<string> ListaCliente = new List<string>();
+            bool ResultadoValidacion = true;
+            string DetalleError = "";
+
+            if (dtArchivo.Rows.Count > 0)
+            {
+                foreach (DataRow row in dtArchivo.Rows)
+                {
+                    Pedidoreferencia = row[colDoc].ToString();
+                    DataTable dtDetallePedido =
+                        Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                    if (dtDetallePedido.Rows.Count > 0)
+                    {
+                        ListaCliente.Add(dtDetallePedido.Rows[0]["Cliente"].ToString());
+                    }
+                }
+            }
+
+            DataTable dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaCliente[0]));
+            
+            List<string> ListaFamilia = (from DataRow row in dtClienteFamilia.Rows select row["Cliente"].ToString()).Distinct().ToList();
+
+
+            foreach (string Cliente in ListaCliente)
+            {
+                if (!ListaFamilia.Exists(e => e.Contains(Cliente)))
+                {
+                    DetalleError += " " + Cliente;
+                    ResultadoValidacion = false;
+                }
+            }
+
+            if (ResultadoValidacion)
+            {
+                detallevalidacion.CodigoError = 0;
+                detallevalidacion.Mensaje = "Todos los pedidos cargados corresponden a clientes emparentados.";
+                detallevalidacion.VerificacionValida = true;
+            }
+            else
+            {
+                detallevalidacion.CodigoError = 500;
+                detallevalidacion.Mensaje = "Los clientes " + DetalleError  + " no están emparentados, por favor corrija.";
+                detallevalidacion.VerificacionValida = false;
+            }
 
             return detallevalidacion;
         }
 
+
+        
         public bool ArchivoValido(string RutaArchivo, string NombreArchivo)
         {
             bool existe;
