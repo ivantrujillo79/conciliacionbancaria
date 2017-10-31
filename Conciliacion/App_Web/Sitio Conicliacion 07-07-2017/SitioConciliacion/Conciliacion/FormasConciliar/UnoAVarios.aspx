@@ -1018,7 +1018,7 @@
                                         <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
                                             Text="FMovimiento"></asp:Label>
                                         <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
-                                            Text="PedidoReferencia"></asp:Label>
+                                            Text="Documento"></asp:Label>
                                     </td>
                                     <td style="width: 12.5%;">
                                         <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio"
@@ -1442,6 +1442,20 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
@@ -1462,7 +1476,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
+                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="False">
                                     <ItemTemplate>
                                         <%-- <asp:RadioButton ID="rdbPedido" runat="server" GroupName="GrupoPedidos" AutoPostBack="True"
                                             Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>' OnCheckedChanged="rdbPedido_CheckedChanged" />--%>
@@ -1522,6 +1536,21 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblSerieFacturaPedido">TEST</asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblClienteReferencia">TEST</asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>

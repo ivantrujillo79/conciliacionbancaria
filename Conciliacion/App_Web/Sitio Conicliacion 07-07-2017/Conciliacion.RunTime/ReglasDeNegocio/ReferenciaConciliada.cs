@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms.PropertyGridInternal;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -65,6 +66,42 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.rfctercerointerno = rfctercerointerno;
             this.depositointerno = depositointerno;
             this.retirointerno = retirointerno;
+        }
+
+        public ReferenciaConciliada(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion,
+                                    int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
+                                    string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
+                                    int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
+                                    string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
+                                    int añoexterno, int añointerno,string SerieFactura, string ClienteReferencia,
+                                    IMensajesImplementacion implementadorMensajes)
+            : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext, chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno, implementadorMensajes)
+        {
+            this.añoconciliacion = añoconciliacion;
+            this.mesconciliacion = mesconciliacion;
+            this.folioconciliacion = folioconciliacion;
+
+            this.añointerno = añointerno;
+            this.sucursalinterno = sucursalinterno;
+            this.sucursalintdes = sucursalintdes;
+            this.foliointerno = foliointerno;
+            this.secuenciainterno = secuenciainterno;
+            this.conceptointerno = conceptointerno;
+            this.montointerno = montointerno;
+            this.foperacionint = foperacionint;
+            this.fmovimientoint = fmovimientoint;
+            this.selecciona = true;
+
+            this.chequeinterno = chequeinterno;
+            this.referenciainterno = referenciainterno;
+            this.descripcioninterno = descripcioninterno;
+            this.nombretercerointerno = nombretercerointerno;
+            this.rfctercerointerno = rfctercerointerno;
+            this.depositointerno = depositointerno;
+            this.retirointerno = retirointerno;
+            this.SerieFactura = SerieFactura;
+            this.ClienteReferencia = ClienteReferencia;
+
         }
 
         public ReferenciaConciliada(IMensajesImplementacion implementadorMensajes): base(implementadorMensajes)
@@ -213,6 +250,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return retirointerno; }
             set { retirointerno = value; }
         }
+
+        public string SerieFactura { get; set; }
+
+        public string ClienteReferencia { get; set; }
 
         #endregion
 
