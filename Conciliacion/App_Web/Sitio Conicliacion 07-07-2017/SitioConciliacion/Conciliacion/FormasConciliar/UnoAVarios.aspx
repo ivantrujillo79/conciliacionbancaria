@@ -1018,7 +1018,7 @@
                                         <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
                                             Text="FMovimiento"></asp:Label>
                                         <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
-                                            Text="PedidoReferencia"></asp:Label>
+                                            Text="Documento"></asp:Label>
                                     </td>
                                     <td style="width: 12.5%;">
                                         <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio"
@@ -1476,7 +1476,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
+                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="False">
                                     <ItemTemplate>
                                         <%-- <asp:RadioButton ID="rdbPedido" runat="server" GroupName="GrupoPedidos" AutoPostBack="True"
                                             Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>' OnCheckedChanged="rdbPedido_CheckedChanged" />--%>
