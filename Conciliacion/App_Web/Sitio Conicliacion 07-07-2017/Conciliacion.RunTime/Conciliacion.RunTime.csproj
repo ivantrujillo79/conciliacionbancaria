@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
     <Compile Include="DatosSQL\CobranzaDatos.cs" />
     <Compile Include="DatosSQL\CobroDatos.cs" />
     <Compile Include="DatosSQL\ConciliacionDatos.cs" />

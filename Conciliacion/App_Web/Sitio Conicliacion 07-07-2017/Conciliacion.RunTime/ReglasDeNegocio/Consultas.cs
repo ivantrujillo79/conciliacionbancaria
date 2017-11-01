@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Conciliacion.RunTime.DatosSQL;
@@ -289,6 +290,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract ListaCombo ConsultaDatosCliente(int cliente);
         public abstract bool ClienteValido(string cliente);
         public abstract bool VerificaPedidoReferenciaExiste(string PedidoReferencia);
+        public abstract DataTable PedidoReferenciaDetalle(string PedidoReferencia);
+        public abstract DataTable FamiliaresCliente(int Cliente);
 
         public abstract Consultas CrearObjeto();
 

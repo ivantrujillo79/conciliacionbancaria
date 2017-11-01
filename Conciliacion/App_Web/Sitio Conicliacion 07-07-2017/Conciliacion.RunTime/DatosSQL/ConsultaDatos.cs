@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Conciliacion.RunTime.ReglasDeNegocio;
@@ -5659,6 +5660,87 @@ namespace Conciliacion.RunTime.DatosSQL
                 return resultado;
             }
         }
+
+
+        public override DataTable PedidoReferenciaDetalle(string PedidoReferencia)
+        {
+            DataTable dtPedidoReferenciaDetalle = null;
+
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBPedidoReferenciaDetalle", cnn);
+                    comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    DataSet ds = new DataSet();
+
+                    SqlDataAdapter dap = new SqlDataAdapter(comando);
+                    dap.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        dtPedidoReferenciaDetalle = ds.Tables[0];
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                //return resultado;
+
+                return dtPedidoReferenciaDetalle;
+            }
+        }
+
+
+        public override DataTable FamiliaresCliente(int Cliente)
+        {
+
+            DataTable dtPedidoReferenciaDetalle = null;
+
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBFamiliaresCliente", cnn);
+                    comando.Parameters.Add("@cliente", System.Data.SqlDbType.VarChar).Value = Cliente;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    DataSet ds = new DataSet();
+
+                    SqlDataAdapter dap = new SqlDataAdapter(comando);
+                    dap.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        dtPedidoReferenciaDetalle = ds.Tables[0];
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                //return resultado;
+
+                return dtPedidoReferenciaDetalle;
+            }
+
+        }
+
 
         /*********
                  * Consulta externos con transferencia
