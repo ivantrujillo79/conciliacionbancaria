@@ -9,6 +9,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
+    [Serializable]
     class ReferenciaNoConciliadaDatos :ReferenciaNoConciliada 
     {
 

@@ -39,6 +39,30 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
+                <div>
+                    <asp:Label ID="lblReferencia" runat="server" CssClass="etiqueta fg-color-negro" Text="Referencia: "
+                        style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
+                <div>
+                    <asp:Label ID="lblMontoPago" runat="server" CssClass="etiqueta fg-color-negro" Text="Monto pago: "
+                        style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
+                <div>
+                    <asp:Label ID="lblSaldo" runat="server" CssClass="etiqueta fg-color-negro" Text="Saldo a favor: "
+                        style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                </div>
+            </td>
+        </tr>
         <tr> 
             <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center; box-sizing:border-box;">
                 <div style="margin: 5px 5px 5px 3px; max-height: 169px; overflow: auto;">
@@ -47,6 +71,19 @@
                         ViewStateMode="Enabled" BehaviourID="gridView1">
                         <PagerStyle CssClass="grvPaginacionScroll" />
                         <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
+                        <HeaderStyle HorizontalAlign="Center" />
+                        <Columns>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox runat="server" ID="chkAplicarPago" />
+                                    </ItemTemplate>
+                                    <%--<HeaderTemplate>
+                                        <asp:CheckBox runat="server" ID="chkTodosInternos" /> <!--AutoPostBack="True" OnCheckedChanged="OnCheckedChangedInternos" -->
+                                    </HeaderTemplate>--%>
+                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="25px" BackColor="#ebecec"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                </asp:TemplateField>
+                        </Columns>
                     </asp:GridView>
                 </div>
             </td>
