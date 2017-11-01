@@ -506,14 +506,14 @@
                                 <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div>
-                                            <asp:Label runat="server" ID="lblSerieFactura" Text="FACTURA"></asp:Label>
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div>
-                                            <asp:Label runat="server" ID="lblClienteReferencia" Text="CLIENTE"></asp:Label>
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>                                

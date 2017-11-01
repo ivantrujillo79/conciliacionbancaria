@@ -687,6 +687,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
+        public string SerieFactura { get; set; }
+        public string ClienteReferencia { get; set; }
+
 
         public List<ReferenciaConciliadaCompartida> ListaReferenciaConciliadaCompartida
         {
