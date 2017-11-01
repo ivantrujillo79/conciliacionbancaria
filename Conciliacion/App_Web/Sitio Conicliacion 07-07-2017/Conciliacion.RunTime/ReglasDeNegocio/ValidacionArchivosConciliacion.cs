@@ -256,6 +256,7 @@ namespace ValidacionArchivosConciliacion
                 listDetalleValidacion.Add(ValidaCuentaBancaria());
                 listDetalleValidacion.Add(ValidaDocumentoReferencia());
                 listDetalleValidacion.Add(ValidaMonto());
+                listDetalleValidacion.Add(ValidaParentezco());
             }
 
             return listDetalleValidacion;
@@ -332,7 +333,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erMonto_Invalido;
-                detallevalidacion.Mensaje = "ERROR: Monto invalido. No es un valor numerico, es menor a $1 o excede dos decimales. Corrija los valores en la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Monto invalido. No es un valor numérico, es menor a $1 o excede dos decimales. Corrija los valores en la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
             return detallevalidacion;
@@ -486,13 +487,68 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erCelda_Vacia;
-                detallevalidacion.Mensaje = "ERROR: Celda vacia. Una o mas celdas estan vacias. Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "ERROR: Celda vacía. Una o mas celdas estan vacías. Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.VerificacionValida = false;
+            }
+            
+            return detallevalidacion;
+        }
+
+        public DetalleValidacion ValidaParentezco()
+        {
+            DetalleValidacion detallevalidacion = new DetalleValidacion();
+            string Pedidoreferencia = "";
+            var ListaPedidoCliente = CrearListaGenerica(new {PedidoReferencia = "", Cliente = ""});
+            ListaPedidoCliente.Clear();
+            
+            bool ResultadoValidacion = true;
+            string DetalleError = "";
+
+            if (dtArchivo.Rows.Count > 0)
+            {
+                foreach (DataRow row in dtArchivo.Rows)
+                {
+                    Pedidoreferencia = row[colDoc].ToString();
+                    DataTable dtDetallePedido = Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                    if (dtDetallePedido.Rows.Count > 0)
+                    {
+                        ListaPedidoCliente.Add(new { PedidoReferencia = dtDetallePedido.Rows[0]["PedidoReferencia"].ToString().Trim(), Cliente = dtDetallePedido.Rows[0]["Cliente"].ToString().Trim() });
+                    }
+                }
+            }
+
+            DataTable dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaPedidoCliente[0].Cliente));
+            
+            List<string> ListaFamilia = (from DataRow row in dtClienteFamilia.Rows select row["Cliente"].ToString()).Distinct().ToList();
+
+            foreach (var Cliente in ListaPedidoCliente)
+            {
+                if (!ListaFamilia.Exists(e => e.Contains(Cliente.Cliente)))
+                {
+                    var ListaPedidos = ListaPedidoCliente.Where(x => x.Cliente == Cliente.Cliente).ToList();
+                    ListaPedidos.ForEach(x => DetalleError += " \n " + x.PedidoReferencia.ToString().Trim()+ " del cliente: " + x.Cliente.ToString().Trim());
+                    ResultadoValidacion = false;
+                }
+            }
+
+            if (ResultadoValidacion)
+            {
+                detallevalidacion.CodigoError = 0;
+                detallevalidacion.Mensaje = "Todos los pedidos cargados corresponden a clientes emparentados.";
+                detallevalidacion.VerificacionValida = true;
+            }
+            else
+            {
+                detallevalidacion.CodigoError = 500;
+                detallevalidacion.Mensaje = "Los pedidos " + DetalleError  + "\n no están emparentados y no serán cargados. \n ¿Desea continuar?";
                 detallevalidacion.VerificacionValida = false;
             }
 
             return detallevalidacion;
         }
 
+
+        
         public bool ArchivoValido(string RutaArchivo, string NombreArchivo)
         {
             bool existe;
@@ -521,19 +577,9 @@ namespace ValidacionArchivosConciliacion
             try
             {
                 sArchivo = RutaArchivo + NombreArchivo;
-                if (Path.GetExtension(sArchivo) == ".xls")
-                {
-                    oledbConn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;" +
-                        "Data Source = " + sArchivo +
-                        ";Extended Properties =\"Excel 8.0;HDR=Yes;IMEX=2\"");
-                }
-                else
-                if (Path.GetExtension(sArchivo) == ".xlsx")
-                {
-                    oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
-                    "Data Source=" + sArchivo +
-                    ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
-                }
+
+
+                oledbConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" +"Data Source=" + sArchivo +";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
 
                 if (oledbConn != null)
                 {
@@ -560,12 +606,17 @@ namespace ValidacionArchivosConciliacion
                 return ds.Tables[0];
             else
                 return null;
-            //if (dtArchivo != null)
-            //    return true;
-            //else
-            //    return false;
         }
-    }//end ValidadorCyC
+
+        static List<T> CrearListaGenerica<T>(T value)
+        {
+            var list = new List<T>();
+            list.Add(value);
+            return list;
+        }
+
+
+    }
     #endregion
 
 }

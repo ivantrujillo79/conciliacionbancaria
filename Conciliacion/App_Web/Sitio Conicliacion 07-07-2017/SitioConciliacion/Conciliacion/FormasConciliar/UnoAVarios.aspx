@@ -367,6 +367,7 @@
                                 <td class="iconoOpcion bg-color-verdeClaro" rowspan="2">
                                     <asp:ImageButton ID="imgAutomatica" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Automatica.png"
                                         ToolTip="CONSULTAR FORMA AUTOMATICA" Width="25px" OnClick="imgAutomatica_Click" />
+                                   
                                 </td>
                                 <td>Conciliación Automatica
                                 </td>
@@ -559,7 +560,7 @@
 
     <table width="100%">
                 <tr>
-                    <td style="width: 100%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-azulClaro">
+                    <td style="width: 50%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-azulClaro">
                         Transacciones Conciliadas
                     </td>
                 </tr>
@@ -652,6 +653,20 @@
                                             <ItemStyle HorizontalAlign="Justify" Width="200px"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="200px"></HeaderStyle>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Factura" SortExpression="Seriefactura">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("Seriefactura").ToString()) %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                            
+                                        <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblCliente" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                            
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
@@ -1017,7 +1032,7 @@
                                         <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
                                             Text="FMovimiento"></asp:Label>
                                         <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
-                                            Text="PedidoReferencia"></asp:Label>
+                                            Text="Documento"></asp:Label>
                                     </td>
                                     <td style="width: 12.5%;">
                                         <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio"
@@ -1086,26 +1101,24 @@
                             </table>
 							<div class="lineaHorizontal">
                             </div>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width: 50%;">
 
-                                        <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
-
-                                    </td>
-                                    <%--<td class="lineaVertical" rowspan="2"></td>--%>
-                                    <td style="width: 50%;">
-                                        <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                            ToolTip="FILTRAR FMovimiento" Width="16px"
-                                            OnClick="btnFiltraCliente_Click" />
-                                        <%--<asp:ImageButton ID="ImageButton2" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                            ToolTip="RESALTAR Factura" Width="16px"
-                                            OnClick="ImageButton2_Click" />--%>
-                                    </td>
-                                </tr>
-                            </table>		
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 50%;">
+                                                <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
+                                            </td>
+                                            <td style="width: 50%;">
+                                                <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
+                                                    Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                    ToolTip="FILTRAR cliente" Width="16px"
+                                                    OnClick="btnFiltraCliente_Click"/>
+                                            </td>
+                                        </tr>
+                                    </table>		
+                                    </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                         <table style="width: 100%;" class="lineaVertical bg-color-grisClaro01">
                             <tr>
@@ -1441,6 +1454,27 @@
                                     <ItemStyle HorizontalAlign="Justify"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label ID="lblCliente" runat="server" Text='<%# resaltarBusqueda(Eval("Cliente").ToString()) %>'></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto">
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
@@ -1461,7 +1495,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
+                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="False">
                                     <ItemTemplate>
                                         <%-- <asp:RadioButton ID="rdbPedido" runat="server" GroupName="GrupoPedidos" AutoPostBack="True"
                                             Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>' OnCheckedChanged="rdbPedido_CheckedChanged" />--%>
@@ -1521,6 +1555,21 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblSerieFacturaPedido">TEST</asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblClienteReferencia">TEST</asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
@@ -2322,9 +2371,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <uc1:WebUserControl runat="server" ID="wucCargaExcelCyC" />
-            </tr>
+            <uc1:WebUserControl ID="wucCargaExcelCyC" runat="server" />
         </table>
     </div>
     </asp:Panel>

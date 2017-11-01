@@ -26,6 +26,22 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
+        public ReferenciaConciliadaDatos(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion,
+                                    int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
+                                    string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
+                                    int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
+                                    string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
+                                    int añoexterno, int añointerno, string SerieFactura, string ClienteReferencia,
+                                    IMensajesImplementacion implementadorMensajes)
+            : base(corporativo, añoconciliacion, mesconciliacion, folioconciliacion, sucursalext, sucursalextdes, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
+            chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
+            sucursalinterno, sucursalintdes, foliointerno, secuenciainterno, conceptointerno, montointerno, foperacionint, fmovimientoint,
+            chequeinterno, referenciainterno, descripcioninterno, nombretercerointerno, rfctercerointerno, depositointerno, retirointerno,
+            añoexterno, añointerno,SerieFactura, ClienteReferencia, implementadorMensajes)
+        {
+
+        }
+
         public ReferenciaConciliadaDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {

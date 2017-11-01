@@ -12,18 +12,59 @@ using System.Text;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 
-public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
+public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
     #region Propiedades
     private int totalRegistrosCargados;
-    public int TotalRegistrosCargados {
+    public int TotalRegistrosCargados
+    {
         get { return totalRegistrosCargados; }
     }
+
     public int RegistrosCargados { get; set; }
+
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
 
-    private string cuentaBancaria;
-    public int CuentaBancaria {
+    private int anio;
+    public int Anio
+    {
+        get
+        {
+            if (ViewState["anio"] == null)
+                return int.MinValue;
+            else
+                return (int)ViewState["anio"];
+        }
+        set { ViewState["anio"] = value; }
+    }
+
+    private string clienteReferencia;
+    public string ClienteReferencia
+    {
+        get { return clienteReferencia; }
+        set
+        {
+            clienteReferencia = value;
+            lblReferencia.Text = clienteReferencia;
+        }
+    }
+
+    private int corporativo;
+    public int Corporativo
+    {
+        get
+        {
+            if (ViewState["corporativo"] == null)
+                return int.MinValue;
+            else
+                return (int)ViewState["corporativo"];
+        }
+        set { ViewState["corporativo"] = value; }
+    }
+
+    private int cuentaBancaria;
+    public int CuentaBancaria
+    {
         get
         {
             if (ViewState["cuentaBancaria"] == null)
@@ -33,10 +74,86 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         }
         set { ViewState["cuentaBancaria"] = value; }
     }
+
+    private int folio;
+    public int Folio
+    {
+        get
+        {
+            if (ViewState["folio"] == null)
+                return int.MinValue;
+            else
+                return (int)ViewState["folio"];
+        }
+        set { ViewState["folio"] = value; }
+    }
+
+    private sbyte mes;
+    public sbyte Mes
+    {
+        get
+        {
+            if (ViewState["mes"] == null)
+                return mes;
+            else
+                return (sbyte)ViewState["mes"];
+        }
+        set { ViewState["mes"] = value; }
+    }
+
+    private decimal montoPago;
+    public decimal MontoPago
+    {
+        get { return montoPago; }
+        set
+        {
+            montoPago = value;
+            lblMontoPago.Text = MONTO + String.Format("{0:C}", montoPago);
+        }
+    }
+
+    private Int16 sucursal;
+    public Int16 Sucursal
+    {
+        get
+        {
+            if (ViewState["sucursal"] == null)
+                return Int16.MinValue;
+            else
+                return (Int16)ViewState["sucursal"];
+        }
+        set { ViewState["sucursal"] = value; }
+    }
+
+    private List<ReferenciaNoConciliada> referenciasPorConciliarExcel;
+    public List<ReferenciaNoConciliada> ReferenciasPorConciliarExcel
+    {
+        //get { return referenciasPorConciliarExcel; }
+        get
+        {
+            if (ViewState["referenciasPorConciliarExcel"] == null)
+                return null;
+            else
+                return (List<ReferenciaNoConciliada>)ViewState["referenciasPorConciliarExcel"];
+        }
+    }
+
+    private bool recuperoNoConciliados;
+    public bool RecuperoNoConciliados
+    {
+        get
+        {
+            if (ViewState["recuperoNoConciliados"] == null)
+                return false;
+            else
+                return (bool)ViewState["recuperoNoConciliados"];
+        }
+    }
     #endregion
 
-    private const string ARCHIVO   = "Archivo: ";
+    private const string ARCHIVO = "Archivo: ";
     private const string REGISTROS = "Total de registros a cargar: ";
+    private const string MONTO = "Monto pago: ";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -46,7 +163,7 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
             grvDetalleConciliacionManual.DataBind();
         }
     }
-    
+
     protected void btnCargaArchivoCancelar_Click(object sender, EventArgs e)
     {
         //mpeCargaArchivoConciliacionManual.Hide();
@@ -61,11 +178,11 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         string sRutaArchivo;
         string sExt;
         StringBuilder sbMensaje;
-        string[] extensiones = {".xls", ".xlsx"};
+        string[] extensiones = { ".xls", ".xlsx" };
         string[] MIME = {"application/vnd.ms-excel" ,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
-        LimpiarCampos();        
+        LimpiarCampos();
         sExt = Path.GetExtension(fupSeleccionar.FileName).ToLower();
         try
         {
@@ -102,6 +219,9 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
                                 lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
                             }
 
+                            //grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                            //grvDetalleConciliacionManual.DataBind();
+
                             sbMensaje = new StringBuilder();
                             foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
                             {
@@ -136,6 +256,11 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         }
     }
 
+    protected void btnAceptar_Click(object sender, EventArgs e)
+    {
+        RecuperaReferenciasNoConciliadas();
+    }
+
     private void LimpiarCampos()
     {
         grvDetalleConciliacionManual.DataSource = null;
@@ -143,4 +268,45 @@ public partial class Conciliacion_WebUserControl : System.Web.UI.UserControl
         lblArchivo.Text = ARCHIVO;
         lblRegistros.Text = REGISTROS;
     }
+
+    private bool RecuperaReferenciasNoConciliadas()
+    {
+        string sDocumento;
+        decimal dMonto;
+        bool recupero = false;
+        ReferenciaNoConciliada RefNoConciliada;
+        referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
+
+        try
+        {
+            if (grvDetalleConciliacionManual.Rows.Count > 0)
+            {
+                foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                {
+                    sDocumento = row.Cells[1].Text;
+                    dMonto = Convert.ToDecimal(row.Cells[3].Text);
+
+                    if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
+                    {
+                        RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
+                        RefNoConciliada.Referencia = sDocumento;
+                        RefNoConciliada.Monto = dMonto;
+                        //RefNoConciliada.Folio = 1;
+                        //RefNoConciliada.Secuencia = 1;
+                        referenciasPorConciliarExcel.Add(RefNoConciliada);
+
+                        recupero = true;
+                    }
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+        recuperoNoConciliados = recupero;
+        ViewState["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
+        ViewState["recuperoNoConciliados"] = recuperoNoConciliados;
+        return recupero;
+    }// FIN Recupera Referencias No Conciliadas
 }

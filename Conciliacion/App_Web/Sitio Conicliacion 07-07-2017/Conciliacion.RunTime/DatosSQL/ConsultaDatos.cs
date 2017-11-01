@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Conciliacion.RunTime.ReglasDeNegocio;
@@ -1489,6 +1490,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                           Convert.ToDecimal(reader["RetiroInt"]),
                                                           Convert.ToInt32(reader["AñoConciliacion"]),
                                                           Convert.ToInt32(reader["AñoConciliacion"]),
+                                                          "HOLAFACTURA",
+                                                          "CLINTE REF = 6757473478",
                                                           this.implementadorMensajes);
                         datos.Add(dato);
                     }
@@ -1833,7 +1836,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -1998,7 +2001,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -2070,7 +2073,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -3273,7 +3276,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -3595,7 +3598,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -3667,7 +3670,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["RFCTercero"]),
                                                                 sucursalconciliacion, Convert.ToString(reader["Tipo"]),
                                                                 Convert.ToString(reader["UbicacionIcono"]),
-                                                                Convert.ToInt16(reader["Año"]),
+                                                                Convert.ToInt16(reader["Año"]), 1,
                                                                 this.implementadorMensajes);
                             datos.Add(dato);
                         }
@@ -3707,7 +3710,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["RFCTercero"]),
                                                                 sucursalconciliacion, Convert.ToString(reader["Tipo"]),
                                                                 Convert.ToString(reader["UbicacionIcono"]),
-                                                                Convert.ToInt16(reader["Año"]),
+                                                                Convert.ToInt16(reader["Año"]), 1,
                                                                 this.implementadorMensajes);
                             datos.Add(dato);
                         }
@@ -3780,7 +3783,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -3928,7 +3931,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -4065,7 +4068,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -4543,7 +4546,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToString(reader["Referencia"]),
                                 Convert.ToString(reader["NombreTercero"]),
                                 Convert.ToString(reader["RFCTercero"]), sucursal,
-                                Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -4619,7 +4622,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["Referencia"]),
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
-                                                            Convert.ToInt16(reader["Año"]), this.implementadorMensajes);
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }
@@ -5657,6 +5660,87 @@ namespace Conciliacion.RunTime.DatosSQL
                 return resultado;
             }
         }
+
+
+        public override DataTable PedidoReferenciaDetalle(string PedidoReferencia)
+        {
+            DataTable dtPedidoReferenciaDetalle = null;
+
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBPedidoReferenciaDetalle", cnn);
+                    comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    DataSet ds = new DataSet();
+
+                    SqlDataAdapter dap = new SqlDataAdapter(comando);
+                    dap.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        dtPedidoReferenciaDetalle = ds.Tables[0];
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                //return resultado;
+
+                return dtPedidoReferenciaDetalle;
+            }
+        }
+
+
+        public override DataTable FamiliaresCliente(int Cliente)
+        {
+
+            DataTable dtPedidoReferenciaDetalle = null;
+
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBFamiliaresCliente", cnn);
+                    comando.Parameters.Add("@cliente", System.Data.SqlDbType.VarChar).Value = Cliente;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    DataSet ds = new DataSet();
+
+                    SqlDataAdapter dap = new SqlDataAdapter(comando);
+                    dap.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        dtPedidoReferenciaDetalle = ds.Tables[0];
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                //return resultado;
+
+                return dtPedidoReferenciaDetalle;
+            }
+
+        }
+
 
         /*********
                  * Consulta externos con transferencia

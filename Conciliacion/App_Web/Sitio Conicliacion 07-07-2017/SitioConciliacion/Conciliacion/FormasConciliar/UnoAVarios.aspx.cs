@@ -19,7 +19,7 @@ using CatalogoConciliacion.ReglasNegocio;
 using SeguridadCB.Public;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 
-
+[Serializable]
 public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Page
 {
     #region "Propiedades Globales"
@@ -60,7 +60,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public bool statusFiltro;
     public string tipoFiltro;
     public DateTime dateMin;
-    private int cuentaBancaria;
+    //private int cuentaBancaria;
 
     public ReferenciaNoConciliada tranDesconciliar;
     public ReferenciaNoConciliada tranExternaAnteriorSeleccionada;
@@ -108,7 +108,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -121,6 +120,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
+            }
+
+            if (wucCargaExcelCyC.RecuperoNoConciliados)
+            {
+                GenerarAgregadosExcel();
             }
 
             if (!Page.IsPostBack)
@@ -161,6 +165,24 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 ActualizarTotalesAgregados();
                 if (grvExternos.Rows.Count > 0)
                 {
+                    if (tipoConciliacion == 2)
+                    {
+                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                        {
+                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                            wucBuscaClientesFacturas.HtmlIdGridCeldaID = "1";
+                            wucBuscaClientesFacturas.HtmlIdGridCNodoID = "1";
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                        {
+                            wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
+                            wucBuscaClientesFacturas.HtmlIdGridCeldaID = "4";
+                            wucBuscaClientesFacturas.HtmlIdGridCNodoID = "0";
+                        }
+                    }
                     //Obtener el la referencia externa seleccionada
                     if (tipoConciliacion == 2)
                     {
@@ -420,8 +442,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
 
-            cuentaBancaria = Convert.ToInt32(c.CuentaBancaria.ToString().Replace(" ","").Trim());
-            ActualizarPopUp_CargaArchivo();
+            ActualizarPopUp_CargaArchivo(Convert.ToInt32(c.CuentaBancaria.Replace(" ","")));
+
         }
         catch (SqlException ex)
         {
@@ -433,9 +455,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-    private void ActualizarPopUp_CargaArchivo()
+    private void ActualizarPopUp_CargaArchivo(int cuentaBancaria)
     {
         wucCargaExcelCyC.CuentaBancaria = cuentaBancaria;
+        wucCargaExcelCyC.Corporativo    = Convert.ToInt32(Request.QueryString["Corporativo"]);
+        wucCargaExcelCyC.Sucursal       = Convert.ToInt16(Request.QueryString["Sucursal"]);
+        wucCargaExcelCyC.Anio           = Convert.ToInt32(Request.QueryString["Año"]);
+        wucCargaExcelCyC.Mes            = Convert.ToSByte(Request.QueryString["Mes"]);
+        wucCargaExcelCyC.Folio          = Convert.ToInt32(Request.QueryString["Folio"]);
+    }
+
+    private void GenerarAgregadosExcel()
+    {
+        int folioIn = 1;
+        int secuenciaIn = 1;
+        List<ReferenciaNoConciliada> ReferenciasExcel;
+        
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        //Leer Referencias Internas
+        listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
+        
+        ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+        /*  
+         *  Asignar un valor cualquiera a folio y secuencia ??  
+         */
+        ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
+
+        foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+        {
+            RNC.AgregarReferenciaConciliada(Referencia);
+        }
+        GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
+        ActualizarTotalesAgregados();
+
     }
 
     /// <summary>
@@ -665,6 +717,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("Cheque", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Descripcion", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -686,7 +740,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Deposito,
                     rc.Cheque,
                     rc.Concepto,
-                    rc.Descripcion);
+                    rc.Descripcion,
+                    rc.SerieFactura,
+                    rc.ClienteReferencia);
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1152,6 +1208,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("Cheque", typeof(string));
             tblReferenciaInternas.Columns.Add("StatusConciliacion", typeof(string));
             tblReferenciaInternas.Columns.Add("UbicacionIcono", typeof(string));
+            tblReferenciaInternas.Columns.Add("Cliente", typeof(int));
+            tblReferenciaInternas.Columns.Add("SerieFactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
             foreach (
@@ -1176,11 +1235,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.NombreTercero,
                     rc.Cheque,
                     rc.StatusConciliacion,
-                    rc.UbicacionIcono
+                    rc.UbicacionIcono,
+                    rc.cliente,
+                    "HOLA DT SF",
+                    "HOL DT CR"
+
                     );
             }
 
-            HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
+            HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas; //detener hasta aqui
             HttpContext.Current.Session["TAB_INTERNOS_AX"] = tblReferenciaInternas;
         }
         catch (Exception ex)
@@ -1197,6 +1260,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             DataTable tablaReferenciasAI = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
             grvInternos.DataSource = tablaReferenciasAI;
             grvInternos.DataBind();
+            Session["TABLADEINTERNOS"] = grvInternos;
         }
         catch (Exception ex)
         {
@@ -1336,6 +1400,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
             tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
             tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
+            tblReferenciaInternas.Columns.Add("Seriefactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
             foreach (
@@ -1352,7 +1418,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Nombre,
                     rc.FMovimiento,
                     rc.Total,
-                    rc.Concepto
+                    rc.Concepto,
+                    "HOLA DT SF",
+                    "HOLA DT CR"
                     );
             }
             HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
@@ -1454,7 +1522,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
                 Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                wucBuscaClientesFacturas.GridRelacionado = grvAgregadosPedidos;								
+                wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
             }
             else
             {
@@ -1616,6 +1684,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaExternas.Columns.Add("Descripcion", typeof(string));
             tblReferenciaExternas.Columns.Add("StatusConciliacion", typeof(string));
             tblReferenciaExternas.Columns.Add("UbicacionIcono", typeof(string));
+            tblReferenciaExternas.Columns.Add("Cliente", typeof(int));
             foreach (ReferenciaNoConciliada rp in listaReferenciaExternas)
                 tblReferenciaExternas.Rows.Add(
                     rp.Corporativo,
@@ -1635,7 +1704,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rp.Cheque,
                     rp.Descripcion,
                     rp.StatusConciliacion,
-                    rp.UbicacionIcono);
+                    rp.UbicacionIcono, 
+                    1);
 
             HttpContext.Current.Session["TAB_EXTERNOS"] = tblReferenciaExternas;
             HttpContext.Current.Session["TAB_EXTERNOS_AX"] = tblReferenciaExternas;
@@ -3220,6 +3290,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
 
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
 
         //Cargar Info Actual Conciliacion
         cargarInfoConciliacionActual();
@@ -4585,19 +4656,35 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
+
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
-        GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];
-        grvAgregadosPedidos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvAgregadosPedidosPrima);
-        grvAgregadosPedidos.DataBind();
-        grvAgregadosPedidos.DataBind();
-        ActualizarTotalesAgregados_GridAgregados();
+        GridView grvPrima = null;
+        //if ()
+        if (tipoConciliacion == 2)
+        {
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                grvPrima = (GridView)Session["TABLADEAGREGADOS"];
+            //else
+            //if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+            //  grvAgregadosPedidosPrima = (GridView)Session[""];
+            grvAgregadosPedidos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+            grvAgregadosPedidos.DataBind();
+            grvAgregadosPedidos.DataBind();
+            ActualizarTotalesAgregados_GridAgregados();
+        }
+        else
+        {
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                grvPrima = (GridView)Session["TABLADEINTERNOS"];
+            else
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                grvPrima = (GridView)Session["TABLADEINTERNOS"];
+            grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+            grvInternos.DataBind();
+            grvInternos.DataBind();
+            //ActualizarTotalesAgregados_GridAgregados();
+        }
     }
 
-    protected void ImageButton2_Click(object sender, ImageClickEventArgs e)
-    {
-        //GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];
-        //grvAgregadosPedidos = wucBuscaClientesFacturas.ResaltaFactura(grvAgregadosPedidosPrima);
-        ////UpdatePanel1.Update();
-    }
 }

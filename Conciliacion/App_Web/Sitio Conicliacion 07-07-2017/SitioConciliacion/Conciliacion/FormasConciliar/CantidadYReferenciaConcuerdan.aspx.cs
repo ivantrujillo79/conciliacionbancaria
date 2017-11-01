@@ -883,6 +883,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         tblTransaccionesConciliadas.Columns.Add("FOperacion", typeof(DateTime));
         tblTransaccionesConciliadas.Columns.Add("MontoConciliado", typeof(decimal));
         tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
+        tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
+        tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
 
         foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
         {
@@ -904,7 +906,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 rc.FMovimiento,
                 rc.FOperacion,
                 rc.MontoConciliado,
-                rc.Concepto);
+                rc.Concepto,
+                rc.SerieFactura,
+                rc.ClienteReferencia);
         }
 
         HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1630,16 +1634,28 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                             ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
                 GenerarTablaReferenciasAConciliarPedidos();
             }
-
             else
             {
-                Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
-                                                              Convert.ToSByte(txtDias.Text),
-                                                              Convert.ToDecimal(txtDiferencia.Text),
-                                                              ddlCampoExterno.SelectedItem.Text,
-                                                              ddlCampoInterno.SelectedItem.Text,
-                                                              Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-                GenerarTablaReferenciasAConciliarArchivos();
+                if (tipoConciliacion != 6)
+                {
+                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
+                        Convert.ToSByte(txtDias.Text),
+                        Convert.ToDecimal(txtDiferencia.Text),
+                        ddlCampoExterno.SelectedItem.Text,
+                        ddlCampoInterno.SelectedItem.Text,
+                        Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaReferenciasAConciliarArchivos();
+                }
+                else
+                {
+                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
+                        Convert.ToSByte(txtDias.Text),
+                        Convert.ToDecimal(txtDiferencia.Text),
+                        ddlCampoExterno.SelectedItem.Text,
+                        ddlCampoInterno.SelectedItem.Text,
+                        Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaReferenciasAConciliarArchivos();
+                }
 
             }
             LlenaGridViewReferenciasConciliadas(tipoConciliacion);
@@ -1668,6 +1684,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                             : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
+        HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Limpian variables de Session
         limpiarVariablesSession();
 
