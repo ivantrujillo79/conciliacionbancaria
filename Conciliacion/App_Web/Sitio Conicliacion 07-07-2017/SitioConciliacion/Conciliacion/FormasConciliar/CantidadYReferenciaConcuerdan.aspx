@@ -503,6 +503,20 @@
                                     <ItemStyle HorizontalAlign="Justify" Width="200px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="200px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text="FACTURA"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                        <div>
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text="CLIENTE"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>                                
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
