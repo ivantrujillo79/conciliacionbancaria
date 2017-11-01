@@ -717,6 +717,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("Cheque", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Descripcion", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -738,7 +740,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Deposito,
                     rc.Cheque,
                     rc.Concepto,
-                    rc.Descripcion);
+                    rc.Descripcion,
+                    rc.SerieFactura,
+                    rc.ClienteReferencia);
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;

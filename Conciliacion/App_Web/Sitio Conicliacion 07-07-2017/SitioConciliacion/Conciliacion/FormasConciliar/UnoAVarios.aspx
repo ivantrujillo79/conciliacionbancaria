@@ -655,15 +655,15 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Factura" SortExpression="Seriefactura">
                                             <ItemTemplate>
-                                                <<div>
-                                                    <asp:Label runat="server" ID="lblSerieFactura" Text="FACTURA"></asp:Label>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("Seriefactura").ToString()) %>'></asp:Label>
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>                            
                                         <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                             <ItemTemplate>
-                                                <<div>
-                                                    <asp:Label runat="server" ID="lblCliente" Text="CLIENTE"></asp:Label>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblCliente" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>                            
