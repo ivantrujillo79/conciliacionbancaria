@@ -1101,6 +1101,7 @@
                             </table>
 							<div class="lineaHorizontal">
                             </div>
+
                             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                 <ContentTemplate>
                                     <table style="width: 100%">
@@ -1118,7 +1119,6 @@
                                     </table>		
                                     </ContentTemplate>
                             </asp:UpdatePanel>
-
                         </div>
                         <table style="width: 100%;" class="lineaVertical bg-color-grisClaro01">
                             <tr>
@@ -2371,9 +2371,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <uc1:WebUserControl runat="server" ID="wucCargaExcelCyC" />
-            </tr>
+            <uc1:WebUserControl ID="wucCargaExcelCyC" runat="server" />
         </table>
     </div>
     </asp:Panel>

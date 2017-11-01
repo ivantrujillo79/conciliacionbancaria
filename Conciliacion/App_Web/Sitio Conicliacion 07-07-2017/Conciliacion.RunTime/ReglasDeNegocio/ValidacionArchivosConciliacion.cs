@@ -578,9 +578,8 @@ namespace ValidacionArchivosConciliacion
             {
                 sArchivo = RutaArchivo + NombreArchivo;
 
-                oledbConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" +
-                    "Data Source=" + sArchivo +
-                    ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
+
+                oledbConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" +"Data Source=" + sArchivo +";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
 
                 if (oledbConn != null)
                 {
