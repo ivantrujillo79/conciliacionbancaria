@@ -19,7 +19,7 @@ using CatalogoConciliacion.ReglasNegocio;
 using SeguridadCB.Public;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 
-
+[Serializable]
 public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Page
 {
     #region "Propiedades Globales"
@@ -60,7 +60,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public bool statusFiltro;
     public string tipoFiltro;
     public DateTime dateMin;
-    private int cuentaBancaria;
+    //private int cuentaBancaria;
 
     public ReferenciaNoConciliada tranDesconciliar;
     public ReferenciaNoConciliada tranExternaAnteriorSeleccionada;
@@ -120,6 +120,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
+            }
+
+            if (wucCargaExcelCyC.RecuperoNoConciliados)
+            {
+                GenerarAgregadosExcel();
             }
 
             if (!Page.IsPostBack)
@@ -437,8 +442,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
 
-            cuentaBancaria = Convert.ToInt32(c.CuentaBancaria.ToString().Replace(" ","").Trim());
-            ActualizarPopUp_CargaArchivo();
+            ActualizarPopUp_CargaArchivo(Convert.ToInt32(c.CuentaBancaria.Replace(" ","")));
+
         }
         catch (SqlException ex)
         {
@@ -450,9 +455,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-    private void ActualizarPopUp_CargaArchivo()
+    private void ActualizarPopUp_CargaArchivo(int cuentaBancaria)
     {
         wucCargaExcelCyC.CuentaBancaria = cuentaBancaria;
+        wucCargaExcelCyC.Corporativo    = Convert.ToInt32(Request.QueryString["Corporativo"]);
+        wucCargaExcelCyC.Sucursal       = Convert.ToInt16(Request.QueryString["Sucursal"]);
+        wucCargaExcelCyC.Anio           = Convert.ToInt32(Request.QueryString["Año"]);
+        wucCargaExcelCyC.Mes            = Convert.ToSByte(Request.QueryString["Mes"]);
+        wucCargaExcelCyC.Folio          = Convert.ToInt32(Request.QueryString["Folio"]);
+    }
+
+    private void GenerarAgregadosExcel()
+    {
+        int folioIn = 1;
+        int secuenciaIn = 1;
+        List<ReferenciaNoConciliada> ReferenciasExcel;
+        
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        //Leer Referencias Internas
+        listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
+        
+        ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+        /*  
+         *  Asignar un valor cualquiera a folio y secuencia ??  
+         */
+        ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
+
+        foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+        {
+            RNC.AgregarReferenciaConciliada(Referencia);
+        }
+        GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
+        ActualizarTotalesAgregados();
+
     }
 
     /// <summary>
