@@ -45,10 +45,10 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         //propiedad "NumeroClienteFiltrar".
 
         DataView dv = null;
-        if (GridView.DataSource != null)
+        NumeroClienteFiltrar = txtCliente.Text.Trim();
+        if (txtCliente.Text.Trim() != "" && GridView != null && GridView.DataSource != null)
         {
             DataTable dtDatos = (DataTable)GridView.DataSource;
-            NumeroClienteFiltrar = txtCliente.Text.Trim();
             if (NumeroClienteFiltrar != string.Empty)
             {
                 dv = new DataView(dtDatos);

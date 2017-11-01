@@ -1087,19 +1087,24 @@
                             </table>
 							<div class="lineaHorizontal">
                             </div>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width: 50%;">
-                                        <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
-                                    </td>
-                                    <td style="width: 50%;">
-                                        <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                            ToolTip="FILTRAR FMovimiento" Width="16px"
-                                            OnClick="btnFiltraCliente_Click" />
-                                    </td>
-                                </tr>
-                            </table>		
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="width: 50%;">
+                                                <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
+                                            </td>
+                                            <td style="width: 50%;">
+                                                <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
+                                                    Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                    ToolTip="FILTRAR cliente" Width="16px"
+                                                    OnClick="btnFiltraCliente_Click"/>
+                                            </td>
+                                        </tr>
+                                    </table>		
+                                    </ContentTemplate>
+                            </asp:UpdatePanel>
+
                         </div>
                         <table style="width: 100%;" class="lineaVertical bg-color-grisClaro01">
                             <tr>

@@ -2,6 +2,11 @@
 
 <script type="text/javascript">
 
+    function ValidNum(e) {
+        var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+        return ((tecla > 47 && tecla < 58));
+    }
+
     function ResaltaFactura() {
         /*Método que resaltará la columna Factura (efecto de  marca textos) en el grid provisto por la propiedad "GridRelacionado" 
          * para todos los registros que cuenten con la cadena provista por el usuario a través de la propiedad "NumeroFacturaResaltar". 
@@ -48,7 +53,7 @@
                 }
             }
             if (encontrado == false) {
-                alert("No se encontro Numero de Factura.");
+                alert("No se encontró número de factura.");
             }
         }
         return false;
@@ -76,7 +81,7 @@
             <asp:Label ID="Label1" runat="server" Text="Cliente" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
         </td>
         <td style="width: 20%;">
-            <asp:TextBox ID="txtCliente" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
+            <asp:TextBox ID="txtCliente" runat="server" onkeypress="return ValidNum(event)" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
         </td>
     </tr>
 </table>

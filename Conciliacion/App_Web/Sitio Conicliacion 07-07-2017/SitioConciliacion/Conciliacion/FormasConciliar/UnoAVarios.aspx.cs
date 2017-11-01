@@ -4621,6 +4621,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
         GridView grvPrima = null;
+        //if ()
         if (tipoConciliacion == 2)
         {
             if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
