@@ -286,8 +286,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     sDocumento = row.Cells[1].Text;
                     dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
-                    if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
-                    {
+                    //if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
+                    //{
                         RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
                         RefNoConciliada.Monto = dMonto;
@@ -296,7 +296,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
-                    }
+                    //}
                 }
             }
         }
@@ -304,8 +304,11 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             throw ex;
         }
+        //ViewState["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
+
+        HttpContext.Current.Session["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
+
         recuperoNoConciliados = recupero;
-        ViewState["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
         ViewState["recuperoNoConciliados"] = recuperoNoConciliados;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas

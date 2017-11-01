@@ -122,11 +122,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
             }
 
-            if (wucCargaExcelCyC.RecuperoNoConciliados)
-            {
-                GenerarAgregadosExcel();
-            }
-
             if (!Page.IsPostBack)
             {
 
@@ -237,6 +232,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
+                GenerarAgregadosExcel();
                 MostrarPopUp_ConciliacionManual();
             }
         }
@@ -467,27 +463,33 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void GenerarAgregadosExcel()
     {
-        int folioIn = 1;
-        int secuenciaIn = 1;
-        List<ReferenciaNoConciliada> ReferenciasExcel;
-        
-        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-        //Leer Referencias Internas
-        listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
-        
-        ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-        /*  
-         *  Asignar un valor cualquiera a folio y secuencia ??  
-         */
-        ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
-
-        foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+        if (wucCargaExcelCyC.RecuperoNoConciliados)
         {
-            RNC.AgregarReferenciaConciliada(Referencia);
-        }
-        GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
-        ActualizarTotalesAgregados();
+            int folioIn = 1;
+            int secuenciaIn = 1;
+            List<ReferenciaNoConciliada> ReferenciasExcel;
 
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            //Leer Referencias Internas
+            listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
+
+            ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+            /*  
+             *  Asignar un valor cualquiera a folio y secuencia ??  
+             */
+
+            //ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
+            ReferenciasExcel = Session["referenciasPorConciliarExcel"] as List<ReferenciaNoConciliada>;
+
+            foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+            {
+                RNC.AgregarReferenciaConciliada(Referencia);
+            }
+            GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
+            ActualizarTotalesAgregados();
+            /*      Cerrar PopUp    */
+            this.hdfVisibleCargaArchivo.Value = "0";
+        }
     }
 
     /// <summary>
