@@ -125,28 +125,33 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["sucursal"] = value; }
     }
 
-    private List<ReferenciaNoConciliada> referenciasPorConciliarExcel;
+    private List<ReferenciaNoConciliada> _referenciasPorConciliarExcel;
     public List<ReferenciaNoConciliada> ReferenciasPorConciliarExcel
     {
-        //get { return referenciasPorConciliarExcel; }
         get
         {
-            if (ViewState["referenciasPorConciliarExcel"] == null)
-                return null;
-            else
-                return (List<ReferenciaNoConciliada>)ViewState["referenciasPorConciliarExcel"];
+            RecuperaReferenciasNoConciliadas();
+            return _referenciasPorConciliarExcel;
         }
     }
 
-    private bool recuperoNoConciliados;
+    //private bool recuperoNoConciliados;
     public bool RecuperoNoConciliados
     {
+    
         get
         {
-            if (ViewState["recuperoNoConciliados"] == null)
-                return false;
+            bool ValorRetorno = false;
+            RecuperaReferenciasNoConciliadas();
+            if(_referenciasPorConciliarExcel == null || _referenciasPorConciliarExcel.Count == 0)
+            {
+                ValorRetorno = false;
+            }
             else
-                return (bool)ViewState["recuperoNoConciliados"];
+            {
+                ValorRetorno = true;
+            }
+                return ValorRetorno;
         }
     }
     #endregion
@@ -254,11 +259,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
+        RecuperaReferenciasNoConciliadas();
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)
     {
-        RecuperaReferenciasNoConciliadas();
+        //RecuperaReferenciasNoConciliadas();
     }
 
     private void LimpiarCampos()
@@ -275,7 +281,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         decimal dMonto;
         bool recupero = false;
         ReferenciaNoConciliada RefNoConciliada;
-        referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
+        _referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
 
         try
         {
@@ -291,9 +297,21 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
                         RefNoConciliada.Monto = dMonto;
-                        //RefNoConciliada.Folio = 1;
-                        //RefNoConciliada.Secuencia = 1;
-                        referenciasPorConciliarExcel.Add(RefNoConciliada);
+
+                        if (_referenciasPorConciliarExcel.Count > 0)
+                        {
+                            RefNoConciliada.Folio =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
+                            RefNoConciliada.Secuencia =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
+                        }
+                        else
+                        {
+                            RefNoConciliada.Folio = 1;
+                            RefNoConciliada.Secuencia = 1;
+                        }
+                        
+                        _referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
                     //}
@@ -304,12 +322,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             throw ex;
         }
-        //ViewState["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
-
-        HttpContext.Current.Session["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
-
-        recuperoNoConciliados = recupero;
-        ViewState["recuperoNoConciliados"] = recuperoNoConciliados;
+        
+        HttpContext.Current.Session["_referenciasPorConciliarExcel"] = _referenciasPorConciliarExcel;
+        this._referenciasPorConciliarExcel = _referenciasPorConciliarExcel;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas
 }

@@ -479,12 +479,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
              */
 
             //ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
-            ReferenciasExcel = Session["referenciasPorConciliarExcel"] as List<ReferenciaNoConciliada>;
+            ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;//Session["referenciasPorConciliarExcel"] as List<ReferenciaNoConciliada>;
 
             foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
             {
                 RNC.AgregarReferenciaConciliada(Referencia);
             }
+            
             GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
             ActualizarTotalesAgregados();
             /*      Cerrar PopUp    */
