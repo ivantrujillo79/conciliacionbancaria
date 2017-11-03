@@ -57,8 +57,8 @@
         </tr>
         <tr>
             <td>
-                <div runat="server" ID="dvAlertaError"  class="alert alert-danger">
-                    <strong>Error:</strong><asp:Label runat="server" ID="lblMensajeError"></asp:Label>
+                <div runat="server" ID="dvAlertaError"  class="alert alert-danger" Visible="false">
+                    <strong>Error: </strong><asp:Label runat="server" ID="lblMensajeError"></asp:Label>
                 </div>
             </td>
         </tr>
