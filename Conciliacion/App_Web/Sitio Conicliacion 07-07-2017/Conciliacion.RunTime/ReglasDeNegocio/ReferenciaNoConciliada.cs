@@ -6,7 +6,6 @@ using System.Text;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
-    [Serializable]
     public abstract class ReferenciaNoConciliada : EmisorMensajes
     {
         int corporativo;

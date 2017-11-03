@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace Conciliacion.RunTime
 {
-    [Serializable]
     public class EmisorMensajes
     {
         protected StackTrace stackTrace;

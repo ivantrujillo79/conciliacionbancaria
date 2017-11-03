@@ -8,7 +8,6 @@ using System.Web.UI.HtmlControls;
 
 namespace Conciliacion.RunTime
 {
-    [Serializable]
     public class MensajeImplementacionWeb : IMensajesImplementacion
     {
         private object contenedor;

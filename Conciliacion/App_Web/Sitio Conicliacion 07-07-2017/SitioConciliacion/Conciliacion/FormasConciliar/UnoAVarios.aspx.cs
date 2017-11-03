@@ -19,7 +19,6 @@ using CatalogoConciliacion.ReglasNegocio;
 using SeguridadCB.Public;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 
-[Serializable]
 public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Page
 {
     #region "Propiedades Globales"
