@@ -470,10 +470,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
             ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
 
-            foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+            if (RNC.ListaReferenciaConciliada.Count == 0)
             {
-                RNC.AgregarReferenciaConciliada(Referencia);
-            }            
+                foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+                {
+                    RNC.AgregarReferenciaConciliada(Referencia);
+                }
+            }
             GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
             ActualizarTotalesAgregados();
             /*      Cerrar PopUp    */
@@ -1134,9 +1137,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         //Limpiar Referncias de Externos
                         if (grvExternos.Rows.Count > 0)
                         {
-
                             rfExterno = leerReferenciaExternaSeleccionada();
-
                             LimpiarExternosReferencia(rfExterno);
                             GenerarTablaAgregadosArchivosInternos(rfExterno, tipoConciliacion);
                             ActualizarTotalesAgregados();
