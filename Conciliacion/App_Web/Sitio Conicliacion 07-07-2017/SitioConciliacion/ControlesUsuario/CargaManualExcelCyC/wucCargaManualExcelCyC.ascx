@@ -4,14 +4,6 @@
 
 <div style="width:inherit;">
     <table style="width:100%; box-sizing:border-box;">
-        <%--<tr class="bg-color-grisOscuro">
-            <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
-                <div class="floatDerecha">
-                    <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                        CssClass="iconoPequeño bg-color-rojo" />
-                </div>
-            </td>
-        </tr>--%>
         <tr>
             <td style="padding:10px 0px 0px 10px; box-sizing:border-box;">
                 <asp:FileUpload ID="fupSeleccionar" runat="server" ViewStateMode="Enabled"/>

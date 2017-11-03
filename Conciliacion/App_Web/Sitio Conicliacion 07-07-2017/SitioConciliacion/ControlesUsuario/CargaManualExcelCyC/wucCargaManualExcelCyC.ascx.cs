@@ -224,9 +224,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                 lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
                             }
 
-                            //grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                            //grvDetalleConciliacionManual.DataBind();
-
                             sbMensaje = new StringBuilder();
                             foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
                             {
@@ -320,9 +317,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         catch(Exception ex)
         {
-            throw ex;
+            App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
-        
         HttpContext.Current.Session["_referenciasPorConciliarExcel"] = _referenciasPorConciliarExcel;
         this._referenciasPorConciliarExcel = _referenciasPorConciliarExcel;
         return recupero;

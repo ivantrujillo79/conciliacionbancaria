@@ -465,27 +465,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         if (wucCargaExcelCyC.RecuperoNoConciliados)
         {
-            int folioIn = 1;
-            int secuenciaIn = 1;
             List<ReferenciaNoConciliada> ReferenciasExcel;
-
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-            //Leer Referencias Internas
-            listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
 
             ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-            /*  
-             *  Asignar un valor cualquiera a folio y secuencia ??  
-             */
-
-            //ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
-            ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;//Session["referenciasPorConciliarExcel"] as List<ReferenciaNoConciliada>;
+            ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
 
             foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
             {
                 RNC.AgregarReferenciaConciliada(Referencia);
-            }
-            
+            }            
             GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
             ActualizarTotalesAgregados();
             /*      Cerrar PopUp    */
