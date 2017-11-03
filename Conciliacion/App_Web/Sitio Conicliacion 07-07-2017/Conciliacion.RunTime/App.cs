@@ -38,7 +38,6 @@ namespace Conciliacion.RunTime
             else
                 return new MensajeImplementacionWeb();
         }
-
         private static IMensajesImplementacion ImplementadorMensajesFactory(TipoMensaje entorno)
         {
             switch (entorno)
