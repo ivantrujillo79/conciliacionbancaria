@@ -241,7 +241,10 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             }
                             if (sbMensaje.Length > 0)
                             {
-                                App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
+                                //App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
+                                lblMensajeError.Text = sbMensaje.ToString();
+                                dvAlertaError.Visible = true;
+
                             }
                         } // if ArchivoValido
                     } // if File.Exists

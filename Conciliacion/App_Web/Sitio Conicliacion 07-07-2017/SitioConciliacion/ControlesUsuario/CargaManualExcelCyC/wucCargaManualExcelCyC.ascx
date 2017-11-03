@@ -55,6 +55,13 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td>
+                <div runat="server" ID="dvAlertaError"  class="alert alert-danger">
+                    <strong>Error:</strong><asp:Label runat="server" ID="lblMensajeError"></asp:Label>
+                </div>
+            </td>
+        </tr>
         <tr> 
             <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center; box-sizing:border-box;">
                 <div style="margin: 5px 5px 5px 3px; max-height: 169px; overflow: auto;">
