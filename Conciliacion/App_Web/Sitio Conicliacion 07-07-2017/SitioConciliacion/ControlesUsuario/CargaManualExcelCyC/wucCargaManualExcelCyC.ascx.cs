@@ -259,6 +259,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
+        dvMensajeExito.Visible = true;
         RecuperaReferenciasNoConciliadas();
     }
 
