@@ -125,28 +125,33 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["sucursal"] = value; }
     }
 
-    private List<ReferenciaNoConciliada> referenciasPorConciliarExcel;
+    private List<ReferenciaNoConciliada> _referenciasPorConciliarExcel;
     public List<ReferenciaNoConciliada> ReferenciasPorConciliarExcel
     {
-        //get { return referenciasPorConciliarExcel; }
         get
         {
-            if (ViewState["referenciasPorConciliarExcel"] == null)
-                return null;
-            else
-                return (List<ReferenciaNoConciliada>)ViewState["referenciasPorConciliarExcel"];
+            RecuperaReferenciasNoConciliadas();
+            return _referenciasPorConciliarExcel;
         }
     }
 
-    private bool recuperoNoConciliados;
+    //private bool recuperoNoConciliados;
     public bool RecuperoNoConciliados
     {
+    
         get
         {
-            if (ViewState["recuperoNoConciliados"] == null)
-                return false;
+            bool ValorRetorno = false;
+            RecuperaReferenciasNoConciliadas();
+            if(_referenciasPorConciliarExcel == null || _referenciasPorConciliarExcel.Count == 0)
+            {
+                ValorRetorno = false;
+            }
             else
-                return (bool)ViewState["recuperoNoConciliados"];
+            {
+                ValorRetorno = true;
+            }
+                return ValorRetorno;
         }
     }
     #endregion
@@ -219,9 +224,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                 lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
                             }
 
-                            //grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                            //grvDetalleConciliacionManual.DataBind();
-
                             sbMensaje = new StringBuilder();
                             foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
                             {
@@ -239,7 +241,10 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             }
                             if (sbMensaje.Length > 0)
                             {
-                                App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
+                                //App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
+                                lblMensajeError.Text = sbMensaje.ToString();
+                                dvAlertaError.Visible = true;
+
                             }
                         } // if ArchivoValido
                     } // if File.Exists
@@ -254,11 +259,13 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
+        dvMensajeExito.Visible = true;
+        RecuperaReferenciasNoConciliadas();
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)
     {
-        RecuperaReferenciasNoConciliadas();
+        //RecuperaReferenciasNoConciliadas();
     }
 
     private void LimpiarCampos()
@@ -275,7 +282,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         decimal dMonto;
         bool recupero = false;
         ReferenciaNoConciliada RefNoConciliada;
-        referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
+        _referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
 
         try
         {
@@ -286,27 +293,39 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     sDocumento = row.Cells[1].Text;
                     dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
-                    if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
-                    {
+                    //if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
+                    //{
                         RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
                         RefNoConciliada.Monto = dMonto;
-                        //RefNoConciliada.Folio = 1;
-                        //RefNoConciliada.Secuencia = 1;
-                        referenciasPorConciliarExcel.Add(RefNoConciliada);
+
+                        if (_referenciasPorConciliarExcel.Count > 0)
+                        {
+                            RefNoConciliada.Folio =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
+                            RefNoConciliada.Secuencia =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
+                        }
+                        else
+                        {
+                            RefNoConciliada.Folio = 1;
+                            RefNoConciliada.Secuencia = 1;
+                        }
+
+                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);    
+                        _referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
-                    }
+                    //}
                 }
             }
         }
         catch(Exception ex)
         {
-            throw ex;
+            App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
-        recuperoNoConciliados = recupero;
-        ViewState["referenciasPorConciliarExcel"] = referenciasPorConciliarExcel;
-        ViewState["recuperoNoConciliados"] = recuperoNoConciliados;
+        HttpContext.Current.Session["_referenciasPorConciliarExcel"] = _referenciasPorConciliarExcel;
+        this._referenciasPorConciliarExcel = _referenciasPorConciliarExcel;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas
 }

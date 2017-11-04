@@ -4,14 +4,6 @@
 
 <div style="width:inherit;">
     <table style="width:100%; box-sizing:border-box;">
-        <%--<tr class="bg-color-grisOscuro">
-            <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
-                <div class="floatDerecha">
-                    <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                        CssClass="iconoPequeño bg-color-rojo" />
-                </div>
-            </td>
-        </tr>--%>
         <tr>
             <td style="padding:10px 0px 0px 10px; box-sizing:border-box;">
                 <asp:FileUpload ID="fupSeleccionar" runat="server" ViewStateMode="Enabled"/>
@@ -60,6 +52,20 @@
                 <div>
                     <asp:Label ID="lblSaldo" runat="server" CssClass="etiqueta fg-color-negro" Text="Saldo a favor: "
                         style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div runat="server" ID="dvAlertaError"  class="alert alert-danger" Visible="false">
+                    <strong>Error: </strong><asp:Label runat="server" ID="lblMensajeError"></asp:Label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div runat="server" ID="dvMensajeExito" class="alert alert-success" Visible="false">
+                    <strong>Éxito: </strong>El archivo se ha cargado satisfactoriamente
                 </div>
             </td>
         </tr>

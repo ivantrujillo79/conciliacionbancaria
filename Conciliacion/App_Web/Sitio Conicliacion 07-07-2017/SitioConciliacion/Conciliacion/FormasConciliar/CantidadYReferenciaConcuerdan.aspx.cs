@@ -883,6 +883,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         tblTransaccionesConciliadas.Columns.Add("FOperacion", typeof(DateTime));
         tblTransaccionesConciliadas.Columns.Add("MontoConciliado", typeof(decimal));
         tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
+        tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
+        tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
 
         foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
         {
@@ -904,7 +906,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 rc.FMovimiento,
                 rc.FOperacion,
                 rc.MontoConciliado,
-                rc.Concepto);
+                rc.Concepto,
+                rc.SerieFactura,
+                rc.ClienteReferencia);
         }
 
         HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;

@@ -19,7 +19,6 @@ using CatalogoConciliacion.ReglasNegocio;
 using SeguridadCB.Public;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 
-[Serializable]
 public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Page
 {
     #region "Propiedades Globales"
@@ -120,11 +119,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
-            }
-
-            if (wucCargaExcelCyC.RecuperoNoConciliados)
-            {
-                GenerarAgregadosExcel();
             }
 
             if (!Page.IsPostBack)
@@ -237,6 +231,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
+                GenerarAgregadosExcel();
                 MostrarPopUp_ConciliacionManual();
             }
         }
@@ -467,27 +462,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void GenerarAgregadosExcel()
     {
-        int folioIn = 1;
-        int secuenciaIn = 1;
-        List<ReferenciaNoConciliada> ReferenciasExcel;
-        
-        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-        //Leer Referencias Internas
-        listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
-        
-        ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-        /*  
-         *  Asignar un valor cualquiera a folio y secuencia ??  
-         */
-        ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
-
-        foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+        if (wucCargaExcelCyC.RecuperoNoConciliados)
         {
-            RNC.AgregarReferenciaConciliada(Referencia);
-        }
-        GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
-        ActualizarTotalesAgregados();
+            List<ReferenciaNoConciliada> ReferenciasExcel;
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
+            ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+            ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
+
+            if (RNC.ListaReferenciaConciliada.Count == 0)
+            {
+                foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+                {
+                    RNC.AgregarReferenciaConciliada(Referencia);
+                }
+            }
+            GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
+            ActualizarTotalesAgregados();
+            /*      Cerrar PopUp    */
+            this.hdfVisibleCargaArchivo.Value = "0";
+        }
     }
 
     /// <summary>
@@ -717,6 +711,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("Cheque", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Descripcion", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -738,7 +734,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Deposito,
                     rc.Cheque,
                     rc.Concepto,
-                    rc.Descripcion);
+                    rc.Descripcion,
+                    rc.SerieFactura,
+                    rc.ClienteReferencia);
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1139,9 +1137,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         //Limpiar Referncias de Externos
                         if (grvExternos.Rows.Count > 0)
                         {
-
                             rfExterno = leerReferenciaExternaSeleccionada();
-
                             LimpiarExternosReferencia(rfExterno);
                             GenerarTablaAgregadosArchivosInternos(rfExterno, tipoConciliacion);
                             ActualizarTotalesAgregados();

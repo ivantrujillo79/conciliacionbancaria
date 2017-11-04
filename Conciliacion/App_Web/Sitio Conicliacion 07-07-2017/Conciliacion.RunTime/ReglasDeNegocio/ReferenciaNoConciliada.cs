@@ -6,7 +6,6 @@ using System.Text;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
-    [Serializable]
     public abstract class ReferenciaNoConciliada : EmisorMensajes
     {
         int corporativo;
@@ -686,6 +685,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 return Color.FromArgb(r%255, g%165, b%100);
             }
         }
+
+        public string SerieFactura { get; set; }
+        public string ClienteReferencia { get; set; }
 
 
         public List<ReferenciaConciliadaCompartida> ListaReferenciaConciliadaCompartida

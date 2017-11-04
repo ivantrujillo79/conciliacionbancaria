@@ -540,7 +540,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = 500;
-                detallevalidacion.Mensaje = "Los pedidos " + DetalleError  + "\n no están emparentados y no serán cargados. \n ¿Desea continuar?";
+                detallevalidacion.Mensaje = "Los pedidos " + DetalleError  + "\n no están emparentados y no serán cargados.";
                 detallevalidacion.VerificacionValida = false;
             }
 
