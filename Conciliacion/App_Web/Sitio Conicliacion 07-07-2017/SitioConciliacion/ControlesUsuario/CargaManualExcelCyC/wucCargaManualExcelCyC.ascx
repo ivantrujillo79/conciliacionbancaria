@@ -3,10 +3,10 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <div style="width:inherit; padding-top:5px; box-sizing:border-box;">
-    <table style="width:100%; box-sizing:border-box;">
+    <table style="width:100%;">
         <tr>
             <td>
-                <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible" Visible="false"
+                <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" Visible="false"
                     style="margin:5px 5px 0px 7px; box-sizing:border-box;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <td>
-                <div runat="server" ID="dvMensajeExito" class="alert alert-success alert-dismissible" Visible="false"
+                <div runat="server" ID="dvMensajeExito" class="alert alert-success alert-dismissible fade show" Visible="false"
                     style="margin:5px 5px 0px 7px; box-sizing:border-box;">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
