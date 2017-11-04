@@ -1115,8 +1115,8 @@
                                             </td>
                                             <td style="width: 50%;">
                                                 <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
-                                                    Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                    ToolTip="FILTRAR cliente" Width="16px"
+                                                    Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                    ToolTip="FILTRAR cliente" Width="25px"
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
                                         </tr>
