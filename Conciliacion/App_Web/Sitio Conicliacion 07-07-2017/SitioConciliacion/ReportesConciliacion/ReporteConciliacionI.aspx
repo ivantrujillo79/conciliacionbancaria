@@ -23,6 +23,11 @@
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
     <!--MsDropdown -->
     <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
+    <!--    Bootstrap CSS & JS      -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
+    <link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />
+    <script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
     <script type="text/javascript">
     
         function pageLoad() {
