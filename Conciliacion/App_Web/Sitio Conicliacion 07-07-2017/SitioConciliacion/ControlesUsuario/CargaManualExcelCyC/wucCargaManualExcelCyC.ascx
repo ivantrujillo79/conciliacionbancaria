@@ -2,15 +2,37 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<div style="width:inherit;">
+<div style="width:inherit; padding-top:5px; box-sizing:border-box;">
     <table style="width:100%; box-sizing:border-box;">
         <tr>
-            <td style="padding:10px 0px 0px 10px; box-sizing:border-box;">
+            <td>
+                <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible" Visible="false"
+                    style="margin:5px 5px 0px 7px; box-sizing:border-box;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>Error: </strong><asp:Label runat="server" ID="lblMensajeError"></asp:Label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div runat="server" ID="dvMensajeExito" class="alert alert-success alert-dismissible" Visible="false"
+                    style="margin:5px 5px 0px 7px; box-sizing:border-box;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>Éxito: </strong>El archivo se ha cargado satisfactoriamente
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:5px 0px 0px 7px; box-sizing:border-box;">
                 <asp:FileUpload ID="fupSeleccionar" runat="server" ViewStateMode="Enabled"/>
             </td>
         </tr>
         <tr>
-            <td style="padding-left:6px; box-sizing:border-box;"> 
+            <td style="padding-left:3px; box-sizing:border-box;"> 
                 <asp:Button ID="btnSubirArchivo" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
                     Text="Subir archivo" OnClick="btnSubirArchivo_Click" />               
             </td>
@@ -20,14 +42,6 @@
                 <div>
                     <asp:Label ID="lblArchivo" runat="server" CssClass="etiqueta fg-color-negro" Font-Size="1em" Text="Archivo: "
                         style="display:inline-block;"/> <!--   width:200px;     -->
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="bg-color-grisClaro01" style="margin-left:5px; padding-right: 5px; box-sizing:border-box;">
-                    <asp:Label ID="lblRegistros" runat="server" CssClass="etiqueta " Font-Size="1em" 
-                        Text="Total de registros a cargar: " style="padding-left:5px;" />
                 </div>
             </td>
         </tr>
@@ -57,15 +71,9 @@
         </tr>
         <tr>
             <td>
-                <div runat="server" ID="dvAlertaError"  class="alert alert-danger" Visible="false">
-                    <strong>Error: </strong><asp:Label runat="server" ID="lblMensajeError"></asp:Label>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div runat="server" ID="dvMensajeExito" class="alert alert-success" Visible="false">
-                    <strong>Éxito: </strong>El archivo se ha cargado satisfactoriamente
+                <div class="bg-color-grisClaro01" style="margin-left:5px; padding-right: 5px; margin-right:5px; box-sizing:border-box;">
+                    <asp:Label ID="lblRegistros" runat="server" CssClass="etiqueta " Font-Size="1em" 
+                        Text="Total de registros a cargar: " style="padding-left:5px;" />
                 </div>
             </td>
         </tr>
