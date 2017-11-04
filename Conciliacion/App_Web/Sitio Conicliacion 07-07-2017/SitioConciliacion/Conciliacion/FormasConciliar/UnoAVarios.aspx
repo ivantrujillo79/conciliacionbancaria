@@ -2371,7 +2371,7 @@
         DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
         BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
     </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" style="display: none;">  
+    <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
     <div> <!--  style="width:400px; overflow:scroll;"   -->
         <table style="width:100%; box-sizing:border-box;">
             <tr class="bg-color-grisOscuro">

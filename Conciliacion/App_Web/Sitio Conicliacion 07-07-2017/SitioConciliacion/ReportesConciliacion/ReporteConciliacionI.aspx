@@ -594,7 +594,7 @@
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:ImageButton runat="server" ID="btnBuscarPedido" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                            Width="15px" Height="15px" Visible="True" Enabled="True" CssClass="icono bg-color-grisOscuro centradoMedio"
+                                                            Width="25px" Height="25px" Visible="True" Enabled="True" CssClass="icono bg-color-grisOscuro centradoMedio"
                                                             ToolTip="BUSCAR PEDIDOS" OnClick="btnBuscarPedido_Click" OnClientClick="return popUpVisible(this);" ValidationGroup="Cliente" />
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
