@@ -558,6 +558,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public List<cReferencia> ListaReferenciaConciliada
         {
             get { return listareferenciaconciliada; }
+            set { listareferenciaconciliada = value; }
         }
 
         public bool Completo
@@ -1008,6 +1009,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                     foreach (ReferenciaConciliada referen in this.ListaReferenciaConciliada)
                     {
+                        if (referen.SucursalInterno == null || referen.SucursalInterno == 0)
+                        {
+                            referen.SucursalInterno = this.sucursal;
+                        }
                         referen.Guardar();
                         this.Completo = true;
                     }

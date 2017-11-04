@@ -1121,6 +1121,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 if (rfExterno.ListaReferenciaConciliada.Count > 0)
                 {
+                    rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
+                    
                     if (rfExterno.GuardarReferenciaConciliada())
                     {
                         //Leer Variables URL 
