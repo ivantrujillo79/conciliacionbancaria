@@ -162,11 +162,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack)
-        {
-            grvDetalleConciliacionManual.DataSource = null;
-            grvDetalleConciliacionManual.DataBind();
-        }
+        OcultarMensajes();
     }
 
     protected void btnCargaArchivoCancelar_Click(object sender, EventArgs e)
@@ -246,6 +242,10 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                 dvAlertaError.Visible = true;
 
                             }
+                            else
+                            {
+                                dvMensajeExito.Visible = true;
+                            }
                         } // if ArchivoValido
                     } // if File.Exists
                 }
@@ -259,7 +259,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
-        dvMensajeExito.Visible = true;
+        //dvMensajeExito.Visible = true;
         RecuperaReferenciasNoConciliadas();
     }
 
@@ -274,6 +274,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         grvDetalleConciliacionManual.DataBind();
         lblArchivo.Text = ARCHIVO;
         lblRegistros.Text = REGISTROS;
+    }
+
+    private void OcultarMensajes()
+    {
+        dvAlertaError.Visible = false;
+        dvMensajeExito.Visible = false;
     }
 
     private bool RecuperaReferenciasNoConciliadas()
