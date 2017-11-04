@@ -72,8 +72,8 @@
         <td style="width: 20%;">
             <asp:ImageButton ID="btnFiltraCliente" runat="server" 
                 CssClass="icono bg-color-verdeClaro"
-                Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                ToolTip="Resalta factura" Width="16px"
+                Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                ToolTip="Resalta factura" Width="25px"
                     OnClientClick="javascript:ResaltaFactura(); return false;" 
                 />
         </td>
