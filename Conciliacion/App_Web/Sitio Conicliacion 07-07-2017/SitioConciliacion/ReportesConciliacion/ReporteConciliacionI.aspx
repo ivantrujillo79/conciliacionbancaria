@@ -437,7 +437,7 @@
                                 <asp:TemplateField HeaderText="Status" SortExpression="StatusConciliacion">
                                     <ItemTemplate>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Eval("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Eval("StatusConciliacion") %>' AlternateText='<%# Eval("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <HeaderTemplate>

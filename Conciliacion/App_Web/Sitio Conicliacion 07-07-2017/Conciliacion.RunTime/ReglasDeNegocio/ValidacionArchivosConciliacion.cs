@@ -288,7 +288,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erCtaBan_EncontroCuentaDistinta;
-                detallevalidacion.Mensaje = "ERROR: Se espera cuenta bancaria: " + CuentaBancaria.ToString() + ". Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "Se espera cuenta bancaria: " + CuentaBancaria.ToString() + ". Corrija la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -333,7 +333,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erMonto_Invalido;
-                detallevalidacion.Mensaje = "ERROR: Monto invalido. No es un valor numérico, es menor a $1 o excede dos decimales. Corrija los valores en la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "Monto invalido. No es un valor numérico, es menor a $1 o excede dos decimales. Corrija los valores en la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
             return detallevalidacion;
@@ -367,7 +367,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erDocRef_EncontroDocRefDistinto;
-                detallevalidacion.Mensaje = "ERROR: No existe la Referencia Documento. Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "No existe la Referencia Documento. Corrija la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -389,7 +389,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erEncabezado_Invalido;
-                detallevalidacion.Mensaje = "ERROR: Encabezado invalido. Se espera Documento Cuenta Monto en la primer fila";
+                detallevalidacion.Mensaje = "Encabezado invalido. Se espera: Documento Cuenta Monto en la primer fila";
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -417,7 +417,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erArchivo_NoEsExcel;
-                detallevalidacion.Mensaje = "ERROR: Archivo invalido. No es un archivo de Excel valido.";
+                detallevalidacion.Mensaje = "Archivo invalido. No es un archivo de Excel valido.";
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -450,7 +450,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erLayOut_NoEsElEsperado;
-                detallevalidacion.Mensaje = "ERROR: El layout no corresponde con el esperado. " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "El layout no corresponde con el esperado. " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
 
@@ -487,7 +487,7 @@ namespace ValidacionArchivosConciliacion
             else
             {
                 detallevalidacion.CodigoError = erCelda_Vacia;
-                detallevalidacion.Mensaje = "ERROR: Celda vacía. Una o mas celdas estan vacías. Corrija la(s) fila(s): " + ValoresInvalidos;
+                detallevalidacion.Mensaje = "Celda vacía. Una o mas celdas estan vacías. Corrija la(s) fila(s): " + ValoresInvalidos;
                 detallevalidacion.VerificacionValida = false;
             }
             
@@ -526,7 +526,7 @@ namespace ValidacionArchivosConciliacion
                 if (!ListaFamilia.Exists(e => e.Contains(Cliente.Cliente)))
                 {
                     var ListaPedidos = ListaPedidoCliente.Where(x => x.Cliente == Cliente.Cliente).ToList();
-                    ListaPedidos.ForEach(x => DetalleError += " \n " + x.PedidoReferencia.ToString().Trim()+ " del cliente: " + x.Cliente.ToString().Trim());
+                    ListaPedidos.ForEach(x => DetalleError += " \n " + x.PedidoReferencia.ToString().Trim()+ " del cliente: " + x.Cliente.ToString().Trim() + ",");
                     ResultadoValidacion = false;
                 }
             }
