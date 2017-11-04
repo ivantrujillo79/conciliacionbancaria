@@ -756,11 +756,11 @@
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
-                                        ToolTip="CARGAR ARCHIVO" Width="20px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
+                                        ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono" Width="25px" Height="25px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
@@ -1023,13 +1023,13 @@
                                     </td>
                                     <td rowspan="2" style="vertical-align: top; width: 12.5%;">
                                         <asp:ImageButton ID="btnRangoFechasFO" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                             OnClick="btnRangoFechasFO_Click" ToolTip="FILTRAR FOperacion" ValidationGroup="vgFOperacion"
-                                            Width="16px" />
+                                            Width="25px" />
                                         <asp:ImageButton ID="btnRangoFechasFS" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                             OnClick="btnRangoFechasFS_Click" ToolTip="FILTRAR FSuminstro" ValidationGroup="vgFSuministro"
-                                            Width="16px" />
+                                            Width="25px" />
                                     </td>
                                     <td class="lineaVertical" rowspan="2"></td>
                                     <td rowspan="2" style="vertical-align: top; width: 12.5%;">
@@ -1056,12 +1056,12 @@
                                     </td>
                                     <td rowspan="2" style="vertical-align: top; width: 12.5%;">
                                         <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                             OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento"
-                                            Width="16px" />
+                                            Width="25px"  />
                                         <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png"
-                                            ToolTip="FILTRAR FMovimiento" Width="16px" ValidationGroup="vgAgregarPedidoDirecto"
+                                            Height="25px" Width="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png"
+                                            ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto"
                                             OnClick="btnAgregarPedidoDirecto_Click" />
                                     </td>
                                 </tr>
@@ -1128,7 +1128,7 @@
                             <tr>
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 1%; padding: 5px 5px 5px 5px">
                                     <img src="../../App_Themes/GasMetropolitanoSkin/Imagenes/grid.png" id="btnMostrarAgregados"
-                                        alt="MOSTRAR AGREGADOS" class="icono bg-color-blanco" style="width: 15px; height: 15px; cursor: pointer"
+                                        alt="MOSTRAR AGREGADOS" class="icono bg-color-blanco" style="width: 25px; height: 25px; cursor: pointer"
                                         title="MOSTRAR AGREGADOS" />
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 15%; padding: 5px 5px 5px 5px">Agregados:
