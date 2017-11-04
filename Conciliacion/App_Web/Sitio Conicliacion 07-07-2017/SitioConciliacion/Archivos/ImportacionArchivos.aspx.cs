@@ -1,24 +1,16 @@
-using System;
+ï»¿using System;
 using System.Data;
-using System.Configuration;
-using System.Collections;
 using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 
 using System.Collections.Generic;
-using AjaxControlToolkit;
 using Conciliacion.Migracion.Runtime;
 using Conciliacion.Migracion.Runtime.ReglasNegocio;
 using System.Text;
 using System.IO;
-using System.Drawing;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Globalization;
-using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 
 public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Page
 {
@@ -52,7 +44,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
             LlenarCombos();
             //this.btnGuardar.Attributes.Add("onclick", "return ValidaFechas();");
             ActualizarSubirDesde();
-            Carga_ImportacionAplicaciones(Convert.ToInt16(cboSucursal.SelectedItem.Value));
+            Carga_Extractores();
 
         }
     }
@@ -100,7 +92,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         }
         else if (this.cboAnio.SelectedIndex == 0)
         {
-            mensaje.Append(" Año.");
+            mensaje.Append(" Aï¿½o.");
             resultado = false;
         }
         //if (string.IsNullOrEmpty(this.dpFInicial.Text))
@@ -125,12 +117,14 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         bool resultado = true;
         mensaje.Append("Se requiere  el campo ");
 
-        if (this.ddlSelecAplicacion.SelectedValue.Equals(""))
+        /*if (this.ddlSelecAplicacion.SelectedValue.Equals(""))
         {
-            mensaje.Append(" Origen información.");
+            mensaje.Append(" Origen informaciï¿½n.");
             resultado = false;
         }
-        else if (txtFInicial.Text.Equals(""))
+        else */
+
+        if (txtFInicial.Text.Equals(""))
         {
             mensaje.Append(" Fecha Inicial.");
             resultado = false;
@@ -258,14 +252,14 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                 Limpiar();
                             else
                                 ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(),
-                                                                    "alert('Ocurrierón errores al importar el archivo);",
+                                                                    "alert('Ocurrierï¿½n errores al importar el archivo);",
                                                                     true);
                             if (File.Exists(rutaCompleta))
                                 File.Delete(rutaCompleta);
                         }
                         else
                         {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Ocurrierón errores al tratar de cargar el archivo.');", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Ocurrierï¿½n errores al tratar de cargar el archivo.');", true);
                         }
                     }
                     else
@@ -294,11 +288,11 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
         texto = texto.Replace("\b", "\\b");    //Retroceso [Backspace] 
         texto = texto.Replace("\f", "\\f");    //[Form feed] 
-        texto = texto.Replace("\n", "\\n");    //Nueva línea 
+        texto = texto.Replace("\n", "\\n");    //Nueva lï¿½nea 
         texto = texto.Replace("\r", "\\r");    //Retorno de carro [Carriage return] 
         texto = texto.Replace("\t", "\\t");    //Tabulador [Tab] 
         texto = texto.Replace("\v", "\\v");    //Tabulador vertical 
-        texto = texto.Replace("\'", "\\'");    //Apóstrofe o comilla simple 
+        texto = texto.Replace("\'", "\\'");    //Apï¿½strofe o comilla simple 
         return texto;
     }
 
@@ -352,7 +346,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
 
     protected void cboBancoFinanciero_SelectedIndexChanged(object sender, EventArgs e)
     {
-      
+
         cboCuentaFinanciero.DataSource = App.Consultas.ObtieneListaCuentaFinancieroPorBanco(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(cboBancoFinanciero.SelectedValue));
         cboCuentaFinanciero.DataBind();
         LlenarComboConsecutivo();
@@ -363,7 +357,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
         LlenarComboConsecutivo();
         ConfigurarImportacion();
-
+        Carga_Extractores();
     }
 
     protected void cboBancoFinanciero_DataBound(object sender, EventArgs e)
@@ -402,7 +396,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     protected void cboSucursal_DataBound(object sender, EventArgs e)
     {
         cboSucursal.Items.Insert(0, new ListItem(" ", "0"));
-        Carga_ImportacionAplicaciones(Convert.ToInt16(cboSucursal.SelectedItem.Value));
+        Carga_Extractores();
     }
     protected void cboAnio_DataBound(object sender, EventArgs e)
     {
@@ -431,12 +425,12 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
         bool seleccion = rdbSubirDesde.SelectedValue.Equals("Archivo");
         uploadFile.Visible = btnGuardar.Visible = seleccion;
-        tblFIFF.Visible = btnGuardarAplicacion.Visible = !seleccion;
+        divAplicacion.Visible = btnGuardarAplicacion.Visible = !seleccion;
     }
     protected void rdbSubirDesde_SelectedIndexChanged(object sender, EventArgs e)
     {
         ActualizarSubirDesde();
-        Carga_ImportacionAplicaciones(Convert.ToInt16(cboSucursal.SelectedItem.Value));
+        Carga_Extractores();
     }
     protected void ddlSelecAplicacion_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -450,16 +444,76 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     /// <summary>
     /// Llena el Combo de Importacion de Aplicaciones
     /// </summary>
-    public void Carga_ImportacionAplicaciones(int sucursal)
+    /// 
+    public void Carga_Extractores()
     {
+
+        string valor = "";
+
+        if (!cboCuentaFinanciero.Text.Equals(""))
+        {
+            valor = cboCuentaFinanciero.SelectedValue.ToString();
+        }
+
+
+        Carga_ImportacionAplicaciones(Convert.ToInt16(cboSucursal.SelectedItem.Value), valor);
+
+
+
+    }
+
+    public void Carga_ImportacionAplicaciones(int sucursal, string cuentaBancaria)
+    {
+        int j = 0;
         try
         {
-            listImportacionAplicacion = Conciliacion.RunTime.App.Consultas.ConsultaImportacionAplicacion(sucursal);
-            this.ddlSelecAplicacion.DataSource = listImportacionAplicacion;
-            this.ddlSelecAplicacion.DataValueField = "Identificador";
-            this.ddlSelecAplicacion.DataTextField = "Descripcion";
-            this.ddlSelecAplicacion.DataBind();
-            this.ddlSelecAplicacion.Dispose();
+
+            listImportacionAplicacion = new List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion>();
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp1 = Conciliacion.RunTime.App.Consultas.ConsultaImportacionesAplicacion(sucursal, cuentaBancaria); ;
+
+            for (int i = 0; i < listImportacionAplicacionTemp1.Count; i++)
+            {
+                listImportacionAplicacionTemp1[i].EsConfiguracion = true;
+            }
+
+
+
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp2 = Conciliacion.RunTime.App.Consultas.ConsultaImportacionAplicacion(sucursal); ;
+            for (int i = 0; i < listImportacionAplicacionTemp2.Count; i++)
+            {
+                foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion importacionObjeto in listImportacionAplicacionTemp1)
+                {
+                    if (importacionObjeto.Identificador == listImportacionAplicacionTemp2[i].Identificador)
+                    {
+                        listImportacionAplicacionTemp2[i] = null;
+                        break;
+                    }
+                }
+
+            }
+
+            listImportacionAplicacionTemp2.RemoveAll(x => x == null);
+
+            listImportacionAplicacion.AddRange(listImportacionAplicacionTemp1);
+            listImportacionAplicacion.AddRange(listImportacionAplicacionTemp2);
+
+            listadoOrigenes.DataSource = listImportacionAplicacion;
+            listadoOrigenes.DataBind();
+
+
+
+            foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion importacionObjeto2 in listImportacionAplicacion)
+            {
+                //CheckBox Sel = ((CheckBox)listadoOrigenes.Rows[fila.RowIndex].FindControl("chkSeleccionar"));
+
+                if (importacionObjeto2.EsConfiguracion)
+                {
+                    ((CheckBox)listadoOrigenes.Rows[j].FindControl("chkSeleccionar")).Checked = true;
+                    ((CheckBox)listadoOrigenes.Rows[j].FindControl("chkSeleccionar")).Enabled = false;
+                }
+                j = j + 1;
+            }
+
         }
         catch (Exception ex)
         {
@@ -468,9 +522,23 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     }
     protected void btnGuardarAplicacion_Click(object sender, EventArgs e)
     {
+        int i = 0;
+        List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores = new List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion>();
         if (ValidarDatos())
         {
-            Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion lcs = listImportacionAplicacion[ddlSelecAplicacion.SelectedIndex];
+            // Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion lcs = listImportacionAplicacion[ddlSelecAplicacion.SelectedIndex];
+
+            foreach (GridViewRow linea in listadoOrigenes.Rows)
+            {
+                CheckBox chkRow = (linea.Cells[0].FindControl("chkSeleccionar") as CheckBox);
+                if (chkRow.Checked)
+                {
+                    listadoExtractores.Add(listImportacionAplicacion[i]);
+                }
+                i = i + 1;
+            }
+
+            Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion lcs = listImportacionAplicacion[1];
 
             if (ValidarAplicacion())
             {
@@ -482,7 +550,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 string usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario.Trim();
                 string pass = SeguridadCB.Seguridad.DesencriptaClave(lcs.Pass);
                 Conciliacion.Migracion.Runtime.ReglasNegocio.ImportacionAplicacion ia = null;
-                ia = Conciliacion.Migracion.Runtime.App.ImportacionAplicacion(Convert.ToInt32(this.cboCorporativo.SelectedValue),
+                /*ia = Conciliacion.Migracion.Runtime.App.ImportacionAplicacion(Convert.ToInt32(this.cboCorporativo.SelectedValue),
                                                                               Convert.ToInt32(this.cboSucursal.SelectedValue),
                                                                               Convert.ToInt32(this.cboAnio.SelectedValue),
                                                                               this.cboCuentaFinanciero.SelectedValue,
@@ -498,6 +566,19 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                                                               lcs.BaseDeDatos,
                                                                               lcs.UsuarioConsulta,
                                                                               pass
+                                                                              );*/
+
+                ia = Conciliacion.Migracion.Runtime.App.ImportacionAplicacion(Convert.ToInt32(this.cboCorporativo.SelectedValue),
+                                                                              Convert.ToInt32(this.cboSucursal.SelectedValue),
+                                                                              Convert.ToInt32(this.cboAnio.SelectedValue),
+                                                                              this.cboCuentaFinanciero.SelectedValue,
+                                                                              fi,
+                                                                              ff,
+                                                                              fa,
+                                                                              usuario,
+                                                                              "CONCILIACION ABIERTA",
+                                                                              folio,
+                                                                              pass, listadoExtractores
                                                                               );
 
                 if (ia.GuardaEnTablaDestinoDetalle())
@@ -507,7 +588,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                     txtFInicial.Text = txtFFinal.Text = String.Empty;
                     ia = null;
                 }
-                else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicación. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
+                else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaciï¿½n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
             }
             else
             {
@@ -527,7 +608,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
         try
         {
-            Carga_ImportacionAplicaciones(Convert.ToInt16(cboSucursal.SelectedItem.Value));
+            Carga_Extractores();
         }
         catch (Exception ex)
         {
@@ -536,4 +617,6 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         }
 
     }
+
+
 }

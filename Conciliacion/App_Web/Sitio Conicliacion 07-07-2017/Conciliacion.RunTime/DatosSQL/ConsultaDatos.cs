@@ -54,6 +54,83 @@ namespace Conciliacion.RunTime.DatosSQL
         //    }
         //}
 
+        public override List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria)
+        {
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> datos = new List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBImportacionAplicacion", cnn);
+                comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.TinyInt).Value = 0;
+                comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
+                //comando.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = cuentaBancoOrigen;
+
+
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    /*int identificador, string descripcion, short tipofuenteinformacion,
+            string procedimiento, string servidor, string basededatos, string usuarioconsulta, string pass*/
+                    Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion dato =
+                        new Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion(Convert.ToInt16(reader["ImportacionAplicacion"]),
+                                                                                        Convert.ToString(reader["Descripcion"]),
+                                                                                        Convert.ToInt16(reader["TipoFuenteInformacion"]),
+                                                                                        Convert.ToString(reader["Procedimiento"]),
+                                                                                        Convert.ToString(reader["Servidor"]),
+                                                                                        Convert.ToString(reader["BaseDeDatos"]),
+                                                                                        Convert.ToString(reader["Usuario"]),
+                                                                                        Convert.ToString(reader["ClaveEncriptada"])
+                                                                                        );
+                    datos.Add(dato);
+                }
+                return datos;
+            }
+        }
+
+        public override List<ImportacionAplicacion> ConsultaImportacionesAplicacion(int sucursal, string cuentaBancaria)
+        {
+            List<ImportacionAplicacion> datos = new List<ImportacionAplicacion>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    //  SqlCommand comando = new SqlCommand("spCBImportacionAplicacion", cnn);
+                    SqlCommand comando = new SqlCommand("spCBImportacionAplicacionConfiguracion", cnn);
+                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 0;
+                    comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.SmallInt).Value = sucursal;
+                    comando.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = cuentaBancaria;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        ImportacionAplicacion dato =
+                            new ImportacionAplicacion(Convert.ToInt32(reader["ImportacionAplicacion"]),
+                                                      Convert.ToString(reader["Descripcion"]),
+                                                      Convert.ToInt16(reader["TipoFuenteInformacion"]),
+                                                      Convert.ToString(reader["Procedimiento"]),
+                                                      Convert.ToString(reader["Servidor"]),
+                                                      Convert.ToString(reader["BaseDeDatos"]),
+                                                      Convert.ToString(reader["Usuario"]),
+                                                      Convert.ToString(reader["ClaveEncriptada"]));
+                        datos.Add(dato);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                return datos;
+            }
+        }
+
         public override DatosArchivo ObtieneArchivoExterno(int corporativo, int sucursal, int año, short mes, int folio)
         {
             DatosArchivo archivo = new DatosArchivoDatos(this.implementadorMensajes);
@@ -5744,6 +5821,8 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
+        
+
 
         /*********
                  * Consulta externos con transferencia
@@ -5788,5 +5867,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
     }
+
+
+    
+
 }
 

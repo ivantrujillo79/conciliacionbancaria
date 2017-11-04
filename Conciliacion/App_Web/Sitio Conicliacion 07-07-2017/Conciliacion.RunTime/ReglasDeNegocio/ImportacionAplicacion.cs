@@ -15,6 +15,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string basededatos;
         string usuarioconsulta;
         string pass;
+        bool esConfiguracion;
 
         public int Identificador
         {
@@ -54,6 +55,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public string Pass
         {
             get { return pass; }
+        }
+
+        public bool EsConfiguracion
+        {
+            get { return esConfiguracion; }
+            set { esConfiguracion = value; }
+
         }
 
         public ImportacionAplicacion(int identificador, string descripcion, short tipofuenteinformacion, 
