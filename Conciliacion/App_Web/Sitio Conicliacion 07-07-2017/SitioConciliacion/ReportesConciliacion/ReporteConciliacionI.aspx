@@ -32,8 +32,19 @@
             CargarEventoCheckBox();
         }
 
-        function popUpVisible() {
+        function popUpVisible(obj) {
+            var n = obj.id.replace('btnBuscarPedido', 'txtCliente');
+            var v = document.getElementById(n).value;
+
+            if (v != null) {
+                if (v == '-' || v == '') {
+                    alert('No indicó un número de cliente, por favor corrija.');
+                    return false;
+                }
+            }
+            
             $('#<%= hfVisibleConciliar.ClientID %>').val("1");
+            
         }
 
         function popUpNoVisible() {
@@ -133,13 +144,35 @@
   </script>
     <!-- Validar: solo numeros -->
     <script type="text/javascript">
-        function ValidNum(e) {
+        function ValidNum(e, obj) {            
+            var row = obj.parentNode.childNodes;            
+            var textbox = document.getElementById(row[1].id);
+            if (textbox.value == '-') {
+                textbox.value = '';
+            }
+
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+            if (tecla === 13) {
+                var n = obj.id.replace('txtCliente', 'btnBuscarPedido');
+                //document.getElementById('ctl00_contenidoPrincipal_grvConciliacionCompartida_ctl02_grvMovimientosConciliadosMovExterno_ctl02_btnBuscarPedido').click();
+                document.getElementById(n).click();
+            }
             return ((tecla > 47 && tecla < 58) || tecla == 8);
         }
         function ValidNumDecimal(e) {
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
             return ((tecla > 47 && tecla < 58) || tecla == 46);
+        }
+        function txtClienteEnSalida(obj)
+        {
+            var row = obj.parentNode.childNodes;
+            var textbox = document.getElementById(row[1].id);
+            while (textbox.value.indexOf('-') > -1) {
+                textbox.value = textbox.value.replace('-', '');
+            }
+            if (textbox.value == '') {
+                textbox.value = '-';
+            }
         }
     </script>
     <!-- Sumar los elementos seleccionados (CHECKBOX) -->
@@ -358,6 +391,8 @@
                 </tr>
                 <tr style="width: 100%">
                     <td colspan="2">
+
+
                         <asp:HiddenField ID="hfCompartidaSV" runat="server" />
                         <asp:HiddenField ID="hfCompartidaSH" runat="server" />
                         <asp:HiddenField ID="hfStatusConciliacionFD" runat="server" />
@@ -510,6 +545,8 @@
                                             </tr>
                                         </table>
                                     </HeaderTemplate>
+                                    
+
                                     <ItemTemplate>
                                         <asp:GridView ID="grvMovimientosConciliadosMovExterno" runat="server" AutoGenerateColumns="False"
                                             Width="950px" AllowPaging="False" ShowHeaderWhenEmpty="False" ShowHeader="False"
@@ -538,9 +575,13 @@
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
                                                     <ItemTemplate>
+
                                                         <asp:TextBox ID="txtCliente" runat="server" Width="80px" CssClass="cajaTextoEditar centrado"
-                                                            Text='<%# Eval("Cliente") %>' onkeypress="return ValidNum(event)" Visible="True"
-                                                            Font-Size="10px" Enabled="True" Style="margin: 0 0 0 0"></asp:TextBox>
+                                                            Text='<%# Eval("Cliente") %>'
+                                                            onkeypress="return ValidNum(event, this)" onblur="txtClienteEnSalida(this)"
+                                                            Visible="True"
+                                                            Font-Size="10px" Enabled="True" Style="margin: 0 0 0 0" ></asp:TextBox>
+
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="80px" />
                                                     <ItemStyle HorizontalAlign="Center" Width="80px" />
@@ -549,7 +590,7 @@
                                                     <ItemTemplate>
                                                         <asp:ImageButton runat="server" ID="btnBuscarPedido" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                             Width="15px" Height="15px" Visible="True" Enabled="True" CssClass="icono bg-color-grisOscuro centradoMedio"
-                                                            ToolTip="BUSCAR PEDIDOS" OnClick="btnBuscarPedido_Click" OnClientClick="popUpVisible();" ValidationGroup="Cliente" />
+                                                            ToolTip="BUSCAR PEDIDOS" OnClick="btnBuscarPedido_Click" OnClientClick="return popUpVisible(this);" ValidationGroup="Cliente" />
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
                                                     <ItemStyle HorizontalAlign="Center" Width="30px" />
