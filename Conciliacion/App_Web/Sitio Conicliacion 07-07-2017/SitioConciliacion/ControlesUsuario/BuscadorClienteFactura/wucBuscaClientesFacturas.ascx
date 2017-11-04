@@ -24,7 +24,7 @@
             var rwIndex = 0;
             var encontrado = false;
             
-            debugger; //IMPORTANTE QUITAR
+            //debugger; //IMPORTANTE QUITAR
 
             for (rwIndex; rwIndex <= gvRowCount - 1; rwIndex++) {
                 //if (gv.rows[rwIndex].cells[1].childNodes[1].innerText.localeCompare(numfactura) == 0) {

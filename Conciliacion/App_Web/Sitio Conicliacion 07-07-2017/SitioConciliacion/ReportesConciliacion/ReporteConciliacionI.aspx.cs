@@ -397,7 +397,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     protected void grvConciliacionCompartida_RowCreated(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType != DataControlRowType.DataRow) return;
-        e.Row.Attributes["onmouseover"] = string.Format("RowMouseOver({0});", e.Row.RowIndex);
+        e.Row.Attributes["onmouseover"] = string.Format("RowMouseOver({0});", e.Row.RowIndex); 
         e.Row.Attributes["onmouseout"] = string.Format("RowMouseOut({0});", e.Row.RowIndex);
         e.Row.Attributes["onclick"] = string.Format("RowSelect({0});", e.Row.RowIndex);
     }
