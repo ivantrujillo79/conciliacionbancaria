@@ -116,6 +116,8 @@
     <Compile Include="ReglasDeNegocio\ImportacionAplicacion.cs" />
     <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
+    <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
+    <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaConciliada.cs" />
@@ -123,6 +125,8 @@
     <Compile Include="ReglasDeNegocio\ReferenciaConciliadaPedido.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaNoConciliada.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaNoConciliadaPedido.cs" />
+    <Compile Include="ReglasDeNegocio\TransBan.cs" />
+    <Compile Include="ReglasDeNegocio\TransBanException.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariaOrigen.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancarias.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariasDetalle.cs" />
