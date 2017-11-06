@@ -458,6 +458,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.Anio           = Convert.ToInt32(Request.QueryString["Año"]);
         wucCargaExcelCyC.Mes            = Convert.ToSByte(Request.QueryString["Mes"]);
         wucCargaExcelCyC.Folio          = Convert.ToInt32(Request.QueryString["Folio"]);
+        wucCargaExcelCyC.TipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]); 
     }
 
     private void GenerarAgregadosExcel()
@@ -465,22 +466,42 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if (wucCargaExcelCyC.RecuperoNoConciliados)
         {
             List<ReferenciaNoConciliada> ReferenciasExcel;
+            List<ReferenciaNoConciliadaPedido> ReferenciasPedidoExcel;
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            wucCargaExcelCyC.TipoConciliacion = tipoConciliacion;
 
-            ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-            ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
-
-            if (RNC.ListaReferenciaConciliada.Count == 0)
+            if (tipoConciliacion != 2)
             {
-                foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+                ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
+
+                if (RNC.ListaReferenciaConciliada.Count == 0)
                 {
-                    RNC.AgregarReferenciaConciliada(Referencia);
+                    foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+                    {
+                        RNC.AgregarReferenciaConciliada(Referencia);
+                    }
                 }
+                GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
+                ActualizarTotalesAgregados();
+                /*      Cerrar PopUp    */
+                this.hdfVisibleCargaArchivo.Value = "0";
             }
-            GenerarTablaAgregadosArchivosInternos(RNC, tipoConciliacion);
-            ActualizarTotalesAgregados();
-            /*      Cerrar PopUp    */
-            this.hdfVisibleCargaArchivo.Value = "0";
+            else
+            {
+                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+                ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
+
+                foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
+                {
+                    RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
+                }
+
+                GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
+                ActualizarTotalesAgregados();
+                /*      Cerrar PopUp    */
+                this.hdfVisibleCargaArchivo.Value = "0";
+            }
         }
     }
 
@@ -1555,6 +1576,82 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             throw ex;
         }
     }
+
+    public void GenerarTablaAgregadosArchivosInternosExcel(ReferenciaNoConciliada refExternaSelec, int tpConciliacion)
+    //Genera la tabla Referencias (Archivos/Pedidos) agregados
+    {
+        try
+        {
+            tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
+            if (tpConciliacion == 2)
+            {
+                tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Celula", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Cliente", typeof(string));
+                tblReferenciaAgregadasInternas.Columns.Add("Nombre", typeof(string));
+                tblReferenciaAgregadasInternas.Columns.Add("FMovimiento", typeof(DateTime));
+                tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof(DateTime));
+                tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof(decimal));
+                tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof(string));
+                tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));
+                //Llena GridView con lista de Agregados del Externo (PEDIDOS)
+                foreach (ReferenciaConciliadaPedido rc in refExternaSelec.ListaReferenciaConciliada)
+                {
+                    tblReferenciaAgregadasInternas.Rows.Add(
+                        rc.Pedido,
+                        rc.AñoPedido,
+                        rc.CelulaPedido,
+                        rc.Cliente,
+                        rc.Nombre,
+                        rc.FMovimiento,
+                        rc.FOperacion,
+                        rc.Total,
+                        rc.ConceptoPedido
+                        );
+                }
+                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                grvAgregadosPedidos.DataBind();
+                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+            }
+            else
+            {
+                tblReferenciaAgregadasInternas.Columns.Add("Secuencia", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Folio", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Año", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Sucursal", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("FMovimiento", typeof(DateTime));
+                tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof(DateTime));
+                tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof(decimal));
+                tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof(string));
+
+                //Llena GridView con lista de Agregados del Externo (INTERNOS)
+                foreach (ReferenciaConciliada rc in refExternaSelec.ListaReferenciaConciliada)
+                {
+                    tblReferenciaAgregadasInternas.Rows.Add(
+                        rc.SecuenciaInterno,
+                        rc.FolioInterno,
+                        rc.AñoConciliacion,
+                        rc.SucursalInterno,
+                        rc.FMovimientoInt,
+                        rc.FOperacionInt,
+                        rc.MontoInterno,
+                        rc.ConceptoInterno
+                        );
+
+                }
+                grvAgregadosInternos.DataSource = tblReferenciaAgregadasInternas;
+                grvAgregadosInternos.DataBind();
+
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
 
     public void GenerarTablaAgregadosVacia(int tConciliacion)
     {

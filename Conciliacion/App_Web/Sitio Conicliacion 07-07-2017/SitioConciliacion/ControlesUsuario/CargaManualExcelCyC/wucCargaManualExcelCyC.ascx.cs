@@ -135,6 +135,17 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
     }
 
+    private List<ReferenciaNoConciliadaPedido> _referenciasPorConciliarPedidoExcel;
+    public List<ReferenciaNoConciliadaPedido> ReferenciasPorConciliarPedidoExcel
+    {
+        get
+        {
+            RecuperaReferenciasNoConciliadas();
+            return _referenciasPorConciliarPedidoExcel;
+        }
+    }
+
+
     //private bool recuperoNoConciliados;
     public bool RecuperoNoConciliados
     {
@@ -143,7 +154,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             bool ValorRetorno = false;
             RecuperaReferenciasNoConciliadas();
-            if(_referenciasPorConciliarExcel == null || _referenciasPorConciliarExcel.Count == 0)
+            if((_referenciasPorConciliarExcel == null || _referenciasPorConciliarExcel.Count == 0) && (_referenciasPorConciliarPedidoExcel == null || _referenciasPorConciliarPedidoExcel.Count == 0))
             {
                 ValorRetorno = false;
             }
@@ -154,6 +165,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 return ValorRetorno;
         }
     }
+
+    public short TipoConciliacion { get; set; }
     #endregion
 
     private const string ARCHIVO = "Archivo: ";
@@ -289,18 +302,21 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         bool recupero = false;
         ReferenciaNoConciliada RefNoConciliada;
         _referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
+        _referenciasPorConciliarPedidoExcel = new List<ReferenciaNoConciliadaPedido>();
 
         try
         {
-            if (grvDetalleConciliacionManual.Rows.Count > 0)
+            if ( Convert.ToSByte(Request.QueryString["TipoConciliacion"])  != 2)
             {
-                foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                if (grvDetalleConciliacionManual.Rows.Count > 0)
                 {
-                    sDocumento = row.Cells[1].Text;
-                    dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                    {
+                        sDocumento = row.Cells[1].Text;
+                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
-                    //if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
-                    //{
+                        //if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
+                        //{
                         RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
                         RefNoConciliada.Monto = dMonto;
@@ -318,11 +334,46 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             RefNoConciliada.Secuencia = 1;
                         }
 
-                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);    
+                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                         _referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
-                    //}
+                        //}
+                    }
+                }
+            }
+            else
+            {
+                if (grvDetalleConciliacionManual.Rows.Count > 0)
+                {
+                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                    {
+                        sDocumento = row.Cells[1].Text;
+                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
+
+                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+
+                        RefNoConciliadaPedido.Pedido = 5;//Convert.ToInt32(sDocumento);
+                        //RefNoConciliadaPedido.//dMonto;
+
+                        if (_referenciasPorConciliarExcel.Count > 0)
+                        {
+                            RefNoConciliadaPedido.Folio =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
+                            RefNoConciliadaPedido.Secuencia =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
+                        }
+                        else
+                        {
+                            RefNoConciliadaPedido.Folio = 1;
+                            RefNoConciliadaPedido.Secuencia = 1;
+                        }
+
+                        RefNoConciliadaPedido.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        _referenciasPorConciliarPedidoExcel.Add(RefNoConciliadaPedido);
+
+                        recupero = true;
+                    }
                 }
             }
         }
@@ -332,6 +383,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         HttpContext.Current.Session["_referenciasPorConciliarExcel"] = _referenciasPorConciliarExcel;
         this._referenciasPorConciliarExcel = _referenciasPorConciliarExcel;
+        HttpContext.Current.Session["_referenciasPorConciliarPedidoExcel"] = _referenciasPorConciliarPedidoExcel;
+        this._referenciasPorConciliarPedidoExcel = _referenciasPorConciliarPedidoExcel;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas
 }
