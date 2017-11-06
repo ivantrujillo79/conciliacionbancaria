@@ -231,7 +231,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                     }
                                     else
                                     {
-                                        sbMensaje.Append("ERROR: el código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
+                                        sbMensaje.Append("Error: el código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
                                     }
                                 }
                             }

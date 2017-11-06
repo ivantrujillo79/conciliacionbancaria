@@ -1121,6 +1121,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 if (rfExterno.ListaReferenciaConciliada.Count > 0)
                 {
+                    rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
+                    
                     if (rfExterno.GuardarReferenciaConciliada())
                     {
                         //Leer Variables URL 
@@ -1163,7 +1165,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                           Convert.ToInt32(ddlCriteriosConciliacion.SelectedItem.Value));
                         GenerarTablaConciliados();
                         LlenaGridViewConciliadas();
-                        App.ImplementadorMensajes.MostrarMensaje("TRANSACCION CONCILIADA EXITOSAMENTE");
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('Ok'); });", true);
+                        //App.ImplementadorMensajes.MostrarMensaje("TRANSACCION CONCILIADA EXITOSAMENTE");
                     }
                     //else
                     //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");

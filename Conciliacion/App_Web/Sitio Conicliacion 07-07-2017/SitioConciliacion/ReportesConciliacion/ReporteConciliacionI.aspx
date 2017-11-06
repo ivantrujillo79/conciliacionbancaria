@@ -23,6 +23,11 @@
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
     <!--MsDropdown -->
     <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
+    <!--    Bootstrap CSS & JS      -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
+    <link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />
+    <script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
     <script type="text/javascript">
     
         function pageLoad() {
@@ -432,7 +437,7 @@
                                 <asp:TemplateField HeaderText="Status" SortExpression="StatusConciliacion">
                                     <ItemTemplate>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Eval("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Eval("StatusConciliacion") %>' AlternateText='<%# Eval("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <HeaderTemplate>
@@ -589,7 +594,7 @@
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:ImageButton runat="server" ID="btnBuscarPedido" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                            Width="15px" Height="15px" Visible="True" Enabled="True" CssClass="icono bg-color-grisOscuro centradoMedio"
+                                                            Width="25px" Height="25px" Visible="True" Enabled="True" CssClass="icono bg-color-grisOscuro centradoMedio"
                                                             ToolTip="BUSCAR PEDIDOS" OnClick="btnBuscarPedido_Click" OnClientClick="return popUpVisible(this);" ValidationGroup="Cliente" />
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
