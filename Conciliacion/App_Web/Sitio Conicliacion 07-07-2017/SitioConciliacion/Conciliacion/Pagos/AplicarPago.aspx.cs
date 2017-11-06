@@ -582,7 +582,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         Parametros p = Session["Parametros"] as Parametros;
                         AppSettingsReader settings = new AppSettingsReader();
                         short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
-                        Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
+                        Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
                         RelacionCobranzaException rCobranzaE = null;
                         try
