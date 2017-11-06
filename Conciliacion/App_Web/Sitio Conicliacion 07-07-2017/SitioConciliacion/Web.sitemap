@@ -32,7 +32,9 @@
         <siteMapNode title="Referencias" description="Referencias a comparar" resourceKey="15" url="~/Catalogos/ReferenciaAComparar.aspx">
         </siteMapNode>
         <siteMapNode title="Status Concepto" description="Acceso al catalogo de Status Concepto" resourceKey="21" url="~/Catalogos/StatusConcepto.aspx">
-      </siteMapNode>
+        </siteMapNode>
+        <siteMapNode title="Tipo de archivo por cuenta" description="Acceso al catalogo de Status Concepto" resourceKey="21" url="~/Catalogos/TipoMovimientoPorCuenta.aspx">
+        </siteMapNode>
       </siteMapNode>
 
       <siteMapNode title="Importación" description="Catálogos para configurar la Importación" resourceKey="24" url="">
