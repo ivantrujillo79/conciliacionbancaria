@@ -24,7 +24,7 @@ namespace CatalogoConciliacion.Datos
 
          public override TipoMovimientoCuenta CrearObjeto()
         {
-            throw new NotImplementedException();
+            return new TipoMovimientoCuentaDatos(this.ImplementadorMensajes);
         }
 
 
@@ -73,7 +73,7 @@ namespace CatalogoConciliacion.Datos
                     comando.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = cuenta;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
-                    this.ImplementadorMensajes.MostrarMensaje("Registro Guardado Con éxito");
+                    this.ImplementadorMensajes.MostrarMensaje("Registro Eliminado Con éxito");
                 }
 
                 catch (SqlException ex)
