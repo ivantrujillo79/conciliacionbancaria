@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
     <Compile Include="DatosSQL\CobranzaDatos.cs" />
     <Compile Include="DatosSQL\CobroDatos.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="DatosSQL\TransferenciaBancariaOrigenDatos.cs" />
     <Compile Include="DatosSQL\TransferenciaBancariasDatos.cs" />
     <Compile Include="DatosSQL\TransferenciaBancariasDetalleDatos.cs" />
+    <Compile Include="DetalleValidacion.cs" />
     <Compile Include="EmisorMensajes.cs" />
     <Compile Include="IMensajesImplementacion.cs" />
     <Compile Include="MensajeImplemantacionForm.cs" />
@@ -116,8 +118,6 @@
     <Compile Include="ReglasDeNegocio\ImportacionAplicacion.cs" />
     <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
-    <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
-    <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaConciliada.cs" />
@@ -125,8 +125,8 @@
     <Compile Include="ReglasDeNegocio\ReferenciaConciliadaPedido.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaNoConciliada.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaNoConciliadaPedido.cs" />
-    <Compile Include="ReglasDeNegocio\TransBan.cs" />
-    <Compile Include="ReglasDeNegocio\TransBanException.cs" />
+    <Compile Include="ReglasDeNegocio\RelacionCobranza.cs" />
+    <Compile Include="ReglasDeNegocio\RelacionCobranzaException.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariaOrigen.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancarias.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariasDetalle.cs" />

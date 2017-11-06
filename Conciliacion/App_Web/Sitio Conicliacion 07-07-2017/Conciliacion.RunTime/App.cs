@@ -207,6 +207,20 @@ namespace Conciliacion.RunTime
 
         }
 
+        private static RelacionCobranza relacionCobranza;
+        public static RelacionCobranza RelCobranza
+        {
+            get
+            {
+                if (relacionCobranza == null)
+                {
+                    relacionCobranza = new RelacionCobranzaDatos(App.ImplementadorMensajes);
+                    //relacionCobranza.CadenaConexion = App.CadenaConexion;                   
+
+                }
+                return relacionCobranza;
+            }
+        }
 
         private static Cobranza cobranza;
         public static Cobranza Cobranza

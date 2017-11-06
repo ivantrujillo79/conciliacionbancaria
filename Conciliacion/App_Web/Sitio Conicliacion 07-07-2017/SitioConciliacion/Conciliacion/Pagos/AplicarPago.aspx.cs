@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using Conciliacion.RunTime;
 using System.Configuration;
+using SeguridadCB.Public;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 {
@@ -578,6 +579,37 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 {
                     if (movimientoCajaAlta.Guardar())
                     {
+                        Parametros p = Session["Parametros"] as Parametros;
+                        AppSettingsReader settings = new AppSettingsReader();
+                        short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
+                        Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
+
+                        RelacionCobranzaException rCobranzaE = null;
+                        try
+                        {
+                            RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(movimientoCajaAlta, HasBoveda);
+                            rCobranza.CadenaConexion = App.CadenaConexion;
+                            Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
+                            conexion.AbrirConexion(true);
+                            rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
+
+                            if (rCobranzaE.DetalleExcepcion.VerificacionValida)
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje(rCobranzaE.DetalleExcepcion.Mensaje);
+                            }
+                            else
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            rCobranzaE.DetalleExcepcion.CodigoError = 201;
+                            rCobranzaE.DetalleExcepcion.Mensaje = rCobranzaE.DetalleExcepcion.Mensaje + " " + ex.Message;
+                            rCobranzaE.DetalleExcepcion.VerificacionValida = false;
+                            throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                        }
+
                         lanzarReporteComprobanteDeCaja(movimientoCajaAlta);
                         Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
                         Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
