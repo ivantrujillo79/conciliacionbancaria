@@ -235,7 +235,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                                                                         int corporativoexterno, int sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno);
 
 
-        public abstract MovimientoCaja ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
 
         public abstract List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
 

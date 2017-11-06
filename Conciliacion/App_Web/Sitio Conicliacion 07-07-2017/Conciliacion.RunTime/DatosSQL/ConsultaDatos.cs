@@ -4414,10 +4414,10 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override MovimientoCaja ConsultaMovimientoCajaAlta(int corporativo, int sucursal, int año, short mes,
+        public override MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativo, int sucursal, int año, short mes,
                                                                   int folio)
         {
-            MovimientoCaja movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
+            MovimientoCajaDatos movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
