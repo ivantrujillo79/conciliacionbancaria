@@ -1,4 +1,5 @@
-﻿using Estructural.Clases.Conciliacion.Migracion.Runtime.Validacion;
+﻿//using Estructural.Clases.Conciliacion.Migracion.Runtime.Validacion;
+using ValidacionArchivosConciliacion;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
