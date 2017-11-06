@@ -10,11 +10,15 @@
     <!--MsDropdown CSS-->
     <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
     <!--Libreria jQuery-->
-    <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+    
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
+    
     <!-- Estilo de AJAX Accordion-->
     <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
     <!-- Script se utiliza para el Scroll del GridView-->
