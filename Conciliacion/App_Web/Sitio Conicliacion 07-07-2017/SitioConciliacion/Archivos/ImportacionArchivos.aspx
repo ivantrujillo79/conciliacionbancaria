@@ -1,6 +1,6 @@
-<%@ Page Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
+ï»¿<%@ Page Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
     CodeFile="ImportacionArchivos.aspx.cs" Inherits="ImportacionArchivos_ImportacionArchivos"
-    Title="Importación Archivos" EnableEventValidation="false" %>
+    Title="ImportaciÃ³n Archivos" EnableEventValidation="false" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ MasterType TypeName="Principal" %>
@@ -59,7 +59,7 @@
                                 <table width="100%" class="lineaHorizontal">
                                     <tr>
                                         <td style="width: 95%">
-                                            Importación de Archivos
+                                            ImportaciÃ³n de Archivos
                                         </td>
                                         <td>
                                             <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/atras.png"
@@ -68,96 +68,131 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="etiqueta">
-                                Corporativo</div>
-                            <asp:DropDownList ID="cboCorporativo" runat="server" CssClass="dropDown" Font-Size="12px"
-                                AutoPostBack="True" OnSelectedIndexChanged="cboCorporativo_SelectedIndexChanged"
-                                Width="50%" OnDataBound="cboCorporativo_DataBound">
-                            </asp:DropDownList>
-                            <br />
-                            <div class="etiqueta">
-                                Banco</div>
-                            <asp:DropDownList ID="cboBancoFinanciero" runat="server" CssClass="dropDown" Font-Size="12px"
-                                AutoPostBack="True" OnSelectedIndexChanged="cboBancoFinanciero_SelectedIndexChanged"
-                                OnDataBound="cboBancoFinanciero_DataBound" Width="50%">
-                            </asp:DropDownList>
-                            <br />
-                            <div class="etiqueta">
-                                Cuenta</div>
-                            <asp:DropDownList ID="cboCuentaFinanciero" runat="server" CssClass="dropDown" Font-Size="12px"
-                                AutoPostBack="True" OnSelectedIndexChanged="cboCuentaFinanciero_SelectedIndexChanged"
-                                Width="50%">
-                            </asp:DropDownList>
-                            <br />
-                            <div class="etiqueta">
-                                Tipo Fuente</div>
-                            <asp:DropDownList ID="cboTipoFuenteInformacion" runat="server" CssClass="dropDown"
-                                Font-Size="12px" Width="50%">
-                            </asp:DropDownList>
-                            <div class="etiqueta">
-                                Sucursal</div>
-                            <asp:DropDownList ID="cboSucursal" runat="server" CssClass="dropDown" Font-Size="12px"
-                                OnDataBound="cboSucursal_DataBound" Width="50%" AutoPostBack="True" 
-                                onselectedindexchanged="cboSucursal_SelectedIndexChanged">
-                            </asp:DropDownList>
-                            <br />
-                            <div class="etiqueta">
-                                Año</div>
-                            <asp:DropDownList ID="cboAnio" runat="server" CssClass="dropDown" Font-Size="12px"
-                                OnDataBound="cboAnio_DataBound" Width="50%" AutoPostBack="True">
-                            </asp:DropDownList>
-                            <br />
-                            <div class="etiqueta">
-                                Importar desde:
-                            </div>
-                            <div class="etiqueta">
-                                <asp:RadioButtonList ID="rdbSubirDesde" runat="server" AutoPostBack="True" RepeatDirection="Horizontal"
-                                    CssClass="etiqueta" OnSelectedIndexChanged="rdbSubirDesde_SelectedIndexChanged">
-                                    <asp:ListItem Selected="True">Archivo</asp:ListItem>
-                                    <asp:ListItem Value="Aplicacion">Aplicación</asp:ListItem>
-                                </asp:RadioButtonList>
-                            </div>
-                            <div class="Filtrado" style="width: 50%">
-                                <div class="datos-estilo">
-                                    <asp:AsyncFileUpload ID="uploadFile" runat="server" ThrobberID="Throbber" ErrorBackColor="Red"
-                                        UploadingBackColor="#66CCFF" OnUploadedComplete="Archivo_UploadedComplete" Width="285px" />
-                                    <asp:Image ID="Throbber" runat="server" CssClass="icono bg-color-blanco" Height="40px"
-                                        ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px"
-                                        Style="display: none" />
-                                    <table style="width: 100%" id="tblFIFF" runat="server">
-                                        <tr>
-                                            <td>
-                                                <asp:Label ID="lblFInicial" runat="server" Text="Fecha Inicial" CssClass="etiqueta"></asp:Label>
-                                                <asp:TextBox ID="txtFInicial" runat="server" CssClass="cajaTexto" Style="width: 97%"></asp:TextBox>
-                                            </td>
-                                            <td style="width: 1%">
-                                            </td>
-                                            <td>
-                                                <asp:Label ID="lblFFinal" runat="server" Text="Fecha Final" CssClass="etiqueta"></asp:Label>
-                                                <asp:TextBox ID="txtFFinal" runat="server" CssClass="cajaTexto" Style="width: 97%"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                <asp:Label ID="lblOrigenAplicacion" runat="server" Text="Origen de Información" CssClass="etiqueta"></asp:Label>
-                                                <asp:DropDownList ID="ddlSelecAplicacion" runat="server" CssClass="dropDown" Font-Size="12px"
-                                                    Width="100%" AutoPostBack="True" OnDataBound="ddlSelecAplicacion_DataBound" OnSelectedIndexChanged="ddlSelecAplicacion_SelectedIndexChanged">
-                                                </asp:DropDownList>
-                                            </td>
-                                        </tr>
-                                    </table>
+                            <div id="Detalle">
+                                <div id="Columna1" style="float: left; width: 50%;" >
+                                    <div class="etiqueta">
+                                        Corporativo
+                                    </div>
+                                    <asp:DropDownList ID="cboCorporativo" runat="server" CssClass="dropDown" Font-Size="12px"
+                                        AutoPostBack="True" OnSelectedIndexChanged="cboCorporativo_SelectedIndexChanged"
+                                        Width="90%" OnDataBound="cboCorporativo_DataBound">
+                                    </asp:DropDownList>
+                                    <br />
+                                    <div class="etiqueta">
+                                        Banco
+                                    </div>
+                                    <asp:DropDownList ID="cboBancoFinanciero" runat="server" CssClass="dropDown" Font-Size="12px"
+                                        AutoPostBack="True" OnSelectedIndexChanged="cboBancoFinanciero_SelectedIndexChanged"
+                                        OnDataBound="cboBancoFinanciero_DataBound" Width="90%">
+                                    </asp:DropDownList>
+                                    <br />
+                                    <div class="etiqueta">
+                                        Cuenta
+                                    </div>
+                                    <asp:DropDownList ID="cboCuentaFinanciero" runat="server" CssClass="dropDown" Font-Size="12px"
+                                        AutoPostBack="True" OnSelectedIndexChanged="cboCuentaFinanciero_SelectedIndexChanged"
+                                        Width="90%">
+                                    </asp:DropDownList>
+                                    <br />
+                                    <div class="etiqueta">
+                                        Tipo Fuente
+                                    </div>
+                                    <asp:DropDownList ID="cboTipoFuenteInformacion" runat="server" CssClass="dropDown"
+                                        Font-Size="12px" Width="90%">
+                                    </asp:DropDownList>
+                                    <div class="etiqueta">
+                                        Sucursal
+                                    </div>
+                                    <asp:DropDownList ID="cboSucursal" runat="server" CssClass="dropDown" Font-Size="12px"
+                                        OnDataBound="cboSucursal_DataBound" Width="90%" AutoPostBack="True"
+                                        OnSelectedIndexChanged="cboSucursal_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                    <br />
+                                    <div class="etiqueta">
+                                        AÃ±o
+                                    </div>
+                                    <asp:DropDownList ID="cboAnio" runat="server" CssClass="dropDown" Font-Size="12px"
+                                        OnDataBound="cboAnio_DataBound" Width="90%" AutoPostBack="True">
+                                    </asp:DropDownList>
+                                    <br />
+                                     <br />
+                                    <div class="centradoMedio" style="width: 100%">
+                                        <asp:Button ID="btnCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
+                                            Text="CANCELAR" ToolTip="Cancelar el guardado de datos" OnClick="btnCancelarDatos_Click" />
+                                        <asp:Button ID="btnGuardar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                            Text="GUARDAR" ToolTip="Importar Archivo." OnClick="btnGuardarDatos_Click" />
+                                        <asp:Button ID="btnGuardarAplicacion" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                            Text="GUARDAR" ToolTip="Importar Archivo." OnClick="btnGuardarAplicacion_Click" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="centradoMedio" style="width: 50%">
-                                <asp:Button ID="btnCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                                    Text="CANCELAR" ToolTip="Cancelar el guardado de datos" OnClick="btnCancelarDatos_Click" />
-                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                    Text="GUARDAR" ToolTip="Importar Archivo." OnClick="btnGuardarDatos_Click" />
-                                <asp:Button ID="btnGuardarAplicacion" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                    Text="GUARDAR" ToolTip="Importar Archivo." OnClick="btnGuardarAplicacion_Click" />
-                            </div>
-                            <br />
-                        </div>
+                                <div id="Columna2" style="float: right; width: 48%;" >
+                                    <div class="etiqueta">
+                                        Importar desde:
+                                    </div>
+                                    <div class="etiqueta">
+                                        <asp:RadioButtonList ID="rdbSubirDesde" runat="server" AutoPostBack="True" RepeatDirection="Horizontal"
+                                            CssClass="etiqueta" OnSelectedIndexChanged="rdbSubirDesde_SelectedIndexChanged">
+                                            <asp:ListItem Selected="True">Archivo</asp:ListItem>
+                                            <asp:ListItem Value="Aplicacion">AplicaciÃ³n</asp:ListItem>
+                                        </asp:RadioButtonList>
+                                    </div>
+                                    <div class="Filtrado" style="width: 100%">
+                                        <div class="datos-estilo">
+                                            <asp:AsyncFileUpload ID="uploadFile" runat="server" ThrobberID="Throbber" ErrorBackColor="Red"
+                                                UploadingBackColor="#66CCFF" OnUploadedComplete="Archivo_UploadedComplete" Width="485px" />
+                                            <asp:Image ID="Throbber" runat="server" CssClass="icono bg-color-blanco" Height="40px"
+                                                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px"
+                                                Style="display: none" />
+                                            <div style="width: 100%"  id ="divAplicacion" runat="server">
+                                                <table style="width: 100%" id="tblFIFF" runat="server">
+                                                    <tr>
+                                                        <td>
+                                                            <asp:Label ID="lblFInicial" runat="server" Text="Fecha Inicial" CssClass="etiqueta"></asp:Label>
+                                                            <asp:TextBox ID="txtFInicial" runat="server" CssClass="cajaTexto" Style="width: 97%"></asp:TextBox>
+                                                        </td>
+                                                        <td style="width: 1%"></td>
+                                                        <td>
+                                                            <asp:Label ID="lblFFinal" runat="server" Text="Fecha Final" CssClass="etiqueta"></asp:Label>
+                                                            <asp:TextBox ID="txtFFinal" runat="server" CssClass="cajaTexto" Style="width: 97%"></asp:TextBox>
+                                                        </td>
+                                                    </tr>                                            
+                                                    
+                                                </table>
+                                                <div style="width: 100%">
+                                                    <asp:Label  Width="97%" ID="lblOrigenAplicacion" runat="server" Text="Origen de InformaciÃ³n" CssClass="etiqueta"></asp:Label>
+                                                    <br />
+                                                    <asp:GridView Width="97%"  ID="listadoOrigenes" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="White" BorderStyle="Ridge" BorderWidth="2px" CellPadding="3" CellSpacing="1" GridLines="None"  >
+                                                        
+                                                        <Columns>
+                                                            <asp:TemplateField HeaderText="Seleccionar">
+                                                                    <ItemTemplate>
+                                                                    <asp:CheckBox ID="chkSeleccionar"  runat="server" />
+                                                                    </ItemTemplate>
+                                                                    <ItemStyle Width="20px"/>
+                                                            </asp:TemplateField>
+                                                            <asp:BoundField DataField="Descripcion" HeaderText="Descripcion" />
+                                                        </Columns>
+                                                        
+                                                        <FooterStyle BackColor="#C6C3C6" ForeColor="Black" />
+                                                        <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#E7E7FF" />
+                                                        <PagerStyle BackColor="#C6C3C6" ForeColor="Black" HorizontalAlign="Right" />
+                                                        <RowStyle BackColor="#DEDFDE" ForeColor="Black" />
+                                                        <SelectedRowStyle BackColor="#9471DE" Font-Bold="True" ForeColor="White" />
+                                                        <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                                                        <SortedAscendingHeaderStyle BackColor="#594B9C" />
+                                                        <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                                                        <SortedDescendingHeaderStyle BackColor="#33276A" />
+                                                        
+                                                    </asp:GridView>
+                                                    
+                                                </div>
+                                            </div>
+                                    </div>
+                                    
+                                        
+                                    
+                                    <br />
+                                </div>
                     </td>
                 </tr>
             </table>

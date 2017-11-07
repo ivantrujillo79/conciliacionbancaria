@@ -24,12 +24,15 @@ namespace CatalogoConciliacion
 
     public class App
     {
+        private static TipoMovimientoCuenta tipoMovimientoCuenta;
         private static MotivoNoConciliado motivoNoConciliado;
         private static GrupoConciliacion grupoConciliacion;
         private static GrupoConciliacionUsuario grupoConciliacionUsuario;
         private static TipoConciliacionUsuario tipoConciliacionUsuario;
         private static ReferenciaAComparar referenciaAComparar;
         private static CuentaTransferencia referenciaCuentaTransferencia;
+        
+
 
         private static IMensajesImplementacion implementadorMensajes;
         public static IMensajesImplementacion ImplementadorMensajes
@@ -120,6 +123,16 @@ namespace CatalogoConciliacion
             }
         }
 
+        public static TipoMovimientoCuenta TipoMovimientoCuenta
+        {
+            get
+            {
+                if (tipoMovimientoCuenta == null)
+                    tipoMovimientoCuenta = new TipoMovimientoCuentaDatos(App.ImplementadorMensajes);
+                return tipoMovimientoCuenta;
+            }
+        }
+
         //Agregada
         public static CuentaTransferencia ReferenciaCuentaTransferencia
         {
@@ -132,6 +145,17 @@ namespace CatalogoConciliacion
         }
 
         public static Consultas Consultas
+        {
+            get
+            {
+                if (consultas == null)
+                    consultas = new ConsultasDatos();
+                return consultas;
+
+            }
+        }
+
+        public static Consultas ConsultasDos
         {
             get
             {

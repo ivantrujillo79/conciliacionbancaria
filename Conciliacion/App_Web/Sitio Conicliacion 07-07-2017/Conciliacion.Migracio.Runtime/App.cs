@@ -226,6 +226,15 @@ namespace Conciliacion.Migracion.Runtime
             }
         }
 
+        public static ImportacionAplicacion ImportacionAplicacion(int corporativo, int sucursal, int año, string cuentabanco, DateTime finicial, DateTime ffinal, DateTime factual,
+            string usuario, string statusConciliacion, int folio, string pass, List<RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores)
+        {
+            {
+                //if (importacionaplicacion == null)
+                importacionaplicacion = new ImportacionAplicacionDatos(corporativo, sucursal, año, cuentabanco, finicial, ffinal, factual, usuario, statusConciliacion, folio, pass, listadoExtractores);
+                return importacionaplicacion;
+            }
+        }
 
         private static string connectionString;
         public static string CadenaConexion

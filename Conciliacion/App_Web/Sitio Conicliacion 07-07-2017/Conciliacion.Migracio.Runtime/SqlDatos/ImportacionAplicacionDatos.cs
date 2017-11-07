@@ -16,6 +16,12 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
         }
 
+        public ImportacionAplicacionDatos(int corporativo, int sucursal, int año, string cuentabanco, DateTime finicial, DateTime ffinal, DateTime falta,
+            string usuario, string statusConciliacion, int folio, string pass, List<RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores)
+            : base(corporativo, sucursal, año, cuentabanco, finicial, ffinal, falta, usuario, statusConciliacion, folio, pass, listadoExtractores)
+        {
+        }
+
         public override List<TablaDestinoDetalle> LlenarObjetosDestinoDestalle()
         {
             List<TablaDestinoDetalle> datos = new List<TablaDestinoDetalle>();

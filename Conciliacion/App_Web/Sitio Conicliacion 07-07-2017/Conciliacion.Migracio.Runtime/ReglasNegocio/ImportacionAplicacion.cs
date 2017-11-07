@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 using System.Data;
-
+using Conciliacion.RunTime.ReglasDeNegocio;
 
 namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 {
@@ -19,6 +19,18 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         String basededatos;
         String usuarioconsulta;
         String pass;
+        private int corporativo;
+        private int sucursal;
+        private int año;
+        private string cuentabanco;
+        private DateTime finicial;
+        private DateTime ffinal;
+        private DateTime falta;
+        private string procedimiento;
+        private string usuario;
+        private string statusConciliacion;
+        private int folio;
+        private List<RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores;
 
         public ImportacionAplicacion(int corporativo, int sucursal, int año, string cuentabanco, 
             int tipofuenteinformacion, DateTime finicial, DateTime ffinal, DateTime falta, 
@@ -47,6 +59,47 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
             TablaDestino.Detalles = LlenarObjetosDestinoDestalle();
         }
+
+
+        public ImportacionAplicacion(int corporativo, int sucursal, int año, string cuentabanco,
+            DateTime finicial, DateTime ffinal, DateTime falta,
+            string usuario, string statusConciliacion, int folio, string pass,
+             List<RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores)
+           
+       
+        {
+           
+
+            tabladestino = new Conciliacion.Migracion.Runtime.SqlDatos.TablaDestinoDatos();
+            TablaDestino.IdCorporativo = corporativo;
+            TablaDestino.IdSucursal = sucursal;
+            TablaDestino.Anio = año;
+            TablaDestino.CuentaBancoFinanciero = cuentabanco;            
+            TablaDestino.IdFrecuencia = 1;
+            TablaDestino.FInicial = finicial;
+            TablaDestino.FFinal = ffinal;
+            TablaDestino.FAlta = falta;
+            TablaDestino.Usuario = usuario;
+            TablaDestino.Folio = folio;
+            TablaDestino.IdStatusConciliacion = statusConciliacion;
+            /**Aqui**/
+
+            foreach (RunTime.ReglasDeNegocio.ImportacionAplicacion extractor in listadoExtractores)
+            {
+                NombreSp = extractor.Procedimiento;
+                Servidor = extractor.Servidor;
+                BaseDeDatos = extractor.BaseDeDatos;
+                UsuarioConsulta = extractor.UsuarioConsulta;
+                Pass = extractor.Pass;
+                TablaDestino.IdTipoFuenteInformacion = extractor.Identificador;
+
+
+                TablaDestino.Detalles.AddRange(LlenarObjetosDestinoDestalle());
+
+            }            
+        }
+
+       
 
         #region propiedades
 

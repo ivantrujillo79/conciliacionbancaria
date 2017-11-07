@@ -153,6 +153,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ImportacionAplicacion> ConsultaImportacionAplicacion(int sucursal);
 
+        public abstract List<ImportacionAplicacion> ConsultaImportacionesAplicacion(int sucursal, string cuentaBancaria);
+
+        public abstract List<ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria);
+
 
         public abstract List<DatosArchivo> ConsultaArchivosNoReferenciados(int corporativo, int sucursal, int año, short mes, short tipofuenteinformacion);
 
@@ -208,14 +212,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaExternoPedido(int corporativo, int sucursal, int año, short mes, int folio, String campo, string operacion, string valor, string tipocampo, decimal diferencia);       
 
 
-
         public abstract List<ReferenciaNoConciliada> ConsultaTransaccionesConciliadas(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int formaconciliacion);
         public abstract List<cReferencia> ConsultaTransaccionesConciliadasDetalle(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, short cointerno, int añoexterno);
 
 
         public abstract cConciliacion ConsultaConciliacionDetalle(int corporativo, int sucursal, int año, short mes, int folioconciliacion);
-
-
 
         public abstract List<ReferenciaNoConciliada> ConsultaDetalleInternoCanceladoPendiente(ConciliacionInterna configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, decimal diferencia);
 
@@ -234,7 +235,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                                                                         int corporativoexterno, int sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno);
 
 
-        public abstract MovimientoCaja ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
 
         public abstract List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
 
