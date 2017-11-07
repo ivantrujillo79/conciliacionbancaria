@@ -8,7 +8,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     background: transparent;
     font-size: 100%;
     padding: 0;
-    vertical-align: baseline;
+    /*vertical-align: baseline;*/
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -114,14 +114,16 @@ a:hover
     border-bottom: 1px solid #FFFFFF;
     border-top: 1px solid #00B12C;
     background-color: #F2F2F2;
-    height: 26px;
+    /*height: 26px;*/
+    height: 40px;
 }
 
 #areaMenuPrincipal .item
 {
     padding: 10px 2px;
     border-width: 1px 0 0 1px;
-    height: 26px;
+    /*height: 26px;*/
+    height: 40px;
     border-style: solid;
     border-color: #FFFFFF;
     background-color: #DADADA;
@@ -130,14 +132,17 @@ a:hover
     text-align: center;
     vertical-align: middle;
     font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+    /*  Nuevo   */
+    font-size: 12px;
 }
 
 
 #areaMenuPrincipal .itemSubMenu
 {
-    padding: 10px 2px;
+    /*padding: 10px 2px;*/
     border-width: 1px 1px 1px 1px;
-    height: 26px;
+    /*height: 26px;*/
+    height: 32px;
     border-style: solid;
     border-color: #FFFFFF;
     background-color: #DADADA;
@@ -146,6 +151,8 @@ a:hover
     text-indent: 10px;
     text-align: left;
     font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
+    /*  Nuevo   */
+    font-size: 12px;
 }
 
 #areaMenuPrincipal .selected
@@ -167,6 +174,12 @@ a:hover
     background-color: #535655;
     font-family: 'Segoe UI Semilight' , 'Open Sans' , Verdana, Arial, Helvetica, sans-serif;
     font-size: 0.9em;
+}
+
+.grids 
+{
+    height:35px; 
+    font-size:14px;
 }
 
 .etiqueta
