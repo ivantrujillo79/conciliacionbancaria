@@ -312,11 +312,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 {
                     foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
                     {
-                        sDocumento = row.Cells[1].Text;
+                        sDocumento = row.Cells[1].Text.Trim();
                         dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
-                        //if (App.Consultas.ValidaPedidoEspecifico(Corporativo, Sucursal, sDocumento))
-                        //{
                         RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
                         RefNoConciliada.Monto = dMonto;
@@ -338,7 +336,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         _referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
-                        //}
                     }
                 }
             }
@@ -348,15 +345,17 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 {
                     foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
                     {
-                        sDocumento = row.Cells[1].Text;
+                        sDocumento = row.Cells[1].Text.Trim();
                         dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
                         ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
 
                         RefNoConciliadaPedido.PedidoReferencia = sDocumento;
                         RefNoConciliadaPedido.Total = dMonto;
-                        //RefNoConciliadaPedido.Pedido = 5;//Convert.ToInt32(sDocumento);
-                        //RefNoConciliadaPedido.//dMonto;
+                        RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
+                        RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
+                        RefNoConciliadaPedido.Pedido = Convert.ToInt32(sDocumento.Substring(5, sDocumento.Length - 5));
+                        
 
                         if (_referenciasPorConciliarExcel.Count > 0)
                         {

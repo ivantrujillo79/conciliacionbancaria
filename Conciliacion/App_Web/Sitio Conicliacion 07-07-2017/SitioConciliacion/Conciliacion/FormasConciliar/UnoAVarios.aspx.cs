@@ -1186,8 +1186,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                           Convert.ToInt32(ddlCriteriosConciliacion.SelectedItem.Value));
                         GenerarTablaConciliados();
                         LlenaGridViewConciliadas();
-                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('Ok'); });", true);
-                        //App.ImplementadorMensajes.MostrarMensaje("TRANSACCION CONCILIADA EXITOSAMENTE");
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacute; se ha realizado exitosamente'); });", true);
                     }
                     //else
                     //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");
