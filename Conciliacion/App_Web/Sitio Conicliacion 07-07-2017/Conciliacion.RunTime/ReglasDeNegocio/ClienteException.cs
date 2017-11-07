@@ -5,41 +5,40 @@
 //  Created on:      23-oct-2017 02:43:14 p.m.
 //  Original author: Desarollo_Transforma
 ///////////////////////////////////////////////////////////
-//using Estructural.Clases.Conciliacion.Migracion.Runtime.Validacion;
-using Estructural.Clases.Conciliacion.RunTime.ReglasDeNegocio;
-using ValidacionArchivosConciliacion;
 
-namespace Estructural.Clases.Conciliacion.RunTime.ReglasDeNegocio {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class ClienteException {
+using Estructural.Clases.Conciliacion.Migracion.Runtime.Validacion;
+/// <summary>
+/// 
+/// </summary>
+public class ClienteException
+{
 
-		/// <summary>
-		/// Instancia de la clase DetalleValidacion con el detalle del error
-		/// </summary>
-		private DetalleValidacion resultadovalidacion;
+    /// <summary>
+    /// Instancia de la clase DetalleValidacion con el detalle del error
+    /// </summary>
+    private DetalleValidacion resultadovalidacion = new DetalleValidacion();
 
-		public ClienteException(){
+    public ClienteException()
+    {
 
-		}
+    }
 
-		~ClienteException(){
+    ~ClienteException()
+    {
 
-		}
+    }
 
-		public virtual void Dispose(){
+    public virtual void Dispose()
+    {
 
-		}
+    }
 
-		/// <summary>
-		/// Instancia de la clase DetalleValidacion con el detalle del error
-		/// </summary>
-		public DetalleValidacion ResultadoValidacion{
-			get{return resultadovalidacion;}
-            set { resultadovalidacion = value; }
-        }
-
-	}//end ClienteException
-
-}//end namespace ReglasDeNegocio
+    /// <summary>
+    /// Instancia de la clase DetalleValidacion con el detalle del error
+    /// </summary>
+    public DetalleValidacion ResultadoValidacion
+    {
+        get { return resultadovalidacion; }
+        set { resultadovalidacion = value; }
+    }
+}//end ClienteException

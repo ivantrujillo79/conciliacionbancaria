@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Conciliacion.RunTime.ReglasDeNegocio;
-using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Data.SqlTypes;
+using System.Data;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -15,24 +16,29 @@ namespace Conciliacion.RunTime.DatosSQL
         public virtual void Dispose(){
 
 		}
-        public ClienteDatos(string Referencia, Conexion _conexion) {
 
-            this.Referencia = Referencia;
+        public ClienteDatos(string Referencia) {
 
-            bool ExisteCliente = ValidaClienteExiste(_conexion);
-
-            if (ExisteCliente)
+            try
             {
-                cConciliacion Conciliacion = new ConciliacionDatos(implementadorMensajes);
-                ObtienePedidosNoConciliadosCliente(Conciliacion, _conexion);
+                this.Referencia = Referencia;
             }
-
+            catch (Exception ex)
+            {
+                ClienteException ObjClienteException = new ClienteException();
+                ObjClienteException.ResultadoValidacion.CodigoError = 203;
+                ObjClienteException.ResultadoValidacion.Mensaje = ex.Message;
+                ObjClienteException.ResultadoValidacion.VerificacionValida = false;
+                throw ex;
+            }
         }
 
         public override bool ValidaClienteExiste(Conexion _conexion)
         {
             try
             {
+                ClienteException ObjClienteException = new ClienteException();
+
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
                 _conexion.Comando.CommandText = "spCCLConsultaVwDatosClientePorReferencia";
 
@@ -65,12 +71,20 @@ namespace Conciliacion.RunTime.DatosSQL
 
                     }
                     rdCliente.Close();
+
+                    ObjClienteException.ResultadoValidacion.CodigoError = 0;
+                    ObjClienteException.ResultadoValidacion.Mensaje = "Proceso realizado existosamente";
+                    ObjClienteException.ResultadoValidacion.VerificacionValida = true;
+
                     return true;
                 }
                 else
                 {
+                    ObjClienteException.ResultadoValidacion.CodigoError = 203;
+                    ObjClienteException.ResultadoValidacion.Mensaje = "Cliente no existe";
+                    ObjClienteException.ResultadoValidacion.VerificacionValida = false;
                     return false;
-                }             
+                }
             }
             catch (Exception ex)
             {
@@ -78,30 +92,63 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override List<ReferenciaNoConciliadaPedido> ObtienePedidosNoConciliadosCliente(cConciliacion Conciliacion, Conexion _conexion){
+        public override List<ReferenciaNoConciliadaPedido> ObtienePedidosNoConciliadosCliente(cConciliacion Conciliacion, Conexion _conexion)
+        {
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBConciliacionBusquedaPedido";
 
-            _conexion.Comando.CommandType = CommandType.StoredProcedure;
-            _conexion.Comando.CommandText = "spCCLConsultaVwDatosClientePorReferencia";
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Configuracion", System.Data.SqlDbType.SmallInt)).Value = 0;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt)).Value = Conciliacion.Corporativo;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", System.Data.SqlDbType.TinyInt)).Value = Conciliacion.Sucursal;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value = Conciliacion.Año;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = Conciliacion.Mes;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = Conciliacion.Folio;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Folio", System.Data.SqlDbType.Int)).Value = Conciliacion.Folio;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Secuencia", System.Data.SqlDbType.Int)).Value = 1;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Celula", System.Data.SqlDbType.SmallInt)).Value = this.Celula;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@ClienteSeleccion", System.Data.SqlDbType.Int)).Value = this.NumCliente;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@ClientePadre", System.Data.SqlDbType.Bit)).Value = 0;
+                SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                List<ReferenciaNoConciliadaPedido> lstRefenciaNoConciliada = new List<ReferenciaNoConciliadaPedido>();
 
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ReferenciaNoConciliadaPedido dato = new ReferenciaNoConciliadaPedidoDatos(
+                                Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]),
+                                Convert.ToString(reader["SucursalDes"]), Conciliacion.Año, Conciliacion.Folio, Conciliacion.Mes,
+                                Convert.ToInt32(reader["Celula"]), Convert.ToInt32(reader["AñoPed"]),
+                                Convert.ToInt32(reader["Pedido"]),
+                                Convert.ToInt32(reader["Cliente"]), Convert.ToString(reader["Nombre"]),
+                                Convert.ToInt32(reader["RemisionPedido"]), Convert.ToString(reader["SeriePedido"]),
+                                Convert.ToInt32(reader["FolioSat"]), Convert.ToString(reader["SerieSat"]),
+                                Convert.ToString(reader["Concepto"]), Convert.ToDecimal(reader["Monto"]),
+                                Convert.ToInt16(reader["FormaConciliacion"]), Convert.ToInt16(reader["StatusConcepto"]),
+                                Convert.ToString(reader["StatusConciliacion"]), Convert.ToDateTime(reader["FOperacion"]),
+                                Convert.ToDateTime(reader["FMovimiento"]), 0, this.implementadorMensajes);
+                        lstRefenciaNoConciliada.Add(dato);
+                    }
+                    reader.Close();
+                }
+                ClienteException ObjClienteException = new ClienteException();
+                ObjClienteException.ResultadoValidacion.CodigoError = 0;
+                ObjClienteException.ResultadoValidacion.Mensaje = "Proceso exitoso";
+                ObjClienteException.ResultadoValidacion.VerificacionValida = true;
 
-            _conexion.Comando.Parameters.Clear();
-            //_conexion.Comando.Parameters.Add(new SqlParameter("@Configuracion", System.Data.SqlDbType.SmallInt)).Value = Conciliacion.con;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt)).Value = Conciliacion.Corporativo;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", System.Data.SqlDbType.TinyInt)).Value = Conciliacion.Sucursal;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value = Conciliacion.Año;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = Conciliacion.Mes;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = Conciliacion.Folio;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@Folio", System.Data.SqlDbType.Int)).Value = Conciliacion.Folio;
-            //_conexion.Comando.Parameters.Add(new SqlParameter("@Secuencia", System.Data.SqlDbType.Int)).Value = Conciliacion.;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@Celula", System.Data.SqlDbType.SmallInt)).Value = this.Celula;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@ClienteSeleccion", System.Data.SqlDbType.Int)).Value = this.NumCliente;
-            //_conexion.Comando.Parameters.Add(new SqlParameter("@ClientePadre", System.Data.SqlDbType.Bit)).Value = Conciliacion.;
-            SqlDataReader rdCliente = _conexion.Comando.ExecuteReader();
-
-            List<ReferenciaNoConciliadaPedido> lstRefenciaNoConciliada = new List<ReferenciaNoConciliadaPedido>();
-
-            return lstRefenciaNoConciliada;
-
+                return lstRefenciaNoConciliada;
+            }
+            catch (Exception ex)
+            {
+                ClienteException ObjClienteException = new ClienteException();
+                ObjClienteException.ResultadoValidacion.CodigoError = 203;
+                ObjClienteException.ResultadoValidacion.Mensaje = ex.Message;
+                ObjClienteException.ResultadoValidacion.VerificacionValida = false;
+                throw ex;
+            }
         }
 
 	}//end ClienteDatos

@@ -6,7 +6,6 @@
 //  Original author: Desarollo_Transforma
 ///////////////////////////////////////////////////////////
 //using Estructural.Clases.Conciliacion.Migracion.Runtime.Validacion;
-using Estructural.Clases.Conciliacion.RunTime.ReglasDeNegocio;
 using ValidacionArchivosConciliacion;
 
 public class DispersorPagoException {
