@@ -187,7 +187,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
                     {
                         Pedido.MontoConciliado =
-                            Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+                        Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
                         Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
                         Pedido.PedidoActualizaSaldo(_conexion);
                         Pedido.ActualizaPagosPorAplicar(_conexion);

@@ -819,7 +819,16 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
             btnGuardarConciliacionTipo2.Visible = false;
             btnSiguienteExterno.Visible = true;
         }
+
+        if(ddlTipoConciliacion.SelectedItem.Text.Equals("CONCILIACION DE INGRESOS POR COBRANZA A ABONAR PEDIDO"))
+        {
+            tabNuevaConciliacion.Tabs[2].Visible = false;
+            btnGuardarConciliacionTipo2.Visible = true;
+            btnSiguienteExterno.Visible = false;
+        }
+
     }
+
     protected void grvAgregados_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.Pager && (grvAgregados.DataSource != null))

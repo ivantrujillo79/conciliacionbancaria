@@ -9,7 +9,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
-    class ReferenciaConciliadaPedidoDatos : ReferenciaConciliadaPedido
+    public class ReferenciaConciliadaPedidoDatos : ReferenciaConciliadaPedido
     {
           public ReferenciaConciliadaPedidoDatos(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion,
                                     int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
