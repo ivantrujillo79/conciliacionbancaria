@@ -1395,7 +1395,17 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     private void ActualizarPopUp_CargaArchivo()
     {
-        wucCargaExcelCyC.CuentaBancaria = Convert.ToInt32(ddlCuentaBancaria.SelectedItem.Text.Trim());
+        int CuentaBancaria = 0;
+        string sCuentaBancaria = "";
+
+        sCuentaBancaria = ddlCuentaBancaria.SelectedItem.Text.Replace(" ", "").Trim();
+
+        if (sCuentaBancaria.Length > 5)
+        {
+            sCuentaBancaria = sCuentaBancaria.Substring(sCuentaBancaria.Length - 5, 5);
+        }
+        
+        wucCargaExcelCyC.CuentaBancaria = CuentaBancaria;
     }
 
     protected void btnGuardarVista_Click(object sender, System.Web.UI.ImageClickEventArgs e)
