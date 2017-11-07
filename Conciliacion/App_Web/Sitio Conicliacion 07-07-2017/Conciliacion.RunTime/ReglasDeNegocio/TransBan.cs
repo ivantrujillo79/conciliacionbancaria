@@ -55,7 +55,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             lstPedidos.Add(Pedido);
                             ultimaCedula = false;
                             i = 1;
-
                         }
                         else
                         {
