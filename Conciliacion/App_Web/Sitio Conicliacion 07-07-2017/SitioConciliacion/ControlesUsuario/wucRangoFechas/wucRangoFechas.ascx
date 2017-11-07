@@ -27,13 +27,44 @@
         });
     }
 
-    function OnChangetxtFecha(valor) {
-        if (valor.value.trim() = "") {
-            valor.style.backgroundColor = "yellow";
+    function txtFecha_onblur(obj) {
+        //debugger;
+        if (document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").value.trim() == ""
+            &&
+            document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaFinal").value.trim() != "") {
+            obj.style.backgroundColor = "orange";
         }
-        else {
-            valor.style.backgroundColor = "";
+        else
+            if (document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaFinal").value.trim() == ""
+                &&
+                document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").value.trim() != "") {
+                obj.style.backgroundColor = "orange";
+            }
+            else {
+                document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").style.backgroundColor = "";
+                document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaFinal").style.backgroundColor = "";
+            }
+    }
+
+    function ValidaFiltro()
+    {
+        if (document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").value.trim() == ""
+            &&
+            document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaFinal").value.trim() != "") {
+            alert("Capture un periodo de fechas valido");
+            document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").focus();
+            return false
         }
+        else
+            if (document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaFinal").value.trim() == ""
+                &&
+                document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").value.trim() != "") {
+                alert("Capture un periodo de fechas valido");
+                document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaFinal").focus();
+                return false
+            }
+            else 
+                return true;
     }
 
 </script>
@@ -41,9 +72,9 @@
  <table style="width: 100%">
     <tr>
         <asp:Label ID="lbTextoDespliega" runat="server" Text=""></asp:Label>
-        <td style="width: 50%;">
+        <td style="width: 40%;">
             <asp:TextBox ID="txtFechaInicial" runat="server" CssClass="cajaTexto" Font-Size="10px" Width="85%"
-                onchange="javascript:OnChangetxtFecha(this)"></asp:TextBox>
+                onblur="txtFecha_onblur(this)"></asp:TextBox>
             <asp:CompareValidator ID="CompareValidator1" runat="server" 
                 Type="Date"
                 Operator="DataTypeCheck"
@@ -51,9 +82,9 @@
                 ErrorMessage="Capture una fecha valida">
             </asp:CompareValidator>
         </td>
-        <td style="width: 50%;">
+        <td style="width: 40%;">
             <asp:TextBox ID="txtFechaFinal" runat="server" CssClass="cajaTexto" Font-Size="10px" Width="85%"
-                onchange="javascript:OnChangetxtFecha(this)"></asp:TextBox>
+                onblur="txtFecha_onblur(this)"></asp:TextBox>
             <asp:CompareValidator ID="CompareValidator2" runat="server" 
                 Type="Date"
                 Operator="DataTypeCheck"
@@ -61,5 +92,9 @@
                 ErrorMessage="Capture una fecha valida">
             </asp:CompareValidator>
         </td>
+        <td style="width: 20%;">
+            <asp:Button ID="btAplicarFiltro" runat="server" Text="Filtrar" OnClientClick="return ValidaFiltro();" OnClick="btAplicarFiltro_Click" />
+        </td>
+
     </tr>
 </table>

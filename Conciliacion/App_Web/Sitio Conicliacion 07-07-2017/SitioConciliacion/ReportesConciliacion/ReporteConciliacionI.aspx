@@ -3,6 +3,8 @@
 
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register Src="~/ControlesUsuario/wucRangoFechas/wucRangoFechas.ascx" TagPrefix="uc1" TagName="wucRangoFechas" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     Reporte Tesoreria I
 </asp:Content>
@@ -10,9 +12,13 @@
     <!--MsDropdown CSS-->
     <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
     <!--Libreria jQuery-->
+    
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
     </script>
+
+    <%--<script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>--%>
+
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     
@@ -80,16 +86,7 @@
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
                 }
             });
-            $("#<%=txtFechaFactura.ClientID%>").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (selectedDate) {
-                    $("#<%=txtFInicial.ClientID%>").datepicker("option", "minDate", selectedDate);
-                }
-                        });
-
-                $("#<%=txtFechaFacturaBusqueda.ClientID%>").datepicker({
+            $("#<%=txtFechaFacturaBusqueda.ClientID%>").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
@@ -162,8 +159,8 @@
 
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
             if (tecla === 13) {
+                txtClienteEnSalida(obj);
                 var n = obj.id.replace('txtCliente', 'btnBuscarPedido');
-                //document.getElementById('ctl00_contenidoPrincipal_grvConciliacionCompartida_ctl02_grvMovimientosConciliadosMovExterno_ctl02_btnBuscarPedido').click();
                 document.getElementById(n).click();
             }
             return ((tecla > 47 && tecla < 58) || tecla == 8);
@@ -840,11 +837,11 @@
 												<asp:ListItem Value="PADREL">Cliente Padre</asp:ListItem>
 											</asp:RadioButtonList>
 										</td>
+
 										<td style="width: 90%; padding: 5px 5px 5px 5px"  colspan="2" align="left">
-											Fecha Factura:
-											<asp:TextBox ID="txtFechaFactura" runat="server" CssClass="cajaTexto" Font-Size="12px"
-											Width="90%">
-											</asp:TextBox>
+                                            
+                                            <uc1:wucRangoFechas runat="server" ID="wucRangoFechas" />
+
 										</td>
 									
 										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="3">

@@ -87,6 +87,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     Response.Cache.SetExpires(DateTime.Now);
                 }
             }
+
+            wucRangoFechas.GridViewFiltrar = grvPedidos;
+            wucRangoFechas.CampoFiltrar = "FSuministro";
+            wucRangoFechas.TextoDespliega = "Fecha Factura:";
+            wucRangoFechas.VarSesionGridNombre = "TAB_PEDIDOS";
+
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -99,7 +105,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 Carga_StatusConcepto(gcu.GrupoConciliacionId);
                 this.ddlEmpresa.Focus();
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
-                
+
             }
             else
             {
@@ -396,10 +402,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     }
     protected void grvConciliacionCompartida_RowCreated(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType != DataControlRowType.DataRow) return;
-        e.Row.Attributes["onmouseover"] = string.Format("RowMouseOver({0});", e.Row.RowIndex); 
-        e.Row.Attributes["onmouseout"] = string.Format("RowMouseOut({0});", e.Row.RowIndex);
-        e.Row.Attributes["onclick"] = string.Format("RowSelect({0});", e.Row.RowIndex);
+        if (e.Row.RowType != DataControlRowType.DataRow) return;  //IMPORTANTE DESCOMENTAR
+        //e.Row.Attributes["onmouseover"] = string.Format("RowMouseOver({0});", e.Row.RowIndex); 
+        //e.Row.Attributes["onmouseout"] = string.Format("RowMouseOut({0});", e.Row.RowIndex);
+        //e.Row.Attributes["onclick"] = string.Format("RowSelect({0});", e.Row.RowIndex);
     }
     protected void grvConciliacionCompartida_RowDataBound(object sender,
         System.Web.UI.WebControls.GridViewRowEventArgs e)
@@ -868,7 +874,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //    rfc.FolioConciliacion,
             //    rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rblClienteTipo.SelectedItem.Value.Equals("PADRE"));
 
-            Consulta_FacturasManual(clienteBuscar, rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"), txtFacturaBusuqeda.Text, (txtFechaFacturaBusqueda.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFechaFacturaBusqueda.Text)));
+            Consulta_FacturasManual(clienteBuscar, 
+                                    rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"), 
+                                    txtFacturaBusuqeda.Text, 
+                                    (txtFechaFacturaBusqueda.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFechaFacturaBusqueda.Text)));
             GenerarTablaFacturas();
             LlenaGridViewFacturasManuales();
         }
@@ -888,7 +897,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         DataTable tablaFacturasManuales = HttpContext.Current.Session["FACTURAS_CONSULTAR"] as DataTable;
         //grvPedidos.PageIndex = 0;
         grvPedidosFacturados.DataSource = tablaFacturasManuales;
-        grvPedidosFacturados.DataBind();
+        grvPedidosFacturados.DataBind();        
     }
 
 
@@ -2015,7 +2024,14 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             Consulta_PedidosFactura(rfc.CorporativoConciliacion, rfc.SucursalConciliacion, rfc.AñoConciliacion, rfc.MesConciliacion,
                 rfc.FolioConciliacion,
-                rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rblClienteTipo.SelectedItem.Value.Equals("PADREL"), txtFactura.Text, (txtFechaFactura.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFechaFactura.Text)));
+                rfc.FolioExterno, 
+                rfc.SecuenciaExterno, 
+                clienteBuscar, 
+                rblClienteTipo.SelectedItem.Value.Equals("PADREL"), 
+                txtFactura.Text,
+                //(txtFechaFactura.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFechaFactura.Text))                
+                (wucRangoFechas.FFinal.ToString() == "" ? DateTime.MinValue : wucRangoFechas.FFinal)
+                );
 
             GenerarTablaPedidos();
             LlenaGridViewPedidos();
