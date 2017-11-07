@@ -182,6 +182,10 @@ a:hover
     font-size:14px;
 }
 
+div.ui-datepicker {
+    font-size: 92%;
+}
+
 .etiqueta
 {
     color: #666;
