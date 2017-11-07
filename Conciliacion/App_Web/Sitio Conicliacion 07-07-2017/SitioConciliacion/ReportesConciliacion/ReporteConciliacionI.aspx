@@ -7,30 +7,6 @@
     Reporte Tesoreria I
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
-    <!--MsDropdown CSS-->
-    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
-    <!--Libreria jQuery-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-    </script>
-    <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
-    
-    <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
-        rel="stylesheet" type="text/css" />
-    
-    <!-- Estilo de AJAX Accordion-->
-    <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
-    <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
-    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
-    <script src="../App_Scripts/Common.js" type="text/javascript"></script>
-    <!--MsDropdown -->
-    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
-    <!--    Bootstrap CSS & JS      -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
-    <link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />
-    <script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
     
@@ -223,7 +199,32 @@
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
 
+    <!--Libreria jQuery-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
     <script src="../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+        <!--MsDropdown CSS-->
+    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
+
+    <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <!-- Estilo de AJAX Accordion-->
+    <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
+    <!-- Script se utiliza para el Scroll del GridView-->
+    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
+    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/Common.js" type="text/javascript"></script>
+    <!--MsDropdown -->
+    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
+    <link rel="Stylesheet" href="../App_Scripts/Bootstrap/css/bootstrap.min.css" />
+    <script src="../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+    
+
     <script type="text/javascript" language="javascript">
         
         function ShowModalPopup() {
@@ -1264,8 +1265,9 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </asp:Panel>
-   <!--
-     <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upConciliacionCompartida">
+   
+ 
+    <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
@@ -1273,5 +1275,5 @@
     </asp:UpdateProgress>
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
-    </asp:ModalPopupExtender>-->
+    </asp:ModalPopupExtender>
 </asp:Content>
