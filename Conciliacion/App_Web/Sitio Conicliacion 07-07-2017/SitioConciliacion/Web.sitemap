@@ -35,6 +35,9 @@
         </siteMapNode>
         <siteMapNode title="Tipo de archivo por cuenta" description="Acceso al catalogo de Status Concepto" resourceKey="21" url="~/Catalogos/TipoMovimientoPorCuenta.aspx">
         </siteMapNode>
+        <siteMapNode title="No. de documentos por TransBan" description="Acceso al catalogo de No. de documentos por TransBan" resourceKey="21" url="~/Catalogos/ConfiguracionEnDocumentosTransban.aspx">
+        </siteMapNode>
+
       </siteMapNode>
 
       <siteMapNode title="Importación" description="Catálogos para configurar la Importación" resourceKey="24" url="">
