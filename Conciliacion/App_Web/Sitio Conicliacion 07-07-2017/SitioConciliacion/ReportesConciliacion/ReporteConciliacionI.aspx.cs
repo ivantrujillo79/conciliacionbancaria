@@ -1950,11 +1950,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             string clienteBuscar = hdfClienteBuscar.Value;
             if (!Consulta_ClienteValido(clienteBuscar)) return;
 
-            ScriptManager.RegisterClientScriptBlock(this.upConciliacionCompartida,
-                                            upConciliacionCompartida.GetType(),
-                                            "Scroll",
-                                            "grvPedidosScroll()",
-                                            true);
+            //ScriptManager.RegisterClientScriptBlock(this.upConciliacionCompartida,
+            //                                upConciliacionCompartida.GetType(),
+            //                                "Scroll",
+            //                                "grvPedidosScroll()",
+            //                                true);
             ReferenciaConciliadaCompartida rfc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
             lblMontoExterno.Text = lblMontoResto.Text = rfc.MontoExterno.ToString("C2");//Colocar el monto seleccionado en el label del MOdal
 
@@ -1987,11 +1987,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             string clienteBuscar = hdfClienteBuscar.Value;
             if (!Consulta_ClienteValido(clienteBuscar)) return;
 
-            ScriptManager.RegisterClientScriptBlock(this.upConciliacionCompartida,
-                                            upConciliacionCompartida.GetType(),
-                                            "Scroll",
-                                            "grvPedidosScroll()",
-                                            true);
+            //ScriptManager.RegisterClientScriptBlock(this.upConciliacionCompartida,
+            //                                upConciliacionCompartida.GetType(),
+            //                                "Scroll",
+            //                                "grvPedidosScroll()",
+            //                                true);
             ReferenciaConciliadaCompartida rfc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
             lblMontoExterno.Text = lblMontoResto.Text = rfc.MontoExterno.ToString("C2");//Colocar el monto seleccionado en el label del MOdal
             

@@ -83,7 +83,7 @@ public partial class ControlesUsuario_wucRangoFechas_wucRangoFechas : System.Web
             m = Convert.ToDateTime(txtFechaFinal.Text).Month;
             d = Convert.ToDateTime(txtFechaFinal.Text).Day;
             string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, CampoFiltrar + " <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
-            dv.RowFilter = Desde +" and "+ Hasta;
+            dv.RowFilter = Desde + " and " + Hasta;
         }
         else
             dv.RowFilter = "";

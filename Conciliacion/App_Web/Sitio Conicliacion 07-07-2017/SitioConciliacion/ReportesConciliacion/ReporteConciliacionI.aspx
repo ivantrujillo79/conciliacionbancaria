@@ -98,26 +98,7 @@
 
         }
 
-        function gridviewScroll() {
-            $('#<%=grvConciliacionCompartida.ClientID%>').gridviewScroll({
-                width: 1200,
-                height: 500,
-                freezesize: 5,
-                arrowsize: 30,
-                varrowtopimg: '../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                varrowbottomimg: '../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                harrowleftimg: '../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                harrowrightimg: '../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                headerrowcount: 1,
-                startVertical: $("#<%=hfCompartidaSV.ClientID%>").val(),
-                startHorizontal: $("#<%=hfCompartidaSH.ClientID%>").val(),
-                onScrollVertical: function (delta) { $("#<%=hfCompartidaSV.ClientID%>").val(delta); },
-                onScrollHorizontal: function (delta) { $("#<%=hfCompartidaSH.ClientID%>").val(delta); }
-            });
-        }
-    </script>
-    <script type="text/javascript">
-         function grvPedidosScroll(){
+        function grvPedidosScroll() {
               $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width:580,
                     height: 300,
@@ -128,9 +109,11 @@
                     harrowleftimg: '../App_Scripts/ScrollGridView/Images/arrowhl.png',
                     harrowrightimg: '../App_Scripts/ScrollGridView/Images/arrowhr.png',
                     headerrowcount: 1
-                
                 });
          }
+
+        //aqui va lo que corte
+        
     </script>
  <script type="text/javascript">
      function FormatToCurrency(num) {
@@ -1261,7 +1244,7 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </asp:Panel>
-   <!--
+   
      <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upConciliacionCompartida">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
@@ -1270,5 +1253,5 @@
     </asp:UpdateProgress>
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
-    </asp:ModalPopupExtender>-->
+    </asp:ModalPopupExtender>
 </asp:Content>

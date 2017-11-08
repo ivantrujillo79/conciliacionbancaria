@@ -93,7 +93,11 @@
             </asp:CompareValidator>
         </td>
         <td style="width: 20%;">
-            <asp:Button ID="btAplicarFiltro" runat="server" Text="Filtrar" OnClientClick="return ValidaFiltro();" OnClick="btAplicarFiltro_Click" />
+            <asp:Button ID="btAplicarFiltro" runat="server" 
+                Text="Filtrar" 
+                OnClientClick="return ValidaFiltro();" 
+                OnClick="btAplicarFiltro_Click" 
+                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"/>
         </td>
 
     </tr>
