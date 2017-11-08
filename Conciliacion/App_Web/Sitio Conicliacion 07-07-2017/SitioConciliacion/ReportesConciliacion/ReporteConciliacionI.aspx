@@ -1267,7 +1267,7 @@
     </asp:Panel>
    
  
-    <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="">
+    <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upConciliacionCompartida">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />

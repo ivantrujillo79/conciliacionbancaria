@@ -1381,7 +1381,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 GenerarTablaConciliacionCompartida();
                 LlenaGridViewConciliacionCompartida();
                 ActualizarPopUp_CargaArchivo();
-                //mpeLoading.Hide();
+                mpeLoading.Hide();
             }
 
             else
