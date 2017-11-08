@@ -31,7 +31,8 @@ namespace CatalogoConciliacion
         private static TipoConciliacionUsuario tipoConciliacionUsuario;
         private static ReferenciaAComparar referenciaAComparar;
         private static CuentaTransferencia referenciaCuentaTransferencia;
-        
+        private static ParametroAplicacion parametro;
+
 
 
         private static IMensajesImplementacion implementadorMensajes;
@@ -144,6 +145,16 @@ namespace CatalogoConciliacion
             }
         }
 
+        public static ParametroAplicacion Parametro
+        {
+            get
+            {
+                if (parametro == null)
+                    parametro = new ParametroAplicacionDatos(App.ImplementadorMensajes);
+                return parametro;
+            }
+        }
+
         public static Consultas Consultas
         {
             get
@@ -153,23 +164,12 @@ namespace CatalogoConciliacion
                 return consultas;
 
             }
-        }
-
-        public static Consultas ConsultasDos
-        {
-            get
-            {
-                if (consultas == null)
-                    consultas = new ConsultasDatos();
-                return consultas;
-
-            }
-        }
-
+        }      
 
 
 
         private static string cadenaconexion;
+      
 
         public static string CadenaConexion
         {
