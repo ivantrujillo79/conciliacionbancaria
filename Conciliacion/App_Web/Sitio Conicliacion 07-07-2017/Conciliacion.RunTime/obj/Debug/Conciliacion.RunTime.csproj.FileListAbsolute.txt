@@ -46,3 +46,8 @@ C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_We
 C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\obj\Debug\Conciliacion.RunTime.csprojResolveAssemblyReference.cache
 C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\obj\Debug\Conciliacion.RunTime.dll
 C:\Users\Public\Documents\Proyectos\Conciliacion bancaria GM\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\obj\Debug\Conciliacion.RunTime.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\bin\Debug\Conciliacion.RunTime.dll
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\bin\Debug\Conciliacion.RunTime.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\obj\Debug\Conciliacion.RunTime.dll
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\obj\Debug\Conciliacion.RunTime.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTime\obj\Debug\Conciliacion.RunTime.csprojResolveAssemblyReference.cache

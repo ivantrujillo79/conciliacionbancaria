@@ -21,3 +21,8 @@ C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliaci
 C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
 C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
 C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csprojResolveAssemblyReference.cache

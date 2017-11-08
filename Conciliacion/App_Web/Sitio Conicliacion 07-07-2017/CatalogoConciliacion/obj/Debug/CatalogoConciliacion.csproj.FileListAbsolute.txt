@@ -79,3 +79,8 @@ C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliaci
 C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Debug\CatalogoConciliacion.csprojResolveAssemblyReference.cache
 C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Debug\CatalogoConciliacion.dll
 C:\Users\Desarollo_Transforma\Google Drive\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Debug\CatalogoConciliacion.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\bin\CatalogoConciliacion.dll
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\bin\CatalogoConciliacion.pdb
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Debug\CatalogoConciliacion.csprojResolveAssemblyReference.cache
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Debug\CatalogoConciliacion.dll
+C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Debug\CatalogoConciliacion.pdb
