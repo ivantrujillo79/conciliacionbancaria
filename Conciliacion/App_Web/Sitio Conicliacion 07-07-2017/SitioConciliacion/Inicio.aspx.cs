@@ -123,10 +123,10 @@ public partial class Inicio : System.Web.UI.Page
                         lnkInformeM.Attributes.CssStyle.Add("opacity", "1");
                     }
                 }
-                    if (statusConciliacion.Equals("CONCILIACION ABIERTA"))
+                if (statusConciliacion.Equals("CONCILIACION ABIERTA"))
                 {
-                    lnkVerM.Attributes.Add("onclick", "return true");
-                    lnkVerM.Attributes.CssStyle.Add("opacity", "0.7");
+                    lnkVerM.Attributes.Add("onclick", "return fnVerConciliacion()");
+                    lnkVerM.Attributes.CssStyle.Add("opacity", "1");
 
                     if (operaciones.EstaHabilitada(30, "Aplicar pagos"))//&& tipoConciliacion == 2)
                     {
