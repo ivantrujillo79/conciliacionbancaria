@@ -710,7 +710,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)).ToString());
         string parametro = parametros.ValorParametro(modulo, "Cuenta Sobregiro");
 
-        if (ddlTipoConciliacion.SelectedItem.Text.Equals("CONCILIACION DE INGRESOS Y EGRESOS SIN ARCHIVO") || ddlTipoConciliacion.SelectedItem.Text.Equals("CONCILIACION DE INGRESOS POR COBRANZA A ABONAR") || ddlCuentaBancaria.SelectedItem.Text.Trim().Equals(parametro.Trim()))
+        if (ddlTipoConciliacion.SelectedItem.Text.Equals("CONCILIACION DE INGRESOS POR COBRANZA A ABONAR PEDIDO") || ddlTipoConciliacion.SelectedItem.Text.Equals("CONCILIACION DE INGRESOS Y EGRESOS SIN ARCHIVO") || ddlTipoConciliacion.SelectedItem.Text.Equals("CONCILIACION DE INGRESOS POR COBRANZA A ABONAR") || ddlCuentaBancaria.SelectedItem.Text.Trim().Equals(parametro.Trim()))
         {
             if (AgregarArchivoExterno())
             {
