@@ -349,6 +349,9 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                             cmd2.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.SmallInt).Value = DBNull.Value;
                         else
                             cmd2.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.SmallInt).Value = tablaDestinoDetalle.IdMotivoNoConciliado;
+
+                        cmd2.Parameters.Add("@TipoFuenteInformacion", System.Data.SqlDbType.SmallInt).Value = tabla.IdTipoFuenteInformacion;
+
                         cmd2.ExecuteNonQuery();
                         secuencia++;
                     }
