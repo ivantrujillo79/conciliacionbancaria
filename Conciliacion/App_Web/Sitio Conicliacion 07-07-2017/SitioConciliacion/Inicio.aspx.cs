@@ -123,6 +123,25 @@ public partial class Inicio : System.Web.UI.Page
                         lnkInformeM.Attributes.CssStyle.Add("opacity", "1");
                     }
                 }
+                    if (statusConciliacion.Equals("CONCILIACION ABIERTA"))
+                {
+                    lnkVerM.Attributes.Add("onclick", "return true");
+                    lnkVerM.Attributes.CssStyle.Add("opacity", "0.7");
+
+                    if (operaciones.EstaHabilitada(30, "Aplicar pagos"))//&& tipoConciliacion == 2)
+                    {
+                        lnkPagosM.Attributes.Add("onclick", "return fnPagos()");
+                        lnkPagosM.Attributes.CssStyle.Add("opacity", "1");
+                    }
+
+                    //Validacion Informe
+                    if (operaciones.EstaHabilitada(30, "Informe contabilidad") && tipoConciliacion == 2)
+                    {
+                        lnkInformeM.Attributes.Add("onclick", "return fnInforme()");
+                        lnkInformeM.Attributes.CssStyle.Add("opacity", "1");
+                    }
+                }
+                        /*
                 else
                 {
                     lnkVerM.Attributes.Add("onclick", "return fnVerConciliacion()");
@@ -133,7 +152,7 @@ public partial class Inicio : System.Web.UI.Page
 
                     lnkInformeM.Attributes.Add("onclick", "return false");
                     lnkInformeM.Attributes.CssStyle.Add("opacity", "0.7");
-                }
+                }*/
             }
 
         }

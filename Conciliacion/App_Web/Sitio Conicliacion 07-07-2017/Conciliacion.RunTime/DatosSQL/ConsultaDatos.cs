@@ -4237,7 +4237,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToInt32(reader["Cliente"]),
                                                                 Convert.ToString(reader["Nombre"]),
                                                                 Convert.ToString(reader["PedidoReferencia"]),
-                                                                Convert.ToDecimal(reader["Saldo"]),
+                                                                Convert.ToDecimal(reader["Retiro"]),
                                                                 Convert.ToInt32(reader["AñoExterno"]),
                                                                 this.implementadorMensajes);
                         datos.Add(dato);
@@ -4439,11 +4439,26 @@ namespace Conciliacion.RunTime.DatosSQL
                         movimiento.Consecutivo = Convert.ToInt16(reader["Consecutivo"]);
                         movimiento.Folio = Convert.ToInt32(reader["Folio"]);
                         movimiento.FMovimiento = Convert.ToDateTime(reader["FMovimiento"]);
-                        movimiento.Total = Convert.ToDecimal(reader["Total"]);
+                        if (reader["Total"] != System.DBNull.Value)
+                        {
+                            movimiento.Total = Convert.ToDecimal(reader["Total"]);    
+                        }
+                        else
+                        {
+                            movimiento.Total = 0;
+                        }
+                        
                         movimiento.Usuario = reader["Usuario"].ToString();
                         movimiento.Empleado = Convert.ToInt32(reader["Empleado"]);
                         movimiento.Observaciones = reader["Observaciones"].ToString();
-                        movimiento.SaldoAFavor = Convert.ToDecimal(reader["SaldoAFavor"]);
+                        if (reader["SaldoAFavor"] != System.DBNull.Value)
+                        {
+                            movimiento.SaldoAFavor = Convert.ToDecimal(reader["SaldoAFavor"]);
+                        }
+                        else
+                        {
+                            movimiento.SaldoAFavor = 0;
+                        }
                         movimiento.ListaCobros = ConsultaChequeTarjetaAltaModifica(corporativo, sucursal, año, mes,
                                                                                    folio);
                         movimiento.ListaPedidos = ConsultaPagosPorAplicar(corporativo, sucursal, año, mes, folio);

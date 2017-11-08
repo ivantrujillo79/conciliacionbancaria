@@ -117,7 +117,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
-                if (tipoConciliacion == 2)
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 {
 
                     lblPedidos.Visible = true;

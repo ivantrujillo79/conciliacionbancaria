@@ -306,7 +306,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
                 conexion.Comando.Transaction.Commit();
 
-                this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
+                //this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
 
                 resultado = true;
             }

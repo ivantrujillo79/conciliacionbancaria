@@ -573,7 +573,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             Parametros p = Session["Parametros"] as Parametros;
             AppSettingsReader settings = new AppSettingsReader();
             short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
-            
+
+            //Leer la InfoActual Conciliacion
+            cargarInfoConciliacionActual();
+            Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
 
             int MaxDocumentos = Convert.ToInt16(p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN"));
@@ -582,8 +586,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             TransBan objTransBan = new TransBan();
            
 
-            //Leer la InfoActual Conciliacion
-            cargarInfoConciliacionActual();
+           
 
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
