@@ -226,7 +226,8 @@ div.ui-datepicker {
 {
     margin-top: 5px;
     padding: 4px;
-    font-size: 10px;
+    /*font-size: 10px;*/
+    font-size: 10.3px;
     border: 1px solid #D6D3D1;
 }
 .dropDownPequeño

@@ -672,7 +672,7 @@
                                 </td>
                                 <td class="bg-color-azulClaro" style="width: 5%">
                                     <asp:Image ID="imgGuardarParcial" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono" Width="30px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
@@ -696,7 +696,7 @@
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono" Width="30px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
@@ -746,7 +746,7 @@
                                     <td class="etiqueta lineaVertical centradoMedio bg-color-naranja" style="width: 5%; padding: 5px 5px 5px 5px"
                                         id="tdVerINEX" runat="server">
                                         <asp:ImageButton runat="server" ID="btnVerInternos" ToolTip="VER INTERNOS" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Ir.png"
-                                            Width="30px" OnClick="btnVerInternos_Click" ValidationGroup="VariosUno" />
+                                            Width="20px" Height="20px" OnClick="btnVerInternos_Click" ValidationGroup="VariosUno" />
                                         <asp:ImageButton runat="server" ID="btnRegresarExternos" ToolTip="REGRESAR EXTERNOS"
                                             ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Regresar.png" Width="30px"
                                             Visible="false" OnClick="btnRegresarExternos_Click" />
@@ -936,8 +936,8 @@
                                     </td>
                                     <td style="width: 50%;">
                                         <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                            ToolTip="FILTRAR FMovimiento" Width="16px"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                            ToolTip="FILTRAR FMovimiento" Width="25px"
                                             OnClick="btnFiltraCliente_Click" />
                                     </td>
                                 </tr>
@@ -967,13 +967,13 @@
                                     </td>
                                     <td rowspan="2" style="vertical-align: top; width: 12.5%;">
                                         <asp:ImageButton ID="btnRangoFechasFO" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                             OnClick="btnRangoFechasFO_Click" ToolTip="FILTRAR FOperacion" ValidationGroup="vgFOperacion"
-                                            Width="16px" />
+                                            Width="25px" />
                                         <asp:ImageButton ID="btnRangoFechasFS" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                             OnClick="btnRangoFechasFS_Click" ToolTip="FILTRAR FSuminstro" ValidationGroup="vgFSuministro"
-                                            Width="16px" />
+                                            Width="25px" />
                                     </td>
                                     <td class="lineaVertical" rowspan="2"></td>
                                     <td rowspan="2" style="vertical-align: top; width: 12.5%;">
@@ -990,9 +990,9 @@
                                     </td>
                                     <td rowspan="2" style="vertical-align: top; width: 12.5%;">
                                         <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="16px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                             OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento"
-                                            Width="16px" />
+                                            Width="25px" />
                                     </td>
                                 </tr>
 
