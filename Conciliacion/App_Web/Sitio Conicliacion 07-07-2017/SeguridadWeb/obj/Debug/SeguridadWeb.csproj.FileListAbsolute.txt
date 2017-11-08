@@ -25,4 +25,3 @@ C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicli
 C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
 C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
 C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
-C:\Proyectos_Transforma\Metropolitano\Branch1\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csprojResolveAssemblyReference.cache
