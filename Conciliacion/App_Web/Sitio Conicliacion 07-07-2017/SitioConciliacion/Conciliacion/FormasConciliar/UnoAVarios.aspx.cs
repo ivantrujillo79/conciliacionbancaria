@@ -1165,7 +1165,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             GenerarTablaAgregadosArchivosInternos(rfExterno, tipoConciliacion);
                             ActualizarTotalesAgregados();
 
-                            if (tipoConciliacion == 2)
+                            if (tipoConciliacion == 2 || tipoConciliacion == 6)
                                 ConsultarPedidosInternos();
                             else
                             {
