@@ -79,6 +79,7 @@
     <Compile Include="Datos\GrupoConciliacionDatos.cs" />
     <Compile Include="Datos\GrupoConciliacionUsuarioDatos.cs" />
     <Compile Include="Datos\MotivoNoConciliadoDatos.cs" />
+    <Compile Include="Datos\ParametroAplicacionDatos.cs" />
     <Compile Include="Datos\TipoMovimientoCuentaDatos.cs" />
     <Compile Include="Datos\ReferenciaACompararDatos.cs" />
     <Compile Include="Datos\TipoConciliacionUsuarioDatos.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="ReglasNegocio\MotivoNoConciliado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReglasNegocio\ReferenciaAComparar.cs" />
+    <Compile Include="ReglasNegocio\ParametroAplicacion.cs" />
     <Compile Include="ReglasNegocio\TipoMovimientoCuenta.cs" />
     <Compile Include="ReglasNegocio\TipoConciliacionUsuario.cs" />
   </ItemGroup>
