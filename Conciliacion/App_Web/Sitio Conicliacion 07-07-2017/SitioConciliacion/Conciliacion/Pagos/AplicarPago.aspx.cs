@@ -593,10 +593,13 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
+                objMovimientoCaja.Total = objMovimientoCaja.ListaPedidos.Sum(x => x.Total);
+                objMovimientoCaja.SaldoAFavor = objMovimientoCaja.ListaCobros.Sum(x => x.Saldo);
+
                 if (objMovimientoCaja.Guardar())
                 {
 
-                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
+                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
                     RelacionCobranzaException rCobranzaE = null;
                     try

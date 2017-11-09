@@ -23,8 +23,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 List<MovimientoCaja> lstMovimientoCajaDatos = new List<MovimientoCaja>();
                 List<ReferenciaConciliadaPedido> lstPedidos = new List<ReferenciaConciliadaPedido>();
                 List<ReferenciaConciliadaPedido> lstPedidosOrdenada = new List<ReferenciaConciliadaPedido>();
+                List<Cobro> lstCobros = new List<Cobro>();
 
                 lstPedidosOrdenada = ObjMovimientoCajaDatos.ListaPedidos.OrderBy(s => s.Cliente).ToList();
+                foreach (Cobro objCobro in ObjMovimientoCajaDatos.ListaCobros)
+                {
+                    lstCobros.Add(objCobro);  
+                }
+                
 
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
@@ -47,12 +53,28 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                                                 ObjMovimientoCajaDatos.SaldoAFavor,
                                                                 ObjMovimientoCajaDatos.ListaCobros,
                                                                 implementadorMensajes);
+
+                            
                             lstPedidos.ForEach(c => objmovimientocajadatos.ListaPedidos.Add(c));
 
                             lstMovimientoCajaDatos.Add(objmovimientocajadatos);
 
                             lstPedidos.Clear();
                             lstPedidos.Add(Pedido);
+
+                            var ListaDistintosClientes = objmovimientocajadatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
+
+                            List<Conciliacion.RunTime.ReglasDeNegocio.Cobro> buffCobro = new List<Conciliacion.RunTime.ReglasDeNegocio.Cobro>();
+
+                            foreach (var clientedisti in ListaDistintosClientes)
+                            {
+                                buffCobro = lstCobros.Where(X => X.Cliente == clientedisti).ToList();    
+                            }
+                            
+                            objmovimientocajadatos.ListaCobros.Clear();
+                            buffCobro.ForEach(x=> objmovimientocajadatos.ListaCobros.Add(x));
+
+
                             ultimaCedula = false;
                             i = 1;
 
@@ -84,6 +106,24 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     ObjMovimientoCajaDatos.ListaCobros,
                                     implementadorMensajes);
                     lstPedidos.ForEach(c => objmovimientocajadatos.ListaPedidos.Add(c));
+
+                    /*List<Cobro> buffCobroFin = lstCobros.Where(X => X.Cliente == lstPedidos[0].Cliente).ToList();
+                    objmovimientocajadatos.ListaCobros.Clear();
+                    objmovimientocajadatos.ListaCobros = buffCobroFin;*/
+                    var ListaDistintosClientes1 = objmovimientocajadatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
+
+                    List<Conciliacion.RunTime.ReglasDeNegocio.Cobro> buffCobro1 = new List<Conciliacion.RunTime.ReglasDeNegocio.Cobro>();
+
+                    foreach (var clientedisti in ListaDistintosClientes1)
+                    {
+                        buffCobro1 = lstCobros.Where(X => X.Cliente == clientedisti).ToList();
+                    }
+
+                    objmovimientocajadatos.ListaCobros.Clear();
+                    //objmovimientocajadatos.ListaCobros = buffCobro1;
+                    buffCobro1.ForEach(x => objmovimientocajadatos.ListaCobros.Add(x));
+
+
                     lstMovimientoCajaDatos.Add(objmovimientocajadatos);
                 }
                 else
