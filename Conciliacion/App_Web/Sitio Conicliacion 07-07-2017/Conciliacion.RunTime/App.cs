@@ -246,6 +246,18 @@ namespace Conciliacion.RunTime
 
         }
 
+        private static Cliente cliente;
+        public static Cliente Cliente
+        {
+            get
+            {
+                if (cliente == null)
+                    cliente = new ClienteDatos(App.ImplementadorMensajes);
+                return cliente;
+            }
+
+        }
+
         private static string cadenaconexion;
        
         

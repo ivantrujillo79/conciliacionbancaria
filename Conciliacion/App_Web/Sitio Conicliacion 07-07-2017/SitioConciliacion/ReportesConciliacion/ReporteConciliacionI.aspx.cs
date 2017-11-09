@@ -107,10 +107,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
 
             }
-            else
-            {
-                MostrarPopUp_ConciliarPedido();
-            }
+            //else
+            //{
+            //    MostrarPopUp_ConciliarPedido();
+            //}
         }
 
         catch (Exception ex)
@@ -124,7 +124,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     /// despues de que se cierra con el PostBack 
     /// </summary>
     private void MostrarPopUp_ConciliarPedido()
-    {
+    { 
         if (hfVisibleConciliar.Value == "1")
         {
             popUpConciliarMovPedido.Show();
@@ -1896,9 +1896,20 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, verifique su consulta.");
                 return;
             }
-            BuscarPedidosClientes();
+
+            Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+            Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
+            conexion.AbrirConexion(true);
+            objCliente.Referencia = clienteBuscar.ToString();
+            if (objCliente.ValidaClienteExiste(conexion))
+            {
+                BuscarPedidosClientes();
+            }
+            else
+                App.ImplementadorMensajes.MostrarMensaje("El número de cliente introducido no existe, por favor verifique");
+
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
-            
+
         }
         catch (Exception ex)
         {
