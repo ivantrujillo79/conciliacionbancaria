@@ -108,7 +108,7 @@
                     <asp:Button ID="btnCargaArchivoAceptar" style="margin-right:10px;" runat="server" OnClick="btnAceptar_Click" 
                         CssClass="boton fg-color-blanco bg-color-azulClaro" Text="Aceptar"  />
                     <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                        Text="Cancelar" />                                        
+                        Text="Cancelar" OnClick="btnCargaArchivoCancelar_Click" />                                        
                 </div>
             </td>
         </tr>

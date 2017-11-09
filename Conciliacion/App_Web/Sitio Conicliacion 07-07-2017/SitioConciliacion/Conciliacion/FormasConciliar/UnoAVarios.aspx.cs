@@ -123,7 +123,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             if (!Page.IsPostBack)
             {
-
+                wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -231,6 +231,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
+                wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
                 GenerarAgregadosExcel();
                 MostrarPopUp_ConciliacionManual();
             }
@@ -470,7 +471,22 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
             wucCargaExcelCyC.TipoConciliacion = tipoConciliacion;
 
-            if (tipoConciliacion != 2)
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
+            {
+                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+                ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
+
+                foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
+                {
+                    RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
+                }
+
+                GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
+                ActualizarTotalesAgregados();
+                
+                this.hdfVisibleCargaArchivo.Value = "0";
+            }
+            else
             {
                 ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
                 ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
@@ -484,22 +500,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
                 ActualizarTotalesAgregados();
-                /*      Cerrar PopUp    */
-                this.hdfVisibleCargaArchivo.Value = "0";
-            }
-            else
-            {
-                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-                ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
 
-                foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
-                {
-                    RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
-                }
-
-                GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
-                ActualizarTotalesAgregados();
-                /*      Cerrar PopUp    */
                 this.hdfVisibleCargaArchivo.Value = "0";
             }
         }
@@ -1477,7 +1478,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             listaReferenciaExternas =
-                tipoConciliacion == 2
+                tipoConciliacion == 2 || tipoConciliacion == 6
                     ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoCanceladoPendiente
                           (chkReferenciaEx.Checked
                                ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
@@ -1507,7 +1508,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
-            if (tpConciliacion == 2)
+            if (tpConciliacion == 2 || tpConciliacion == 6)
             {
                 tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof (int));
                 tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof (int));
@@ -1582,7 +1583,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
-            if (tpConciliacion == 2)
+            if (tpConciliacion == 2 || tpConciliacion == 6)
             {
                 tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof(int));
                 tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof(int));
@@ -1657,7 +1658,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
-            if (tConciliacion == 2)
+            if (tConciliacion == 2 || tConciliacion == 6)
             {
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
@@ -1842,7 +1843,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         try
         {
-            listaReferenciaExternas = tipoConciliacion == 2
+            listaReferenciaExternas = tipoConciliacion == 2 || tipoConciliacion == 6
                                           ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
@@ -1889,7 +1890,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -2246,7 +2247,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             ActualizarTotalesAgregados();
             //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
-            if (tipoConciliacion == 2)
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 ConsultarPedidosInternos();
             else
                 ConsultarArchivosInternos();
@@ -2330,7 +2331,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                           tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
         GenerarTablaExternos();
         LlenaGridViewExternos();
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -2353,7 +2354,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         cargarInfoConciliacionActual();
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS) TANTO PENDIENTES COMO CANCELADOS
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -2365,7 +2366,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         cargarInfoConciliacionActual();
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS) TANTO PENDIENTES COMO CANCELADOS
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -2574,7 +2575,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 ActualizarTotalesAgregados();
                 //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
-                if (tipoConciliacion == 2)
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
                     ConsultarPedidosInternos();
                 else
                     ConsultarArchivosInternos();
@@ -2585,7 +2586,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Leer el tipoConciliacion URL
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-                if (tipoConciliacion == 2)
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 {
                     grvPedidos.DataSource = HttpContext.Current.Session["TAB_INTERNOS_AX"] as DataTable;
                     grvPedidos.DataBind();
@@ -2649,7 +2650,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         else if (ddlBuscarEn.SelectedItem.Value.Equals("Internos"))
         {
-            if (tipoConciliacion == 2)
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
             {
                 grvPedidos.DataSource = HttpContext.Current.Session["TAB_INTERNOS_AX"] as DataTable;
                 grvPedidos.DataBind();
@@ -2800,7 +2801,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             rfExterno.MotivoNoConciliado = Convert.ToInt32(ddlMotivosNoConciliado.SelectedItem.Value);
             rfExterno.ComentarioNoConciliado = txtComentario.Text;
-            if (tipoConciliacion == 2)
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 rfExterno.CancelarExternoPedido();
             else
                 rfExterno.CancelarExternoInterno();
@@ -2824,7 +2825,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         ActualizarTotalesAgregados();
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -3015,7 +3016,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             //Cargar Info Actual Conciliacion
             cargarInfoConciliacionActual();
-            if (tipoConciliacion == 2)
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
             {
                 if (grvPedidos.Rows.Count <= 0)
                 {
@@ -3053,7 +3054,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             LlenaGridViewExternos();
             LimpiarExternosTodos();
             ActualizarTotalesAgregados();
-            if (tipoConciliacion == 2)
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 ConsultarPedidosInternos();
             else
                 ConsultarArchivosInternos();
@@ -3068,11 +3069,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     //Falta una validacion 
     public ReferenciaNoConciliada leerReferenciaExternaSeleccionada()
     {
+        int secuenciaExterno = 0;
+        int folioExterno = 0;
         try
         {
             listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
-            int secuenciaExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
-            int folioExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Folio"]);
+            if (grvExternos.Rows.Count != 0)
+            {
+                secuenciaExterno =
+                    Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
+                folioExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Folio"]);
+            }
+            else
+            {
+                throw new Exception("No existen registros externos para el criterio elegido");
+            }
             return listaReferenciaExternas.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno);
         }
         catch (Exception ex)
@@ -3120,7 +3131,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 folioExterno = Convert.ToInt32(grvExternos.DataKeys[fila.RowIndex].Values["Folio"]);
                 rfExterno =
                     listaReferenciaExternas.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno);
-                if (tipoConciliacion == 2)
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
                     rfExterno.EliminarReferenciaConciliadaPedido();
                 else
                     rfExterno.EliminarReferenciaConciliada();
@@ -3137,7 +3148,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
-                if (tipoConciliacion == 2)
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
                     Consulta_ExternosPendientesCancelados(corporativo, sucursal, año,
                                                           mes, folio, 0, 0, 0,
                                                           Convert.ToDecimal(txtDiferencia.Text),
@@ -3209,7 +3220,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         LimpiarExternosReferencia(rfExterno);
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -3257,7 +3268,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
             ConsultarArchivosInternos();
@@ -3347,7 +3358,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             GenerarTablaAgregadosVacia(tipoConciliacion);
         }
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
-        if (tipoConciliacion == 2)
+        if (tipoConciliacion == 2 || tipoConciliacion == 6)
             ConsultarPedidosInternos();
         else
         {

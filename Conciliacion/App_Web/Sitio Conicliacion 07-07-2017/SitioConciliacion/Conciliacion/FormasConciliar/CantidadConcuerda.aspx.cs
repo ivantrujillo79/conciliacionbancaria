@@ -1330,10 +1330,10 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                                 ? "CopiaDeConciliacion"
                                 : "Manual";
 
-        if (tipoConciliacion == 6)
+        /*if (tipoConciliacion == 6)
         {
             criterioConciliacion = "CantidadYReferenciaConcuerdan";
-        }
+        }*/
 
         HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Eliminar las variables de Session utilizadas en la Vista

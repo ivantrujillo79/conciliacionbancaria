@@ -2390,7 +2390,7 @@
                 <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                     <div class="floatDerecha">
                         <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo" OnClientClick="popUpNoVisible()"/> <%--OnClientClick="HideModalPopup();"--%>
+                            CssClass="iconoPequeño bg-color-rojo" Width="25px" Height="25px" OnClientClick="popUpNoVisible()"/> <%--OnClientClick="HideModalPopup();"--%>
                     </div>
                 </td>
             </tr>
