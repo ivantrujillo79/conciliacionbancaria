@@ -12,25 +12,59 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ClienteDatos: Cliente
     {
-        
-        public virtual void Dispose(){
 
-		}
+        public ClienteDatos(IMensajesImplementacion implementadorMensajes)
+            : base(implementadorMensajes)
+        {
+        }
+        //public ClienteDatos(string Referencia) {
+        //    try
+        //    {
+        //        this.Referencia = Referencia;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ClienteException ObjClienteException = new ClienteException();
+        //        ObjClienteException.ResultadoValidacion.CodigoError = 203;
+        //        ObjClienteException.ResultadoValidacion.Mensaje = ex.Message;
+        //        ObjClienteException.ResultadoValidacion.VerificacionValida = false;
+        //        throw ex;
+        //    }
+        //}
+        public ClienteDatos(int cliente,
+            byte celula,
+            Int16 digitoverificador,
+            string nombre,
+            string referencia,
+            string razonsocial,
+            int ruta,
+            int programacion,
+            string telefonocasa,
+            string telefonoalternouno,
+            string telefonoalternodos,
+            decimal saldo,
+            string email,
+            string direccion,
+            IMensajesImplementacion implementadorMensajes)
+            : base(celula,
+            digitoverificador,
+            nombre,
+            referencia,
+            razonsocial,
+            ruta,
+            programacion,
+            telefonocasa,
+            telefonoalternouno,
+            telefonoalternodos,
+            saldo,
+            email,
+            direccion, implementadorMensajes)
+        {
+        }
 
-        public ClienteDatos(string Referencia) {
-
-            try
-            {
-                this.Referencia = Referencia;
-            }
-            catch (Exception ex)
-            {
-                ClienteException ObjClienteException = new ClienteException();
-                ObjClienteException.ResultadoValidacion.CodigoError = 203;
-                ObjClienteException.ResultadoValidacion.Mensaje = ex.Message;
-                ObjClienteException.ResultadoValidacion.VerificacionValida = false;
-                throw ex;
-            }
+        public override Cliente CrearObjeto()
+        {
+            return new ClienteDatos(this.ImplementadorMensajes);
         }
 
         public override bool ValidaClienteExiste(Conexion _conexion)
@@ -44,7 +78,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
 
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroReferencia", System.Data.SqlDbType.TinyInt)).Value = this.Referencia;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroReferencia", System.Data.SqlDbType.VarChar)).Value = this.Referencia;
                 SqlDataReader rdCliente = _conexion.Comando.ExecuteReader();
 
                 if (rdCliente.HasRows)

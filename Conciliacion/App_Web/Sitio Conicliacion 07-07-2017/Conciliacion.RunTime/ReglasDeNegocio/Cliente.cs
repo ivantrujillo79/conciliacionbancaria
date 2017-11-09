@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Conciliacion.RunTime.DatosSQL;
 
-namespace Conciliacion.RunTime.ReglasDeNegocio{
+namespace Conciliacion.RunTime.ReglasDeNegocio
+{
 	public abstract class Cliente: EmisorMensajes
     {
 
@@ -24,6 +25,54 @@ namespace Conciliacion.RunTime.ReglasDeNegocio{
 		private string email;
 		private string direccion;
 
+        public Cliente(IMensajesImplementacion implementadorMensajes)
+        {
+            this.implementadorMensajes = implementadorMensajes;
+            this.celula = 0;
+            this.digitoverificador = 0;
+            this.nombre = "";
+            this.referencia = "";
+            this.razonsocial = "";
+            this.ruta = 0;
+            this.programacion = 0;
+            this.telefonocasa = "";
+            this.telefonoalternouno = "";
+            this.telefonoalternodos = "";
+            this.saldo = 0;
+            this.email = "";
+            this.direccion = "";
+        }
+
+        public Cliente(byte celula, 
+                       short digitoverificador, 
+                       string nombre, 
+                       string referencia, 
+                       string razonsocial, 
+                       int ruta, 
+                       int programacion, 
+                       string telefonocasa, 
+                       string telefonoalternouno, 
+                       string telefonoalternodos, 
+                       decimal saldo, 
+                       string email, 
+                       string direccion, IMensajesImplementacion implementadorMensajes)
+        {
+            this.celula = celula;
+            this.digitoverificador = digitoverificador;
+            this.nombre = nombre;
+            this.referencia = referencia;
+            this.razonsocial = razonsocial;
+            this.ruta = ruta;
+            this.programacion = programacion;
+            this.telefonocasa = telefonocasa;
+            this.telefonoalternouno = telefonoalternouno;
+            this.telefonoalternodos = telefonoalternodos;
+            this.saldo = saldo;
+            this.email = email;
+            this.direccion = direccion;
+            this.implementadorMensajes = implementadorMensajes;
+        }
+
         #region Propiedades
         public byte Celula
         {
@@ -33,13 +82,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio{
 
         public Int16 DigitoVerificador
         {
-            get { return digitoverificador;}
+            get { return digitoverificador; }
             set { digitoverificador = value; }
         }
 
         public string Nombre
         {
-            get { return nombre;}
+            get { return nombre; }
             set { nombre = value; }
         }
 
@@ -88,7 +137,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio{
         public decimal Saldo
         {
             get { return saldo; }
-            set {saldo = value; }
+            set { saldo = value; }
         }
 
         public string Email
@@ -110,19 +159,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio{
         }
         #endregion
 
-        #region Constructores
-        public Cliente()
-        {
-        }
-        public Cliente(string Referencia)
-        {
-        }
-        public virtual void Dispose()
-        {
-		}
-        #endregion
+        public abstract Cliente CrearObjeto();
 
         public abstract bool ValidaClienteExiste(Conexion _conexion);
+
         public abstract List<ReferenciaNoConciliadaPedido> ObtienePedidosNoConciliadosCliente(cConciliacion Conciliacion, Conexion _conexion);
 
 	}//end Cliente

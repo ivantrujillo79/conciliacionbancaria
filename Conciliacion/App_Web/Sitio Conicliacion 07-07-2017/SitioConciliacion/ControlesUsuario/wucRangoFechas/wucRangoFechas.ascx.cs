@@ -97,4 +97,4 @@ public partial class ControlesUsuario_wucRangoFechas_wucRangoFechas : System.Web
     {
         AplicarFiltro();
     }
-}
+}   
