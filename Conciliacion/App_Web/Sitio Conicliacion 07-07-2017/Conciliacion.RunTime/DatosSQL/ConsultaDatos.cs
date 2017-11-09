@@ -4368,10 +4368,30 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
+                        decimal _total = 0;
+                        decimal _saldo = 0;
+                        if (reader["Total"] != System.DBNull.Value)
+                        {
+                            _total = Convert.ToDecimal(reader["Total"]);
+                        }
+                        else
+                        {
+                            _total = 0;
+                        }
+
+                        if (reader["Saldo"] != System.DBNull.Value)
+                        {
+                           _saldo =  Convert.ToDecimal(reader["Saldo"]);
+                        }
+                        else
+                        {
+                            _saldo = 0;
+                        }
+
                         Cobro dato = new CobroDatos(Convert.ToInt16(reader["AñoCobro"]),
                                                     Convert.ToInt32(reader["Cobro"]),
                                                     Convert.ToString(reader["NumeroCheque"]),
-                                                    Convert.ToDecimal(reader["Total"]),
+                                                    _total,
                                                     Convert.ToDecimal(reader["Saldo"]),
                                                     Convert.ToString(reader["NumeroCuenta"]),
                                                     Convert.ToString(reader["NumeroCuentaDestino"]),

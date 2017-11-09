@@ -23,8 +23,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 List<MovimientoCaja> lstMovimientoCajaDatos = new List<MovimientoCaja>();
                 List<ReferenciaConciliadaPedido> lstPedidos = new List<ReferenciaConciliadaPedido>();
                 List<ReferenciaConciliadaPedido> lstPedidosOrdenada = new List<ReferenciaConciliadaPedido>();
+                List<Cobro> lstCobros = new List<Cobro>();
 
                 lstPedidosOrdenada = ObjMovimientoCajaDatos.ListaPedidos.OrderBy(s => s.Cliente).ToList();
+                foreach (Cobro objCobro in ObjMovimientoCajaDatos.ListaCobros)
+                {
+                    lstCobros.Add(objCobro);  
+                }
+                
 
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
@@ -47,6 +53,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                                                 ObjMovimientoCajaDatos.SaldoAFavor,
                                                                 ObjMovimientoCajaDatos.ListaCobros,
                                                                 implementadorMensajes);
+
+                            
+                            List<Cobro> buffCobro = lstCobros.Where(X => X.Cliente == cliente).ToList();
+                            objmovimientocajadatos.ListaCobros.Clear();
+                            objmovimientocajadatos.ListaCobros=buffCobro;
+
                             lstPedidos.ForEach(c => objmovimientocajadatos.ListaPedidos.Add(c));
 
                             lstMovimientoCajaDatos.Add(objmovimientocajadatos);
@@ -84,6 +96,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     ObjMovimientoCajaDatos.ListaCobros,
                                     implementadorMensajes);
                     lstPedidos.ForEach(c => objmovimientocajadatos.ListaPedidos.Add(c));
+
+                    List<Cobro> buffCobroFin = lstCobros.Where(X => X.Cliente == lstPedidos[0].Cliente).ToList();
+                    objmovimientocajadatos.ListaCobros.Clear();
+                    objmovimientocajadatos.ListaCobros = buffCobroFin;
+
+
                     lstMovimientoCajaDatos.Add(objmovimientocajadatos);
                 }
                 else
