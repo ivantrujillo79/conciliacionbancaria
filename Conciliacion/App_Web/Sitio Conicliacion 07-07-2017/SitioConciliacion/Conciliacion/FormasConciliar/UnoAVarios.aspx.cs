@@ -4751,11 +4751,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            mpeCargaArchivoConciliacionManual.Show();
+            if (grvExternos.Rows.Count != 0)
+            {
+                mpeCargaArchivoConciliacionManual.Show();
+            }
+            else
+            {
+                mpeCargaArchivoConciliacionManual.Hide();
+                throw new Exception("No existen registros externos para el criterio elegido");
+            }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+            //App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 

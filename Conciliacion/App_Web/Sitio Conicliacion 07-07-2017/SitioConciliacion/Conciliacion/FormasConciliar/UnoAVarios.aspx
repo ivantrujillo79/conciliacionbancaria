@@ -2376,7 +2376,7 @@
         </asp:UpdatePanel>
     </asp:Panel>
 
-    <!--        POPUP CARGA ARCHIVO     -->
+    <!--        INICIO DE POPUP CARGA ARCHIVO     -->
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
     <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" value="0"/>
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
@@ -2384,13 +2384,13 @@
         BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
-    <div> <!--  style="width:400px; overflow:scroll;"   -->
+    <div>
         <table style="width:100%; box-sizing:border-box;">
             <tr class="bg-color-grisOscuro">
                 <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                     <div class="floatDerecha">
                         <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo" Width="25px" Height="25px" OnClientClick="popUpNoVisible()"/> <%--OnClientClick="HideModalPopup();"--%>
+                            CssClass="iconoPequeño bg-color-rojo" Width="25px" Height="25px" OnClientClick="popUpNoVisible()"/>
                     </div>
                 </td>
             </tr>
