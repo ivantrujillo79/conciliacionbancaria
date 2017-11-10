@@ -508,7 +508,7 @@
                             <tr>
                                 <td id="tdImportar" runat="server" class="iconoOpcion bg-color-verdeFuerte" style="height: 30px">
                                     <asp:ImageButton ID="imgImportar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Importar.png"
-                                        ToolTip="IMPORTAR" Width="25px" OnClick="imgImportar_Click" />
+                                        ToolTip="IMPORTAR" Width="25px" OnClick="imgImportar_Click"/>
                                 </td>
                             </tr>
                         </table>
@@ -730,7 +730,7 @@
                                 </td>
                                 <td class="bg-color-azulClaro" style="width: 5%">
                                     <asp:Image ID="imgGuardarParcial" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono" Width="25px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
@@ -756,7 +756,7 @@
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
                                         ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
                                 </td>
-                                <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
+                                <td class="bg-color-grisClaro fg-color-amarillo" style="width: 5%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
                                         CssClass="icono" Width="25px" Height="25px"></asp:Image>
                                 </td>
@@ -1998,13 +1998,13 @@
                                     </td>
                                     <td style="vertical-align: top; padding: 6px;">
                                         <asp:ImageButton ID="btnAñadirFolio" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png"
-                                            Width="16px" Height="16px" ValidationGroup="Interno" CssClass="icono bg-color-verdeClaro"
+                                            Width="25px" Height="25px" ValidationGroup="Interno" CssClass="icono bg-color-verdeClaro"
                                             OnClick="btnAñadirFolio_Click" />
                                     </td>
                                     <td style="vertical-align: top; padding: 6px;">
                                         <asp:ImageButton ID="btnVerDatalleInterno" runat="server" ImageAlign="AbsMiddle"
                                             ValidationGroup="Interno" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/buscar.png"
-                                            Width="16px" Height="16px" CssClass="icono bg-color-azulClaro" OnClick="btnVerDatalleInterno_Click" />
+                                            Width="25px" Height="25px" CssClass="icono bg-color-azulClaro" OnClick="btnVerDatalleInterno_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -2368,7 +2368,7 @@
                 <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                     <div class="floatDerecha">
                         <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo" Width="25px" Height="25px" OnClientClick="popUpNoVisible()"/>
+                            CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="popUpNoVisible()"/>
                     </div>
                 </td>
             </tr>

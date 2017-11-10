@@ -551,7 +551,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <table style="width: 100%">
+                        <table style="width: 100%" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%">Total Externo
                                 </td>
@@ -564,14 +564,14 @@
                                 </td>
                                 <td class="bg-color-azulClaro" style="width: 5%">
                                     <asp:Image ID="imgGuardarParcial" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono" Width="25px" Height="25px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
                     </td>
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
-                        <table style="width: 100%; height: 20px">
+                        <table style="width: 100%;"  class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%" id="tdEtiquetaMontoIn"
                                     runat="server">Total Interno
@@ -586,9 +586,9 @@
                                         <asp:Label ID="lblPedidos" Text="Pedidos" runat="server" Visible="false"></asp:Label>
                                     </b>
                                 </td>
-                                <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
+                                <td class="bg-color-grisClaro fg-color-amarillo" style="width: 5%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono"  Width="25px" Height="25px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
