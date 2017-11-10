@@ -16,34 +16,12 @@
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
-    
-    <%--
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    --%>
-    <!--    Bootstrap CSS & JS      -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
-    <link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />
-    <script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
+        
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     
-    <!-- JavaScript -->
-<script src="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
-
-<!-- CSS -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
-<!-- Default theme -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
-<!-- Semantic UI theme -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/semantic.min.css"/>
-<!-- Bootstrap theme -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/bootstrap.min.css"/>
-
-
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         
@@ -739,7 +717,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <table style="width: 100%">
+                        <table style="width: 100%;" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%">Total Externo
                                 </td>
@@ -759,7 +737,7 @@
                     </td>
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
-                        <table style="width: 100%; height: 20px">
+                        <table style="width: 100%;" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%" id="tdEtiquetaMontoIn"
                                     runat="server">Total Interno
@@ -881,7 +859,7 @@
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
                                             Style="display: none"></asp:Label>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="35px"></ItemStyle>
@@ -1394,7 +1372,7 @@
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
                                             Style="display: none"></asp:Label>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>

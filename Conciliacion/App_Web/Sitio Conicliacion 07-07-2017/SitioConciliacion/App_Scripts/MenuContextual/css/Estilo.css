@@ -39,6 +39,8 @@
     padding: 0px;
     margin: 0px;
     display: none;
+    /*  Nuevo   */
+    font-size: 0.905em;
 }
 
 .contextMenu LI

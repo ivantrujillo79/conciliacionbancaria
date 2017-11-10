@@ -571,7 +571,7 @@
 
     <asp:UpdatePanel runat="server" ID="upConciliar" UpdateMode="Always">
         <ContentTemplate>
-            <table style="width: 100%">
+            <table style="width: 100%; font-size:12px;">
                 <tr>
                     <td style="width: 100%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-verdeFuerte"
                         colspan="3">Transacciones Por Conciliar
@@ -579,7 +579,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <table style="width: 100%">
+                        <table style="width: 100%" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%">Total Externo
                                 </td>
@@ -600,7 +600,7 @@
                     </td>
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
-                        <table style="width: 100%; height: 20px">
+                        <table style="width: 100%;" class="grids">  <%--style ="height: 20px"--%>
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%" id="tdEtiquetaMontoIn"
                                     runat="server">Total Interno
