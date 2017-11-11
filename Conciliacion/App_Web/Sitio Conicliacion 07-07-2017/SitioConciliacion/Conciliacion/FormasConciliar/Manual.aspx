@@ -702,7 +702,7 @@
                             <table width="100%">
                                 <tr>
                                     <td class="centradoJustificado" style="width: 30%;">
-                                        <asp:CheckBox ID="chkReferenciaEx" runat="server" Text="Referencia" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                        <asp:CheckBox ID="chkReferenciaEx" runat="server" Text="Documento" CssClass="etiqueta fg-color-blanco centradoMedio"
                                             AutoPostBack="True" OnCheckedChanged="chkReferenciaEx_CheckedChanged" />
                                     </td>
                                     <td class="centradoDerecha" style="width: 20%;">
@@ -805,7 +805,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Referencia" SortExpression="Referencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
@@ -874,7 +874,7 @@
                             <table width="100%">
                                 <tr>
                                     <td style="width: 15%" class="centradoJustificado">
-                                        <asp:CheckBox ID="chkReferenciaIn" runat="server" Text="Referencia" CssClass="etiqueta fg-color-blanco"
+                                        <asp:CheckBox ID="chkReferenciaIn" runat="server" Text="Documento" CssClass="etiqueta fg-color-blanco"
                                             ToolTip="COMPARAR REFERENCIA" AutoPostBack="True" OnCheckedChanged="chkReferenciaIn_CheckedChanged" />
                                     </td>
                                     <td style="width: 5%" class="etiqueta fg-color-blanco">
@@ -1050,7 +1050,7 @@
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Referencia" SortExpression="Referencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
@@ -1726,7 +1726,7 @@
                                     <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
                                 </EmptyDataTemplate>
                                 <Columns>
-                                    <asp:TemplateField HeaderText="Referencia" SortExpression="referencia">
+                                    <asp:TemplateField HeaderText="Documento" SortExpression="referencia">
                                         <ItemTemplate>
                                             <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
                                         </ItemTemplate>

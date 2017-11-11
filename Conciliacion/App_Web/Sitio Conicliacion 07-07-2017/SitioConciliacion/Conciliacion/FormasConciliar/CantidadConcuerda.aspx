@@ -933,7 +933,7 @@
                                     <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Ped. Ref." SortExpression="PedidoReferencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
                                     </ItemTemplate>
