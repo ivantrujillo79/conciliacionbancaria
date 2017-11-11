@@ -1463,14 +1463,14 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
@@ -1557,14 +1557,14 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div>
                                             <asp:Label runat="server" ID="lblSerieFacturaPedido">TEST</asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div>
                                             <asp:Label runat="server" ID="lblClienteReferencia">TEST</asp:Label>
