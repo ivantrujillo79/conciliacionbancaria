@@ -231,7 +231,7 @@
                                 </td>
                                 <td class="lineaVertical" style="vertical-align: bottom">
                                     <asp:TextBox ID="txtValorCadenaFiltro" runat="server" CssClass="etiqueta cajaTextoPequeño"
-                                        Width="270px" Font-Size="12px" Style="margin-bottom: 3px; margin-right: 3px">
+                                        Width="120px" Font-Size="12px" Style="margin-bottom: 3px; margin-right: 3px">
                                     </asp:TextBox>
                                     <asp:TextBox ID="txtValorFechaFiltro" runat="server" CssClass="etiqueta cajaTextoPequeño"
                                         Width="270px" Font-Size="12px" Style="margin-bottom: 3px; margin-right: 3px">
