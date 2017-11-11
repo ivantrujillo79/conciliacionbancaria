@@ -77,7 +77,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                             ultimaCedula = false;
                             i = 1;
-
                         }
                         else
                         {

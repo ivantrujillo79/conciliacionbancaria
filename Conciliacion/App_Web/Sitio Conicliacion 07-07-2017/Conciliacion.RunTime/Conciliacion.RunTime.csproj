@@ -110,6 +110,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReglasDeNegocio\Cliente.cs" />
     <Compile Include="ReglasDeNegocio\ClienteException.cs" />
+    <Compile Include="ReglasDeNegocio\ConsultarMultiplesDocumentosTransBan.cs" />
     <Compile Include="ReglasDeNegocio\Cobranza.cs" />
     <Compile Include="ReglasDeNegocio\Cobro.cs" />
     <Compile Include="ReglasDeNegocio\Conciliacion.cs" />
@@ -138,6 +139,8 @@
     <Compile Include="ReglasDeNegocio\TransBanException.cs" />
     <Compile Include="ReglasDeNegocio\RelacionCobranza.cs" />
     <Compile Include="ReglasDeNegocio\RelacionCobranzaException.cs" />
+    <Compile Include="ReglasDeNegocio\TransBan.cs" />
+    <Compile Include="ReglasDeNegocio\TransBanException.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariaOrigen.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancarias.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariasDetalle.cs" />
