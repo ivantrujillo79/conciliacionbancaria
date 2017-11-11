@@ -107,10 +107,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
 
             }
-            //else
-            //{
-            //    MostrarPopUp_ConciliarPedido();
-            //}
+            else
+            {
+                MostrarPopUp_ConciliarPedido();
+            }
         }
 
         catch (Exception ex)
@@ -1909,6 +1909,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 App.ImplementadorMensajes.MostrarMensaje("El número de cliente introducido no existe, por favor verifique");
 
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
+
+            /*      Asignar propiedades de Carga archivo Excel      */
+            wucCargaExcelCyC.MontoPago = decimal.Parse((grvRCC.FindControl("lblDeposito") as Label).Text, NumberStyles.Currency);
+            wucCargaExcelCyC.ClienteReferencia = clienteBuscar;
 
         }
         catch (Exception ex)

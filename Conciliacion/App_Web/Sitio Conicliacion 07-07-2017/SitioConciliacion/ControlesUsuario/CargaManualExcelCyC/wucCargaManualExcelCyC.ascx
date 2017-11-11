@@ -48,7 +48,7 @@
         <tr>
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
-                    <asp:Label ID="lblReferencia" runat="server" CssClass="etiqueta fg-color-negro" Text="Referencia: "
+                    <asp:Label ID="lblReferencia" runat="server" CssClass="etiqueta fg-color-negro" Text="Cliente: "
                         style="display:inline-block;"/> <!--    Font-Size="1em"     -->
                 </div>
             </td>
@@ -108,7 +108,7 @@
                     <asp:Button ID="btnCargaArchivoAceptar" style="margin-right:10px;" runat="server" OnClick="btnAceptar_Click" 
                         CssClass="boton fg-color-blanco bg-color-azulClaro" Text="Aceptar"  />
                     <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                        Text="Cancelar" OnClick="btnCargaArchivoCancelar_Click" />                                        
+                        Text="Cancelar" OnClick="btnCargaArchivoCancelar_Click" Visible="false"/>                                        
                 </div>
             </td>
         </tr>

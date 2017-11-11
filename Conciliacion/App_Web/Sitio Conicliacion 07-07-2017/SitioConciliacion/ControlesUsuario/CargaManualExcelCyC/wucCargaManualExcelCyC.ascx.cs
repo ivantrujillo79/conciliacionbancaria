@@ -38,14 +38,15 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["anio"] = value; }
     }
 
-    private string clienteReferencia;
-    public string ClienteReferencia
+    private int clienteReferencia;
+    public int ClienteReferencia
     {
         get { return clienteReferencia; }
         set
         {
             clienteReferencia = value;
-            lblReferencia.Text = clienteReferencia;
+            lblReferencia.Text = CLIENTE + clienteReferencia.ToString();
+            //lblReferencia.Text = clienteReferencia;
         }
     }
 
@@ -73,6 +74,18 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 return (int)ViewState["cuentaBancaria"];
         }
         set { ViewState["cuentaBancaria"] = value; }
+    }
+
+    public bool DispersionAutomatica
+    {
+        get
+        {
+            if (ViewState["dispersionAutomatica"] == null)
+                return false;
+            else
+                return (bool)ViewState["dispersionAutomatica"];
+        }
+        set { ViewState["dispersionAutomatica"] = value; }
     }
 
     private int folio;
@@ -112,6 +125,18 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
     }
 
+    public bool MostrarBotonCancelar
+    {
+        get
+        {
+            if (ViewState["mostrarBotonCancelar"] == null)
+                return false;
+            else
+                return (bool)ViewState["mostrarBotonCancelar"];
+        }
+        set { ViewState["mostrarBotonCancelar"] = value; }
+    }
+
     private Int16 sucursal;
     public Int16 Sucursal
     {
@@ -144,8 +169,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             return _referenciasPorConciliarPedidoExcel;
         }
     }
-
-
+    
     //private bool recuperoNoConciliados;
     public bool RecuperoNoConciliados
     {
@@ -175,10 +199,16 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     private const string ARCHIVO = "Archivo: ";
     private const string REGISTROS = "Total de registros a cargar: ";
     private const string MONTO = "Monto pago: ";
+    private const string CLIENTE = "Cliente: ";
 
     protected void Page_Load(object sender, EventArgs e)
     {
         OcultarMensajes();
+
+        if (MostrarBotonCancelar)
+        {
+            this.btnCargaArchivoCancelar.Visible = true;
+        }
     }
 
     protected void btnCargaArchivoCancelar_Click(object sender, EventArgs e)

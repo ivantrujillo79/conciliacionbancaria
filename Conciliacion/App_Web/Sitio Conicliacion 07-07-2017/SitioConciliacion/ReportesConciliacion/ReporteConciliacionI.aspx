@@ -560,13 +560,12 @@
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
                                                     <ItemTemplate>
-
                                                         <asp:TextBox ID="txtCliente" runat="server" Width="80px" CssClass="cajaTextoEditar centrado"
                                                             Text='<%# Eval("Cliente") %>'
                                                             onkeypress="return ValidNum(event, this)" onblur="txtClienteEnSalida(this)"
                                                             Visible="True"
-                                                            Font-Size="10px" Enabled="True" Style="margin: 0 0 0 0" ></asp:TextBox>
-
+                                                            Font-Size="10px" Enabled="True" Style="margin: 0 0 0 0" >
+                                                        </asp:TextBox>
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="80px" />
                                                     <ItemStyle HorizontalAlign="Center" Width="80px" />
