@@ -4,7 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion", "SitioConciliacion\", "{7A5FA135-BF53-4A16-AC90-49DC4884C944}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{76a968e3-b770-48fa-b4e1-30eb653757e7}|Conciliacion.Migracion.Runtime.dll;{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}|Conciliacion.RunTime.dll;"
+		ProjectReferences = "{76a968e3-b770-48fa-b4e1-30eb653757e7}|Conciliacion.Migracion.Runtime.dll;{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}|Conciliacion.RunTime.dll;{f77fcea1-5442-48a2-8fe4-43a655788cdd}|CatalogoConciliacion.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/SitioConciliacion"
 		Debug.AspNetCompiler.PhysicalPath = "SitioConciliacion\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\SitioConciliacion\"
