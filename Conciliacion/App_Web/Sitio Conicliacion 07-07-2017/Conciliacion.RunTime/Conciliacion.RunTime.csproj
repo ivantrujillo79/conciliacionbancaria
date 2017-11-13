@@ -139,8 +139,6 @@
     <Compile Include="ReglasDeNegocio\TransBanException.cs" />
     <Compile Include="ReglasDeNegocio\RelacionCobranza.cs" />
     <Compile Include="ReglasDeNegocio\RelacionCobranzaException.cs" />
-    <Compile Include="ReglasDeNegocio\TransBan.cs" />
-    <Compile Include="ReglasDeNegocio\TransBanException.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariaOrigen.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancarias.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariasDetalle.cs" />
