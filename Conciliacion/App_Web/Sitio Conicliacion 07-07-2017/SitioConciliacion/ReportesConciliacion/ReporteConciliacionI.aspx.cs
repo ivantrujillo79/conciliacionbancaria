@@ -1934,11 +1934,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         wucCargaExcelCyC.Corporativo = corporativo;
         wucCargaExcelCyC.DispersionAutomatica = true;
         wucCargaExcelCyC.Sucursal = sucursal;
-        //wucCargaExcelCyC.CuentaBancaria = cuentaBancaria;
-        //wucCargaExcelCyC.Anio = Convert.ToInt32(Request.QueryString["Año"]);
-        //wucCargaExcelCyC.Mes = Convert.ToSByte(Request.QueryString["Mes"]);
-        //wucCargaExcelCyC.Folio = Convert.ToInt32(Request.QueryString["Folio"]);
-        //wucCargaExcelCyC.TipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
     }
 
     protected void btnGuardar_Click(object sender, EventArgs e)

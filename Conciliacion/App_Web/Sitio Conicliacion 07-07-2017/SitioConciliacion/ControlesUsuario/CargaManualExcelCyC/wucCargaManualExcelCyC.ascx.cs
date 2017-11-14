@@ -352,7 +352,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             try
             {
                 string sDocumento;
-                string sClienteReferencia = "";
                 decimal dMonto;
                 DataTable dtTablaPropuestos;
                 ReferenciaNoConciliadaPedido ReferenciaNoConciliada;
@@ -373,7 +372,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     pago.PedidoReferencia = sDocumento;
                     pago.SaldoPedido = ReferenciaNoConciliada.Total; /*RNCP.total*/
                     pago.ClienteReferencia = ReferenciaNoConciliada.Cliente.ToString(); /*RNCP.cliente*/
-                    sClienteReferencia = ReferenciaNoConciliada.Cliente.ToString();
                     pagosEntrada.Add(pago);
                 }
 
