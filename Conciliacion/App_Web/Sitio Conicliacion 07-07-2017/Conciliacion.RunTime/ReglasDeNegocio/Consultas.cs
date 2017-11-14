@@ -145,6 +145,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ListaCombo> ConsultaFormaConciliacion(short tipoconciliacion);
 
+        public abstract List<ListaCombo> CargarFormaConciliacion(short tipoconciliacion);
+
+        public abstract string ObtieneURLSolicitud(short TipoConciliacion, short FormaConciliacion);
+
         public abstract List<ListaCombo> ConsultaMotivoNoConciliado();
 
         public abstract List<ListaCombo> ConsultaStatusConcepto(ConfiguracionStatusConcepto configuracion);

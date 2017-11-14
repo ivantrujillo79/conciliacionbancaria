@@ -571,7 +571,7 @@
 
     <asp:UpdatePanel runat="server" ID="upConciliar" UpdateMode="Always">
         <ContentTemplate>
-            <table style="width: 100%">
+            <table style="width: 100%; font-size:12px;">
                 <tr>
                     <td style="width: 100%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-verdeFuerte"
                         colspan="3">Transacciones Por Conciliar
@@ -579,7 +579,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <table style="width: 100%">
+                        <table style="width: 100%" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%">Total Externo
                                 </td>
@@ -600,7 +600,7 @@
                     </td>
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
-                        <table style="width: 100%; height: 20px">
+                        <table style="width: 100%;" class="grids">  <%--style ="height: 20px"--%>
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%" id="tdEtiquetaMontoIn"
                                     runat="server">Total Interno
@@ -793,14 +793,14 @@
                                     <ItemStyle HorizontalAlign="Left" Width="120px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="120px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                          <div class="parrafoTexto" style="width: 100px">
                                             <asp:Label ID="lblSerieFactura" runat="server" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                      </ItemTemplate>  
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                          <div class="parrafoTexto" style="width: 100px">
                                             <asp:Label ID="lblClienteReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
@@ -933,7 +933,7 @@
                                     <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Ped. Ref." SortExpression="PedidoReferencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
                                     </ItemTemplate>

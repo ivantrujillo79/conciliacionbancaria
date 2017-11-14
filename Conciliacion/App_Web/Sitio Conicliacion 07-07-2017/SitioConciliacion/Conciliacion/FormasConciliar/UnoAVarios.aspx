@@ -16,34 +16,12 @@
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
-    
-    <%--
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    --%>
-    <!--    Bootstrap CSS & JS      -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
-    <link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />
-    <script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
+        
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     
-    <!-- JavaScript -->
-<script src="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
-
-<!-- CSS -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
-<!-- Default theme -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
-<!-- Semantic UI theme -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/semantic.min.css"/>
-<!-- Bootstrap theme -->
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/bootstrap.min.css"/>
-
-
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         
@@ -739,7 +717,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <table style="width: 100%">
+                        <table style="width: 100%;" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%">Total Externo
                                 </td>
@@ -759,7 +737,7 @@
                     </td>
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
-                        <table style="width: 100%; height: 20px">
+                        <table style="width: 100%;" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%" id="tdEtiquetaMontoIn"
                                     runat="server">Total Interno
@@ -776,7 +754,8 @@
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
-                                        ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
+                                        ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"
+                                        Enabled="false"></asp:ImageButton>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -792,7 +771,7 @@
                             <table width="100%">
                                 <tr>
                                     <td class="centradoJustificado" style="width: 15%;">
-                                        <asp:CheckBox ID="chkReferenciaEx" runat="server" Text="Referencia" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                        <asp:CheckBox ID="chkReferenciaEx" runat="server" Text="Documento" CssClass="etiqueta fg-color-blanco centradoMedio"
                                             AutoPostBack="True" OnCheckedChanged="chkReferenciaEx_CheckedChanged" />
                                     </td>
                                     <td class="centradoJustificado" style="width: 30%;">
@@ -881,7 +860,7 @@
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
                                             Style="display: none"></asp:Label>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="35px"></ItemStyle>
@@ -908,7 +887,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Referencia" SortExpression="Referencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
@@ -977,7 +956,7 @@
                             <table width="100%">
                                 <tr>
                                     <td style="width: 15%" class="centradoJustificado">
-                                        <asp:CheckBox ID="chkReferenciaIn" runat="server" Text="Referencia" CssClass="etiqueta fg-color-blanco"
+                                        <asp:CheckBox ID="chkReferenciaIn" runat="server" Text="Documento" CssClass="etiqueta fg-color-blanco"
                                             ToolTip="COMPARAR REFERENCIA" AutoPostBack="True" OnCheckedChanged="chkReferenciaIn_CheckedChanged" />
                                     </td>
                                     <td style="width: 5%" class="etiqueta fg-color-blanco">
@@ -1394,7 +1373,7 @@
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
                                             Style="display: none"></asp:Label>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
@@ -1421,7 +1400,7 @@
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Referencia" SortExpression="Referencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
@@ -1485,14 +1464,14 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
@@ -1579,14 +1558,14 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div>
                                             <asp:Label runat="server" ID="lblSerieFacturaPedido">TEST</asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div>
                                             <asp:Label runat="server" ID="lblClienteReferencia">TEST</asp:Label>
@@ -2131,7 +2110,7 @@
                                     <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
                                 </EmptyDataTemplate>
                                 <Columns>
-                                    <asp:TemplateField HeaderText="Referencia" SortExpression="referencia">
+                                    <asp:TemplateField HeaderText="Documento" SortExpression="referencia">
                                         <ItemTemplate>
                                             <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
                                         </ItemTemplate>
@@ -2246,7 +2225,7 @@
                             <asp:TextBox ID="lbFMovimiento" runat="server" Width="95%" CssClass="cajaTexto" Enabled="False"></asp:TextBox>
                             <br />
                             <div class="etiqueta">
-                                Referencia
+                                Documento
                             </div>
                             <asp:TextBox ID="txtReferencia" runat="server" Width="95%" CssClass="cajaTexto" Enabled="True"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvReferencia" runat="server" ControlToValidate="txtReferencia"
@@ -2376,7 +2355,7 @@
         </asp:UpdatePanel>
     </asp:Panel>
 
-    <!--        POPUP CARGA ARCHIVO     -->
+    <!--        INICIO DE POPUP CARGA ARCHIVO     -->
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
     <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" value="0"/>
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
@@ -2384,13 +2363,13 @@
         BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
-    <div> <!--  style="width:400px; overflow:scroll;"   -->
+    <div>
         <table style="width:100%; box-sizing:border-box;">
             <tr class="bg-color-grisOscuro">
                 <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                     <div class="floatDerecha">
                         <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo" OnClientClick="popUpNoVisible()"/> <%--OnClientClick="HideModalPopup();"--%>
+                            CssClass="iconoPequeño bg-color-rojo" Width="25px" Height="25px" OnClientClick="popUpNoVisible()"/>
                     </div>
                 </td>
             </tr>

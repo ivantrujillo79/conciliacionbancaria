@@ -1,5 +1,0 @@
-C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\Conciliacion.RunTime\bin\Release\Conciliacion.RunTime.dll
-C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\Conciliacion.RunTime\bin\Release\Conciliacion.RunTime.pdb
-C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\Conciliacion.RunTime\obj\Release\Conciliacion.RunTime.dll
-C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\Conciliacion.RunTime\obj\Release\Conciliacion.RunTime.pdb
-C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\Conciliacion.RunTime\obj\Release\Conciliacion.RunTime.csprojResolveAssemblyReference.cache

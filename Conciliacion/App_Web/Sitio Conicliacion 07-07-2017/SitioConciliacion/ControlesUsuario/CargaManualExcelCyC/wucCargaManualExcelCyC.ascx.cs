@@ -8,7 +8,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Data;
 using System.Text;
-
+using AjaxControlToolkit;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 
@@ -167,6 +167,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     }
 
     public short TipoConciliacion { get; set; }
+
+    public ModalPopupExtender PopupContenedor { get; set; }
+
     #endregion
 
     private const string ARCHIVO = "Archivo: ";
@@ -180,7 +183,10 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
     protected void btnCargaArchivoCancelar_Click(object sender, EventArgs e)
     {
-        //mpeCargaArchivoConciliacionManual.Hide();
+        if (PopupContenedor != null)
+        {
+            PopupContenedor.Hide();
+        }
     }
 
     protected void btnSubirArchivo_Click(object sender, EventArgs e)
@@ -306,41 +312,11 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
         try
         {
-            if ( Convert.ToSByte(Request.QueryString["TipoConciliacion"])  != 2)
+            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
             {
                 if (grvDetalleConciliacionManual.Rows.Count > 0)
                 {
-                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
-                    {
-                        sDocumento = row.Cells[1].Text.Trim();
-                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
-
-                        RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
-                        RefNoConciliada.Referencia = sDocumento;
-                        RefNoConciliada.Monto = dMonto;
-
-                        if (_referenciasPorConciliarExcel.Count > 0)
-                        {
-                            RefNoConciliada.Folio =
-                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
-                            RefNoConciliada.Secuencia =
-                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
-                        }
-                        else
-                        {
-                            RefNoConciliada.Folio = 1;
-                            RefNoConciliada.Secuencia = 1;
-                        }
-
-                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                        _referenciasPorConciliarExcel.Add(RefNoConciliada);
-
-                        recupero = true;
-                    }
-                }
-            }
-            else
-            {
+                 
                 if (grvDetalleConciliacionManual.Rows.Count > 0)
                 {
                     foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
@@ -375,6 +351,38 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                         recupero = true;
                     }
+            }
+            else
+            {
+                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                    {
+                        sDocumento = row.Cells[1].Text.Trim();
+                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
+
+                        RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
+                        RefNoConciliada.Referencia = sDocumento;
+                        RefNoConciliada.Monto = dMonto;
+
+                        if (_referenciasPorConciliarExcel.Count > 0)
+                        {
+                            RefNoConciliada.Folio =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
+                            RefNoConciliada.Secuencia =
+                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
+                        }
+                        else
+                        {
+                            RefNoConciliada.Folio = 1;
+                            RefNoConciliada.Secuencia = 1;
+                        }
+
+                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        _referenciasPorConciliarExcel.Add(RefNoConciliada);
+
+                        recupero = true;
+                    }
+                }
+
                 }
             }
         }
@@ -388,4 +396,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         this._referenciasPorConciliarPedidoExcel = _referenciasPorConciliarPedidoExcel;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas
+    protected void btnCargaArchivoCancelar_Click1(object sender, EventArgs e)
+    {
+
+    }
 }
