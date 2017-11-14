@@ -312,7 +312,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     {
         try
         {
-            listFormasConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaFormaConciliacion(Convert.ToSByte(Request.QueryString["TipoConciliacion"]));
+            Enrutador objEnrutador = new Enrutador();
+            listFormasConciliacion = objEnrutador.CargarFormaConciliacion(Convert.ToSByte(Request.QueryString["TipoConciliacion"]));
             this.ddlCriteriosConciliacion.DataSource = listFormasConciliacion;
             this.ddlCriteriosConciliacion.DataValueField = "Identificador";
             this.ddlCriteriosConciliacion.DataTextField = "Descripcion";
@@ -1670,7 +1671,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         //Leer Variables URL 
         cargarInfoConciliacionActual();
 
-        string criterioConciliacion = ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
+        Enrutador objEnrutador = new Enrutador();
+
+        string criterioConciliacion = "";
+        
+#region eLIMINAR cÓDIGO
+        /*ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
             //? "CantidadConcuerda" : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN") ? "CantidadYReferenciaConcuerdan" :
             ? "CantidadConcuerda"
              : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
@@ -1683,7 +1689,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                             ? "VariosAUno"
                             : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
                                 ? "CopiaDeConciliacion"
-                                : "Manual";
+                                : "Manual";*/
+#endregion
+        criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
+                                                                                       Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)));
+
         HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Limpian variables de Session
         limpiarVariablesSession();

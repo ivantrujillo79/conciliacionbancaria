@@ -119,6 +119,7 @@
     <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />
     <Compile Include="ReglasDeNegocio\DispersorPago.cs" />
     <Compile Include="ReglasDeNegocio\DispersorPagoException.cs" />
+    <Compile Include="ReglasDeNegocio\Enrutador.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
     <Compile Include="ReglasDeNegocio\FuenteInformacion.cs" />
     <Compile Include="ReglasDeNegocio\GrupoConciliacionDiasDiferencia.cs" />

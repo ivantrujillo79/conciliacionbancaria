@@ -1001,6 +1001,82 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+
+        public override List<ListaCombo> CargarFormaConciliacion(short tipoconciliacion)
+        {
+            List<ListaCombo> datos = new List<ListaCombo>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBCargaComboFormaConciliacion", cnn);
+                    comando.Parameters.Add("@TipoConciliacion", System.Data.SqlDbType.SmallInt).Value = tipoconciliacion;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        ListaCombo dato = new ListaCombo(Convert.ToInt32(reader["Identificador"]),
+                                                         Convert.ToString(reader["Descripcion"]));
+                        datos.Add(dato);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return datos;
+            }
+        }
+
+
+        public override string ObtieneURLSolicitud(short TipoConciliacion, short FormaConciliacion)
+        {
+            string URLDestino = "";
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBObtieneRutaConciliacion", cnn);
+                    comando.Parameters.Add("@TipoConciliacion", System.Data.SqlDbType.SmallInt).Value = TipoConciliacion;
+                    comando.Parameters.Add("@FormaConciliacion", System.Data.SqlDbType.SmallInt).Value =
+                        FormaConciliacion;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        var dato = new
+                        {
+                            Tipo = Convert.ToInt32(reader["TipoConciliacion"]),
+                            Forma = Convert.ToString(reader["FormaConciliacion"]),
+                            URL = Convert.ToString(reader["PaginaCargar"])
+                        };
+                        URLDestino = Convert.ToString(dato.URL);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return URLDestino;
+
+            }
+        }
+
+
         /*public override List<ListaCombo> ConsultaMotivoNoConciliado()
         {
             List<ListaCombo> datos = new List<ListaCombo>();
