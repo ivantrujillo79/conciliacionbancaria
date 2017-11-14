@@ -11,6 +11,7 @@ using System.Text;
 using AjaxControlToolkit;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using Conciliacion.RunTime.DatosSQL;
 
 public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
@@ -37,20 +38,21 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["anio"] = value; }
     }
-
-    private int clienteReferencia;
+    
     public int ClienteReferencia
     {
-        get { return clienteReferencia; }
-        set
+        get
         {
-            clienteReferencia = value;
-            lblReferencia.Text = CLIENTE + clienteReferencia.ToString();
-            //lblReferencia.Text = clienteReferencia;
+            if (ViewState["clienteReferencia"] == null)
+                return int.MinValue;
+            else
+                return (int)ViewState["clienteReferencia"];
         }
+        set { ViewState["clienteReferencia"] = value; }
     }
 
-    private int corporativo;
+    //public int Corporativo { get; set; }
+    
     public int Corporativo
     {
         get
@@ -75,6 +77,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["cuentaBancaria"] = value; }
     }
+
+    //public bool DispersionAutomatica { get; set; }
 
     public bool DispersionAutomatica
     {
@@ -113,15 +117,20 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["mes"] = value; }
     }
-
-    private decimal montoPago;
+    
     public decimal MontoPago
     {
-        get { return montoPago; }
+        get
+        {
+            if (ViewState["montoPago"] == null)
+                return 0;
+            else
+                return (decimal)ViewState["montoPago"];
+        }
         set
         {
-            montoPago = value;
-            lblMontoPago.Text = MONTO + String.Format("{0:C}", montoPago);
+            ViewState["montoPago"] = value;
+            lblMontoPago.Text = MONTO + String.Format("{0:C}", value);
         }
     }
 
@@ -137,7 +146,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["mostrarBotonCancelar"] = value; }
     }
 
-    private Int16 sucursal;
+    //public int Sucursal { get; set; }
+    
     public Int16 Sucursal
     {
         get
@@ -294,6 +304,10 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             else
                             {
                                 dvMensajeExito.Visible = true;
+                                if (DispersionAutomatica)
+                                {
+                                    DispersarPagos();
+                                }
                             }
                         } // if ArchivoValido
                     } // if File.Exists
@@ -307,9 +321,69 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
+            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+            //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
         //dvMensajeExito.Visible = true;
         RecuperaReferenciasNoConciliadas();
+    }
+
+    private void DispersarPagos()
+    {
+        if (grvDetalleConciliacionManual.Rows.Count > 0)
+        {
+            try
+            {
+                string sDocumento;
+                string sClienteReferencia = "";
+                decimal dMonto;
+                ReferenciaNoConciliadaPedido ReferenciaNoConciliada;
+                PagoPropuesto pago;
+                List<PagoPropuesto> pagosEntrada = new List<PagoPropuesto>();
+                List<PagoPropuesto> pagosPropuestos = new List<PagoPropuesto>();
+                DispersorPagoDatos dispersor = new DispersorPagoDatos();
+                Conexion conexion = new Conexion();
+
+                foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                {
+                    sDocumento = row.Cells[1].Text.Trim();
+                    dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                    ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
+
+                    pago = new PagoPropuesto();
+                    pago.MontoPropuesto = dMonto;
+                    pago.PedidoReferencia = sDocumento;
+                    pago.SaldoPedido = ReferenciaNoConciliada.Total; /*RNCP.total*/
+                    pago.ClienteReferencia = ReferenciaNoConciliada.Cliente.ToString(); /*RNCP.cliente*/
+                    sClienteReferencia = ReferenciaNoConciliada.Cliente.ToString();
+                    pagosEntrada.Add(pago);
+                }
+
+                try
+                {
+                    conexion.AbrirConexion(false);
+                    dispersor.MontoTotalPago = MontoPago;
+                    //dispersor.SaldoAFavor = 10000;      /*      TEMPORAL        */
+                    dispersor.PagosPropuestos = pagosEntrada;
+                    if (dispersor.ValidaClientes(pagosEntrada, ClienteReferencia.ToString(), conexion))
+                    {
+                        pagosPropuestos = dispersor.PagosPropuestos;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)
@@ -345,74 +419,72 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
             {
                 if (grvDetalleConciliacionManual.Rows.Count > 0)
-                {
-                 
-                if (grvDetalleConciliacionManual.Rows.Count > 0)
-                {
-                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                {                 
+                    if (grvDetalleConciliacionManual.Rows.Count > 0)
                     {
-                        sDocumento = row.Cells[1].Text.Trim();
-                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                        foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                        {
+                            sDocumento = row.Cells[1].Text.Trim();
+                            dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
-                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                            ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
 
-                        RefNoConciliadaPedido.PedidoReferencia = sDocumento;
-                        RefNoConciliadaPedido.Total = dMonto;
-                        RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
-                        RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
-                        RefNoConciliadaPedido.Pedido = Convert.ToInt32(sDocumento.Substring(5, sDocumento.Length - 5));
+                            RefNoConciliadaPedido.PedidoReferencia = sDocumento;
+                            RefNoConciliadaPedido.Total = dMonto;
+                            RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
+                            RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
+                            RefNoConciliadaPedido.Pedido = Convert.ToInt32(sDocumento.Substring(5, sDocumento.Length - 5));
                         
 
-                        if (_referenciasPorConciliarExcel.Count > 0)
-                        {
-                            RefNoConciliadaPedido.Folio =
-                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
-                            RefNoConciliadaPedido.Secuencia =
-                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
-                        }
-                        else
-                        {
-                            RefNoConciliadaPedido.Folio = 1;
-                            RefNoConciliadaPedido.Secuencia = 1;
-                        }
+                            if (_referenciasPorConciliarExcel.Count > 0)
+                            {
+                                RefNoConciliadaPedido.Folio =
+                                    _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
+                                RefNoConciliadaPedido.Secuencia =
+                                    _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
+                            }
+                            else
+                            {
+                                RefNoConciliadaPedido.Folio = 1;
+                                RefNoConciliadaPedido.Secuencia = 1;
+                            }
 
-                        RefNoConciliadaPedido.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                        _referenciasPorConciliarPedidoExcel.Add(RefNoConciliadaPedido);
+                            RefNoConciliadaPedido.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                            _referenciasPorConciliarPedidoExcel.Add(RefNoConciliadaPedido);
 
-                        recupero = true;
+                            recupero = true;
+                        }
                     }
-            }
-            else
-            {
-                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                    else
                     {
-                        sDocumento = row.Cells[1].Text.Trim();
-                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
-
-                        RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
-                        RefNoConciliada.Referencia = sDocumento;
-                        RefNoConciliada.Monto = dMonto;
-
-                        if (_referenciasPorConciliarExcel.Count > 0)
+                        foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
                         {
-                            RefNoConciliada.Folio =
-                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
-                            RefNoConciliada.Secuencia =
-                                _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
-                        }
-                        else
-                        {
-                            RefNoConciliada.Folio = 1;
-                            RefNoConciliada.Secuencia = 1;
-                        }
+                            sDocumento = row.Cells[1].Text.Trim();
+                            dMonto = Convert.ToDecimal(row.Cells[3].Text);
 
-                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                        _referenciasPorConciliarExcel.Add(RefNoConciliada);
+                            RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
+                            RefNoConciliada.Referencia = sDocumento;
+                            RefNoConciliada.Monto = dMonto;
 
-                        recupero = true;
+                            if (_referenciasPorConciliarExcel.Count > 0)
+                            {
+                                RefNoConciliada.Folio =
+                                    _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Folio;
+                                RefNoConciliada.Secuencia =
+                                    _referenciasPorConciliarExcel[_referenciasPorConciliarExcel.Count - 1].Secuencia + 1;
+                            }
+                            else
+                            {
+                                RefNoConciliada.Folio = 1;
+                                RefNoConciliada.Secuencia = 1;
+                            }
+
+                            RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                            _referenciasPorConciliarExcel.Add(RefNoConciliada);
+
+                            recupero = true;
+                        }
                     }
-                }
-
                 }
             }
         }
@@ -426,6 +498,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         this._referenciasPorConciliarPedidoExcel = _referenciasPorConciliarPedidoExcel;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas
+
     protected void btnCargaArchivoCancelar_Click1(object sender, EventArgs e)
     {
 

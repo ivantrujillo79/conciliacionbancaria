@@ -1863,6 +1863,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //int secuencia = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grv.RowIndex].Values["Secuencia"]);
             int secuenciarelacion = Convert.ToInt32(grvMCE.DataKeys[grvRMCE.RowIndex].Values["SecuenciaRelacion"]);
 
+            decimal deposito = decimal.Parse((grvRCC.FindControl("lblDeposito") as Label).Text, NumberStyles.Currency);
+            //int corporativo = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grvRCC.RowIndex].Values["CorporativoConciliacion"].ToString());
+            //int sucursal = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grvRCC.RowIndex].Values["SucursalConciliacion"].ToString());
+            int corporativo = Convert.ToInt32(hdfCorporativo.Value);
+            short sucursal = Convert.ToInt16(hdfSucursal.Value);
+
             ReferenciaNoConciliada referencia = LeerReferenciaConciliadaCompartida(grvRCC.RowIndex);
             listMovimientosConciliadosEx =
                        referencia.ListaReferenciaConciliadaCompartida;
@@ -1911,14 +1917,28 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
 
             /*      Asignar propiedades de Carga archivo Excel      */
-            wucCargaExcelCyC.MontoPago = decimal.Parse((grvRCC.FindControl("lblDeposito") as Label).Text, NumberStyles.Currency);
-            wucCargaExcelCyC.ClienteReferencia = clienteBuscar;
-
+            ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value), deposito, clienteBuscar, corporativo, sucursal);
+            
         }
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
+    }
+    
+    private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, int cliente, int corporativo, short sucursal)
+    {
+        wucCargaExcelCyC.CuentaBancaria = cuenta;
+        wucCargaExcelCyC.MontoPago = montoPago;
+        wucCargaExcelCyC.ClienteReferencia = cliente;
+        wucCargaExcelCyC.Corporativo = corporativo;
+        wucCargaExcelCyC.DispersionAutomatica = true;
+        wucCargaExcelCyC.Sucursal = sucursal;
+        //wucCargaExcelCyC.CuentaBancaria = cuentaBancaria;
+        //wucCargaExcelCyC.Anio = Convert.ToInt32(Request.QueryString["Año"]);
+        //wucCargaExcelCyC.Mes = Convert.ToSByte(Request.QueryString["Mes"]);
+        //wucCargaExcelCyC.Folio = Convert.ToInt32(Request.QueryString["Folio"]);
+        //wucCargaExcelCyC.TipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
     }
 
     protected void btnGuardar_Click(object sender, EventArgs e)

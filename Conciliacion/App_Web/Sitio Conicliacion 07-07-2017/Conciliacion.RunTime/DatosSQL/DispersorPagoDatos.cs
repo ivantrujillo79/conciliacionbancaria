@@ -43,7 +43,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
 
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroReferencia", System.Data.SqlDbType.TinyInt)).Value = this.ClienteReferencia;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroReferencia", System.Data.SqlDbType.VarChar)).Value = this.ClienteReferencia;
                 SqlDataReader rdCliente = _conexion.Comando.ExecuteReader();
 
                 if (rdCliente.HasRows)
