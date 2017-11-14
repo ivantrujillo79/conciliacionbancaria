@@ -625,12 +625,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
                     }
 
+                    MovimientoCajaConciliacionDatos objConciliaCaja = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion,
+                       objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
+                       corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "CERRADA", App.ImplementadorMensajes);
+                    objConciliaCaja.Guardar(conexion);
+
                     lanzarReporteComprobanteDeCaja(objMovimientoCaja);
 
-                    MovimientoCajaConciliacionDatos objConciliaCaja = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion,
-                        objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
-                        corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "CERRADA", App.ImplementadorMensajes);
-                    objConciliaCaja.Guardar(conexion);
+                   
 
 
                     Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
