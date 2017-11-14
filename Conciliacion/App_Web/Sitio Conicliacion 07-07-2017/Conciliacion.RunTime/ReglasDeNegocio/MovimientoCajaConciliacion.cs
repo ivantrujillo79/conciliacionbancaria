@@ -13,12 +13,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 		private DateTime foperacion;
 		private short consecutivo;
 		private int folio;
-		private short corporativoconciliacion;
-		private short sucursalconciliacion;
+		private int corporativoconciliacion;
+		private int sucursalconciliacion;
 		private int añoconciliacion;
 		private short mesconciliacion;
 		private int folioconciliacion;
-		private short status;
+		private String status;
 
         #region Constructores
         public MovimientoCajaConciliacion(IMensajesImplementacion implementadorMensajes)
@@ -32,10 +32,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.AñoConciliacion = 0;
             this.MesConciliacion = 0;
             this.FolioConciliacion = 0;
-            this.Status = 0; 
+            this.Status = ""; 
         }
 
-        public MovimientoCajaConciliacion(short caja, DateTime foperacion, short consecutivo, int folio, short corporativoconciliacion, short sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, short status, IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacion(short caja, DateTime foperacion, short consecutivo, int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.Caja = caja;
@@ -77,12 +77,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { folio = value; }
         }
 
-        public short CorporativoConciliacion{
+        public int CorporativoConciliacion{
             get { return corporativoconciliacion; }
             set { corporativoconciliacion = value; }
         }
 
-        public short SucursalConciliacion{
+        public int SucursalConciliacion{
             get { return sucursalconciliacion; }
             set { sucursalconciliacion = value; }
         }
@@ -102,7 +102,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { folioconciliacion = value; }
         }
 
-		public short Status{
+		public String Status
+        {
             get { return status; }
             set { status = value; }
         }

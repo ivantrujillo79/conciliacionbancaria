@@ -132,7 +132,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool ValidaMovimientoCaja(Conexion _conexion);
         public abstract bool AplicarCobros(Conexion _conexion);
 
-        public abstract bool Guardar();
+        public abstract bool Guardar(Conexion conexion);
         
         public abstract MovimientoCaja CrearObjeto();
 

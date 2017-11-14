@@ -73,6 +73,8 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             //   MovimientoCaja movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
             SqlDataReader drConsulta = null;
+            
+
             bool resultado = false;
             try
             {
@@ -99,7 +101,10 @@ namespace Conciliacion.RunTime.DatosSQL
                         this.Consecutivo = Convert.ToInt16(drConsulta["Consecutivo"]);
                         this.Folio = Convert.ToInt32(drConsulta["Folio"]);
                     }
+
                 }
+
+
 
                 resultado = true;
             }
@@ -290,11 +295,11 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }*/
 
-        public override bool Guardar()
+        public override bool Guardar(Conexion conexion)
         {
             bool resultado = false;
 
-            Conexion conexion = new Conexion();
+            
 
             try
             {
@@ -304,9 +309,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 AplicarCobros(conexion);
                 ValidaMovimientoCaja(conexion);
 
-                conexion.Comando.Transaction.Commit();
 
-                this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
 
                 resultado = true;
             }
