@@ -754,7 +754,8 @@
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
-                                        ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"></asp:ImageButton> <%--OnClientClick="VisibleCargarArchivo();--%>
+                                        ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"
+                                        Enabled="false"></asp:ImageButton>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -770,7 +771,7 @@
                             <table width="100%">
                                 <tr>
                                     <td class="centradoJustificado" style="width: 15%;">
-                                        <asp:CheckBox ID="chkReferenciaEx" runat="server" Text="Referencia" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                        <asp:CheckBox ID="chkReferenciaEx" runat="server" Text="Documento" CssClass="etiqueta fg-color-blanco centradoMedio"
                                             AutoPostBack="True" OnCheckedChanged="chkReferenciaEx_CheckedChanged" />
                                     </td>
                                     <td class="centradoJustificado" style="width: 30%;">
@@ -886,7 +887,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Referencia" SortExpression="Referencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
@@ -955,7 +956,7 @@
                             <table width="100%">
                                 <tr>
                                     <td style="width: 15%" class="centradoJustificado">
-                                        <asp:CheckBox ID="chkReferenciaIn" runat="server" Text="Referencia" CssClass="etiqueta fg-color-blanco"
+                                        <asp:CheckBox ID="chkReferenciaIn" runat="server" Text="Documento" CssClass="etiqueta fg-color-blanco"
                                             ToolTip="COMPARAR REFERENCIA" AutoPostBack="True" OnCheckedChanged="chkReferenciaIn_CheckedChanged" />
                                     </td>
                                     <td style="width: 5%" class="etiqueta fg-color-blanco">
@@ -1399,7 +1400,7 @@
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Referencia" SortExpression="Referencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
@@ -1463,14 +1464,14 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
@@ -1557,14 +1558,14 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="SerieFactura" SortExpression="SerieFactura">
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div>
                                             <asp:Label runat="server" ID="lblSerieFacturaPedido">TEST</asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="ClienteReferencia" SortExpression="ClienteReferencia">
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div>
                                             <asp:Label runat="server" ID="lblClienteReferencia">TEST</asp:Label>
@@ -2109,7 +2110,7 @@
                                     <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
                                 </EmptyDataTemplate>
                                 <Columns>
-                                    <asp:TemplateField HeaderText="Referencia" SortExpression="referencia">
+                                    <asp:TemplateField HeaderText="Documento" SortExpression="referencia">
                                         <ItemTemplate>
                                             <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
                                         </ItemTemplate>
@@ -2224,7 +2225,7 @@
                             <asp:TextBox ID="lbFMovimiento" runat="server" Width="95%" CssClass="cajaTexto" Enabled="False"></asp:TextBox>
                             <br />
                             <div class="etiqueta">
-                                Referencia
+                                Documento
                             </div>
                             <asp:TextBox ID="txtReferencia" runat="server" Width="95%" CssClass="cajaTexto" Enabled="True"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="rfvReferencia" runat="server" ControlToValidate="txtReferencia"

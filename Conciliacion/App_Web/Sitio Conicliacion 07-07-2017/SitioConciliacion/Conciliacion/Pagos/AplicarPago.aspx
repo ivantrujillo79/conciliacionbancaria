@@ -231,7 +231,7 @@
                                 </td>
                                 <td class="lineaVertical" style="vertical-align: bottom">
                                     <asp:TextBox ID="txtValorCadenaFiltro" runat="server" CssClass="etiqueta cajaTextoPequeño"
-                                        Width="270px" Font-Size="12px" Style="margin-bottom: 3px; margin-right: 3px">
+                                        Width="120px" Font-Size="12px" Style="margin-bottom: 3px; margin-right: 3px">
                                     </asp:TextBox>
                                     <asp:TextBox ID="txtValorFechaFiltro" runat="server" CssClass="etiqueta cajaTextoPequeño"
                                         Width="270px" Font-Size="12px" Style="margin-bottom: 3px; margin-right: 3px">
@@ -392,7 +392,7 @@
                                     <HeaderStyle Width="200px"></HeaderStyle>
                                     <ItemStyle Width="200px"></ItemStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Ped. Ref." SortExpression="PedidoReferencia">
+                                <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
                                     </ItemTemplate>

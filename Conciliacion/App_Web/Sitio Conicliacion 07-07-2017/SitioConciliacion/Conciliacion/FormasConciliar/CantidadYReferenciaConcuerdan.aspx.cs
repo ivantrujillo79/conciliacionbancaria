@@ -303,7 +303,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     //Colocar el DropDown de Criterios de Evaluacion en la Actual
     public void ActualizarCriterioEvaluacion()
     {
-        ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS").Value;
+        ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD Y REFERENCIA CONCUERDAN").Value;
     }
     /// <summary>
     /// Llena el Combo de Formas de Conciliacion

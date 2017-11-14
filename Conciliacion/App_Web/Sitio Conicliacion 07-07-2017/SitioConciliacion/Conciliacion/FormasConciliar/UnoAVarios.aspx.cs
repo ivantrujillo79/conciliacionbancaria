@@ -124,6 +124,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (!Page.IsPostBack)
             {
                 wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
+                wucCargaExcelCyC.MostrarBotonCancelar = true;
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -147,6 +148,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboMotivosNoConciliado();
                 LlenarBarraEstado();
+                HabilitarCargaArchivo();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
                 Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
                                                   Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
@@ -261,6 +263,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             mpeCargaArchivoConciliacionManual.Show();
             mpeCargaArchivoConciliacionManual.Focus();
+        }
+    }
+
+    /// <summary>
+    /// Método para habilitar el botón de carga de archivo
+    /// cuando la conciliación sea diferente de cerrada o cancelada
+    /// </summary>
+    private void HabilitarCargaArchivo()
+    {
+        if(!(lblStatusConciliacion.Equals("CONCILIACION CANCELADA") || lblStatusConciliacion.Equals("CONCILIACION CERRADA")))
+        {
+            imgCargar.Enabled = true;
         }
     }
 
