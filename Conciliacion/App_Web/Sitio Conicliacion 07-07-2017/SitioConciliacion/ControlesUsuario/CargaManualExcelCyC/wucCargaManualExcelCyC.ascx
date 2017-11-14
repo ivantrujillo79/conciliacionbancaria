@@ -86,17 +86,82 @@
                         <PagerStyle CssClass="grvPaginacionScroll" />
                         <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                         <HeaderStyle HorizontalAlign="Center" />
-                        <Columns>
+                        <%--<Columns>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkAplicarPago" />
                                     </ItemTemplate>
-                                    <%--<HeaderTemplate>
+                                    <HeaderTemplate>
                                         <asp:CheckBox runat="server" ID="chkTodosInternos" /> <!--AutoPostBack="True" OnCheckedChanged="OnCheckedChangedInternos" -->
-                                    </HeaderTemplate>--%>
+                                    </HeaderTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="25px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
                                 </asp:TemplateField>
+                        </Columns>--%>
+                    </asp:GridView>
+                    <asp:GridView ID="grvPagosPropuestos" runat="server" style="align-content:center;"
+                        CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
+                        ViewStateMode="Enabled" BehaviourID="gridView1" Visible="false" AutoGenerateColumns="false">
+                        <PagerStyle CssClass="grvPaginacionScroll" />
+                        <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
+                        <HeaderStyle HorizontalAlign="Center" />
+                        <Columns>
+                            <asp:TemplateField HeaderText="Aplicar pago">
+                                <ItemTemplate>
+                                    <asp:CheckBox runat="server" ID="chkAplicarPago" Checked='<%# Convert.ToBoolean(Eval("AplicarPago")) %>' 
+                                        Enabled="false"/>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" BackColor="#ebecec"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Documento">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# Eval("PedidoReferencia") %>'></asp:Label>
+                                </ItemTemplate>
+                                <ControlStyle CssClass="centradoMedio" />
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Cliente">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblClienteReferencia" runat="server" Text='<%# Eval("ClienteReferencia") %>'></asp:Label>
+                                </ItemTemplate>
+                                <ControlStyle CssClass="centradoMedio" />
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="F. Suministro">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro") %>'></asp:Label>
+                                </ItemTemplate>
+                                <ControlStyle CssClass="centradoMedio" />
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Saldo">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblSaldoPedido" runat="server" Text='<%# Eval("SaldoPedido") %>'></asp:Label>
+                                </ItemTemplate>
+                                <ControlStyle CssClass="centradoMedio" />
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Monto Propuesto">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblMontoPropuesto" runat="server" Text='<%# Eval("MontoPropuesto") %>'></asp:Label>
+                                </ItemTemplate>
+                                <ControlStyle CssClass="centradoMedio" />
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="F. Propuesta">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblFechaPropuesta" runat="server" Text='<%# Eval("FechaPropuesta") %>'></asp:Label>
+                                </ItemTemplate>
+                                <ControlStyle CssClass="centradoMedio" />
+                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                            </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
                 </div>

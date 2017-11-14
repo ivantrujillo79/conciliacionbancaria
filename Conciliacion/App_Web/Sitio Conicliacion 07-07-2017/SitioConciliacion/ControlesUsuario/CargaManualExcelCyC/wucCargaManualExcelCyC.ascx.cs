@@ -12,6 +12,7 @@ using AjaxControlToolkit;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using Conciliacion.RunTime.DatosSQL;
+using System.ComponentModel;
 
 public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
@@ -146,8 +147,22 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["mostrarBotonCancelar"] = value; }
     }
 
-    //public int Sucursal { get; set; }
-    
+    public decimal SaldoAFavor
+    {
+        get
+        {
+            if (ViewState["saldoAFavor"] == null)
+                return 0;
+            else
+                return (decimal)ViewState["saldoAFavor"];
+        }
+        set
+        {
+            ViewState["saldoAFavor"] = value;
+            lblSaldo.Text = SALDO + String.Format("{0:C}", value);
+        }
+    }
+
     public Int16 Sucursal
     {
         get
@@ -210,6 +225,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     private const string REGISTROS = "Total de registros a cargar: ";
     private const string MONTO = "Monto pago: ";
     private const string CLIENTE = "Cliente: ";
+    private const string SALDO = "Saldo a favor: ";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -271,6 +287,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                             if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                             {
+                                grvDetalleConciliacionManual.Visible = true;
                                 grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
                                 grvDetalleConciliacionManual.DataBind();
                                 totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
@@ -337,6 +354,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 string sDocumento;
                 string sClienteReferencia = "";
                 decimal dMonto;
+                DataTable dtTablaPropuestos;
                 ReferenciaNoConciliadaPedido ReferenciaNoConciliada;
                 PagoPropuesto pago;
                 List<PagoPropuesto> pagosEntrada = new List<PagoPropuesto>();
@@ -346,8 +364,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                 foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
                 {
-                    sDocumento = row.Cells[1].Text.Trim();
-                    dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                    sDocumento = row.Cells[0].Text.Trim();
+                    dMonto = Convert.ToDecimal(row.Cells[2].Text);
                     ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
 
                     pago = new PagoPropuesto();
@@ -368,6 +386,13 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     if (dispersor.ValidaClientes(pagosEntrada, ClienteReferencia.ToString(), conexion))
                     {
                         pagosPropuestos = dispersor.PagosPropuestos;
+                        dtTablaPropuestos = ConvertirListaATabla<PagoPropuesto>(pagosPropuestos);
+                        SaldoAFavor = dispersor.SaldoAFavor;
+
+                        grvDetalleConciliacionManual.Visible = false;
+                        grvPagosPropuestos.Visible = true;
+                        grvPagosPropuestos.DataSource = dtTablaPropuestos;
+                        grvPagosPropuestos.DataBind();
                     }
                 }
                 catch (Exception ex)
@@ -384,6 +409,23 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 throw ex;
             }
         }
+    }
+
+    private DataTable ConvertirListaATabla<T> (IList<T> list)
+    {
+        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
+        DataTable table = new DataTable();
+        foreach (PropertyDescriptor prop in properties)
+            table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+
+        foreach (T item in list)
+        {
+            DataRow row = table.NewRow();
+            foreach (PropertyDescriptor prop in properties)
+                row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+            table.Rows.Add(row);
+        }
+        return table;
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)
@@ -424,8 +466,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     {
                         foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
                         {
-                            sDocumento = row.Cells[1].Text.Trim();
-                            dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                            sDocumento = row.Cells[0].Text.Trim();
+                            dMonto = Convert.ToDecimal(row.Cells[2].Text);
 
                             ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
 
@@ -459,8 +501,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     {
                         foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
                         {
-                            sDocumento = row.Cells[1].Text.Trim();
-                            dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                            sDocumento = row.Cells[0].Text.Trim();
+                            dMonto = Convert.ToDecimal(row.Cells[2].Text);
 
                             RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                             RefNoConciliada.Referencia = sDocumento;
