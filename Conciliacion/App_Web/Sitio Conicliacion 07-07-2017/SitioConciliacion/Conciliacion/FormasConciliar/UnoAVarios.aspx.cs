@@ -2120,10 +2120,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                    Fecha: 08/06/2017
                else
                App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");**/
+                int Celula;
+                if (int.TryParse(ddlCelula.SelectedValue, out Celula))
+                    Celula = Convert.ToInt32(ddlCelula.SelectedValue);
 
                 Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                     Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                     cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
+                      Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                      cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
                 LlenaGridViewPedidos();
                 statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);

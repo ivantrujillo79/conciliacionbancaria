@@ -46,7 +46,7 @@ AS
 
 
 
-    DELETE  tdd
+    DELETE  td
     FROM    dbo.TablaDestino td
     WHERE   td.Folio = @FolioExt
             AND td.Año = @AñoExt;

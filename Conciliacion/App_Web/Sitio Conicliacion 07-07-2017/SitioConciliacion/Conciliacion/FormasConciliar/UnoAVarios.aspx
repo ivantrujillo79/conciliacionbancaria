@@ -13,18 +13,15 @@
     <script src="../../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
-    <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
-        rel="stylesheet" type="text/css" />
+    <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
         
     <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
-        type="text/css" />
+    <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
-        
         //Funcion para mostrar el calendar
         function datapicker_modal(fDiaMin, fMesMin, fAñoMin, fDiaMax, fMesMax, fAñoMax) {
             var cadenaMin = fDiaMin+'/'+fMesMin+'/'+fAñoMin;
