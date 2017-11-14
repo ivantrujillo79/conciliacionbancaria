@@ -124,7 +124,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (!Page.IsPostBack)
             {
                 wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
-                wucCargaExcelCyC.MostrarBotonCancelar = true;
+                //wucCargaExcelCyC.MostrarBotonCancelar = true;
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
