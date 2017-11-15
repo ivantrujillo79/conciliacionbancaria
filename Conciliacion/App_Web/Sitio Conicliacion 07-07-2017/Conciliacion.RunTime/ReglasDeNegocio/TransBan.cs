@@ -13,7 +13,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
         }
 
-        public List<MovimientoCaja> ReorganizaTransban(MovimientoCajaDatos ObjMovimientoCajaDatos, int MaxDocumentos)
+/*        public List<MovimientoCaja> ReorganizaTransban(MovimientoCajaDatos ObjMovimientoCajaDatos, int MaxDocumentos)
         {
             try
             {
@@ -26,11 +26,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 List<Cobro> lstCobros = new List<Cobro>();
 
                 lstPedidosOrdenada = ObjMovimientoCajaDatos.ListaPedidos.OrderBy(s => s.Cliente).ToList();
-                foreach (Cobro objCobro in ObjMovimientoCajaDatos.ListaCobros)
-                {
-                    lstCobros.Add(objCobro);  
-                }
-                
+
+                lstCobros = ObjMovimientoCajaDatos.ListaCobros.OrderBy(s => s.Cliente).ToList();
 
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
@@ -57,7 +54,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             
                             lstPedidos.ForEach(c => objmovimientocajadatos.ListaPedidos.Add(c));
 
-                            lstMovimientoCajaDatos.Add(objmovimientocajadatos);
 
                             lstPedidos.Clear();
                             lstPedidos.Add(Pedido);
@@ -74,6 +70,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             objmovimientocajadatos.ListaCobros.Clear();
                             buffCobro.ForEach(x=> objmovimientocajadatos.ListaCobros.Add(x));
 
+                            lstMovimientoCajaDatos.Add(objmovimientocajadatos);
 
                             ultimaCedula = false;
                             i = 1;
@@ -81,9 +78,40 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         else
                         {
                             int NumClientes = ObjMovimientoCajaDatos.ListaPedidos.Where(y => y.Cliente == Pedido.Cliente).Count();
-
-                            lstPedidos.Add(Pedido);
                             
+                            lstPedidos.Clear();
+                            lstPedidos.Add(Pedido);
+
+                            objmovimientocajadatos = new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
+                                                                ObjMovimientoCajaDatos.FOperacion,
+                                                                ObjMovimientoCajaDatos.Consecutivo,
+                                                                ObjMovimientoCajaDatos.Folio,
+                                                                ObjMovimientoCajaDatos.FMovimiento,
+                                                                ObjMovimientoCajaDatos.Total,
+                                                                ObjMovimientoCajaDatos.Usuario,
+                                                                ObjMovimientoCajaDatos.Empleado,
+                                                                ObjMovimientoCajaDatos.Observaciones,
+                                                                ObjMovimientoCajaDatos.SaldoAFavor,
+                                                                ObjMovimientoCajaDatos.ListaCobros,
+                                                                implementadorMensajes);
+
+                            objmovimientocajadatos.ListaPedidos.Clear();
+                            objmovimientocajadatos.ListaCobros.Clear();
+
+                            objmovimientocajadatos.ListaPedidos.Add(Pedido);
+
+                            var ListaDistintosClientes = objmovimientocajadatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
+                            List<Conciliacion.RunTime.ReglasDeNegocio.Cobro> buffCobro = new List<Conciliacion.RunTime.ReglasDeNegocio.Cobro>();
+
+                            foreach (var clientedisti in ListaDistintosClientes)
+                            {
+                                buffCobro = lstCobros.Where(X => X.Cliente == clientedisti).ToList();
+                            }
+
+                            buffCobro.ForEach(x => objmovimientocajadatos.ListaCobros.Add(x));
+
+                            lstMovimientoCajaDatos.Add(objmovimientocajadatos);
+
                             if (NumClientes + i > MaxDocumentos && ultimaCedula == false)
                                 ultimaCedula = true;
 
@@ -106,9 +134,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     implementadorMensajes);
                     lstPedidos.ForEach(c => objmovimientocajadatos.ListaPedidos.Add(c));
 
-                    /*List<Cobro> buffCobroFin = lstCobros.Where(X => X.Cliente == lstPedidos[0].Cliente).ToList();
-                    objmovimientocajadatos.ListaCobros.Clear();
-                    objmovimientocajadatos.ListaCobros = buffCobroFin;*/
                     var ListaDistintosClientes1 = objmovimientocajadatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
 
                     List<Conciliacion.RunTime.ReglasDeNegocio.Cobro> buffCobro1 = new List<Conciliacion.RunTime.ReglasDeNegocio.Cobro>();
@@ -123,7 +148,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     buffCobro1.ForEach(x => objmovimientocajadatos.ListaCobros.Add(x));
 
 
-                    lstMovimientoCajaDatos.Add(objmovimientocajadatos);
+                    //lstMovimientoCajaDatos.Add(objmovimientocajadatos);
                 }
                 else
                 {
@@ -147,5 +172,91 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
 
         }
+    }*/
+
+
+        public List<MovimientoCaja> ReorganizaTransban(MovimientoCajaDatos ObjMovimientoCajaDatos, int MaxDocumentos)
+        {
+            List<MovimientoCaja> lstMovimientoCajaDatos = new List<MovimientoCaja>();
+            List<Cobro> BufferCobro = new List<Cobro>();
+
+            var ListaDistintosClientes = ObjMovimientoCajaDatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
+            ObjMovimientoCajaDatos.ListaCobros.ForEach(X => BufferCobro.Add(X));
+
+            if (ObjMovimientoCajaDatos.ListaPedidos.Count() == ObjMovimientoCajaDatos.ListaCobros.Count())
+            {
+                if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
+                {
+                    //Se supera el máximo configurado
+                    /*MovimientoCaja _objmovimientocajadatos =
+                           new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
+                               ObjMovimientoCajaDatos.FOperacion,
+                               ObjMovimientoCajaDatos.Consecutivo,
+                               ObjMovimientoCajaDatos.Folio,
+                               ObjMovimientoCajaDatos.FMovimiento,
+                               ObjMovimientoCajaDatos.Total,
+                               ObjMovimientoCajaDatos.Usuario,
+                               ObjMovimientoCajaDatos.Empleado,
+                               ObjMovimientoCajaDatos.Observaciones,
+                               ObjMovimientoCajaDatos.SaldoAFavor,
+                               ObjMovimientoCajaDatos.ListaCobros,
+                               implementadorMensajes);
+
+                    _objmovimientocajadatos.ListaCobros.Clear();
+                    _objmovimientocajadatos.ListaPedidos.Clear();*/
+
+                    foreach (var Cliente in ListaDistintosClientes)
+                    {
+                        MovimientoCaja _objmovimientocajadatos =
+                           new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
+                               ObjMovimientoCajaDatos.FOperacion,
+                               ObjMovimientoCajaDatos.Consecutivo,
+                               ObjMovimientoCajaDatos.Folio,
+                               ObjMovimientoCajaDatos.FMovimiento,
+                               ObjMovimientoCajaDatos.Total,
+                               ObjMovimientoCajaDatos.Usuario,
+                               ObjMovimientoCajaDatos.Empleado,
+                               ObjMovimientoCajaDatos.Observaciones,
+                               ObjMovimientoCajaDatos.SaldoAFavor,
+                               ObjMovimientoCajaDatos.ListaCobros,
+                               implementadorMensajes);
+
+                        _objmovimientocajadatos.ListaCobros.Clear();
+                        _objmovimientocajadatos.ListaPedidos.Clear();
+
+                        var ListaPedidosDelCliente =
+                            ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Cliente == Convert.ToInt32(Cliente))
+                                .ToList();
+
+                        var ListaCobrosDelCliente =
+                            BufferCobro.Where(x => x.Cliente == Convert.ToInt32(Cliente))
+                                .ToList();
+
+                        foreach (var Pedido in ListaPedidosDelCliente)
+                        {
+                            _objmovimientocajadatos.ListaPedidos.Add(Pedido);    
+                        }
+
+                        foreach (var Cobro in ListaCobrosDelCliente)
+                        {
+                            _objmovimientocajadatos.ListaCobros.Add(Cobro);
+                        }
+
+                        lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
+                        _objmovimientocajadatos = null;
+
+                    }
+
+                }
+                else
+                {
+                    //No se supera el máximo configurado
+                    lstMovimientoCajaDatos.Add(ObjMovimientoCajaDatos);
+                }
+            }
+
+            return lstMovimientoCajaDatos;
+        }
     }
+
 }
