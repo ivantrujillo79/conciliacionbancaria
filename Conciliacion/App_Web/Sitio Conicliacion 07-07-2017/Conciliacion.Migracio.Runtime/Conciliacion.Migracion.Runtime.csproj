@@ -159,6 +159,10 @@
       <Project>{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}</Project>
       <Name>Conciliacion.RunTime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SeguridadCB\SeguridadCB.csproj">
+      <Project>{C924B2CB-B08E-4786-9E41-77F9278A8372}</Project>
+      <Name>SeguridadCB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

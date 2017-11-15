@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Conciliacion.RunTime;
+using Conciliacion.RunTime.ReglasDeNegocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +10,9 @@ using System.Web;
 /// </summary>
 public class ClaseFiltros
 {
-    
+    private cConciliacion conciliacion;
+    public cConciliacion Conciliacion { get; set; }
+
     private int empresa;
     public int Empresa
     {
@@ -53,6 +57,7 @@ public class ClaseFiltros
         anio = -1;
         mes = -1;
         folio = -1;
+        conciliacion = null;
         //
         // TODO: Agregar aquí la lógica del constructor
         //

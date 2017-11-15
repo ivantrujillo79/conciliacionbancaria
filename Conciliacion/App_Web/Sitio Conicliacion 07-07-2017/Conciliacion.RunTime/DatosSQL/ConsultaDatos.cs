@@ -88,6 +88,64 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override List<ConsultarMultiplesDocumentosTransBan> ConsultaConsultarMultiplesDocumentosTransBan
+        (int corporativo, int sucursal, int anio, int mes, int folio)
+        {
+            List<ConsultarMultiplesDocumentosTransBan> lista = new List<ConsultarMultiplesDocumentosTransBan>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaMovimientoCaja", cnn);
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value = corporativo;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursal;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = anio;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.TinyInt).Value = mes;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        ConsultarMultiplesDocumentosTransBan dato =
+                            new ConsultarMultiplesDocumentosTransBanDatos(Convert.ToString(reader["Clave"]),
+                                                            Convert.ToDateTime(reader["FMovimiento"]),
+                                                            Convert.ToString(reader["CajaDescripcion"]),
+                                                            Convert.ToInt16(reader["Caja"]),
+                                                            Convert.ToDateTime(reader["FOperacion"]),
+                                                            Convert.ToString(reader["TipoMovimientoCajaDescripcion"]),
+                                                            Convert.ToDecimal(reader["Total"]));
+                        lista.Add(dato);
+                    }
+                    /*
+                    for (int i = 0; i < 14; i++)
+                    {
+                        ConsultarMultiplesDocumentosTransBan dato2 = new ConsultarMultiplesDocumentosTransBanDatos(App.ImplementadorMensajes);
+                        dato2.Clave =Convert.ToString(i + 1);
+                        dato2.FMovimiento = DateTime.Now;
+                        dato2.CajaDescripcion = "CajaDescripcion " + Convert.ToString(i);
+                        dato2.Caja = i;
+                        dato2.FOperacion = DateTime.Now.AddDays(i);
+                        dato2.TipoMovimientoCajaDescripcion = "TipoMovimientoCajaDescripcion " + Convert.ToString(i);
+                        dato2.Total = i * i;
+                        lista.Add(dato2);
+                    }   */
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+            }
+            return lista;
+        }
+
+
         public override List<ImportacionAplicacion> ConsultaImportacionesAplicacion(int sucursal, string cuentaBancaria)
         {
             List<ImportacionAplicacion> datos = new List<ImportacionAplicacion>();

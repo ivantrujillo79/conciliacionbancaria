@@ -7,35 +7,47 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class ConsultarMultiplesDocumentosTransBan: EmisorMensajes
     {
-        string campo1;
-        int campo2;
+        string clave;
+        DateTime fMovimiento;
+        string cajaDescripcion;
+        int caja;
+        DateTime fOperacion;
+        string tipoMovimientoCajaDescripcion;
+        decimal total;        
 
         public ConsultarMultiplesDocumentosTransBan(IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
-            this.campo1 = "";
-            this.campo2 = 0;
+            this.clave="";
+            this.fMovimiento = DateTime.Now;
+            this.cajaDescripcion="";
+            this.caja=0;
+            this.fOperacion=DateTime.Now;
+            this.tipoMovimientoCajaDescripcion="";
+            this.total=0;
         }
 
-        public ConsultarMultiplesDocumentosTransBan(string campo1, int campo2)
+        public ConsultarMultiplesDocumentosTransBan(string clave, DateTime fMovimiento, string cajaDescripcion, int caja, DateTime fOperacion, string tipoMovimientoCajaDescripcion, decimal total)
         {
-            this.campo1 = campo1;
-            this.campo2 = campo2;
+            Clave = clave;
+            FMovimiento = fMovimiento;
+            CajaDescripcion = cajaDescripcion;
+            Caja = caja;
+            FOperacion = fOperacion;
+            TipoMovimientoCajaDescripcion = tipoMovimientoCajaDescripcion;
+            Total = total;
         }
 
-        public string Campo1
-        {
-            get { return campo1; }
-            set { campo1 = value; }
-        }
-
-        public int Campo2
-        {
-            get { return Campo2; }
-            set { campo2 = value; }
-        }
+        public string Clave { get; set; }
+        public DateTime FMovimiento { get; set; }
+        public string CajaDescripcion { get; set ; }
+        public int Caja { get; set; }
+        public DateTime FOperacion { get; set; }
+        public string TipoMovimientoCajaDescripcion { get; set; }
+        public decimal Total { get; set; }
 
         public abstract ConsultarMultiplesDocumentosTransBan CrearObjeto();
+
     }
 
     

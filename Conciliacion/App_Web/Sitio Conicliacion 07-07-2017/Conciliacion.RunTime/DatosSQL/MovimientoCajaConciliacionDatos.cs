@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Conciliacion.RunTime.DatosSQL;
 using System.Data;
 using System.Data.SqlClient;
-
-namespace Conciliacion.RunTime.ReglasDeNegocio
+using Conciliacion.RunTime.ReglasDeNegocio;
+namespace Conciliacion.RunTime.DatosSQL
 {
     public class MovimientoCajaConciliacionDatos: MovimientoCajaConciliacion {
 
@@ -15,7 +14,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
         }
 
-        public MovimientoCajaConciliacionDatos(short caja, DateTime foperacion, short consecutivo,int folio, short corporativoconciliacion, short sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, short status, IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacionDatos(short caja, DateTime foperacion, short consecutivo,int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, IMensajesImplementacion implementadorMensajes)
             : base(caja, foperacion, consecutivo, folio, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, status, implementadorMensajes)
         {
         }

@@ -78,7 +78,8 @@ public partial class Inicio : System.Web.UI.Page
                 ddlAñoConciliacion.SelectedValue = leerAño();                
                
                 if (HttpContext.Current.Session["filtros"] != null)
-                {                    
+                {
+
                     ClaseFiltros filtros = new ClaseFiltros();
                     filtros = (ClaseFiltros)HttpContext.Current.Session["filtros"];
                     ddlEmpresa.SelectedIndex = filtros.Empresa-1;
@@ -141,25 +142,6 @@ public partial class Inicio : System.Web.UI.Page
                         lnkInformeM.Attributes.CssStyle.Add("opacity", "1");
                     }
                 }
-                if (statusConciliacion.Equals("CONCILIACION ABIERTA"))
-                {
-                    lnkVerM.Attributes.Add("onclick", "return fnVerConciliacion()");
-                    lnkVerM.Attributes.CssStyle.Add("opacity", "1");
-
-                    if (operaciones.EstaHabilitada(30, "Aplicar pagos"))//&& tipoConciliacion == 2)
-                    {
-                        lnkPagosM.Attributes.Add("onclick", "return fnPagos()");
-                        lnkPagosM.Attributes.CssStyle.Add("opacity", "1");
-                    }
-
-                    //Validacion Informe
-                    if (operaciones.EstaHabilitada(30, "Informe contabilidad") && tipoConciliacion == 2)
-                    {
-                        lnkInformeM.Attributes.Add("onclick", "return fnInforme()");
-                        lnkInformeM.Attributes.CssStyle.Add("opacity", "1");
-                    }
-                }
-                        /*
                 else
                 {
                     lnkVerM.Attributes.Add("onclick", "return fnVerConciliacion()");
@@ -170,7 +152,7 @@ public partial class Inicio : System.Web.UI.Page
 
                     lnkInformeM.Attributes.Add("onclick", "return false");
                     lnkInformeM.Attributes.CssStyle.Add("opacity", "0.7");
-                }*/
+                }
             }
 
         }
@@ -616,7 +598,9 @@ public partial class Inicio : System.Web.UI.Page
         filtros.Status = ddlStatusConciliacion.SelectedIndex;
         filtros.Anio = ddlAñoConciliacion.SelectedIndex;
         filtros.Mes = ddlMesConciliacion.SelectedIndex;
-        filtros.Folio= Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value); 
+        filtros.Folio= Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
+        cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == filtros.Folio);
+        filtros.Conciliacion = conciliacion;
         HttpContext.Current.Session["filtros"] = filtros;
         Response.Redirect("~/Conciliacion/ConsultarDocumentos.aspx");
     }

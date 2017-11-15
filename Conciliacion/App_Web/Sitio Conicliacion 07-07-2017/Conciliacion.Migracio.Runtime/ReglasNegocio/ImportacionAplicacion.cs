@@ -6,6 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Data;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using SeguridadCB;
 
 namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 {
@@ -90,7 +91,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                 Servidor = extractor.Servidor;
                 BaseDeDatos = extractor.BaseDeDatos;
                 UsuarioConsulta = extractor.UsuarioConsulta;
-                Pass = extractor.Pass;
+                Pass = Seguridad.DesencriptaClave(extractor.Pass);
                 TablaDestino.IdTipoFuenteInformacion = extractor.Identificador;
 
 

@@ -550,6 +550,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 string usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario.Trim();
                 string pass = SeguridadCB.Seguridad.DesencriptaClave(lcs.Pass);
                 Conciliacion.Migracion.Runtime.ReglasNegocio.ImportacionAplicacion ia = null;
+
                 /*ia = Conciliacion.Migracion.Runtime.App.ImportacionAplicacion(Convert.ToInt32(this.cboCorporativo.SelectedValue),
                                                                               Convert.ToInt32(this.cboSucursal.SelectedValue),
                                                                               Convert.ToInt32(this.cboAnio.SelectedValue),

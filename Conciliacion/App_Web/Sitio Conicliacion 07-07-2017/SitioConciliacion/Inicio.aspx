@@ -346,7 +346,7 @@
                 <li class="separator"></li>
                 <li class="pagos"><a runat="server" id="lnkPagosM">Pagos</a></li>
                 <li class="informe"><a runat="server" id="lnkInformeM">Informe</a></li> 
-                <li class="editar"><a runat="server" id="lnkConsultarDoc">Consultar documentos</a></li> 
+                <li class="editar"><a runat="server" id="lnkConsultarDoc">TransBan</a></li> 
               <%--  <li class="informe"><a runat="server" id="lnkInformeM">Informe</a></li>--%>
             </ul>
         </ContentTemplate>

@@ -38,10 +38,12 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                     comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = this.TablaDestino.FInicial;
                     comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = this.TablaDestino.FFinal;
                     comando.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = this.TablaDestino.CuentaBancoFinanciero;
-
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    comando.CommandTimeout = 500;
+
+
+                       comando.CommandTimeout = 500;
                     SqlDataReader reader = comando.ExecuteReader();
+                    
                     while (reader.Read())
                     {
 
@@ -74,6 +76,12 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                     }
                 }
                 catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.StackTrace);
+                    stackTrace = null;
+                }
+                catch (Exception ex)
                 {
                     stackTrace = new StackTrace();
                     this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.StackTrace);
