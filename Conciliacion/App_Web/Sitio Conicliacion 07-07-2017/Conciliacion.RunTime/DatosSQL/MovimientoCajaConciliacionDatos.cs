@@ -28,11 +28,8 @@ namespace Conciliacion.RunTime.DatosSQL
 		    SqlConnection cnn = new SqlConnection(App.CadenaConexion);
             SqlCommand cmd = new SqlCommand("spCBMovimientoCajaConciliacionAlta",cnn);
             cmd.CommandType = CommandType.StoredProcedure;
-            //_conexion.Comando.CommandType = CommandType.StoredProcedure;
-            //_conexion.Comando.CommandText = "spCBMovimientoCajaConciliacionAlta";
 
             cmd.Parameters.Clear();
-
             cmd.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = this.Caja;
             cmd.Parameters.Add(new SqlParameter("@FOperacion", System.Data.SqlDbType.DateTime)).Value = this.FOperacion;
             cmd.Parameters.Add(new SqlParameter("@Consecutivo", System.Data.SqlDbType.TinyInt)).Value = this.Consecutivo;
@@ -47,8 +44,6 @@ namespace Conciliacion.RunTime.DatosSQL
             cnn.Open();
             cmd.ExecuteNonQuery();
         }
-
-		
 	}//end MovimientoCajaConciliacionDatos
 
 }//end namespace DatosSQL

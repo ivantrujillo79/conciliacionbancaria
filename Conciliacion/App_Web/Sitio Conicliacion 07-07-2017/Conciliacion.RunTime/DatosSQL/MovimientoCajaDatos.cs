@@ -303,21 +303,13 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool Guardar(Conexion conexion)
         {
             bool resultado = false;
-
-            
-
             try
             {
-                
                 conexion.AbrirConexion(true);
-
                 MovimientoCajaAlta(conexion);
                 AplicarCobros(conexion);
                 ValidaMovimientoCaja(conexion);
-
                 conexion.Comando.Transaction.Commit();
-
-
                 resultado = true;
             }
             catch (Exception ex)
@@ -332,7 +324,6 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 conexion.CerrarConexion();
             }
-
             return resultado;
         }
 

@@ -26,18 +26,20 @@ namespace Conciliacion.RunTime.DatosSQL
         {
         }
 
-        public override RelacionCobranzaException CreaRelacionCobranza(Conexion _conexion)
+        public override RelacionCobranzaException CreaRelacionCobranza(Conexion conexion)
         {
+            conexion.Comando.Connection.ConnectionString = App.CadenaConexion;
+            conexion.AbrirConexion(true);
             try
             {
                 ObjRelacionCobranzaExcepcion = new RelacionCobranzaException();
 
                 if (ConBoveda)
                 {
-                    CreaEncabezadoRelacionCobranza(_conexion);
-                    AjustarPedidos(_conexion);
-                    CreaDetalleRelacionCobranza(_conexion);
-                    _conexion.Comando.Transaction.Commit();                    
+                    CreaEncabezadoRelacionCobranza(conexion);
+                    AjustarPedidos(conexion);
+                    CreaDetalleRelacionCobranza(conexion);
+                    conexion.Comando.Transaction.Commit();                    
                 }
 
                 ObjRelacionCobranzaExcepcion.DetalleExcepcion.CodigoError = 0;
@@ -48,9 +50,9 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             catch (Exception ex)
             {
-                if (_conexion.Comando.Transaction != null)
+                if (conexion.Comando.Transaction != null)
                 {
-                    _conexion.Comando.Transaction.Rollback();
+                    conexion.Comando.Transaction.Rollback();
                 }
                 ObjRelacionCobranzaExcepcion.DetalleExcepcion.CodigoError = 201;
                 ObjRelacionCobranzaExcepcion.DetalleExcepcion.Mensaje = ex.Message;
@@ -59,7 +61,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             finally
             {
-                _conexion.CerrarConexion();
+                conexion.CerrarConexion();
             }
 
         }
