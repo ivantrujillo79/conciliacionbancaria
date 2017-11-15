@@ -905,7 +905,7 @@
                                                                 <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Ped.Referencia" SortExpression="PedReferencia">
+                                                            <asp:TemplateField HeaderText="Documento" SortExpression="PedReferencia">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                                                 </ItemTemplate>
