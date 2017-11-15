@@ -16,7 +16,7 @@
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
-        
+
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
@@ -223,10 +223,6 @@
             }
         }
 
-        <%--function VisibleCargarArchivo() {
-            var visible = document.getElementById("<%=hdfVisibleCargaArchivo.ClientID%>");
-            visible.value = "1";
-        }--%>
     </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
