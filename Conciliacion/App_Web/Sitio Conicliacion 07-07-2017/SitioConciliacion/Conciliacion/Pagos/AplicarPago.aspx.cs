@@ -597,6 +597,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 conexion.AbrirConexion(true);
                 if (objMovimientoCaja.Guardar(conexion))
                 {
+                    int corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
+                    Int16 sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
+                    int añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
+                    int folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
+                    short  mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
+                    short  tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
+                        corporativoConciliacion, sucursalConciliacion,añoConciliacion, mesConciliacion, folioConciliacion,"ABIERTO", new MensajeImplemantacionForm());
+                    objMCC.Guardar(conexion);
+
 
                     Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
                     /*
