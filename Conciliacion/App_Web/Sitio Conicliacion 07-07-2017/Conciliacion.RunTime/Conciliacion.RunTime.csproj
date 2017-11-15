@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="DatosSQL\ClienteDatos.cs" />
     <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
@@ -107,6 +108,8 @@
     <Compile Include="MensajeImplementacionConsola.cs" />
     <Compile Include="MensajeImplementacionWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReglasDeNegocio\Cliente.cs" />
+    <Compile Include="ReglasDeNegocio\ClienteException.cs" />
     <Compile Include="ReglasDeNegocio\Cobranza.cs" />
     <Compile Include="ReglasDeNegocio\Cobro.cs" />
     <Compile Include="ReglasDeNegocio\Conciliacion.cs" />

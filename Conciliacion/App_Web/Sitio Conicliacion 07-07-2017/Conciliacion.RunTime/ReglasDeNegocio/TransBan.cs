@@ -203,10 +203,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         _objmovimientocajadatos.Total = ObjMovimientoCajaDatos.Total;
                         _objmovimientocajadatos.Usuario = ObjMovimientoCajaDatos.Usuario;
 
-
-                        /*_objmovimientocajadatos.ListaCobros.Clear();
-                        _objmovimientocajadatos.ListaPedidos.Clear();*/
-
                         List<ReferenciaConciliadaPedido> ListaPedidosDelCliente = new List<ReferenciaConciliadaPedido>();
                         ListaPedidosDelCliente = ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Cliente == Convert.ToInt32(Cliente)).ToList();
 
