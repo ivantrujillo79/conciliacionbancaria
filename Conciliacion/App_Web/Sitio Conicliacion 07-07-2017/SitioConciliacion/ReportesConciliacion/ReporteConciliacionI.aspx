@@ -870,7 +870,7 @@
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
-                            <div style="width:100%; margin-top:5px; max-height:400px; overflow:auto">  <%-- max-height:400px; overflow:auto--%>
+                            <div style="width:100%; margin-top:5px; max-height:400px; overflow:auto; ">
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
                                     <Panes>
