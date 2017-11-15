@@ -83,11 +83,11 @@
                     <!--        GRIDVIEW DETALLE CONCILIACION MANUAL       -->
                     <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
                         CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
-                        ViewStateMode="Enabled" BehaviourID="gridView1" AutoGenerateColumns="True">
+                        ViewStateMode="Enabled" BehaviourID="gridView1" AutoGenerateColumns="False">
                         <PagerStyle CssClass="grvPaginacionScroll" />
                         <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                         <HeaderStyle HorizontalAlign="Center" />
-                        <%--<Columns>
+                        <Columns>
                             <asp:TemplateField HeaderText="Documento">
                             <ItemTemplate>
                                 <asp:Label ID="lblDocumento" runat="server" Text='<%# Eval("Documento") %>'></asp:Label>
@@ -106,13 +106,13 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Monto">
                             <ItemTemplate>
-                                <asp:Label ID="lblMonto" runat="server" Text='<%# Eval("Monto") %>'></asp:Label>
+                                <asp:Label ID="lblMonto" runat="server" Text='<%# Eval("Monto", "{0:C}") %>'></asp:Label>
                             </ItemTemplate>
                             <ControlStyle CssClass="centradoMedio" />
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             <HeaderStyle HorizontalAlign="Center" Width="33%"></HeaderStyle>
                         </asp:TemplateField>
-                        </Columns>--%>
+                        </Columns>
                     </asp:GridView>
                     <!--        GRIDVIEW PAGOS PROPUESTOS       -->
                     <asp:GridView ID="grvPagosPropuestos" runat="server" style="align-content:center;"
@@ -148,7 +148,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F. Suministro">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                    <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro", "{0:d}") %>'></asp:Label>
                                 </ItemTemplate>
                                 <ControlStyle CssClass="centradoMedio" />
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -172,7 +172,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F. Propuesta">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFechaPropuesta" runat="server" Text='<%# Eval("FechaPropuesta", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                    <asp:Label ID="lblFechaPropuesta" runat="server" Text='<%# Eval("FechaPropuesta", "{0:d}") %>'></asp:Label>
                                 </ItemTemplate>
                                 <ControlStyle CssClass="centradoMedio" />
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>

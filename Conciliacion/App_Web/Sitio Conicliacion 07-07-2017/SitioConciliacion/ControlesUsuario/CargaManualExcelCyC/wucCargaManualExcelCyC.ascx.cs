@@ -26,14 +26,13 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     public int RegistrosCargados { get; set; }
 
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
-
-    private int anio;
+    
     public int Anio
     {
         get
         {
             if (ViewState["anio"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["anio"];
         }
@@ -45,14 +44,24 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         get
         {
             if (ViewState["clienteReferencia"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["clienteReferencia"];
         }
-        set { ViewState["clienteReferencia"] = value; }
+        set
+        {
+            ViewState["clienteReferencia"] = value;
+            if (value == -1)
+            {
+                lblReferencia.Text = "El pago no tiene referencia";
+                lblReferencia.CssClass = "etiqueta fg-color-naranja";
+            }
+            else
+            {
+                lblReferencia.Text = CLIENTE + value.ToString();
+            }
+        }
     }
-
-    //public int Corporativo { get; set; }
     
     public int Corporativo
     {
@@ -65,22 +74,19 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["corporativo"] = value; }
     }
-
-    private int cuentaBancaria;
+    
     public int CuentaBancaria
     {
         get
         {
             if (ViewState["cuentaBancaria"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["cuentaBancaria"];
         }
         set { ViewState["cuentaBancaria"] = value; }
     }
-
-    //public bool DispersionAutomatica { get; set; }
-
+    
     public bool DispersionAutomatica
     {
         get
@@ -92,27 +98,25 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["dispersionAutomatica"] = value; }
     }
-
-    private int folio;
+    
     public int Folio
     {
         get
         {
             if (ViewState["folio"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["folio"];
         }
         set { ViewState["folio"] = value; }
     }
-
-    private sbyte mes;
+    
     public sbyte Mes
     {
         get
         {
             if (ViewState["mes"] == null)
-                return mes;
+                return 0;
             else
                 return (sbyte)ViewState["mes"];
         }
@@ -321,7 +325,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                 dvMensajeExito.Visible = true;
                                 if (DispersionAutomatica)
                                 {
-                                    DispersarPagos();
+                                    DispersarPagos(dtTabla);
                                 }
                             }
                         } // if ArchivoValido
@@ -341,13 +345,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
             //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
-        //dvMensajeExito.Visible = true;
         RecuperaReferenciasNoConciliadas();
     }
 
-    private void DispersarPagos()
+    private void DispersarPagos(DataTable dtDatos)
     {
-        if (grvDetalleConciliacionManual.Rows.Count > 0)
+        if (dtDatos.Rows.Count > 0)
         {
             try
             {
@@ -360,11 +363,11 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 List<PagoPropuesto> pagosPropuestos = new List<PagoPropuesto>();
                 DispersorPagoDatos dispersor = new DispersorPagoDatos();
                 Conexion conexion = new Conexion();
-
-                foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                
+                foreach (DataRow row in dtDatos.Rows)
                 {
-                    sDocumento = row.Cells[0].Text.Trim();
-                    dMonto = Convert.ToDecimal(row.Cells[2].Text);
+                    sDocumento = row["Documento"].ToString();
+                    dMonto = Convert.ToDecimal(row["Monto"].ToString());
                     ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
 
                     pago = new PagoPropuesto();
