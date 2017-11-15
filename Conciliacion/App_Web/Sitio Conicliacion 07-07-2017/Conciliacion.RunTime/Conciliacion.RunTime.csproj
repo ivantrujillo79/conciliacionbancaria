@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="ReglasDeNegocio\Cobranza.cs" />
     <Compile Include="ReglasDeNegocio\Cobro.cs" />
     <Compile Include="ReglasDeNegocio\Conciliacion.cs" />
+    <Compile Include="ReglasDeNegocio\ConsultarMultiplesDocumentosTransBan.cs" />
     <Compile Include="ReglasDeNegocio\Consultas.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivo.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />

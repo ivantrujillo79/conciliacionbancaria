@@ -123,6 +123,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ListaCombo> ConsultaTipoConciliacion(ConfiguracionGrupo configuracion, string usuario);
 
+        public abstract List<ConsultarMultiplesDocumentosTransBan> ConsultaConsultarMultiplesDocumentosTransBan
+        (int corporativo, int sucursal, int anio, int mes, int folio);
+
         public abstract List<ListaCombo> ConsultaStatusConciliacion();
 
         public abstract List<ListaCombo> ConsultaTipoInformacionDatos(ConfiguracionTipoFuente configuracion);

@@ -68,6 +68,10 @@
                     var lnkInforme = document.getElementById("<%=lnkInforme.ClientID %>");
                     lnkInforme.click();
                 }
+                function fnConsultar() {
+                    var lnkConsultar = document.getElementById("<%=lnkConsultar.ClientID %>");
+                    lnkConsultar.click();
+                }
               
             </script>
             <table style="width: 100%">
@@ -333,7 +337,8 @@
             <asp:LinkButton ID="lnkVer" Style="display: none" runat="server" OnClick="lnkVer_Click" />
             <asp:LinkButton ID="lnkDetalle" Style="display: none" runat="server" OnClick="lnkDetalle_Click" />
             <asp:LinkButton ID="lnkPagos" Style="display: none" runat="server" OnClick="lnkPagos_Click" />
-            <asp:LinkButton ID="lnkInforme" Style="display: none" runat="server" OnClick="lnkInforme_Click" />
+            <asp:LinkButton ID="lnkInforme" Style="display: none" runat="server" OnClick="lnkInforme_Click" />            
+            <asp:LinkButton ID="lnkConsultar" Style="display: none" runat="server" OnClick="lnkConsultar_Click"/>
             <asp:HiddenField ID="fldIndiceConcilacion" runat="server" />
             <ul id="miMenu" class="contextMenu" runat="server" >
                 <li class="conciliar"><a runat="server" id="lnkVerM">Conciliar</a></li>
@@ -341,6 +346,7 @@
                 <li class="separator"></li>
                 <li class="pagos"><a runat="server" id="lnkPagosM">Pagos</a></li>
                 <li class="informe"><a runat="server" id="lnkInformeM">Informe</a></li> 
+                <li class="editar"><a runat="server" id="lnkConsultarDoc">TransBan</a></li> 
               <%--  <li class="informe"><a runat="server" id="lnkInformeM">Informe</a></li>--%>
             </ul>
         </ContentTemplate>
