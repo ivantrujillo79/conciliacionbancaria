@@ -313,10 +313,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             }
                             if (sbMensaje.Length > 0)
                             {
-                                //App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
                                 lblMensajeError.Text = sbMensaje.ToString();
                                 dvAlertaError.Visible = true;
-
                             }
                             else
                             {
@@ -332,6 +330,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 else
                 {
                     App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
+                    //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                    //    @"alertify.alert('Conciliaci&oacute;n bancaria','El archivo debe ser de formato Excel', function(){ alertify.error('Error cargando archivo'); });", true);
                 }
             }// fupSeleccionar.HasFile
         }
@@ -391,6 +391,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         grvPagosPropuestos.Visible = true;
                         grvPagosPropuestos.DataSource = dtTablaPropuestos;
                         grvPagosPropuestos.DataBind();
+
+                        /*          Actualizar etiqueta de registros        */
+                        lblRegistros.Text = REGISTROS + grvPagosPropuestos.Rows.Count.ToString();
                     }
                 }
                 catch (Exception ex)

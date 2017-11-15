@@ -83,11 +83,11 @@
                     <!--        GRIDVIEW DETALLE CONCILIACION MANUAL       -->
                     <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
                         CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 
-                        ViewStateMode="Enabled" BehaviourID="gridView1" AutoGenerateColumns="false">
+                        ViewStateMode="Enabled" BehaviourID="gridView1" AutoGenerateColumns="True">
                         <PagerStyle CssClass="grvPaginacionScroll" />
                         <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                         <HeaderStyle HorizontalAlign="Center" />
-                        <Columns>
+                        <%--<Columns>
                             <asp:TemplateField HeaderText="Documento">
                             <ItemTemplate>
                                 <asp:Label ID="lblDocumento" runat="server" Text='<%# Eval("Documento") %>'></asp:Label>
@@ -112,7 +112,7 @@
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             <HeaderStyle HorizontalAlign="Center" Width="33%"></HeaderStyle>
                         </asp:TemplateField>
-                        </Columns>
+                        </Columns>--%>
                     </asp:GridView>
                     <!--        GRIDVIEW PAGOS PROPUESTOS       -->
                     <asp:GridView ID="grvPagosPropuestos" runat="server" style="align-content:center;"
@@ -148,7 +148,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F. Suministro">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro") %>'></asp:Label>
+                                    <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro", "{0:MM/dd/yyyy}") %>'></asp:Label>
                                 </ItemTemplate>
                                 <ControlStyle CssClass="centradoMedio" />
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -156,15 +156,15 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="Saldo">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblSaldoPedido" runat="server" Text='<%# Eval("SaldoPedido") %>'></asp:Label>
+                                    <asp:Label ID="lblSaldoPedido" runat="server" Text='<%# Eval("SaldoPedido", "{0:C}") %>'></asp:Label>
                                 </ItemTemplate>
                                 <ControlStyle CssClass="centradoMedio" />
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Monto Propuesto">
+                            <asp:TemplateField HeaderText="Monto propuesto">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblMontoPropuesto" runat="server" Text='<%# Eval("MontoPropuesto") %>'></asp:Label>
+                                    <asp:Label ID="lblMontoPropuesto" runat="server" Text='<%# Eval("MontoPropuesto", "{0:C}") %>'></asp:Label>
                                 </ItemTemplate>
                                 <ControlStyle CssClass="centradoMedio" />
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -172,7 +172,7 @@
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="F. Propuesta">
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFechaPropuesta" runat="server" Text='<%# Eval("FechaPropuesta") %>'></asp:Label>
+                                    <asp:Label ID="lblFechaPropuesta" runat="server" Text='<%# Eval("FechaPropuesta", "{0:MM/dd/yyyy}") %>'></asp:Label>
                                 </ItemTemplate>
                                 <ControlStyle CssClass="centradoMedio" />
                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
