@@ -11,6 +11,11 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class MovimientoCajaDatos : MovimientoCaja
     {
+        public MovimientoCajaDatos()
+        {
+            
+        }
+
         public MovimientoCajaDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {

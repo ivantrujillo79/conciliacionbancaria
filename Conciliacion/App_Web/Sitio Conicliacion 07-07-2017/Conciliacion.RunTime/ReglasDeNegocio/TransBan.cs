@@ -179,8 +179,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             List<MovimientoCaja> lstMovimientoCajaDatos = new List<MovimientoCaja>();
             List<Cobro> BufferCobro = new List<Cobro>();
+            object[] ARREGLO = new object[3];
 
-            var ListaDistintosClientes = ObjMovimientoCajaDatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
+            List<int> ListaDistintosClientes = new List<int>();
+            ListaDistintosClientes = ObjMovimientoCajaDatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
             ObjMovimientoCajaDatos.ListaCobros.ForEach(X => BufferCobro.Add(X));
 
             if (ObjMovimientoCajaDatos.ListaPedidos.Count() == ObjMovimientoCajaDatos.ListaCobros.Count())
@@ -188,27 +190,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
                     //Se supera el máximo configurado
-                    /*MovimientoCaja _objmovimientocajadatos =
-                           new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
-                               ObjMovimientoCajaDatos.FOperacion,
-                               ObjMovimientoCajaDatos.Consecutivo,
-                               ObjMovimientoCajaDatos.Folio,
-                               ObjMovimientoCajaDatos.FMovimiento,
-                               ObjMovimientoCajaDatos.Total,
-                               ObjMovimientoCajaDatos.Usuario,
-                               ObjMovimientoCajaDatos.Empleado,
-                               ObjMovimientoCajaDatos.Observaciones,
-                               ObjMovimientoCajaDatos.SaldoAFavor,
-                               ObjMovimientoCajaDatos.ListaCobros,
-                               implementadorMensajes);
-
-                    _objmovimientocajadatos.ListaCobros.Clear();
-                    _objmovimientocajadatos.ListaPedidos.Clear();*/
-
+                    int i = 0;
                     foreach (var Cliente in ListaDistintosClientes)
                     {
-                        MovimientoCaja _objmovimientocajadatos =
-                           new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
+                        MovimientoCajaDatos _objmovimientocajadatos = new MovimientoCajaDatos();
+                        /*   new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
                                ObjMovimientoCajaDatos.FOperacion,
                                ObjMovimientoCajaDatos.Consecutivo,
                                ObjMovimientoCajaDatos.Folio,
@@ -219,18 +205,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                ObjMovimientoCajaDatos.Observaciones,
                                ObjMovimientoCajaDatos.SaldoAFavor,
                                ObjMovimientoCajaDatos.ListaCobros,
-                               implementadorMensajes);
+                               implementadorMensajes);*/
 
                         _objmovimientocajadatos.ListaCobros.Clear();
                         _objmovimientocajadatos.ListaPedidos.Clear();
 
-                        var ListaPedidosDelCliente =
-                            ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Cliente == Convert.ToInt32(Cliente))
-                                .ToList();
+                        List<ReferenciaConciliadaPedido> ListaPedidosDelCliente = new List<ReferenciaConciliadaPedido>();
+                        ListaPedidosDelCliente = ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Cliente == Convert.ToInt32(Cliente)).ToList();
 
-                        var ListaCobrosDelCliente =
-                            BufferCobro.Where(x => x.Cliente == Convert.ToInt32(Cliente))
-                                .ToList();
+                        List<Cobro> ListaCobrosDelCliente = new List<Cobro>();
+                        ListaCobrosDelCliente = BufferCobro.Where(x => x.Cliente == Convert.ToInt32(Cliente)).ToList();
 
                         foreach (var Pedido in ListaPedidosDelCliente)
                         {
@@ -241,12 +225,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         {
                             _objmovimientocajadatos.ListaCobros.Add(Cobro);
                         }
-
+                        
                         lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
                         _objmovimientocajadatos = null;
-
+                        ARREGLO[i] = _objmovimientocajadatos;
+                        i++;
                     }
-
                 }
                 else
                 {

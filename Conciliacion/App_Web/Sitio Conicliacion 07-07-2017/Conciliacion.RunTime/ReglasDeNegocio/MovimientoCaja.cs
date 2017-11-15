@@ -24,6 +24,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
+        public MovimientoCaja()
+        {
+            
+        }
+
         public MovimientoCaja(IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;

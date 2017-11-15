@@ -124,7 +124,7 @@ public partial class Inicio : System.Web.UI.Page
                 miMenu.Visible = true;
                 lnkConsultarDoc.Attributes.Add("onclick", "return fnConsultar()");
                 lnkConsultarDoc.Attributes.CssStyle.Add("opacity", "1");
-                if (statusConciliacion.Equals("CONCILIACION CERRADA"))
+                if (statusConciliacion.Equals("CONCILIACION ABIERTA") || statusConciliacion.Equals("CONCILIACION CERRADA"))
                 {
                     lnkVerM.Attributes.Add("onclick", "return false");
                     lnkVerM.Attributes.CssStyle.Add("opacity", "0.7");
