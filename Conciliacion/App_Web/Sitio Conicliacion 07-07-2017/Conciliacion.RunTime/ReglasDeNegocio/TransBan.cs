@@ -179,7 +179,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             List<MovimientoCaja> lstMovimientoCajaDatos = new List<MovimientoCaja>();
             List<Cobro> BufferCobro = new List<Cobro>();
-            object[] ARREGLO = new object[3];
 
             List<int> ListaDistintosClientes = new List<int>();
             ListaDistintosClientes = ObjMovimientoCajaDatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
@@ -190,25 +189,23 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
                     //Se supera el máximo configurado
-                    int i = 0;
                     foreach (var Cliente in ListaDistintosClientes)
                     {
                         MovimientoCajaDatos _objmovimientocajadatos = new MovimientoCajaDatos();
-                        /*   new MovimientoCajaDatos(ObjMovimientoCajaDatos.Caja,
-                               ObjMovimientoCajaDatos.FOperacion,
-                               ObjMovimientoCajaDatos.Consecutivo,
-                               ObjMovimientoCajaDatos.Folio,
-                               ObjMovimientoCajaDatos.FMovimiento,
-                               ObjMovimientoCajaDatos.Total,
-                               ObjMovimientoCajaDatos.Usuario,
-                               ObjMovimientoCajaDatos.Empleado,
-                               ObjMovimientoCajaDatos.Observaciones,
-                               ObjMovimientoCajaDatos.SaldoAFavor,
-                               ObjMovimientoCajaDatos.ListaCobros,
-                               implementadorMensajes);*/
+                        _objmovimientocajadatos.Caja = ObjMovimientoCajaDatos.Caja;
+                        _objmovimientocajadatos.FMovimiento = ObjMovimientoCajaDatos.FMovimiento;
+                        _objmovimientocajadatos.FOperacion = ObjMovimientoCajaDatos.FOperacion;
+                        _objmovimientocajadatos.Empleado = ObjMovimientoCajaDatos.Empleado;
+                        _objmovimientocajadatos.Folio = ObjMovimientoCajaDatos.Folio;
+                        _objmovimientocajadatos.ImplementadorMensajes = ObjMovimientoCajaDatos.ImplementadorMensajes;
+                        _objmovimientocajadatos.Observaciones = ObjMovimientoCajaDatos.Observaciones;
+                        _objmovimientocajadatos.SaldoAFavor = ObjMovimientoCajaDatos.SaldoAFavor;
+                        _objmovimientocajadatos.Total = ObjMovimientoCajaDatos.Total;
+                        _objmovimientocajadatos.Usuario = ObjMovimientoCajaDatos.Usuario;
 
-                        _objmovimientocajadatos.ListaCobros.Clear();
-                        _objmovimientocajadatos.ListaPedidos.Clear();
+
+                        /*_objmovimientocajadatos.ListaCobros.Clear();
+                        _objmovimientocajadatos.ListaPedidos.Clear();*/
 
                         List<ReferenciaConciliadaPedido> ListaPedidosDelCliente = new List<ReferenciaConciliadaPedido>();
                         ListaPedidosDelCliente = ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Cliente == Convert.ToInt32(Cliente)).ToList();
@@ -228,8 +225,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         
                         lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
                         _objmovimientocajadatos = null;
-                        ARREGLO[i] = _objmovimientocajadatos;
-                        i++;
                     }
                 }
                 else
@@ -238,7 +233,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     lstMovimientoCajaDatos.Add(ObjMovimientoCajaDatos);
                 }
             }
-
             return lstMovimientoCajaDatos;
         }
     }
