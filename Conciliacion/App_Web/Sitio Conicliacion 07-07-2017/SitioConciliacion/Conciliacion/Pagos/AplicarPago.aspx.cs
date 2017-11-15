@@ -578,7 +578,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             int MaxDocumentos = Convert.ToInt16(p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN"));
             TransBan objTransBan = new TransBan();
 
-            //Leer la InfoActual Conciliacion
             cargarInfoConciliacionActual();
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
@@ -611,13 +610,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rCobranza.CadenaConexion = App.CadenaConexion;
                         rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
 
-                        if (rCobranzaE.DetalleExcepcion.VerificacionValida)
+                        if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
                         {
-                            App.ImplementadorMensajes.MostrarMensaje(rCobranzaE.DetalleExcepcion.Mensaje);
-                        }
-                        else
-                        {
-                            App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                            App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                         }
                     }
                     catch (Exception ex)
@@ -625,13 +620,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rCobranzaE.DetalleExcepcion.CodigoError = 201;
                         rCobranzaE.DetalleExcepcion.Mensaje = rCobranzaE.DetalleExcepcion.Mensaje + " " + ex.Message;
                         rCobranzaE.DetalleExcepcion.VerificacionValida = false;
-                        throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                        throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                     }
-
-                    /*MovimientoCajaConciliacionDatos objConciliaCaja = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion,
-                       objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
-                       corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "CERRADA", App.ImplementadorMensajes);
-                    objConciliaCaja.Guardar(conexion);*/
 
                     lanzarReporteComprobanteDeCaja(objMovimientoCaja);
 
@@ -650,7 +640,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
 
                         Cobranza cobranza = Conciliacion.RunTime.App.Cobranza.CrearObjeto();
-                        //Charcar si quedaran como constantes
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
@@ -659,10 +648,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     }
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos. Verifique");
+                    App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
     }
-            //conexion.Comando.Transaction.Commit();
-            App.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
+            App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
 
             /* if (movimientoCajaAlta != null && movimientoCajaAlta.Caja != 0)
             {
