@@ -597,7 +597,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 if (objMovimientoCaja.Guardar(conexion))
                 {
 
-                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
+                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
                     RelacionCobranzaException rCobranzaE = null;
                     try
