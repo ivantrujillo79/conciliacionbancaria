@@ -590,15 +590,16 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
 
             Conexion conexion = new Conexion();
-            conexion.AbrirConexion(true);
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
+                conexion = new Conexion();
+                conexion.AbrirConexion(true);
                 if (objMovimientoCaja.Guardar(conexion))
                 {
 
                     Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
-
+                    /*
                     RelacionCobranzaException rCobranzaE = null;
                     try
                     {
@@ -650,20 +651,20 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
 
                         Cobranza cobranza = Conciliacion.RunTime.App.Cobranza.CrearObjeto();
-                        /*Charcar si quedaran como constantes*/
+                        //Charcar si quedaran como constantes
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
                         int idCobranza = cobranza.GuardarProcesoCobranza();
                         lanzarReporteCobranza(idCobranza);
-                    }
+                    }*/
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos. Verifique");
 
 
     }
-            conexion.Comando.Transaction.Commit();
+            //conexion.Comando.Transaction.Commit();
 
             App.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
 

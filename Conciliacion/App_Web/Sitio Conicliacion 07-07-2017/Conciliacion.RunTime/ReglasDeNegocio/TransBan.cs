@@ -192,6 +192,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     foreach (var Cliente in ListaDistintosClientes)
                     {
                         MovimientoCajaDatos _objmovimientocajadatos = new MovimientoCajaDatos();
+                        _objmovimientocajadatos.CadenaConexion = ObjMovimientoCajaDatos.CadenaConexion;
                         _objmovimientocajadatos.Caja = ObjMovimientoCajaDatos.Caja;
                         _objmovimientocajadatos.FMovimiento = ObjMovimientoCajaDatos.FMovimiento;
                         _objmovimientocajadatos.FOperacion = ObjMovimientoCajaDatos.FOperacion;

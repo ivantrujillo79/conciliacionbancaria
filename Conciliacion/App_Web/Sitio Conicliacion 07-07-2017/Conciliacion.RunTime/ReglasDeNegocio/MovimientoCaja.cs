@@ -147,6 +147,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 return App.CadenaConexion;
             }
+            set { App.CadenaConexion = value; }
         }
 
     }

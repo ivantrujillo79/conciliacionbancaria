@@ -308,12 +308,14 @@ namespace Conciliacion.RunTime.DatosSQL
 
             try
             {
+                
                 conexion.AbrirConexion(true);
 
                 MovimientoCajaAlta(conexion);
                 AplicarCobros(conexion);
                 ValidaMovimientoCaja(conexion);
 
+                conexion.Comando.Transaction.Commit();
 
 
                 resultado = true;

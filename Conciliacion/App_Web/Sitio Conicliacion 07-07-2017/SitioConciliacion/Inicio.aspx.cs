@@ -122,12 +122,15 @@ public partial class Inicio : System.Web.UI.Page
             else
             {
                 miMenu.Visible = true;
+
                 lnkConsultarDoc.Attributes.Add("onclick", "return fnConsultar()");
                 lnkConsultarDoc.Attributes.CssStyle.Add("opacity", "1");
                 if (statusConciliacion.Equals("CONCILIACION ABIERTA") || statusConciliacion.Equals("CONCILIACION CERRADA"))
                 {
-                    lnkVerM.Attributes.Add("onclick", "return false");
-                    lnkVerM.Attributes.CssStyle.Add("opacity", "0.7");
+                    lnkVerM.Attributes.Add("onclick", "return fnVerConciliacion()");
+                    lnkVerM.Attributes.CssStyle.Add("opacity", "1");
+                    /*lnkVerM.Attributes.Add("onclick", "return false");
+                    lnkVerM.Attributes.CssStyle.Add("opacity", "0.7");*/
 
                     if (operaciones.EstaHabilitada(30, "Aplicar pagos"))//&& tipoConciliacion == 2)
                     {
