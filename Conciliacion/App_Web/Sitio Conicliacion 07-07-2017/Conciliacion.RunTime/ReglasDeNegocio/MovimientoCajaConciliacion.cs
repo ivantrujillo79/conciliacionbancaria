@@ -63,8 +63,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
 		public DateTime FOperacion{
-			get { return FOperacion; }
-            set { FOperacion = value; }
+			get { return foperacion; }
+            set { foperacion = value; }
         }
 
 		public short Consecutivo{

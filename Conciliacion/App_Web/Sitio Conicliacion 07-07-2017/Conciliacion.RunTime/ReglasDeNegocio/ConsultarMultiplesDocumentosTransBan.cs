@@ -13,7 +13,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int caja;
         DateTime fOperacion;
         string tipoMovimientoCajaDescripcion;
-        decimal total;        
+        decimal total;
+        int consecutivo;
+        int folio;
 
         public ConsultarMultiplesDocumentosTransBan(IMensajesImplementacion implementadorMensajes)
         {
@@ -25,9 +27,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.fOperacion=DateTime.Now;
             this.tipoMovimientoCajaDescripcion="";
             this.total=0;
+            this.consecutivo = 0;
+            this.folio = 0;
         }
 
-        public ConsultarMultiplesDocumentosTransBan(string clave, DateTime fMovimiento, string cajaDescripcion, int caja, DateTime fOperacion, string tipoMovimientoCajaDescripcion, decimal total)
+        public ConsultarMultiplesDocumentosTransBan(string clave, DateTime fMovimiento, string cajaDescripcion, int caja, DateTime fOperacion, string tipoMovimientoCajaDescripcion, decimal total, int consecutivo, int folio)
         {
             Clave = clave;
             FMovimiento = fMovimiento;
@@ -36,6 +40,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             FOperacion = fOperacion;
             TipoMovimientoCajaDescripcion = tipoMovimientoCajaDescripcion;
             Total = total;
+            Consecutivo = consecutivo;
+            Folio = folio;
         }
 
         public string Clave { get; set; }
@@ -45,6 +51,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public DateTime FOperacion { get; set; }
         public string TipoMovimientoCajaDescripcion { get; set; }
         public decimal Total { get; set; }
+        public int Consecutivo { get; set; }
+        public int Folio { get; set; }
 
         public abstract ConsultarMultiplesDocumentosTransBan CrearObjeto();
 

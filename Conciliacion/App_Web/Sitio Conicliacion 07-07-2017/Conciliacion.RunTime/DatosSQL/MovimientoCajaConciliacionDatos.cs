@@ -24,22 +24,30 @@ namespace Conciliacion.RunTime.DatosSQL
 		}
 
 		public override void Guardar(Conexion _conexion){
-            _conexion.Comando.CommandType = CommandType.StoredProcedure;
-            _conexion.Comando.CommandText = "spCBMovimientoCajaConciliacionAlta";
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBMovimientoCajaConciliacionAlta";
 
 
-            _conexion.Comando.Parameters.Clear();
-            _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = this.Caja;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@FOperacion", System.Data.SqlDbType.DateTime)).Value = this.FOperacion;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@Consecutivo", System.Data.SqlDbType.TinyInt)).Value = this.Consecutivo;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@Folio", System.Data.SqlDbType.Int)).Value = this.Folio;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt)).Value = this.CorporativoConciliacion;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", System.Data.SqlDbType.TinyInt)).Value = this.SucursalConciliacion;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value = this.AñoConciliacion;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = this.MesConciliacion;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = this.FolioConciliacion;
-            _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.TinyInt)).Value = this.Folio;
-            _conexion.Comando.ExecuteNonQuery();
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = this.Caja;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FOperacion", System.Data.SqlDbType.DateTime)).Value = this.FOperacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Consecutivo", System.Data.SqlDbType.TinyInt)).Value = this.Consecutivo;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Folio", System.Data.SqlDbType.Int)).Value = this.Folio;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt)).Value = this.CorporativoConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", System.Data.SqlDbType.TinyInt)).Value = this.SucursalConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value = this.AñoConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = this.MesConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = this.FolioConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.TinyInt)).Value = this.Folio;
+                _conexion.Comando.ExecuteNonQuery();
+                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
 		

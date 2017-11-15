@@ -588,25 +588,26 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
-
-            Conexion conexion = new Conexion();
-            conexion.AbrirConexion(true);
-
+            
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
+                Conexion conexion = new Conexion();
+                conexion.AbrirConexion(true);
+                //conexion.Comando.Transaction.Connection.BeginTransaction();
+
                 if (objMovimientoCaja.Guardar(conexion))
                 {
 
-                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
+                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
                     RelacionCobranzaException rCobranzaE = null;
                     try
                     {
                         RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
                         rCobranza.CadenaConexion = App.CadenaConexion;
-                        //Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
-                        conexion.AbrirConexion(true);
-                        rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
+                        Conciliacion.RunTime.DatosSQL.Conexion conexion2 = new Conciliacion.RunTime.DatosSQL.Conexion();
+                        conexion2.AbrirConexion(true);
+                        rCobranzaE = rCobranza.CreaRelacionCobranza(conexion2);
 
                         if (rCobranzaE.DetalleExcepcion.VerificacionValida)
                         {
@@ -628,11 +629,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     MovimientoCajaConciliacionDatos objConciliaCaja = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion,
                        objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
                        corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "CERRADA", App.ImplementadorMensajes);
-                    objConciliaCaja.Guardar(conexion);
-
+                    Conciliacion.RunTime.DatosSQL.Conexion conexion3 = new Conciliacion.RunTime.DatosSQL.Conexion();
+                    conexion3.AbrirConexion(true);
+                    objConciliaCaja.Guardar(conexion3);
+                    conexion3.Comando.Transaction.Commit();
+                    conexion3.CerrarConexion();
                     lanzarReporteComprobanteDeCaja(objMovimientoCaja);
 
-                   
+
 
 
                     Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
@@ -659,11 +663,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     }
                 }
                 else
+                {
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos. Verifique");
+                }
+                conexion.Comando.Transaction.Commit();
+                conexion.CerrarConexion();
 
-
-    }
-            conexion.Comando.Transaction.Commit();
+            }
+            
 
             App.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
 
