@@ -449,7 +449,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         try
         {
-            listFormasConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
+            //listFormasConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
+            Enrutador objEnrutador = new Enrutador();
+            listFormasConciliacion = objEnrutador.CargarFormaConciliacion(Convert.ToSByte(Request.QueryString["TipoConciliacion"]));
             this.ddlCriteriosConciliacion.DataSource = listFormasConciliacion;
             this.ddlCriteriosConciliacion.DataValueField = "Identificador";
             this.ddlCriteriosConciliacion.DataTextField = "Descripcion";
@@ -1928,21 +1930,28 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     }
     protected void imgAutomatica_Click(object sender, ImageClickEventArgs e)
     {
-        string criterioConciliacion = ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
-            ? "CantidadConcuerda"
-            //: ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
-            //    ? "CantidadYReferenciaConcuerdan"
-            : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
-                ? "CantidadYReferenciaConcuerdanEdificios"
-                : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS")
-                    ? "CantidadYReferenciaConcuerdan"
-                    : ddlCriteriosConciliacion.SelectedItem.Text.Equals("UNO A VARIOS")
-                        ? "UnoAVarios"
-                        : ddlCriteriosConciliacion.SelectedItem.Text.Equals("VARIOS A UNO")
-                            ? "VariosAUno"
-                            : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
-                                ? "CopiaDeConciliacion"
-                                : "Manual";
+        Enrutador objEnrutador = new Enrutador();
+        string criterioConciliacion = "";
+
+        //string criterioConciliacion = ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
+        //    ? "CantidadConcuerda"
+        //    //: ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
+        //    //    ? "CantidadYReferenciaConcuerdan"
+        //    : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
+        //        ? "CantidadYReferenciaConcuerdanEdificios"
+        //        : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS")
+        //            ? "CantidadYReferenciaConcuerdan"
+        //            : ddlCriteriosConciliacion.SelectedItem.Text.Equals("UNO A VARIOS")
+        //                ? "UnoAVarios"
+        //                : ddlCriteriosConciliacion.SelectedItem.Text.Equals("VARIOS A UNO")
+        //                    ? "VariosAUno"
+        //                    : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
+        //                        ? "CopiaDeConciliacion"
+        //                        : "Manual";
+
+        criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
+                                                                                       Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)));
+
         HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Leer info actual de la conciliación.
         cargarInfoConciliacionActual();

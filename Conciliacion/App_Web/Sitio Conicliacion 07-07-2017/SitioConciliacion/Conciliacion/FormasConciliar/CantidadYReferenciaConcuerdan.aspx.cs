@@ -69,7 +69,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
-                if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
+                if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || 
+                    (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
                 {
                     HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
@@ -1670,9 +1671,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     {
         //Leer Variables URL 
         cargarInfoConciliacionActual();
-
         Enrutador objEnrutador = new Enrutador();
-
         string criterioConciliacion = "";
         
 #region eLIMINAR cÓDIGO
