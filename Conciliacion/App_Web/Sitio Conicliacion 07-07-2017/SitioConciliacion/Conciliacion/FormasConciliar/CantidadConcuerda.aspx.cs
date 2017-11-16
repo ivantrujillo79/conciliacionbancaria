@@ -113,8 +113,9 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     mesConciliacion, folioConciliacion, tipoConciliacion, Convert.ToSByte(txtDias.Text),
                     Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
-                Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion,
-                    mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                if (ddlCriteriosConciliacion.SelectedValue != "")
+                    Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion,
+                                                      mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
                 if (tipoConciliacion == 2 || tipoConciliacion == 6)
@@ -227,7 +228,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD CONCUERDA").Value;
+            if (ddlCriteriosConciliacion.Items.Count > 0)
+                ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD CONCUERDA").Value;
         }
         catch (Exception)
         {
