@@ -33,6 +33,7 @@ public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
         try
         {
             listaDocumentos = Conciliacion.RunTime.App.Consultas.ConsultaConsultarMultiplesDocumentosTransBan(filtros.Conciliacion.Corporativo,filtros.Conciliacion.Sucursal,filtros.Conciliacion.Año,filtros.Conciliacion.Mes,filtros.Folio);
+            HttpContext.Current.Session["LISTA_DOCUMENTOS"] = listaDocumentos;
         }
         catch (Exception ex)
         {
@@ -133,44 +134,45 @@ public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
         }
         catch (Exception)
         {
+
         }
     }
 
     protected void lnkReporte_Click(object sender, EventArgs e)
     {
         AppSettingsReader settings = new AppSettingsReader();
-
+        
         ClaseFiltros filtro = new ClaseFiltros();
         filtro = (ClaseFiltros)HttpContext.Current.Session["filtros"];
+        string indice = fldIndiceConcilacion.Value.Trim();
+        string clave = Convert.ToString(grid_cmdtb.DataKeys[Convert.ToInt32(indice)].Value);
 
-        int folioConciliacion = filtro.Folio;
-        cConciliacion conciliacion = filtro.Conciliacion;
+        List<ConsultarMultiplesDocumentosTransBan> lista = (List<ConsultarMultiplesDocumentosTransBan>)HttpContext.Current.Session["LISTA_DOCUMENTOS"];
 
-        string strReporte = Server.MapPath("~/") + settings.GetValue("RutaReporteRelacionCobranza", typeof(string));
+        ConsultarMultiplesDocumentosTransBan dato = lista.Find(x => x.Clave.Equals(clave));
 
+        string strReporte = Server.MapPath("~/") + settings.GetValue("RutaComprobanteDeCaja", typeof(string));
         if (!File.Exists(strReporte)) return;
         try
         {
             string strServer = settings.GetValue("Servidor", typeof(string)).ToString();
             string strDatabase = settings.GetValue("Base", typeof(string)).ToString();
-
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+
             string strUsuario = usuario.IdUsuario.Trim();
             string strPW = usuario.ClaveDesencriptada;
             ArrayList Par = new ArrayList();
 
-            Par.Add("@FCobranza=" + conciliacion.FInicial);
-           
+            Par.Add("@Consecutivo=" + dato.Consecutivo);
+            Par.Add("@Folio=" + dato.Folio);
+            Par.Add("@Caja=" + dato.Caja);
+            Par.Add("@FOperacion=" + dato.FOperacion);
 
             ClaseReporte Reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
-            //Reporte.Imprimir_Reporte();
-
             HttpContext.Current.Session["RepDoc"] = Reporte.RepDoc;
             HttpContext.Current.Session["ParametrosReporte"] = Par;
-            Nueva_Ventana("../Reporte/Reporte.aspx", "Carta", 0, 0, 0, 0);
-            //if (Reporte.Hay_Error) Mensaje("Error.", Reporte.Error);
+            Nueva_Ventana("../../Reporte/Reporte.aspx", "Carta", 0, 0, 0, 0);
             Reporte = null;
-
         }
         catch (Exception ex)
         {

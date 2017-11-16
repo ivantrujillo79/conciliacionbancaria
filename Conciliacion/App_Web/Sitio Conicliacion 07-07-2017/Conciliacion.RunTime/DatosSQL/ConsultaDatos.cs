@@ -115,7 +115,9 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToInt16(reader["Caja"]),
                                                             Convert.ToDateTime(reader["FOperacion"]),
                                                             Convert.ToString(reader["TipoMovimientoCajaDescripcion"]),
-                                                            Convert.ToDecimal(reader["Total"]));
+                                                            Convert.ToDecimal(reader["Total"]),
+                                                            Convert.ToInt16(reader["Consecutivo"]),
+                                                            Convert.ToInt16(reader["Folio"]));
                         lista.Add(dato);
                     }
                     /*
