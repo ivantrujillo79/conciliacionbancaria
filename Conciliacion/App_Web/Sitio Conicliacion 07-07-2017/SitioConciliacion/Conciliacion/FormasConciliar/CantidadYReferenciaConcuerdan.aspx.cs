@@ -12,7 +12,6 @@ using Conciliacion.RunTime;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
-using Conciliacion.RunTime.DatosSQL;
 
 public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan : System.Web.UI.Page
 {
@@ -70,7 +69,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
-                if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
+                if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || 
+                    (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
                 {
                     HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
@@ -89,7 +89,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                  * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
                  * estatica el valor del tipo conciliacion*/
 
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                tipoConciliacion = 2; //Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
@@ -313,9 +313,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     {
         try
         {
-            /*Enrutador objEnrutador = new Enrutador();
-            listFormasConciliacion = objEnrutador.CargarFormaConciliacion(Convert.ToSByte(Request.QueryString["TipoConciliacion"]));*/
-            listFormasConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
+            Enrutador objEnrutador = new Enrutador();
+            listFormasConciliacion = objEnrutador.CargarFormaConciliacion(Convert.ToSByte(Request.QueryString["TipoConciliacion"]));
             this.ddlCriteriosConciliacion.DataSource = listFormasConciliacion;
             this.ddlCriteriosConciliacion.DataValueField = "Identificador";
             this.ddlCriteriosConciliacion.DataTextField = "Descripcion";
@@ -1672,13 +1671,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     {
         //Leer Variables URL 
         cargarInfoConciliacionActual();
-        
-        //Enrutador objEnrutador = new Enrutador();
-
+        Enrutador objEnrutador = new Enrutador();
         string criterioConciliacion = "";
         
 #region eLIMINAR cÓDIGO
-        criterioConciliacion = ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
+        /*ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
             //? "CantidadConcuerda" : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN") ? "CantidadYReferenciaConcuerdan" :
             ? "CantidadConcuerda"
              : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
@@ -1691,10 +1688,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                             ? "VariosAUno"
                             : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
                                 ? "CopiaDeConciliacion"
-                                : "Manual";
+                                : "Manual";*/
 #endregion
-        /*criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
-                                                                                       Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)));*/
+        criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
+                                                                                       Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)));
 
         HttpContext.Current.Session["criterioConciliacion"] = criterioConciliacion;
         //Limpian variables de Session
