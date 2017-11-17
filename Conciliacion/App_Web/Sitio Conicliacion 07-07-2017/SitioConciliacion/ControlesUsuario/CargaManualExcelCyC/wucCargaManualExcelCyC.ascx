@@ -40,7 +40,7 @@
         <tr>
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
-                    <asp:Label ID="lblArchivo" runat="server" CssClass="etiqueta fg-color-negro" Font-Size="1em" Text="Archivo: "
+                    <asp:Label ID="lblArchivo" runat="server" CssClass="etiqueta fg-color-negro" Font-Size="0.97em" Text="Archivo: "
                         style="display:inline-block;"/> <!--   width:200px;     -->
                 </div>
             </td>
@@ -49,7 +49,7 @@
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
                     <asp:Label ID="lblReferencia" runat="server" CssClass="etiqueta fg-color-negro" Text="Cliente: "
-                        style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                        style="display:inline-block;" Font-Size="0.97em"/>
                 </div>
             </td>
         </tr>
@@ -57,7 +57,7 @@
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
                     <asp:Label ID="lblMontoPago" runat="server" CssClass="etiqueta fg-color-negro" Text="Monto pago: "
-                        style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                        style="display:inline-block;" Font-Size="0.97em"/>
                 </div>
             </td>
         </tr>
@@ -65,14 +65,14 @@
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
                     <asp:Label ID="lblSaldo" runat="server" CssClass="etiqueta fg-color-negro" Text="Saldo a favor: "
-                        style="display:inline-block;"/> <!--    Font-Size="1em"     -->
+                        style="display:inline-block;" Font-Size="0.97em"/>
                 </div>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="bg-color-grisClaro01" style="margin-left:5px; padding-right: 5px; margin-right:5px; box-sizing:border-box;">
-                    <asp:Label ID="lblRegistros" runat="server" CssClass="etiqueta " Font-Size="1em" 
+                    <asp:Label ID="lblRegistros" runat="server" CssClass="etiqueta " Font-Size="0.97em" 
                         Text="Total de registros a cargar: " style="padding-left:5px;" />
                 </div>
             </td>
@@ -186,10 +186,12 @@
         <tr>
             <td style="padding-left:7px; box-sizing:border-box;">
                 <div class="centradoMedio">
-                    <asp:Button ID="btnCargaArchivoAceptar" style="margin-right:10px;" runat="server" OnClick="btnAceptar_Click" 
-                        CssClass="boton fg-color-blanco bg-color-azulClaro" Text="Aceptar"  />
-                    <asp:Button ID="btnCargaArchivoCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                        Text="Cancelar" OnClick="btnCargaArchivoCancelar_Click" Visible="false"/>                                        
+                    <!--        Implementar btnCargaManualAceptar_Click(); en página contenedora       -->
+                    <asp:Button ID="btnAceptar" runat="server" OnClick="btnAceptar_Click" OnClientClick="btnCargaManualAceptar_Click();"
+                        CssClass="boton fg-color-blanco bg-color-azulClaro" Text="Aceptar" style="margin-right:10px;" />
+                    <!--        Implementar btnCargaManualCancelar_Click(); en página contenedora       -->
+                    <asp:Button ID="btnCancelar" runat="server" OnClick="btnCancelar_Click" OnClientClick="btnCargaManualCancelar_Click();" 
+                        CssClass="boton fg-color-blanco bg-color-grisClaro" Text="Cancelar" Visible="false" />                                        
                 </div>
             </td>
         </tr>

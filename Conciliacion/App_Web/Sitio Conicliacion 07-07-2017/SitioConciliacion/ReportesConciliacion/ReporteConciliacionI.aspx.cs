@@ -93,6 +93,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             wucRangoFechas.TextoDespliega = "Fecha Factura:";
             wucRangoFechas.VarSesionGridNombre = "TAB_PEDIDOS";
 
+            CargarConfiguracion_wucCargaExcel();
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -105,7 +106,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 Carga_StatusConcepto(gcu.GrupoConciliacionId);
                 this.ddlEmpresa.Focus();
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
-
             }
             else
             {
@@ -117,6 +117,15 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             App.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
         }
+    }
+
+    /// <summary>
+    /// Método para asignar propiedades del web user control
+    /// "wucCargaExcelCyC"
+    /// </summary>
+    private void CargarConfiguracion_wucCargaExcel()
+    {
+        wucCargaExcelCyC.PopupContenedor = popUpConciliarMovPedido;
     }
 
     /// <summary>

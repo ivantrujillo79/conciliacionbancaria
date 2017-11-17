@@ -54,6 +54,14 @@
         function popUpNoVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
         }
+
+        function btnCargaManualAceptar_Click() {
+            popUpNoVisible();
+        }
+
+        function btnCargaManualCancelar_Click() {
+            popUpNoVisible();
+        }
         
         function activarDatePickers() {
             //DataPicker Rango-Fechas 
@@ -822,9 +830,9 @@
                         </div>
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
-                            AllowPaging="True" PageSize="100" DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion"
-                            AllowSorting="True" CssClass="grvResultadoConsultaCss" OnSorting="grvExternos_Sorting"
-                            OnPageIndexChanging="grvExternos_PageIndexChanging">
+                            AllowPaging="True" PageSize="100" AllowSorting="True" CssClass="grvResultadoConsultaCss"
+                            DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion,Referencia,Deposito"
+                            OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
                             <%--<EmptyDataTemplate>
                                     <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
                                         Text="No se encontraron referencias externas."></asp:Label>
