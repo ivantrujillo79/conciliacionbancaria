@@ -150,8 +150,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 LlenarBarraEstado();
                 HabilitarCargaArchivo();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
-                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
                 Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
@@ -197,7 +196,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         lblGridAP.Text = "PEDIDOS ";
                         //tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
 
-
+                        
                         Carga_CelulaCorporativo(corporativo);
 						
                         /**Modifico: CNSM 
@@ -705,9 +704,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                                                     sucursalconciliacion,
                                                                                     añoconciliacion, mesconciliacion,
                                                                                     folioconciliacion,
-                                                                                    Convert.ToInt16(
-                                                                                        ddlCriteriosConciliacion
-                                                                                            .SelectedValue));
+                                                                                    formaconciliacion);
 
             Session["CONCILIADAS"] = listaTransaccionesConciliadas;
         }
@@ -1172,7 +1169,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         LlenaGridViewExternos();
 
 
-                        //Limpiar Referncias de Externos
+                        //Limpiar referencias de Externos
                         if (grvExternos.Rows.Count > 0)
                         {
                             rfExterno = leerReferenciaExternaSeleccionada();
@@ -1195,7 +1192,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             ActualizarTotalesAgregados();
 
                         }
-                        //ACTUALIZAR BARRAS Y DE MAS HERRAMIENTAS
+                        //ACTUALIZAR BARRAS Y DEMAS HERRAMIENTAS
                         LlenarBarraEstado();
                         Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
                                                           Convert.ToInt32(ddlCriteriosConciliacion.SelectedItem.Value));
