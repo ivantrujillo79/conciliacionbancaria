@@ -117,6 +117,7 @@
     <Compile Include="ReglasDeNegocio\Consultas.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivo.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />
+    <Compile Include="ReglasDeNegocio\Enrutador.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
     <Compile Include="ReglasDeNegocio\FuenteInformacion.cs" />
     <Compile Include="ReglasDeNegocio\GrupoConciliacionDiasDiferencia.cs" />
