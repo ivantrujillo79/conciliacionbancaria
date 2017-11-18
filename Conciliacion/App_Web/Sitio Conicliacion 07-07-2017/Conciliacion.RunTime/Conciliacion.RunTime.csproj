@@ -78,6 +78,7 @@
     <Compile Include="App.cs" />
     <Compile Include="DatosSQL\ClienteDatos.cs" />
     <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
+    <Compile Include="DatosSQL\DispersorPagoDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
@@ -117,6 +118,8 @@
     <Compile Include="ReglasDeNegocio\Consultas.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivo.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />
+    <Compile Include="ReglasDeNegocio\DispersorPago.cs" />
+    <Compile Include="ReglasDeNegocio\DispersorPagoException.cs" />
     <Compile Include="ReglasDeNegocio\Enrutador.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
     <Compile Include="ReglasDeNegocio\FuenteInformacion.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
+    <Compile Include="ReglasDeNegocio\PagoPropuesto.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaConciliada.cs" />
