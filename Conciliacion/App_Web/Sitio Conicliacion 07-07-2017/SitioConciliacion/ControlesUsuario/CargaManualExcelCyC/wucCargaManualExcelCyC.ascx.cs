@@ -148,7 +148,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             ViewState["montoPago"] = value;
             lblMontoPago.Text = MONTO + String.Format("{0:C}", value);
-            App.ImplementadorMensajes.MostrarMensaje(lblMontoPago.Text);
         }
     }
 
