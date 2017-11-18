@@ -107,6 +107,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        /*      Registrar PostBackControl en la página para 
+         *      arreglar bug de FileUpload Control dentro de Update Panel    */
+        ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
+
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -125,6 +129,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
                 //wucCargaExcelCyC.MostrarBotonCancelar = true;
+
+                CargarConfiguracion_wucCargaExcel();
+
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -253,7 +260,28 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
     /// <summary>
-    /// Metodo para mostrar de nuevo el ModalPopUp "mpeCargaArchivoConciliacionManual"
+    /// Método para actualizar propiedades del web user control
+    /// "wucCargaExcelCyC"
+    /// </summary>
+    private void ActualizarDatos_wucCargaExcel()
+    {
+        decimal monto = Convert.ToDecimal(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Deposito"].ToString());
+        wucCargaExcelCyC.MontoPago = monto;
+    }    
+
+    /// <summary>
+    /// Método para asignar propiedades del web user control
+    /// "wucCargaExcelCyC"
+    /// </summary>
+    private void CargarConfiguracion_wucCargaExcel()
+    {
+        wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
+        wucCargaExcelCyC.MostrarBotonCancelar = true;
+        wucCargaExcelCyC.ClienteReferencia = -1;
+    }
+
+    /// <summary>
+    /// Método para mostrar de nuevo el ModalPopUp "mpeCargaArchivoConciliacionManual"
     /// despues de que se cierra con el PostBack 
     /// </summary>
     private void MostrarPopUp_ConciliacionManual()
@@ -477,46 +505,72 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void GenerarAgregadosExcel()
     {
-        if (wucCargaExcelCyC.RecuperoNoConciliados)
+        try
         {
-            List<ReferenciaNoConciliada> ReferenciasExcel;
-            List<ReferenciaNoConciliadaPedido> ReferenciasPedidoExcel;
-            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-            wucCargaExcelCyC.TipoConciliacion = tipoConciliacion;
-
-            if (tipoConciliacion == 2 || tipoConciliacion == 6)
+            if (wucCargaExcelCyC.RecuperoNoConciliados && Convert.ToBoolean(ViewState["GeneroAgregados"]) != true  )
             {
-                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-                ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
+                List<ReferenciaNoConciliada> ReferenciasExcel;
+                List<ReferenciaNoConciliadaPedido> ReferenciasPedidoExcel;
+                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                wucCargaExcelCyC.TipoConciliacion = tipoConciliacion;
+                decimal monto = 0;
+                int agregados = 0;
+                decimal resto = 0;
 
-                foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 {
-                    RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
-                }
+                    ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+                    ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
 
-                GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
-                ActualizarTotalesAgregados();
-                
-                this.hdfVisibleCargaArchivo.Value = "0";
-            }
-            else
-            {
-                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
-                ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
-
-                if (RNC.ListaReferenciaConciliada.Count == 0)
-                {
-                    foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+                    foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
                     {
-                        RNC.AgregarReferenciaConciliada(Referencia);
+                        RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
+                        monto += ReferenciaPedido.Total;
+                        agregados ++;
                     }
-                }
-                GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
-                ActualizarTotalesAgregados();
 
-                this.hdfVisibleCargaArchivo.Value = "0";
+                    GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
+                    //ActualizarTotalesAgregados();
+                    ActualizarTotalesAgregadosExcel(monto, agregados, resto);
+
+                    this.hdfVisibleCargaArchivo.Value = "0";
+                }
+                else
+                {
+                    ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+                    ReferenciasExcel = wucCargaExcelCyC.ReferenciasPorConciliarExcel;
+
+                    if (RNC.ListaReferenciaConciliada.Count == 0)
+                    {
+                        foreach (ReferenciaNoConciliada Referencia in ReferenciasExcel)
+                        {
+                            RNC.AgregarReferenciaConciliada(Referencia);
+                            monto += Referencia.Monto;
+                            resto += Referencia.Resto;
+                            agregados++;
+                        }
+                    }
+                    GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
+                    //ActualizarTotalesAgregados();
+                    ActualizarTotalesAgregadosExcel(monto, agregados, resto );
+
+                    this.hdfVisibleCargaArchivo.Value = "0";
+                }
+                ViewState["GeneroAgregados"] = true;
             }
         }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private void ActualizarTotalesAgregadosExcel(decimal Monto, int TotalRegistros, decimal Resto)
+    {
+        lblMontoAcumuladoInterno.Text = Decimal.Round(Monto, 2).ToString("C2");
+        lblAgregadosInternos.Text = TotalRegistros.ToString();
+        lblMontoResto.Text = Decimal.Round(Resto, 2).ToString("C2");
+        //lblMontoResto.Text = Decimal.Round(Referencia.Resto, 2).ToString("C2");
     }
 
     /// <summary>
@@ -1910,7 +1964,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
         GenerarTablaAgregadosArchivosInternos(rfEx, tipoConciliacion);
         ActualizarTotalesAgregados();
-
+        ActualizarDatos_wucCargaExcel();
     }
 
     ////Seleccion del RadioButton de Referencias Pedidos

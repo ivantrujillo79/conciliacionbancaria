@@ -11,6 +11,8 @@ using System.Text;
 using AjaxControlToolkit;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using Conciliacion.RunTime.DatosSQL;
+using System.ComponentModel;
 
 public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
@@ -24,32 +26,43 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     public int RegistrosCargados { get; set; }
 
     public List<ValidacionArchivosConciliacion.DetalleValidacion> DetalleProcesoDeCarga { get; set; }
-
-    private int anio;
+    
     public int Anio
     {
         get
         {
             if (ViewState["anio"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["anio"];
         }
         set { ViewState["anio"] = value; }
     }
-
-    private string clienteReferencia;
-    public string ClienteReferencia
+    
+    public int ClienteReferencia
     {
-        get { return clienteReferencia; }
+        get
+        {
+            if (ViewState["clienteReferencia"] == null)
+                return 0;
+            else
+                return (int)ViewState["clienteReferencia"];
+        }
         set
         {
-            clienteReferencia = value;
-            lblReferencia.Text = clienteReferencia;
+            ViewState["clienteReferencia"] = value;
+            if (value == -1)
+            {
+                lblReferencia.Text = "El pago no tiene referencia";
+                lblReferencia.CssClass = "etiqueta fg-color-naranja";
+            }
+            else
+            {
+                lblReferencia.Text = REFERENCIA + value.ToString();
+            }
         }
     }
-
-    private int corporativo;
+    
     public int Corporativo
     {
         get
@@ -61,58 +74,111 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["corporativo"] = value; }
     }
-
-    private int cuentaBancaria;
+    
     public int CuentaBancaria
     {
         get
         {
             if (ViewState["cuentaBancaria"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["cuentaBancaria"];
         }
         set { ViewState["cuentaBancaria"] = value; }
     }
 
-    private int folio;
+    private DataTable DatosAConciliar
+    {
+        get
+        {
+            if (ViewState["datosAConciliar"] == null)
+                return new DataTable();
+            else
+                return (DataTable)ViewState["datosAConciliar"];
+        }
+        set { ViewState["datosAConciliar"] = value; }
+    }
+
+    public bool DispersionAutomatica
+    {
+        get
+        {
+            if (ViewState["dispersionAutomatica"] == null)
+                return false;
+            else
+                return (bool)ViewState["dispersionAutomatica"];
+        }
+        set { ViewState["dispersionAutomatica"] = value; }
+    }
+    
     public int Folio
     {
         get
         {
             if (ViewState["folio"] == null)
-                return int.MinValue;
+                return 0;
             else
                 return (int)ViewState["folio"];
         }
         set { ViewState["folio"] = value; }
     }
-
-    private sbyte mes;
+    
     public sbyte Mes
     {
         get
         {
             if (ViewState["mes"] == null)
-                return mes;
+                return 0;
             else
                 return (sbyte)ViewState["mes"];
         }
         set { ViewState["mes"] = value; }
     }
-
-    private decimal montoPago;
+    
     public decimal MontoPago
     {
-        get { return montoPago; }
+        get
+        {
+            if (ViewState["montoPago"] == null)
+                return 0m;
+            else
+                return (decimal)ViewState["montoPago"];
+        }
         set
         {
-            montoPago = value;
-            lblMontoPago.Text = MONTO + String.Format("{0:C}", montoPago);
+            ViewState["montoPago"] = value;
+            lblMontoPago.Text = MONTO + String.Format("{0:C}", value);
         }
     }
 
-    private Int16 sucursal;
+    public bool MostrarBotonCancelar
+    {
+        get
+        {
+            if (ViewState["mostrarBotonCancelar"] == null)
+                return false;
+            else
+                return (bool)ViewState["mostrarBotonCancelar"];
+        }
+        set { ViewState["mostrarBotonCancelar"] = value; }
+    }
+
+    public decimal SaldoAFavor
+    {
+        get
+        {
+            if (ViewState["saldoAFavor"] == null)
+                return 0m;
+            else
+                return (decimal)ViewState["saldoAFavor"];
+        }
+        set
+        {
+            ViewState["saldoAFavor"] = value;
+            lblSaldo.Text = SALDO + String.Format("{0:C}", value);
+        }
+    }
+
     public Int16 Sucursal
     {
         get
@@ -144,8 +210,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             return _referenciasPorConciliarPedidoExcel;
         }
     }
-
-
+    
     //private bool recuperoNoConciliados;
     public bool RecuperoNoConciliados
     {
@@ -175,13 +240,20 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     private const string ARCHIVO = "Archivo: ";
     private const string REGISTROS = "Total de registros a cargar: ";
     private const string MONTO = "Monto pago: ";
+    private const string REFERENCIA = "Cliente: ";
+    private const string SALDO = "Saldo a favor: ";
 
     protected void Page_Load(object sender, EventArgs e)
     {
         OcultarMensajes();
+
+        if (MostrarBotonCancelar)
+        {
+            this.btnCancelar.Visible = true;
+        }
     }
 
-    protected void btnCargaArchivoCancelar_Click(object sender, EventArgs e)
+    protected void btnCancelar_Click(object sender, EventArgs e)
     {
         if (PopupContenedor != null)
         {
@@ -202,7 +274,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         string[] MIME = {"application/vnd.ms-excel" ,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
-        LimpiarCampos();
+        LimpiarGrid();
         sExt = Path.GetExtension(fupSeleccionar.FileName).ToLower();
         try
         {
@@ -227,10 +299,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
                         {
                             dtTabla = iValidador.CargaArchivo(sRutaArchivo, Path.GetFileName(sArchivo));
+                            DatosAConciliar = dtTabla;
                             DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
 
                             if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                             {
+                                grvDetalleConciliacionManual.Visible = true;
                                 grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
                                 grvDetalleConciliacionManual.DataBind();
                                 totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
@@ -246,24 +320,26 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                 {
                                     if (detalle.CodigoError > 0)
                                     {
-                                        sbMensaje.Append(detalle.Mensaje + "\n");
+                                        sbMensaje.Append(detalle.Mensaje + "<br />");
                                     }
                                     else
                                     {
-                                        sbMensaje.Append("Error: el código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
+                                        sbMensaje.Append("El código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
                                     }
                                 }
                             }
                             if (sbMensaje.Length > 0)
                             {
-                                //App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
                                 lblMensajeError.Text = sbMensaje.ToString();
                                 dvAlertaError.Visible = true;
-
                             }
                             else
                             {
                                 dvMensajeExito.Visible = true;
+                                if (DispersionAutomatica)
+                                {
+                                    DispersarPagos(dtTabla);
+                                }
                             }
                         } // if ArchivoValido
                     } // if File.Exists
@@ -271,26 +347,117 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 else
                 {
                     App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
+                    //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                    //    @"alertify.alert('Conciliaci&oacute;n bancaria','El archivo debe ser de formato Excel', function(){ alertify.error('Error cargando archivo'); });", true);
                 }
             }// fupSeleccionar.HasFile
         }
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
+            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+            //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
-        //dvMensajeExito.Visible = true;
         RecuperaReferenciasNoConciliadas();
+    }
+
+    private void DispersarPagos(DataTable dtDatos)
+    {
+        if (dtDatos.Rows.Count > 0)
+        {
+            try
+            {
+                string sDocumento;
+                decimal dMonto;
+                DataTable dtTablaPropuestos;
+                ReferenciaNoConciliadaPedido ReferenciaNoConciliada;
+                PagoPropuesto pago;
+                List<PagoPropuesto> pagosEntrada = new List<PagoPropuesto>();
+                List<PagoPropuesto> pagosPropuestos = new List<PagoPropuesto>();
+                DispersorPagoDatos dispersor = new DispersorPagoDatos();
+                Conexion conexion = new Conexion();
+                
+                foreach (DataRow row in dtDatos.Rows)
+                {
+                    sDocumento = row["Documento"].ToString();
+                    dMonto = Convert.ToDecimal(row["Monto"].ToString());
+                    ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
+
+                    pago = new PagoPropuesto();
+                    pago.MontoPropuesto = dMonto;
+                    pago.PedidoReferencia = sDocumento;
+                    pago.SaldoPedido = ReferenciaNoConciliada.Total; /*RNCP.total*/
+                    pago.ClienteReferencia = ReferenciaNoConciliada.Cliente.ToString(); /*RNCP.cliente*/
+                    pagosEntrada.Add(pago);
+                }
+
+                try
+                {
+                    conexion.AbrirConexion(false);
+                    dispersor.MontoTotalPago = MontoPago;
+                    //dispersor.SaldoAFavor = 10000;      /*      TEMPORAL        */
+                    dispersor.PagosPropuestos = pagosEntrada;
+                    if (dispersor.ValidaClientes(pagosEntrada, ClienteReferencia.ToString(), conexion))
+                    {
+                        pagosPropuestos = dispersor.PagosPropuestos;
+                        dtTablaPropuestos = ConvertirListaATabla<PagoPropuesto>(pagosPropuestos);
+                        SaldoAFavor = dispersor.SaldoAFavor;
+
+                        grvDetalleConciliacionManual.Visible = false;
+                        grvPagosPropuestos.DataSource = dtTablaPropuestos;
+                        grvPagosPropuestos.DataBind();
+                        grvPagosPropuestos.Visible = true;
+
+                        /*          Actualizar etiqueta de registros        */
+                        lblRegistros.Text = REGISTROS + grvPagosPropuestos.Rows.Count.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    conexion.CerrarConexion();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+    }
+
+    private DataTable ConvertirListaATabla<T> (IList<T> list)
+    {
+        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
+        DataTable table = new DataTable();
+        foreach (PropertyDescriptor prop in properties)
+            table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+
+        foreach (T item in list)
+        {
+            DataRow row = table.NewRow();
+            foreach (PropertyDescriptor prop in properties)
+                row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+            table.Rows.Add(row);
+        }
+        return table;
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)
     {
         //RecuperaReferenciasNoConciliadas();
+        LimpiarGrid();
+        btnCancelar_Click(sender, e);
     }
 
-    private void LimpiarCampos()
+    private void LimpiarGrid()
     {
         grvDetalleConciliacionManual.DataSource = null;
         grvDetalleConciliacionManual.DataBind();
+        grvPagosPropuestos.DataSource = null;
+        grvPagosPropuestos.DataBind();
         lblArchivo.Text = ARCHIVO;
         lblRegistros.Text = REGISTROS;
     }
@@ -314,15 +481,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
             {
-                if (grvDetalleConciliacionManual.Rows.Count > 0)
+                if (DatosAConciliar.Rows.Count > 0 )
                 {
-                 
-                if (grvDetalleConciliacionManual.Rows.Count > 0)
-                {
-                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                    foreach (DataRow row in DatosAConciliar.Rows)
                     {
-                        sDocumento = row.Cells[1].Text.Trim();
-                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                        sDocumento = row["Documento"].ToString();
+                        dMonto = Convert.ToDecimal(row["Monto"].ToString());
 
                         ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
 
@@ -351,13 +515,13 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                         recupero = true;
                     }
-            }
-            else
-            {
-                    foreach (GridViewRow row in grvDetalleConciliacionManual.Rows)
+                }
+                else
+                {
+                    foreach (DataRow row in DatosAConciliar.Rows)
                     {
-                        sDocumento = row.Cells[1].Text.Trim();
-                        dMonto = Convert.ToDecimal(row.Cells[3].Text);
+                        sDocumento = row["Documento"].ToString();
+                        dMonto = Convert.ToDecimal(row["Monto"].ToString());
 
                         RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
@@ -381,9 +545,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                         recupero = true;
                     }
-                }
-
-                }
+                }                
             }
         }
         catch(Exception ex)
@@ -396,8 +558,5 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         this._referenciasPorConciliarPedidoExcel = _referenciasPorConciliarPedidoExcel;
         return recupero;
     }// FIN Recupera Referencias No Conciliadas
-    protected void btnCargaArchivoCancelar_Click1(object sender, EventArgs e)
-    {
-
-    }
+    
 }

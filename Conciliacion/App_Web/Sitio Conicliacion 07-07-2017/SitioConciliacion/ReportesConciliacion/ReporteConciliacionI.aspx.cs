@@ -93,6 +93,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             wucRangoFechas.TextoDespliega = "Fecha Factura:";
             wucRangoFechas.VarSesionGridNombre = "TAB_PEDIDOS";
 
+            CargarConfiguracion_wucCargaExcel();
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -105,18 +106,26 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 Carga_StatusConcepto(gcu.GrupoConciliacionId);
                 this.ddlEmpresa.Focus();
                 HttpContext.Current.Session["MOVIMIENTOS_AUX"] = null;
-
             }
-            //else
-            //{
-            //    MostrarPopUp_ConciliarPedido();
-            //}
+            else
+            {
+                MostrarPopUp_ConciliarPedido();
+            }
         }
 
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
         }
+    }
+
+    /// <summary>
+    /// Método para asignar propiedades del web user control
+    /// "wucCargaExcelCyC"
+    /// </summary>
+    private void CargarConfiguracion_wucCargaExcel()
+    {
+        wucCargaExcelCyC.PopupContenedor = popUpConciliarMovPedido;
     }
 
     /// <summary>
@@ -1863,6 +1872,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //int secuencia = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grv.RowIndex].Values["Secuencia"]);
             int secuenciarelacion = Convert.ToInt32(grvMCE.DataKeys[grvRMCE.RowIndex].Values["SecuenciaRelacion"]);
 
+            decimal deposito = decimal.Parse((grvRCC.FindControl("lblDeposito") as Label).Text, NumberStyles.Currency);
+            //int corporativo = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grvRCC.RowIndex].Values["CorporativoConciliacion"].ToString());
+            //int sucursal = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grvRCC.RowIndex].Values["SucursalConciliacion"].ToString());
+            int corporativo = Convert.ToInt32(hdfCorporativo.Value);
+            short sucursal = Convert.ToInt16(hdfSucursal.Value);
+
             ReferenciaNoConciliada referencia = LeerReferenciaConciliadaCompartida(grvRCC.RowIndex);
             listMovimientosConciliadosEx =
                        referencia.ListaReferenciaConciliadaCompartida;
@@ -1910,11 +1925,24 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
 
+            /*      Asignar propiedades de Carga archivo Excel      */
+            ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value), deposito, clienteBuscar, corporativo, sucursal);
+            
         }
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
+    }
+    
+    private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, int cliente, int corporativo, short sucursal)
+    {
+        wucCargaExcelCyC.CuentaBancaria = cuenta;
+        wucCargaExcelCyC.MontoPago = montoPago;
+        wucCargaExcelCyC.ClienteReferencia = cliente;
+        wucCargaExcelCyC.Corporativo = corporativo;
+        wucCargaExcelCyC.DispersionAutomatica = true;
+        wucCargaExcelCyC.Sucursal = sucursal;
     }
 
     protected void btnGuardar_Click(object sender, EventArgs e)

@@ -5,6 +5,7 @@
 
 .accordion-content {
 	padding: 5px 5px 5px 5px;
+    font-size: 0.88em;
 }
 
 .accordion-header {
@@ -13,6 +14,7 @@
 	margin-bottom: 5px;
 	background-color: #d1d0d0;
 	/*border: 1.5px solid #44A2A9;*/
+    font-size: 0.9em;
 }
 
 .accordion-selected {
@@ -20,4 +22,5 @@
 	padding: 5px 5px 5px 5px;
 	background-color: #44A2A9;
 	color: white;
+    font-size: 0.9em;
 }

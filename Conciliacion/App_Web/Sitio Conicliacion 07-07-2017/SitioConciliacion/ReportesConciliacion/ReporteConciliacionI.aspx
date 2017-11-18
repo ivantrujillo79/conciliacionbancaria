@@ -560,13 +560,12 @@
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
                                                     <ItemTemplate>
-
                                                         <asp:TextBox ID="txtCliente" runat="server" Width="80px" CssClass="cajaTextoEditar centrado"
                                                             Text='<%# Eval("Cliente") %>'
                                                             onkeypress="return ValidNum(event, this)" onblur="txtClienteEnSalida(this)"
                                                             Visible="True"
-                                                            Font-Size="10px" Enabled="True" Style="margin: 0 0 0 0" ></asp:TextBox>
-
+                                                            Font-Size="10px" Enabled="True" Style="margin: 0 0 0 0" >
+                                                        </asp:TextBox>
                                                     </ItemTemplate>
                                                     <HeaderStyle HorizontalAlign="Center" Width="80px" />
                                                     <ItemStyle HorizontalAlign="Center" Width="80px" />
@@ -871,7 +870,7 @@
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
-                            <div style="width:100%; margin-top:5px; max-height:400px; overflow:auto">  <%-- max-height:400px; overflow:auto--%>
+                            <div style="width:100%; padding-top:5px; max-height:400px; overflow:auto; box-sizing:border-box;">
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
                                     <Panes>
@@ -906,7 +905,7 @@
                                                                 <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Ped.Referencia" SortExpression="PedReferencia">
+                                                            <asp:TemplateField HeaderText="Documento" SortExpression="PedReferencia">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                                                 </ItemTemplate>
@@ -989,7 +988,7 @@
                                                         <PagerStyle CssClass="grvPaginacionScroll" />
                                                     </asp:GridView>
                                                 </div>
-                                                <%--<table width="100%">
+                                                <table width="100%">
                                                     <tr>
 						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
 							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
@@ -998,7 +997,7 @@
 								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
 						                                </td>	
                                                     </tr>
-                                                </table>--%>
+                                                </table>
                                             </Content>
                                         </ajaxToolkit:AccordionPane>
                                     </Panes>

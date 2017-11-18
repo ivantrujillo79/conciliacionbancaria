@@ -15,7 +15,7 @@
     <script src="../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
-        
+
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
@@ -44,12 +44,24 @@
             activarDatePickers();
         }
 
+        function OcultarPopUpConciliacionManual() {
+            $find("mpeCargaArchivo").hide();
+        }
+
         function popUpVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
 
         function popUpNoVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
+        }
+
+        function btnCargaManualAceptar_Click() {
+            popUpNoVisible();
+        }
+
+        function btnCargaManualCancelar_Click() {
+            popUpNoVisible();
         }
         
         function activarDatePickers() {
@@ -220,10 +232,6 @@
             }
         }
 
-        <%--function VisibleCargarArchivo() {
-            var visible = document.getElementById("<%=hdfVisibleCargaArchivo.ClientID%>");
-            visible.value = "1";
-        }--%>
     </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
@@ -505,7 +513,7 @@
                             <tr>
                                 <td id="tdImportar" runat="server" class="iconoOpcion bg-color-verdeFuerte" style="height: 30px">
                                     <asp:ImageButton ID="imgImportar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Importar.png"
-                                        ToolTip="IMPORTAR" Width="25px" OnClick="imgImportar_Click" />
+                                        ToolTip="IMPORTAR" Width="25px" OnClick="imgImportar_Click"/>
                                 </td>
                             </tr>
                         </table>
@@ -574,7 +582,7 @@
                                     OnRowCommand="grvConciliadas_RowCommand" OnSelectedIndexChanging="grvConciliadas_SelectedIndexChanging"
                                     OnRowCreated="grvConciliadas_RowCreated" AllowSorting="True" OnSorting="grvConciliadas_Sorting">
                                     <EmptyDataTemplate>
-                                        <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se han conciliado ninguna transacción."></asp:Label>
+                                        <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se ha conciliado ninguna transacción."></asp:Label>
                                     </EmptyDataTemplate>
                                     <HeaderStyle HorizontalAlign="Center" />
                                     <Columns>
@@ -727,7 +735,7 @@
                                 </td>
                                 <td class="bg-color-azulClaro" style="width: 5%">
                                     <asp:Image ID="imgGuardarParcial" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                        CssClass="icono" Width="25px"></asp:Image>
                                 </td>
                             </tr>
                         </table>
@@ -754,7 +762,7 @@
                                         ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"
                                         Enabled="false"></asp:ImageButton>
                                 </td>
-                                <td class="bg-color-grisClaro fg-color-amarillo" style="width: 1%">
+                                <td class="bg-color-grisClaro fg-color-amarillo" style="width: 5%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
                                         CssClass="icono" Width="25px" Height="25px"></asp:Image>
                                 </td>
@@ -824,9 +832,9 @@
                         </div>
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
-                            AllowPaging="True" PageSize="100" DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion"
-                            AllowSorting="True" CssClass="grvResultadoConsultaCss" OnSorting="grvExternos_Sorting"
-                            OnPageIndexChanging="grvExternos_PageIndexChanging">
+                            AllowPaging="True" PageSize="100" AllowSorting="True" CssClass="grvResultadoConsultaCss"
+                            DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion,Referencia,Deposito"
+                            OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
                             <%--<EmptyDataTemplate>
                                     <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
                                         Text="No se encontraron referencias externas."></asp:Label>
@@ -1996,13 +2004,13 @@
                                     </td>
                                     <td style="vertical-align: top; padding: 6px;">
                                         <asp:ImageButton ID="btnAñadirFolio" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png"
-                                            Width="16px" Height="16px" ValidationGroup="Interno" CssClass="icono bg-color-verdeClaro"
+                                            Width="25px" Height="25px" ValidationGroup="Interno" CssClass="icono bg-color-verdeClaro"
                                             OnClick="btnAñadirFolio_Click" />
                                     </td>
                                     <td style="vertical-align: top; padding: 6px;">
                                         <asp:ImageButton ID="btnVerDatalleInterno" runat="server" ImageAlign="AbsMiddle"
                                             ValidationGroup="Interno" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/buscar.png"
-                                            Width="16px" Height="16px" CssClass="icono bg-color-azulClaro" OnClick="btnVerDatalleInterno_Click" />
+                                            Width="25px" Height="25px" CssClass="icono bg-color-azulClaro" OnClick="btnVerDatalleInterno_Click" />
                                     </td>
                                 </tr>
                             </table>
@@ -2356,27 +2364,31 @@
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
     <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" value="0"/>
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
-        DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
-        BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
+        DropShadow="False" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
+        BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo"> <%--EnableViewState="false"--%>
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
-    <div>
-        <table style="width:100%; box-sizing:border-box;">
-            <tr class="bg-color-grisOscuro">
-                <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
-                    <div class="floatDerecha">
-                        <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo" Width="25px" Height="25px" OnClientClick="popUpNoVisible()"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <uc1:WebUserControl ID="wucCargaExcelCyC" runat="server" />
-                </td>
-            </tr>
-        </table>
-    </div>
+    <asp:UpdatePanel ID="UPCargaArchivoConciliacionManual" runat="server">
+        <ContentTemplate>
+            <div>
+                <table style="width:100%; box-sizing:border-box;">
+                    <tr class="bg-color-grisOscuro">
+                        <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
+                            <div class="floatDerecha">
+                                <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="popUpNoVisible(); OcultarPopUpConciliacionManual();"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <uc1:WebUserControl ID="wucCargaExcelCyC" runat="server" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
 
