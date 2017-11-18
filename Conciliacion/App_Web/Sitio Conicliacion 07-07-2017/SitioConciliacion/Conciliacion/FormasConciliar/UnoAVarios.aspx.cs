@@ -107,6 +107,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        /*      Registrar PostBackControl en la página para 
+         *      arreglar bug de FileUpload Control dentro de Update Panel    */
+        ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
+
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {

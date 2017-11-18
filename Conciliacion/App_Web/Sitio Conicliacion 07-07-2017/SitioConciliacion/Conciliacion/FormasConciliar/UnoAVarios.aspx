@@ -47,6 +47,10 @@
             activarDatePickers();
         }
 
+        function OcultarPopUpConciliacionManual() {
+            $find("mpeCargaArchivo").hide();
+        }
+
         function popUpVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
@@ -2362,27 +2366,31 @@
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
     <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" value="0"/>
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"
-        DropShadow="False" EnableViewState="false" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
-        BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo">
+        DropShadow="False" PopupControlID="pnlCargaArchivo" TargetControlID="hdfCargaArchivo"
+        BehaviorID="mpeCargaArchivo" CancelControlID="btnCerrarCargaArchivo"> <%--EnableViewState="false"--%>
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlCargaArchivo" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
-    <div>
-        <table style="width:100%; box-sizing:border-box;">
-            <tr class="bg-color-grisOscuro">
-                <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
-                    <div class="floatDerecha">
-                        <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                            CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="popUpNoVisible()"/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <uc1:WebUserControl ID="wucCargaExcelCyC" runat="server" />
-                </td>
-            </tr>
-        </table>
-    </div>
+    <asp:UpdatePanel ID="UPCargaArchivoConciliacionManual" runat="server">
+        <ContentTemplate>
+            <div>
+                <table style="width:100%; box-sizing:border-box;">
+                    <tr class="bg-color-grisOscuro">
+                        <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
+                            <div class="floatDerecha">
+                                <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="popUpNoVisible(); OcultarPopUpConciliacionManual();"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <uc1:WebUserControl ID="wucCargaExcelCyC" runat="server" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
 
