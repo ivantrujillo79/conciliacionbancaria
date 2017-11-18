@@ -332,10 +332,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             {
                                 lblMensajeError.Text = sbMensaje.ToString();
                                 dvAlertaError.Visible = true;
+                                DatosAConciliar = null;
                             }
                             else
                             {
                                 dvMensajeExito.Visible = true;
+                                RecuperaReferenciasNoConciliadas();
                                 if (DispersionAutomatica)
                                 {
                                     DispersarPagos(dtTabla);
@@ -358,7 +360,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
             //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
-        RecuperaReferenciasNoConciliadas();
+        //RecuperaReferenciasNoConciliadas();
     }
 
     private void DispersarPagos(DataTable dtDatos)
@@ -456,8 +458,10 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     {
         grvDetalleConciliacionManual.DataSource = null;
         grvDetalleConciliacionManual.DataBind();
+        grvDetalleConciliacionManual.Visible = false;
         grvPagosPropuestos.DataSource = null;
         grvPagosPropuestos.DataBind();
+        grvPagosPropuestos.Visible = false;
         lblArchivo.Text = ARCHIVO;
         lblRegistros.Text = REGISTROS;
     }
