@@ -64,7 +64,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-       
+        const short _FormaConciliacion = 1;
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -102,6 +102,11 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
+                SolicitdConciliacion objSolicitdConciliacion = new SolicitdConciliacion();
+                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
 
                 Carga_SucursalCorporativo(corporativoConciliacion);
@@ -127,13 +132,18 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     btnActualizarConfig.ValidationGroup = "CantidadPedidos";
                     rvDiferencia.ValidationGroup = "CantidadPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "CantidadPedidos";
-                    GenerarTablaReferenciasAConciliarPedidos();
+                    //GenerarTablaReferenciasAConciliarPedidos();
                 }
                 else
                 {
                     GenerarTablaReferenciasAConciliarInternos();
                     lblArchivosInternos.Visible = true;
                     btnActualizarConfig.ValidationGroup = "CantidadArchivos";
+                }
+
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    GenerarTablaReferenciasAConciliarPedidos();
                 }
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
