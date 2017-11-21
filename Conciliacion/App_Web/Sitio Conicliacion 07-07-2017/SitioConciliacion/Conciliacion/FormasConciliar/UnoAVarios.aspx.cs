@@ -124,14 +124,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
-
+            
+            CargarConfiguracion_wucCargaExcel();
             if (!Page.IsPostBack)
             {
-                wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
-                //wucCargaExcelCyC.MostrarBotonCancelar = true;
-
-                CargarConfiguracion_wucCargaExcel();
-
                 //Leer variables de URL
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -157,13 +153,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 LlenarBarraEstado();
                 HabilitarCargaArchivo();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
-                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
                 Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
                 GenerarTablaExternos();
                 LlenaGridViewExternos();
+                ActualizarDatos_wucCargaExcel();
                 ActualizarTotalesAgregados();
                 if (grvExternos.Rows.Count > 0)
                 {
@@ -239,7 +236,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
-                wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
                 GenerarAgregadosExcel();
                 MostrarPopUp_ConciliacionManual();
             }
@@ -265,8 +261,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// </summary>
     private void ActualizarDatos_wucCargaExcel()
     {
-        decimal monto = Convert.ToDecimal(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Deposito"].ToString());
-        wucCargaExcelCyC.MontoPago = monto;
+        if (grvExternos.Rows.Count > 0)
+        {
+            decimal monto = Convert.ToDecimal(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Deposito"].ToString());
+            wucCargaExcelCyC.MontoPago = monto;
+        }
     }    
 
     /// <summary>
