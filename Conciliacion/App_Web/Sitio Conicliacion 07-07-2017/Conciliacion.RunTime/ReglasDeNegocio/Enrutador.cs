@@ -53,38 +53,56 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
     } //Fin clase SolicitudEnrutador
 
-    public class SolicitdConciliacion
+    public class SolicitudConciliacion
     {
         public short TipoConciliacion { get; set; }
         public short FormaConciliacion { get; set; }
         private List<ConfiguracionTipoFormaConciliacion> ListaConfiguraciones = new List<ConfiguracionTipoFormaConciliacion>();
 
-        public SolicitdConciliacion()
+        public SolicitudConciliacion()
         {
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 1, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 1, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 2, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 2, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 3, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 3, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 4, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 4, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 5, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 5, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 6, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 6, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 1, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 1, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 2, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 2, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 3, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 3, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 4, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 4, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 5, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 5, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 6, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 6, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 7, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 7, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 8, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 9, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 9, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
         }
 
         public bool ConsultaPedido()
         {
             bool Retorno = false;
 
-            Retorno = ListaConfiguraciones.Where(x => x.TipoConciliacion == this.TipoConciliacion
+            try
+            {
+                Retorno = ListaConfiguraciones.Where(x => x.TipoConciliacion == this.TipoConciliacion
                                                                  && x.FormaConciliacion == this.FormaConciliacion
                                                                  && x.FuenteInsumo == "Pedido")
                 .Single()
                 .CargaFuenteInsumo;
 
+            }
+            catch (InvalidOperationException IOE)
+            {
+                   throw new Exception("No existe configuración para el tipo, forma e insumo");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
             return Retorno;
         }
 

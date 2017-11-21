@@ -62,7 +62,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        const short _FormaConciliacion = 2;
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -89,8 +89,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                  * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
                  * estatica el valor del tipo conciliacion*/
 
-                tipoConciliacion = 2; //Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
+
+                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
 
@@ -118,9 +122,23 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
 
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
-                    GenerarTablaReferenciasAConciliarPedidos();
+                    //GenerarTablaReferenciasAConciliarPedidos();
                 }
                 else
+                {/*
+                    btnActualizarConfig.ValidationGroup = "CantidadReferencia";
+                    txtDias.Enabled = true;
+                    lblArchivosInternos.Visible = true;
+                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaReferenciasAConciliarArchivos();*/
+                }
+
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    GenerarTablaReferenciasAConciliarPedidos();
+                }
+
+                if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                     btnActualizarConfig.ValidationGroup = "CantidadReferencia";
                     txtDias.Enabled = true;
@@ -128,6 +146,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                     GenerarTablaReferenciasAConciliarArchivos();
                 }
+
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
                 //Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
@@ -304,7 +323,22 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     //Colocar el DropDown de Criterios de Evaluacion en la Actual
     public void ActualizarCriterioEvaluacion()
     {
-        ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD Y REFERENCIA CONCUERDAN").Value;
+        try
+        {
+            ddlCriteriosConciliacion.SelectedValue =
+                ddlCriteriosConciliacion.Items.FindByText("CANTIDAD Y REFERENCIA CONCUERDAN").Value;
+        }
+        catch (NullReferenceException ex)
+        {
+            if (ddlCriteriosConciliacion.Items.Count > 0)
+            {
+                ddlCriteriosConciliacion.SelectedIndex = 0;
+            }
+            else
+            {
+                throw new Exception("No existen elementos en el combo de formas de conciliación.");
+            }
+        }
     }
     /// <summary>
     /// Llena el Combo de Formas de Conciliacion

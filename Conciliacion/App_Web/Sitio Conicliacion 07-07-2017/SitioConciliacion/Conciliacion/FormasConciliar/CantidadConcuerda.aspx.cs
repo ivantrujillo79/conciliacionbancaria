@@ -102,7 +102,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
-                SolicitdConciliacion objSolicitdConciliacion = new SolicitdConciliacion();
+                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
@@ -136,15 +136,23 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 }
                 else
                 {
-                    GenerarTablaReferenciasAConciliarInternos();
+                    /*GenerarTablaReferenciasAConciliarInternos();
                     lblArchivosInternos.Visible = true;
-                    btnActualizarConfig.ValidationGroup = "CantidadArchivos";
+                    btnActualizarConfig.ValidationGroup = "CantidadArchivos";*/
                 }
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     GenerarTablaReferenciasAConciliarPedidos();
                 }
+
+                if (objSolicitdConciliacion.ConsultaArchivo())
+                {
+                    GenerarTablaReferenciasAConciliarInternos();
+                    lblArchivosInternos.Visible = true;
+                    btnActualizarConfig.ValidationGroup = "CantidadArchivos";
+                }
+
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
                 //Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
@@ -244,7 +252,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         catch (Exception)
         {
 
-            throw;
         }
 
     }
