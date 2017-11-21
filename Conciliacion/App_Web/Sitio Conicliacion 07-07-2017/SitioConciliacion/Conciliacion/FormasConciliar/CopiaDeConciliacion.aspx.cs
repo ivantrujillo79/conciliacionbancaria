@@ -125,7 +125,21 @@ public partial class Conciliacion_FormasConciliar_CopiaDeConciliacion : System.W
     //Colocar el DropDown de Criterios de Evaluacion en la Actual
     public void ActualizarCriterioEvaluacion()
     {
-        ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("COPIA DE CONCILIACION").Value;
+        try
+        {
+            ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("COPIA DE CONCILIACION").Value;
+        }
+        catch (NullReferenceException ex)
+        {
+            if (ddlCriteriosConciliacion.Items.Count > 0)
+            {
+                ddlCriteriosConciliacion.SelectedIndex = 0;
+            }
+            else
+            {
+                throw new Exception("No existen elementos en el combo de formas de conciliación.");
+            }
+        }
     }
     /// <summary>
     /// Llena el Combo de Sucurales según Corporativo

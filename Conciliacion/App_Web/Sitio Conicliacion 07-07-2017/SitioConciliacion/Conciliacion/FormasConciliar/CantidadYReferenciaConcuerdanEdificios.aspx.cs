@@ -293,7 +293,21 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     //Colocar el DropDown de Criterios de Evaluacion en la Actual
     public void ActualizarCriterioEvaluacion()
     {
-        ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD Y REFERENCIA CONCUERDAN").Value;
+        try
+        {
+            ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD Y REFERENCIA CONCUERDAN").Value;
+        }
+        catch (NullReferenceException ex)
+        {
+            if (ddlCriteriosConciliacion.Items.Count > 0)
+            {
+                ddlCriteriosConciliacion.SelectedIndex = 0;
+            }
+            else
+            {
+                throw new Exception("No existen elementos en el combo de formas de conciliación.");
+            }
+        }
     }
     /// <summary>
     /// Llena el Combo de Formas de Conciliacion

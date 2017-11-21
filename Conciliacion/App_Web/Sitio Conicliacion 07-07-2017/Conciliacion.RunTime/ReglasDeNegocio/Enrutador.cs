@@ -84,7 +84,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public bool ConsultaPedido()
         {
             bool Retorno = false;
-
             try
             {
                 Retorno = ListaConfiguraciones.Where(x => x.TipoConciliacion == this.TipoConciliacion
@@ -92,7 +91,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                                                  && x.FuenteInsumo == "Pedido")
                 .Single()
                 .CargaFuenteInsumo;
-
             }
             catch (InvalidOperationException IOE)
             {
@@ -102,23 +100,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 throw;
             }
-            
             return Retorno;
         }
 
         public bool ConsultaArchivo()
         {
             bool Retorno = false;
-
             Retorno = ListaConfiguraciones.Where(x => x.TipoConciliacion == this.TipoConciliacion 
                                                       && x.FormaConciliacion == this.FormaConciliacion 
                                                       && x.FuenteInsumo == "Archivo")
                .Single()
                .CargaFuenteInsumo;
-
             return Retorno;
         }
-
     }
 
     public struct ConfiguracionTipoFormaConciliacion

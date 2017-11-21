@@ -246,12 +246,18 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            if (ddlCriteriosConciliacion.Items.Count > 0)
                 ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD CONCUERDA").Value;
         }
-        catch (Exception)
+        catch (NullReferenceException ex)
         {
-
+            if (ddlCriteriosConciliacion.Items.Count > 0)
+            {
+                ddlCriteriosConciliacion.SelectedIndex = 0;
+            }
+            else
+            {
+                throw new Exception("No existen elementos en el combo de formas de conciliación.");
+            }
         }
 
     }
