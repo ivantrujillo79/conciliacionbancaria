@@ -851,22 +851,24 @@
                                         </td>
                                         <td class="iconoOpcion bg-color-naranja" rowspan="2">
                                             <asp:ImageButton ID="imgBuscarPedido" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                ToolTip="BUSCAR" style="width: 25px; padding: 10px 2px 2px 2px"  OnClick="imgBuscarPedido_Click" />
-                                            <%--Width="25px"--%>
+                                                ToolTip="Buscar pedido" style="width: 25px; padding: 10px 2px 2px 2px"  OnClick="imgBuscarPedido_Click" />
                                         </td>
                                     </tr>
                                     
                                     
 									<!--            //          POR ARREGLAR        -->
-                                    <%--</table>
+                                    </table>
                                     <table width="100%">
-                                    <tr>
-                                        <asp:ImageButton runat="server" ID="btnBusquFact" 
-                                        Width="150px" Height="25px" Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
-                                        ToolTip="BUSCAR FACTURAS" OnClick="btnBuscarFactura_Click" />
-                                    </tr>--%>
-									
-                                </table>
+                                        <tr>
+                                            <td>
+                                                <asp:ImageButton runat="server" ID="btnBusquFact" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
+                                                ToolTip="Buscar facturas" style="width: 25px; padding: 10px 2px 2px 2px"
+                                                OnClick="btnBuscarFactura_Click" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!--            //          POR ARREGLAR        -->
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
