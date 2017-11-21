@@ -110,6 +110,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             else
             {
                 MostrarPopUp_ConciliarPedido();
+                RecuperarReferencias_wucCargaExcel();
             }
         }
 
@@ -117,6 +118,61 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             App.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
         }
+    }
+
+    /// <summary>
+    /// Recupera las referencias procesadas en el
+    /// web user control "wucCargaExcelCyC"
+    /// </summary>
+    private void RecuperarReferencias_wucCargaExcel()
+    {
+        //if (wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel.Count > 0)
+        if (wucCargaExcelCyC.ReferenciasPorConciliarExcel.Count > 0)
+        {
+            listaReferenciaPedidos = ConvertirListaConciliadaAPedido(wucCargaExcelCyC.ReferenciasPorConciliarExcel);
+            Session["PEDIDOS_CONCILIAR"] = listaReferenciaPedidos;
+        }
+    }
+
+    /// <summary>
+    /// Convierte una lista de tipo ReferenciaNoConciliada a 
+    /// ReferenciaNoConciliadaPedido
+    /// </summary>
+    private List<ReferenciaNoConciliadaPedido> ConvertirListaConciliadaAPedido(List<ReferenciaNoConciliada> Referencia)
+    {
+        List<ReferenciaNoConciliadaPedido> ListaReferenciaPedido = new List<ReferenciaNoConciliadaPedido>();
+        ReferenciaNoConciliadaPedido ReferenciaPedido;
+        try
+        {
+            foreach (ReferenciaNoConciliada Ref in Referencia)
+            {
+                ReferenciaPedido = Conciliacion.RunTime.App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                ReferenciaPedido.Corporativo = Ref.Corporativo;
+                ReferenciaPedido.Sucursal = Ref.Sucursal;
+                ReferenciaPedido.SucursalDes = Ref.SucursalDes;
+                ReferenciaPedido.Año = Ref.Año;
+                ReferenciaPedido.FolioConciliacion = Ref.FolioConciliacion;
+                ReferenciaPedido.MesConciliacion = Ref.MesConciliacion;
+                ReferenciaPedido.Concepto = Ref.Concepto;
+                ReferenciaPedido.Total = Ref.Monto; /*   Total   */
+                ReferenciaPedido.FolioConciliacion = Ref.FormaConciliacion;
+                ReferenciaPedido.StatusConcepto = Ref.StatusConcepto;
+                ReferenciaPedido.StatusConciliacion = Ref.StatusConciliacion;
+                ReferenciaPedido.FOperacion = Ref.FOperacion;
+                ReferenciaPedido.FMovimiento = Ref.FMovimiento;
+                ReferenciaPedido.Diferencia = Ref.Diferencia;
+                //ReferenciaPedido.ImplementadorMensajes = App.ImplementadorMensajes.ContenedorActual();
+
+                ListaReferenciaPedido.Add(ReferenciaPedido);
+            }
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + 
+                "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+        return ListaReferenciaPedido;
     }
 
     /// <summary>
@@ -1458,6 +1514,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                             : rcc.ActualizarStatusConceptoDescripcionConciliacionPedido();
                     }
                 }
+
+                ConciliarMovExterno( (ReferenciaConciliadaCompartida)Session["MOVIMIENTO_SELECCIONADO"] );
             }
             catch (Exception ex)
             {

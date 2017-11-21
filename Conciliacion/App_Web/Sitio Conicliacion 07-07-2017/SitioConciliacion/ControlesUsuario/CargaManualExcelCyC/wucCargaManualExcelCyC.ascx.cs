@@ -330,9 +330,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             }
                             if (sbMensaje.Length > 0)
                             {
+                                DatosAConciliar = null;
                                 lblMensajeError.Text = sbMensaje.ToString();
                                 dvAlertaError.Visible = true;
-                                DatosAConciliar = null;
                             }
                             else
                             {
@@ -483,9 +483,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
         try
         {
-            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+            if (DatosAConciliar.Rows.Count > 0)
             {
-                if (DatosAConciliar.Rows.Count > 0 )
+                if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
                 {
                     foreach (DataRow row in DatosAConciliar.Rows)
                     {
@@ -499,7 +499,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
                         RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
                         RefNoConciliadaPedido.Pedido = Convert.ToInt32(sDocumento.Substring(5, sDocumento.Length - 5));
-                        
+
 
                         if (_referenciasPorConciliarExcel.Count > 0)
                         {
