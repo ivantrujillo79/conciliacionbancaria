@@ -855,22 +855,18 @@
                                             <%--Width="25px"--%>
                                         </td>
                                     </tr>
-                                    
-                                    
-									<!--            //          POR ARREGLAR        -->
-                                    <%--</table>
-                                    <table width="100%">
+                                </table>
+                                <table width="100%">
                                     <tr>
                                         <asp:ImageButton runat="server" ID="btnBusquFact" 
                                         Width="150px" Height="25px" Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
                                         ToolTip="BUSCAR FACTURAS" OnClick="btnBuscarFactura_Click" />
-                                    </tr>--%>
-									
+                                    </tr>
                                 </table>
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
-                            <div style="width:100%; padding-top:5px; max-height:400px; overflow:auto; box-sizing:border-box;">
+                            <div style="width:100%; padding-top:5px; max-height:373px; overflow:auto; box-sizing:border-box;"> <%--max-height:400px; --%>
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
                                     <Panes>
@@ -1002,7 +998,7 @@
                                         </ajaxToolkit:AccordionPane>
                                     </Panes>
                                 </asp:Accordion>
-                            </div>						
+                            </div>
                         </td>			
                     </tr>
                 </table>                    
