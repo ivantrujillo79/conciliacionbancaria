@@ -64,6 +64,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     {
         const short _FormaConciliacion = 2;
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        DataTable _tblReferenciasAConciliarPedido = new DataTable();
+        DataTable _tblReferenciasAConciliarArchivo = new DataTable();
         try
         {
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -143,6 +145,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
                     GenerarTablaReferenciasAConciliarPedidos();
+                    _tblReferenciasAConciliarPedido = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
 
                 if (objSolicitdConciliacion.ConsultaArchivo())
@@ -152,6 +155,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     lblArchivosInternos.Visible = true;
                     Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                     GenerarTablaReferenciasAConciliarArchivos();
+                    _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
 
 
@@ -159,11 +163,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 {
                     //Realizar el merge de los recordsets
                     lblPedidos.Text = " y " + lblPedidos.Text;
-                    /*DataTable tblReferenciasAConciliar = new DataTable();
-                    DataTable tblReferenciasAConciliar = new DataTable();
-                    tblReferenciasAConciliar = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
-                    tblReferenciasAConciliar = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];*/
-                    
+                    _tblReferenciasAConciliarPedido.Merge(_tblReferenciasAConciliarArchivo);
+                    HttpContext.Current.Session["TBL_REFCON_CANTREF"] = _tblReferenciasAConciliarPedido;
                 }
 
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
