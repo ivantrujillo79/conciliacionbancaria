@@ -788,7 +788,8 @@
         BackgroundCssClass="ModalBackground" >
     </asp:ModalPopupExtender>
     <%--Style="display: none"--%>
-	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="95%">
+	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="95%" Style="display: none"
+        CssClass="ModalPopup">
         <asp:UpdatePanel ID="upConciliarMovPedido" runat="server" >
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -854,25 +855,21 @@
                                                 ToolTip="Buscar pedido" style="width: 25px; padding: 10px 2px 2px 2px"  OnClick="imgBuscarPedido_Click" />
                                         </td>
                                     </tr>
-                                    
-                                    
-									<!--            //          POR ARREGLAR        -->
-                                    </table>
-                                    <table width="100%">
-                                        <tr>
-                                            <td>
-                                                <asp:ImageButton runat="server" ID="btnBusquFact" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
-                                                ToolTip="Buscar facturas" style="width: 25px; padding: 10px 2px 2px 2px"
-                                                OnClick="btnBuscarFactura_Click" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!--            //          POR ARREGLAR        -->
+                                </table>
+                                <table width="100%">
+                                    <tr>
+                                        <td>
+                                            <asp:ImageButton runat="server" ID="btnBusquFact" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                            Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
+                                            ToolTip="Buscar facturas" style="width: 25px; padding: 10px 2px 2px 2px"
+                                            OnClick="btnBuscarFactura_Click" />
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
-                            <div style="width:100%; padding-top:5px; max-height:400px; overflow:auto; box-sizing:border-box;">
+                            <div style="width:100%; padding-top:5px; max-height:367px; overflow:auto; box-sizing:border-box;">
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
                                     <Panes>
@@ -1064,15 +1061,16 @@
     <asp:ModalPopupExtender ID="mpeBusquedaFactura" runat="server" PopupControlID="pnlBusquedaFactura"
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="600px">
+    <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="600px"  Style="display: none"
+        CssClass="ModalPopup">
         <asp:UpdatePanel ID="upBusquedaFactura" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
                     <tr class="bg-color-grisOscuro">
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
                             <div class="floatDerecha">
-                                <asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupConciliarMovPedido();" /><%--OnClick="imgCerrarImportar_Click"--%>
+                                <asp:ImageButton runat="server" ID="ImgBusquedaFacturaCerrar" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupFacturasPedido();" /><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
                                 BUSQUEDA FACTURAS.
