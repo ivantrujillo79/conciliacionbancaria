@@ -61,7 +61,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public SolicitudConciliacion()
         {
-            /*Tipo de conciliación 2 => CONCILIACION DE INGRESOS POR COBRANZA A ABONAR ED*/
+            /*Tipo de conciliación 2 => CONCILIACION DE INGRESOS POR COBRANZA A ABONAR EDIFICIOS*/
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 2, FormaConciliacion = 1, FuenteInsumo = "Pedido", CargaFuenteInsumo = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 2, FormaConciliacion = 1, FuenteInsumo = "Archivo", CargaFuenteInsumo = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 2, FormaConciliacion = 2, FuenteInsumo = "Pedido", CargaFuenteInsumo = true });
