@@ -1136,7 +1136,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             this.ddlCampoInterno.DataValueField = "Identificador";
             this.ddlCampoInterno.DataTextField = "Descripcion";
             this.ddlCampoInterno.DataBind();
-            this.ddlCampoInterno.Dispose();
+            //this.ddlCampoInterno.Dispose();
         }
         catch
         {
@@ -1159,7 +1159,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
              * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
              * estatica el valor del tipo conciliacion*/
 
-        tipoConciliacion = 2;//Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
         Carga_CamposInternos(tipoConciliacion, ddlCampoExterno.SelectedItem.Text);
     }
