@@ -309,7 +309,7 @@ public partial class Conciliacion_FormasConciliar_CopiaDeConciliacion : System.W
         catch (Exception ex)
         {
 
-            App.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Error :" + ex.StackTrace);
+            App.ImplementadorMensajes.MostrarMensaje("Error al consultar la información.\n\rClase :" + this.GetType().Name + "\n\r" + "Error :" + ex.StackTrace);
         }
 
     }

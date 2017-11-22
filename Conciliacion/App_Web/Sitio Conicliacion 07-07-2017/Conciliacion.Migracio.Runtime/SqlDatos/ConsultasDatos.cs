@@ -557,7 +557,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la información.\n\rClase :" + this.GetType().Name + "\n\r" + "Método :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
                     stackTrace = null;
                 }
                 return datos;
@@ -610,7 +610,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la información.\n\rClase :" + this.GetType().Name + "\n\r" + "Método :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
                     stackTrace = null;
                 }
                 return datos;
@@ -1408,7 +1408,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Método :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
                     stackTrace = null;
                 }
                 return datos;

@@ -2264,13 +2264,27 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        const short _FormaConciliacion = 6;
+
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
         if (Convert.ToInt32(lblAgregadosExternos.Text) > 0)
         {
-            if (tipoConciliacion == 2)
+            //if (tipoConciliacion == 2)
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
                 ConsultarPedidosInternos();
-            else
+            }
+            if (objSolicitdConciliacion.ConsultaArchivo())
+            {
                 ConsultarArchivosInternos();
+            }
+            if (objSolicitdConciliacion.ConsultaPedido() && objSolicitdConciliacion.ConsultaArchivo())
+            {
+                
+            }
         }
         else
         {

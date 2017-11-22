@@ -423,8 +423,8 @@ namespace CatalogoConciliacion.Datos
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la información.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Método :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
                     stackTrace = null;
