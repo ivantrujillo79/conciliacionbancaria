@@ -463,19 +463,12 @@ public partial class Inicio : System.Web.UI.Page
                                      conciliacion.Mes);
     }
 
-
-
-
-
     //Nueva funcionalidad
     protected void lnkInforme_Click(object sender, EventArgs e)
     {
-
         AppSettingsReader settings = new AppSettingsReader();
-
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
-
         string strReporte = Server.MapPath("~/") + settings.GetValue("RutaReporteInformeContabilidad", typeof(string));
 
         if (!File.Exists(strReporte)) return;
@@ -497,7 +490,6 @@ public partial class Inicio : System.Web.UI.Page
 
             ClaseReporte Reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
             //Reporte.Imprimir_Reporte();
-
             HttpContext.Current.Session["RepDoc"] = Reporte.RepDoc;
             HttpContext.Current.Session["ParametrosReporte"] = Par;
             Nueva_Ventana("Reporte/Reporte.aspx", "Carta", 0, 0, 0, 0);
