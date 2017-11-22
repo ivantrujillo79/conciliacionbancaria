@@ -83,17 +83,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             {
                 usuario = (SeguridadCB.Public.Usuario) HttpContext.Current.Session["Usuario"];
 
-                //parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
-                //AppSettingsReader settings = new AppSettingsReader();
-
-                //txtDiferencia.Text = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "DiferenciaCentavosMaxima");//DiferenciaCentavosMaxima
-                //DiferenciaCentavosMaxima = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "DiferenciaCentavosMaxima");
-                //DiferenciaCentavosMinima = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "DiferenciaCentavosMinima");
-
-                //rvDiferencia.MaximumValue = DiferenciaCentavosMaxima;
-                //rvDiferencia.MinimumValue = DiferenciaCentavosMinima;
-                //rvDiferencia.ErrorMessage = "[Diferencia permitida entre " + DiferenciaCentavosMinima + " - " + DiferenciaCentavosMaxima + " pesos]";
-
                 corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
                 añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
@@ -123,7 +112,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                                                       mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
-                if (tipoConciliacion == 2 || tipoConciliacion == 6)
+                /*if (tipoConciliacion == 2 || tipoConciliacion == 6)
                 {
 
                     lblPedidos.Visible = true;
@@ -132,17 +121,22 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     btnActualizarConfig.ValidationGroup = "CantidadPedidos";
                     rvDiferencia.ValidationGroup = "CantidadPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "CantidadPedidos";
-                    //GenerarTablaReferenciasAConciliarPedidos();
+                    GenerarTablaReferenciasAConciliarPedidos();
                 }
                 else
                 {
-                    /*GenerarTablaReferenciasAConciliarInternos();
+                    GenerarTablaReferenciasAConciliarInternos();
                     lblArchivosInternos.Visible = true;
-                    btnActualizarConfig.ValidationGroup = "CantidadArchivos";*/
-                }
-
+                    btnActualizarConfig.ValidationGroup = "CantidadArchivos";
+                }*/
+                
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
+                    lblPedidos.Visible = true;
+                    txtDias.Enabled = tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false; //=imgExportar.Enabled
+                    btnActualizarConfig.ValidationGroup = "CantidadPedidos";
+                    rvDiferencia.ValidationGroup = "CantidadPedidos";
+                    rfvDiferenciaVacio.ValidationGroup = "CantidadPedidos";
                     GenerarTablaReferenciasAConciliarPedidos();
                 }
 
