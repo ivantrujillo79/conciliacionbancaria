@@ -40,6 +40,23 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
             return UrlDestino;
         }
+
+        public string ObtieneURLSolicitudPorDefecto(SolicitudEnrutador Solicitud)
+        {
+            string UrlDestino = "";
+            try
+            {
+                UrlDestino = Conciliacion.RunTime.App.Consultas.ObtieneURLSolicitud(Solicitud.TipoConciliacion,
+                                                                                Solicitud.FormaConciliacion);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return UrlDestino;
+        }
+
+
    } //Fin clase Enrutador
 
     public class SolicitudEnrutador

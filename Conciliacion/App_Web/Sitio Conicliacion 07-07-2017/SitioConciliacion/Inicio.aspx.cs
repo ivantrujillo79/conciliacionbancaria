@@ -432,15 +432,17 @@ public partial class Inicio : System.Web.UI.Page
     }
     protected void lnkVer_Click(object sender, EventArgs e)
     {
-
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
 
-        Response.Redirect("~/Conciliacion/FormasConciliar/" + (conciliacion.TipoConciliacion != 2 ? "CantidadConcuerda" : "CantidadYReferenciaConcuerdan") +
+        Enrutador objEnrutador = new Enrutador();
+        List<ListaCombo> listFormasConciliacion = objEnrutador.CargarFormaConciliacion(conciliacion.TipoConciliacion);
+        string URLDestino = objEnrutador.ObtieneURLSolicitudPorDefecto(new SolicitudEnrutador(conciliacion.TipoConciliacion, 0));
+
+        Response.Redirect("~/Conciliacion/FormasConciliar/" + URLDestino +
                                      ".aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
                                      conciliacion.Mes + "&TipoConciliacion=" + conciliacion.TipoConciliacion + "&GrupoConciliacion=" + conciliacion.GrupoConciliacion);
-
     }
     protected void lnkDetalle_Click(object sender, EventArgs e)
     {
