@@ -109,7 +109,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
-                if (tipoConciliacion == 2)
+                /*if (tipoConciliacion == 2)
                 {
 
                     lblPedidos.Visible = true;
@@ -122,19 +122,26 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
 
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
-                    //GenerarTablaReferenciasAConciliarPedidos();
+                    GenerarTablaReferenciasAConciliarPedidos();
                 }
                 else
-                {/*
+                {
                     btnActualizarConfig.ValidationGroup = "CantidadReferencia";
                     txtDias.Enabled = true;
                     lblArchivosInternos.Visible = true;
                     Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-                    GenerarTablaReferenciasAConciliarArchivos();*/
-                }
+                    GenerarTablaReferenciasAConciliarArchivos();
+                }*/
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
+                    lblPedidos.Visible = true;
+                    txtDias.Enabled = tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false;//imgExportar.Enabled
+                    btnActualizarConfig.ValidationGroup = "CantidadReferenciaPedidos";
+                    rvDiferencia.ValidationGroup = "CantidadReferenciaPedidos";
+                    rfvDiferenciaVacio.ValidationGroup = "CantidadReferenciaPedidos";
+                    Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
+                    Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
                     GenerarTablaReferenciasAConciliarPedidos();
                 }
 
@@ -147,9 +154,17 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     GenerarTablaReferenciasAConciliarArchivos();
                 }
 
+
+                if (objSolicitdConciliacion.ConsultaPedido() && objSolicitdConciliacion.ConsultaArchivo())
+                {
+                    //Realizar el merge de los recordsets
+                    lblPedidos.Text = " y " + lblPedidos.Text;
+                    
+                }
+
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
-                //Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
+                Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
             }
         }
