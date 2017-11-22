@@ -159,6 +159,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 {
                     //Realizar el merge de los recordsets
                     lblPedidos.Text = " y " + lblPedidos.Text;
+                    /*DataTable tblReferenciasAConciliar = new DataTable();
+                    DataTable tblReferenciasAConciliar = new DataTable();
+                    tblReferenciasAConciliar = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
+                    tblReferenciasAConciliar = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];*/
                     
                 }
 
