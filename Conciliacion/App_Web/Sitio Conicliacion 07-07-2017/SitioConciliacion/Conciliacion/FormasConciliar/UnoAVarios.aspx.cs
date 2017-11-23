@@ -168,6 +168,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 LlenaGridViewExternos();
                 ActualizarDatos_wucCargaExcel();
                 ActualizarTotalesAgregados();
+
+                wucBuscaClientesFacturas.Visible = objSolicitdConciliacion.ConsultaPedido();
+
                 if (grvExternos.Rows.Count > 0)
                 {
                     if (tipoConciliacion == 2)
