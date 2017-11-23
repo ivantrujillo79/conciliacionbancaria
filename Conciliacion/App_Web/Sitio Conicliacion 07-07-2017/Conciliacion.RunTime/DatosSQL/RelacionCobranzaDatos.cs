@@ -39,7 +39,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     CreaEncabezadoRelacionCobranza(conexion);
                     AjustarPedidos(conexion);
                     CreaDetalleRelacionCobranza(conexion);
-                    conexion.Comando.Transaction.Commit();                    
+                    conexion.Comando.Transaction.Commit();
                 }
 
                 ObjRelacionCobranzaExcepcion.DetalleExcepcion.CodigoError = 0;
@@ -128,7 +128,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         ListaPedidos.Add(Pedido);
                     }
 
-               }
+                }
                 return ListaPedidos;
             }
             catch (Exception ex)

@@ -76,7 +76,7 @@
                             </div>
                             <br />
                             <asp:GridView ID="grid_cmdtb" runat="server" CssClass="grvResultadoConsultaCss" PageSize="12" AutoGenerateColumns="false"
-                ShowHeaderWhenEmpty="true" Width="100%" OnRowCreated="grid_cmdtb_RowCreated" AllowPaging="true" 
+                ShowHeaderWhenEmpty="true" Width="100%" OnRowCreated="grid_cmdtb_RowCreated" AllowPaging="true" DataKeyNames="Clave" 
                 OnRowDataBound="grid_cmdtb_RowDataBound" OnPageIndexChanging="grid_cmdtb_PageIndexChanging">
                                 <EmptyDataTemplate>
                     <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existe ningún documento a visualizar de acuerdo a los Parámetros del Filtrado. "></asp:Label>

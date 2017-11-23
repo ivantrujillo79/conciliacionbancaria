@@ -104,7 +104,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         {
             movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
 
-                    //short consecutivo = movimientoCajaAlta.Consecutivo;
+            //short consecutivo = movimientoCajaAlta.Consecutivo;
             //int folio = movimientoCajaAlta.Folio;
             //short caja = movimientoCajaAlta.Caja;
             //string FOperacion = Convert.ToString(movimientoCajaAlta.FOperacion);
@@ -573,7 +573,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             Parametros p = Session["Parametros"] as Parametros;
             AppSettingsReader settings = new AppSettingsReader();
             short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
-            
+
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
             int MaxDocumentos = Convert.ToInt16(p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN"));
             TransBan objTransBan = new TransBan();
@@ -598,11 +598,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     short  tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
-                        corporativoConciliacion, sucursalConciliacion,añoConciliacion, mesConciliacion, folioConciliacion,"ABIERTO", new MensajeImplemantacionForm());
+                        corporativoConciliacion,sucursalConciliacion,añoConciliacion,mesConciliacion,folioConciliacion,"ABIERTO",new MensajeImplemantacionForm());
                     objMCC.Guardar(conexion);
 
                     Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
-                    
+
                     RelacionCobranzaException rCobranzaE = null;
                     try
                     {
@@ -649,7 +649,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
-    }
+            }
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
 
             /* if (movimientoCajaAlta != null && movimientoCajaAlta.Caja != 0)
