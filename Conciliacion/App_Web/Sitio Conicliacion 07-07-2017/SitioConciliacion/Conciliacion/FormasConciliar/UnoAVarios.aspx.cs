@@ -254,6 +254,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 Carga_TipoFuenteInformacionInterno(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
+
+                ListItem selectedListItem = ddlCriteriosConciliacion.Items.FindByValue(_FormaConciliacion.ToString());
+                ddlCriteriosConciliacion.ClearSelection();
+                if (selectedListItem != null)
+                {
+                    selectedListItem.Selected = true;
+                }
             }
             else
             {

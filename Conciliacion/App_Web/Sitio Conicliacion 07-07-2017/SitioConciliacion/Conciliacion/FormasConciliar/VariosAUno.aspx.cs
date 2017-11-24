@@ -137,30 +137,6 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     }
                 }
 
-                /*
-                if (tipoConciliacion == 2)
-                {
-                    lblSucursalCelula.Text = "Celula Interna";
-                    ddlCelula.Visible = lblPedidos.Visible = lblVer.Visible = rdbTodosMenoresIn.Visible = true;
-                    //btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible = txtDias.CausesValidation = txtDias.Enabled = ddlSucursal.Enabled = imgExportar.Enabled = false;
-                    btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible = txtDias.CausesValidation = txtDias.Enabled = ddlSucursal.Enabled = false;//imgExportar.Enabled = 
-                    //tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
-                    tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false;
-                    Carga_CelulaCorporativo(corporativo);
-
-                    btnActualizarConfig.ValidationGroup = "VariosUnoPedidos";
-                    rfvDiferenciaVacio.ValidationGroup = "VariosUnoPedidos";
-                    rvDiferencia.ValidationGroup = "VariosUnoPedidos";
-
-                }
-                else
-                {
-                    lblSucursalCelula.Text = "Sucursal Interna";
-                    btnActualizarConfig.ValidationGroup = "VariosUno";
-                    ddlSucursal.Visible = lblArchivosInternos.Visible = true;
-                    Carga_SucursalCorporativo(corporativo);
-                }*/
-
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblSucursalCelula.Text = "Celula Interna";
@@ -183,19 +159,18 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     Carga_SucursalCorporativo(corporativo);
                 }
 
-                if (objSolicitdConciliacion.ConsultaPedido() && objSolicitdConciliacion.ConsultaArchivo())
-                {
-                    //Realizar el merge de los recordsets
-                    lblPedidos.Text = " y " + lblPedidos.Text;
-                    /*_tblReferenciasAConciliarPedido.Merge(_tblReferenciasAConciliarArchivo);
-                    HttpContext.Current.Session["TBL_REFCON_CANTREF"] = _tblReferenciasAConciliarPedido;*/
-                }
-
                 btnGuardar.Enabled = false;
                 ocultarFiltroFechas(tipoConciliacion);
 
                 Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
+
+                ListItem selectedListItem = ddlCriteriosConciliacion.Items.FindByValue(_FormaConciliacion.ToString());
+                ddlCriteriosConciliacion.ClearSelection();
+                if (selectedListItem != null)
+                {
+                    selectedListItem.Selected = true;
+                }
             }
         }
         catch (SqlException ex)

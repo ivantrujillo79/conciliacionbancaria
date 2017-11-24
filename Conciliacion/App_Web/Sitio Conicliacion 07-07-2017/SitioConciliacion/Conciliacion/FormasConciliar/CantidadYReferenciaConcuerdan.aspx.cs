@@ -74,6 +74,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 _FormaConciliacion = 2;
             }
         }
+
+
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         DataTable _tblReferenciasAConciliarPedido = new DataTable();
         DataTable _tblReferenciasAConciliarArchivo = new DataTable();
@@ -146,19 +148,18 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
 
-
-                if (objSolicitdConciliacion.ConsultaPedido() && objSolicitdConciliacion.ConsultaArchivo())
-                {
-                    //Realizar el merge de los recordsets
-                    lblPedidos.Text = " y " + lblPedidos.Text;
-                    _tblReferenciasAConciliarPedido.Merge(_tblReferenciasAConciliarArchivo);
-                    HttpContext.Current.Session["TBL_REFCON_CANTREF"] = _tblReferenciasAConciliarPedido;
-                }
-
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
                 Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
+
+                ListItem selectedListItem = ddlCriteriosConciliacion.Items.FindByValue(_FormaConciliacion.ToString());
+                ddlCriteriosConciliacion.ClearSelection();
+                if (selectedListItem != null)
+                {
+                    selectedListItem.Selected = true;
+                }
+
             }
         }
         catch (SqlException ex)
