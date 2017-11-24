@@ -199,7 +199,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaPedido(BusquedaPedido configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, decimal diferencia, int celula, string cliente, bool clientepadre);
         public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaPedido(BusquedaPedido configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, decimal diferencia, int celula, string cliente, bool clientepadre, SqlString factura, DateTime ffactura);
-        public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaFacturaManual(string cliente, bool clientepadre, SqlString factura, DateTime ffactura);
+        //public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaFacturaManual(string cliente, bool clientepadre, SqlString factura, DateTime ffactura);
+        public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaFacturaManual(int cliente, bool clientepadre, SqlString factura, DateTime fechaIni, DateTime fechaFin);
 
         public abstract bool ValidaPedidoEspecifico(int corporativo, int sucursal,
             string pedidoReferencia);

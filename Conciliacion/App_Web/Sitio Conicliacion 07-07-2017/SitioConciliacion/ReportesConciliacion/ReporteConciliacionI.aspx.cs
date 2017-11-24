@@ -73,7 +73,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             /*      Registrar PostBackControl en la página para 
              *      arreglar bug de FileUpload Control dentro de Update Panel    */
             ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
-
+            
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
@@ -939,10 +939,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //    rfc.FolioConciliacion,
             //    rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rblClienteTipo.SelectedItem.Value.Equals("PADRE"));
 
-            Consulta_FacturasManual(clienteBuscar, 
-                                    rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"), 
-                                    txtFacturaBusuqeda.Text, 
-                                    (txtFechaFacturaBusqueda.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFechaFacturaBusqueda.Text)));
+            Consulta_FacturasManual(Convert.ToInt32(clienteBuscar),
+                                    rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"),
+                                    txtFacturaBusuqeda.Text,
+                                    txtFacturaFechaInicial.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaInicial.Text),
+                                    txtFacturaFechaFinal.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaFinal.Text));
+
             GenerarTablaFacturas();
             LlenaGridViewFacturasManuales();
         }
@@ -1775,7 +1777,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
     }
 
-    public void Consulta_FacturasManual(string cliente, bool clientepadre, SqlString factura, DateTime fechafactura)
+    public void Consulta_FacturasManual(int cliente, bool clientepadre, SqlString factura, DateTime fechaIni, DateTime fechaFin)
     {
         System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
@@ -1786,7 +1788,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
 
             listaReferenciaFacturaConsulta =
-            Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaFacturaManual(cliente, clientepadre, factura, fechafactura);
+            Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaFacturaManual(cliente, clientepadre, factura, fechaIni, fechaFin);
             //Session["FACTURAS_CONSULTAR"] = listaReferenciaFacturaConsulta;
         }
         catch (Exception ex)
@@ -1855,9 +1857,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         tblPedidos = new DataTable("FacturasManual");
 
         tblPedidos.Columns.Add("Cliente", typeof(string));
-        tblPedidos.Columns.Add("NombreCliente", typeof(string));
+        tblPedidos.Columns.Add("Nombre", typeof(string));
         tblPedidos.Columns.Add("FechaFactura", typeof(DateTime));
         tblPedidos.Columns.Add("FolioFactura", typeof(string));
+        tblPedidos.Columns.Add("Concepto", typeof(string));
+        tblPedidos.Columns.Add("Total", typeof(decimal));
 
         foreach (
             ReferenciaNoConciliadaPedido rc in
@@ -1867,8 +1871,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 rc.Cliente,
                 rc.Nombre,
                 rc.Ffactura,
-                rc.Foliofacturaserie
+                rc.Foliofactura,
+                rc.Concepto,
+                rc.Total
                 /*rc.PedidoReferencia,
+                //rc.Foliofacturaserie,
                 rc.AñoPedido,
                 rc.CelulaPedido,
                 rc.Cliente,
