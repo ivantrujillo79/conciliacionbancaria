@@ -1,0 +1,59 @@
+TipoConciliacion Descripcion                                                                                          Camino TipoMovimientoArchivo
+---------------- ---------------------------------------------------------------------------------------------------- ------ ---------------------
+1                CONCILIACION DE INGRESOS POR VENTA                                                                   1      2
+2                CONCILIACION DE INGRESOS POR COBRANZA A ABONAR                                                       2      2
+3                CONCILIACION DE EGRESOS                                                                              3      3
+4                CONCILIACION DE INGRESOS Y EGRESOS                                                                   1      1
+5                CONCILIACION DE INGRESOS Y EGRESOS SIN ARCHIVO                                                       1      1
+6                CONCILIACION DE INGRESOS POR COBRANZA A ABONAR PEDIDO                                                2      2
+
+(6 row(s) affected)
+
+
+FormaConciliacion Descripcion
+----------------- --------------------------------------------------
+1                 CANTIDAD CONCUERDA
+2                 CANTIDAD Y REFERENCIA CONCUERDAN
+3                 UNO A VARIOS
+4                 COPIA DE CONCILIACION
+5                 CONCILIACION MANUAL
+6                 VARIOS A UNO
+7                 CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS
+8                 UNO A VARIOS PEDIDOS
+9                 VARIOS A UNO PEDIDOS
+
+(9 row(s) affected)
+
+
+TipoConciliacion FormaConciliacion PaginaCargar
+---------------- ----------------- ----------------------------------------------------------------------------------------------------
+4                1                 CantidadConcuerda
+4                2                 CantidadYReferenciaConcuerdan
+4                3                 UnoAVarios
+4                5                 Manual
+4                6                 VariosAUno
+4                7                 CantidadYReferenciaConcuerdan
+4                8                 UnoAVarios
+4                9                 VariosAUno
+1                1                 CantidadConcuerda
+1                2                 CantidadYReferenciaConcuerdan
+1                3                 UnoAVarios
+1                5                 Manual
+1                6                 VariosAUno
+1                7                 CantidadYReferenciaConcuerdan
+1                8                 UnoAVarios
+1                9                 VariosAUno
+2                2                 CantidadYReferenciaConcuerdan
+2                3                 UnoAVarios
+2                6                 VariosAUno
+3                1                 CantidadConcuerda
+3                2                 CantidadYReferenciaConcuerdan
+3                3                 UnoAVarios
+3                5                 Manual
+3                6                 VariosAUno
+6                7                 CantidadYReferenciaConcuerdan
+6                8                 UnoAVarios
+6                9                 VariosAUno
+
+(27 row(s) affected)
+
