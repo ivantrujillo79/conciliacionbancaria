@@ -1083,7 +1083,7 @@
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="800px" Style="display: none"
-        CssClass="ModalPopup ModalPopupChild">
+        CssClass="ModalPopup" Height="500px">
         <asp:UpdatePanel ID="upBusquedaFactura" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -1175,22 +1175,23 @@
 					</tr>
                     <tr>
                         <td>
-                            <div style="width:100%; height:200px; overflow: scroll;">
+                            <div style="width:100%; height:310px; overflow: scroll;">
                                 <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                                    CssClass="grvResultadoConsultaCssE" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True"
-                                    PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging">
+                                    CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
+                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True" 
+                                    PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
+                                    OnSorting="grvPedidosFacturados_Sorting">
                                   
                                     <HeaderStyle HorizontalAlign="Center" />
                                     <Columns>
-										<asp:TemplateField HeaderText="Fecha" SortExpression="Fecha">
+										<asp:TemplateField HeaderText="Fecha" SortExpression="FechaFactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFechaFACT" runat="server" Text='<%# Eval("FechaFactura","{0:d}") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Factura" SortExpression="FoliFactura">
+                                         <asp:TemplateField HeaderText="Factura" SortExpression="Foliofactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFolioFacturaFACT" runat="server" Text='<%# Eval("Foliofactura") %>' />
                                             </ItemTemplate>
@@ -1211,14 +1212,14 @@
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Concepto" SortExpression="Cliente">
+                                        <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblConceptoFACT" runat="server" Text='<%# Eval("Concepto") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total" SortExpression="Cliente">
+                                        <asp:TemplateField HeaderText="Total" SortExpression="Total">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTotalFACT" runat="server" Text='<%# Eval("Total", "{0:C}") %>' />
                                             </ItemTemplate>
