@@ -112,6 +112,18 @@ namespace Conciliacion.RunTime
             }
         }
 
+        private static FacturasComplemento facturasComplemento;
+        public static FacturasComplemento FacturasComplemento
+        {
+            get
+            {
+                if (facturasComplemento == null)
+                    facturasComplemento = new FacturasComplementoDatos(App.ImplementadorMensajes);
+                return facturasComplemento;
+
+            }
+        }
+
         private static ReferenciaConciliada referenciaconciliada;
         public static ReferenciaConciliada ReferenciaConciliada
         {

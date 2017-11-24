@@ -584,18 +584,30 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             Conexion conexion = new Conexion();
 
+
+            int corporativoConciliacion = 0;
+            Int16 sucursalConciliacion = 0;
+            int añoConciliacion = 0;
+            int folioConciliacion = 0;
+            short mesConciliacion = 0;
+            short tipoConciliacion = 0;
+
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
                 conexion = new Conexion();
                 conexion.AbrirConexion(true);
+
+
                 if (objMovimientoCaja.Guardar(conexion))
                 {
-                    int corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                    Int16 sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                    int añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
-                    int folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
-                    short  mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
-                    short  tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+                    corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
+                    sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
+                    añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
+                    folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
+                    mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
+                    tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
                         corporativoConciliacion,sucursalConciliacion,añoConciliacion,mesConciliacion,folioConciliacion,"ABIERTO",new MensajeImplemantacionForm());
@@ -650,6 +662,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 else
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
+
+            FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
+            objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
+            objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
+            objFacturasComplemento.AnioConciliacion = añoConciliacion;
+            objFacturasComplemento.MesConciliacion = mesConciliacion;
+            objFacturasComplemento.FolioConciliacion = folioConciliacion;
+            objFacturasComplemento.Guardar(conexion);
+
+
+
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
 
             /* if (movimientoCajaAlta != null && movimientoCajaAlta.Caja != 0)

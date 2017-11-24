@@ -46,7 +46,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
             if (!IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                //objParametro = CatalogoConciliacion.App.Parametro;
+                objParametro = CatalogoConciliacion.App.Parametro;
 
                 objParametro.Parametro = "NumeroDocumentosTRANSBAN";
 

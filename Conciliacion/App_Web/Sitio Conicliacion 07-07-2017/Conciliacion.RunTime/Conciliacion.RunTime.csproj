@@ -78,6 +78,7 @@
     <Compile Include="App.cs" />
     <Compile Include="DatosSQL\ClienteDatos.cs" />
     <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
+    <Compile Include="DatosSQL\FacturasComplementoDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="ReglasDeNegocio\DatosArchivo.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
+    <Compile Include="ReglasDeNegocio\FacturasComplemento.cs" />
     <Compile Include="ReglasDeNegocio\FuenteInformacion.cs" />
     <Compile Include="ReglasDeNegocio\GrupoConciliacionDiasDiferencia.cs" />
     <Compile Include="ReglasDeNegocio\IConciliacion.cs" />
