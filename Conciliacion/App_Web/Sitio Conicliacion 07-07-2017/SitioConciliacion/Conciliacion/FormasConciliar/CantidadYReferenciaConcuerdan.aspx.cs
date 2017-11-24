@@ -65,7 +65,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (_FormaConciliacion == 0)
         {
-            _FormaConciliacion = 2;
+            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+            {
+                _FormaConciliacion = 7;
+            }
+            else
+            {
+                _FormaConciliacion = 2;
+            }
         }
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         DataTable _tblReferenciasAConciliarPedido = new DataTable();
@@ -115,29 +122,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
-                /*if (tipoConciliacion == 2)
-                {
-
-                    lblPedidos.Visible = true;
-                    //tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
-                    txtDias.Enabled = tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false;//imgExportar.Enabled
-                    btnActualizarConfig.ValidationGroup = "CantidadReferenciaPedidos";
-                    rvDiferencia.ValidationGroup = "CantidadReferenciaPedidos";
-                    rfvDiferenciaVacio.ValidationGroup = "CantidadReferenciaPedidos";
-
-                    Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
-
-                    Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
-                    GenerarTablaReferenciasAConciliarPedidos();
-                }
-                else
-                {
-                    btnActualizarConfig.ValidationGroup = "CantidadReferencia";
-                    txtDias.Enabled = true;
-                    lblArchivosInternos.Visible = true;
-                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-                    GenerarTablaReferenciasAConciliarArchivos();
-                }*/
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -1732,22 +1716,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         Enrutador objEnrutador = new Enrutador();
         string criterioConciliacion = "";
         
-#region eLIMINAR cÓDIGO
-        /*ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
-            //? "CantidadConcuerda" : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN") ? "CantidadYReferenciaConcuerdan" :
-            ? "CantidadConcuerda"
-             : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
-                ? "CantidadYReferenciaConcuerdanEdificios"
-                : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS")
-                    ? "CantidadYReferenciaConcuerdan"
-                    : ddlCriteriosConciliacion.SelectedItem.Text.Equals("UNO A VARIOS")
-                        ? "UnoAVarios"
-                        : ddlCriteriosConciliacion.SelectedItem.Text.Equals("VARIOS A UNO")
-                            ? "VariosAUno"
-                            : ddlCriteriosConciliacion.SelectedItem.Text.Equals("COPIA DE CONCILIACION")
-                                ? "CopiaDeConciliacion"
-                                : "Manual";*/
-#endregion
         criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
                                                                                        Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)));
 

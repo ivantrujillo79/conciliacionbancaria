@@ -175,6 +175,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 wucBuscaClientesFacturas.Visible = objSolicitdConciliacion.ConsultaPedido();
 
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    lblGridAP.Text = "PEDIDOS ";
+                    lblSucursalCelula.Text = "Celula Interna";
+                    lblPedidos.Visible = true;
+                }
+                if (objSolicitdConciliacion.ConsultaArchivo())
+                {
+                    lblSucursalCelula.Text = "Sucursal Interna";
+                    lblGridAP.Text = "INTERNOS ";
+                    lblArchivosInternos.Visible = true;
+                }
+
+
                 if (grvExternos.Rows.Count > 0)
                 {
                     if (tipoConciliacion == 2)
@@ -195,53 +209,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             wucBuscaClientesFacturas.HtmlIdGridCNodoID = "0";
                         }
                     }
-                    //Obtener el la referencia externa seleccionada
-                    /*if (tipoConciliacion == 2)
-                    {
-                        lblSucursalCelula.Text = "Celula Interna";
-                        ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
-                        btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible =
-                                                                            lblVer.Visible =
-                                                                            txtDias.CausesValidation =
-                                                                            txtDias.Enabled = ddlSucursal.Enabled =
-                                                                                              btnHistorialPendientesInterno
-                                                                                                  .Visible =
-                                                                                              tdEtiquetaMontoIn.Visible
-                                                                                              =
-                                                                                              tdMontoIn.Visible = false;
-                        //imgExportar.Enabled = 
-                        lblGridAP.Text = "PEDIDOS ";
-                        //tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
-
-                        
-                        Carga_CelulaCorporativo(corporativo);
-						
-                        //Modifico: CNSM 
-                        //Fecha: 08/06/2017
-                        ConsultarPedidosInternos();
-
-                        ConsultaInicialPedidosInternos();
-
-                        //CHECAR SI SE DEJA EL CAMBIO DE VALIDATIONGROUP
-                        btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
-                        rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
-                        rvDiferencia.ValidationGroup = "UnoVariosPedidos";
-
-                    }
-                    else
-                    {
-                        lblSucursalCelula.Text = "Sucursal Interna";
-                        ddlSucursal.Visible = true;
-                        Carga_SucursalCorporativo(corporativo);
-                        ConsultarArchivosInternos();
-
-                        btnActualizarConfig.ValidationGroup = "UnoVarios";
-                        lblArchivosInternos.Visible = true;
-                        lblGridAP.Text = "INTERNOS ";
-                    }*/
 
                     if (objSolicitdConciliacion.ConsultaPedido())
                     {
+                        lblGridAP.Text = "PEDIDOS ";
                         lblSucursalCelula.Text = "Celula Interna";
                         ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
                         btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible =
@@ -253,11 +224,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                                                               tdEtiquetaMontoIn.Visible
                                                                                               =
                                                                                               tdMontoIn.Visible = false;
-                        //imgExportar.Enabled = 
-                        lblGridAP.Text = "PEDIDOS ";
-                        //tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
-
-
                         Carga_CelulaCorporativo(corporativo);
 
                         /**Modifico: CNSM 
@@ -274,23 +240,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     if (objSolicitdConciliacion.ConsultaArchivo())
                     {
                         lblSucursalCelula.Text = "Sucursal Interna";
+                        lblGridAP.Text = "INTERNOS ";
                         ddlSucursal.Visible = true;
                         Carga_SucursalCorporativo(corporativo);
                         ConsultarArchivosInternos();
                         btnActualizarConfig.ValidationGroup = "UnoVarios";
                         lblArchivosInternos.Visible = true;
-                        lblGridAP.Text = "INTERNOS ";
                     }
-
-                    if (objSolicitdConciliacion.ConsultaPedido() && objSolicitdConciliacion.ConsultaArchivo())
-                    {
-                        //Realizar el merge de los recordsets
-                        lblPedidos.Text = " y " + lblPedidos.Text;
-                        /*_tblReferenciasAConciliarPedido.Merge(_tblReferenciasAConciliarArchivo);
-                        HttpContext.Current.Session["TBL_REFCON_CANTREF"] = _tblReferenciasAConciliarPedido;*/
-                    }
-
-
                 }
                 btnGuardar.Enabled = false;
                 ocultarFiltroFechas(tipoConciliacion);
@@ -3523,25 +3479,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         Enrutador objEnrutador = new Enrutador();
         string criterioConciliacion = "";
-
-        //string criterioConciliacion = ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD CONCUERDA")
-        //    ? "CantidadConcuerda"
-        //    //: ddlCriteriosConciliacion.SelectedItem.Text.Equals(
-        //    //    "CANTIDAD Y REFERENCIA CONCUERDAN")
-        //    //      ? "CantidadYReferenciaConcuerdan"
-        //    : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN")
-        //        ? "CantidadYReferenciaConcuerdanEdificios"
-        //        : ddlCriteriosConciliacion.SelectedItem.Text.Equals("CANTIDAD Y REFERENCIA CONCUERDAN PEDIDOS")
-        //            ? "CantidadYReferenciaConcuerdan"
-        //            : ddlCriteriosConciliacion.SelectedItem.Text.Equals("UNO A VARIOS")
-        //                ? "UnoAVarios"
-        //                : ddlCriteriosConciliacion.SelectedItem.Text.Equals("VARIOS A UNO")
-        //                    ? "VariosAUno"
-        //                    : ddlCriteriosConciliacion.SelectedItem.Text.Equals(
-        //                        "COPIA DE CONCILIACION")
-        //                        ? "CopiaDeConciliacion"
-        //                        : "Manual";
-
         criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
                                                                                        Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)));
 
