@@ -71,7 +71,11 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            _FormaConciliacion = 5;
+        }
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -2014,7 +2018,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                      mes + "&TipoConciliacion=" + tipoConciliacion);
+                                      mes + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
     protected void Nueva_Ventana(string pagina, string titulo, int ancho, int alto, int x, int y)
     {

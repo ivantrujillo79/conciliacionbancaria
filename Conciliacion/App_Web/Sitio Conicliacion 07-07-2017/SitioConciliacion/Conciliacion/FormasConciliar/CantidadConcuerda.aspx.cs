@@ -64,7 +64,11 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        const short _FormaConciliacion = 1;
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            _FormaConciliacion = 1;
+        }
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -1365,7 +1369,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
                                       "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
-                                      mesConciliacion + "&TipoConciliacion=" + tipoConciliacion);
+                                      mesConciliacion + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {

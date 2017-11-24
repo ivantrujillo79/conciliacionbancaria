@@ -71,7 +71,12 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
-        const short _FormaConciliacion = 6;
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            _FormaConciliacion = 6;
+        }
+
         try
         {
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -2011,7 +2016,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                      mes + "&TipoConciliacion=" + tipoConciliacion);
+                                      mes + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
     protected void Nueva_Ventana(string pagina, string titulo, int ancho, int alto, int x, int y)
     {

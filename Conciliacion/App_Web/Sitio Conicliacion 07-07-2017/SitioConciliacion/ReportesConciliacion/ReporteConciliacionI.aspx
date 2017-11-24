@@ -4,7 +4,7 @@
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~/ControlesUsuario/wucRangoFechas/wucRangoFechas.ascx" TagPrefix="uc1" TagName="wucRangoFechas" %>
-<%@ Register Src="~/ControlesUsuario/ModalPopupRelation/ModalPopupRelation.ascx" TagPrefix="uc1" TagName="ModalPopupRelation" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     Reporte Tesoreria I

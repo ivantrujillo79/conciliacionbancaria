@@ -62,7 +62,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        const short _FormaConciliacion = 2;
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            _FormaConciliacion = 2;
+        }
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         DataTable _tblReferenciasAConciliarPedido = new DataTable();
         DataTable _tblReferenciasAConciliarArchivo = new DataTable();
@@ -87,7 +91,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 folio = Convert.ToInt32(Request.QueryString["Folio"]);
                 mes = Convert.ToSByte(Request.QueryString["Mes"]);
 
-                /*Se requiere realizar la modificacion de tipoConciliacion desde esta vista, 
+                /*Se requiere realizar la modificacion de tipoConimgAutomaticaciliacion desde esta vista, 
                  * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
                  * estatica el valor del tipo conciliacion*/
 
@@ -1754,7 +1758,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                      mes + "&TipoConciliacion=" + Convert.ToSByte(Request.QueryString["TipoConciliacion"]));
+                                      mes + "&TipoConciliacion=" + Convert.ToSByte(Request.QueryString["TipoConciliacion"]) + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {

@@ -192,7 +192,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
             catch (InvalidOperationException IOE)
             {
-                   throw new Exception("No existe configuración para el tipo, forma e insumo");
+                throw new Exception("No existe configuración para el tipo, forma e insumo Tipo: " + this.TipoConciliacion.ToString() + " Forma: " + this.FormaConciliacion.ToString());
             }
             catch (Exception ex)
             {

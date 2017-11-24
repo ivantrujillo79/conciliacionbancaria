@@ -112,7 +112,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
 
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
-        const short _FormaConciliacion = 3;
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            _FormaConciliacion = 3;
+        }
 
         try
         {
@@ -3550,7 +3554,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                           ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                           "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                          mes + "&TipoConciliacion=" + tipoConciliacion);
+                          mes + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
 
     protected void Nueva_Ventana(string pagina, string titulo, int ancho, int alto, int x, int y)
