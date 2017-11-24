@@ -4,6 +4,7 @@
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~/ControlesUsuario/wucRangoFechas/wucRangoFechas.ascx" TagPrefix="uc1" TagName="wucRangoFechas" %>
+<%@ Register Src="~/ControlesUsuario/ModalPopupRelation/ModalPopupRelation.ascx" TagPrefix="uc1" TagName="ModalPopupRelation" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     Reporte Tesoreria I
@@ -12,9 +13,10 @@
     <script type="text/javascript">
     
         function pageLoad() {
+            activarDatePickers();
             gridviewScroll();
             //FInicio - FFinal
-            activarDatePickers();
+            //activarDatePickers();
             CargarEventoCheckBox();
         }
 
@@ -57,7 +59,26 @@
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
                 }
             });
-            $("#<%=txtFechaFacturaBusqueda.ClientID%>").datepicker({
+
+            /*          DatePicker Busqueda Facturas         */
+            $("#<%= txtFacturaFechaInicial.ClientID %>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFacturaFechaFinal.ClientID %>").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%= txtFacturaFechaFinal.ClientID %>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFacturaFechaInicial.ClientID %>").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
+            <%--$("#<%=txtFechaFacturaBusqueda.ClientID%>").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
@@ -65,7 +86,7 @@
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "minDate", selectedDate);
                 }
-            });
+            });--%>
 
         }
 
@@ -1061,8 +1082,8 @@
     <asp:ModalPopupExtender ID="mpeBusquedaFactura" runat="server" PopupControlID="pnlBusquedaFactura"
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="600px"  Style="display: none"
-        CssClass="ModalPopup">
+    <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="800px" Style="display: none"
+        CssClass="ModalPopup ModalPopupChild">
         <asp:UpdatePanel ID="upBusquedaFactura" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -1082,27 +1103,46 @@
                     <tr>
                         <td class="datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
                             <div class="etiqueta lineaHorizontal">
-                                <table width="100%">
+                                <table width="100%" style="box-sizing: border-box;">
                                     <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-										<td style="width: 50%; padding: 5px 5px 5px 5px" colspan="2">
+										<td style="width: 25%; padding: 5px 5px 5px 5px" colspan="1"> <%--width: 40%;--%>
 											<asp:RadioButtonList ID="rblTipoClienteFactura" runat="server" RepeatColumns="2" RepeatDirection="Horizontal"
-												Width="70%">
+												    Width="100%"> <%--Width="70%"--%>
 												<asp:ListItem Value="NORMA" Selected="True">Cliente Normal</asp:ListItem>
 												<asp:ListItem Value="PADREL">Cliente Padre</asp:ListItem>
 											</asp:RadioButtonList>
-										</td>  
-										<td style="width: 25%; padding: 5px 5px 5px 5px"  colspan="2" align="left">
+										</td>
+										<%--<td style="width: 25%; padding: 5px 5px 5px 5px"  colspan="2" align="left">
 											Fecha Factura:
 											<asp:TextBox ID="txtFechaFacturaBusqueda" runat="server"  CssClass="cajaTexto" Font-Size="12px"
 											Width="90%">
 											</asp:TextBox>
-										</td>
-										<td style="width: 25%; padding: 5px 5px 5px 5px" colspan="2">
-											Factura:
-										    <asp:TextBox ID="txtFacturaBusuqeda" runat="server" CssClass="cajaTexto" Font-Size="12px"
-											Width="90%">
+										</td>--%>
+                                        <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left"> <%--width: 20%;--%>
+											Fecha inicial:
+                                            <br />
+											<asp:TextBox ID="txtFacturaFechaInicial" runat="server"  CssClass="cajaTexto" Font-Size="12px"
+											width="70%"> <%--Width="90%"--%>
 											</asp:TextBox>
-										</td>                                
+										</td>
+                                        <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
+											Fecha final:
+                                            <br />
+											<asp:TextBox ID="txtFacturaFechaFinal" runat="server"  CssClass="cajaTexto" Font-Size="12px"
+											Width="70%"> <%--Width="90%"--%>
+											</asp:TextBox>
+										</td>
+										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="1" align="left">
+											Folio factura:
+                                            <br />
+										    <asp:TextBox ID="txtFacturaBusuqeda" runat="server" CssClass="cajaTexto" Font-Size="12px"
+											Width="70%"> <%--Width="90%"--%>
+											</asp:TextBox>
+										</td>
+                                        <td class="iconoOpcion bg-color-naranja" colspan="2"> <%--class="iconoOpcion bg-color-naranja" rowspan="2"--%>
+                                            <asp:ImageButton ID="imgBotonBuscarFacturasManual" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                ToolTip="BUSCAR" style="padding: 10px 2px 7px 5px;"  OnClick="imgBotonBuscarFacturasManual_Click" /> <%--padding: 10px 2px 2px 2px;--%>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="etiqueta lineaVertical centradoMedio" style="width: 40%; padding: 5px 5px 5px 5px">
@@ -1123,11 +1163,11 @@
                                             padding: 5px 5px 5px 5px">
                                             <asp:Label runat="server" ID="lblMontoRestoFactrura"></asp:Label>
                                         </td>
-                                        <td class="iconoOpcion bg-color-naranja" rowspan="2">
+                                        <%--<td class="iconoOpcion bg-color-naranja" rowspan="2">
                                             <asp:ImageButton ID="imgBotonBuscarFacturasManual" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                 ToolTip="BUSCAR" style="width: 25px; padding: 10px 2px 2px 2px"  OnClick="imgBotonBuscarFacturasManual_Click" />
-                                            <%--Width="25px"--%>
-                                        </td>
+                                            <!--Width="25px"-->
+                                        </td>--%>
                                     </tr>
 								</table>
                             </div>
@@ -1138,14 +1178,21 @@
                             <div style="width:100%; height:200px; overflow: scroll;">
                                 <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                     CssClass="grvResultadoConsultaCssE" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="False"
+                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True"
                                     PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging">
                                   
                                     <HeaderStyle HorizontalAlign="Center" />
                                     <Columns>
+										<asp:TemplateField HeaderText="Fecha" SortExpression="Fecha">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFechaFACT" runat="server" Text='<%# Eval("FechaFactura","{0:d}") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
+                                        </asp:TemplateField>
                                          <asp:TemplateField HeaderText="Factura" SortExpression="FoliFactura">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblFolioFacturaFACT" runat="server" Text='<%# Eval("FolioFactura") %>' />
+                                                <asp:Label ID="lblFolioFacturaFACT" runat="server" Text='<%# Eval("Foliofactura") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
@@ -1159,14 +1206,21 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Nombre" SortExpression="Nombre">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblNombreClienteFACT" runat="server" Text='<%# Eval("NombreCliente") %>' />
+                                                <asp:Label ID="lblNombreClienteFACT" runat="server" Text='<%# Eval("Nombre") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-										<asp:TemplateField HeaderText="Fecha" SortExpression="Fecha">
+                                        <asp:TemplateField HeaderText="Concepto" SortExpression="Cliente">
                                             <ItemTemplate>
-                                                <asp:Label ID="lblFechaFACT" runat="server" Text='<%# Eval("FechaFactura","{0:d}") %>' />
+                                                <asp:Label ID="lblConceptoFACT" runat="server" Text='<%# Eval("Concepto") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Total" SortExpression="Cliente">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblTotalFACT" runat="server" Text='<%# Eval("Total", "{0:C}") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
@@ -1194,6 +1248,8 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </asp:Panel>
+    <%--<uc1:ModalPopupRelation ID="ModalPopupRelation1" runat="server" ParentModalPopupID="popUpConciliarMovPedido" 
+        ChildModalPopupID="mpeBusquedaFactura" Start="true"/>--%>
 
     <asp:HiddenField runat="server" ID="hdfMesAño" />
     <asp:ModalPopupExtender ID="mpeMesAño" runat="server" PopupControlID="pnlMesAño"

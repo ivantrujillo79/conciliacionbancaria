@@ -3020,10 +3020,11 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         //BUSQUEDA FACTURAS MANUALES
-        public override List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaFacturaManual(string cliente,
+        public override List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaFacturaManual(int cliente,
                                                                               bool clientepadre,
                                                                               SqlString factura,
-                                                                              DateTime ffactura)
+                                                                              DateTime fechaIni,
+                                                                              DateTime fechaFin)
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -3032,23 +3033,34 @@ namespace Conciliacion.RunTime.DatosSQL
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBConsultaFacturaSinPedido", cnn);
-                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.VarChar).Value = cliente;
+                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.Int).Value = cliente;
                     comando.Parameters.Add("@ClientePadre", System.Data.SqlDbType.Bit).Value = clientepadre;
-                    comando.Parameters.Add("@FolioFactura", System.Data.SqlDbType.VarChar).Value = (factura == "" ? SqlString.Null : factura);
-                    comando.Parameters.Add("@Fecha", System.Data.SqlDbType.DateTime).Value = ffactura == DateTime.MinValue ? SqlDateTime.Null : ffactura;
+                    //comando.Parameters.Add("@FolioFactura", System.Data.SqlDbType.VarChar).Value = (factura == "" ? SqlString.Null : factura);
+                    comando.Parameters.Add("@FolioFactura", System.Data.SqlDbType.VarChar).Value = (factura == "" ? "" : factura);
+                    comando.Parameters.Add("@Fechaini", System.Data.SqlDbType.DateTime).Value = fechaIni == DateTime.MinValue ? SqlDateTime.Null : fechaIni;
+                    comando.Parameters.Add("@Fechafin", System.Data.SqlDbType.DateTime).Value = fechaFin == DateTime.MinValue ? SqlDateTime.Null : fechaFin;
                     comando.CommandTimeout = 900;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
                         ReferenciaNoConciliadaPedido dato = new ReferenciaNoConciliadaPedidoDatos(
-                            Convert.ToDateTime(reader["FechaFactura"]),
+                            //Convert.ToDateTime(reader["FechaFactura"]),
+                            //Convert.ToInt32(reader["Cliente"]),
+                            //Convert.ToString(reader["NombreCliente"]),
+                            //Convert.ToString(reader["FolioFactura"]),
+                            //Convert.ToString(reader["Serie"]),
+                            //Convert.ToString(reader["Folio"]),
+                            Convert.ToDateTime(reader["FFactura"]),
                             Convert.ToInt32(reader["Cliente"]),
-                            Convert.ToString(reader["NombreCliente"]),
+                            Convert.ToString(reader["Nombre.Cliente"]),
                             Convert.ToString(reader["FolioFactura"]),
-                            Convert.ToString(reader["Serie"]),
-                            Convert.ToString(reader["Folio"]),
+                            "",     //      Serie
+                            "",     //      Folio
                             this.implementadorMensajes);
+                        dato.Concepto = Convert.ToString(reader["Concepto"]);
+                        dato.Total = Convert.ToDecimal(reader["Monto"]);
+
                         datos.Add(dato);
                     }
                 }
