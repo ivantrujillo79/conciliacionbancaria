@@ -465,6 +465,19 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         Carga_CuentaBancaria(Convert.ToInt16(ddlEmpresa.SelectedItem.Value),
             ddlBanco.Items.Count > 0 ? Convert.ToSByte(ddlBanco.SelectedItem.Value) : -1);
     }
+
+    protected void grvPedidosFacturados_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
+    {
+        DataTable dtSortTable = HttpContext.Current.Session["FACTURAS_CONSULTAR"] as DataTable;
+
+        if (dtSortTable == null) return;
+        string order = getSortDirectionString(e.SortExpression);
+        dtSortTable.DefaultView.Sort = e.SortExpression + " " + order;
+
+        grvPedidosFacturados.DataSource = dtSortTable;
+        grvPedidosFacturados.DataBind();
+    }
+
     protected void grvConciliacionCompartida_RowCreated(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType != DataControlRowType.DataRow) return;  //IMPORTANTE DESCOMENTAR
@@ -472,6 +485,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         //e.Row.Attributes["onmouseout"] = string.Format("RowMouseOut({0});", e.Row.RowIndex);
         //e.Row.Attributes["onclick"] = string.Format("RowSelect({0});", e.Row.RowIndex);
     }
+
     protected void grvConciliacionCompartida_RowDataBound(object sender,
         System.Web.UI.WebControls.GridViewRowEventArgs e)
     {
@@ -566,6 +580,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         ViewState["SortExpression"] = columna;
         return sortDirection;
     }
+
     protected void grvConciliacionCompartida_Sorting(object sender, System.Web.UI.WebControls.GridViewSortEventArgs e)
     {
         DataTable dtSortTable = HttpContext.Current.Session["MOVIMIENTOS_AUX"] as DataTable;
@@ -942,8 +957,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             Consulta_FacturasManual(Convert.ToInt32(clienteBuscar),
                                     rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"),
                                     txtFacturaBusuqeda.Text,
-                                    txtFacturaFechaInicial.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaInicial.Text),
-                                    txtFacturaFechaFinal.Text == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaFinal.Text));
+                                    txtFacturaFechaInicial.Text.Trim() == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaInicial.Text),
+                                    txtFacturaFechaFinal.Text.Trim() == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaFinal.Text));
 
             GenerarTablaFacturas();
             LlenaGridViewFacturasManuales();

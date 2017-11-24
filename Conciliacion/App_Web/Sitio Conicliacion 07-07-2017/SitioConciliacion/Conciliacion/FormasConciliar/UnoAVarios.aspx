@@ -1072,29 +1072,29 @@
                                 <tr>
                                     <td colspan="2">
                                         <asp:RangeValidator ID="rvFOInicio" runat="server" ControlToValidate="txtFOInicio"
-                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Porfavor insertar una fecha valida"
+                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                             MaximumValue="28/12/9999" MinimumValue="28/12/1000" Type="Date" ValidationGroup="vgFOperacion"
                                             Font-Size="10px"></asp:RangeValidator>
                                         <asp:RangeValidator ID="rvFOTermino" runat="server" ControlToValidate="txtFOTermino"
-                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Porfavor insertar una fecha valida"
+                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                             MaximumValue="28/12/9999" MinimumValue="28/12/1000" Type="Date" ValidationGroup="vgFOperacion"
                                             Font-Size="10px"></asp:RangeValidator>
                                         <asp:RangeValidator ID="rvFSInicio" runat="server" ControlToValidate="txtFSInicio"
-                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Porfavor insertar una fecha valida"
+                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                             MaximumValue="28/12/9999" MinimumValue="28/12/1000" Type="Date" ValidationGroup="vgFSuministro"
                                             Font-Size="10px"></asp:RangeValidator>
                                         <asp:RangeValidator ID="rvFSTermino" runat="server" ControlToValidate="txtFSTermino"
-                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Porfavor insertar una fecha valida"
+                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                             MaximumValue="28/12/9999" MinimumValue="28/12/1000" Type="Date" ValidationGroup="vgFSuministro"
                                             Font-Size="10px"></asp:RangeValidator>
                                     </td>
                                     <td colspan="2">
                                         <asp:RangeValidator ID="rvFMInicio" runat="server" ControlToValidate="txtFMInicio"
-                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Porfavor insertar una fecha valida"
+                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                             MaximumValue="28/12/9999" MinimumValue="28/12/1000" Type="Date" ValidationGroup="vgFMovimiento"
                                             Font-Size="10px"></asp:RangeValidator>
                                         <asp:RangeValidator ID="rvFMTermino" runat="server" ControlToValidate="txtFMTermino"
-                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Porfavor insertar una fecha valida"
+                                            CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                             MaximumValue="28/12/9999" MinimumValue="28/12/1000" Type="Date" ValidationGroup="vgFMovimiento"
                                             Font-Size="10px"></asp:RangeValidator>
                                         <asp:RequiredFieldValidator ID="rfvPedido" runat="server" ControlToValidate="txtPedido"

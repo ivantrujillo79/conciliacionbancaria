@@ -10,6 +10,33 @@
     Reporte Tesoreria I
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
+    
+    <!--Libreria jQuery-->
+    <%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>--%>    
+    <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+    <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
+    
+    <!--MsDropdown CSS-->
+    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
+    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
+
+    <!-- Estilo de AJAX Accordion-->
+    <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
+
+    <!-- Script se utiliza para el Scroll del GridView-->
+    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
+    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/Common.js" type="text/javascript"></script>
+    
+    <!--MsDropdown -->
+<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
+    <link rel="Stylesheet" href="../App_Scripts/Bootstrap/css/bootstrap.min.css" />
+    <script src="../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
+
     <script type="text/javascript">
     
         function pageLoad() {
@@ -194,35 +221,11 @@
     <asp:ScriptManager runat="server" ID="smDetalleConciliacion" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
-
-    <!--Libreria jQuery-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-    </script>
-    <script src="../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
-    <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
-        <!--MsDropdown CSS-->
-    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
-
-    <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
-        rel="stylesheet" type="text/css" />
-    <!-- Estilo de AJAX Accordion-->
-    <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
-    <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
-    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
-    <script src="../App_Scripts/Common.js" type="text/javascript"></script>
-    <!--MsDropdown -->
-    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
-    <link rel="Stylesheet" href="../App_Scripts/Bootstrap/css/bootstrap.min.css" />
-    <script src="../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
     
+    <!--      Script animación de carga      -->
+    <script src="../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>    
 
-    <script type="text/javascript" language="javascript">
-        
+    <script type="text/javascript" language="javascript">        
         function ShowModalPopup() {
             $find("ModalBehaviour").show();
         }
@@ -1082,8 +1085,8 @@
     <asp:ModalPopupExtender ID="mpeBusquedaFactura" runat="server" PopupControlID="pnlBusquedaFactura"
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="800px" Style="display: none"
-        CssClass="ModalPopup ModalPopupChild">
+    <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="800px" Style="display: none;"
+        CssClass="ModalPopup" Height="507px">
         <asp:UpdatePanel ID="upBusquedaFactura" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -1105,9 +1108,9 @@
                             <div class="etiqueta lineaHorizontal">
                                 <table width="100%" style="box-sizing: border-box;">
                                     <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-										<td style="width: 25%; padding: 5px 5px 5px 5px" colspan="1"> <%--width: 40%;--%>
+										<td style="width: 25%; padding: 5px 5px 5px 5px" colspan="1">
 											<asp:RadioButtonList ID="rblTipoClienteFactura" runat="server" RepeatColumns="2" RepeatDirection="Horizontal"
-												    Width="100%"> <%--Width="70%"--%>
+												    Width="100%">
 												<asp:ListItem Value="NORMA" Selected="True">Cliente Normal</asp:ListItem>
 												<asp:ListItem Value="PADREL">Cliente Padre</asp:ListItem>
 											</asp:RadioButtonList>
@@ -1118,30 +1121,31 @@
 											Width="90%">
 											</asp:TextBox>
 										</td>--%>
-                                        <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left"> <%--width: 20%;--%>
+                                        <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
 											Fecha inicial:
                                             <br />
 											<asp:TextBox ID="txtFacturaFechaInicial" runat="server"  CssClass="cajaTexto" Font-Size="12px"
-											width="70%"> <%--Width="90%"--%>
+											    width="70%" ValidationGroup="vgFacturaFechas">
 											</asp:TextBox>
 										</td>
                                         <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
 											Fecha final:
                                             <br />
 											<asp:TextBox ID="txtFacturaFechaFinal" runat="server"  CssClass="cajaTexto" Font-Size="12px"
-											Width="70%"> <%--Width="90%"--%>
+											    Width="70%" ValidationGroup="vgFacturaFechas">
 											</asp:TextBox>
 										</td>
 										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="1" align="left">
 											Folio factura:
                                             <br />
 										    <asp:TextBox ID="txtFacturaBusuqeda" runat="server" CssClass="cajaTexto" Font-Size="12px"
-											Width="70%"> <%--Width="90%"--%>
+											    Width="70%">
 											</asp:TextBox>
 										</td>
-                                        <td class="iconoOpcion bg-color-naranja" colspan="2"> <%--class="iconoOpcion bg-color-naranja" rowspan="2"--%>
+                                        <td class="iconoOpcion bg-color-naranja" colspan="2">
                                             <asp:ImageButton ID="imgBotonBuscarFacturasManual" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                ToolTip="BUSCAR" style="padding: 10px 2px 7px 5px;"  OnClick="imgBotonBuscarFacturasManual_Click" /> <%--padding: 10px 2px 2px 2px;--%>
+                                                ToolTip="BUSCAR" style="padding: 10px 2px 7px 5px;"  OnClick="imgBotonBuscarFacturasManual_Click" 
+                                                ValidationGroup="vgFacturaFechas"/> <%--padding: 10px 2px 2px 2px;--%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1163,11 +1167,20 @@
                                             padding: 5px 5px 5px 5px">
                                             <asp:Label runat="server" ID="lblMontoRestoFactrura"></asp:Label>
                                         </td>
-                                        <%--<td class="iconoOpcion bg-color-naranja" rowspan="2">
-                                            <asp:ImageButton ID="imgBotonBuscarFacturasManual" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                ToolTip="BUSCAR" style="width: 25px; padding: 10px 2px 2px 2px"  OnClick="imgBotonBuscarFacturasManual_Click" />
-                                            <!--Width="25px"-->
-                                        </td>--%>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div style="min-height:18px;">
+                                            <asp:RangeValidator ID="rvFacturaFechaInicial" runat="server" ControlToValidate="txtFacturaFechaInicial"
+                                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
+                                                MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFacturaFechas"
+                                                Font-Size="12px"></asp:RangeValidator>
+                                            <asp:RangeValidator ID="rvFacturaFechaFinal" runat="server" ControlToValidate="txtFacturaFechaFinal"
+                                                CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
+                                                MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFacturaFechas"
+                                                Font-Size="12px"></asp:RangeValidator>
+                                            </div>
+                                        </td>
                                     </tr>
 								</table>
                             </div>
@@ -1175,22 +1188,23 @@
 					</tr>
                     <tr>
                         <td>
-                            <div style="width:100%; height:200px; overflow: scroll;">
+                            <div style="width:100%; height:300px; overflow: scroll;">
                                 <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                                    CssClass="grvResultadoConsultaCssE" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True"
-                                    PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging">
+                                    CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
+                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True" 
+                                    PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
+                                    OnSorting="grvPedidosFacturados_Sorting">
                                   
                                     <HeaderStyle HorizontalAlign="Center" />
                                     <Columns>
-										<asp:TemplateField HeaderText="Fecha" SortExpression="Fecha">
+										<asp:TemplateField HeaderText="Fecha" SortExpression="FechaFactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFechaFACT" runat="server" Text='<%# Eval("FechaFactura","{0:d}") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Factura" SortExpression="FoliFactura">
+                                         <asp:TemplateField HeaderText="Factura" SortExpression="Foliofactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFolioFacturaFACT" runat="server" Text='<%# Eval("Foliofactura") %>' />
                                             </ItemTemplate>
@@ -1211,14 +1225,14 @@
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Concepto" SortExpression="Cliente">
+                                        <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblConceptoFACT" runat="server" Text='<%# Eval("Concepto") %>' />
                                             </ItemTemplate>
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Total" SortExpression="Cliente">
+                                        <asp:TemplateField HeaderText="Total" SortExpression="Total">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblTotalFACT" runat="server" Text='<%# Eval("Total", "{0:C}") %>' />
                                             </ItemTemplate>
