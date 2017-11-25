@@ -38,7 +38,19 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["anio"] = value; }
     }
-    
+
+    public bool CargarAgregados
+    {
+        get
+        {
+            if (ViewState["CargarAgregados"] == null)
+                return false;
+            else
+                return (bool)ViewState["CargarAgregados"];
+        }
+        set { ViewState["CargarAgregados"] = value; }
+    }
+
     public int ClienteReferencia
     {
         get
@@ -338,6 +350,12 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             {
                                 dvMensajeExito.Visible = true;
                                 RecuperaReferenciasNoConciliadas();
+
+                                if (CargarAgregados == true)
+                                {
+                                    CargarAgregados = false;
+                                }
+
                                 if (DispersionAutomatica)
                                 {
                                     DispersarPagos(dtTabla);

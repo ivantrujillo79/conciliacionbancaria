@@ -534,7 +534,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            if (wucCargaExcelCyC.RecuperoNoConciliados && Convert.ToBoolean(ViewState["GeneroAgregados"]) != true  )
+            if (wucCargaExcelCyC.RecuperoNoConciliados && wucCargaExcelCyC.CargarAgregados == false )
             {
                 List<ReferenciaNoConciliada> ReferenciasExcel;
                 List<ReferenciaNoConciliadaPedido> ReferenciasPedidoExcel;
@@ -583,7 +583,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     this.hdfVisibleCargaArchivo.Value = "0";
                 }
-                ViewState["GeneroAgregados"] = true;
+                wucCargaExcelCyC.CargarAgregados = true;
             }
         }
         catch(Exception ex)
@@ -594,9 +594,31 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void ActualizarTotalesAgregadosExcel(decimal Monto, int TotalRegistros, decimal Resto)
     {
-        lblMontoAcumuladoInterno.Text = Decimal.Round(Monto, 2).ToString("C2");
-        lblAgregadosInternos.Text = TotalRegistros.ToString();
-        lblMontoResto.Text = Decimal.Round(Resto, 2).ToString("C2");
+        Decimal MontoConciliado;
+        DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
+        if (dt.Rows.Count > 0)
+        {
+            MontoConciliado = 0;
+            foreach (DataRow gvRow in dt.Rows)
+            {
+                if (gvRow[7].ToString().Trim() != string.Empty)
+                    MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow[7]);
+            }
+
+            lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
+            lblAgregadosInternos.Text = dt.Rows.Count.ToString();
+            //lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+        }
+        //else
+        //{
+        //    lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
+        //    lblAgregadosInternos.Text = "0";
+        //    lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
+        //}
+
+        //lblMontoAcumuladoInterno.Text = Decimal.Round(Monto, 2).ToString("C2");
+        //lblAgregadosInternos.Text = TotalRegistros.ToString();
+        //lblMontoResto.Text = Decimal.Round(Resto, 2).ToString("C2");
         //lblMontoResto.Text = Decimal.Round(Referencia.Resto, 2).ToString("C2");
     }
 
