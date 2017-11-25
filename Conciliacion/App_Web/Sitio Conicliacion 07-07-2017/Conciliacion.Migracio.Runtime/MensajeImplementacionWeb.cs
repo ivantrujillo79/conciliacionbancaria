@@ -17,8 +17,8 @@ namespace Conciliacion.Migracion.Runtime
         {
            Page pagina =(Page)this.contenedor;
             if(mensajesActivos)
-                ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + LimpiarTexto(texto) + "', function(){ alertify.error('Error en la solicitud'); }).bringToFront();", true);
-                //ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(texto) + "');", true);
+                //ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + LimpiarTexto(texto) + "', function(){ alertify.error('Error en la solicitud'); }).bringToFront();", true);
+                ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(texto) + "');", true);
                 
         }
 
