@@ -824,7 +824,7 @@
                                     CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" /><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
-                                CONCILIAR MOVIMIENTO.
+                                CONCILIAR MOVIMIENTO
                             </div>
                         </td>
                     </tr>
@@ -1094,10 +1094,10 @@
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
                             <div class="floatDerecha">
                                 <asp:ImageButton runat="server" ID="ImgBusquedaFacturaCerrar" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupFacturasPedido();" /><%--OnClick="imgCerrarImportar_Click"--%>
+                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupFacturasPedido();" OnClick="imgCerrarBusquedaFactura_Click"/><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
-                                BUSQUEDA FACTURAS.
+                                BUSQUEDA FACTURAS
                             </div>
                         </td>
                     </tr>
@@ -1138,7 +1138,7 @@
 										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="1" align="left">
 											Folio factura:
                                             <br />
-										    <asp:TextBox ID="txtFacturaBusuqeda" runat="server" CssClass="cajaTexto" Font-Size="12px"
+										    <asp:TextBox ID="txtFacturaBusqueda" runat="server" CssClass="cajaTexto" Font-Size="12px"
 											    Width="70%">
 											</asp:TextBox>
 										</td>
