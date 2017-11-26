@@ -2330,7 +2330,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento. Recargue su selección.");
+            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento.\n" + ex.Message + "\nRecargue su selección.");
             resultado = false;
         }
         return resultado;
