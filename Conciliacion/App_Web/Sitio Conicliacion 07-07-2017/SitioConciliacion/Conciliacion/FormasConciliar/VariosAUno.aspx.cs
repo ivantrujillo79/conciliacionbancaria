@@ -117,7 +117,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 LlenaGridViewExternos();
                 ocultarOpciones("INTERNO");
 
-                wucBuscaClientesFacturas.Visible = objSolicitdConciliacion.ConsultaPedido();
+                //wucBuscaClientesFacturas.Visible = objSolicitdConciliacion.ConsultaPedido();
+                if (objSolicitdConciliacion.ConsultaPedido())
+                    HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 1;
+                else
+                    HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 0;
 
                 if (tipoConciliacion == 2)
                 {   //PENDIENTE
