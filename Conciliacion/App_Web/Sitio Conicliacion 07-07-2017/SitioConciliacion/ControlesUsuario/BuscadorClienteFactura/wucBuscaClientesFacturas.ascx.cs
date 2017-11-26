@@ -35,7 +35,15 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null)
+        { 
+            if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
+                Visible = true;
+            else
+                Visible = false;
+        }
+        else
+            Visible = false;
     }
 
     public DataTable FiltraCliente(GridView GridView)
