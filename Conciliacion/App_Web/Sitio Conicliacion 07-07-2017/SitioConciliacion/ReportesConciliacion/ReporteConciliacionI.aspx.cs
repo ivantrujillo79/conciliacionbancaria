@@ -2056,6 +2056,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna factura. Verifique su selección.");
                     return false;
                 }
+                // Asignar FormaConciliacion = Cociliación manual
+                listaReferenciaFacturaConsulta.Select(s => { s.FormaConciliacion = 5; return s; }).ToList();
+
                 foreach (GridViewRow row in pedidosSeleccionados)
                 {
                     //int pedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Pedido"]);

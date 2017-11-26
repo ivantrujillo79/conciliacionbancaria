@@ -957,7 +957,7 @@
                                                                 <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Litros" SortExpression="Litros">
+                                                            <%--<asp:TemplateField HeaderText="Litros" SortExpression="Litros">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblLitros" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                                                 </ItemTemplate>
@@ -972,7 +972,7 @@
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                                            </asp:TemplateField>
+                                                            </asp:TemplateField>--%>
                                                             <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
                                                                 <ItemTemplate>
                                                                     <div class="parrafoTexto">
