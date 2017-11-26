@@ -1176,7 +1176,7 @@
                                                 MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFacturaFechas"
                                                 Font-Size="12px"></asp:RangeValidator>
                                             <asp:RangeValidator ID="rvFacturaFechaFinal" runat="server" ControlToValidate="txtFacturaFechaFinal"
-                                                CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
+                                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                                 MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFacturaFechas"
                                                 Font-Size="12px"></asp:RangeValidator>
                                             </div>
@@ -1191,12 +1191,19 @@
                             <div style="width:100%; height:300px; overflow: scroll;">
                                 <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                     CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True" 
-                                    PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
+                                    ShowHeaderWhenEmpty="True" DataKeyNames="FechaFactura, Foliofactura, Cliente, Nombre, Concepto, Total" 
+                                    AllowPaging="True" PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
                                     OnSorting="grvPedidosFacturados_Sorting">
                                   
                                     <HeaderStyle HorizontalAlign="Center" />
                                     <Columns>
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                                <asp:CheckBox runat="server" ID="chkConciliarFACT" />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" BackColor="#ebecec"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                        </asp:TemplateField>
 										<asp:TemplateField HeaderText="Fecha" SortExpression="FechaFactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFechaFACT" runat="server" Text='<%# Eval("FechaFactura","{0:d}") %>' />
@@ -1248,6 +1255,9 @@
                     </tr>
                     <tr>
                         <td class="centradoMedio">
+                            <asp:Button ID="btnConciliarFACT" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
+                                OnClientClick="HideModalPopupFacturasPedido();" OnClick="btnConciliarFACT_Click"
+                                Text="CONCILIAR" Width="100px" />
                             <asp:Button ID="btnSalir" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
                                 OnClick="btnSalir_Click" 
                                 OnClientClick="HideModalPopupFacturasPedido();"
