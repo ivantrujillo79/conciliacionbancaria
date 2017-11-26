@@ -547,12 +547,30 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         try
         {
             DataTable tablaReferenacias = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
-            if (tipoConcilacion == 2)
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+            if (_FormaConciliacion == 0)
+            {
+                if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+                {
+                    _FormaConciliacion = 7;
+                }
+                else
+                {
+                    _FormaConciliacion = 2;
+                }
+            }
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            if (objSolicitdConciliacion.ConsultaPedido())
             {
                 grvCantidadReferenciaConcuerdanPedido.DataSource = tablaReferenacias;
                 grvCantidadReferenciaConcuerdanPedido.DataBind();
             }
-            else
+            if (objSolicitdConciliacion.ConsultaArchivo())
             {
                 grvCantidadReferenciaConcuerdanArchivos.DataSource = tablaReferenacias;
                 grvCantidadReferenciaConcuerdanArchivos.DataBind();
