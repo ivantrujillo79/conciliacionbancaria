@@ -12,17 +12,14 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
     
     <!--Libreria jQuery-->
-    <%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-    </script>--%>    
     <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
     
     <!--MsDropdown CSS-->
-    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
     <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
+    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
 
     <!-- Estilo de AJAX Accordion-->
     <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
@@ -32,18 +29,12 @@
     <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
     
-    <!--MsDropdown -->
-<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
-    <link rel="Stylesheet" href="../App_Scripts/Bootstrap/css/bootstrap.min.css" />
-    <script src="../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
-
     <script type="text/javascript">
     
         function pageLoad() {
-            activarDatePickers();
             gridviewScroll();
             //FInicio - FFinal
-            //activarDatePickers();
+            activarDatePickers();
             CargarEventoCheckBox();
         }
 
@@ -104,17 +95,6 @@
                     $("#<%= txtFacturaFechaInicial.ClientID %>").datepicker("option", "maxDate", selectedDate);
                 }
             });
-
-            <%--$("#<%=txtFechaFacturaBusqueda.ClientID%>").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-
-                onClose: function (selectedDate) {
-                    $("#<%=txtFInicial.ClientID%>").datepicker("option", "minDate", selectedDate);
-                }
-            });--%>
-
         }
 
         function grvPedidosScroll() {
@@ -1124,8 +1104,8 @@
                                         <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
 											Fecha inicial:
                                             <br />
-											<asp:TextBox ID="txtFacturaFechaInicial" runat="server"  CssClass="cajaTexto" Font-Size="12px"
-											    width="70%" ValidationGroup="vgFacturaFechas">
+											<asp:TextBox ID="txtFacturaFechaInicial" runat="server" CssClass="cajaTexto" Font-Size="12px"
+											    width="70%" ValidationGroup="vgFacturaFechas" >
 											</asp:TextBox>
 										</td>
                                         <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
