@@ -173,12 +173,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 ActualizarDatos_wucCargaExcel();
                 ActualizarTotalesAgregados();
 
-                //wucBuscaClientesFacturas.Visible = objSolicitdConciliacion.ConsultaPedido();
                 if (objSolicitdConciliacion.ConsultaPedido())
+                {
                     HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 1;
+                    btnFiltraCliente.Visible = true;
+                }
                 else
+                { 
                     HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 0;
-
+                    btnFiltraCliente.Visible = false;
+                }
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblGridAP.Text = "PEDIDOS ";
