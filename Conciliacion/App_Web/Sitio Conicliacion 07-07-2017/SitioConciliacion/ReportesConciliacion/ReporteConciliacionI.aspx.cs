@@ -124,14 +124,16 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     /// Recupera las referencias procesadas en el
     /// web user control "wucCargaExcelCyC"
     /// </summary>
-    private void RecuperarReferencias_wucCargaExcel()
+    private bool RecuperarReferencias_wucCargaExcel()
     {
         //if (wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel.Count > 0)
         if (wucCargaExcelCyC.ReferenciasPorConciliarExcel.Count > 0)
         {
             listaReferenciaPedidos = ConvertirListaConciliadaAPedido(wucCargaExcelCyC.ReferenciasPorConciliarExcel);
             Session["PEDIDOS_CONCILIAR"] = listaReferenciaPedidos;
+            return true;
         }
+        return false;
     }
 
     /// <summary>
@@ -956,7 +958,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             Consulta_FacturasManual(Convert.ToInt32(clienteBuscar),
                                     rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"),
-                                    txtFacturaBusuqeda.Text,
+                                    txtFacturaBusqueda.Text,
                                     txtFacturaFechaInicial.Text.Trim() == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaInicial.Text),
                                     txtFacturaFechaFinal.Text.Trim() == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaFinal.Text));
 
@@ -972,7 +974,19 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
     }
 
+    protected void imgCerrarBusquedaFactura_Click(object sender, ImageClickEventArgs e)
+    {
+        LimpiarCamposFacturas();
+    }
 
+    private void LimpiarCamposFacturas()
+    {
+        txtFacturaFechaInicial.Text = "";
+        txtFacturaFechaFinal.Text = "";
+        txtFacturaBusqueda.Text = "";
+        grvPedidosFacturados.DataSource = null;
+        grvPedidosFacturados.DataBind();
+    }
 
     private void LlenaGridViewFacturasManuales() //Llena el gridview dePedidos
     {
@@ -1804,7 +1818,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             listaReferenciaFacturaConsulta =
             Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaFacturaManual(cliente, clientepadre, factura, fechaIni, fechaFin);
-            //Session["FACTURAS_CONSULTAR"] = listaReferenciaFacturaConsulta;
+            Session["FACTURAS_CONSULTAR_LISTA"] = listaReferenciaFacturaConsulta;
         }
         catch (Exception ex)
         {
@@ -1818,14 +1832,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
-
-           
             Session["FACTURAS_CONSULTAR"] = "";
+            Session["FACTURAS_CONSULTAR_LISTA"] = "";
 
-            grvPedidosFacturados.Dispose();
-            grvPedidosFacturados.DataSource = null;
-            grvPedidosFacturados.DataBind();
-
+            LimpiarCamposFacturas();
         }
         catch (Exception ex)
         {
@@ -2023,6 +2033,82 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         wucCargaExcelCyC.Corporativo = corporativo;
         wucCargaExcelCyC.DispersionAutomatica = true;
         wucCargaExcelCyC.Sucursal = sucursal;
+    }
+
+    public bool ConciliarFactura(ReferenciaConciliadaCompartida rfExterna)
+    {
+        bool resultado = false;
+        try
+        {
+
+            listaReferenciaFacturaConsulta = Session["FACTURAS_CONSULTAR_LISTA"] as List<ReferenciaNoConciliadaPedido>;
+            if (listaReferenciaFacturaConsulta != null && listaReferenciaFacturaConsulta.Count > 0 && grvPedidosFacturados.Rows.Count > 0) {
+
+                List<GridViewRow> pedidosSeleccionados =
+                    grvPedidosFacturados.Rows.Cast<GridViewRow>()
+                               .Where(
+                                   fila =>
+                                   fila.RowType == DataControlRowType.DataRow &&
+                                   (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked))
+                               .ToList();
+                if (pedidosSeleccionados.Count == 0)
+                {
+                    App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna factura. Verifique su selección.");
+                    return false;
+                }
+                // Asignar FormaConciliacion = Cociliación manual
+                listaReferenciaFacturaConsulta.Select(s => { s.FormaConciliacion = 5; return s; }).ToList();
+
+                foreach (GridViewRow row in pedidosSeleccionados)
+                {
+                    //int pedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Pedido"]);
+                    //int celulaPedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Celula"]);
+                    //int añoPedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["AñoPed"]);
+
+                    string folioFactura = grvPedidosFacturados.DataKeys[row.RowIndex].Values["Foliofactura"].ToString();
+                    DateTime fechaFactura = Convert.ToDateTime(grvPedidosFacturados.DataKeys[row.RowIndex].Values["FechaFactura"]);
+                    decimal total = decimal.Parse(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Total"].ToString(), NumberStyles.Currency);
+
+                    ReferenciaNoConciliadaPedido rfPedido =
+                    listaReferenciaFacturaConsulta.Single(
+                       s => s.Foliofactura == folioFactura && s.Ffactura == fechaFactura && s.Total == total);
+                    if (!rfExterna.AgregarReferenciaConciliadaSinVerificacion(rfPedido)) return false;
+                }
+
+                resultado = rfExterna.GuardarReferenciaConciliada();
+            }
+            else
+            {
+                throw new Exception("No se ha cargado ninguna factura.");
+            }
+        }
+        catch (Exception ex)
+        {
+            //App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento.\n" + ex.Message);
+            resultado = false;
+            throw ex;
+        }
+        return resultado;
+    }
+
+    protected void btnConciliarFACT_Click(object sender, EventArgs e)
+    {
+        bool ConciliacionExitosa = false;
+        try
+        {
+            //if (!RecuperarReferencias_wucCargaExcel()) return;
+            ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
+            rnc.BorrarReferenciaConciliada();
+            ConciliacionExitosa = ConciliarFactura(rnc);
+            mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
+            LimpiarCamposFacturas();
+            if (!ConciliacionExitosa) return;
+            App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error al conciliar la factura.\n[" + ex.Message + "]\nRefresque nuevamente la vista");
+        }
     }
 
     protected void btnGuardar_Click(object sender, EventArgs e)
@@ -2261,7 +2347,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento. Recargue su selección.");
+            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento.\n" + ex.Message + "\nRecargue su selección.");
             resultado = false;
         }
         return resultado;

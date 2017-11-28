@@ -12,17 +12,14 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
     
     <!--Libreria jQuery-->
-    <%--<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" 
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-    </script>--%>    
     <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
     
     <!--MsDropdown CSS-->
-    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
     <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
+    <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
 
     <!-- Estilo de AJAX Accordion-->
     <link rel="stylesheet" href="../App_Themes/GasMetropolitanoSkin/Accordion/css/accordion.css" />
@@ -32,18 +29,12 @@
     <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
     
-    <!--MsDropdown -->
-<%--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
-    <link rel="Stylesheet" href="../App_Scripts/Bootstrap/css/bootstrap.min.css" />
-    <script src="../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
-
     <script type="text/javascript">
     
         function pageLoad() {
-            activarDatePickers();
             gridviewScroll();
             //FInicio - FFinal
-            //activarDatePickers();
+            activarDatePickers();
             CargarEventoCheckBox();
         }
 
@@ -104,17 +95,6 @@
                     $("#<%= txtFacturaFechaInicial.ClientID %>").datepicker("option", "maxDate", selectedDate);
                 }
             });
-
-            <%--$("#<%=txtFechaFacturaBusqueda.ClientID%>").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-
-                onClose: function (selectedDate) {
-                    $("#<%=txtFInicial.ClientID%>").datepicker("option", "minDate", selectedDate);
-                }
-            });--%>
-
         }
 
         function grvPedidosScroll() {
@@ -824,7 +804,7 @@
                                     CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" /><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
-                                CONCILIAR MOVIMIENTO.
+                                CONCILIAR MOVIMIENTO
                             </div>
                         </td>
                     </tr>
@@ -957,7 +937,7 @@
                                                                 <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                                             </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Litros" SortExpression="Litros">
+                                                            <%--<asp:TemplateField HeaderText="Litros" SortExpression="Litros">
                                                                 <ItemTemplate>
                                                                     <asp:Label ID="lblLitros" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
                                                                 </ItemTemplate>
@@ -972,7 +952,7 @@
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                                            </asp:TemplateField>
+                                                            </asp:TemplateField>--%>
                                                             <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
                                                                 <ItemTemplate>
                                                                     <div class="parrafoTexto">
@@ -1094,10 +1074,10 @@
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
                             <div class="floatDerecha">
                                 <asp:ImageButton runat="server" ID="ImgBusquedaFacturaCerrar" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupFacturasPedido();" /><%--OnClick="imgCerrarImportar_Click"--%>
+                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupFacturasPedido();" OnClick="imgCerrarBusquedaFactura_Click"/><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
-                                BUSQUEDA FACTURAS.
+                                BUSQUEDA FACTURAS
                             </div>
                         </td>
                     </tr>
@@ -1124,8 +1104,8 @@
                                         <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
 											Fecha inicial:
                                             <br />
-											<asp:TextBox ID="txtFacturaFechaInicial" runat="server"  CssClass="cajaTexto" Font-Size="12px"
-											    width="70%" ValidationGroup="vgFacturaFechas">
+											<asp:TextBox ID="txtFacturaFechaInicial" runat="server" CssClass="cajaTexto" Font-Size="12px"
+											    width="70%" ValidationGroup="vgFacturaFechas" >
 											</asp:TextBox>
 										</td>
                                         <td style="width: 20%; padding: 5px 5px 5px 5px"  colspan="1" align="left">
@@ -1138,7 +1118,7 @@
 										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="1" align="left">
 											Folio factura:
                                             <br />
-										    <asp:TextBox ID="txtFacturaBusuqeda" runat="server" CssClass="cajaTexto" Font-Size="12px"
+										    <asp:TextBox ID="txtFacturaBusqueda" runat="server" CssClass="cajaTexto" Font-Size="12px"
 											    Width="70%">
 											</asp:TextBox>
 										</td>
@@ -1176,7 +1156,7 @@
                                                 MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFacturaFechas"
                                                 Font-Size="12px"></asp:RangeValidator>
                                             <asp:RangeValidator ID="rvFacturaFechaFinal" runat="server" ControlToValidate="txtFacturaFechaFinal"
-                                                CssClass="etiqueta fg-color-amarillo" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
+                                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Por favor insertar una fecha valida"
                                                 MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFacturaFechas"
                                                 Font-Size="12px"></asp:RangeValidator>
                                             </div>
@@ -1191,12 +1171,19 @@
                             <div style="width:100%; height:300px; overflow: scroll;">
                                 <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                     CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="Cliente" AllowPaging="True" 
-                                    PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
+                                    ShowHeaderWhenEmpty="True" DataKeyNames="FechaFactura, Foliofactura, Cliente, Nombre, Concepto, Total" 
+                                    AllowPaging="True" PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
                                     OnSorting="grvPedidosFacturados_Sorting">
                                   
                                     <HeaderStyle HorizontalAlign="Center" />
                                     <Columns>
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                                <asp:CheckBox runat="server" ID="chkConciliarFACT" />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" BackColor="#ebecec"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                        </asp:TemplateField>
 										<asp:TemplateField HeaderText="Fecha" SortExpression="FechaFactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFechaFACT" runat="server" Text='<%# Eval("FechaFactura","{0:d}") %>' />
@@ -1248,6 +1235,9 @@
                     </tr>
                     <tr>
                         <td class="centradoMedio">
+                            <asp:Button ID="btnConciliarFACT" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
+                                OnClientClick="HideModalPopupFacturasPedido();" OnClick="btnConciliarFACT_Click"
+                                Text="CONCILIAR" Width="100px" />
                             <asp:Button ID="btnSalir" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
                                 OnClick="btnSalir_Click" 
                                 OnClientClick="HideModalPopupFacturasPedido();"
