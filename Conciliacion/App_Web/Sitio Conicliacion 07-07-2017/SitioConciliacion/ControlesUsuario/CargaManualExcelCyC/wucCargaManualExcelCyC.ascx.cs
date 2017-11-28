@@ -576,7 +576,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         }
 
                         //RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                        RefNoConciliadaPedido.FormaConciliacion = FormaConciliacion;
+                        RefNoConciliada.FormaConciliacion = FormaConciliacion;
                         _referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
