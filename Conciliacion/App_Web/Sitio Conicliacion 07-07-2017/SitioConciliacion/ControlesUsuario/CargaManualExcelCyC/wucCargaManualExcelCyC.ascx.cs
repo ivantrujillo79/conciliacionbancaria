@@ -122,6 +122,18 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         set { ViewState["dispersionAutomatica"] = value; }
     }
+
+    public short FormaConciliacion
+    {
+        get
+        {
+            if (ViewState["FormaConciliacion"] == null)
+                return 0;
+            else
+                return (short)ViewState["FormaConciliacion"];
+        }
+        set { ViewState["FormaConciliacion"] = value; }
+    }
     
     public int Folio
     {
@@ -532,7 +544,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             RefNoConciliadaPedido.Secuencia = 1;
                         }
 
-                        RefNoConciliadaPedido.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        //RefNoConciliadaPedido.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        RefNoConciliadaPedido.FormaConciliacion = FormaConciliacion;
                         _referenciasPorConciliarPedidoExcel.Add(RefNoConciliadaPedido);
 
                         recupero = true;
@@ -562,7 +575,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             RefNoConciliada.Secuencia = 1;
                         }
 
-                        RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        //RefNoConciliada.FormaConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        RefNoConciliada.FormaConciliacion = FormaConciliacion;
                         _referenciasPorConciliarExcel.Add(RefNoConciliada);
 
                         recupero = true;
