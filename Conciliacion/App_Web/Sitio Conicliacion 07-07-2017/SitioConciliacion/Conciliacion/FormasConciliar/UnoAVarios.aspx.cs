@@ -309,6 +309,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
         wucCargaExcelCyC.MostrarBotonCancelar = true;
         wucCargaExcelCyC.ClienteReferencia = -1;
+        wucCargaExcelCyC.FormaConciliacion = 3;     //      FormaConciliacion 3 = UnoAVarios
     }
 
     /// <summary>
@@ -1317,7 +1318,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         //ACTUALIZAR BARRAS Y DEMAS HERRAMIENTAS
                         LlenarBarraEstado();
                         Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                                          Convert.ToInt32(ddlCriteriosConciliacion.SelectedItem.Value));
+                                                          Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                         GenerarTablaConciliados();
                         LlenaGridViewConciliadas();
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacute; se ha realizado exitosamente'); });", true);
