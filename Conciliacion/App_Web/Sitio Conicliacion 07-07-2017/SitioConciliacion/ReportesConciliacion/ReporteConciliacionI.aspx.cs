@@ -1971,7 +1971,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             ReferenciaNoConciliada referencia = LeerReferenciaConciliadaCompartida(grvRCC.RowIndex);
             listMovimientosConciliadosEx =
                        referencia.ListaReferenciaConciliadaCompartida;
-            int clienteBuscar = 0;
+            Int64 clienteBuscar = 0;
             //Leer y Guardar en Memoria el MovimientoSeleccionado.
             listMovimientos = Session["MOVIMIENTOS"] as List<ReferenciaNoConciliada>;
             movSeleccionado = listMovimientosConciliadosEx.Single(x => x.Corporativo == referencia.Corporativo &&
@@ -1988,7 +1988,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             Session["MOVIMIENTO_SELECCIONADO"] = movSeleccionado;
             try
             {
-                clienteBuscar = Convert.ToInt32((grvRMCE.FindControl("txtCliente") as TextBox).Text);
+                clienteBuscar = Convert.ToInt64((grvRMCE.FindControl("txtCliente") as TextBox).Text.Trim());
                 hdfClienteBuscar.Value = clienteBuscar.ToString();
             }
             catch (FormatException)
@@ -2025,7 +2025,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
     }
     
-    private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, int cliente, int corporativo, short sucursal)
+    private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
     {
         wucCargaExcelCyC.CuentaBancaria = cuenta;
         wucCargaExcelCyC.MontoPago = montoPago;

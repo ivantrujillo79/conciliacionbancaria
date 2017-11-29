@@ -18,6 +18,20 @@ namespace Conciliacion.RunTime
                 ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(texto) + "');", true);
         }
 
+        public void MostrarMensajeError(string texto)
+        {
+            Page pagina = (Page)this.contenedor;
+            if (mensajesActivos)
+                ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(texto) + "');", true);
+        }
+
+        public void MostrarMensajeExito(string texto)
+        {
+            Page pagina = (Page)this.contenedor;
+            if (mensajesActivos)
+                ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(texto) + "');", true);
+        }
+
 
         public object ContenedorActual
         {

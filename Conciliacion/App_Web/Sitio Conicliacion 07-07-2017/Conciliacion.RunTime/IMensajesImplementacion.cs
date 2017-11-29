@@ -9,6 +9,8 @@ namespace Conciliacion.RunTime
     {
         object ContenedorActual { get; set; }
         void MostrarMensaje(string texto);
+        void MostrarMensajeError(string Mensaje);
+        void MostrarMensajeExito(string Mensaje);
         bool MensajesActivos { get; set; }
     }
 }

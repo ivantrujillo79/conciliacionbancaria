@@ -18,6 +18,20 @@ namespace Conciliacion.RunTime
                 MessageBox.Show(ventana, texto, ventana.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
         }
 
+        public void MostrarMensajeError(string texto)
+        {
+            Form ventana = (Form)this.ContenedorActual;
+            if (this.MensajesActivos)
+                MessageBox.Show(ventana, texto, ventana.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
+
+        public void MostrarMensajeExito(string texto)
+        {
+            Form ventana = (Form)this.ContenedorActual;
+            if (this.MensajesActivos)
+                MessageBox.Show(ventana, texto, ventana.Text, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
+
         public object ContenedorActual
         {
             get { return contenedor; }

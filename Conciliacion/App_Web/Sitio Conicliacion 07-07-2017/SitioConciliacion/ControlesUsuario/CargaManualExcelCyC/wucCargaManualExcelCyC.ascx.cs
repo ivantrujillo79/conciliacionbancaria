@@ -51,14 +51,14 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["CargarAgregados"] = value; }
     }
 
-    public int ClienteReferencia
+    public Int64 ClienteReferencia
     {
         get
         {
             if (ViewState["clienteReferencia"] == null)
                 return 0;
             else
-                return (int)ViewState["clienteReferencia"];
+                return (Int64)ViewState["clienteReferencia"];
         }
         set
         {

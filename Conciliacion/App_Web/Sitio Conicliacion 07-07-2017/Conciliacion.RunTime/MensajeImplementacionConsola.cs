@@ -15,6 +15,16 @@ namespace Conciliacion.RunTime
                 System.Console.Write(texto);
         }
 
+        public void MostrarMensajeError(string Mensaje)
+        {
+            
+        }
+
+        public void MostrarMensajeExito(string Mensaje)
+        {
+
+        }
+
         public object ContenedorActual
         {
             get { return contenedor; }
