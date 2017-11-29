@@ -296,7 +296,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool CierreMesConciliacion(short config, int corporativo, int sucursal, int año, short mes,string usuariocierre);
         
 
-        public abstract ListaCombo ConsultaDatosCliente(int cliente);
+        public abstract ListaCombo ConsultaDatosCliente(Int64 cliente);
         public abstract bool ClienteValido(string cliente);
         public abstract bool VerificaPedidoReferenciaExiste(string PedidoReferencia);
         public abstract DataTable PedidoReferenciaDetalle(string PedidoReferencia);

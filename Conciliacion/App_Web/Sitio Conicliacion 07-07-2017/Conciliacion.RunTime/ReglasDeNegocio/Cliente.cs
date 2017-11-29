@@ -167,4 +167,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 	}//end Cliente
 
+
+    public class ClienteAuxiliar
+    {
+        public int Cliente { get; set; }
+        public string Referencia { get; set; }
+        
+        public ClienteAuxiliar()
+        {
+            
+        }
+
+    }
 }//end namespace ReglasDeNegocio

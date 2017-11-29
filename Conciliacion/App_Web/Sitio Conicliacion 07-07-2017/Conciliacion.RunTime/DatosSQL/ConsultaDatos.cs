@@ -5785,7 +5785,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override ListaCombo ConsultaDatosCliente(int cliente)
+        public override ListaCombo ConsultaDatosCliente(Int64 cliente)
         {
             ListaCombo dato = null;
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -5793,8 +5793,8 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCCLConsultaVwDatosCliente", cnn);
-                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.Int).Value = cliente;
+                    SqlCommand comando = new SqlCommand("spCCLConsultaVwDatosClienteReferencia", cnn);
+                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.VarChar).Value = cliente.ToString();
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();

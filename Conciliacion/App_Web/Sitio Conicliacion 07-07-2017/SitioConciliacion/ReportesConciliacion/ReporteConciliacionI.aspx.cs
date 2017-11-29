@@ -23,8 +23,7 @@ using System.Data.SqlTypes;
 using SeguridadCB.Public;
 
 using System.Collections.Generic;
-
-
+using System.Diagnostics;
 using Conciliacion.Migracion.Runtime;
 using System.Web.UI;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
@@ -1727,13 +1726,17 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
     }
     //-------------------------------------------------------------------------------------------------
-    public bool Consulta_ClienteValido(string cliente)
+    public ClienteAuxiliar Consulta_ClienteValido(string cliente)
     {
+        ClienteAuxiliar ClienteRetorno = new ClienteAuxiliar();
+        ClienteRetorno.Referencia = cliente;
+        
         bool resultado = true;
         try
         {
-            int cli = Convert.ToInt32(cliente);
+            Int64 cli = Convert.ToInt64(cliente);
             ListaCombo clt = Conciliacion.RunTime.App.Consultas.ConsultaDatosCliente(cli);
+            ClienteRetorno.Cliente = clt.Identificador;
             lblCliente.Text = clt != null ? clt.Descripcion : "Cliente no Identificado";
         }
         catch (FormatException e)
@@ -1753,7 +1756,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             App.ImplementadorMensajes.MostrarMensaje("Mensaje de Error:\n" + ex.Message);
         }
 
-        return resultado;
+        return ClienteRetorno;
     }
 
     public void Consulta_Pedidos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
@@ -2153,7 +2156,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             string clienteBuscar = hdfClienteBuscar.Value;
-            if (!Consulta_ClienteValido(clienteBuscar)) return;
+            ClienteAuxiliar objCliente = new ClienteAuxiliar();
+            objCliente = Consulta_ClienteValido(clienteBuscar);
+
+            if (objCliente.Cliente == 0) return;
 
             //ScriptManager.RegisterClientScriptBlock(this.upConciliacionCompartida,
             //                                upConciliacionCompartida.GetType(),
@@ -2165,7 +2171,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             Consulta_Pedidos(rfc.CorporativoConciliacion, rfc.SucursalConciliacion, rfc.AñoConciliacion, rfc.MesConciliacion,
                 rfc.FolioConciliacion,
-                rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rdbTipoCliente.SelectedItem.Value.Equals("PADRE"));
+                rfc.FolioExterno, rfc.SecuenciaExterno, objCliente.Cliente.ToString(), rdbTipoCliente.SelectedItem.Value.Equals("PADRE"));
 
             GenerarTablaPedidos();
             LlenaGridViewPedidos();
@@ -2190,7 +2196,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             string clienteBuscar = hdfClienteBuscar.Value;
-            if (!Consulta_ClienteValido(clienteBuscar)) return;
+            ClienteAuxiliar objCliente = new ClienteAuxiliar();
+            objCliente = Consulta_ClienteValido(clienteBuscar);
+            if (objCliente.Cliente == 0) return;
 
             //ScriptManager.RegisterClientScriptBlock(this.upConciliacionCompartida,
             //                                upConciliacionCompartida.GetType(),

@@ -74,11 +74,11 @@ namespace Conciliacion.RunTime.DatosSQL
                 ClienteException ObjClienteException = new ClienteException();
 
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCCLConsultaVwDatosClientePorReferencia";
+                _conexion.Comando.CommandText = "spCCLConsultaVwDatosClienteReferencia";
 
 
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroReferencia", System.Data.SqlDbType.VarChar)).Value = this.Referencia;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.VarChar)).Value = this.Referencia;
                 SqlDataReader rdCliente = _conexion.Comando.ExecuteReader();
 
                 if (rdCliente.HasRows)
