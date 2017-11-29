@@ -663,6 +663,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
+            conexion.AbrirConexion(true);
             FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
             objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
             objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
