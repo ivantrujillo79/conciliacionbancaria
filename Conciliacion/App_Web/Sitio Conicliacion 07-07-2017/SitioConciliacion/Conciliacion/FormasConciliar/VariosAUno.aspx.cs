@@ -181,6 +181,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     selectedListItem.Selected = true;
                 }
             }
+            if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
+                btnFiltraCliente.Visible = true;
+            else
+                btnFiltraCliente.Visible = false;
         }
         catch (SqlException ex)
         {
