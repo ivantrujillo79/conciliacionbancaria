@@ -53,7 +53,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
     public int corporativo, año, folio, sucursal;
-    public short mes, tipoConciliacion, grupoConciliacion;
+    public short mes, tipoConciliacion, grupoConciliacion, formaConciliacion;
     //public int indiceExternoSeleccionado = 0;
     //public int indiceInternoSeleccionado = 0;
     public bool statusFiltro;
@@ -112,10 +112,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
 
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
-        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
-        if (_FormaConciliacion == 0)
+        //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (formaConciliacion == 0)
         {
-            _FormaConciliacion = 3;
+            formaConciliacion = 3;
         }
 
         try
@@ -145,7 +146,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-                objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;
@@ -163,7 +164,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 LlenarBarraEstado();
                 HabilitarCargaArchivo();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
-                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, formaConciliacion);
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
                 Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
@@ -264,7 +266,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 Carga_TipoFuenteInformacionInterno(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
 
-                ListItem selectedListItem = ddlCriteriosConciliacion.Items.FindByValue(_FormaConciliacion.ToString());
+                ListItem selectedListItem = ddlCriteriosConciliacion.Items.FindByValue(formaConciliacion.ToString());
                 ddlCriteriosConciliacion.ClearSelection();
                 if (selectedListItem != null)
                 {
@@ -314,7 +316,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
         wucCargaExcelCyC.MostrarBotonCancelar = true;
         wucCargaExcelCyC.ClienteReferencia = -1;
-        wucCargaExcelCyC.FormaConciliacion = 3;     //      FormaConciliacion 3 = UnoAVarios
+        wucCargaExcelCyC.FormaConciliacion = formaConciliacion;
     }
 
     /// <summary>
@@ -1322,11 +1324,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         }
                         //ACTUALIZAR BARRAS Y DEMAS HERRAMIENTAS
                         LlenarBarraEstado();
+                        //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+                        //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                         Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                                          Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                                                          formaConciliacion);
                         GenerarTablaConciliados();
                         LlenaGridViewConciliadas();
-                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacute; se ha realizado exitosamente'); });", true);
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                            "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
                     }
                     //else
                     //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");
@@ -2463,8 +2468,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                  x.Secuencia == secuenciaExterno);
 
         tranDesconciliar.DesConciliar();
+        //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+        //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
         Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                          Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                                          formaConciliacion);
         GenerarTablaConciliados();
         LlenaGridViewConciliadas();
         LlenarBarraEstado();
