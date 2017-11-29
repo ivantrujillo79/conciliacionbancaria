@@ -128,7 +128,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblPedidos.Visible = true;
-                    txtDias.Enabled = tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false;//imgExportar.Enabled
+                    //txtDias.Enabled = 
+                    tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false;//imgExportar.Enabled
                     btnActualizarConfig.ValidationGroup = "CantidadReferenciaPedidos";
                     rvDiferencia.ValidationGroup = "CantidadReferenciaPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "CantidadReferenciaPedidos";
@@ -147,6 +148,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     GenerarTablaReferenciasAConciliarArchivos();
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
+
+                txtDias.Enabled = true;
 
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 

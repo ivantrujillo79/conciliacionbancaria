@@ -98,7 +98,8 @@ public partial class Conciliacion_FormasConciliar_CopiaDeConciliacion : System.W
                 GenerarTablaReferenciasAConciliar();
                 LlenaGridViewReferenciasConciliadas();
 
-                txtDias.Enabled = false;
+                //txtDias.Enabled = false;
+                txtDias.Enabled = true;
                 txtDiferencia.Enabled = false;
                 ddlStatusConcepto.Enabled = false;
                 ddlSucursal.Enabled = false;

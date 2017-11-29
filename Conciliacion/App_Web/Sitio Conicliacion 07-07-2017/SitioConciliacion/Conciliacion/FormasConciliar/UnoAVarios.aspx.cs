@@ -255,6 +255,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         btnActualizarConfig.ValidationGroup = "UnoVarios";
                         lblArchivosInternos.Visible = true;
                     }
+                    txtDias.Enabled = true;
                 }
                 btnGuardar.Enabled = false;
                 ocultarFiltroFechas(tipoConciliacion);

@@ -167,7 +167,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     ddlSucursal.Visible = lblArchivosInternos.Visible = true;
                     Carga_SucursalCorporativo(corporativo);
                 }
-
+                txtDias.Enabled = true;
                 btnGuardar.Enabled = false;
                 ocultarFiltroFechas(tipoConciliacion);
 

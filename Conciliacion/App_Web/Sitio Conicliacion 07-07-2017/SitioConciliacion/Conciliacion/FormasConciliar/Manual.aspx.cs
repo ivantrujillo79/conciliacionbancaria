@@ -136,6 +136,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     Carga_SucursalCorporativo(corporativo);
                     ConsultarArchivosInternos();
                 }
+                txtDias.Enabled = true;
                 btnGuardar.Enabled = false;
                 ocultarFiltroFechas(tipoConciliacion);
 

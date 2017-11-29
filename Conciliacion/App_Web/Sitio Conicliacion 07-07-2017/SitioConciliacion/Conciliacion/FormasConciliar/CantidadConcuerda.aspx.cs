@@ -137,7 +137,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblPedidos.Visible = true;
-                    txtDias.Enabled = tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false; //=imgExportar.Enabled
+                    tdEtiquetaMontoIn.Visible = tdMontoIn.Visible = false; //=imgExportar.Enabled
                     btnActualizarConfig.ValidationGroup = "CantidadPedidos";
                     rvDiferencia.ValidationGroup = "CantidadPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "CantidadPedidos";
@@ -150,6 +150,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     lblArchivosInternos.Visible = true;
                     btnActualizarConfig.ValidationGroup = "CantidadArchivos";
                 }
+
+                txtDias.Enabled = true;
 
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
