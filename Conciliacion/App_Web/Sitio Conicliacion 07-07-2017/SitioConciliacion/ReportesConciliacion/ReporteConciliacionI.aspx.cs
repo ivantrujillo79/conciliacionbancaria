@@ -997,7 +997,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
 
     /////////////////////////////////////// BUSCAR FACTURA 
-    protected void btnBuscarFactura_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+    protected void btnBuscarFactura_Click(object sender, EventArgs e) /*System.Web.UI.ImageClickEventArgs*/
     {
         rblTipoClienteFactura.SelectedValue = rblClienteTipo.SelectedValue;
         lblClienteFactura.Text = lblCliente.Text;

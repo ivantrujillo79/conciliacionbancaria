@@ -873,9 +873,9 @@
                                 <table width="100%">
                                     <tr>
                                         <td>
-                                            <asp:ImageButton runat="server" ID="btnBusquFact" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                            <asp:Button runat="server" ID="btnBusquFact" 
                                             Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
-                                            ToolTip="Buscar facturas" style="width: 25px; padding: 10px 2px 2px 2px"
+                                            Text="Buscar facturas" style="padding: 5px; border: none; cursor:pointer;" Font-size="12px"
                                             OnClick="btnBuscarFactura_Click" />
                                         </td>
                                     </tr>
@@ -885,7 +885,7 @@
                             <%--        AJAX Accordion        --%>
                             <div style="width:100%; padding-top:5px; max-height:367px; overflow:auto; box-sizing:border-box;">
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
-                                    HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content">
+                                    HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content" Width="100%">
                                     <Panes>
                                         <ajaxToolkit:AccordionPane ID="apCargarArchivo" runat="server">
                                             <Header>CARGAR ARCHIVO</Header>
