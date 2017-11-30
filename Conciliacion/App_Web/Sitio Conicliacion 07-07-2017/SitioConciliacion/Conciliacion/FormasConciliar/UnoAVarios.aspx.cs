@@ -259,6 +259,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     txtDias.Enabled = true;
                 }
+
                 btnGuardar.Enabled = false;
                 ocultarFiltroFechas(tipoConciliacion);
                 ocultarAgregarPedidoDirecto(tipoConciliacion);
@@ -278,6 +279,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 GenerarAgregadosExcel();
                 MostrarPopUp_ConciliacionManual();
             }
+            if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
+                btnFiltraCliente.Visible = true;
+            else
+                btnFiltraCliente.Visible = false;
         }
         catch (SqlException ex)
         {
