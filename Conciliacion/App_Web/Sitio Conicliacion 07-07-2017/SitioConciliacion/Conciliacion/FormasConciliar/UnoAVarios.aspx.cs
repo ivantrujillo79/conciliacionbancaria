@@ -575,7 +575,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
                     //ActualizarTotalesAgregados();
-                    ActualizarTotalesAgregadosExcel(monto, agregados, resto);
+                    ActualizarTotalesAgregadosExcel(grvAgregadosPedidos);
 
                     this.hdfVisibleCargaArchivo.Value = "0";
                 }
@@ -596,7 +596,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
                     //ActualizarTotalesAgregados();
-                    ActualizarTotalesAgregadosExcel(monto, agregados, resto );
+                    ActualizarTotalesAgregadosExcel(grvAgregadosInternos);
 
                     this.hdfVisibleCargaArchivo.Value = "0";
                 }
@@ -609,11 +609,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-    private void ActualizarTotalesAgregadosExcel(decimal Monto, int TotalRegistros, decimal Resto)
+    //private void ActualizarTotalesAgregadosExcel(decimal Monto, int TotalRegistros, decimal Resto)
+    private void ActualizarTotalesAgregadosExcel(GridView Grid)
     {
         Decimal MontoConciliado;
-        DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
-        if (dt.Rows.Count > 0)
+        //DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
+        DataTable dt = (DataTable)Grid.DataSource;
+
+        if (dt != null && dt.Rows.Count > 0)
         {
             MontoConciliado = 0;
             foreach (DataRow gvRow in dt.Rows)
