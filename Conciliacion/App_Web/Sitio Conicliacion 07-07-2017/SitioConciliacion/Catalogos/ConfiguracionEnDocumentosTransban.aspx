@@ -60,9 +60,39 @@
                                 <br />
                                 <div align="center">
                                     <div class="etiqueta">
-                                        Valor del parámetro
-                                    </div>
-                                    <asp:TextBox ID="tbValor" runat="server" style="" Width="50%"></asp:TextBox>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                Valor para el parámetro
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:TextBox ID="tbValor" runat="server" style="" Width="100px"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                <asp:RegularExpressionValidator ID="revtbValor"
+                                        ControlToValidate="tbValor" runat="server"
+                                        ErrorMessage="Introduzca sólo valores numéricos"
+                                        ValidationExpression="\d+" >
+                                    </asp:RegularExpressionValidator>
+                                                    </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    <asp:RequiredFieldValidator runat="server" id="reqParametro" controltovalidate="tbValor" errormessage="Por favor ingrese un valor" />
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                 </div>
+                                    
+                                    
                                 </div>
                                 <br />
                                 <br />
@@ -104,7 +134,7 @@
                                 <br />
                                 <br />
                                 <div class="etiqueta" style="font-size: large">
-                                    <asp:label  iD="lbObservaciones" runat ="server" Text="Numero de Documentos que integran una TRANSBAN en una Conciliacion"> </asp:label>                                   
+                                    <asp:label  iD="lbObservaciones" runat ="server" Text="Número de documentos que integran una TRANSBAN en una conciliación"> </asp:label>                                   
 
                                 </div>
                                 <br />

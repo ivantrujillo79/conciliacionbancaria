@@ -76,20 +76,14 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 
         try
         {
-            // if (cboCorporativo.Items.Count == 0 && cboCorporativoDestino_.Items.Count == 0)
-            //objParametro = CatalogoConciliacion.App.Parametro;
-
+            objParametro = CatalogoConciliacion.App.Parametro.CrearObjeto();
             objParametro.Parametro = "NumeroDocumentosTRANSBAN";
             objParametro.Valor = tbValor.Text;
             if(objParametro.Modificar())
             {
-
                 cargaValores();
-
                 tbValor.Text = String.Empty;
             }
-                
-           
         }
         catch (Exception ex)
         {
