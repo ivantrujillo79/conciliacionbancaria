@@ -2019,7 +2019,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
 
             /*      Asignar propiedades de Carga archivo Excel      */
-            ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value), deposito, clienteBuscar, corporativo, sucursal);
+            ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value.ToString().Replace(" ", "")), deposito, clienteBuscar, corporativo, sucursal);
             
         }
         catch (Exception ex)
