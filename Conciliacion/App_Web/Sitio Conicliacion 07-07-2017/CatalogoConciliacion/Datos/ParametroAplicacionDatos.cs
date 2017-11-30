@@ -81,7 +81,6 @@ namespace CatalogoConciliacion.Datos
                     comando.Parameters.Add("@Valor", System.Data.SqlDbType.VarChar).Value = this.Valor;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
-                    this.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
                 }
 
                 catch (SqlException ex)

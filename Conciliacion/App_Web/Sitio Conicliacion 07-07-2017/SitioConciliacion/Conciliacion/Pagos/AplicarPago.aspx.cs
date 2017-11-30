@@ -611,6 +611,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
                         corporativoConciliacion,sucursalConciliacion,añoConciliacion,mesConciliacion,folioConciliacion,"ABIERTO",new MensajeImplemantacionForm());
+
                     objMCC.Guardar(conexion);
 
                     Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
@@ -619,13 +620,13 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     try
                     {
                         RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
-                        rCobranza.CadenaConexion = App.CadenaConexion;
                         rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
 
                         if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
                         {
                             App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                         }
+                        conexion.CerrarConexion();
                     }
                     catch (Exception ex)
                     {

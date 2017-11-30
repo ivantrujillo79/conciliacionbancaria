@@ -83,6 +83,10 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
+                this.Caja = 1;
+                this.FOperacion = DateTime.Now;
+                this.FMovimiento = DateTime.Now;
+
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
                 _conexion.Comando.CommandText = "spCBMovimientoCajaAlta";
                 _conexion.Comando.Parameters.Clear();
@@ -309,7 +313,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 MovimientoCajaAlta(conexion);
                 AplicarCobros(conexion);
                 ValidaMovimientoCaja(conexion);
-                conexion.Comando.Transaction.Commit();
+                //conexion.Comando.Transaction.Commit();
                 resultado = true;
             }
             catch (Exception ex)
@@ -322,7 +326,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             finally
             {
-                conexion.CerrarConexion();
+                //conexion.CerrarConexion();
             }
             return resultado;
         }

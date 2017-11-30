@@ -28,8 +28,6 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override RelacionCobranzaException CreaRelacionCobranza(Conexion conexion)
         {
-            conexion.Comando.Connection.ConnectionString = App.CadenaConexion;
-            conexion.AbrirConexion(true);
             try
             {
                 ObjRelacionCobranzaExcepcion = new RelacionCobranzaException();
