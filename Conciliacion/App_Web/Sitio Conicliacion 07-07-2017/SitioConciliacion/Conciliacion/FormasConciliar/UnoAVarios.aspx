@@ -2182,7 +2182,7 @@
         TargetControlID="hdfAgregarTransfBancaria" BehaviorID="ModalBehaviourTransferenciaBancaria"
         BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlAgregarTransfBancaria" runat="server" BackColor="#FFFFFF" Width="50%">
+    <asp:Panel ID="pnlAgregarTransfBancaria" runat="server" BackColor="#FFFFFF" Width="50%" style="display: none">
         <%--Style="display: none"--%>
         <asp:UpdatePanel ID="upAgregarTransferenciaBancaria" runat="server">
             <ContentTemplate>
