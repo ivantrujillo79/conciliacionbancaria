@@ -32,7 +32,7 @@
     <script type="text/javascript">
     
         function pageLoad() {
-            gridviewScroll();
+            grvPedidosScroll();
             //FInicio - FFinal
             activarDatePickers();
             CargarEventoCheckBox();
@@ -58,8 +58,6 @@
         }
 
         function activarDatePickers() {
-            //DataPicker Rango-Fechas 
-
             //DatePicker FOperacion
             $("#<%= txtFInicial.ClientID%>").datepicker({
                 defaultDate: "+1w",
@@ -76,6 +74,18 @@
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
                 }
+            });
+
+            /*          DatePicker wucRangoFechas         */
+            $("#<%= wucRangoFechas.FindControl("txtFechaInicial").ClientID %>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#<%= wucRangoFechas.FindControl("txtFechaFinal").ClientID %>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true
             });
 
             /*          DatePicker Busqueda Facturas         */

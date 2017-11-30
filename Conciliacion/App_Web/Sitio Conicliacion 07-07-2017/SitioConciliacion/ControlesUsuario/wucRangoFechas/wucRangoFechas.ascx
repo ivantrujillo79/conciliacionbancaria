@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 
-    function pageLoad() {
+    <%--function pageLoad() {
         //FInicio - FFinal
         activarDatePickers();
     }
@@ -25,7 +25,7 @@
                 $("#<%=txtFechaFinal.ClientID%>").datepicker("option", "maxDate", selectedDate);
             }
         });
-    }
+    }--%>
 
     function txtFecha_onblur(obj) {
         //debugger;
