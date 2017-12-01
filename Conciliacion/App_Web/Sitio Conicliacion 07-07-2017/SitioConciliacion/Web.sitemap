@@ -78,6 +78,8 @@
       </siteMapNode>
       <!--<siteMapNode title="Flujo Proyectado" description="Flujo Proyectado" resourceKey="3" url="~/Conciliacion/FlujoEfectivo/FlujoEfectivoProyectado.aspx">
       </siteMapNode>-->
+      <siteMapNode title="Cuenta Bancaria Saldo" description="Depositos y facturas Complemento" resourceKey="3" url="~/ReportesConciliacion/DepositoFacturaComp.aspx">
+      </siteMapNode>
     </siteMapNode>
 
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
