@@ -59,7 +59,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             finally
             {
-                conexion.CerrarConexion();
+                //conexion.CerrarConexion();
             }
 
         }

@@ -102,9 +102,9 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
 
-        public override int GuardarProcesoCobranza()
+        public override int GuardarProcesoCobranza(Conexion conexion)
         {
-           Conexion conexion = new Conexion();
+           //Conexion conexion = new Conexion();
 
             try
             {
@@ -151,7 +151,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             finally
             {
-                conexion.CerrarConexion();
+                //conexion.CerrarConexion();
             }
 
             return this.Id;

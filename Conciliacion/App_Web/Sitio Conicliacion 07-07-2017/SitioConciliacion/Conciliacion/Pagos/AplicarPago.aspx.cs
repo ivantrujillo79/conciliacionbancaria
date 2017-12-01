@@ -626,7 +626,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         {
                             App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                         }
-                        conexion.CerrarConexion();
                     }
                     catch (Exception ex)
                     {
@@ -656,7 +655,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
-                        int idCobranza = cobranza.GuardarProcesoCobranza();
+                        int idCobranza = cobranza.GuardarProcesoCobranza(conexion);
                         lanzarReporteCobranza(idCobranza);
                     }
                 }
@@ -664,7 +663,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
-            conexion.AbrirConexion(true);
             FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
             objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
             objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
@@ -673,78 +671,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);
 
-
+            conexion.CerrarConexion();
 
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
-
-            /* if (movimientoCajaAlta != null && movimientoCajaAlta.Caja != 0)
-            {
-                if (grvPagos.Rows.Count > 0)
-                {
-                    if (movimientoCajaAlta.Guardar())
-                    {
-
-                        Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
-
-                        RelacionCobranzaException rCobranzaE = null;
-                        try
-                        {
-                            RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(movimientoCajaAlta, HasBoveda);
-                            rCobranza.CadenaConexion = App.CadenaConexion;
-                            Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
-                            conexion.AbrirConexion(true);
-                            rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
-
-                            if (rCobranzaE.DetalleExcepcion.VerificacionValida)
-                            {
-                                App.ImplementadorMensajes.MostrarMensaje(rCobranzaE.DetalleExcepcion.Mensaje);
-                            }
-                            else
-                            {
-                                App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            rCobranzaE.DetalleExcepcion.CodigoError = 201;
-                            rCobranzaE.DetalleExcepcion.Mensaje = rCobranzaE.DetalleExcepcion.Mensaje + " " + ex.Message;
-                            rCobranzaE.DetalleExcepcion.VerificacionValida = false;
-                            throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
-                        }
-
-                        lanzarReporteComprobanteDeCaja(movimientoCajaAlta);
-                        Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-                        Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-                        GenerarTablaReferenciasAPagarPedidos();
-                        LlenaGridViewReferenciasPagos();
-
-                        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
-                        string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
-                        if (aplicacobranza == "1")
-                        {
-                            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                            string strUsuario = usuario.IdUsuario.Trim();
-
-                            List<ReferenciaConciliadaPedido>_listaReferenciaConciliadaPagos =(List<ReferenciaConciliadaPedido>) HttpContext.Current.Session["LIST_REF_PAGAR"];
-
-                            Cobranza cobranza = Conciliacion.RunTime.App.Cobranza.CrearObjeto();
-                            /*Charcar si quedaran como constantes
-                            cobranza.FCobranza = DateTime.Now;
-                            cobranza.UsuarioCaptura = strUsuario;
-                            cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
-                            int idCobranza = cobranza.GuardarProcesoCobranza();
-                            lanzarReporteCobranza(idCobranza);
-                        }
-                    }
-                    else
-                        App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos. Verifique");
-                }
-                else
-                    App.ImplementadorMensajes.MostrarMensaje("No existe ningun pedidos para aplicar pagos. Verifique");
-
-            }
-            else
-                App.ImplementadorMensajes.MostrarMensaje("No puede aplicar pagos. Verifique: Caja 0 no existe");*/
         }
         catch (Exception ex)
         {

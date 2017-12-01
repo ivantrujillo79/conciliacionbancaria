@@ -171,7 +171,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract bool Guardar(Conexion _conexion);
 
-        public abstract int GuardarProcesoCobranza();
+        public abstract int GuardarProcesoCobranza(Conexion _conexion);
 
         public abstract Cobranza CrearObjeto();
 
