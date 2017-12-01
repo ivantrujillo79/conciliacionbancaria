@@ -264,7 +264,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         HttpContext.Current.Response.Buffer = true;
         HttpContext.Current.Response.ContentType = "application/ms-excel";
         HttpContext.Current.Response.Write(@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">");
-        HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=ReporteaSaldoCuentaBanco.xls");
+        HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;filename=ReporteDepositosyFacturasComplemento.xls");
 
         HttpContext.Current.Response.Charset = "utf-8";
         HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1250");
@@ -276,7 +276,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         //HttpContext.Current.Response.Write(ddlEmpresa.SelectedItem.Text);
         HttpContext.Current.Response.Write("</B>");
         HttpContext.Current.Response.Write("<BR>");
-        HttpContext.Current.Response.Write("CUENTA BANCARIA / SALDO FINAL");
+        HttpContext.Current.Response.Write("DEPOSITOS y FACTURAS COMPLEMENTO");
         HttpContext.Current.Response.Write("<BR>");
         HttpContext.Current.Response.Write("<B style='font-size:12.0pt; font-family: Calibri;'>");
         //HttpContext.Current.Response.Write("DIA : " + hdfConsulta.Value);
