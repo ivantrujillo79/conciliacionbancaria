@@ -658,7 +658,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
-                        int idCobranza = cobranza.GuardarProcesoCobranza();
+                        int idCobranza = cobranza.GuardarProcesoCobranza(conexion);
                         lanzarReporteCobranza(idCobranza);
                     }
                 }
