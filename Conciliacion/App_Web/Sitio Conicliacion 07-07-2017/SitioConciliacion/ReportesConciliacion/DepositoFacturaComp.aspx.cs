@@ -443,8 +443,8 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
                 tiporeporte = 1;
                 fconciliacionini = Convert.ToDateTime(txtFConsultaIni.Text);
                 fconciliacionfin = Convert.ToDateTime(txtFConsultaFin.Text);
-                hdfConciliacionIni.Value = fconciliacionini.ToShortDateString();
-                hdfConciliacionFin.Value = fconciliacionfin.ToShortDateString();
+                hdfConciliacionIni.Value = fconciliacionini.ToString("dd/MM/yyyy");
+                hdfConciliacionFin.Value = fconciliacionfin.ToString("dd/MM/yyyy");
             }
             else
             if (chkFDeposito.Checked)
@@ -465,8 +465,8 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
 
             ConsultaDepositoFacturaComp(tiporeporte, fconciliacionini, fconciliacionfin, fdepositoini, fdepositofin, ftimbradoini, ftimbradofin);
 
-            //GenerarTablaCuentaBancariaSaldoFinal();
-            //LlenarGridViewCuentaBancoSaldoFinal();
+            GenerarTablaCuentaBancariaSaldoFinal();
+            LlenarGridViewCuentaBancoSaldoFinal();
 
         }
         catch (Exception ex)
