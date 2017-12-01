@@ -837,7 +837,7 @@
 
 										</td>
 									
-										<td style="width: 20%; padding: 5px 5px 5px 5px" colspan="3">
+										<td style="width: 20%; padding:5px; vertical-align: top;" colspan="3">
 											Factura:
 										    <asp:TextBox ID="txtFactura" runat="server" CssClass="cajaTexto" Font-Size="12px"
 											Width="90%">
