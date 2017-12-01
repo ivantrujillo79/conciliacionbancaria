@@ -35,6 +35,7 @@
             //grvPedidosScroll();
             //FInicio - FFinal
             activarDatePickers();
+            grvConciliacionCompartida_Scroll();
             CargarEventoCheckBox();
         }
 
@@ -121,6 +122,22 @@
                 });
          }
 
+        function grvConciliacionCompartida_Scroll() {
+            $('#<%= grvConciliacionCompartida.ClientID %>').gridviewScroll({
+                width: 1200,
+                height: -1,     /*          -1 = Ajustar altura de acuerdo al contenido          */
+                freezesize: 0,
+                verticalbar: "hidden",
+                arrowsize: 30,
+                //varrowtopimg: '../App_Scripts/ScrollGridView/Images/arrowvt.png',
+                //varrowbottomimg: '../App_Scripts/ScrollGridView/Images/arrowvb.png',
+                harrowleftimg: '../App_Scripts/ScrollGridView/Images/arrowhl.png',
+                harrowrightimg: '../App_Scripts/ScrollGridView/Images/arrowhr.png',
+                headerrowcount: 1,
+                startHorizontal: $("#<%=hfCompartidaSH.ClientID%>").val(), 
+                onScrollHorizontal: function (delta) { $("#<%=hfCompartidaSH.ClientID%>").val(delta);}
+            });
+         }
         //aqui va lo que corte
         
     </script>
@@ -390,7 +407,6 @@
                 </tr>
                 <tr style="width: 100%">
                     <td colspan="2">
-
 
                         <asp:HiddenField ID="hfCompartidaSV" runat="server" />
                         <asp:HiddenField ID="hfCompartidaSH" runat="server" />
