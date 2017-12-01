@@ -8,16 +8,15 @@ using Conciliacion.RunTime;
 namespace CatalogoConciliacion.ReglasNegocio
 {
     public abstract class DepositoFacturaCom : Conciliacion.RunTime.EmisorMensajes
-    {
-        private string cuentabancariasaldofinal;
+    {        
         private string cuentabancofinanciero;
         private string cuentabanco;
         private string fdeposito;
         private string deposito;
-        private string foliocumple;
-        private string seriecumple;
-        private string ftimbradocumple;
-        private string totalcumple;
+        private string foliocomple;
+        private string seriecomple;
+        private string ftimbradocomple;
+        private string totalcomple;
         private string uuidcomple;
         private string folio;
         private string serie;
@@ -30,15 +29,14 @@ namespace CatalogoConciliacion.ReglasNegocio
         #region constructores
         public DepositoFacturaCom(Conciliacion.RunTime.IMensajesImplementacion implemntadorMensajes)
         {
-            this.cuentabancariasaldofinal = "";
             this.cuentabancofinanciero = "";
             this.cuentabanco = "";
             this.fdeposito = "";
             this.deposito = "";
-            this.foliocumple = "";
-            this.seriecumple = "";
-            this.ftimbradocumple = "";
-            this.totalcumple = "";
+            this.foliocomple = "";
+            this.seriecomple = "";
+            this.ftimbradocomple = "";
+            this.totalcomple = "";
             this.uuidcomple = "";
             this.folio = "";
             this.serie = "";
@@ -48,20 +46,19 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.rfcliente = "";
             this.implementadorMensajes = implemntadorMensajes;
         }
-        public DepositoFacturaCom(string cuentabancariasaldofinal, string cuentabancofinanciero, string cuentabanco, string fdeposito, string deposito, 
-            string foliocumple, string seriecumplestring, string ftimbradocumple, 
-            string totalcumple, string uuidcomple, string folio, string serie, string ftimbrado, 
+        public DepositoFacturaCom(string cuentabancofinanciero, string cuentabanco, string fdeposito, string deposito, 
+            string foliocomple, string seriecomple, string ftimbradocomple, 
+            string totalcomple, string uuidcomple, string folio, string serie, string ftimbrado, 
             string total, string uuid, string rfcliente, Conciliacion.RunTime.IMensajesImplementacion implemntadorMensajes)
         {
-            this.cuentabancariasaldofinal = cuentabancariasaldofinal;
             this.cuentabancofinanciero = cuentabancofinanciero;
             this.cuentabanco = cuentabanco;
             this.fdeposito = fdeposito;
             this.deposito = deposito;
-            this.foliocumple = foliocumple;
-            this.foliocumple = foliocumple;
-            this.ftimbradocumple = ftimbradocumple;
-            this.totalcumple = totalcumple;
+            this.foliocomple = foliocomple;
+            this.foliocomple = foliocomple;
+            this.ftimbradocomple = ftimbradocomple;
+            this.totalcomple = totalcomple;
             this.uuidcomple = uuidcomple;
             this.folio = folio;
             this.serie = serie;
@@ -78,15 +75,14 @@ namespace CatalogoConciliacion.ReglasNegocio
         //}
         #endregion
 
-        private string CuentaBancariaSaldoFinal { get { return cuentabancariasaldofinal; } set { cuentabancariasaldofinal = value; } }
         private string CuentaBancoFinanciero { get { return cuentabancofinanciero; } set { cuentabancofinanciero = value; } }
         private string CuentaBanco { get { return cuentabanco; } set { cuentabanco = value; } }
         private string FDeposito { get { return fdeposito; } set { fdeposito = value; } }
         private string Deposito { get { return deposito; } set { deposito = value; } }
-        private string FolioCumple { get { return foliocumple; } set { foliocumple = value; } }
-        private string SerieCumple { get { return seriecumple; } set { seriecumple = value; } }
-        private string FTimbradoCumple { get { return ftimbradocumple; } set { ftimbradocumple = value; } }
-        private string TotalCumple { get { return totalcumple; } set { totalcumple = value; } }
+        private string FolioComple { get { return foliocomple; } set { foliocomple = value; } }
+        private string SerieComple { get { return seriecomple; } set { seriecomple = value; } }
+        private string FTimbradoComple { get { return ftimbradocomple; } set { ftimbradocomple = value; } }
+        private string TotalComple { get { return totalcomple; } set { totalcomple = value; } }
         private string UUIDComple { get { return uuidcomple; } set { uuidcomple = value; } }
         private string Folio { get { return folio; } set { folio = value; } }
         private string Serie { get { return serie; } set { serie = value; } }
