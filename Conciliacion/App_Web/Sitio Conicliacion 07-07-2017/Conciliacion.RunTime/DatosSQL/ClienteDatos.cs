@@ -156,7 +156,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]),
                                 Convert.ToString(reader["SucursalDes"]), Conciliacion.Año, Conciliacion.Folio, Conciliacion.Mes,
                                 Convert.ToInt32(reader["Celula"]), Convert.ToInt32(reader["AñoPed"]),
-                                Convert.ToInt32(reader["Pedido"]),
+                                Convert.ToInt32(reader["Pedido"]), Convert.ToString(reader["PedidoReferencia"]),
                                 Convert.ToInt32(reader["Cliente"]), Convert.ToString(reader["Nombre"]),
                                 Convert.ToInt32(reader["RemisionPedido"]), Convert.ToString(reader["SeriePedido"]),
                                 Convert.ToInt32(reader["FolioSat"]), Convert.ToString(reader["SerieSat"]),

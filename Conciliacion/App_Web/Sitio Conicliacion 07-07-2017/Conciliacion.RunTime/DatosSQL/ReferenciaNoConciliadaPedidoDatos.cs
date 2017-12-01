@@ -12,11 +12,11 @@ namespace Conciliacion.RunTime.DatosSQL
     class ReferenciaNoConciliadaPedidoDatos :ReferenciaNoConciliadaPedido 
     {
         public ReferenciaNoConciliadaPedidoDatos
-            (int corporativo, int sucursal, string sucursaldes, int año, int folio, short mes, int celula, int añoped, int pedido, int cliente, string nombre, int remisionpedido, string seriepedido,
+            (int corporativo, int sucursal, string sucursaldes, int año, int folio, short mes, int celula, int añoped, int pedido, string pedidoreferencia, int cliente, string nombre, int remisionpedido, string seriepedido,
             int foliosat, string seriesat, string concepto, decimal total, short formaconciliacion, short statusconcepto, string statusconciliacion,DateTime foperacion, DateTime fmovimiento,
             decimal diferencia,  IMensajesImplementacion implementadorMensajes)
 
-            : base(corporativo,sucursal, sucursaldes,año,folio,mes, celula, añoped, pedido, cliente,nombre, remisionpedido,seriepedido, foliosat, seriesat,concepto,total,formaconciliacion,
+            : base(corporativo,sucursal, sucursaldes,año,folio,mes, celula, añoped, pedido, pedidoreferencia, cliente,nombre, remisionpedido,seriepedido, foliosat, seriesat,concepto,total,formaconciliacion,
                     statusconcepto,statusconciliacion, foperacion,fmovimiento, diferencia, implementadorMensajes)
         {
 

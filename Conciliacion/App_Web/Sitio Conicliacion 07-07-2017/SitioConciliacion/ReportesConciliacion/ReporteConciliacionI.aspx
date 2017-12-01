@@ -32,7 +32,7 @@
     <script type="text/javascript">
     
         function pageLoad() {
-            grvPedidosScroll();
+            //grvPedidosScroll();
             //FInicio - FFinal
             activarDatePickers();
             CargarEventoCheckBox();
@@ -109,7 +109,7 @@
 
         function grvPedidosScroll() {
               $('#<%=grvPedidos.ClientID%>').gridviewScroll({
-                    width:580,
+                    width: 980,
                     height: 300,
                     freezesize: 2,
                     arrowsize: 30,
@@ -899,8 +899,7 @@
                                                 <div>
                                                     <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                                        ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" AllowPaging="False"
-                                                        PageSize="10" OnPageIndexChanging="grvPedidos_PageIndexChanging">
+                                                        ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" AllowPaging="False">
                                   
                                                         <HeaderStyle HorizontalAlign="Center" />
                                                         <Columns>
@@ -927,17 +926,26 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Remisión" SortExpression="Remision">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblRemision" runat="server" Text='' />
+                                                                    <asp:Label ID="lblRemision" runat="server" Text='<%# Eval("RemisionPedido") %>' />
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Factura" SortExpression="Factura">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblFactura" runat="server" Text='<%# Eval("PedidoReferencia") %>' />
+                                                                    <asp:Label ID="lblFactura" runat="server" Text='<%# Eval("FolioSat").ToString() + Eval("SerieSat").ToString() %>' />
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
+                                                            </asp:TemplateField>
+                                                            <asp:TemplateField HeaderText="Monto" SortExpression="Total">
+                                                                <ItemTemplate>
+                                                                    <b>
+                                                                        <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total", "{0:C}") %>'></asp:Label>
+												                    </b>
+                                                                </ItemTemplate>
+                                                                <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
+                                                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="FSuministro" SortExpression="FSuministro">
                                                                 <ItemTemplate>
@@ -953,15 +961,6 @@
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="Monto" SortExpression="Total">
-                                                                <ItemTemplate>
-                                                                    <b>
-                                                                        <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("PedidoReferencia") %>'></asp:Label>
-												                    </b>
-                                                                </ItemTemplate>
-                                                                <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
-                                                                <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                                             </asp:TemplateField>--%>
                                                             <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
                                                                 <ItemTemplate>
