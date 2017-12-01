@@ -51,31 +51,31 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public int CorporativoConciliacion
         {
             get { return corporativoConciliacion; }
-            set { value = corporativoConciliacion; }
+            set { corporativoConciliacion = value; }
         }
 
         public int SucursalConciliacion
         {
             get {return sucursalConciliacion; }
-            set { value = sucursalConciliacion; }
+            set { sucursalConciliacion = value; }
         }
 
         public int AnioConciliacion
         {
             get {return anioConciliacion; }
-            set {value= anioConciliacion; }
+            set {anioConciliacion = value; }
         }
 
         public int MesConciliacion
         {
             get {return mesConciliacion; }
-            set {value= mesConciliacion; }
+            set {mesConciliacion = value; }
         }
 
         public int FolioConciliacion
         {
             get {return folioConciliacion; }
-            set {value= folioConciliacion; }
+            set {folioConciliacion = value; }
         }
 
       

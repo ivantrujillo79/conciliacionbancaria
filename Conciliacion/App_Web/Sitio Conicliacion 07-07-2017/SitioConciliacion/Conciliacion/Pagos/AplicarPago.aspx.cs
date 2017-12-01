@@ -494,7 +494,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             Par.Add("@Consecutivo=" + mc.Consecutivo);
             Par.Add("@Folio=" + mc.Folio);
             Par.Add("@Caja=" + mc.Caja);
-            Par.Add("@FOperacion=" + mc.FOperacion);
+            Par.Add("@FOperacion=" + mc.FOperacion.ToString("dd/MM/yyyy HH:mm:ss"));
 
             ClaseReporte Reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
             HttpContext.Current.Session["RepDoc"] = Reporte.RepDoc;
@@ -568,6 +568,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
+        Conexion conexion = new Conexion();
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -582,16 +583,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
 
-            Conexion conexion = new Conexion();
-
-
-            int corporativoConciliacion = 0;
-            Int16 sucursalConciliacion = 0;
-            int añoConciliacion = 0;
-            int folioConciliacion = 0;
-            short mesConciliacion = 0;
-            short tipoConciliacion = 0;
-
+            
+            
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
                 conexion = new Conexion();
@@ -600,15 +593,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                 if (objMovimientoCaja.Guardar(conexion))
                 {
-
-                    corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                    sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                    añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
-                    folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
-                    mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
-                    tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-
-
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
                         corporativoConciliacion,sucursalConciliacion,añoConciliacion,mesConciliacion,folioConciliacion,"ABIERTO",new MensajeImplemantacionForm());
 
@@ -674,13 +658,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             conexion.Comando.Transaction.Commit();
             conexion.CerrarConexion();
 
-            //App.ImplementadorMensajes.MostrarMensaje("El pago se guardó con éxito.");
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 "alertify.alert('Conciliaci&oacute;n bancaria','Pago realizado correctamente', function(){ alertify.success('Solicitud exitosa'); });", true);
         }
         catch (Exception ex)
         {
-            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            conexion.RollBackTransaction();
+            conexion.CerrarConexion();
+
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
                 "', function(){ alertify.error('Error en la solicitud'); });", true);

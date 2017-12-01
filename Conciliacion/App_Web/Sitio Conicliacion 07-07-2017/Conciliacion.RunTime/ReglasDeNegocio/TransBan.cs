@@ -184,8 +184,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ListaDistintosClientes = ObjMovimientoCajaDatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
             ObjMovimientoCajaDatos.ListaCobros.ForEach(X => BufferCobro.Add(X));
 
-            if (ObjMovimientoCajaDatos.ListaPedidos.Count() == ObjMovimientoCajaDatos.ListaCobros.Count())
-            {
+            //if (ObjMovimientoCajaDatos.ListaPedidos.Count() == ObjMovimientoCajaDatos.ListaCobros.Count())
+            //{
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
                     //Se supera el máximo configurado
@@ -229,7 +229,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     //No se supera el máximo configurado
                     lstMovimientoCajaDatos.Add(ObjMovimientoCajaDatos);
                 }
-            }
+            //}
             return lstMovimientoCajaDatos;
         }
     }
