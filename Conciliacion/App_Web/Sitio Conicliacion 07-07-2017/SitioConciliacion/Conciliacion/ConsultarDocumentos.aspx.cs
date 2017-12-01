@@ -166,12 +166,12 @@ public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
             Par.Add("@Consecutivo=" + dato.Consecutivo);
             Par.Add("@Folio=" + dato.Folio);
             Par.Add("@Caja=" + dato.Caja);
-            Par.Add("@FOperacion=" + dato.FOperacion);
+            Par.Add("@FOperacion=" + dato.FOperacion.ToString("dd/MM/yyyy HH:mm:ss"));
 
             ClaseReporte Reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
             HttpContext.Current.Session["RepDoc"] = Reporte.RepDoc;
             HttpContext.Current.Session["ParametrosReporte"] = Par;
-            Nueva_Ventana("../../Reporte/Reporte.aspx", "Carta", 0, 0, 0, 0);
+            Nueva_Ventana("../Reporte/Reporte.aspx", "Carta", 0, 0, 0, 0);
             Reporte = null;
         }
         catch (Exception ex)
