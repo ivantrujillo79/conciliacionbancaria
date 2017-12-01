@@ -39,7 +39,9 @@ namespace CatalogoConciliacion.ReglasNegocio
         public abstract GrupoConciliacionUsuario ObtieneGrupoConciliacionUsuarioEspecifico(string usuario);
 
         public abstract List<CuentaBancoSaldo> ConsultaCuentaBancariaSaldoFinalDia(int corporativo, int sucursal,int banco,  string cuentabancaria, DateTime fconsulta);//, int grupoconciliacion
-     
+
+        public abstract List<DepositoFacturaCom> ConsultaDepositoFacturaComp(int TipoFecha, DateTime FechaIni, DateTime FechaFin);
+
         public abstract Consultas CrearObjeto();
 
         public virtual string CadenaConexion
@@ -49,5 +51,6 @@ namespace CatalogoConciliacion.ReglasNegocio
                 return App.CadenaConexion;
             }
         }
+
     }
 }

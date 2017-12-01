@@ -76,6 +76,7 @@
     <Compile Include="Datos\ConsultasDatos.cs" />
     <Compile Include="Datos\CuentaBancoSaldoDatos.cs" />
     <Compile Include="Datos\CuentaTransferenciaDatos.cs" />
+    <Compile Include="Datos\DepositoFacturaComDatos.cs" />
     <Compile Include="Datos\GrupoConciliacionDatos.cs" />
     <Compile Include="Datos\GrupoConciliacionUsuarioDatos.cs" />
     <Compile Include="Datos\MotivoNoConciliadoDatos.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="ReglasNegocio\Consultas.cs" />
     <Compile Include="ReglasNegocio\CuentaBancoSaldo.cs" />
     <Compile Include="ReglasNegocio\CuentaTransferencia.cs" />
+    <Compile Include="ReglasNegocio\DepositoFacturaCom.cs" />
     <Compile Include="ReglasNegocio\GrupoConciliacion.cs" />
     <Compile Include="ReglasNegocio\GrupoConciliacionUsuario.cs" />
     <Compile Include="ReglasNegocio\MotivoNoConciliado.cs" />
