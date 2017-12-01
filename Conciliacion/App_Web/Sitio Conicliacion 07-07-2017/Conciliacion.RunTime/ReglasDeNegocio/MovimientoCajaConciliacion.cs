@@ -19,6 +19,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 		private short mesconciliacion;
 		private int folioconciliacion;
 		private String status;
+        private int cobranza;
 
         #region Constructores
         public MovimientoCajaConciliacion(IMensajesImplementacion implementadorMensajes)
@@ -35,7 +36,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.Status = ""; 
         }
 
-        public MovimientoCajaConciliacion(short caja, DateTime foperacion, short consecutivo, int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacion(short caja, DateTime foperacion, short consecutivo, int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, int cobranza,IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.Caja = caja;
@@ -48,6 +49,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.MesConciliacion = mesconciliacion;
             this.FolioConciliacion = folioconciliacion;
             this.Status = status;
+            this.Cobranza = cobranza;
         }
 
         public virtual void Dispose()
@@ -102,11 +104,20 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { folioconciliacion = value; }
         }
 
+
+
 		public String Status
         {
             get { return status; }
             set { status = value; }
         }
+
+        public int Cobranza
+        {
+            get { return cobranza; }
+            set { cobranza = value; }
+        }
+
         #endregion
 
         public abstract void Guardar(Conexion _conexion);

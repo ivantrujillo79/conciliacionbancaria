@@ -14,8 +14,8 @@ namespace Conciliacion.RunTime.DatosSQL
         {
         }
 
-        public MovimientoCajaConciliacionDatos(short caja, DateTime foperacion, short consecutivo,int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, IMensajesImplementacion implementadorMensajes)
-            : base(caja, foperacion, consecutivo, folio, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, status, implementadorMensajes)
+        public MovimientoCajaConciliacionDatos(short caja, DateTime foperacion, short consecutivo,int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, int cobranza, IMensajesImplementacion implementadorMensajes)
+            : base(caja, foperacion, consecutivo, folio, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, status, cobranza, implementadorMensajes)
         {
         }
 
@@ -40,7 +40,8 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value = this.AñoConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = this.MesConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = this.FolioConciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.TinyInt)).Value = this.Folio;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.TinyInt)).Value = 1;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@cobranza", System.Data.SqlDbType.Int)).Value = this.Cobranza;
                 _conexion.Comando.ExecuteNonQuery();
                 
             }
