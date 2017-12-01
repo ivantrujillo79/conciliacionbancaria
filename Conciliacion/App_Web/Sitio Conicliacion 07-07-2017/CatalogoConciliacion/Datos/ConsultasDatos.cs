@@ -488,22 +488,21 @@ namespace CatalogoConciliacion.Datos
                 while (reader.Read())
                 {
                     DepositoFacturaCom dato =
-                        new DepositoFacturaComDatos(Convert.ToString(reader["cuentabancariasaldofinal"]),
-                                                    Convert.ToString(reader["cuentabancofinanciero"]),
+                        new DepositoFacturaComDatos(Convert.ToString(reader["cuentabancofinanciero"]),
                                                     Convert.ToString(reader["cuentabanco"]),
                                                     Convert.ToString(reader["fdeposito"]),
                                                     Convert.ToString(reader["deposito"]),
-                                                    Convert.ToString(reader["foliocumple"]),
-                                                    Convert.ToString(reader["seriecumplestring"]),
-                                                    Convert.ToString(reader["ftimbradocumple"]),
-                                                    Convert.ToString(reader["totalcumple"]),
+                                                    Convert.ToString(reader["foliocomple"]),
+                                                    Convert.ToString(reader["seriecomple"]),
+                                                    Convert.ToString(reader["ftimbradocomple"]),
+                                                    Convert.ToString(reader["totalcomple"]),
                                                     Convert.ToString(reader["uuidcomple"]),
                                                     Convert.ToString(reader["folio"]),
                                                     Convert.ToString(reader["serie"]),
                                                     Convert.ToString(reader["ftimbrado"]),
                                                     Convert.ToString(reader["total"]),
                                                     Convert.ToString(reader["uuid"]),
-                                                    Convert.ToString(reader["rfcliente"]),
+                                                    Convert.ToString(reader["rfccliente"]),
                                                     this.implementadorMensajes);
                     datos.Add(dato);
                 }

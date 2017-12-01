@@ -194,10 +194,10 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         dtSaldoFinal.Columns.Add("CuentaBanco", typeof(string));
         dtSaldoFinal.Columns.Add("FDeposito", typeof(string));
         dtSaldoFinal.Columns.Add("Deposito", typeof(string));
-        dtSaldoFinal.Columns.Add("FolioCumple", typeof(string));
-        dtSaldoFinal.Columns.Add("SerieCumple", typeof(string));
-        dtSaldoFinal.Columns.Add("FTimbradoCumple", typeof(string));
-        dtSaldoFinal.Columns.Add("TotalCumple", typeof(string));
+        dtSaldoFinal.Columns.Add("FolioComple", typeof(string));
+        dtSaldoFinal.Columns.Add("SerieComple", typeof(string));
+        dtSaldoFinal.Columns.Add("FTimbradoComple", typeof(string));
+        dtSaldoFinal.Columns.Add("TotalComple", typeof(string));
         dtSaldoFinal.Columns.Add("UUIDComple", typeof(string));
         dtSaldoFinal.Columns.Add("Folio", typeof(string));
         dtSaldoFinal.Columns.Add("Serie", typeof(string));

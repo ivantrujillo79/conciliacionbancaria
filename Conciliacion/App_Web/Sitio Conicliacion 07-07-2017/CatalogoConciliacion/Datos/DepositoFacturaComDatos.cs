@@ -14,13 +14,13 @@ namespace CatalogoConciliacion.Datos
         {
         }
 
-        public DepositoFacturaComDatos(string cuentabancariasaldofinal, string cuentabancofinanciero, string cuentabanco, string fdeposito, string deposito,
-            string foliocumple, string seriecumplestring, string ftimbradocumple,
-            string totalcumple, string uuidcomple, string folio, string serie, string ftimbrado,
+        public DepositoFacturaComDatos(string cuentabancofinanciero, string cuentabanco, string fdeposito, string deposito,
+            string foliocomple, string seriecomple, string ftimbradocomple,
+            string totalcomple, string uuidcomple, string folio, string serie, string ftimbrado,
             string total, string uuid, string rfcliente, IMensajesImplementacion implemntadorMensajes)
-            : base(cuentabancariasaldofinal, cuentabancofinanciero, cuentabanco, fdeposito, deposito,
-            foliocumple, seriecumplestring, ftimbradocumple,
-            totalcumple, uuidcomple, folio, serie, ftimbrado,
+            : base(cuentabancofinanciero, cuentabanco, fdeposito, deposito,
+            foliocomple, seriecomple, ftimbradocomple,
+            totalcomple, uuidcomple, folio, serie, ftimbrado,
             total, uuid, rfcliente, implemntadorMensajes)
         {
         }
