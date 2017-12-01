@@ -205,16 +205,25 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         dtSaldoFinal.Columns.Add("Total", typeof(string));
         dtSaldoFinal.Columns.Add("UUID", typeof(string));
         dtSaldoFinal.Columns.Add("RFCCliente", typeof(string));
+        
 
         foreach (DepositoFacturaCom cs in listaCuentaBancoSaldo)
             dtSaldoFinal.Rows.Add(
-                //cs.,
-                //cs.Sucursal,
-                //cs.Banco,
-                //cs.BancoDes,
-                //cs.CuentaBancaria,
-                //cs.SaldoInicialMes,
-                //cs.SaldoFinal
+                cs.cuentabancofinanciero,
+                cs.cuentabanco,
+                cs.fdeposito,
+                cs.deposito,
+                cs.foliocomple,
+                cs.seriecomple,
+                cs.ftimbradocomple,
+                cs.totalcomple,
+                cs.uuidcomple,
+                cs.folio,
+                cs.serie,
+                cs.ftimbrado,
+                cs.total,
+                cs.uuid,
+                cs.rfcliente
                );
 
         HttpContext.Current.Session["TAB_CUENTABANCOSALDO"] = dtSaldoFinal;
@@ -336,29 +345,29 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
     protected void grvCuentaBancoSaldoFinalDia_RowDataBound(object sender, GridViewRowEventArgs e)
     {
 
-        switch (e.Row.RowType)
-        {
-            case DataControlRowType.DataRow:
-                sumatotalsaldo = sumatotalsaldo + Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "SaldoFinalDia"));
-                break;
-            case DataControlRowType.Footer:
-                {
-                    Label lblTotalSaldoFinal = (Label)e.Row.FindControl("lblTotalSaldoFinalDia");
-                    lblTotalSaldoFinal.Text = sumatotalsaldo.ToString("C2");
-                }
-                break;
-        }
+        //switch (e.Row.RowType)
+        //{
+        //    case DataControlRowType.DataRow:
+        //        //sumatotalsaldo = sumatotalsaldo + Convert.ToDecimal(DataBinder.Eval(e.Row.DataItem, "SaldoFinalDia"));
+        //        break;
+        //    case DataControlRowType.Footer:
+        //        {
+        //            Label lblTotalSaldoFinal = (Label)e.Row.FindControl("lblTotalSaldoFinalDia");
+        //            lblTotalSaldoFinal.Text = sumatotalsaldo.ToString("C2");
+        //        }
+        //        break;
+        //}
     }
 
     protected void grvCuentaBancoSaldoFinalDia_Sorting(object sender, GridViewSortEventArgs e)
     {
-        DataTable dtTblOrdenada = (DataTable)HttpContext.Current.Session["TAB_CUENTABANCOSALDO"];
-        if (dtTblOrdenada == null) return;
-        string orden = direccionOrdenarCadena(e.SortExpression);
-        dtTblOrdenada.DefaultView.Sort = e.SortExpression + " " + orden;
-        HttpContext.Current.Session["TAB_CUENTABANCOSALDO"] = dtTblOrdenada;
-        grvCuentaBancoSaldoFinalDia.DataSource = dtTblOrdenada;
-        grvCuentaBancoSaldoFinalDia.DataBind();
+        //DataTable dtTblOrdenada = (DataTable)HttpContext.Current.Session["TAB_CUENTABANCOSALDO"];
+        //if (dtTblOrdenada == null) return;
+        //string orden = direccionOrdenarCadena(e.SortExpression);
+        //dtTblOrdenada.DefaultView.Sort = e.SortExpression + " " + orden;
+        //HttpContext.Current.Session["TAB_CUENTABANCOSALDO"] = dtTblOrdenada;
+        //grvCuentaBancoSaldoFinalDia.DataSource = dtTblOrdenada;
+        //grvCuentaBancoSaldoFinalDia.DataBind();
     }
 
     protected void btnActualizarConfig_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -465,8 +474,8 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
 
             ConsultaDepositoFacturaComp(tiporeporte, fconciliacionini, fconciliacionfin, fdepositoini, fdepositofin, ftimbradoini, ftimbradofin);
 
-            //GenerarTablaCuentaBancariaSaldoFinal();
-            //LlenarGridViewCuentaBancoSaldoFinal();
+            GenerarTablaCuentaBancariaSaldoFinal();
+            LlenarGridViewCuentaBancoSaldoFinal();
 
         }
         catch (Exception ex)

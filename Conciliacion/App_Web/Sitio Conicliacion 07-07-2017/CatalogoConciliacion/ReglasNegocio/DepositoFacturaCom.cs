@@ -9,22 +9,22 @@ namespace CatalogoConciliacion.ReglasNegocio
 {
     public abstract class DepositoFacturaCom : Conciliacion.RunTime.EmisorMensajes
     {        
-        private string cuentabancofinanciero;
-        private string cuentabanco;
-        private string fdeposito;
-        private string deposito;
-        private string foliocomple;
-        private string seriecomple;
-        private string ftimbradocomple;
-        private string totalcomple;
-        private string uuidcomple;
-        private string folio;
-        private string serie;
-        private string ftimbrado;
-        private string total;
-        private string uuid;
-        private string rfcliente;
-        private Conciliacion.RunTime.IMensajesImplementacion implementadorMensajes;
+        public string cuentabancofinanciero;
+        public string cuentabanco;
+        public string fdeposito;
+        public string deposito;
+        public string foliocomple;
+        public string seriecomple;
+        public string ftimbradocomple;
+        public string totalcomple;
+        public string uuidcomple;
+        public string folio;
+        public string serie;
+        public string ftimbrado;
+        public string total;
+        public string uuid;
+        public string rfcliente;
+        public Conciliacion.RunTime.IMensajesImplementacion implementadorMensajes;
 
         #region constructores
         public DepositoFacturaCom(Conciliacion.RunTime.IMensajesImplementacion implemntadorMensajes)
