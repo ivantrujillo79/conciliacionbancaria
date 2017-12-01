@@ -997,7 +997,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
 
     /////////////////////////////////////// BUSCAR FACTURA 
-    protected void btnBuscarFactura_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+    protected void btnBuscarFactura_Click(object sender, EventArgs e) /*System.Web.UI.ImageClickEventArgs*/
     {
         rblTipoClienteFactura.SelectedValue = rblClienteTipo.SelectedValue;
         lblClienteFactura.Text = lblCliente.Text;
@@ -1848,16 +1848,29 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void GenerarTablaPedidos() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
+        //tblPedidos = new DataTable("ReferenciasInternas");
+        //tblPedidos.Columns.Add("Pedido", typeof(int));
+        //tblPedidos.Columns.Add("PedidoReferencia", typeof(int));
+        //tblPedidos.Columns.Add("AñoPed", typeof(int));
+        //tblPedidos.Columns.Add("Celula", typeof(int));
+        //tblPedidos.Columns.Add("Cliente", typeof(string));
+        //tblPedidos.Columns.Add("Nombre", typeof(string));
+        //tblPedidos.Columns.Add("FSuministro", typeof(DateTime));
+        //tblPedidos.Columns.Add("Total", typeof(decimal));
+        //tblPedidos.Columns.Add("Concepto", typeof(string));
         tblPedidos = new DataTable("ReferenciasInternas");
         tblPedidos.Columns.Add("Pedido", typeof(int));
-        tblPedidos.Columns.Add("PedidoReferencia", typeof(int));
-        tblPedidos.Columns.Add("AñoPed", typeof(int));
-        tblPedidos.Columns.Add("Celula", typeof(int));
-        tblPedidos.Columns.Add("Cliente", typeof(string));
-        tblPedidos.Columns.Add("Nombre", typeof(string));
-        tblPedidos.Columns.Add("FSuministro", typeof(DateTime));
+        tblPedidos.Columns.Add("PedidoReferencia", typeof(string));
+        tblPedidos.Columns.Add("RemisionPedido", typeof(int));
+        tblPedidos.Columns.Add("FolioSat", typeof(int));
+        tblPedidos.Columns.Add("SerieSat", typeof(string));
         tblPedidos.Columns.Add("Total", typeof(decimal));
+        tblPedidos.Columns.Add("FSuministro", typeof(DateTime));
+        tblPedidos.Columns.Add("Nombre", typeof(string));
         tblPedidos.Columns.Add("Concepto", typeof(string));
+        tblPedidos.Columns.Add("Cliente", typeof(string));
+        tblPedidos.Columns.Add("Celula", typeof(int));
+        tblPedidos.Columns.Add("AñoPed", typeof(int));
 
 
         foreach (
@@ -1867,13 +1880,16 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             tblPedidos.Rows.Add(
                 rc.Pedido,
                 rc.PedidoReferencia,
-                rc.AñoPedido,
-                rc.CelulaPedido,
-                rc.Cliente,
-                rc.Nombre,
-                rc.FMovimiento,
+                rc.RemisionPedido,
+                rc.FolioSat,
+                rc.SerieSat,
                 rc.Total,
-                rc.Concepto
+                rc.FMovimiento,
+                rc.Nombre,
+                rc.Concepto,
+                rc.Cliente,
+                rc.CelulaPedido,
+                rc.AñoPedido
                 );
         }
         HttpContext.Current.Session["TAB_PEDIDOS"] = tblPedidos;

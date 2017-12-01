@@ -56,7 +56,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         #region Constructores
 
         public ReferenciaNoConciliadaPedido(int corporativo, int sucursal, string sucursaldes, int año,int folioconciliacion,
-            short mesconciliacion, int celulapedido,int añopedido, int pedido, int cliente, string nombre,int remisionpedido, string seriepedido,
+            short mesconciliacion, int celulapedido,int añopedido, int pedido, string pedidoreferencia, int cliente, string nombre,int remisionpedido, string seriepedido,
             int foliosat, string seriesat, string concepto,decimal total, short formaconciliacion, short statusconcepto, 
                 string statusconciliacion, DateTime foperacion, DateTime fmovimiento, 
             decimal diferencia,IMensajesImplementacion implementadorMensajes)
@@ -72,6 +72,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.celulapedido= celulapedido;
             this.añopedido= añopedido;
             this.pedido= pedido;
+            this.pedidoreferencia = pedidoreferencia;
             this.cliente= cliente;
             this.nombre = nombre;
             this.remisionpedido= remisionpedido;
