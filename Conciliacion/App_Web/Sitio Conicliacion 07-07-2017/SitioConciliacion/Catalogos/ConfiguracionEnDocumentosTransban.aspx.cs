@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
+
 using System.Data;
 using SeguridadCB.Public;
 using Conciliacion.RunTime.ReglasDeNegocio;
@@ -38,12 +40,13 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
+           
             //Llamamos a la clase app perteneciente a libreria de clases donde estamos apuntando
             
             if (!IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                objParametro = CatalogoConciliacion.App.Parametro;
+                objParametro = CatalogoConciliacion.App.Parametro.CrearObjeto();
 
                 objParametro.Parametro = "NumeroDocumentosTRANSBAN";
 
@@ -73,22 +76,24 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 
         try
         {
+            // if (cboCorporativo.Items.Count == 0 && cboCorporativoDestino_.Items.Count == 0)
             objParametro = CatalogoConciliacion.App.Parametro.CrearObjeto();
+
             objParametro.Parametro = "NumeroDocumentosTRANSBAN";
             objParametro.Valor = tbValor.Text;
             if(objParametro.Modificar())
             {
+
                 cargaValores();
+
                 tbValor.Text = String.Empty;
             }
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                "alertify.alert('Conciliaci&oacute;n bancaria','El valor fue registrado correctamente', function(){ alertify.success('Transacción exitosa'); });", true);
+                
+           
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
-                "', function(){ alertify.error('Error en la solicitud'); });", true);
+
         }
     }
     

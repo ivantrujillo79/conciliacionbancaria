@@ -494,7 +494,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             Par.Add("@Consecutivo=" + mc.Consecutivo);
             Par.Add("@Folio=" + mc.Folio);
             Par.Add("@Caja=" + mc.Caja);
-            Par.Add("@FOperacion=" + mc.FOperacion.ToString("dd/MM/yyyy HH:mm:ss"));
+            Par.Add("@FOperacion=" + mc.FOperacion);
 
             ClaseReporte Reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
             HttpContext.Current.Session["RepDoc"] = Reporte.RepDoc;
@@ -568,7 +568,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
-        Conexion conexion = new Conexion();
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -583,8 +582,16 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
 
-            
-            
+            Conexion conexion = new Conexion();
+
+
+            int corporativoConciliacion = 0;
+            Int16 sucursalConciliacion = 0;
+            int añoConciliacion = 0;
+            int folioConciliacion = 0;
+            short mesConciliacion = 0;
+            short tipoConciliacion = 0;
+
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
                 conexion = new Conexion();
@@ -593,17 +600,25 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                 if (objMovimientoCaja.Guardar(conexion))
                 {
-                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
-                        corporativoConciliacion,sucursalConciliacion,añoConciliacion,mesConciliacion,folioConciliacion,"ABIERTO",new MensajeImplemantacionForm());
 
-                    objMCC.Guardar(conexion);
+                    corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
+                    sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
+                    añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
+                    folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
+                    mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
+                    tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                    
+
+                 
 
                     Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
                     RelacionCobranzaException rCobranzaE = null;
+                    RelacionCobranza rCobranza;
                     try
                     {
-                        RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
+                        rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
+                        rCobranza.CadenaConexion = App.CadenaConexion;
                         rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
 
                         if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
@@ -618,6 +633,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rCobranzaE.DetalleExcepcion.VerificacionValida = false;
                         throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                     }
+
+                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
+                     corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", rCobranza.Cobranza ,new MensajeImplemantacionForm());
+                    objMCC.Guardar(conexion);
 
                     lanzarReporteComprobanteDeCaja(objMovimientoCaja);
 
@@ -639,7 +658,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
-                        int idCobranza = cobranza.GuardarProcesoCobranza(conexion);
+                        int idCobranza = cobranza.GuardarProcesoCobranza();
                         lanzarReporteCobranza(idCobranza);
                     }
                 }
@@ -647,6 +666,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
+            conexion.AbrirConexion(true);
             FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
             objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
             objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
@@ -655,20 +675,82 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);
 
-            conexion.Comando.Transaction.Commit();
-            conexion.CerrarConexion();
 
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                "alertify.alert('Conciliaci&oacute;n bancaria','Pago realizado correctamente', function(){ alertify.success('Solicitud exitosa'); });", true);
+
+            App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
+
+            /* if (movimientoCajaAlta != null && movimientoCajaAlta.Caja != 0)
+            {
+                if (grvPagos.Rows.Count > 0)
+                {
+                    if (movimientoCajaAlta.Guardar())
+                    {
+
+                        Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("SI");
+
+                        RelacionCobranzaException rCobranzaE = null;
+                        try
+                        {
+                            RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(movimientoCajaAlta, HasBoveda);
+                            rCobranza.CadenaConexion = App.CadenaConexion;
+                            Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
+                            conexion.AbrirConexion(true);
+                            rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
+
+                            if (rCobranzaE.DetalleExcepcion.VerificacionValida)
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje(rCobranzaE.DetalleExcepcion.Mensaje);
+                            }
+                            else
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            rCobranzaE.DetalleExcepcion.CodigoError = 201;
+                            rCobranzaE.DetalleExcepcion.Mensaje = rCobranzaE.DetalleExcepcion.Mensaje + " " + ex.Message;
+                            rCobranzaE.DetalleExcepcion.VerificacionValida = false;
+                            throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Codigo: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                        }
+
+                        lanzarReporteComprobanteDeCaja(movimientoCajaAlta);
+                        Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                        Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                        GenerarTablaReferenciasAPagarPedidos();
+                        LlenaGridViewReferenciasPagos();
+
+                        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                        string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
+                        if (aplicacobranza == "1")
+                        {
+                            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                            string strUsuario = usuario.IdUsuario.Trim();
+
+                            List<ReferenciaConciliadaPedido>_listaReferenciaConciliadaPagos =(List<ReferenciaConciliadaPedido>) HttpContext.Current.Session["LIST_REF_PAGAR"];
+
+                            Cobranza cobranza = Conciliacion.RunTime.App.Cobranza.CrearObjeto();
+                            /*Charcar si quedaran como constantes
+                            cobranza.FCobranza = DateTime.Now;
+                            cobranza.UsuarioCaptura = strUsuario;
+                            cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
+                            int idCobranza = cobranza.GuardarProcesoCobranza();
+                            lanzarReporteCobranza(idCobranza);
+                        }
+                    }
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos. Verifique");
+                }
+                else
+                    App.ImplementadorMensajes.MostrarMensaje("No existe ningun pedidos para aplicar pagos. Verifique");
+
+            }
+            else
+                App.ImplementadorMensajes.MostrarMensaje("No puede aplicar pagos. Verifique: Caja 0 no existe");*/
         }
         catch (Exception ex)
         {
-            conexion.RollBackTransaction();
-            conexion.CerrarConexion();
-
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
-                "', function(){ alertify.error('Error en la solicitud'); });", true);
+            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     protected void grvPagos_RowCreated(object sender, GridViewRowEventArgs e)
