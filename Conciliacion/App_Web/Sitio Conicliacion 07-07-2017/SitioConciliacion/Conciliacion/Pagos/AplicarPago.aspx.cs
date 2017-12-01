@@ -607,18 +607,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                     mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                     tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                    
 
-
-                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja,objMovimientoCaja.FOperacion,objMovimientoCaja.Consecutivo,objMovimientoCaja.Folio,
-                        corporativoConciliacion,sucursalConciliacion,añoConciliacion,mesConciliacion,folioConciliacion,"ABIERTO",new MensajeImplemantacionForm());
-                    objMCC.Guardar(conexion);
+                 
 
                     Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
                     RelacionCobranzaException rCobranzaE = null;
+                    RelacionCobranza rCobranza;
                     try
                     {
-                        RelacionCobranza rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
+                        rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
                         rCobranza.CadenaConexion = App.CadenaConexion;
                         rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
 
@@ -634,6 +633,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rCobranzaE.DetalleExcepcion.VerificacionValida = false;
                         throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                     }
+
+                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
+                     corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", rCobranza.Cobranza ,new MensajeImplemantacionForm());
+                    objMCC.Guardar(conexion);
 
                     lanzarReporteComprobanteDeCaja(objMovimientoCaja);
 

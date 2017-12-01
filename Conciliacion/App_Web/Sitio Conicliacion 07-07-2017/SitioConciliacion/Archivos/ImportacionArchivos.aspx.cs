@@ -545,7 +545,8 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 CultureInfo culture = new CultureInfo("en-US");
                 DateTime fi = DateTime.ParseExact(txtFInicial.Text, "MM/dd/yyyy", culture);
                 DateTime ff = DateTime.ParseExact(txtFFinal.Text, "MM/dd/yyyy", culture);
-                DateTime fa = DateTime.ParseExact(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss"), "MM/dd/yyyy hh:mm:ss", culture);
+                //DateTime fa = DateTime.ParseExact(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss"), "MM/dd/yyyy hh:mm:ss", culture);
+                DateTime fa = DateTime.Now;
                 int folio = App.Consultas.ObtieneTablaDestinoNumeroMaximo(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue), Convert.ToInt32(this.cboAnio.SelectedValue)) + 1;
                 string usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario.Trim();
                 string pass = SeguridadCB.Seguridad.DesencriptaClave(lcs.Pass);

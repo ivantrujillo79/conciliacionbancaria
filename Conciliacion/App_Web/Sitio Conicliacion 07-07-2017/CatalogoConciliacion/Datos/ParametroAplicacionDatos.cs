@@ -81,10 +81,10 @@ namespace CatalogoConciliacion.Datos
                     comando.Parameters.Add("@Valor", System.Data.SqlDbType.VarChar).Value = this.Valor;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
-                    this.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
+                   // this.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
                 }
 
-                catch (SqlException ex)
+                catch (Exception ex)
                 {
                     stackTrace = new StackTrace();
                     this.ImplementadorMensajes.MostrarMensaje("No se pudo modificar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
@@ -92,9 +92,9 @@ namespace CatalogoConciliacion.Datos
                     resultado = false;
                 }
                 finally
-                {
+                {                   
                     cnn.Close();
-                    cnn.Dispose();
+                    cnn.Dispose();                   
                 }
             }
             return resultado;
