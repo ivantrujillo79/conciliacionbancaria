@@ -45,7 +45,6 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = this.FolioConciliacion;
 
                 _conexion.Comando.ExecuteNonQuery();
-                this.ImplementadorMensajes.MostrarMensaje("Registro Guardado Con éxito");
                 resultado = true;
             }
 

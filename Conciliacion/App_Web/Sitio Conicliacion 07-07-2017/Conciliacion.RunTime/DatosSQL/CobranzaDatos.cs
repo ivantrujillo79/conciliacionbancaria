@@ -135,11 +135,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
                     pedidoCobranza.Guardar(conexion);
                 }
-
-                conexion.Comando.Transaction.Commit();
-
-                this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
-                
+                //this.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
             }
             catch (Exception ex)
             {

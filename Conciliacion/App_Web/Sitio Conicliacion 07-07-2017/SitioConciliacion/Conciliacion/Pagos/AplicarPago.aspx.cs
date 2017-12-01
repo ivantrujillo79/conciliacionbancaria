@@ -671,13 +671,19 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);
 
+            conexion.Comando.Transaction.Commit();
             conexion.CerrarConexion();
 
-            App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
+            //App.ImplementadorMensajes.MostrarMensaje("El pago se guardó con éxito.");
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                "alertify.alert('Conciliaci&oacute;n bancaria','Pago realizado correctamente', function(){ alertify.success('Solicitud exitosa'); });", true);
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
+                "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void grvPagos_RowCreated(object sender, GridViewRowEventArgs e)
