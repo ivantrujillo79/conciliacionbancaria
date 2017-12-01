@@ -240,7 +240,7 @@
             <table style="width: 100%">
                 <tr>
                     <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                        SALDO FINAL POR DIA
+                        DEPOSITOS Y FACTURAS COMPLEMENTO
                     </td>
                 </tr>
                 <tr style="width: 100%">
@@ -256,7 +256,7 @@
                             </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
-                                <asp:TemplateField HeaderText="Banco" SortExpression="Banco">
+                                <asp:TemplateField HeaderText="Cuenta Banco Financ" SortExpression="Banco">
                                     <ItemTemplate>
                                         <asp:Label ID="lblBanco" runat="server" Text='<%# Eval("cuentabancofinanciero") %>'></asp:Label>
                                     </ItemTemplate>
@@ -274,7 +274,7 @@
                                     <ItemStyle HorizontalAlign="Center" Wrap="True" Font-Size="13px" BackColor="#ebecec"
                                         CssClass="centradoMedio" />
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Inicial Mes" SortExpression="fdeposito">
+                                <asp:TemplateField HeaderText="Deposito" SortExpression="fdeposito">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoInicialMes" runat="server" Text='<%# Eval("fdeposito") %>'></asp:Label>
                                     </ItemTemplate>
@@ -285,7 +285,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="deposito">
+                                <asp:TemplateField HeaderText="Deposito" SortExpression="deposito">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("deposito") %>'></asp:Label>
                                     </ItemTemplate>
@@ -297,7 +297,7 @@
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="foliocomple">
+                                <asp:TemplateField HeaderText="Folio Complemento" SortExpression="foliocomple">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("foliocomple") %>'></asp:Label>
                                     </ItemTemplate>
@@ -309,7 +309,7 @@
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="seriecomple">
+                                <asp:TemplateField HeaderText="Serie Complemento" SortExpression="seriecomple">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("seriecomple") %>'></asp:Label>
                                     </ItemTemplate>
@@ -321,7 +321,7 @@
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="ftimbradocomple">
+                                <asp:TemplateField HeaderText="Timbrado complemento" SortExpression="ftimbradocomple">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("ftimbradocomple") %>'></asp:Label>
                                     </ItemTemplate>
@@ -332,7 +332,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="totalcomple">
+                                <asp:TemplateField HeaderText="Total Complemento" SortExpression="totalcomple">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("totalcomple") %>'></asp:Label>
                                     </ItemTemplate>
@@ -343,7 +343,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="uuidcomple">
+                                <asp:TemplateField HeaderText="UUID Complemento" SortExpression="uuidcomple">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("uuidcomple") %>'></asp:Label>
                                     </ItemTemplate>
@@ -354,7 +354,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="folio">
+                                <asp:TemplateField HeaderText="Folio" SortExpression="folio">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("folio") %>'></asp:Label>
                                     </ItemTemplate>
@@ -365,7 +365,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="serie">
+                                <asp:TemplateField HeaderText="Serie" SortExpression="serie">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("serie") %>'></asp:Label>
                                     </ItemTemplate>
@@ -376,7 +376,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="ftimbrado">
+                                <asp:TemplateField HeaderText="Timbrado" SortExpression="ftimbrado">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("ftimbrado") %>'></asp:Label>
                                     </ItemTemplate>
@@ -387,7 +387,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="total">
+                                <asp:TemplateField HeaderText="Total" SortExpression="total">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("total") %>'></asp:Label>
                                     </ItemTemplate>
@@ -398,7 +398,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="uuid">
+                                <asp:TemplateField HeaderText="UUID" SortExpression="uuid">
                                     <ItemTemplate>
                                         <asp:Label ID="lblSaldoFinalDia" runat="server" Text='<%# Eval("uuid") %>'></asp:Label>
                                     </ItemTemplate>
@@ -409,7 +409,7 @@
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
                                     <FooterStyle CssClass="centradoMedio bg-color-grisOscuro fg-color-blanco" Font-Size="14px"></FooterStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Saldo Final Dia" SortExpression="rfccliente">
+                                <asp:TemplateField HeaderText="RFC" SortExpression="rfccliente">
                                     <ItemTemplate>
                                         <asp:Label ID="rfcliente" runat="server" Text='<%# Eval("rfccliente") %>'></asp:Label>
                                     </ItemTemplate>
