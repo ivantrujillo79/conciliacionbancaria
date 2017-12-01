@@ -92,7 +92,7 @@
                 ErrorMessage="Capture una fecha valida">
             </asp:CompareValidator>
         </td>
-        <td style="width: 20%;">
+        <td style="width: 20%; vertical-align:top; padding-top:7px;">
             <asp:Button ID="btAplicarFiltro" runat="server" 
                 Text="Filtrar" 
                 OnClientClick="return ValidaFiltro();" 
