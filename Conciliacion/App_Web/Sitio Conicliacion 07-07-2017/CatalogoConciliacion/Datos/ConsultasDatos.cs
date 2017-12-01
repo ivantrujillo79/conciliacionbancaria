@@ -470,6 +470,46 @@ namespace CatalogoConciliacion.Datos
             }
         }
 
+        public override List<DepositoFacturaCom> ConsultaDepositoFacturaComp(int TipoFecha, DateTime FechaIni, DateTime FechaFin)
+        {
+
+            List<DepositoFacturaCom> datos = new List<DepositoFacturaCom>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBReporteConsultaFacturasComplemento", cnn);
+                comando.Parameters.Add("@TipoFecha", System.Data.SqlDbType.Int).Value = TipoFecha;
+                comando.Parameters.Add("@FechaIni", System.Data.SqlDbType.DateTime).Value = FechaIni;
+                comando.Parameters.Add("@FechaFin", System.Data.SqlDbType.DateTime).Value = FechaFin;
+
+                comando.CommandTimeout = 900;
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    DepositoFacturaCom dato =
+                        new DepositoFacturaComDatos(Convert.ToString(reader["cuentabancofinanciero"]),
+                                                    Convert.ToString(reader["cuentabanco"]),
+                                                    Convert.ToString(reader["fdeposito"]),
+                                                    Convert.ToString(reader["deposito"]),
+                                                    Convert.ToString(reader["foliocomple"]),
+                                                    Convert.ToString(reader["seriecomple"]),
+                                                    Convert.ToString(reader["ftimbradocomple"]),
+                                                    Convert.ToString(reader["totalcomple"]),
+                                                    Convert.ToString(reader["uuidcomple"]),
+                                                    Convert.ToString(reader["folio"]),
+                                                    Convert.ToString(reader["serie"]),
+                                                    Convert.ToString(reader["ftimbrado"]),
+                                                    Convert.ToString(reader["total"]),
+                                                    Convert.ToString(reader["uuid"]),
+                                                    Convert.ToString(reader["rfccliente"]),
+                                                    this.implementadorMensajes);
+                    datos.Add(dato);
+                }
+                return datos;
+            }
+        }
+
     }
 }
 
