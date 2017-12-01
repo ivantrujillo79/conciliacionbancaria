@@ -207,7 +207,7 @@
                                         <asp:Label ID="lblSaldoInicialMes" runat="server" Text='<%# Eval("SaldoInicialMes", "{0:c2}") %>'></asp:Label>
                                     </ItemTemplate>
                                     <FooterTemplate>
-                                        <asp:Label ID="lblTotalDia" runat="server" Text="Total Saldo Final Dia"></asp:Label>
+                                        <asp:Label ID="lblTotalDia" runat="server" Text=""></asp:Label>
                                     </FooterTemplate>
                                     <HeaderStyle HorizontalAlign="Center" Font-Size="13px" />
                                     <ItemStyle HorizontalAlign="Center" Font-Size="13px" Wrap="False" />
