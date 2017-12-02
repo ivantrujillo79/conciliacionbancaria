@@ -276,7 +276,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
-                GenerarAgregadosExcel();
+                if (hdfCargaAgregado.Value == "1")
+                {
+                    GenerarAgregadosExcel();
+                }
                 MostrarPopUp_ConciliacionManual();
             }
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)

@@ -179,6 +179,14 @@
                 });
             }
         }
+
+        /*              Botones del control wucCargaManualExcel         */
+        function btnCargaManualCancelar_Click(){
+            $('#<%= hdfCargaAgregado.ClientID %>').val("0");
+        }
+        function btnCargaManualAceptar_Click(){
+            $("#<%= hdfCargaAgregado.ClientID %>").val("1");
+        }
     </script>
     <!-- Validar: solo numeros -->
     <script type="text/javascript">
@@ -2361,6 +2369,7 @@
     </asp:Panel>
 
     <!--        INICIO DE POPUP CARGA ARCHIVO     -->
+    <asp:HiddenField runat="server" ID="hdfCargaAgregado" value="1"/>
     <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
     <asp:HiddenField runat="server" ID="hdfVisibleCargaArchivo" value="0"/>
     <asp:ModalPopupExtender ID="mpeCargaArchivoConciliacionManual" runat="server" BackgroundCssClass="ModalBackground"

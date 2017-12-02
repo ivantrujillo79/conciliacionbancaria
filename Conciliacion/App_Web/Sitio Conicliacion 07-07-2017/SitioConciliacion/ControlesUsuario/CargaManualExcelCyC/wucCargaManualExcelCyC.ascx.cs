@@ -279,6 +279,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
     protected void btnCancelar_Click(object sender, EventArgs e)
     {
+        CargarAgregados = true;
+        LimpiarGrid();
         if (PopupContenedor != null)
         {
             PopupContenedor.Hide();
@@ -480,7 +482,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     protected void btnAceptar_Click(object sender, EventArgs e)
     {
         //RecuperaReferenciasNoConciliadas();
-        LimpiarGrid();
         btnCancelar_Click(sender, e);
     }
 
