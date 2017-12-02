@@ -634,7 +634,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
-                        idCobranza = cobranza.GuardarProcesoCobranza();
+                        idCobranza = cobranza.GuardarProcesoCobranza(conexion);
 
                         Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
