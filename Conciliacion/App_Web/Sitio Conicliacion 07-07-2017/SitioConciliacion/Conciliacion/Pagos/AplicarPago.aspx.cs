@@ -607,38 +607,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                     mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                     tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                    
 
-                 
 
-                    Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
 
-                    RelacionCobranzaException rCobranzaE = null;
-                    RelacionCobranza rCobranza;
-                    try
-                    {
-                        rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
-                        rCobranza.CadenaConexion = App.CadenaConexion;
-                        rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
 
-                        if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
-                        {
-                            App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        rCobranzaE.DetalleExcepcion.CodigoError = 201;
-                        rCobranzaE.DetalleExcepcion.Mensaje = rCobranzaE.DetalleExcepcion.Mensaje + " " + ex.Message;
-                        rCobranzaE.DetalleExcepcion.VerificacionValida = false;
-                        throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
-                    }
-
-                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
-                     corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", rCobranza.Cobranza ,new MensajeImplemantacionForm());
-                    objMCC.Guardar(conexion);
-
-                    lanzarReporteComprobanteDeCaja(objMovimientoCaja);
+                   // lanzarReporteComprobanteDeCaja(objMovimientoCaja); quitar, ya no debe de mostrarse por múltiple trasban
 
                     Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
                     Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
@@ -647,6 +620,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
                     string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
+
+                    int idCobranza = -1;
+
                     if (aplicacobranza == "1")
                     {
                         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -658,9 +634,37 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
-                        int idCobranza = cobranza.GuardarProcesoCobranza(conexion);
-                        lanzarReporteCobranza(idCobranza);
+                        idCobranza = cobranza.GuardarProcesoCobranza(conexion);
+
+                        Boolean HasBoveda = p.ValorParametro(modulo, "BovedaExiste").Equals("1");
+
+                        RelacionCobranzaException rCobranzaE = null;
+                        RelacionCobranza rCobranza;
+                        try
+                        {
+                            rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
+                            rCobranza.CadenaConexion = App.CadenaConexion;
+                            rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
+
+                            if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            rCobranzaE.DetalleExcepcion.CodigoError = 201;
+                            rCobranzaE.DetalleExcepcion.Mensaje = rCobranzaE.DetalleExcepcion.Mensaje + " " + ex.Message;
+                            rCobranzaE.DetalleExcepcion.VerificacionValida = false;
+                            throw new Exception("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                        }
+                        // lanzarReporteCobranza(idCobranza); quitar, ya no debe mostrarse por múltiple trasban
                     }
+
+                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
+                         corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
+                    objMCC.Guardar(conexion);
+
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
@@ -674,8 +678,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.MesConciliacion = mesConciliacion;
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);
-
-
 
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
 
