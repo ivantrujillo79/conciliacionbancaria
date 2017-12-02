@@ -247,6 +247,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                         rvDiferencia.ValidationGroup = "UnoVariosPedidos";
                     }
+                    Carga_SucursalCorporativo(corporativo);
                     if (objSolicitdConciliacion.ConsultaArchivo())
                     {
                         lblSucursalCelula.Text = "Sucursal Interna";
