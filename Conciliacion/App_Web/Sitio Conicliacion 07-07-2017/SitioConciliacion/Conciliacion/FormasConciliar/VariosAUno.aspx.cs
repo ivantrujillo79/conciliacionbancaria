@@ -107,6 +107,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboMotivosNoConciliado();
+                Carga_SucursalCorporativo(corporativo);
                 LlenarBarraEstado();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
                 Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
