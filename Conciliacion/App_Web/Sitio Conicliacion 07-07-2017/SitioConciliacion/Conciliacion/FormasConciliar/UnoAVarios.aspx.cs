@@ -4940,7 +4940,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             else
             if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
                 grvPrima = (GridView)Session["TABLADEINTERNOS"];
+
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+            if ( (grvInternos.DataSource as DataTable).Rows.Count == 0 )
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
+                return;
+            }
             grvInternos.DataBind();
             grvInternos.DataBind();
             //ActualizarTotalesAgregados_GridAgregados();
