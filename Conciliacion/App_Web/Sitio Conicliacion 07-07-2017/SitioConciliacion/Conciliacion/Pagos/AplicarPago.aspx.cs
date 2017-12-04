@@ -582,10 +582,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             cargarInfoConciliacionActual();
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
-
            
-
-
             int corporativoConciliacion = 0;
             Int16 sucursalConciliacion = 0;
             int añoConciliacion = 0;
