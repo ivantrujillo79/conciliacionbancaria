@@ -7,6 +7,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using Conciliacion.RunTime;
+using Conciliacion.RunTime.ReglasDeNegocio;
+using Conciliacion.RunTime.DatosSQL;
 
 public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFacturas : System.Web.UI.UserControl
 {
@@ -69,6 +72,29 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         }
         else
             return null;
+    }
+
+    public DataTable BuscaCliente()
+    {
+        //Método privado en el que durante su ejecución los registros asignados en el datasource del grid asignado por medio de 
+        //la propiedad "GridRelacionado", serán filtrados para sólo mostrar los pedidos relacionados con el cliente provisto por la 
+        //propiedad "NumeroClienteFiltrar".
+
+        //DataView dv = null;
+        DataTable dtClientePedidos = null;
+        NumeroClienteFiltrar = txtCliente.Text.Trim();
+
+        if (txtCliente.Text.Trim() != "")
+        {
+            Cliente cliente = App.Cliente.CrearObjeto();
+
+            Conexion conexion = new Conexion();
+            conexion.AbrirConexion(true);
+
+            dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt32(NumeroClienteFiltrar), conexion);            
+        }
+
+        return dtClientePedidos;
     }
 
     protected void btnBuscar_Click(object sender, ImageClickEventArgs e)

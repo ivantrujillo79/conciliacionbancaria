@@ -4942,10 +4942,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvPrima = (GridView)Session["TABLADEINTERNOS"];
 
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
-            if ( (grvInternos.DataSource as DataTable).Rows.Count == 0 )
+            if ( grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0 )
             {
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
-                    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                //    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
+                //grvPedidos.DataSource = null;
+                //grvPedidos.DataBind();
+                grvPedidos.DataSource = wucBuscaClientesFacturas.BuscaCliente();
+                grvPedidos.DataBind();
+                grvPedidos.DataBind();
                 return;
             }
             grvInternos.DataBind();
