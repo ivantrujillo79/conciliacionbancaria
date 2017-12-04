@@ -309,7 +309,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 MovimientoCajaAlta(conexion);
                 AplicarCobros(conexion);
                 ValidaMovimientoCaja(conexion);
-                //conexion.Comando.Transaction.Commit();
+               // conexion.Comando.Transaction.Commit();
                 resultado = true;
             }
             catch (Exception ex)

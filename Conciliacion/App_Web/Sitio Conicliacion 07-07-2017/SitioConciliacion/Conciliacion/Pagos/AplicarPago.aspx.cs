@@ -568,6 +568,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
+        Conexion conexion  = new Conexion(); ;
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -582,7 +583,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
 
-            Conexion conexion = new Conexion();
+           
 
 
             int corporativoConciliacion = 0;
@@ -592,10 +593,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             short mesConciliacion = 0;
             short tipoConciliacion = 0;
 
+            conexion.AbrirConexion(true);
+
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
-                conexion = new Conexion();
-                conexion.AbrirConexion(true);
+               // conexion = new Conexion();
+                
 
 
                 if (objMovimientoCaja.Guardar(conexion))
@@ -613,7 +616,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                    // lanzarReporteComprobanteDeCaja(objMovimientoCaja); quitar, ya no debe de mostrarse por múltiple trasban
 
-                    Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+         //           Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
                     Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
                     GenerarTablaReferenciasAPagarPedidos();
                     LlenaGridViewReferenciasPagos();
@@ -664,9 +667,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     }
                     */
 
-                  /*  MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
+                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
                          corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
-                    objMCC.Guardar(conexion);*/
+                    objMCC.Guardar(conexion);
 
                 }
                 else
@@ -682,7 +685,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);*/
 
+            conexion.Comando.Transaction.Commit();
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
+           
 
             /* if (movimientoCajaAlta != null && movimientoCajaAlta.Caja != 0)
             {
@@ -755,6 +760,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            conexion.Comando.Transaction.Rollback();
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
