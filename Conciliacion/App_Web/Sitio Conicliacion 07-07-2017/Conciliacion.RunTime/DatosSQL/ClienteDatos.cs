@@ -185,6 +185,30 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override DataTable ObtienePedidosCliente(int Cliente, Conexion _conexion)
+        {
+            DataTable dtRetorno = new DataTable();
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBPedidosCliente";
+
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value = Cliente;
+
+                SqlDataAdapter Dap = new SqlDataAdapter(_conexion.Comando);
+                Dap.Fill(dtRetorno);
+            }
+            catch (Exception Ex)
+            {
+
+            }
+            return dtRetorno;
+
+        }
+
+
+
 	}//end ClienteDatos
 
 }//end namespace DatosSQL

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Conciliacion.RunTime.DatosSQL;
+using System.Data;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -165,6 +166,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ReferenciaNoConciliadaPedido> ObtienePedidosNoConciliadosCliente(cConciliacion Conciliacion, Conexion _conexion);
 
+        public abstract DataTable ObtienePedidosCliente(int Cliente, Conexion _conexion);
 	}//end Cliente
 
 
