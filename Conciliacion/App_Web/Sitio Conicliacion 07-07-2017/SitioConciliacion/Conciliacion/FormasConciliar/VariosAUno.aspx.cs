@@ -46,7 +46,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
     public int corporativo, año, folio, sucursal;
-    public short mes, tipoConciliacion, grupoConciliacion;
+    public short mes, tipoConciliacion, grupoConciliacion, formaConciliacion;
     public int indiceExternoSeleccionado = 0;
     public int indiceInternoSeleccionado = 0;
     public ReferenciaNoConciliada tranDesconciliar;
@@ -98,6 +98,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 mes = Convert.ToSByte(Request.QueryString["Mes"]);
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
+                formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]);
 
                 SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -110,7 +111,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 Carga_SucursalCorporativo(corporativo);
                 LlenarBarraEstado();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
-                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, formaConciliacion);
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
                 Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
@@ -575,7 +577,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
         try
         {
-            listaTransaccionesConciliadas = Conciliacion.RunTime.App.Consultas.ConsultaTransaccionesConciliadas(corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue));
+            listaTransaccionesConciliadas = Conciliacion.RunTime.App.Consultas.ConsultaTransaccionesConciliadas(corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, formaconciliacion);
             Session["CONCILIADAS"] = listaTransaccionesConciliadas;
         }
         catch (SqlException ex)
@@ -873,6 +875,19 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             cargarInfoConciliacionActual();
 
             List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
+            /*          Asignar forma de conciliación "Varios a Uno" o  "Varios a Uno Pedidos"           */
+            short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
+            //extSeleccionados.Select(s => { s.FormaConciliacion = formaConciliacion; return s; }).ToList();
+            
+            foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
+            {
+                rfNC.FormaConciliacion = formaConciliacion;
+                foreach (ReferenciaConciliada rfC in rfNC.ListaReferenciaConciliada)
+                {
+                    rfC.FormaConciliacion = formaConciliacion;
+                }
+            }
+
             int numRegInter = tipoConciliacion == 2 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
             {
@@ -884,7 +899,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         GenerarTablaExternos();
                         LlenaGridViewExternos();
 
-                        Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                        //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                        Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, formaConciliacion);
                         GenerarTablaConciliados();
                         LlenaGridViewConciliadas();
                         LlenarBarraEstado();
@@ -1431,7 +1447,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     x.Secuencia == secuenciaExterno);
 
             tranDesconciliar.DesConciliar();
-            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+            //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, formaConciliacion);
             GenerarTablaConciliados();
             LlenaGridViewConciliadas();
             LlenarBarraEstado();
