@@ -618,12 +618,15 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     GenerarTablaReferenciasAPagarPedidos();
                     LlenaGridViewReferenciasPagos();
 
-                    parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
-                    string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
+                   
 
                     int idCobranza = -1;
 
-                  /*  if (aplicacobranza == "1")
+                  /*  
+                    parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                    string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");  
+                    
+                     if (aplicacobranza == "1")
                     {
                         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                         string strUsuario = usuario.IdUsuario.Trim();
