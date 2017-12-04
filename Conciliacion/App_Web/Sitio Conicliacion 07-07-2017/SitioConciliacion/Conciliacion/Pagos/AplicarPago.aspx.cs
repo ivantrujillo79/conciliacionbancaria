@@ -623,8 +623,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     int idCobranza = -1;
 
                   /*  
-                    parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
-                    string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");  
+                     
                     
                      if (aplicacobranza == "1")
                     {
@@ -665,9 +664,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     }
                     */
 
-                    MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
+                  /*  MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
                          corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
-                    objMCC.Guardar(conexion);
+                    objMCC.Guardar(conexion);*/
 
                 }
                 else

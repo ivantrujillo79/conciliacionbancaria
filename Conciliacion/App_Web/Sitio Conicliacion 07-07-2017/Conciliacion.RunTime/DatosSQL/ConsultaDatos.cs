@@ -4580,6 +4580,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBConsultaMovimientoCajaAlta", cnn);
+                    comando.CommandTimeout=0;
                     comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = corporativo;
                     comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
                     comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = año;
