@@ -55,12 +55,14 @@
         function popUpNoVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
         }
-
-        function btnCargaManualAceptar_Click() {
+        
+        /*              Botones del control wucCargaManualExcel         */
+        function btnCargaManualCancelar_Click(){
+            $('#<%= hdfCargaAgregado.ClientID %>').val("0");
             popUpNoVisible();
         }
-
-        function btnCargaManualCancelar_Click() {
+        function btnCargaManualAceptar_Click(){
+            $("#<%= hdfCargaAgregado.ClientID %>").val("1");
             popUpNoVisible();
         }
         
@@ -180,13 +182,6 @@
             }
         }
 
-        /*              Botones del control wucCargaManualExcel         */
-        function btnCargaManualCancelar_Click(){
-            $('#<%= hdfCargaAgregado.ClientID %>').val("0");
-        }
-        function btnCargaManualAceptar_Click(){
-            $("#<%= hdfCargaAgregado.ClientID %>").val("1");
-        }
     </script>
     <!-- Validar: solo numeros -->
     <script type="text/javascript">
