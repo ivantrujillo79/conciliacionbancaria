@@ -623,7 +623,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     int idCobranza = -1;
 
-                    if (aplicacobranza == "1")
+                  /*  if (aplicacobranza == "1")
                     {
                         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                         string strUsuario = usuario.IdUsuario.Trim();
@@ -660,6 +660,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         }
                         // lanzarReporteCobranza(idCobranza); quitar, ya no debe mostrarse por múltiple trasban
                     }
+                    */
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
                          corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
@@ -670,14 +671,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
-            conexion.AbrirConexion(true);
+       /*     conexion.AbrirConexion(true);
             FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
             objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
             objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
             objFacturasComplemento.AnioConciliacion = añoConciliacion;
             objFacturasComplemento.MesConciliacion = mesConciliacion;
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
-            objFacturasComplemento.Guardar(conexion);
+            objFacturasComplemento.Guardar(conexion);*/
 
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
 
@@ -755,6 +756,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
+
     protected void grvPagos_RowCreated(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)

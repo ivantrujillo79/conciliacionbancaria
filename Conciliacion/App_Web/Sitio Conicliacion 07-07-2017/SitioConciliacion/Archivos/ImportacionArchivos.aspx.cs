@@ -252,7 +252,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                 Limpiar();
                             else
                                 ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(),
-                                                                    "alert('Ocurrier�n errores al importar el archivo);",
+                                                                    "alert('Ocurrieron errores al importar el archivo);",
                                                                     true);
                             if (File.Exists(rutaCompleta))
                                 File.Delete(rutaCompleta);
