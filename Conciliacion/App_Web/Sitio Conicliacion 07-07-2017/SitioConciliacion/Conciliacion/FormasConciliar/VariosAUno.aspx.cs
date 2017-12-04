@@ -2723,7 +2723,19 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         {
             if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
                 grvPrima = (GridView)Session["TABLADEINTERNOS"];
+
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+            if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
+            {
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                //    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
+                //grvPedidos.DataSource = null;
+                //grvPedidos.DataBind();
+                grvPedidos.DataSource = wucBuscaClientesFacturas.BuscaCliente();
+                grvPedidos.DataBind();
+                grvPedidos.DataBind();
+                return;
+            }
             grvInternos.DataBind();
             grvInternos.DataBind();
             //ActualizarTotalesAgregados_GridAgregados();

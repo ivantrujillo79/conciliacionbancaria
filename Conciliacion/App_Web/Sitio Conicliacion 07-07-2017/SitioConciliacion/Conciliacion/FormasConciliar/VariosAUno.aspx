@@ -937,7 +937,7 @@
                                     <td style="width: 50%;">
                                         <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
                                             Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                            ToolTip="FILTRAR FMovimiento" Width="25px"
+                                            ToolTip="FILTRAR Cliente" Width="25px"
                                             OnClick="btnFiltraCliente_Click" />
                                     </td>
                                 </tr>
@@ -1162,14 +1162,14 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
-                        <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                        <%--<asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnSorting="grvPedidos_Sorting"
                             AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging"
                             OnRowDataBound="grvPedidos_RowDataBound" OnDataBound="grvPedidos_DataBound">
-                            <%-- <EmptyDataTemplate>
+                            <!-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
-                            </EmptyDataTemplate>--%>
+                            </EmptyDataTemplate>-->
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
                                 <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
@@ -1237,7 +1237,62 @@
                                 </asp:TemplateField>
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
+                        </asp:GridView>--%>
+
+                        <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                            CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="595"
+                            ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting"
+                            AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging">
+                            <HeaderStyle HorizontalAlign="Center" />
+                            <Columns>
+                                <asp:TemplateField HeaderText="FSuministro" SortExpression="FSuministro">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro","{0:d}") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ControlStyle CssClass="centradoMedio" />
+                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Monto" SortExpression="Total">
+                                    <ItemTemplate>
+                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:C}") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
+                                    <ItemTemplate>
+                                            <asp:Label ID="lblCliente" runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Justify"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
+                                    <ItemTemplate>
+                                            <asp:Label ID="lblConcepto" runat="server" Text='<%# Eval("Concepto") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("FolioFactura") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("Cliente") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                </asp:TemplateField>
+
+                            </Columns>
+                            <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+
                         <asp:HiddenField ID="hfInternosSV" runat="server" />
                         <asp:HiddenField ID="hfInternosSH" runat="server" />
                     </td>
