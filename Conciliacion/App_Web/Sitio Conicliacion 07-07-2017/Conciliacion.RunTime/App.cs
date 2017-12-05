@@ -270,6 +270,17 @@ namespace Conciliacion.RunTime
 
         }
 
+        private static Pagare pagare;
+        public static Pagare Pagare
+        {
+            get
+            {
+                if (pagare == null)
+                    pagare = new PagareDatos(App.ImplementadorMensajes);
+                return pagare;
+            }
+        }
+
         private static string cadenaconexion;
        
         
@@ -284,6 +295,6 @@ namespace Conciliacion.RunTime
                 cadenaconexion = value;
             }
         }
-        
+
     }
 }
