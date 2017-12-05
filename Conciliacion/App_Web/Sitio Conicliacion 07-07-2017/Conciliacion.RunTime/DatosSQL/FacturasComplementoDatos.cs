@@ -50,10 +50,11 @@ namespace Conciliacion.RunTime.DatosSQL
 
             catch (Exception ex)
             {
-                stackTrace = new StackTrace();
+                /*stackTrace = new StackTrace();
                 this.ImplementadorMensajes.MostrarMensaje("No se pudo guardar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
                 stackTrace = null;
-                resultado = false;
+                resultado = false;*/
+                throw ex;
             }
 
             return resultado;

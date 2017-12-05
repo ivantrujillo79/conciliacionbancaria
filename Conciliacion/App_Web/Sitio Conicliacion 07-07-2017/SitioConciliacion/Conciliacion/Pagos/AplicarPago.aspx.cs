@@ -594,8 +594,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
-               // conexion = new Conexion();
-                
 
 
                 if (objMovimientoCaja.Guardar(conexion))
@@ -620,12 +618,13 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                    
 
-                    int idCobranza = -1;
+                    int idCobranza = 0;
 
-                  /*  
-                     
-                    
-                     if (aplicacobranza == "1")
+                    parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                    string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
+
+
+                    if (aplicacobranza == "1")
                     {
                         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                         string strUsuario = usuario.IdUsuario.Trim();
@@ -650,7 +649,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                             if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
                             {
-                                App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                               
+                               App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                             }
                         }
                         catch (Exception ex)
@@ -662,7 +662,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         }
                         // lanzarReporteCobranza(idCobranza); quitar, ya no debe mostrarse por múltiple trasban
                     }
-                    */
+                    
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
                          corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
@@ -673,14 +673,16 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
-       /*     conexion.AbrirConexion(true);
+            conexion.AbrirConexion(true);
             FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
             objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
             objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
             objFacturasComplemento.AnioConciliacion = añoConciliacion;
             objFacturasComplemento.MesConciliacion = mesConciliacion;
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
-            objFacturasComplemento.Guardar(conexion);*/
+            objFacturasComplemento.Guardar(conexion);
+
+          //  conexion.Comando.Transaction.Rollback();
 
             conexion.Comando.Transaction.Commit();
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
