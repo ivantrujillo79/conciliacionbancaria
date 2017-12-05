@@ -821,7 +821,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             bool resultado = true;
             try
             {
-                if ((this.MontoConciliado + referencia.Total > this.monto + this.Diferencia) & (this.MismoClienteM(referencia.Cliente) == false))
+                /*if ((this.MontoConciliado + referencia.Total > this.monto + this.Diferencia) & (this.MismoClienteM(referencia.Cliente) == false))
                 {
                     this.ImplementadorMensajes.MostrarMensaje("El pedido " + referencia.Pedido + " supera el monto a conciliar: " + this.monto);
                     return false;
@@ -830,7 +830,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 {
                     this.ImplementadorMensajes.MostrarMensaje("Ha acompletado el monto a conciliar, ya no puede agregar mas pedidos.");
                     return false;
-                }
+                }*/
                 ReferenciaConciliadaPedido RefConciliada;
                 RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliadaPedido.CrearObjeto();
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion

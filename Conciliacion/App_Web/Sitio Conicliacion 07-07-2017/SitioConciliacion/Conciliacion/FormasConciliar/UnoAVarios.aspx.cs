@@ -105,8 +105,54 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
     }
 
+
+    public static string GetPostBackControlId(Page page)
+    {
+        if (!page.IsPostBack)
+            return string.Empty;
+
+        Control control = null;
+        // Buscar a "__EVENTTARGET" 
+        string controlName = page.Request.Params["__EVENTTARGET"];
+        if (!String.IsNullOrEmpty(controlName))
+        {
+            control = page.FindControl(controlName);
+        }
+        else
+        {
+            // Si __EVENTTARGET es null, el control es de tipo botón
+            // y hay que iterar para encontrarlo
+
+            string controlId;
+            Control foundControl;
+
+
+            foreach (string ctl in page.Request.Form)
+            {
+                // Manejo especial de los ImageButton
+                if (ctl.EndsWith(".x") || ctl.EndsWith(".y"))
+                {
+                    controlId = ctl.Substring(0, ctl.Length - 2);
+                    foundControl = page.FindControl(controlId);
+                }
+                else
+                {
+                    foundControl = page.FindControl(ctl);
+                }
+
+                if (!(foundControl is IButtonControl)) continue;
+
+                control = foundControl;
+                break;
+            }
+        }
+
+        return control == null ? String.Empty : control.ID;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        string objControl = GetPostBackControlId(this.Page);
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
@@ -222,6 +268,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     if (objSolicitdConciliacion.ConsultaPedido())
                     {
+                        
                         lblGridAP.Text = "PEDIDOS ";
                         lblSucursalCelula.Text = "Celula Interna";
                         ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
@@ -235,17 +282,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                                                               =
                                                                                               tdMontoIn.Visible = false;
                         Carga_CelulaCorporativo(corporativo);
-
-                        /**Modifico: CNSM 
-                        Fecha: 08/06/2017**/
                         ConsultarPedidosInternos();
-
                         ConsultaInicialPedidosInternos();
-
-                        //CHECAR SI SE DEJA EL CAMBIO DE VALIDATIONGROUP
                         btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                         rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                         rvDiferencia.ValidationGroup = "UnoVariosPedidos";
+                        
                     }
                     Carga_SucursalCorporativo(corporativo);
                     if (objSolicitdConciliacion.ConsultaArchivo())
@@ -301,19 +343,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                                                           =
                                                                                           tdMontoIn.Visible = false;
                     Carga_CelulaCorporativo(corporativo);
-
-                    /**Modifico: CNSM 
-                    Fecha: 08/06/2017**/
                     ConsultarPedidosInternos();
-
                     ConsultaInicialPedidosInternos();
-
+                    
                     grvInternos.Visible = false;
-
-                    //CHECAR SI SE DEJA EL CAMBIO DE VALIDATIONGROUP
                     btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                     rvDiferencia.ValidationGroup = "UnoVariosPedidos";
+
+                    if (objControl == "btnFiltraCliente" || objControl == "btnAgregarPedido")
+                    {
+                        grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    }
                 }
                     Carga_SucursalCorporativo(corporativo);
                 if (objSolicitdConciliacion.ConsultaArchivo())
@@ -816,6 +857,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
 
     }
+
+    protected void grvPedidos_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+    
+        //btnAgregarPedido. btnAgregarPedido_Click
+    }
+
+    protected void grvPedidos_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        Response.Write(e.CommandArgument);
+        if (e.CommandName == "AgregarPedidoAConciliacion")
+        {
+            int index = Convert.ToInt32(e.CommandArgument);
+            // Recupera la fila en la que se hizo clic al botón
+            GridViewRow row = grvPedidos.Rows[index];
+        }
+
+    }
+ 
+
 
     //Crea la paginacion para Concilidos
     protected void grvConciliadas_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -3934,12 +3995,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarPedido_Click(object sender, EventArgs e)
     {
+        grvPedidos.DataBind();
         if (grvExternos.Rows.Count > 0)
         {
             Button btnAgregarPedido = sender as Button;
             GridViewRow gRowIn = (GridViewRow)(btnAgregarPedido).Parent.Parent;
             //Leer Referencia Externa
             ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
+            Session["POR_CONCILIAR_INTERNO"] = ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
             ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
             agregarPedidoReferenciaExterna(rcp, rncP);
         }
@@ -3948,12 +4011,41 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     }
 
+    private List<ReferenciaNoConciliadaPedido> ConvierteTablaAReferenciaNoConciliadaPedido(DataTable dtEntrada)
+    {
+        List<ReferenciaNoConciliadaPedido> ListaPedidosRegresar = new List<ReferenciaNoConciliadaPedido>();
+
+        if (dtEntrada.Rows.Count > 0)
+        {
+            foreach (DataRow drPedido in dtEntrada.Rows)
+            {
+                ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                string sDocumento = drPedido["Documento"].ToString();
+                decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
+                RefNoConciliadaPedido.PedidoReferencia = sDocumento;
+                RefNoConciliadaPedido.Total = dMonto;
+                RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
+                RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
+                RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
+                RefNoConciliadaPedido.Folio = 1;
+                RefNoConciliadaPedido.Secuencia = 1;
+                RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
+
+                ListaPedidosRegresar.Add(RefNoConciliadaPedido);
+            }   
+        }
+        return ListaPedidosRegresar;
+    }
+
     public ReferenciaNoConciliadaPedido leerReferenciaPedidoSeleccionada(int rowIndex)
     {
         listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
         int pedido = Convert.ToInt32(grvPedidos.DataKeys[rowIndex].Values["Pedido"]);
         int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[rowIndex].Values["Celula"]);
         int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[rowIndex].Values["AñoPed"]);
+
+       
+
         return
             listaReferenciaPedidos.Single(
                 s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
@@ -4999,7 +5091,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
                 //grvPedidos.DataSource = null;
                 //grvPedidos.DataBind();
-                grvPedidos.DataSource = wucBuscaClientesFacturas.BuscaCliente();
+                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 grvPedidos.DataBind();
                 grvPedidos.DataBind();
                 return;
