@@ -66,7 +66,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override void CreaEncabezadoRelacionCobranza(Conexion _conexion)
         {
-            _conexion.Comando.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
             _conexion.Comando.CommandText = "spCyCCobranzaAltaModifica";
 
 
@@ -83,6 +86,12 @@ namespace Conciliacion.RunTime.DatosSQL
             _conexion.Comando.Parameters["@SigCobranza"].Value = 0;
             _conexion.Comando.ExecuteNonQuery();
             this.Cobranza = int.Parse(_conexion.Comando.Parameters["@SigCobranza"].Value.ToString());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
         }
 

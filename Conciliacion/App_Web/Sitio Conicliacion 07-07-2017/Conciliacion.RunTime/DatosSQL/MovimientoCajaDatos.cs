@@ -313,11 +313,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 resultado = true;
             }
             catch (Exception ex)
-            {
-                if (conexion.Comando.Transaction != null)
-                {
-                    conexion.Comando.Transaction.Rollback();
-                }
+            {               
                 throw ex;
             }
             finally

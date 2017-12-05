@@ -41,7 +41,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = this.MesConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = this.FolioConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.TinyInt)).Value = 1;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@cobranza", System.Data.SqlDbType.Int)).Value = 1; //Cambiar por la propiedad this.Cobranza
+                _conexion.Comando.Parameters.Add(new SqlParameter("@cobranza", System.Data.SqlDbType.Int)).Value = this.Cobranza;
                 _conexion.Comando.ExecuteNonQuery();
                 
             }
