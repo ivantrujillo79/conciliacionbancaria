@@ -199,7 +199,7 @@
                 //                CalcularTotal(montoexterno);
                 var montoseleccionado = document.getElementById('<%=lblMontoExterno.ClientID%>');
                 var monto = parseFloat((montoseleccionado.innerText).replace(/[^0-9-.]/g, ''));
-                CalcularTotal(monto);
+                //CalcularTotal(monto);
             });
 
             function CalcularTotal(montoexterno) {
