@@ -133,6 +133,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             
             CargarConfiguracion_wucCargaExcel();
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             if (!Page.IsPostBack)
             {
                 //Leer variables de URL
@@ -144,7 +145,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
-                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
@@ -277,11 +277,57 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
+                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
                 if (hdfCargaAgregado.Value == "1")
                 {
                     GenerarAgregadosExcel();
                 }
                 MostrarPopUp_ConciliacionManual();
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    lblGridAP.Text = "PEDIDOS ";
+                    lblSucursalCelula.Text = "Celula Interna";
+                    ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
+                    btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible =
+                                                                        lblVer.Visible =
+                                                                       txtDias.CausesValidation =
+                                                                        txtDias.Enabled = ddlSucursal.Enabled =
+                                                                                          btnHistorialPendientesInterno
+                                                                                              .Visible =
+                                                                                          tdEtiquetaMontoIn.Visible
+                                                                                          =
+                                                                                          tdMontoIn.Visible = false;
+                    Carga_CelulaCorporativo(corporativo);
+
+                    /**Modifico: CNSM 
+                    Fecha: 08/06/2017**/
+                    ConsultarPedidosInternos();
+
+                    ConsultaInicialPedidosInternos();
+
+                    grvInternos.Visible = false;
+
+                    //CHECAR SI SE DEJA EL CAMBIO DE VALIDATIONGROUP
+                    btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
+                    rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
+                    rvDiferencia.ValidationGroup = "UnoVariosPedidos";
+                }
+                    Carga_SucursalCorporativo(corporativo);
+                if (objSolicitdConciliacion.ConsultaArchivo())
+                {
+                 /*   lblSucursalCelula.Text = "Sucursal Interna";
+                    lblGridAP.Text = "INTERNOS ";
+                    ddlSucursal.Visible = true;
+                    Carga_SucursalCorporativo(corporativo);
+                    ConsultarArchivosInternos();
+                    btnActualizarConfig.ValidationGroup = "UnoVarios";
+                    lblArchivosInternos.Visible = true;*/
+                }
+                    txtDias.Enabled = true;
+
             }
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
@@ -2178,17 +2224,22 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     catch (Exception e)
                     {
                         App.ImplementadorMensajes.MostrarMensaje(
-                            "Cliente no es valido, tendra que agregar el pedido directamenete.");
+                            "Cliente no es válido, tendrá que agregar el pedido directamenete.");
                     }
 
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje(
-                        "Cliente no es valido, tendra que agregar el pedido directamenete.");
+                        "Cliente no es válido, tendrá que agregar el pedido directamenete.");
 
-                Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                    Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                    cliente, false);
+                
+
+                if (ddlCelula.SelectedItem != null)
+                {
+                    Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
+                        Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                        cliente, false);
+                }
                 // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
                 LlenaGridViewPedidos();
