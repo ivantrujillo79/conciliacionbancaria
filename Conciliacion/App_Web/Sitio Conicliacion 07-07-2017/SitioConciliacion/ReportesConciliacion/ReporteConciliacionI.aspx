@@ -878,7 +878,7 @@
                                         </td>
                                         <td class="etiqueta lineaVertical centradoMedio bg-color-azul fg-color-blanco" style="width: 15%;
                                             padding: 5px 5px 5px 5px">
-                                            <asp:Label runat="server" ID="lblMontoResto"></asp:Label>
+                                            <asp:Label runat="server" ID="lblMontoResto" Width="70px"></asp:Label>
                                         </td>
                                         <td class="iconoOpcion bg-color-naranja" rowspan="2">
                                             <asp:ImageButton ID="imgBuscarPedido" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
@@ -921,7 +921,8 @@
                                                         <Columns>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:CheckBox runat="server" ID="chkSeleccionado" />
+                                                                    <asp:CheckBox runat="server" ID="chkSeleccionado" AutoPostBack="True"
+                                                                        OnCheckedChanged="chkSeleccionado_CheckedChanged" />
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
