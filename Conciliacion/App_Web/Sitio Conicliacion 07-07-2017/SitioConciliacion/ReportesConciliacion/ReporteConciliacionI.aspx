@@ -878,7 +878,7 @@
                                         </td>
                                         <td class="etiqueta lineaVertical centradoMedio bg-color-azul fg-color-blanco" style="width: 15%;
                                             padding: 5px 5px 5px 5px">
-                                            <asp:Label runat="server" ID="lblMontoResto"></asp:Label>
+                                            <asp:Label runat="server" ID="lblMontoResto" Width="70px"></asp:Label>
                                         </td>
                                         <td class="iconoOpcion bg-color-naranja" rowspan="2">
                                             <asp:ImageButton ID="imgBuscarPedido" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
@@ -915,13 +915,14 @@
                                                 <div>
                                                     <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                                        ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" AllowPaging="False">
+                                                        ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente,Total" AllowPaging="False">
                                   
                                                         <HeaderStyle HorizontalAlign="Center" />
                                                         <Columns>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:CheckBox runat="server" ID="chkSeleccionado" />
+                                                                    <asp:CheckBox runat="server" ID="chkSeleccionado" AutoPostBack="True"
+                                                                        OnCheckedChanged="chkSeleccionado_CheckedChanged" />
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
