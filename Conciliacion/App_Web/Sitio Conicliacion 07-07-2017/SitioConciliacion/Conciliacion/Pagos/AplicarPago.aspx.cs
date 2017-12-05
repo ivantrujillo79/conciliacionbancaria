@@ -73,6 +73,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 GenerarTablaReferenciasAPagarPedidos();
                 LlenaGridViewReferenciasPagos();
 
+                decimal totalTemp = 0;
+
+                foreach (ReferenciaConciliadaPedido objReferencia in listaReferenciaConciliadaPagos)
+                {
+                    totalTemp = totalTemp + objReferencia.Total;
+                }
+
+                movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
+                movimientoCajaAlta.Total = totalTemp;
+                HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
+
                 tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
                 imgExportar.Enabled = false;
             }
@@ -109,6 +120,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             //short caja = movimientoCajaAlta.Caja;
             //string FOperacion = Convert.ToString(movimientoCajaAlta.FOperacion);
             HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
+            HttpContext.Current.Session["LIST_REF_PAGAR"] = movimientoCajaAlta.ListaPedidos;
         }
         catch (Exception ex) { App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.StackTrace + "\nMensaje: " + ex.Message); }
 
@@ -139,7 +151,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     {
         try
         {
-            // movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
+             //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
             listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC);
             HttpContext.Current.Session["LIST_REF_PAGAR"] = listaReferenciaConciliadaPagos;
         }
@@ -609,10 +621,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
 
 
-                   // lanzarReporteComprobanteDeCaja(objMovimientoCaja); quitar, ya no debe de mostrarse por múltiple trasban
+                    // lanzarReporteComprobanteDeCaja(objMovimientoCaja); quitar, ya no debe de mostrarse por múltiple trasban
 
-         //           Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-                    Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                    //           Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                    //      Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                    //listaReferenciaConciliadaPagos= (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
                     GenerarTablaReferenciasAPagarPedidos();
                     LlenaGridViewReferenciasPagos();
 
@@ -682,8 +695,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);
 
-          //  conexion.Comando.Transaction.Rollback();
 
+            //conexion.Comando.Transaction.Rollback();
             conexion.Comando.Transaction.Commit();
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
            
