@@ -87,6 +87,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 }
             }
 
+            if (Convert.ToDecimal(hdfMontoResto.Value) > 0)
+            {
+                lblMontoResto.Text = Convert.ToDecimal(hdfMontoResto.Value).ToString("C2");
+            }
             wucRangoFechas.GridViewFiltrar = grvPedidos;
             wucRangoFechas.CampoFiltrar = "FSuministro";
             wucRangoFechas.TextoDespliega = "Fecha Factura:";
@@ -2415,35 +2419,35 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     }
 
-    protected void chkSeleccionado_CheckedChanged(object sender, EventArgs e)
-    {
-        decimal mMonto, mMontoExterno, mResto;
-        mMonto = mMontoExterno = mResto = 0M;
-        listaReferenciaPedidos = Session["PEDIDOS_CONCILIAR"] as List<ReferenciaNoConciliadaPedido>;
+    //protected void chkSeleccionado_CheckedChanged(object sender, EventArgs e)
+    //{
+    //    decimal mMonto, mMontoExterno, mResto;
+    //    mMonto = mMontoExterno = mResto = 0M;
+    //    listaReferenciaPedidos = Session["PEDIDOS_CONCILIAR"] as List<ReferenciaNoConciliadaPedido>;
         
-        /*          LEER MONTO EXTERNO          */
-        ReferenciaConciliadaCompartida rfc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
-        mMontoExterno = rfc.MontoExterno;
+    //    /*          LEER MONTO EXTERNO          */
+    //    ReferenciaConciliadaCompartida rfc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
+    //    mMontoExterno = rfc.MontoExterno;
 
-        List<GridViewRow> pedidosSeleccionados =
-            grvPedidos.Rows.Cast<GridViewRow>()
-                       .Where(
-                           fila =>
-                           fila.RowType == DataControlRowType.DataRow &&
-                           (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked))
-                       .ToList();
-        if (pedidosSeleccionados.Count <= 0)
-        {
-            lblMontoResto.Text = lblMontoExterno.Text;
-            return;
-        }
-        foreach (GridViewRow grv in pedidosSeleccionados)
-        {
-            mMonto += decimal.Parse(grvPedidos.DataKeys[grv.RowIndex].Values["Total"].ToString(), NumberStyles.Currency);
-        }
+    //    List<GridViewRow> pedidosSeleccionados =
+    //        grvPedidos.Rows.Cast<GridViewRow>()
+    //                   .Where(
+    //                       fila =>
+    //                       fila.RowType == DataControlRowType.DataRow &&
+    //                       (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked))
+    //                   .ToList();
+    //    if (pedidosSeleccionados.Count <= 0)
+    //    {
+    //        lblMontoResto.Text = lblMontoExterno.Text;
+    //        return;
+    //    }
+    //    foreach (GridViewRow grv in pedidosSeleccionados)
+    //    {
+    //        mMonto += decimal.Parse(grvPedidos.DataKeys[grv.RowIndex].Values["Total"].ToString(), NumberStyles.Currency);
+    //    }
 
-        mResto = mMontoExterno - mMonto;
-        lblMontoResto.Text = mResto.ToString("C");
-    }
+    //    mResto = mMontoExterno - mMonto;
+    //    lblMontoResto.Text = mResto.ToString("C");
+    //}
 }
 

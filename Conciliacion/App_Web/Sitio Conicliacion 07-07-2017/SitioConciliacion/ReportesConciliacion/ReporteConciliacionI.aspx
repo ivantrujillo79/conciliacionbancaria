@@ -203,20 +203,20 @@
             });
 
             function CalcularTotal(montoexterno) {
-
                 var total = 0;
 
-                $('#<%=grvPedidos.ClientID%> tr:not(:last)').each(function () {
+                $('#<%=grvPedidos.ClientID%> tr').each(function () {
                     var checkBox = $(this).find("input[type='checkbox']");
                     if ($(checkBox).is(':checked')) {
                         $(this).attr("checked", "checked");
-                        var coltotal = parseFloat($("td:eq(3) span", this).html());
+                        var coltotal = Number($("td:eq(5) span", this).html().replace(/[^0-9\.-]+/g, ""));
                         if (!isNaN(coltotal)) {
                             total += coltotal;
                         }
                     }
                 });
                 var resultado = montoexterno - total;
+                $('#<%= hdfMontoResto.ClientID%>').val(resultado);
                 $('#<%=lblMontoResto.ClientID%>').html(FormatToCurrency(resultado));
                 //            $('#<%=grvPedidos.ClientID%> tr:last td:eq(3) span').html(total);
             }
@@ -876,6 +876,7 @@
                                         <td class="etiqueta lineaVertical centradoMedio" style="width: 15%; padding: 5px 5px 5px 5px">
                                             Resto:
                                         </td>
+                                        <asp:HiddenField runat="server" ID="hdfMontoResto" value="0"/>
                                         <td class="etiqueta lineaVertical centradoMedio bg-color-azul fg-color-blanco" style="width: 15%;
                                             padding: 5px 5px 5px 5px">
                                             <asp:Label runat="server" ID="lblMontoResto" Width="70px"></asp:Label>
@@ -921,8 +922,8 @@
                                                         <Columns>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:CheckBox runat="server" ID="chkSeleccionado" AutoPostBack="True"
-                                                                        OnCheckedChanged="chkSeleccionado_CheckedChanged" />
+                                                                    <asp:CheckBox runat="server" ID="chkSeleccionado" /> <%--AutoPostBack="True"
+                                                                        OnCheckedChanged="chkSeleccionado_CheckedChanged" --%>
                                                                 </ItemTemplate>
                                                                 <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                                                 <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
