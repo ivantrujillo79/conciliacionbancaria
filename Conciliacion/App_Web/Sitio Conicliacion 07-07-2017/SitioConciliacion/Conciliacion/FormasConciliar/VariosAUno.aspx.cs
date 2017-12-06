@@ -2714,6 +2714,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
         GridView grvPrima = null;
+        DataTable dtPedidos = null;
+        List<ReferenciaNoConciliadaPedido> ListPedidos;
+        ReferenciaNoConciliadaPedido rp;
+        
         if (tipoConciliacion == 2)
         {
             if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
@@ -2727,13 +2731,27 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
             if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
             {
-                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
-                //    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
-                //grvPedidos.DataSource = null;
-                //grvPedidos.DataBind();
-                grvPedidos.DataSource = wucBuscaClientesFacturas.BuscaCliente();
+                dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
+                grvPedidos.DataSource = dtPedidos;
                 grvPedidos.DataBind();
                 grvPedidos.DataBind();
+                if (dtPedidos.Rows.Count == 0) return;
+
+                /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
+                ListPedidos = new List<ReferenciaNoConciliadaPedido>();
+                foreach (DataRow tr in dtPedidos.Rows)
+                {
+                    rp = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                    rp.AñoPedido    = Convert.ToInt32(tr["AñoPed"]);
+                    rp.CelulaPedido = Convert.ToInt32(tr["Celula"]);
+                    rp.Pedido       = Convert.ToInt32(tr["Pedido"]);
+                    rp.Total        = Convert.ToDecimal(tr["Total"]);
+                    rp.Foliofactura = tr["FolioFactura"].ToString();
+                    rp.Cliente      = Convert.ToInt32(tr["Cliente"]);
+                    rp.Nombre       = tr["Nombre"].ToString();
+                    ListPedidos.Add(rp);
+                }
+                Session["POR_CONCILIAR_INTERNO"] = ListPedidos;
                 return;
             }
             grvInternos.DataBind();
