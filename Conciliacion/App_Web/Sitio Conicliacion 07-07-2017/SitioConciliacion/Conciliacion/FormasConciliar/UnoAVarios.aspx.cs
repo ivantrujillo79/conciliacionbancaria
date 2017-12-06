@@ -1246,7 +1246,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
-                    
+                    ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
+                    lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoPedido, 2).ToString("C2");
+                    lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
+                    lblMontoResto.Text = Decimal.Round(rE.Monto - rE.MontoPedido, 2).ToString("C2");
                 }
             }
             else
@@ -3976,7 +3979,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             txtPedido.Text = String.Empty;
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: No existe ninguna transacci&oacute;n externa', function(){ alertify.error('Error en la solicitud'); });", true);
     }
 
     protected void btnAgregarPedido_Click(object sender, EventArgs e)
@@ -3996,11 +3999,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
             grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
             grvPedidos.DataBind();
-
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
-
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: No existe ninguna transacci&oacute;n externa', function(){ alertify.error('Error en la solicitud'); });", true);
     }
 
     private List<ReferenciaNoConciliadaPedido> ConvierteTablaAReferenciaNoConciliadaPedido(DataTable dtEntrada)

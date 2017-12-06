@@ -1571,7 +1571,7 @@
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
                                 
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="True">
+                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="False">
                                     <ItemTemplate>
                                             <asp:Label ID="lblPedidoPedido" runat="server" Text='<%# Eval("Pedido") %>'></asp:Label>
                                     </ItemTemplate>
@@ -1579,7 +1579,7 @@
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Celula" SortExpression="Celula" Visible="True">
+                                <asp:TemplateField HeaderText="Celula" SortExpression="Celula" Visible="False">
                                     <ItemTemplate>
                                             <asp:Label ID="lblCelulaPedido" runat="server" Text='<%# Eval("Celula") %>'></asp:Label>
                                     </ItemTemplate>
@@ -1587,7 +1587,7 @@
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
                                 
-                                <asp:TemplateField HeaderText="AñoPed" SortExpression="AñoPed" Visible="True">
+                                <asp:TemplateField HeaderText="AñoPed" SortExpression="AñoPed" Visible="False">
                                     <ItemTemplate>
                                             <asp:Label ID="lblAñoPedPedido" runat="server" Text='<%# Eval("AñoPed") %>'></asp:Label>
                                     </ItemTemplate>
