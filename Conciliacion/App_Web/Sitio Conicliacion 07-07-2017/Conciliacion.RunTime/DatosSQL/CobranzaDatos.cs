@@ -131,7 +131,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     pedidoCobranza.Celula = referenciaConciliadaPedido.CelulaPedido;
                     pedidoCobranza.Cobranza = this.Id;
                     pedidoCobranza.GestionInicial = 1;/*Gestion inicial siempre es 1*/
-                    pedidoCobranza.Saldo = referenciaConciliadaPedido.Saldo;
+                    pedidoCobranza.Saldo = referenciaConciliadaPedido.Total;
 
                     pedidoCobranza.Guardar(conexion);
                 }
@@ -139,10 +139,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             catch (Exception ex)
             {
-                if (conexion.Comando.Transaction != null)
-                {
-                    conexion.Comando.Transaction.Rollback();
-                }
+               
                 throw ex;
             }
             finally
