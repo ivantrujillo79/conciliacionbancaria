@@ -115,8 +115,9 @@ namespace Conciliacion.RunTime.DatosSQL
                 decimal totalSaldo = 0;
                 foreach (ReferenciaConciliadaPedido referenciaConciliadaPedido in listaReferenciaConciliadaPedido)
                 {
-                    totalSaldo = totalSaldo + referenciaConciliadaPedido.Saldo;
+                    totalSaldo = totalSaldo + referenciaConciliadaPedido.Total;
                 }
+
                 this.Total = totalSaldo;
 
                 //this.Total = listaReferenciaConciliadaPedido.Aggregate(this.Total, (current, referenciaConciliadaPedido) => current = +referenciaConciliadaPedido.Saldo);
