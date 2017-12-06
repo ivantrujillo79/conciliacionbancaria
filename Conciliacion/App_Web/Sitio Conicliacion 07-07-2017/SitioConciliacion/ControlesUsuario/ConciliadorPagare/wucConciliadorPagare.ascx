@@ -62,9 +62,14 @@
             </table>
         </td>
         <td style="width:5%" align="left" class="iconoOpcion bg-color-naranja">
-            <asp:ImageButton ID="imgBotonBuscarFacturasManual" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                ToolTip="BUSCAR" style="padding: 10px 4px 7px 5px;"  OnClick="imgBotonBuscarFacturasManual_Click" 
+            <asp:ImageButton ID="imgBuscaPagares" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                ToolTip="BUSCAR" style="padding: 10px 4px 7px 5px;" 
                 ValidationGroup="vgFecha"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="etiqueta lineaVertical centradoMedio" style="width:50%; padding:5px" >
+            Monto conciliar:
         </td>
     </tr>
 </table>
