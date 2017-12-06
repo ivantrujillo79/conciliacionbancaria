@@ -1510,7 +1510,7 @@
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="595"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
-                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging"
+                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
                             DataKeyNames="Celula,Pedido,AñoPed,Cliente" EnableViewState="True">
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
@@ -2058,7 +2058,7 @@
                             </div>
                             <asp:GridView ID="grvAgregados" runat="server" AllowPaging="True" AutoGenerateColumns="False"
                                 BorderStyle="Dotted" CssClass="grvResultadoConsultaCss" Font-Size="12px" ShowHeaderWhenEmpty="True"
-                                Width="90%" ShowHeader="False" BorderColor="White" DataKeyNames="Folio" PageSize="6"
+                                Width="90%" ShowHeader="True" BorderColor="White" DataKeyNames="Folio" PageSize="6"
                                 OnRowDeleting="grvAgregados_RowDeleting" OnPageIndexChanging="grvAgregados_PageIndexChanging">
                                 <Columns>
                                     <asp:TemplateField>

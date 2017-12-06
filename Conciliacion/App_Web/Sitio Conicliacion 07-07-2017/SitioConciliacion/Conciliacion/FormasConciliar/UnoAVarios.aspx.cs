@@ -1234,7 +1234,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 			
-			
             if (grvExternos.Rows.Count > 0)
             {
                 if (objSolicitdConciliacion.ConsultaArchivo())
