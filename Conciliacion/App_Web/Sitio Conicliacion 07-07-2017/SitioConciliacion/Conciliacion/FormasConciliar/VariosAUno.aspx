@@ -145,6 +145,21 @@
 
                 });
             }
+            $('#<%=grvPedidos.ClientID%>').gridviewScroll({
+                    width: 595,
+                    height: 372,
+                    freezesize: 0,
+                    arrowsize: 30,
+                    varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
+                    varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
+                    harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
+                    harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
+                    headerrowcount: 1,
+                    startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
+                    startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
+                    onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
+                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
+                });
         }
     </script>
     <!-- Validar: solo numeros -->
@@ -791,7 +806,7 @@
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
                                             Style="display: none"></asp:Label>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="35px"></ItemStyle>
@@ -1068,7 +1083,7 @@
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
                                             Style="display: none"></asp:Label>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
@@ -1162,14 +1177,14 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
-                        <%--<asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                        <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnSorting="grvPedidos_Sorting"
                             AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging"
                             OnRowDataBound="grvPedidos_RowDataBound" OnDataBound="grvPedidos_DataBound">
-                            <!-- <EmptyDataTemplate>
+                            <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
-                            </EmptyDataTemplate>-->
+                            </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
                                 <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
@@ -1187,6 +1202,13 @@
                                     <ControlStyle CssClass="centradoMedio" />
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("FolioFactura") %>'></asp:Label>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Monto" SortExpression="Total">
                                     <ItemTemplate>
@@ -1237,65 +1259,10 @@
                                 </asp:TemplateField>
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
-                        </asp:GridView>--%>
-
-                        <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                            CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="595"
-                            ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting"
-                            AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging">
-                            <HeaderStyle HorizontalAlign="Center" />
-                            <Columns>
-                                <asp:TemplateField HeaderText="FSuministro" SortExpression="FSuministro">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro","{0:d}") %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ControlStyle CssClass="centradoMedio" />
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Monto" SortExpression="Total">
-                                    <ItemTemplate>
-                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:C}") %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
-                                    <ItemTemplate>
-                                            <asp:Label ID="lblCliente" runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Justify"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
-                                    <ItemTemplate>
-                                            <asp:Label ID="lblConcepto" runat="server" Text='<%# Eval("Concepto") %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
-                                    <ItemTemplate>
-                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("FolioFactura") %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
-                                    <ItemTemplate>
-                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("Cliente") %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-
-                            </Columns>
-                            <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
-
                         <asp:HiddenField ID="hfInternosSV" runat="server" />
                         <asp:HiddenField ID="hfInternosSH" runat="server" />
-                    </td>
+                    </div>
                 </tr>
             </table>
         </ContentTemplate>

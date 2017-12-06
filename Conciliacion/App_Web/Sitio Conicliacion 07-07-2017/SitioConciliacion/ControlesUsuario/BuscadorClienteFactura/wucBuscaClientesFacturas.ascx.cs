@@ -55,23 +55,30 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         //la propiedad "GridRelacionado", serán filtrados para sólo mostrar los pedidos relacionados con el cliente provisto por la 
         //propiedad "NumeroClienteFiltrar".
 
-        DataView dv = null;
-        NumeroClienteFiltrar = txtCliente.Text.Trim();
-        if (txtCliente.Text.Trim() != "" && GridView != null && GridView.DataSource != null)
+        try
         {
-            DataTable dtDatos = (DataTable)GridView.DataSource;
-            if (NumeroClienteFiltrar != string.Empty)
+            DataView dv = null;
+            NumeroClienteFiltrar = txtCliente.Text.Trim();
+            if (txtCliente.Text.Trim() != "" && GridView != null && GridView.DataSource != null)
             {
-                dv = new DataView(dtDatos);
-                dv.RowFilter = "Cliente = " + NumeroClienteFiltrar;
+                DataTable dtDatos = (DataTable)GridView.DataSource;
+                if (NumeroClienteFiltrar != string.Empty)
+                {
+                    dv = new DataView(dtDatos);
+                    dv.RowFilter = "Cliente = " + NumeroClienteFiltrar;
+                }
+                if (dv == null)
+                    return dtDatos;
+                else
+                    return dv.ToTable();
             }
-            if (dv == null)
-                return dtDatos;
             else
-                return dv.ToTable();
+                return null;
         }
-        else
-            return null;
+        catch(Exception)
+        {
+            throw new Exception("Ingrese un número de cliente válido.");
+        }
     }
 
     public DataTable BuscaCliente()
@@ -81,20 +88,28 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         //propiedad "NumeroClienteFiltrar".
 
         //DataView dv = null;
-        DataTable dtClientePedidos = null;
-        NumeroClienteFiltrar = txtCliente.Text.Trim();
-
-        if (txtCliente.Text.Trim() != "")
+        try
         {
-            Cliente cliente = App.Cliente.CrearObjeto();
+            DataTable dtClientePedidos = null;
+            NumeroClienteFiltrar = txtCliente.Text.Trim();
 
-            Conexion conexion = new Conexion();
-            conexion.AbrirConexion(true);
+            if (txtCliente.Text.Trim() != "")
+            {
+                Cliente cliente = App.Cliente.CrearObjeto();
 
-            dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt32(NumeroClienteFiltrar), conexion);            
+                Conexion conexion = new Conexion();
+                conexion.AbrirConexion(true);
+
+                dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt32(NumeroClienteFiltrar), conexion);
+            }
+
+            return dtClientePedidos;
+        }
+        catch(Exception)
+        {
+            throw new Exception("Ingrese un número de cliente válido.");
         }
 
-        return dtClientePedidos;
     }
 
     protected void btnBuscar_Click(object sender, ImageClickEventArgs e)
