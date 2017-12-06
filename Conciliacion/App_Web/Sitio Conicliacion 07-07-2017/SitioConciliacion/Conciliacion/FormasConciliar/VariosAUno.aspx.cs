@@ -878,7 +878,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             /*          Asignar forma de conciliación "Varios a Uno" o  "Varios a Uno Pedidos"           */
             short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
             //extSeleccionados.Select(s => { s.FormaConciliacion = formaConciliacion; return s; }).ToList();
-            
+
             foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
             {
                 rfNC.FormaConciliacion = formaConciliacion;
@@ -2717,46 +2717,55 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         DataTable dtPedidos = null;
         List<ReferenciaNoConciliadaPedido> ListPedidos;
         ReferenciaNoConciliadaPedido rp;
-        
-        if (tipoConciliacion == 2)
+        try
         {
-            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                grvPrima = (GridView)Session["TABLADEAGREGADOS"];
-        }
-        else
-        {
-            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                grvPrima = (GridView)Session["TABLADEINTERNOS"];
+            short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
 
-            grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
-            if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
+            if (tipoConciliacion == 2)
             {
-                dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
-                grvPedidos.DataSource = dtPedidos;
-                grvPedidos.DataBind();
-                grvPedidos.DataBind();
-                if (dtPedidos.Rows.Count == 0) return;
-
-                /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
-                ListPedidos = new List<ReferenciaNoConciliadaPedido>();
-                foreach (DataRow tr in dtPedidos.Rows)
-                {
-                    rp = App.ReferenciaNoConciliadaPedido.CrearObjeto();
-                    rp.AñoPedido    = Convert.ToInt32(tr["AñoPed"]);
-                    rp.CelulaPedido = Convert.ToInt32(tr["Celula"]);
-                    rp.Pedido       = Convert.ToInt32(tr["Pedido"]);
-                    rp.Total        = Convert.ToDecimal(tr["Total"]);
-                    rp.Foliofactura = tr["FolioFactura"].ToString();
-                    rp.Cliente      = Convert.ToInt32(tr["Cliente"]);
-                    rp.Nombre       = tr["Nombre"].ToString();
-                    ListPedidos.Add(rp);
-                }
-                Session["POR_CONCILIAR_INTERNO"] = ListPedidos;
-                return;
+                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                    grvPrima = (GridView)Session["TABLADEAGREGADOS"];
             }
-            grvInternos.DataBind();
-            grvInternos.DataBind();
-            //ActualizarTotalesAgregados_GridAgregados();
+            else
+            {
+                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                    grvPrima = (GridView)Session["TABLADEINTERNOS"];
+
+                grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+                if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
+                {
+                    dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
+                    if (dtPedidos.Rows.Count == 0) return;
+
+                    grvPedidos.DataSource = dtPedidos;
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
+                    /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
+                    ListPedidos = new List<ReferenciaNoConciliadaPedido>();
+                    foreach (DataRow tr in dtPedidos.Rows)
+                    {
+                        rp = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                        rp.AñoPedido        = Convert.ToInt32(tr["AñoPed"]);
+                        rp.CelulaPedido     = Convert.ToInt32(tr["Celula"]);
+                        rp.Pedido           = Convert.ToInt32(tr["Pedido"]);
+                        rp.Total            = Convert.ToDecimal(tr["Total"]);
+                        rp.Foliofactura     = tr["FolioFactura"].ToString();
+                        rp.Cliente          = Convert.ToInt32(tr["Cliente"]);
+                        rp.Nombre           = tr["Nombre"].ToString();
+                        rp.FormaConciliacion = formaConciliacion;
+                        ListPedidos.Add(rp);
+                    }
+                    Session["POR_CONCILIAR_INTERNO"] = ListPedidos;
+                    return;
+                }
+                grvInternos.DataBind();
+                grvInternos.DataBind();
+                //ActualizarTotalesAgregados_GridAgregados();
+            }
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
 }
