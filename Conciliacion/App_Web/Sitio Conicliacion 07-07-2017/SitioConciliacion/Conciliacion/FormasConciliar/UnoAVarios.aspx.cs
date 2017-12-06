@@ -1770,8 +1770,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
-            if (tpConciliacion == 2 || tpConciliacion == 6)
+            if (objSolicitdConciliacion.ConsultaPedido())//tpConciliacion == 2 || tpConciliacion == 6)
             {
                 tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof (int));
                 tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof (int));
