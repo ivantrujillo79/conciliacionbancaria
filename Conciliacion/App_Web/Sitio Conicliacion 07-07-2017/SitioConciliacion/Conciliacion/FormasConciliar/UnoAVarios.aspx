@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
     CodeFile="UnoAVarios.aspx.cs" Inherits="Conciliacion_FormasConciliar_UnoAVarios"
-    MaintainScrollPositionOnPostback="false" %>
+    MaintainScrollPositionOnPostback="false" EnableEventValidation="false" %>
     
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>

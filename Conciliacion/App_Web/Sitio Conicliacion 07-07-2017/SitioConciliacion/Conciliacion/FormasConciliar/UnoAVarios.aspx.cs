@@ -43,6 +43,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private DataTable tblTransaccionesConciliadas;
     private DataTable tblReferenciaExternas;
     private DataTable tblReferenciaInternas;
+    private string objControlPostBack;
+
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     public DataTable tblDetalleTransaccionConciliada;
     public DataTable tblReferenciaAgregadasInternas;
@@ -152,7 +154,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        string objControl = GetPostBackControlId(this.Page);
+        objControlPostBack = GetPostBackControlId(this.Page);
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
@@ -351,9 +353,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                     rvDiferencia.ValidationGroup = "UnoVariosPedidos";
 
-                    if (objControl == "btnFiltraCliente" || objControl == "btnAgregarPedido")
+                    if (objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido")
                     {
                         grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                        grvPedidos.DataBind();
                     }
                 }
                     Carga_SucursalCorporativo(corporativo);
@@ -2239,38 +2242,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     }
 
-    //public void ConsultarPedidosInternos()
-    //{
-    //    if (grvExternos.Rows.Count > 0)
-    //    {
-    //        //Obtener el la referencia externa seleccionada
-    //        ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
-    //                                          ? leerReferenciaExternaSeleccionada()
-    //                                          : tranExternaAnteriorSeleccionada;
-    //        //Leer Variables URL 
-    //        cargarInfoConciliacionActual();
-
-    //        Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-    //                         Convert.ToInt32(ddlCelula.SelectedItem.Value), rfEx.Referencia.Trim());
-    //        GenerarTablaPedidos();
-    //        LlenaGridViewPedidos();
-    //        statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);
-    //        if (statusFiltro)
-    //        {
-    //            //Leer el tipoConciliacion URL
-    //            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-
-    //            cargar_ComboCampoFiltroDestino(tipoConciliacion, ddlFiltrarEn.SelectedItem.Value);
-    //            tipoFiltro = Session["TipoFiltro"] as string;
-    //            FiltrarInternos(tipoFiltro);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        grvPedidos.DataSource = null;
-    //        grvPedidos.DataBind();
-    //    }
-    //}
     public void ConsultaInicialPedidosInternos()
     {
         try
@@ -2309,8 +2280,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 else
                     App.ImplementadorMensajes.MostrarMensaje(
                         "Cliente no es válido, tendrá que agregar el pedido directamenete.");
-
-                
 
                 if (ddlCelula.SelectedItem != null)
                 {
@@ -4022,6 +3991,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             Session["POR_CONCILIAR_INTERNO"] = ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
             ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
             agregarPedidoReferenciaExterna(rcp, rncP);
+            DataTable dtTemporal = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            dtTemporal.Rows[gRowIn.RowIndex].Delete();
+            HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
+            grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            grvPedidos.DataBind();
+
         }
         else
             App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
@@ -4089,7 +4064,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
                 GenerarTablaAgregadosArchivosInternos(rfExterna, tipoConciliacion);
                 ActualizarTotalesAgregados();
-                ConsultarPedidosInternos();
+                if (objControlPostBack != "btnAgregarPedido")
+                {
+                    ConsultarPedidosInternos();
+                }
             }
             else
                 App.ImplementadorMensajes.MostrarMensaje(
@@ -5104,10 +5082,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
             if ( grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0 )
             {
-                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
-                //    "alertify.alert('Conciliaci&oacute;n bancaria','Cliente sin pedidos en cartera');", true);
-                //grvPedidos.DataSource = null;
-                //grvPedidos.DataBind();
                 HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
                 grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 grvPedidos.DataBind();
