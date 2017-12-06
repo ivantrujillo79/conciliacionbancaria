@@ -570,6 +570,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public bool ConInterno
         {
             get { return coninterno; }
+            set { coninterno = value; }
         }
 
         public decimal Diferencia

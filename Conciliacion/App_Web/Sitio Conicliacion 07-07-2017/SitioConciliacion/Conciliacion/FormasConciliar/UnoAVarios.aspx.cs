@@ -16,6 +16,7 @@ using System.Web.UI.WebControls;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using CatalogoConciliacion.ReglasNegocio;
+using Conciliacion.RunTime.DatosSQL;
 using SeguridadCB.Public;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 
@@ -641,6 +642,41 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.TipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]); 
     }
 
+
+    private void GenerarAgregadosBusquedaPedidosDelCliente(List<ReferenciaNoConciliadaPedido> PedidosBuscadosUsuario)
+    {
+        List<ReferenciaNoConciliada> ReferenciasExcel;
+        List<ReferenciaNoConciliadaPedido> ReferenciasPedidoExcel;
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        decimal monto = 0;
+        int agregados = 0;
+        decimal resto = 0;
+
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+        if (objSolicitdConciliacion.ConsultaPedido())
+        {
+            ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+            ReferenciasPedidoExcel = PedidosBuscadosUsuario;
+
+            foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
+            {
+                RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
+                monto += ReferenciaPedido.Total;
+                agregados ++;
+            }
+
+            GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
+            //ActualizarTotalesAgregados();
+            ActualizarTotalesAgregadosExcel(grvAgregadosPedidos);
+
+            this.hdfVisibleCargaArchivo.Value = "0";
+        }
+    }
+
     private void GenerarAgregadosExcel()
     {
         try
@@ -655,7 +691,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 int agregados = 0;
                 decimal resto = 0;
 
-                if (tipoConciliacion == 2 || tipoConciliacion == 6)
+                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+                if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
                     ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
@@ -1415,14 +1456,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         if (grvExternos.Rows.Count > 0)
         {
-
             ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
             if (!rfExterno.Completo)
             {
                 if (rfExterno.ListaReferenciaConciliada.Count > 0)
                 {
                     rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
-                    
+                    rfExterno.ConInterno = false;
                     if (rfExterno.GuardarReferenciaConciliada())
                     {
                         //Leer Variables URL 
@@ -1865,10 +1905,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public void GenerarTablaAgregadosArchivosInternosExcel(ReferenciaNoConciliada refExternaSelec, int tpConciliacion)
     //Genera la tabla Referencias (Archivos/Pedidos) agregados
     {
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+		
         try
         {
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
-            if (tpConciliacion == 2 || tpConciliacion == 6)
+            if (objSolicitdConciliacion.ConsultaPedido())
             {
                 tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof(int));
                 tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof(int));
@@ -3991,13 +4036,30 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //Leer Referencia Externa
             ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
             Session["POR_CONCILIAR_INTERNO"] = ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
-            ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
-            agregarPedidoReferenciaExterna(rcp, rncP);
-            DataTable dtTemporal = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            
+            /*ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
+            agregarPedidoReferenciaExterna(rcp, rncP);*/
+
+            
+            listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+            int pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
+            int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
+            int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
+
+            List<ReferenciaNoConciliadaPedido> ListaParaCarga = new List<ReferenciaNoConciliadaPedido>();
+            ListaParaCarga.Add(listaReferenciaPedidos.Single(
+                s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
+            
+            GenerarAgregadosBusquedaPedidosDelCliente(ListaParaCarga);
+
+            DataTable dtTemporal = new DataTable();
+            dtTemporal=(DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
             dtTemporal.Rows[gRowIn.RowIndex].Delete();
+            dtTemporal.AcceptChanges();
             HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
             grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
             grvPedidos.DataBind();
+
         }
         else
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: No existe ninguna transacci&oacute;n externa', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -4009,21 +4071,25 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         if (dtEntrada.Rows.Count > 0)
         {
+
             foreach (DataRow drPedido in dtEntrada.Rows)
             {
-                ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
-                string sDocumento = drPedido["Documento"].ToString();
-                decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
-                RefNoConciliadaPedido.PedidoReferencia = sDocumento;
-                RefNoConciliadaPedido.Total = dMonto;
-                RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
-                RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
-                RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
-                RefNoConciliadaPedido.Folio = 1;
-                RefNoConciliadaPedido.Secuencia = 1;
-                RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
+                if (drPedido.RowState == DataRowState.Unchanged)
+                {
+                    ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                    string sDocumento = drPedido["Documento"].ToString();
+                    decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
+                    RefNoConciliadaPedido.PedidoReferencia = sDocumento;
+                    RefNoConciliadaPedido.Total = dMonto;
+                    RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
+                    RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
+                    RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
+                    RefNoConciliadaPedido.Folio = 1;
+                    RefNoConciliadaPedido.Secuencia = 1;
+                    RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
 
-                ListaPedidosRegresar.Add(RefNoConciliadaPedido);
+                    ListaPedidosRegresar.Add(RefNoConciliadaPedido);
+                }
             }   
         }
         return ListaPedidosRegresar;
