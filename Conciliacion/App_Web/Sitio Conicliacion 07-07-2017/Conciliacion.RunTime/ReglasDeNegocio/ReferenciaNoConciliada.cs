@@ -821,7 +821,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             bool resultado = true;
             try
             {
-                /*if ((this.MontoConciliado + referencia.Total > this.monto + this.Diferencia) & (this.MismoClienteM(referencia.Cliente) == false))
+                if ((this.MontoConciliado + referencia.Total > this.monto + this.Diferencia) & (this.MismoClienteM(referencia.Cliente) == false))
                 {
                     this.ImplementadorMensajes.MostrarMensaje("El pedido " + referencia.Pedido + " supera el monto a conciliar: " + this.monto);
                     return false;
@@ -830,7 +830,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 {
                     this.ImplementadorMensajes.MostrarMensaje("Ha acompletado el monto a conciliar, ya no puede agregar mas pedidos.");
                     return false;
-                }*/
+                }
                 ReferenciaConciliadaPedido RefConciliada;
                 RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliadaPedido.CrearObjeto();
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion
@@ -857,10 +857,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 RefConciliada.Secuencia = this.secuencia; //Secuencia del externo
                 RefConciliada.Año = this.año; //Año externo
 
-                RefConciliada.MontoConciliado = this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia)
-                                                    ? referencia.Total //Monto del pedido
-                    //: (this.MontoPedido + referencia.Total) - this.Monto; //La diferencia
-                                                    : ((this.Monto) - this.MontoPedido); //La diferencia
+                RefConciliada.MontoConciliado = this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia) ? referencia.Total : ((this.Monto) - this.MontoPedido);
 
                 RefConciliada.Deposito = this.Monto;
                 RefConciliada.FMovimiento = referencia.FMovimiento;//Fecha Movimiento 

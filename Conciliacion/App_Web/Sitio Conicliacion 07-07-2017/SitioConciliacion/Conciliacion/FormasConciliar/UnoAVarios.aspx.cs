@@ -1226,12 +1226,25 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+			
+			
             if (grvExternos.Rows.Count > 0)
             {
-                ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
-                lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
-                lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+                if (objSolicitdConciliacion.ConsultaArchivo())
+                {
+                    ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
+                    lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
+                    lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
+                    lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+                }
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    
+                }
             }
             else
             {
