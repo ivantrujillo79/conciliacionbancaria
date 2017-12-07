@@ -4870,6 +4870,22 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         CargarDatadatepicker(dateMin);
     }
 
+    protected void imgPagare_Click(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            if (grvExternos.Rows.Count > 0)
+            {
+                mpeConciliarPagares.Show();
+            }
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " 
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
     protected void imgCargar_Click(object sender, ImageClickEventArgs e)
     {
         try
