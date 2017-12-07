@@ -629,7 +629,7 @@
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
-                                                    ToolTip="DESCONCILIAR" Width="20px" Height="20px" OnClientClick='<%# "return confirm(\"¿Esta seguro de DESCONCILIAR la Transacción: " + Eval("FolioExterno").ToString() + ": Secuencia: "+ Eval("SecuenciaExterno").ToString() + "?¡Se actualizará la conciliacion y su detalle! ?\");" %>'
+                                                    ToolTip="DESCONCILIAR" Width="20px" Height="20px" OnClientClick='<%# "return confirm(\"¿Esta seguro de DESCONCILIAR la Transacción: " + Eval("FolioExterno").ToString() + ", Secuencia: "+ Eval("SecuenciaExterno").ToString() + "? ¡Se actualizará la conciliacion y su detalle!\");" %>'
                                                     CommandName="DESCONCILIAR" />
                                                 <asp:Button runat="server" ID="imgDetalleConciliado" CssClass="Detalle centradoMedio boton"
                                                     ToolTip="VER DETALLE" Width="20px" Height="20px" CommandName="Select" />
