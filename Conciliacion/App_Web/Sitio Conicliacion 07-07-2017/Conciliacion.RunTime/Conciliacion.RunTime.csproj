@@ -81,6 +81,7 @@
     <Compile Include="DatosSQL\DispersorPagoDatos.cs" />
     <Compile Include="DatosSQL\FacturasComplementoDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
+    <Compile Include="DatosSQL\PagareDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
     <Compile Include="DatosSQL\CobranzaDatos.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
+    <Compile Include="ReglasDeNegocio\Pagare.cs" />
     <Compile Include="ReglasDeNegocio\PagoPropuesto.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />
