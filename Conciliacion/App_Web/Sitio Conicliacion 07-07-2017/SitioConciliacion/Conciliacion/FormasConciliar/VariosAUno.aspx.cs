@@ -226,6 +226,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         HttpContext.Current.Session["TAB_INTERNOS"] = null;
         HttpContext.Current.Session["POR_CONCILIAR_INTERNO"] = null;
         HttpContext.Current.Session["POR_CONCILIAR_EXTERNO"] = null;
+        HttpContext.Current.Session["POR_CONCILIAR_PEDIDO"] = null;
         HttpContext.Current.Session["TAB_EXTERNOS"] = null;
         HttpContext.Current.Session["TAB_EXTERNOS_01"] = null;
         HttpContext.Current.Session["TAB_INTER_RESP"] = null;
@@ -933,9 +934,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 }
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("No se han elegido de manera correcta una referencia interna.");
+                App.ImplementadorMensajes.MostrarMensaje("No se ha seleccionado una referencia interna de forma correcta.");
         }
-        catch (Exception ex) { App.ImplementadorMensajes.MostrarMensaje("Error\n -Verifique su selección."); }
+        catch (Exception) { App.ImplementadorMensajes.MostrarMensaje("Error\nVerifique su selección."); }
     }
 
     public void GenerarTablaArchivosInternos()//Genera la tabla Referencias a Conciliar de Archivos Internos
@@ -1045,7 +1046,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         try
         {
             listaReferenciaPedidos = App.Consultas.ConciliacionBusquedaPedidoVariosUno(Consultas.BusquedaPedido.Todos, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, 0, 0, diferencia, celula);
-            Session["POR_CONCILIAR_INTERNO"] = listaReferenciaPedidos;
+            //Session["POR_CONCILIAR_INTERNO"] = listaReferenciaPedidos;
+            Session["POR_CONCILIAR_PEDIDO"] = listaReferenciaPedidos;
         }
         catch (Exception ex)
         {
@@ -1831,7 +1833,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     }
     public ReferenciaNoConciliadaPedido leerReferenciaPedidoSeleccionada()
     {
-        listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+        //listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+        listaReferenciaPedidos = Session["POR_CONCILIAR_PEDIDO"] as List<ReferenciaNoConciliadaPedido>;
 
         int celula = Convert.ToInt32(grvPedidos.DataKeys[indiceInternoSeleccionado].Values["Celula"]);
         int pedido = Convert.ToInt32(grvPedidos.DataKeys[indiceInternoSeleccionado].Values["Pedido"]);
@@ -2203,7 +2206,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     public ReferenciaNoConciliadaPedido leerReferenciaPedidoSeleccionada(int rowIndex)
     {
-        listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+        //listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+        listaReferenciaPedidos = Session["POR_CONCILIAR_PEDIDO"] as List<ReferenciaNoConciliadaPedido>;
 
         int pedido = Convert.ToInt32(grvPedidos.DataKeys[rowIndex].Values["Pedido"]);
         int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[rowIndex].Values["Celula"]);
@@ -2739,7 +2743,6 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
                     grvPedidos.DataSource = dtPedidos;
                     grvPedidos.DataBind();
-                    grvPedidos.DataBind();
                     /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
                     ListPedidos = new List<ReferenciaNoConciliadaPedido>();
                     foreach (DataRow tr in dtPedidos.Rows)
@@ -2755,7 +2758,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         rp.FormaConciliacion = formaConciliacion;
                         ListPedidos.Add(rp);
                     }
-                    Session["POR_CONCILIAR_INTERNO"] = ListPedidos;
+                    Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
                     return;
                 }
                 grvInternos.DataBind();
