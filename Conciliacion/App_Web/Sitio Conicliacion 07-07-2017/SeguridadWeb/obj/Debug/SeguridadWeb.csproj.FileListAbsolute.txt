@@ -28,6 +28,5 @@ C:\Proyectos\NET\MetroConcilia\conciliacionbancaria\Conciliacion\App_Web\Sitio C
 C:\Proyectos\NET\MetroConcilia\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
 C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.dll
 C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csprojResolveAssemblyReference.cache
 C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
 C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
