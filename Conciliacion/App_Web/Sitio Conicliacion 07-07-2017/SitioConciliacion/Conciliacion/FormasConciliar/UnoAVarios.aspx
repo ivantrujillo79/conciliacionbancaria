@@ -2416,11 +2416,11 @@
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
 
-    <!--        INICIO DE POPUP CONCILIAR PAGARES     -->
+    <!--        INICIO DE POPUP CONCILIAR PAGARES    
     <asp:HiddenField runat="server" ID="hdfConciliarPagares" />
     <asp:ModalPopupExtender ID="mpeConciliarPagares" runat="server" BackgroundCssClass="ModalBackground"
         DropShadow="False" PopupControlID="pnlConciliarPagares" TargetControlID="hdfConciliarPagares"
-        BehaviorID="ModalBehaviour" CancelControlID="imgCerrar_ConciliarPagares"> <%--EnableViewState="false"--%>
+        BehaviorID="ModalBehaviour" CancelControlID="imgCerrar_ConciliarPagares">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlConciliarPagares" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
     <asp:UpdatePanel ID="upConciliarPagares" runat="server">
@@ -2445,7 +2445,7 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     </asp:Panel>
-    <!--        FIN POPUP CONCILIAR PAGARES     -->
+          FIN POPUP CONCILIAR PAGARES     -->
 
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
