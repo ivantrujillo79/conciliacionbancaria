@@ -2217,13 +2217,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Session["StatusFiltro"] = statusFiltro;
         tipoFiltro = String.Empty;
         Session["TipoFiltro"] = tipoFiltro;
+        
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-
-        if (tipoConciliacion == 2 || tipoConciliacion == 6)
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+	    
+        if(objSolicitdConciliacion.ConsultaPedido())
             ConsultarPedidosInternos();
-        else
+        if (objSolicitdConciliacion.ConsultaArchivo())
             ConsultarArchivosInternos();
+
         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
         GenerarTablaAgregadosArchivosInternos(rfEx, tipoConciliacion);
         ActualizarTotalesAgregados();
@@ -5105,7 +5110,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (grvExternos.Rows.Count > 0)
             {
-                mpeConciliarPagares.Show();
+                //mpeConciliarPagares.Show();
             }
         }
         catch(Exception ex)

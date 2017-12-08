@@ -5,7 +5,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
-<%@ Register Src="~/ControlesUsuario/ConciliadorPagare/wucConciliadorPagare.ascx" TagPrefix="uc1" TagName="wucConciliadorPagare" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
@@ -2415,37 +2415,6 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
-
-    <!--        INICIO DE POPUP CONCILIAR PAGARES    
-    <asp:HiddenField runat="server" ID="hdfConciliarPagares" />
-    <asp:ModalPopupExtender ID="mpeConciliarPagares" runat="server" BackgroundCssClass="ModalBackground"
-        DropShadow="False" PopupControlID="pnlConciliarPagares" TargetControlID="hdfConciliarPagares"
-        BehaviorID="ModalBehaviour" CancelControlID="imgCerrar_ConciliarPagares">
-    </asp:ModalPopupExtender>
-    <asp:Panel ID="pnlConciliarPagares" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
-    <asp:UpdatePanel ID="upConciliarPagares" runat="server">
-        <ContentTemplate>
-            <div>
-                <table style="width:100%; box-sizing:border-box;">
-                    <tr class="bg-color-grisOscuro">
-                        <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
-                            <div class="floatDerecha">
-                                <asp:ImageButton runat="server" ID="imgCerrar_ConciliarPagares" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="HideModalPopup();"/>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <uc1:wucConciliadorPagare ID="wucConciliadorPagare" runat="server" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    </asp:Panel>
-          FIN POPUP CONCILIAR PAGARES     -->
 
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
