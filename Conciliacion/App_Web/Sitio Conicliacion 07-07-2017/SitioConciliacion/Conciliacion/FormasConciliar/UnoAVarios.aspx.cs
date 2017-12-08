@@ -1729,7 +1729,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             tblReferenciaInternas = new DataTable("ReferenciasInternas");
             tblReferenciaInternas.Columns.Add("Pedido", typeof(int));
-            tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(int));
+            tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(string));
             tblReferenciaInternas.Columns.Add("AñoPed", typeof(int));
             tblReferenciaInternas.Columns.Add("Celula", typeof(int));
             tblReferenciaInternas.Columns.Add("Cliente", typeof(string));
@@ -2307,6 +2307,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     : tranExternaAnteriorSeleccionada;
                 //Leer Variables URL 
                 cargarInfoConciliacionActual();
+
+                if(rfEx.Referencia.Trim()=="")
+                    return;
+
                 bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
                 string cliente = "-1";
                 if (clientevalido)
@@ -2382,6 +2386,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                   : tranExternaAnteriorSeleccionada;
                 //Leer Variables URL 
                 cargarInfoConciliacionActual();
+
+                if(rfEx.Referencia.Trim() == "")
+                    return;
+
                 bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
                 string cliente = "-1";
                 if (clientevalido)
@@ -2673,13 +2681,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void rdbTodosMenoresIn_SelectedIndexChanged(object sender, EventArgs e)
     {
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+		
+			
+
         //Leer Variables URL 
         cargarInfoConciliacionActual();
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS) TANTO PENDIENTES COMO CANCELADOS
-        if (tipoConciliacion == 2 || tipoConciliacion == 6)
+        if(	objSolicitdConciliacion.ConsultaPedido())
             ConsultarPedidosInternos();
-        else
+        if (objSolicitdConciliacion.ConsultaArchivo())
             ConsultarArchivosInternos();
     }
 
