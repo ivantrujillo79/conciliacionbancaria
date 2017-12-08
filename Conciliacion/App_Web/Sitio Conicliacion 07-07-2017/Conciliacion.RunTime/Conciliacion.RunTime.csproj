@@ -79,6 +79,7 @@
     <Compile Include="DatosSQL\ClienteDatos.cs" />
     <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
     <Compile Include="DatosSQL\DispersorPagoDatos.cs" />
+    <Compile Include="DatosSQL\FacturaManualDatos.cs" />
     <Compile Include="DatosSQL\FacturasComplementoDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\PagareDatos.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="ReglasDeNegocio\DispersorPago.cs" />
     <Compile Include="ReglasDeNegocio\DispersorPagoException.cs" />
     <Compile Include="ReglasDeNegocio\Enrutador.cs" />
+    <Compile Include="ReglasDeNegocio\FacturaManual.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
     <Compile Include="ReglasDeNegocio\FacturasComplemento.cs" />
     <Compile Include="ReglasDeNegocio\FuenteInformacion.cs" />
