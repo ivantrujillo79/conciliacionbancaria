@@ -1453,74 +1453,83 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnGuardarUnoAVarios_Click(object sender, EventArgs e)
     {
-
-        if (grvExternos.Rows.Count > 0)
+        try
         {
-            ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
-            if (!rfExterno.Completo)
+            if (grvExternos.Rows.Count > 0)
             {
-                if (rfExterno.ListaReferenciaConciliada.Count > 0)
+                ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
+                if (!rfExterno.Completo)
                 {
-                    rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
-                    rfExterno.ConInterno = false;
-                    if (rfExterno.GuardarReferenciaConciliada())
+                    if (rfExterno.ListaReferenciaConciliada.Count > 0)
                     {
-                        //Leer Variables URL 
-                        cargarInfoConciliacionActual();
-
-                        activarVerPendientesCanceladosExternos(true);
-                        Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
-                                          tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue),
-                                          EsDepositoRetiro());
-                        GenerarTablaExternos();
-                        LlenaGridViewExternos();
-
-
-                        //Limpiar referencias de Externos
-                        if (grvExternos.Rows.Count > 0)
+                        rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
+                        rfExterno.ConInterno = (formaConciliacion == 3 ? true : false);
+                        if (rfExterno.GuardarReferenciaConciliada())
                         {
-                            rfExterno = leerReferenciaExternaSeleccionada();
-                            LimpiarExternosReferencia(rfExterno);
-                            GenerarTablaAgregadosArchivosInternos(rfExterno, tipoConciliacion);
-                            ActualizarTotalesAgregados();
+                            //Leer Variables URL 
+                            cargarInfoConciliacionActual();
 
-                            if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                                ConsultarPedidosInternos();
+                            activarVerPendientesCanceladosExternos(true);
+                            Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+                                              tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue),
+                                              EsDepositoRetiro());
+                            GenerarTablaExternos();
+                            LlenaGridViewExternos();
+
+                            //ConsultarArchivosInternos();
+
+                            //Limpiar referencias de Externos
+                            if (grvExternos.Rows.Count > 0)
+                            {
+                                rfExterno = leerReferenciaExternaSeleccionada();
+                                LimpiarExternosReferencia(rfExterno);
+                                GenerarTablaAgregadosArchivosInternos(rfExterno, tipoConciliacion);
+                                ActualizarTotalesAgregados();
+
+                                if (tipoConciliacion == 2 || tipoConciliacion == 6)
+                                    ConsultarPedidosInternos();
+                                else
+                                {
+                                    activarVerPendientesCanceladosInternos(true);
+                                    ConsultarArchivosInternos();
+                                }
+                            }
                             else
                             {
-                                activarVerPendientesCanceladosInternos(true);
-                                ConsultarArchivosInternos();
-                            }
-                        }
-                        else
-                        {
-                            LimpiarExternosTodos();
-                            GenerarTablaAgregadosVacia(tipoConciliacion);
-                            ActualizarTotalesAgregados();
+                                LimpiarExternosTodos();
+                                GenerarTablaAgregadosVacia(tipoConciliacion);
+                                ActualizarTotalesAgregados();
 
+                            }
+                            //ACTUALIZAR BARRAS Y DEMAS HERRAMIENTAS
+                            LlenarBarraEstado();
+                            //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+                            //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+                                                              formaConciliacion);
+                            GenerarTablaConciliados();
+                            LlenaGridViewConciliadas();
+                            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                                "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
                         }
-                        //ACTUALIZAR BARRAS Y DEMAS HERRAMIENTAS
-                        LlenarBarraEstado();
-                        //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                        //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-                        Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                                          formaConciliacion);
-                        GenerarTablaConciliados();
-                        LlenaGridViewConciliadas();
-                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
-                            "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
+                        //else
+                        //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");
                     }
-                    //else
-                    //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje("No se han agregado ninguna referencia interna aún");
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje("No se han agregado ninguna referencia interna aún");
+                    App.ImplementadorMensajes.MostrarMensaje("El archivo externo ya fue Conciliado");
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("El archivo externo ya fue Conciliado");
+                App.ImplementadorMensajes.MostrarMensaje("No existe ningun archivo externo a conciliar");
         }
-        else
-            App.ImplementadorMensajes.MostrarMensaje("No existe ningun archivo externo a conciliar");
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " 
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     public void GenerarTablaArchivosInternos() //Genera la tabla Referencias a Conciliar de Archivos Internos
@@ -2723,61 +2732,111 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarArchivo_Click(object sender, EventArgs e)
     {
-        //try
-        //{
-        if (grvExternos.Rows.Count > 0)
+        List<ReferenciaNoConciliada> ListSeleccionadosInternos = new List<ReferenciaNoConciliada>();
+        try
         {
-            Button btnAgregarArchivo = sender as Button;
-            GridViewRow gRowIn = (GridViewRow)(btnAgregarArchivo).Parent.Parent;
-            //Leer Referencia Externa
-            ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
-            //Leer Referencia (Archivo) que se va agregar
-            int folioIn = Convert.ToInt32(grvInternos.DataKeys[gRowIn.RowIndex].Values["Folio"]);
-            int secuenciaIn = Convert.ToInt32(grvInternos.DataKeys[gRowIn.RowIndex].Values["Secuencia"]);
-
-            //Leer el tipoConciliacion URL
-            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-            //Leer Referencias Internas
-            listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
-
-            ReferenciaNoConciliada rnc =
-                listaReferenciaArchivosInternos.Single(s => s.Secuencia == secuenciaIn && s.Folio == folioIn);
-
-            if (!hdfExternosControl.Value.Equals("PENDIENTES"))
+            if (grvExternos.Rows.Count > 0)
             {
-                rcp.AgregarReferenciaConciliada(rnc);
-                //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
+                /*          Obtener registro donde se presionó el botón         */
+                Button btnAgregarArchivo = sender as Button;
+                GridViewRow gRowIn = (GridViewRow)(btnAgregarArchivo).Parent.Parent;
+                //      Leer Referencia Externa
+                ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
+                //      Leer Referencia (Archivo) que se va agregar
+                int folioIn = Convert.ToInt32(grvInternos.DataKeys[gRowIn.RowIndex].Values["Folio"]);
+                int secuenciaIn = Convert.ToInt32(grvInternos.DataKeys[gRowIn.RowIndex].Values["Secuencia"]);
+                //      Leer el tipoConciliacion URL
+                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);                
+                //      Leer Referencias Internas
+                listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
+                
+                ReferenciaNoConciliada rnc =
+                    listaReferenciaArchivosInternos.Single(s => s.Secuencia == secuenciaIn && s.Folio == folioIn);
 
+                ListSeleccionadosInternos = ObtenerSeleccionadosInternos();
 
-                GenerarTablaAgregadosArchivosInternos(rcp, tipoConciliacion);
-                ActualizarTotalesAgregados();
-                ConsultarArchivosInternos();
+                //      Agregar referencia seleccionada por medio de botón
+                bool contiene = ListSeleccionadosInternos.Any(s => (s.Secuencia == secuenciaIn) && (s.Folio == folioIn));
+                if (!contiene) { ListSeleccionadosInternos.Add(rnc); }
 
-
-            }
-            else
-            {
-                if (!rcp.StatusConciliacion.Equals("CONCILIACION CANCELADA"))
+                if (!hdfExternosControl.Value.Equals("PENDIENTES"))
                 {
-                    rcp.AgregarReferenciaConciliada(rnc);
+                    foreach(ReferenciaNoConciliada referencia in ListSeleccionadosInternos)
+                    {
+                        rcp.AgregarReferenciaConciliada(referencia);
+                    }
+
                     //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
                     GenerarTablaAgregadosArchivosInternos(rcp, tipoConciliacion);
                     ActualizarTotalesAgregados();
                     ConsultarArchivosInternos();
-
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje(
-                        "NO SE PUEDE COMPLETAR LA ACCION \nLA REFERENCIA EXTERNA ESTA CANCELADA");
-            }
-        }
-        else
-            App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
+                {
+                    if (!rcp.StatusConciliacion.Equals("CONCILIACION CANCELADA"))
+                    {
+                        foreach (ReferenciaNoConciliada referencia in ListSeleccionadosInternos)
+                        {
+                            rcp.AgregarReferenciaConciliada(referencia);
+                        }
+                        //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
+                        GenerarTablaAgregadosArchivosInternos(rcp, tipoConciliacion);
+                        ActualizarTotalesAgregados();
+                        ConsultarArchivosInternos();
 
-        //catch (Exception ex)
-        //{
-        //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
-        //}
+                    }
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje(
+                            "NO SE PUEDE COMPLETAR LA ACCION \nLA REFERENCIA EXTERNA ESTA CANCELADA");
+                }
+            }
+            else
+                App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    /// <summary>
+    /// Obtiene los registros seleccionados por medio de CheckBox
+    /// en el grid Internos
+    /// </summary>
+    private List<ReferenciaNoConciliada> ObtenerSeleccionadosInternos()
+    {
+        List<ReferenciaNoConciliada> ListInternos = new List<ReferenciaNoConciliada>();
+        try
+        {             
+            listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
+
+            List<GridViewRow> internosSeleccionados =
+                        grvInternos.Rows.Cast<GridViewRow>()
+                                   .Where(
+                                       fila =>
+                                       fila.RowType == DataControlRowType.DataRow &&
+                                       (fila.Cells[1].Controls.OfType<CheckBox>().FirstOrDefault().Checked))
+                                   .ToList();
+            if (internosSeleccionados.Count == 0)
+            {
+                return ListInternos;
+            }
+            foreach (GridViewRow row in internosSeleccionados)
+            {
+                int secuencia = Convert.ToInt32(grvInternos.DataKeys[row.RowIndex].Values["Secuencia"]);
+                int folio = Convert.ToInt32(grvInternos.DataKeys[row.RowIndex].Values["Folio"]);
+
+                ListInternos.Add( listaReferenciaArchivosInternos.Single(s => s.Secuencia == secuencia && s.Folio == folio) );
+            }
+            //App.ImplementadorMensajes.MostrarMensaje("Secuencia: " + secuencia + "\nFolio: " + folio);
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+        return ListInternos;
     }
 
     protected void btnQuitarArchivoInterno_Click(object sender, EventArgs e)
