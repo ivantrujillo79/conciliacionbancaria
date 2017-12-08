@@ -5,6 +5,7 @@
 //  Created on:      27-nov-2017 03:23:16 p.m.
 //  Original author: Desarollo_Transforma
 ///////////////////////////////////////////////////////////
+using Conciliacion.RunTime.DatosSQL;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
 	public abstract class Pagare : EmisorMensajes
     {
-
+        private Conexion conexion;
 		private int foliocorte;
 		private DateTime foperacion;
 		private int caja;
@@ -29,6 +30,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public Pagare(IMensajesImplementacion implementadorMensajes)
         {
+            this.conexion = null;
             this.FolioCorte = 0;
             this.FOperacion = DateTime.MinValue;
             this.Caja = 0;
@@ -45,28 +47,26 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.ImplementadorMensajes = implementadorMensajes;
         }
 
-        public Pagare(int foliocorte, DateTime foperacion, int caja, int consecutivo, string descripcion, decimal total, string observaciones, 
-                      short anioPed, short celula, int pedido, int cobranza, decimal saldo, short gestionInicial, 
-                      IMensajesImplementacion implementadorMensajes)
+        public Pagare(int foliocorte, DateTime foperacion, int caja, int consecutivo, string descripcion, decimal total, string observaciones, short anioPed, short celula, int pedido, int cobranza, decimal saldo, short gestioninicial, IMensajesImplementacion implementadorMensajes)
         {
-            this.FolioCorte = foliocorte;
-            this.FOperacion = foperacion;
-            this.Caja = caja;
-            this.Consecutivo = consecutivo;
-            this.Descripcion = descripcion;
-            this.Total = total;
-            this.Observaciones = observaciones;
-            this.AnioPed = anioped;
-            this.Celula = celula;
-            this.Pedido = pedido;
-            this.Cobranza = cobranza;
-            this.Saldo = saldo;
-            this.GestionInicial = gestioninicial;
+            this.foliocorte = foliocorte;
+            this.foperacion = foperacion;
+            this.caja = caja;
+            this.consecutivo = consecutivo;
+            this.descripcion = descripcion;
+            this.total = total;
+            this.observaciones = observaciones;
+            this.anioped = anioPed;
+            this.celula = celula;
+            this.pedido = pedido;
+            this.cobranza = cobranza;
+            this.saldo = saldo;
+            this.gestioninicial = gestioninicial;
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public abstract List<Pagare> ConsultaPagares(DateTime FechaFin, DateTime FechaIni);
-        public abstract List<Pagare> CargaPagare(sbyte Corporativo, sbyte Sucursal, DateTime FechaIni, DateTime FechaFin, string CuentaBanco);
+        public abstract List<Pagare> ConsultaPagares(Conexion _conexion, DateTime FechaFin, DateTime FechaIni);
+        public abstract List<Pagare> CargaPagare(Conexion _conexion, sbyte Corporativo, sbyte Sucursal, DateTime FechaIni, DateTime FechaFin, string CuentaBanco);
 
         public abstract Pagare CrearObjeto();
 

@@ -72,7 +72,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /// <param name="FechaFin"></param>
         /// <param name="FechaIni"></param>
         #endregion
-        public List<Pagare> ConsultaPagares(Conexion _conexion, DateTime FechaFin, DateTime FechaIni)
+        public override List<Pagare> ConsultaPagares(Conexion _conexion, DateTime FechaFin, DateTime FechaIni)
         {
             SqlDataReader drConsulta = null;
             try
@@ -129,7 +129,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /// <param name="FechaFin"></param>
         /// <param name="CuentaBanco"></param>
         #endregion
-        public List<Pagare> CargaPagare(Conexion _conexion, sbyte Corporativo, sbyte Sucursal, DateTime FechaIni, DateTime FechaFin, string CuentaBanco)
+        public override List<Pagare> CargaPagare(Conexion _conexion, sbyte Corporativo, sbyte Sucursal, DateTime FechaIni, DateTime FechaFin, string CuentaBanco)
         {
             SqlDataReader drConsulta = null;
             try
