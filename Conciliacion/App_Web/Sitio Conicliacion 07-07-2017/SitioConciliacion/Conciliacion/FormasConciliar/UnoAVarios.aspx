@@ -194,8 +194,7 @@
                     startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
                     onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}--%>
-
-                });
+            });
             
         }
 
@@ -1362,7 +1361,7 @@
                         </div>
                         <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             AllowPaging="True" CssClass="grvResultadoConsultaCss" AllowSorting="True" OnRowDataBound="grvInternos_RowDataBound"
-                            ShowHeaderWhenEmpty="True" ShowFooter="False" Width="100%" DataKeyNames="Secuencia, Folio, Sucursal"
+                            ShowHeaderWhenEmpty="False" ShowFooter="False" Width="100%" DataKeyNames="Secuencia, Folio, Sucursal"
                             OnSorting="grvInternos_Sorting" OnPageIndexChanging="grvInternos_PageIndexChanging"
                             PageSize="100">
                             <HeaderStyle HorizontalAlign="Center" />
