@@ -188,10 +188,10 @@
                 <div class="centradoMedio">
                     <!--        Implementar btnCargaManualAceptar_Click(); en página contenedora       -->
                     <asp:Button ID="btnAceptar" runat="server" OnClick="btnAceptar_Click" OnClientClick="btnCargaManualAceptar_Click();"
-                        CssClass="boton fg-color-blanco bg-color-azulClaro" Text="Aceptar" style="margin-right:10px;" />
+                        CssClass="boton fg-color-blanco bg-color-azulClaro" Text="ACEPTAR" style="margin-right:10px;" />
                     <!--        Implementar btnCargaManualCancelar_Click(); en página contenedora       -->
                     <asp:Button ID="btnCancelar" runat="server" OnClick="btnCancelar_Click" OnClientClick="btnCargaManualCancelar_Click();" 
-                        CssClass="boton fg-color-blanco bg-color-grisClaro" Text="Cancelar" Visible="false" />                                        
+                        CssClass="boton fg-color-blanco bg-color-grisClaro" Text="CANCELAR" Visible="false" />                                        
                 </div>
             </td>
         </tr>

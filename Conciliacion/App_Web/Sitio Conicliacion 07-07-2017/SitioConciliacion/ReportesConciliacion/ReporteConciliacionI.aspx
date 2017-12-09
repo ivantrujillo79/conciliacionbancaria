@@ -1023,8 +1023,8 @@
 						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
 							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
 								                                Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
-							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro01 fg-color-blanco"
-								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
+							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro fg-color-blanco"
+								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" Width="100px"/>
 						                                </td>	
                                                     </tr>
                                                 </table>
