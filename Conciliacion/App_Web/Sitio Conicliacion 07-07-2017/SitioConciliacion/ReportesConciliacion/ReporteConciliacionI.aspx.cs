@@ -2063,10 +2063,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         bool resultado = false;
         try
         {
-
             listaReferenciaFacturaConsulta = Session["FACTURAS_CONSULTAR_LISTA"] as List<ReferenciaNoConciliadaPedido>;
-            if (listaReferenciaFacturaConsulta != null && listaReferenciaFacturaConsulta.Count > 0 && grvPedidosFacturados.Rows.Count > 0) {
-
+            if (listaReferenciaFacturaConsulta != null && listaReferenciaFacturaConsulta.Count > 0)
+            {
                 List<GridViewRow> pedidosSeleccionados =
                     grvPedidosFacturados.Rows.Cast<GridViewRow>()
                                .Where(
@@ -2076,18 +2075,14 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                                .ToList();
                 if (pedidosSeleccionados.Count == 0)
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna factura. Verifique su selección.");
-                    return false;
+                    //App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna factura. Verifique su selección.");
+                    throw new Exception("No ha seleccionado ninguna factura. Verifique su selección.");
                 }
                 // Asignar FormaConciliacion = Cociliación manual
                 listaReferenciaFacturaConsulta.Select(s => { s.FormaConciliacion = 5; return s; }).ToList();
 
                 foreach (GridViewRow row in pedidosSeleccionados)
                 {
-                    //int pedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Pedido"]);
-                    //int celulaPedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Celula"]);
-                    //int añoPedido = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["AñoPed"]);
-
                     string folioFactura = grvPedidosFacturados.DataKeys[row.RowIndex].Values["Foliofactura"].ToString();
                     DateTime fechaFactura = Convert.ToDateTime(grvPedidosFacturados.DataKeys[row.RowIndex].Values["FechaFactura"]);
                     decimal total = decimal.Parse(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Total"].ToString(), NumberStyles.Currency);
@@ -2097,7 +2092,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                        s => s.Foliofactura == folioFactura && s.Ffactura == fechaFactura && s.Total == total);
                     if (!rfExterna.AgregarReferenciaConciliadaSinVerificacion(rfPedido)) return false;
                 }
-
                 resultado = rfExterna.GuardarReferenciaConciliada();
             }
             else
@@ -2107,8 +2101,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            //App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento.\n" + ex.Message);
-            resultado = false;
             throw ex;
         }
         return resultado;
@@ -2119,18 +2111,42 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         bool ConciliacionExitosa = false;
         try
         {
-            //if (!RecuperarReferencias_wucCargaExcel()) return;
-            ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
-            rnc.BorrarReferenciaConciliada();
-            ConciliacionExitosa = ConciliarFactura(rnc);
-            mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
-            LimpiarCamposFacturas();
-            if (!ConciliacionExitosa) return;
-            App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+            if (grvPedidosFacturados.Rows.Count > 0)
+            {
+                //if (!RecuperarReferencias_wucCargaExcel()) return;
+                //ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
+                //rnc.BorrarReferenciaConciliada();
+                //ConciliacionExitosa = ConciliarFactura(rnc);
+                //mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
+                //if (!ConciliacionExitosa) return;
+                //App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+
+                ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
+                rnc.BorrarReferenciaConciliada();
+
+
+
+                ConciliacionExitosa = ConciliarFactura(rnc);
+                mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
+                if (!ConciliacionExitosa) return;
+                App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+            }
+            else
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Para conciliar una factura manual primero debe buscarla por criterio de fecha o por su identificador.");
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                //    + "Para conciliar una factura manual primero debe buscarla por criterio de fecha o por su identificador.', "
+                //    + "function(){ alertify.error('Error en la solicitud'); });", true);
+            }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al conciliar la factura.\n[" + ex.Message + "]\nRefresque nuevamente la vista");
+            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+        }
+        finally
+        {
+            LimpiarCamposFacturas();
         }
     }
 

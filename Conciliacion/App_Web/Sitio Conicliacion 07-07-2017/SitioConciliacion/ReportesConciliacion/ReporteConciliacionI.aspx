@@ -891,8 +891,8 @@
                                     <tr>
                                         <td>
                                             <asp:Button runat="server" ID="btnBusquFact" 
-                                            Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azulOscuro centradoMedio fg-color-blanco"
-                                            Text="Buscar facturas" style="padding: 5px; border: none; cursor:pointer;" Font-size="12px"
+                                            Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azul centradoMedio fg-color-blanco"
+                                            Text="BUSCAR FACTURAS" style="padding: 5px; border: none; cursor:pointer;" Font-size="11px"
                                             OnClick="btnBuscarFactura_Click" />
                                         </td>
                                     </tr>
@@ -1023,8 +1023,8 @@
 						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
 							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
 								                                Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
-							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro01 fg-color-blanco"
-								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido();" Width="100px" />
+							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro fg-color-blanco"
+								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" Width="100px"/>
 						                                </td>	
                                                     </tr>
                                                 </table>
