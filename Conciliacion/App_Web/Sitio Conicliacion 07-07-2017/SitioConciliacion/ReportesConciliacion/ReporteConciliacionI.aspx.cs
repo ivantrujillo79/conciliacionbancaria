@@ -2114,8 +2114,18 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             if (grvPedidosFacturados.Rows.Count > 0)
             {
                 //if (!RecuperarReferencias_wucCargaExcel()) return;
+                //ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
+                //rnc.BorrarReferenciaConciliada();
+                //ConciliacionExitosa = ConciliarFactura(rnc);
+                //mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
+                //if (!ConciliacionExitosa) return;
+                //App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+
                 ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
                 rnc.BorrarReferenciaConciliada();
+
+
+
                 ConciliacionExitosa = ConciliarFactura(rnc);
                 mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
                 if (!ConciliacionExitosa) return;
