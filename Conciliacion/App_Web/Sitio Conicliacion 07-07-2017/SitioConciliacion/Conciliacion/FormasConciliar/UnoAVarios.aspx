@@ -1378,9 +1378,9 @@
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkInterno" />
                                     </ItemTemplate>
-                                    <HeaderTemplate>
+                                    <%--<HeaderTemplate>
                                         <asp:CheckBox runat="server" ID="chkTodosInternos" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedInternos" />
-                                    </HeaderTemplate>
+                                    </HeaderTemplate>--%>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
                                 </asp:TemplateField>
@@ -1507,10 +1507,10 @@
                         </asp:GridView>
                         <br />
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                            CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="595"
+                            CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
                             OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" EnableViewState="True">
+                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--EnableViewState="True"--%>
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
                             </EmptyDataTemplate>--%>
@@ -1525,6 +1525,13 @@
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox runat="server" ID="chkPedido" />
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="FSuministro" SortExpression="FSuministro">
                                     <ItemTemplate>
@@ -1570,7 +1577,7 @@
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
                                 
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="False">
+                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="True">
                                     <ItemTemplate>
                                             <asp:Label ID="lblPedidoPedido" runat="server" Text='<%# Eval("Pedido") %>'></asp:Label>
                                     </ItemTemplate>

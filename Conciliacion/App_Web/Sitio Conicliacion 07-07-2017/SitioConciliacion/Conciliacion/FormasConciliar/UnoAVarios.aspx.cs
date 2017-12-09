@@ -79,8 +79,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public List<ListaCombo> listaSucursalTransferencia = new List<ListaCombo>();
     public List<ListaCombo> listaNombreBancoTransferencia = new List<ListaCombo>();
     public List<ListaCombo> listaCuentaBancoTransferencia = new List<ListaCombo>();
-
-
+    
+    private List<int> LsIndicePedidosSeleccionados = new List<int>();
+    
     //public List<TransferenciaBancarias> ListTransferenciasBancarias = new List<TransferenciaBancarias>();
 
     private int indiceExternoSeleccionado
@@ -168,6 +169,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             formaConciliacion = 3;
         }
 
+        GuardarSeleccionadosPedidos();
         try
         {
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -180,7 +182,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
-            
+
             CargarConfiguracion_wucCargaExcel();
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             if (!Page.IsPostBack)
@@ -391,6 +393,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         catch (Exception ex)
         {
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: "+ ex.Message +"', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    private void GuardarSeleccionadosPedidos()
+    {
+        /*          Almacenar indice de filas seleccionadas         */
+        foreach (GridViewRow row in grvPedidos.Rows)
+        {
+            if (row.Cells[1].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+            {
+                LsIndicePedidosSeleccionados.Add(row.RowIndex);
+            }
         }
     }
 
@@ -4087,41 +4101,109 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarPedido_Click(object sender, EventArgs e)
     {
-        grvPedidos.DataBind();
-        if (grvExternos.Rows.Count > 0)
+        List<ReferenciaNoConciliadaPedido> ListSeleccionadosPedidos = new List<ReferenciaNoConciliadaPedido>();
+        try
         {
-            Button btnAgregarPedido = sender as Button;
-            GridViewRow gRowIn = (GridViewRow)(btnAgregarPedido).Parent.Parent;
-            //Leer Referencia Externa
-            ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
-            Session["POR_CONCILIAR_INTERNO"] = ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
-            
-            /*ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
-            agregarPedidoReferenciaExterna(rcp, rncP);*/
-
-            
-            listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
-            int pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
-            int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
-            int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
-
-            List<ReferenciaNoConciliadaPedido> ListaParaCarga = new List<ReferenciaNoConciliadaPedido>();
-            ListaParaCarga.Add(listaReferenciaPedidos.Single(
-                s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
-            
-            GenerarAgregadosBusquedaPedidosDelCliente(ListaParaCarga);
-
-            DataTable dtTemporal = new DataTable();
-            dtTemporal=(DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-            dtTemporal.Rows[gRowIn.RowIndex].Delete();
-            dtTemporal.AcceptChanges();
-            HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
-            grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
             grvPedidos.DataBind();
+            if (grvExternos.Rows.Count > 0)
+            {
+                /*          Obtener registro donde se presionó el botón         */
+                Button btnAgregarPedido = sender as Button;
+                GridViewRow gRowIn = (GridViewRow)(btnAgregarPedido).Parent.Parent;
+                //Leer Referencia Externa
+                ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
 
+                Session["POR_CONCILIAR_INTERNO"] = ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
+                /*ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
+                agregarPedidoReferenciaExterna(rcp, rncP);*/
+                listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+
+                int pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
+                int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
+                int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
+                //List<ReferenciaNoConciliadaPedido> ListaParaCarga = new List<ReferenciaNoConciliadaPedido>();
+                //ListaParaCarga.Add(listaReferenciaPedidos.Single(
+                //    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
+
+                ReferenciaNoConciliadaPedido rnc =
+                    listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
+
+                ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos();
+
+                //      Agregar referencia seleccionada por medio de botón
+                bool contiene =
+                    ListSeleccionadosPedidos.Any(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
+                if (!contiene) { ListSeleccionadosPedidos.Add(rnc); }
+
+                GenerarAgregadosBusquedaPedidosDelCliente(ListSeleccionadosPedidos);
+
+                DataTable dtTemporal = new DataTable();
+                dtTemporal = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                foreach (int idx in LsIndicePedidosSeleccionados)
+                {
+                    dtTemporal.Rows[idx].Delete();
+                }
+                dtTemporal.Rows[gRowIn.RowIndex].Delete();
+                dtTemporal.AcceptChanges();
+                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
+                grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                grvPedidos.DataBind();
+
+            }
+            else
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                    + "No existe ninguna transacci&oacute;n externa', function(){ alertify.error('Error en la solicitud'); });", true);
         }
-        else
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: No existe ninguna transacci&oacute;n externa', function(){ alertify.error('Error en la solicitud'); });", true);
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+    
+    /// <summary>
+    /// Obtiene los registros seleccionados por medio de CheckBox
+    /// en el grid Pedidos
+    /// </summary>
+    private List<ReferenciaNoConciliadaPedido> ObtenerSeleccionadosPedidos()
+    {
+        List<ReferenciaNoConciliadaPedido> ListPedidos = new List<ReferenciaNoConciliadaPedido>();
+        //List<GridViewRow> pedidosSeleccionados = new List<GridViewRow>();
+        //DataTable dtPedidos = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+        //GridView grvRespaldoPedidos = Session["grvPEDIDOS_RESPALDO"] as GridView;
+
+        //int i = 0;
+        try
+        {
+            Session["POR_CONCILIAR_INTERNO"] = 
+                ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
+            listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+            
+            List<GridViewRow> pedidosSeleccionados =
+                        grvPedidos.Rows.Cast<GridViewRow>()
+                                   .Where(
+                                       row => LsIndicePedidosSeleccionados.Contains(row.RowIndex))
+                                   .ToList();
+
+            foreach (GridViewRow row in pedidosSeleccionados)
+            {
+                int pedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Pedido"]);
+                int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Celula"]);
+                int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["AñoPed"]);
+
+                ListPedidos.Add(listaReferenciaPedidos.Single(
+                    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
+            }
+            //App.ImplementadorMensajes.MostrarMensaje("Pedido: " + pedido.ToString()
+            //            + "\nCelula: " + celulaPedido.ToString());
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return ListPedidos;
     }
 
     private List<ReferenciaNoConciliadaPedido> ConvierteTablaAReferenciaNoConciliadaPedido(DataTable dtEntrada)
@@ -5183,39 +5265,47 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
         GridView grvPrima = null;
-        //if ()
-        if (tipoConciliacion == 2)
+        try
         {
-            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
-                grvPrima = (GridView)Session["TABLADEAGREGADOS"];
-            //else
-            //if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-            //  grvAgregadosPedidosPrima = (GridView)Session[""];
-            grvAgregadosPedidos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
-            grvAgregadosPedidos.DataBind();
-            grvAgregadosPedidos.DataBind();
-            ActualizarTotalesAgregados_GridAgregados();
-        }
-        else
-        {
-            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
-                grvPrima = (GridView)Session["TABLADEINTERNOS"];
-            else
-            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                grvPrima = (GridView)Session["TABLADEINTERNOS"];
-
-            grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
-            if ( grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0 )
+            if (tipoConciliacion == 2)
             {
-                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
-                grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                grvPedidos.DataBind();
-                grvPedidos.DataBind();
-                return;
+                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                    grvPrima = (GridView)Session["TABLADEAGREGADOS"];
+                //else
+                //if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                //  grvAgregadosPedidosPrima = (GridView)Session[""];
+                grvAgregadosPedidos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+                grvAgregadosPedidos.DataBind();
+                grvAgregadosPedidos.DataBind();
+                ActualizarTotalesAgregados_GridAgregados();
             }
-            grvInternos.DataBind();
-            grvInternos.DataBind();
-            //ActualizarTotalesAgregados_GridAgregados();
+            else
+            {
+                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
+                    grvPrima = (GridView)Session["TABLADEINTERNOS"];
+                else
+                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                    grvPrima = (GridView)Session["TABLADEINTERNOS"];
+
+                grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+                if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
+                {
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                    grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
+                    return;
+                }
+                grvInternos.DataBind();
+                grvInternos.DataBind();
+                //ActualizarTotalesAgregados_GridAgregados();
+            }
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
 
