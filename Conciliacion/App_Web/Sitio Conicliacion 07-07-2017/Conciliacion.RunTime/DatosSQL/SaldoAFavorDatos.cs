@@ -27,8 +27,8 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             Folio = Convert.ToInt32(reader["Folio"]),
                             Cliente = reader["Cliente"].ToString(),
-                            NombreCliente = reader["statusmovimiento"].ToString(),
-                            CuentaBancaria = reader["statusmovimiento"]
+                            NombreCliente = reader["statusmovimiento"].ToString()//,
+                            //CuentaBancaria = reader["statusmovimiento"]
         /*Banco 
         Sucursal 
         TipoCargo 

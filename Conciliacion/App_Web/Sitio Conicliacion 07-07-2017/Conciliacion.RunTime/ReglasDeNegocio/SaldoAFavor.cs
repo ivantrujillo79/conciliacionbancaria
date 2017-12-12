@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Conciliacion.RunTime.DatosSQL;
+
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
-   public  class SaldoAFavor
+   public  class SaldoAFavor 
     {
     }
 
@@ -32,7 +34,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public List<DetalleSaldoAFavor> ConsultaSaldoAFavor(string FInicial, string FFinal, string Cliente, decimal monto)
         {
-            
+            List<DetalleSaldoAFavor> Lista = new List<DetalleSaldoAFavor>();
+
+            return Lista;
         }
 
 
