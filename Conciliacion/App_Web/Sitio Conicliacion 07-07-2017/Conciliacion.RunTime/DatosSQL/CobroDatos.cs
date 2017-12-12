@@ -19,10 +19,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public CobroDatos(short añocobro, int numcobro, string numerocheque, decimal total, decimal saldo, string numerocuenta, string numerocuentadestino,
             DateTime fcheque, int cliente, short banco, short bancoorigen, string observaciones, string status, short tipocobro, Boolean alta,
-            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, List<ReferenciaConciliadaPedido> listapedidos, IMensajesImplementacion implementadorMensajes)
+            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, IMensajesImplementacion implementadorMensajes)
             : base(añocobro, numcobro, numerocheque, total, saldo, numerocuenta, numerocuentadestino,
              fcheque, cliente, banco, bancoorigen, observaciones, status, tipocobro, alta,
-             usuario, saldoafavor, sucursalbancaria, descripcion, listapedidos, implementadorMensajes)
+             usuario, saldoafavor, sucursalbancaria, descripcion, clientepago, listapedidos, implementadorMensajes)
         {
         }
 
@@ -105,8 +105,19 @@ namespace Conciliacion.RunTime.DatosSQL
                     .Value = this.NumeroCuentaDestino;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FCheque", System.Data.SqlDbType.DateTime)).Value =
                     this.FCheque;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value =
-                    this.Cliente;
+                if (this.ClientePago==0)
+                {
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value =
+                   this.Cliente;
+                }
+                else
+                {
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value =
+                  this.ClientePago;
+                }
+               
+
+
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value =
                     this.Banco;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@BancoOrigen", System.Data.SqlDbType.SmallInt)).Value
