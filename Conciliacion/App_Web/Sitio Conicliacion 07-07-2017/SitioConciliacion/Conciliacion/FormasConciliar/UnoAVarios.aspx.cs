@@ -360,7 +360,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         grvPedidos.DataBind();
                     }
                 }
-                    Carga_SucursalCorporativo(corporativo);
+                //Carga_SucursalCorporativo(corporativo);
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                  /*   lblSucursalCelula.Text = "Sucursal Interna";
@@ -2212,36 +2212,45 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     //Seleccion del RadioButton de Referencias Externas
     protected void rdbSecuencia_CheckedChanged(object sender, EventArgs e)
     {
-        quitarSeleccionRadio("EXTERNO");
-        RadioButton rdb = sender as RadioButton;
-        rdb.Checked = true;
-        GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
-        pintarFilaSeleccionadaExterno(grv.RowIndex);
+        try
+        {
+            quitarSeleccionRadio("EXTERNO");
+            RadioButton rdb = sender as RadioButton;
+            rdb.Checked = true;
+            GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
+            pintarFilaSeleccionadaExterno(grv.RowIndex);
 
-        indiceExternoSeleccionado = grv.RowIndex;
-        ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
-        //Limpiar Listas de Referencia de demas Externos
-        LimpiarExternosReferencia(rfEx);
-        statusFiltro = false;
-        Session["StatusFiltro"] = statusFiltro;
-        tipoFiltro = String.Empty;
-        Session["TipoFiltro"] = tipoFiltro;
-        
-        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-        //Leer el tipoConciliacion URL
-        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-	    
-        if(objSolicitdConciliacion.ConsultaPedido())
-            ConsultarPedidosInternos();
-        if (objSolicitdConciliacion.ConsultaArchivo())
-            ConsultarArchivosInternos();
+            indiceExternoSeleccionado = grv.RowIndex;
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+            //Limpiar Listas de Referencia de demas Externos
+            LimpiarExternosReferencia(rfEx);
+            statusFiltro = false;
+            Session["StatusFiltro"] = statusFiltro;
+            tipoFiltro = String.Empty;
+            Session["TipoFiltro"] = tipoFiltro;
 
-        //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
-        GenerarTablaAgregadosArchivosInternos(rfEx, tipoConciliacion);
-        ActualizarTotalesAgregados();
-        ActualizarDatos_wucCargaExcel();
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            //Leer el tipoConciliacion URL
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+                ConsultarPedidosInternos();
+            if (objSolicitdConciliacion.ConsultaArchivo())
+                ConsultarArchivosInternos();
+
+            //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
+            GenerarTablaAgregadosArchivosInternos(rfEx, tipoConciliacion);
+            ActualizarTotalesAgregados();
+            ActualizarDatos_wucCargaExcel();
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     ////Seleccion del RadioButton de Referencias Pedidos
