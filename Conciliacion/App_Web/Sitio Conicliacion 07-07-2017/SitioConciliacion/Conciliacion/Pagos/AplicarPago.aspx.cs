@@ -588,7 +588,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
 
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
-            int MaxDocumentos = Convert.ToInt16(p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN"));
+
+            string valor = p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN");
+
+            if (valor.Equals(""))
+            {
+                throw new Exception("Parametro NumeroDocumentosTRANSBAN no dado de alta");
+
+            }
+            int MaxDocumentos = Convert.ToInt16(valor);
+
+
             TransBan objTransBan = new TransBan();
 
             cargarInfoConciliacionActual();
@@ -770,8 +780,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            conexion.Comando.Transaction.Rollback();
+            
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            try
+            {
+                conexion.Comando.Transaction.Rollback();
+            }
+            catch
+            {
+
+            }
+            
         }
     }
 

@@ -28,8 +28,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //Se agregaron dos atributos
         int sucursalbancaria;
         string descripcion;
+        int clientepago;
 
         private List<ReferenciaConciliadaPedido> listapedidos = new List<ReferenciaConciliadaPedido>();
+        
 
         #region Constructores
 
@@ -52,14 +54,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.alta = true;
             this.usuario = "";
             this.saldoafavor = false;
+            this.clientepago = 0;
 
             this.sucursalbancaria = 0;
             this.descripcion = "";
-        }
+        } 
 
         public Cobro(short añocobro, int numcobro, string numerocheque, decimal total, decimal saldo, string numerocuenta, string numerocuentadestino,
             DateTime fcheque, int cliente, short banco, short bancoorigen, string observaciones, string status, short tipocobro, Boolean alta,
-            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, List<ReferenciaConciliadaPedido> listapedidos, IMensajesImplementacion implementadorMensajes)
+            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.añocobro = añocobro;
@@ -80,6 +83,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.usuario = usuario;
             this.saldoafavor = saldoafavor;
             this.listapedidos = listapedidos;
+            this.clientepago = clientepago;
 
             this.sucursalbancaria = sucursalbancaria;
             this.descripcion = descripcion;
@@ -210,6 +214,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return descripcion; }
             set { descripcion = value; }
+        }
+
+        public int ClientePago
+        {
+            get { return clientepago; }
+            set { clientepago = value; }
         }
         #endregion
 
