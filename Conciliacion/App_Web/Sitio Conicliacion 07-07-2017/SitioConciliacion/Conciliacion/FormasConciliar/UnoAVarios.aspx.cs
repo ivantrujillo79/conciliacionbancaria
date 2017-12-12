@@ -452,9 +452,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// </summary>
     private void HabilitarCargaArchivo()
     {
-        if(!(lblStatusConciliacion.Equals("CONCILIACION CANCELADA") || lblStatusConciliacion.Equals("CONCILIACION CERRADA")))
+        formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (formaConciliacion == 8)
         {
-            imgCargar.Enabled = true;
+            if (!(lblStatusConciliacion.Equals("CONCILIACION CANCELADA") || lblStatusConciliacion.Equals("CONCILIACION CERRADA")))
+            {
+                imgCargar.Visible = true;
+            }
         }
     }
 
