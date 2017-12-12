@@ -5,6 +5,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
+<%@ Register Src="~/ControlesUsuario/SaldosAFavor/wucSaldoAFavor.ascx" TagPrefix="uc1" TagName="wucSaldoAFavor" %>
+
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
@@ -49,6 +51,10 @@
             $find("mpeCargaArchivo").hide();
         }
 
+        function OcultarPopUpSaldoAFavor() {
+            $find("mpeSaldosAFavor").hide();
+        }
+
         function popUpVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
@@ -57,6 +63,10 @@
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
         }
         
+        function popUpSaldoAFavorNoVisible() {
+            $('#<%= hdfSaldoAFavor.ClientID %>').val("0");
+        }
+
         /*              Botones del control wucCargaManualExcel         */
         function btnCargaManualCancelar_Click(){
             $('#<%= hdfCargaAgregado.ClientID %>').val("0");
@@ -89,6 +99,7 @@
                         $("#<%=txtFOInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
                     }
                 });
+
                 //DatePicker FMovimiento
                 $("#<%= txtFMInicio.ClientID%>").datepicker({
                     defaultDate: "+1w",
@@ -129,6 +140,7 @@
                     }
                 });
             }
+
         }
 
         function gridviewScroll() {
@@ -252,11 +264,20 @@
             }
         }
 
-    </script>
+        function ShowModalPopupSaldoAFavor() {
+           
+            var varBuscar = document.getElementById("<%=mpeSaldosAFavor.ClientID%>");
+            alert(varBuscar);
+            $find("mpeSaldosAFavor").show();
+            }
+            </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
     </script>
 
+    
+
+    
 
 
     <asp:UpdatePanel runat="server" ID="upBarraEstado" UpdateMode="Always">
@@ -1059,39 +1080,28 @@
                                             OnClick="btnRangoFechasFS_Click" ToolTip="FILTRAR FSuminstro" ValidationGroup="vgFSuministro"
                                             Width="25px" />
                                     </td>
-                                    <td class="lineaVertical" rowspan="2"></td>
-                                    <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                        <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
-                                            Text="FMovimiento"></asp:Label>
-                                        <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
-                                            Text="Documento"></asp:Label>
-                                    </td>
-                                    <td style="width: 12.5%;">
-                                        <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio"
-                                            Width="80px"></asp:TextBox>
-                                        <asp:TextBox ID="txtPedido" runat="server" CssClass="cajaTextoPequeño" ToolTip="Pedido"
-                                            Width="190px" ValidationGroup="vgAgregarPedidoDirecto"></asp:TextBox>
-                                        <%--<asp:TextBoxWatermarkExtender ID="txtWMFMInicio" runat="server" TargetControlID="txtFMInicio"
+                                    <caption>
+                                        <td class="lineaVertical" rowspan="2"></td>
+                                        <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                            <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="FMovimiento"></asp:Label>
+                                            <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="Documento"></asp:Label>
+                                        </td>
+                                        <td style="width: 12.5%;">
+                                            <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio" Width="80px"></asp:TextBox>
+                                            <asp:TextBox ID="txtPedido" runat="server" CssClass="cajaTextoPequeño" ToolTip="Pedido" ValidationGroup="vgAgregarPedidoDirecto" Width="190px"></asp:TextBox>
+                                            <%--<asp:TextBoxWatermarkExtender ID="txtWMFMInicio" runat="server" TargetControlID="txtFMInicio"
                                             WatermarkText="FMov Inicio" WatermarkCssClass="cajaTextoPequeño marcaAgua">
-                                        </asp:TextBoxWatermarkExtender>--%>
-                                    </td>
-                                    <td style="width: 12.5%;">
-                                        <asp:TextBox ID="txtFMTermino" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Fin"
-                                            Width="80px"></asp:TextBox>
-                                        <%-- <asp:TextBoxWatermarkExtender ID="txtWMFMTermino" runat="server" TargetControlID="txtFMTermino"
+                                        </asp:TextBoxWatermarkExtender>--%></td>
+                                        <td style="width: 12.5%;">
+                                            <asp:TextBox ID="txtFMTermino" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Fin" Width="80px"></asp:TextBox>
+                                            <%-- <asp:TextBoxWatermarkExtender ID="txtWMFMTermino" runat="server" TargetControlID="txtFMTermino"
                                             WatermarkText="FMov Termino" WatermarkCssClass="cajaTextoPequeño marcaAgua">
-                                        </asp:TextBoxWatermarkExtender>--%>
-                                    </td>
-                                    <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                        <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro"
-                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
-                                            OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento"
-                                            Width="25px"  />
-                                        <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro"
-                                            Height="25px" Width="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png"
-                                            ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto"
-                                            OnClick="btnAgregarPedidoDirecto_Click" />
-                                    </td>
+                                        </asp:TextBoxWatermarkExtender>--%></td>
+                                        <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                            <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento" Width="25px" />
+                                            <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png" OnClick="btnAgregarPedidoDirecto_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto" Width="25px" />
+                                        </td>
+                                    </caption>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -1148,6 +1158,15 @@
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                    <asp:ImageButton ID="ibSaldosAFavor" runat="server" CssClass="icono bg-color-verdeClaro"
+                                                    Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                    ToolTip="Administración de saldos a favor" Width="25px"
+                                                    OnClick="ibSaldosAFavor_Click"/>
+                                            </td>
+                                            <td></td>
+                                       </tr>
                                     </table>		
                                     </ContentTemplate>
                             </asp:UpdatePanel>
@@ -2421,6 +2440,12 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
+    
+    <div id="la">
+        El monto depositado genera un saldo a favor por <%= lblMontoResto.Text%> <br/> ¿desea generar el saldo a favor?
+    </div>
+    
+    
 
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
@@ -2431,4 +2456,38 @@
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
     </asp:ModalPopupExtender>
+    
+    <!-- MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
+    <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
+    <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" EnableViewState="True" />
+    <asp:ModalPopupExtender ID="mpeSaldosAFavor" runat="server" BackgroundCssClass="ModalBackground"
+                DropShadow="False" EnableViewState="false" PopupControlID="pnlSaldoAFavor"
+                TargetControlID="hdfSaldoAFavor">
+   </asp:ModalPopupExtender>
+        <asp:Panel ID="pnlSaldoAFavor" runat="server" CssClass="ModalPopup" Width="900px"
+                    Style="display: none">
+                    <asp:UpdatePanel ID="upSaldoAFavor" runat="server">
+            <ContentTemplate>
+                <div>
+                    <table style="width: 100%;">
+                        <tr class="bg-color-grisOscuro">
+                            <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                                <div class="floatDerecha bg-color-grisClaro01">
+                                    <asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                        CssClass="iconoPequeño bg-color-rojo" OnClientClick="popUpSaldoAFavorNoVisible(); OcultarPopUpSaldoAFavor();"/>
+                                </div>
+                                <div class="fg-color-blanco centradoJustificado">
+                                    CONSULTA SALDOS A FAVOR
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>  <uc1:wucSaldoAFavor runat="server" ID="wucSaldoAFavor" />  </td>
+                        </tr>
+                    </table>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </asp:Panel>
+    <!--TERMINA MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
 </asp:Content>

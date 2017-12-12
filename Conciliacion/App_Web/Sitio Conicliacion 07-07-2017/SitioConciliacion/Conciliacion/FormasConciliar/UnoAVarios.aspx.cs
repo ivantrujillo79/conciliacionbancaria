@@ -160,6 +160,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
+        wucSaldoAFavor.Contenedor = mpeSaldosAFavor;
+        wucSaldoAFavor.TipoOperacion = 2;
+
+
+        if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
+        {
+            mpeSaldosAFavor.Show(); 
+        }
+
 
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
@@ -1523,6 +1532,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                               formaConciliacion);
                             GenerarTablaConciliados();
                             LlenaGridViewConciliadas();
+
+                            if (lblMontoResto.Text.Trim() != "")
+                            {
+                                decimal SaldoAFavor = Convert.ToDecimal(lblMontoResto.Text.Replace("$",""));
+                                if (SaldoAFavor > 0)
+                                {
+                                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
+                                    if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
+                                    {
+                                        mpeSaldosAFavor.Show(); 
+                                    }
+                                    
+                                }
+                            }
+
                             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                                 "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
                         }
@@ -5345,4 +5369,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    protected void ibSaldosAFavor_Click(object sender, ImageClickEventArgs e)
+    {
+        mpeSaldosAFavor.Show();
+    }
 }
