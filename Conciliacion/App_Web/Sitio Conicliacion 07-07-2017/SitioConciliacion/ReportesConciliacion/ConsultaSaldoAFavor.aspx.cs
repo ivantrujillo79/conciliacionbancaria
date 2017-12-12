@@ -9,6 +9,7 @@ public partial class ReportesConciliacion_ConsultaSaldoAFavor : System.Web.UI.Pa
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        wucSaldoAFavor.Contenedor = null;
+        wucSaldoAFavor.TipoOperacion = 1;
     }
 }

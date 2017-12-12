@@ -42,10 +42,16 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
             ddStatusConciliacion.DataValueField = "IDOpcion";
             ddStatusConciliacion.DataTextField = "OpcionConciliacion";
             ddStatusConciliacion.DataBind();
+
+            ddStatusConciliacion.Visible = true;
+            btnCancelar.Visible = false;
+            btnGuardar.Visible = false;
         }
         else
         {
             ddStatusConciliacion.Visible = false;
+            btnCancelar.Visible = true;
+            btnGuardar.Visible = true;
         }
 
     }
