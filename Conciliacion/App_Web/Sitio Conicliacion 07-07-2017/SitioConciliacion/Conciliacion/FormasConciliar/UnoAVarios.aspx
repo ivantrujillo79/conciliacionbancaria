@@ -1383,9 +1383,9 @@
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkInterno" />
                                     </ItemTemplate>
-                                    <%--<HeaderTemplate>
+                                    <HeaderTemplate>
                                         <asp:CheckBox runat="server" ID="chkTodosInternos" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedInternos" />
-                                    </HeaderTemplate>--%>
+                                    </HeaderTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
                                 </asp:TemplateField>
