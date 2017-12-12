@@ -1515,7 +1515,7 @@
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
                             OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--EnableViewState="True"--%>
+                            DataKeyNames="Celula,Pedido,AñoPed,Cliente,FolioFactura" > <%--EnableViewState="True"--%>
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
                             </EmptyDataTemplate>--%>
@@ -1569,7 +1569,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
-                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("Cliente") %>'></asp:Label>
+                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("FolioFactura") %>'></asp:Label>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>

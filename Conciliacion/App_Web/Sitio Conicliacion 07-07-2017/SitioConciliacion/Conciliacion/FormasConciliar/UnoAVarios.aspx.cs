@@ -4151,15 +4151,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 agregarPedidoReferenciaExterna(rcp, rncP);*/
                 listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
 
-                int pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
-                int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
-                int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
+                int pedido          = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
+                int celulaPedido    = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
+                int añoPedido       = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
+                string folioFactura = grvPedidos.DataKeys[gRowIn.RowIndex].Values["FolioFactura"].ToString();
                 //List<ReferenciaNoConciliadaPedido> ListaParaCarga = new List<ReferenciaNoConciliadaPedido>();
                 //ListaParaCarga.Add(listaReferenciaPedidos.Single(
                 //    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
 
                 ReferenciaNoConciliadaPedido rnc =
-                    listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
+                    listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido
+                        && s.Foliofactura == folioFactura);
 
                 ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos();
 
@@ -4225,9 +4227,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 int pedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Pedido"]);
                 int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Celula"]);
                 int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["AñoPed"]);
+                string folioFactura = grvPedidos.DataKeys[row.RowIndex].Values["FolioFactura"].ToString();
 
                 ListPedidos.Add(listaReferenciaPedidos.Single(
-                    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
+                    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido && s.Foliofactura == folioFactura));
             }
             //App.ImplementadorMensajes.MostrarMensaje("Pedido: " + pedido.ToString()
             //            + "\nCelula: " + celulaPedido.ToString());
@@ -4261,6 +4264,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     RefNoConciliadaPedido.Folio = 1;
                     RefNoConciliadaPedido.Secuencia = 1;
                     RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
+                    RefNoConciliadaPedido.Foliofactura = drPedido["FolioFactura"].ToString();
 
                     ListaPedidosRegresar.Add(RefNoConciliadaPedido);
                 }

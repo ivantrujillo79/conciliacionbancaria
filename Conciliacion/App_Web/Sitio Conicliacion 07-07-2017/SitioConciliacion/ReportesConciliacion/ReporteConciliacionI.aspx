@@ -125,16 +125,17 @@
         function grvConciliacionCompartida_Scroll() {
             $('#<%= grvConciliacionCompartida.ClientID %>').gridviewScroll({
                 width: 1200,
-                height: -1,     /*          -1 = Ajustar altura de acuerdo al contenido          */
+                height: 500,     /*          -1 = Ajustar altura de acuerdo al contenido          */
                 freezesize: 0,
-                verticalbar: "hidden",
+                //verticalbar: "hidden",
                 arrowsize: 30,
-                //varrowtopimg: '../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                //varrowbottomimg: '../App_Scripts/ScrollGridView/Images/arrowvb.png',
+                varrowtopimg: '../App_Scripts/ScrollGridView/Images/arrowvt.png',
+                varrowbottomimg: '../App_Scripts/ScrollGridView/Images/arrowvb.png',
                 harrowleftimg: '../App_Scripts/ScrollGridView/Images/arrowhl.png',
                 harrowrightimg: '../App_Scripts/ScrollGridView/Images/arrowhr.png',
                 headerrowcount: 1,
                 startHorizontal: $("#<%=hfCompartidaSH.ClientID%>").val(), 
+                onScrollVertical: function (delta) { $("#<%=hfCompartidaSV.ClientID%>").val(delta); }, 
                 onScrollHorizontal: function (delta) { $("#<%=hfCompartidaSH.ClientID%>").val(delta);}
             });
          }
@@ -415,7 +416,7 @@
                         <asp:GridView ID="grvConciliacionCompartida" runat="server" AutoGenerateColumns="False"
                             Width="100%" AllowPaging="True" ShowHeaderWhenEmpty="True" CssClass="grvResultadoConsultaCss"
                             DataKeyNames="FolioConciliacion,CorporativoConciliacion,SucursalConciliacion,AñoConciliacion,MesConciliacion,
-                            Folio,Corporativo,Sucursal,Año,Secuencia,ConsecutivoFlujo" PageSize="50" OnPageIndexChanging="grvConciliacionCompartida_PageIndexChanging"
+                            Folio,Corporativo,Sucursal,Año,Secuencia,ConsecutivoFlujo" PageSize="25" OnPageIndexChanging="grvConciliacionCompartida_PageIndexChanging"
                             OnRowDataBound="grvConciliacionCompartida_RowDataBound" OnRowCreated="grvConciliacionCompartida_RowCreated"
                             AllowSorting="True" OnSorting="grvConciliacionCompartida_Sorting">
                             <%-- <EmptyDataTemplate>
