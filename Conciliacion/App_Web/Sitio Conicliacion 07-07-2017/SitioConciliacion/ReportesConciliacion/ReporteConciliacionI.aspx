@@ -1198,7 +1198,7 @@
                             <div style="width:100%; height:300px; overflow: scroll;">
                                 <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                     CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                    ShowHeaderWhenEmpty="True" DataKeyNames="FechaFactura, Foliofactura, Cliente, Nombre, Concepto, Total" 
+                                    ShowHeaderWhenEmpty="True" DataKeyNames="FechaFactura, Factura, Foliofactura, Cliente, Nombre, Concepto, Total" 
                                     AllowPaging="True" PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"
                                     OnSorting="grvPedidosFacturados_Sorting">
                                   
@@ -1218,7 +1218,14 @@
                                             <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Factura" SortExpression="Foliofactura">
+                                         <asp:TemplateField HeaderText="Factura" SortExpression="Factura">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFacturaFACT" runat="server" Text='<%# Eval("Factura") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="70px" BackColor="#ebecec"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Folio factura" SortExpression="Foliofactura">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblFolioFacturaFACT" runat="server" Text='<%# Eval("Foliofactura") %>' />
                                             </ItemTemplate>

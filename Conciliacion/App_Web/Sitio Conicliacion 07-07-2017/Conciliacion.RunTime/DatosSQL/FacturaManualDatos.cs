@@ -86,7 +86,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override bool Guardar(Conexion _conexion, byte corporativoconciliacion, byte sucursalconciliacion, int añoconciliacion, int mesconciliacion, 
                                     int folioconciliacion, int secuenciarelacion, int factura, byte corporativoexterno, byte sucursalexterno, int añoexterno, 
-                                    int folioexterno, int secuenciaexterno, string concepto, decimal montoconciliado, decimal montoexterno, int montointerno, 
+                                    int folioexterno, int secuenciaexterno, string concepto, decimal montoconciliado, decimal montoexterno, decimal montointerno, 
                                     int formaconciliacion, int statusconcepto, string statusconciliacion, string statusmovimiento, string usuario, DateTime falta, 
                                     string descripcion, string usuariostatusconcepto, DateTime fstatusconcepto)
         {
@@ -96,25 +96,31 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
                 _conexion.Comando.CommandText = "spCBConciliacionFacturaManualAlta";
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@corporativoconciliacion", SqlDbType.SmallInt)).Value = corporativoconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@sucursalconciliacion", SqlDbType.SmallInt)).Value = sucursalconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@añoconciliacion", SqlDbType.SmallInt)).Value = añoconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@mesconciliacion", SqlDbType.SmallInt)).Value = mesconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@folioconciliacion", SqlDbType.SmallInt)).Value = folioconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@secuenciarelacion", SqlDbType.SmallInt)).Value = secuenciarelacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@factura", SqlDbType.SmallInt)).Value = factura;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@corporativoexterno", SqlDbType.SmallInt)).Value = corporativoexterno;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@sucursalexterno", SqlDbType.SmallInt)).Value = sucursalexterno;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@añoexterno", SqlDbType.SmallInt)).Value = añoexterno;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@formaconciliacion", SqlDbType.SmallInt)).Value = formaconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@statusconcepto", SqlDbType.SmallInt)).Value = statusconcepto;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@statusconciliacion", SqlDbType.SmallInt)).Value = statusconciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@statusmovimiento", SqlDbType.SmallInt)).Value = statusmovimiento;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@usuario", SqlDbType.SmallInt)).Value = usuario;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@falta", SqlDbType.SmallInt)).Value = falta;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@descripcion", SqlDbType.SmallInt)).Value = descripcion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@usuariostatusconcepto", SqlDbType.SmallInt)).Value = usuariostatusconcepto;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@fstatusconcepto", SqlDbType.SmallInt)).Value = fstatusconcepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", SqlDbType.TinyInt)).Value = corporativoconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", SqlDbType.TinyInt)).Value = sucursalconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", SqlDbType.Int)).Value = añoconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", SqlDbType.SmallInt)).Value = mesconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", SqlDbType.Int)).Value = folioconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SecuenciaRelacion", SqlDbType.Int)).Value = secuenciarelacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Factura", SqlDbType.Int)).Value = factura;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoExterno", SqlDbType.TinyInt)).Value = corporativoexterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalExterno", SqlDbType.TinyInt)).Value = sucursalexterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoExterno", SqlDbType.Int)).Value = añoexterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioExterno", SqlDbType.Int)).Value = folioexterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SecuenciaExterno", SqlDbType.Int)).Value = secuenciaexterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Concepto", SqlDbType.VarChar, 500)).Value = concepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MontoConciliado", SqlDbType.Money)).Value = montoconciliado;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MontoExterno", SqlDbType.Money)).Value = montoexterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MontoInterno", SqlDbType.Int)).Value = montointerno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FormaConciliacion", SqlDbType.SmallInt)).Value = formaconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", SqlDbType.SmallInt)).Value = statusconcepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", SqlDbType.VarChar, 20)).Value = statusconciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@StatusMovimiento", SqlDbType.VarChar, 100)).Value = statusmovimiento;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Usuario", SqlDbType.Char, 15)).Value = usuario;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FAlta", SqlDbType.DateTime)).Value = falta;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Descripcion", SqlDbType.VarChar, 100)).Value = descripcion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@UsuarioStatusConcepto", SqlDbType.Char, 15)).Value = usuariostatusconcepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FStatusConcepto", SqlDbType.DateTime)).Value = fstatusconcepto;
                 _conexion.Comando.ExecuteNonQuery();
                 resultado = true;
             }

@@ -50,6 +50,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         DateTime ffactura;
         string serie;
         string foliofactura;
+        int factura;
 
         //private List<ReferenciaConciliadaPedido> listareferenciaconciliadapedido = new List<ReferenciaConciliadaPedido>();
         
@@ -349,6 +350,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { selecciona = value; }
         }
 
+        public int Factura
+        {
+            get { return factura; }
+            set { factura = value; }
+        }
 
         public String Foliofacturaserie
         {

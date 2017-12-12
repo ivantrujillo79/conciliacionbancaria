@@ -104,7 +104,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool Guardar(Conexion _conexion,
             byte corporativoconciliacion, byte sucursalconciliacion, int añoconciliacion, int mesconciliacion, int folioconciliacion, 
             int secuenciarelacion, int factura, byte corporativoexterno, byte sucursalexterno, int añoexterno, int folioexterno, 
-            int secuenciaexterno, string concepto, decimal montoconciliado, decimal montoexterno, int montointerno, int formaconciliacion, 
+            int secuenciaexterno, string concepto, decimal montoconciliado, decimal montoexterno, decimal montointerno, int formaconciliacion, 
             int statusconcepto, string statusconciliacion, string statusmovimiento, string usuario, DateTime falta, string descripcion, 
             string usuariostatusconcepto, DateTime fstatusconcepto);
 
@@ -329,7 +329,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
-        public int SStatusConcepto
+        public int StatusConcepto
         {
             get
             {
