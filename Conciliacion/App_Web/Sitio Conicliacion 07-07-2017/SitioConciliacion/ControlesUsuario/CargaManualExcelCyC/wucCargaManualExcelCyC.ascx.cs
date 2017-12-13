@@ -462,7 +462,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
     }
 
-    private DataTable ConvertirListaATabla<T> (IList<T> list)
+    private DataTable ConvertirListaATabla<T>(IList<T> list)
     {
         PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
         DataTable table = new DataTable();
