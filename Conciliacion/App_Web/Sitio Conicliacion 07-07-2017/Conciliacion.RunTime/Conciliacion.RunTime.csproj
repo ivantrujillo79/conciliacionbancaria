@@ -84,6 +84,7 @@
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\PagareDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
+    <Compile Include="DatosSQL\SaldoAFavorDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
     <Compile Include="DatosSQL\CobranzaDatos.cs" />
     <Compile Include="DatosSQL\CobroDatos.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="ReglasDeNegocio\ReferenciaNoConciliadaPedido.cs" />
     <Compile Include="ReglasDeNegocio\RelacionCobranza.cs" />
     <Compile Include="ReglasDeNegocio\RelacionCobranzaException.cs" />
+    <Compile Include="ReglasDeNegocio\SaldoAFavor.cs" />
     <Compile Include="ReglasDeNegocio\TransBan.cs" />
     <Compile Include="ReglasDeNegocio\TransBanException.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariaOrigen.cs" />

@@ -81,6 +81,9 @@
       <siteMapNode title="Depositos y facturas Complemento" description="Depositos y facturas Complemento" resourceKey="3" url="~/ReportesConciliacion/DepositoFacturaComp.aspx">
       </siteMapNode>
       
+      <siteMapNode title="Consulta de saldos a favor" description="Consulta de saldos a favor" resourceKey="4" url="~/ReportesConciliacion/ConsultaSaldoAFavor.aspx">
+      </siteMapNode>
+      
     </siteMapNode>
 
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
