@@ -691,6 +691,34 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                          corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
                     objMCC.Guardar(conexion);
 
+                    SaldoAFavor objSaldoAFavor = new SaldoAFavor {  AñoMovimiento 				=1,
+                                                                    TipoMovimientoAConciliar 	=1,
+                                                                    EmpresaContable				=1,
+                                                                    Caja						=1,
+                                                                    FOperacion					=DateTime.Now,
+                                                                    TipoFicha					=1,
+                                                                    Consecutivo					=1,
+                                                                    TipoAplicacionIngreso		=1,
+                                                                    ConsecutivoTipoAplicacion	=1,
+                                                                    Factura						=1,
+                                                                    AñoCobro					=2017,
+                                                                    Cobro						=1,
+                                                                    Monto						=20,/////CORREGIR
+                                                                    StatusMovimiento			="STATUSMOVIMIENTO",
+                                                                    FMovimiento					=DateTime.Now,
+                                                                    StatusConciliacion			="STATUSCONCILIACION",
+                                                                    FConciliacion				=DateTime.UtcNow,
+                                                                    CorporativoConciliacion 	=1,
+                                                                    SucursalConciliacion 		=1,
+                                                                    AñoConciliacion 			=2017,
+                                                                    MesConciliacion				=12,
+                                                                    FolioConciliacion			=71,
+                                                                    CorporativoExterno			=2,
+                                                                    SucursalExterno 			=3,
+                                                                    AñoExterno					=4,
+                                                                    FolioExterno				=5,
+                                                                    SecuenciaExterno			=6
+                                                                     };
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
