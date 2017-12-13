@@ -181,6 +181,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             List<Cobro> BufferCobro = new List<Cobro>();
 
             List<int> ListaDistintosClientes = new List<int>();
+
+            if (ObjMovimientoCajaDatos == null)
+            {
+                throw new Exception("Error en método: TransBan.ReorganizaTransban, la instancia de MovimientoCajaDatos es nula, imposible continuar con el proceso de reorganización.");
+            }
+
             ListaDistintosClientes = ObjMovimientoCajaDatos.ListaPedidos.Select(x => x.Cliente).Distinct().ToList();
             ObjMovimientoCajaDatos.ListaCobros.ForEach(X => BufferCobro.Add(X));
 
