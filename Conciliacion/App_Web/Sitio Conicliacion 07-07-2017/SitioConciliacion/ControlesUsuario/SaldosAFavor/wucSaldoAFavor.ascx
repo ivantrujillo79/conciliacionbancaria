@@ -2,29 +2,25 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <script type="text/javascript">
-    //Funcion para mostrar el calendar
-    function datapicker_modal(fDiaMin, fMesMin, fAñoMin, fDiaMax, fMesMax, fAñoMax) {
-        var cadenaMin = fDiaMin + '/' + fMesMin + '/' + fAñoMin;
-        var cadenaMax = fDiaMax + '/' + fMesMax + '/' + fAñoMax;
-        $("#<%=txtFechaInicio.ClientID%>").datepicker({
-                dateFormat: 'dd/mm/yy',
-                changeYear: true,
-                changeMonth: true,
-                minDate: cadenaMin,
-                maxDate: cadenaMax
-            });
-        }
 
-
-    $("#<%=txtFechaInicio.ClientID%>").datepicker({
-        defaultDate: "+1w",
-        changeMonth: true,
-        changeYear: true,
-        numberOfMonths: 2,
-        onClose: function (selectedDate) {
-            $("#<%=txtFechaInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-        }
-    });
+    function SAF_DatePickers() {
+        $("#<%= txtFechaInicio.ClientID%>").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function(selectedDate) {
+                $("#<%=txtFechaFin.ClientID%>").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#<%=txtFechaFin.ClientID%>").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function(selectedDate) {
+                $("#<%=txtFechaInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    }
 </script>
 
 

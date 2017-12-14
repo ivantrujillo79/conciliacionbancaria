@@ -30,6 +30,10 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!Page.IsPostBack)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "Calendarios", "SAF_DatePickers();", true);
+        }
         if (this.TipoOperacion == 1)
         {
             ddStatusConciliacion.Visible = true;
