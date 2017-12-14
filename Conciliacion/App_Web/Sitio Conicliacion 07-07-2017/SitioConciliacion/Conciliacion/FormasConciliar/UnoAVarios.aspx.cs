@@ -4168,55 +4168,110 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnAgregarPedido_Click(object sender, EventArgs e)
     {
         List<ReferenciaNoConciliadaPedido> ListSeleccionadosPedidos = new List<ReferenciaNoConciliadaPedido>();
+
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+
+        formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (formaConciliacion == 0)
+        {
+            formaConciliacion = 3;
+        }
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+
         try
         {
-            grvPedidos.DataBind();
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
+                DataTable tablaReferenciasP = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+                grvPedidos.PageIndex = 0;
+                grvPedidos.DataSource = tablaReferenciasP;
+                grvPedidos.DataBind();
+            }
+
             if (grvExternos.Rows.Count > 0)
             {
                 /*          Obtener registro donde se presionó el botón         */
                 Button btnAgregarPedido = sender as Button;
-                GridViewRow gRowIn = (GridViewRow)(btnAgregarPedido).Parent.Parent;
+                GridViewRow gRowIn = (GridViewRow) (btnAgregarPedido).Parent.Parent;
                 //Leer Referencia Externa
                 ReferenciaNoConciliada rcp = leerReferenciaExternaSeleccionada();
 
-                Session["POR_CONCILIAR_INTERNO"] = ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
-                /*ReferenciaNoConciliadaPedido rncP = leerReferenciaPedidoSeleccionada(gRowIn.RowIndex);
-                agregarPedidoReferenciaExterna(rcp, rncP);*/
+                if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+                {
+                    Session["POR_CONCILIAR_INTERNO"] =
+                        ConvierteTablaAReferenciaNoConciliadaPedido(
+                            (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
+                }
+
                 listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
 
-                int pedido          = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
-                int celulaPedido    = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
-                int añoPedido       = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
-                string folioFactura = grvPedidos.DataKeys[gRowIn.RowIndex].Values["FolioFactura"].ToString();
-                //List<ReferenciaNoConciliadaPedido> ListaParaCarga = new List<ReferenciaNoConciliadaPedido>();
-                //ListaParaCarga.Add(listaReferenciaPedidos.Single(
-                //    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
+                int pedido = 0;
+                int celulaPedido = 0;
+                int añoPedido = 0;
+                string folioFactura = "";
+                ReferenciaNoConciliadaPedido rnc;
 
-                ReferenciaNoConciliadaPedido rnc =
-                    listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido
-                        && s.Foliofactura == folioFactura);
+            if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
+                    celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
+                    añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
+                    rnc = listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
+                
+                }
+                else
+                {
+                    pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
+                    celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
+                    añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
+                    folioFactura = grvPedidos.DataKeys[gRowIn.RowIndex].Values["FolioFactura"].ToString();
+                    rnc = listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido && s.Foliofactura == folioFactura);
+                }
 
-                ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos();
+            ListSeleccionadosPedidos.Add(rnc);
 
+                //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea uno de multiselección Reparar
+                //ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos();
+
+                //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea DOS de multiselección Reparar
                 //      Agregar referencia seleccionada por medio de botón
-                bool contiene =
+                /*bool contiene =
                     ListSeleccionadosPedidos.Any(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
-                if (!contiene) { ListSeleccionadosPedidos.Add(rnc); }
+                if (!contiene) { ListSeleccionadosPedidos.Add(rnc); }*/
 
                 GenerarAgregadosBusquedaPedidosDelCliente(ListSeleccionadosPedidos);
 
                 DataTable dtTemporal = new DataTable();
-                dtTemporal = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+                {
+                    dtTemporal = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                }
+                else
+                {
+                    dtTemporal = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+                }
+
+                if (dtTemporal!=null)
                 foreach (int idx in LsIndicePedidosSeleccionados)
                 {
                     dtTemporal.Rows[idx].Delete();
                 }
                 dtTemporal.Rows[gRowIn.RowIndex].Delete();
                 dtTemporal.AcceptChanges();
-                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
-                grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+                {
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
+                    grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                }
+                else
+                {
+                    HttpContext.Current.Session["TAB_INTERNOS"] = dtTemporal;
+                    grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+                }
                 grvPedidos.DataBind();
-
             }
             else
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
