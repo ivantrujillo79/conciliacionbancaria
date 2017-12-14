@@ -1080,30 +1080,39 @@
                                             OnClick="btnRangoFechasFS_Click" ToolTip="FILTRAR FSuminstro" ValidationGroup="vgFSuministro"
                                             Width="25px" />
                                     </td>
-                                    <caption>
-                                        <tr>
-                                            <td class="lineaVertical" rowspan="2"></td>
-                                            <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                                <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="FMovimiento"></asp:Label>
-                                                <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="Documento"></asp:Label>
-                                            </td>
-                                            <td style="width: 12.5%;">
-                                                <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio" Width="80px"></asp:TextBox>
-                                                <asp:TextBox ID="txtPedido" runat="server" CssClass="cajaTextoPequeño" ToolTip="Pedido" ValidationGroup="vgAgregarPedidoDirecto" Width="190px"></asp:TextBox>
-                                                <%--<asp:TextBoxWatermarkExtender ID="txtWMFMInicio" runat="server" TargetControlID="txtFMInicio"
+                                    <td class="lineaVertical" rowspan="2"></td>
+                                    <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                        <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                            Text="FMovimiento"></asp:Label>
+                                        <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                            Text="Documento"></asp:Label>
+                                    </td>
+                                    <td style="width: 12.5%;">
+                                        <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio"
+                                            Width="80px"></asp:TextBox>
+                                        <asp:TextBox ID="txtPedido" runat="server" CssClass="cajaTextoPequeño" ToolTip="Pedido"
+                                            Width="190px" ValidationGroup="vgAgregarPedidoDirecto"></asp:TextBox>
+                                        <%--<asp:TextBoxWatermarkExtender ID="txtWMFMInicio" runat="server" TargetControlID="txtFMInicio"
                                             WatermarkText="FMov Inicio" WatermarkCssClass="cajaTextoPequeño marcaAgua">
-                                        </asp:TextBoxWatermarkExtender>--%></td>
-                                            <td style="width: 12.5%;">
-                                                <asp:TextBox ID="txtFMTermino" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Fin" Width="80px"></asp:TextBox>
-                                                <%-- <asp:TextBoxWatermarkExtender ID="txtWMFMTermino" runat="server" TargetControlID="txtFMTermino"
+                                        </asp:TextBoxWatermarkExtender>--%>
+                                    </td>
+                                    <td style="width: 12.5%;">
+                                        <asp:TextBox ID="txtFMTermino" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Fin"
+                                            Width="80px"></asp:TextBox>
+                                        <%-- <asp:TextBoxWatermarkExtender ID="txtWMFMTermino" runat="server" TargetControlID="txtFMTermino"
                                             WatermarkText="FMov Termino" WatermarkCssClass="cajaTextoPequeño marcaAgua">
-                                        </asp:TextBoxWatermarkExtender>--%></td>
-                                            <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                                <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento" Width="25px" />
-                                                <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png" OnClick="btnAgregarPedidoDirecto_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto" Width="25px" />
-                                            </td>
-                                        </tr>
-                                    </caption>
+                                        </asp:TextBoxWatermarkExtender>--%>
+                                    </td>
+                                    <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                        <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro"
+                                            Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                            OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento"
+                                            Width="25px"  />
+                                        <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro"
+                                            Height="25px" Width="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png"
+                                            ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto"
+                                            OnClick="btnAgregarPedidoDirecto_Click" />
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
