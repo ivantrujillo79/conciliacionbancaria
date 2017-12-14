@@ -258,6 +258,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblArchivosInternos.Visible = true;
                 }
 
+                if (objSolicitdConciliacion.MuestraBuscadores())
+                {
+                    
+                }
 
                 if (grvExternos.Rows.Count > 0)
                 {
@@ -295,7 +299,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                                                               tdEtiquetaMontoIn.Visible
                                                                                               =
                                                                                               tdMontoIn.Visible = false;
-                        Carga_CelulaCorporativo(corporativo);
+                        if (ddlCelula.SelectedIndex == -1)
+                        {
+                            Carga_CelulaCorporativo(corporativo);
+                        }
                         ConsultarPedidosInternos();
                         ConsultaInicialPedidosInternos();
                         btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
@@ -356,7 +363,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                                                           tdEtiquetaMontoIn.Visible
                                                                                           =
                                                                                           tdMontoIn.Visible = false;
-                    Carga_CelulaCorporativo(corporativo);
+                    if (ddlCelula.SelectedIndex == -1)
+                    {
+                        Carga_CelulaCorporativo(corporativo);
+                    }
                     ConsultarPedidosInternos();
                     ConsultaInicialPedidosInternos();
                     
@@ -870,7 +880,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         this.ddlCelula.DataValueField = "Identificador";
         this.ddlCelula.DataTextField = "Descripcion";
         this.ddlCelula.DataBind();
-        this.ddlCelula.Dispose();
         }
         catch (SqlException ex)
         {

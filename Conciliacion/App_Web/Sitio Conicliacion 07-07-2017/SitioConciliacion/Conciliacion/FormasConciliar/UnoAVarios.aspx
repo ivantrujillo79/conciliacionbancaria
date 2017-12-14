@@ -1081,26 +1081,28 @@
                                             Width="25px" />
                                     </td>
                                     <caption>
-                                        <td class="lineaVertical" rowspan="2"></td>
-                                        <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                            <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="FMovimiento"></asp:Label>
-                                            <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="Documento"></asp:Label>
-                                        </td>
-                                        <td style="width: 12.5%;">
-                                            <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio" Width="80px"></asp:TextBox>
-                                            <asp:TextBox ID="txtPedido" runat="server" CssClass="cajaTextoPequeño" ToolTip="Pedido" ValidationGroup="vgAgregarPedidoDirecto" Width="190px"></asp:TextBox>
-                                            <%--<asp:TextBoxWatermarkExtender ID="txtWMFMInicio" runat="server" TargetControlID="txtFMInicio"
+                                        <tr>
+                                            <td class="lineaVertical" rowspan="2"></td>
+                                            <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                                <asp:Label ID="lblFMovimiento" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="FMovimiento"></asp:Label>
+                                                <asp:Label ID="lblPedidoDirecto" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio" Text="Documento"></asp:Label>
+                                            </td>
+                                            <td style="width: 12.5%;">
+                                                <asp:TextBox ID="txtFMInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Inicio" Width="80px"></asp:TextBox>
+                                                <asp:TextBox ID="txtPedido" runat="server" CssClass="cajaTextoPequeño" ToolTip="Pedido" ValidationGroup="vgAgregarPedidoDirecto" Width="190px"></asp:TextBox>
+                                                <%--<asp:TextBoxWatermarkExtender ID="txtWMFMInicio" runat="server" TargetControlID="txtFMInicio"
                                             WatermarkText="FMov Inicio" WatermarkCssClass="cajaTextoPequeño marcaAgua">
                                         </asp:TextBoxWatermarkExtender>--%></td>
-                                        <td style="width: 12.5%;">
-                                            <asp:TextBox ID="txtFMTermino" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Fin" Width="80px"></asp:TextBox>
-                                            <%-- <asp:TextBoxWatermarkExtender ID="txtWMFMTermino" runat="server" TargetControlID="txtFMTermino"
+                                            <td style="width: 12.5%;">
+                                                <asp:TextBox ID="txtFMTermino" runat="server" CssClass="cajaTextoPequeño" ToolTip="FMov Fin" Width="80px"></asp:TextBox>
+                                                <%-- <asp:TextBoxWatermarkExtender ID="txtWMFMTermino" runat="server" TargetControlID="txtFMTermino"
                                             WatermarkText="FMov Termino" WatermarkCssClass="cajaTextoPequeño marcaAgua">
                                         </asp:TextBoxWatermarkExtender>--%></td>
-                                        <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                            <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento" Width="25px" />
-                                            <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png" OnClick="btnAgregarPedidoDirecto_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto" Width="25px" />
-                                        </td>
+                                            <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                                <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" OnClick="btnRangoFechasFM_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgFMovimiento" Width="25px" />
+                                                <asp:ImageButton ID="btnAgregarPedidoDirecto" runat="server" CssClass="icono bg-color-verdeClaro" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.png" OnClick="btnAgregarPedidoDirecto_Click" ToolTip="FILTRAR FMovimiento" ValidationGroup="vgAgregarPedidoDirecto" Width="25px" />
+                                            </td>
+                                        </tr>
                                     </caption>
                                 </tr>
                                 <tr>
@@ -1160,10 +1162,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                    <asp:ImageButton ID="ibSaldosAFavor" runat="server" CssClass="icono bg-color-verdeClaro"
-                                                    Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                    ToolTip="Administración de saldos a favor" Width="25px"
-                                                    OnClick="ibSaldosAFavor_Click"/>
+
                                             </td>
                                             <td></td>
                                        </tr>
@@ -1534,7 +1533,7 @@
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
                             OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                            DataKeyNames="Celula,Pedido,AñoPed,Cliente,FolioFactura" > <%--EnableViewState="True"--%>
+                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--EnableViewState="True"--%>
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
                             </EmptyDataTemplate>--%>
@@ -1588,7 +1587,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
-                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("FolioFactura") %>'></asp:Label>
+                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("Concepto") %>'></asp:Label>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>

@@ -13,7 +13,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public int AñoMovimiento { get; set; }
         public Int16 TipoMovimientoAConciliar { get; set; }
         public int EmpresaContable { get; set; }
-        public byte Caja { get; set; }
+        public short Caja { get; set; }
         public DateTime FOperacion { get; set; }
         public int TipoFicha { get; set; }
         public int Consecutivo { get; set; }
@@ -27,13 +27,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public DateTime FMovimiento { get; set; }
         public string StatusConciliacion { get; set; }
         public DateTime FConciliacion { get; set; }
-        public byte CorporativoConciliacion { get; set; }
-        public byte SucursalConciliacion { get; set; }
+        public int CorporativoConciliacion { get; set; }
+        public int SucursalConciliacion { get; set; }
         public int AñoConciliacion { get; set; }
         public Int16 MesConciliacion { get; set; }
         public int FolioConciliacion { get; set; }
-        public byte CorporativoExterno { get; set; }
-        public byte SucursalExterno { get; set; }
+        public int CorporativoExterno { get; set; }
+        public int SucursalExterno { get; set; }
         public int AñoExterno { get; set; }
         public int FolioExterno { get; set; }
         public int SecuenciaExterno { get; set; }

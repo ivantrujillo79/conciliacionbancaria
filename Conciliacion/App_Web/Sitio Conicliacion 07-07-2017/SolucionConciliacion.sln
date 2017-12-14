@@ -1,9 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion(1)", "SitioConciliacion\", "{7A5FA135-BF53-4A16-AC90-49DC4884C944}"
+# Visual Studio 2012
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion", "SitioConciliacion\", "{7A5FA135-BF53-4A16-AC90-49DC4884C944}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		ProjectReferences = "{76a968e3-b770-48fa-b4e1-30eb653757e7}|Conciliacion.Migracion.Runtime.dll;{7124EB10-FCCD-40DD-90E3-3DFECA7EF535}|Conciliacion.RunTime.dll;{C924B2CB-B08E-4786-9E41-77F9278A8372}|SeguridadCB.dll;{3a19b75e-4312-4871-8368-72562fe91241}|SeguridadWeb.dll;"
@@ -21,8 +19,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion(1)", "Sit
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "29051"
-		SlnRelativePath = "SitioConciliacion\"
+		VWDPort = "35908"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogoConciliacion", "CatalogoConciliacion\CatalogoConciliacion.csproj", "{F77FCEA1-5442-48A2-8FE4-43A655788CDD}"
