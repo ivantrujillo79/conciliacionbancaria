@@ -21,6 +21,19 @@
             }
         });
     }
+
+    function ValidaNumero(e) {
+        var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+        return ((tecla > 47 && tecla < 58));
+    }
+    function ValidaMoneda(e) {
+        var charCode = (e.which) ? e.which : e.keyCode;
+        if (charCode != 46 && charCode > 31
+          && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
 </script>
 
 
@@ -56,12 +69,18 @@
             <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
         </td>      
         <td>
-            <asp:TextBox ID="txtCliente" runat="server"></asp:TextBox></td>
+            <asp:TextBox ID="txtCliente" runat="server" onkeypress="return ValidaNumero(event)"></asp:TextBox>
+        </td>
         <td>
-            <asp:TextBox ID="txtMonto" runat="server"></asp:TextBox></td>  
-        <td>            <asp:ImageButton ID="imgBuscaPagares" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+            <asp:TextBox ID="txtMonto" runat="server" onkeypress="return ValidaMoneda(event)"></asp:TextBox>
+            <br />
+
+        </td>  
+        <td>            
+            <asp:ImageButton ID="imgBuscaPagares" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                 ToolTip="BUSCAR" style="padding: 10px 4px 7px 5px;" 
-                ValidationGroup="vgFecha" OnClick="imgBuscaPagares_Click"/></td>       
+                ValidationGroup="vgFecha, vgMoneda" OnClick="imgBuscaPagares_Click"/>
+        </td>       
     </tr>
     <tr>
         <td class="auto-style1"></td>
@@ -69,7 +88,12 @@
         <td class="auto-style1"></td>
         <td class="auto-style1"></td>
         <td class="auto-style1"></td>
-        <td class="auto-style1"></td>
+        <td class="auto-style1">
+            <asp:CompareValidator id="cvMonto" runat="server" 
+                ControlToValidate="txtMonto" 
+                Operator="DataTypeCheck"
+                Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
+        </td>
         <td class="auto-style1"></td>
     </tr>
     <tr>

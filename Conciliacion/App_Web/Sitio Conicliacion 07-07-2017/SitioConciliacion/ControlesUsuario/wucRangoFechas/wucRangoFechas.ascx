@@ -12,7 +12,7 @@
             changeMonth: true,
             changeYear: true,
             onClose: function (selectedDate) {
-                $("#<%=txtFechaInicial.ClientID%>").datepicker("option", "minDate", selectedDate);
+                $("#<%=txtFechaFinal.ClientID%>").datepicker("option", "minDate", selectedDate);
             }
         });
 
@@ -21,7 +21,7 @@
             changeMonth: true,
             changeYear: true,
             onClose: function (selectedDate) {
-                $("#<%=txtFechaFinal.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                $("#<%=txtFechaInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
             }
         });
     }
