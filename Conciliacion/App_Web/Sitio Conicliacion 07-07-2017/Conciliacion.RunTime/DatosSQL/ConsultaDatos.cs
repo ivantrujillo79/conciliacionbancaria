@@ -3502,9 +3502,9 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
                                                             Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
-                        
-                        dato.SerieFactura = reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
-                        dato.ClienteReferencia = reader["CliReferencia"].ToString().Trim();
+
+                        dato.SerieFactura = "";//reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
+                        dato.ClienteReferencia = "";//reader["CliReferencia"].ToString().Trim();
                         datos.Add(dato);
                     }
                 }

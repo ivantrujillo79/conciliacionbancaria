@@ -1494,6 +1494,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (grvExternos.Rows.Count > 0)
             {
                 ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
+
+                //ReferenciaNoConciliadaPedido rx = leerReferenciaPedidoSeleccionada(grvExternos.SelectedIndex);
                 if (!rfExterno.Completo)
                 {
                     if (rfExterno.ListaReferenciaConciliada.Count > 0)
@@ -4214,7 +4216,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 string folioFactura = "";
                 ReferenciaNoConciliadaPedido rnc;
 
-            if (objSolicitdConciliacion.ConsultaPedido())
+                if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
                     celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
@@ -4231,16 +4233,23 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rnc = listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido && s.Foliofactura == folioFactura);
                 }
 
-            ListSeleccionadosPedidos.Add(rnc);
+            
 
                 //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea uno de multiselección Reparar
-                //ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos();
+                ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos(objSolicitdConciliacion);
 
-                //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea DOS de multiselección Reparar
-                //      Agregar referencia seleccionada por medio de botón
-                /*bool contiene =
-                    ListSeleccionadosPedidos.Any(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
-                if (!contiene) { ListSeleccionadosPedidos.Add(rnc); }*/
+                if (ListSeleccionadosPedidos.Count == 0)
+                {
+                    ListSeleccionadosPedidos.Add(rnc);
+                }
+                else
+                {
+                    //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea DOS de multiselección Reparar
+                    //      Agregar referencia seleccionada por medio de botón
+                    bool contiene =
+                        ListSeleccionadosPedidos.Any(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
+                    if (!contiene) { ListSeleccionadosPedidos.Add(rnc); }
+                }
 
                 GenerarAgregadosBusquedaPedidosDelCliente(ListSeleccionadosPedidos);
 
@@ -4290,7 +4299,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// Obtiene los registros seleccionados por medio de CheckBox
     /// en el grid Pedidos
     /// </summary>
-    private List<ReferenciaNoConciliadaPedido> ObtenerSeleccionadosPedidos()
+    private List<ReferenciaNoConciliadaPedido> ObtenerSeleccionadosPedidos(SolicitudConciliacion objSolicitdConciliacion)
     {
         List<ReferenciaNoConciliadaPedido> ListPedidos = new List<ReferenciaNoConciliadaPedido>();
         //List<GridViewRow> pedidosSeleccionados = new List<GridViewRow>();
@@ -4300,8 +4309,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //int i = 0;
         try
         {
-            Session["POR_CONCILIAR_INTERNO"] = 
-                ConvierteTablaAReferenciaNoConciliadaPedido((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
+            if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+            {
+                Session["POR_CONCILIAR_INTERNO"] =
+                    ConvierteTablaAReferenciaNoConciliadaPedido(
+                        (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
+            }
+            else
+            {
+                Session["POR_CONCILIAR_INTERNO"] =
+                    ConvierteTablaAReferenciaNoConciliadaPedido((DataTable) HttpContext.Current.Session["TAB_INTERNOS"]);
+            }
             listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
             
             List<GridViewRow> pedidosSeleccionados =
@@ -4312,13 +4330,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             foreach (GridViewRow row in pedidosSeleccionados)
             {
-                int pedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Pedido"]);
-                int celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Celula"]);
-                int añoPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["AñoPed"]);
-                string folioFactura = grvPedidos.DataKeys[row.RowIndex].Values["FolioFactura"].ToString();
+                int pedido = 0;
+                int celulaPedido = 0;
+                int añoPedido = 0;
+                string folioFactura = "";
 
-                ListPedidos.Add(listaReferenciaPedidos.Single(
-                    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido && s.Foliofactura == folioFactura));
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    pedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Pedido"]);
+                    celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Celula"]);
+                    añoPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["AñoPed"]);
+                    ListPedidos.Add(listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido));
+                }
+                else
+                {
+                    pedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Pedido"]);
+                    celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["Celula"]);
+                    añoPedido = Convert.ToInt32(grvPedidos.DataKeys[row.RowIndex].Values["AñoPed"]);
+                    folioFactura = grvPedidos.DataKeys[row.RowIndex].Values["FolioFactura"].ToString();
+                    ListPedidos.Add(listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido && s.Foliofactura == folioFactura));
+                }
             }
             //App.ImplementadorMensajes.MostrarMensaje("Pedido: " + pedido.ToString()
             //            + "\nCelula: " + celulaPedido.ToString());
