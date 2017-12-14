@@ -1,13 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucRangoFechas.ascx.cs" Inherits="ControlesUsuario_wucRangoFechas_wucRangoFechas" %>
 
 <script type="text/javascript">
-
     <%--function pageLoad() {
         //FInicio - FFinal
         activarDatePickers();
-    }
-
-    function activarDatePickers() {
+    }--%>
+    
+    function RF_DatePickers() {
         $("#<%= txtFechaInicial.ClientID%>").datepicker({
             defaultDate: "+1w",
             changeMonth: true,
@@ -25,8 +24,8 @@
                 $("#<%=txtFechaFinal.ClientID%>").datepicker("option", "maxDate", selectedDate);
             }
         });
-    }--%>
-
+    }
+    
     function txtFecha_onblur(obj) {
         //debugger;
         if (document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").value.trim() == ""

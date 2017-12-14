@@ -61,6 +61,8 @@ public partial class ControlesUsuario_wucRangoFechas_wucRangoFechas : System.Web
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        ScriptManager.RegisterStartupScript(this, typeof(Page), "Calendarios", "RF_DatePickers();", true);
+
         lbTextoDespliega.Text = TextoDespliega;
     }
 
