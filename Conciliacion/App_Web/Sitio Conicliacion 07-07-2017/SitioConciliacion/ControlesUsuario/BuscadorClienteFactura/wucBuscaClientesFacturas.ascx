@@ -70,11 +70,17 @@
             <asp:TextBox ID="txtFactura" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
         </td>
         <td style="width: 20%;">
-            <asp:ImageButton ID="btnFiltraCliente" runat="server" 
+            <%--<asp:ImageButton ID="btnFiltraCliente" runat="server" 
                 CssClass="icono bg-color-verdeClaro"
                 Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                 ToolTip="Resalta factura" Width="25px"
                     OnClientClick="javascript:ResaltaFactura(); return false;" 
+                />--%>
+            <asp:ImageButton ID="btnBuscaFactura" runat="server" 
+                CssClass="icono bg-color-verdeClaro"
+                Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                ToolTip="Filtra factura" Width="25px"
+                OnClick="btnBuscaFactura_Click"
                 />
         </td>
         <td style="width: 20%;">

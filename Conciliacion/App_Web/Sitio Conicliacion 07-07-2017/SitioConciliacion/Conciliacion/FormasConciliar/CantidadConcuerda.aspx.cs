@@ -149,7 +149,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     GenerarTablaReferenciasAConciliarInternos();
                     lblArchivosInternos.Visible = true;
                     btnActualizarConfig.ValidationGroup = "CantidadArchivos";
+
+                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
+
                 }
+                else
+                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
 
                 txtDias.Enabled = true;
 
@@ -1926,5 +1931,22 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     protected void imgCerrarImportar_Click(object sender, ImageClickEventArgs e)
     {
 
+    }
+
+    protected void grvCantidadConcuerdanArchivos_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
+        {
+            if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
+            {
+                e.Row.Cells[15].Visible = false;
+                e.Row.Cells[16].Visible = false;
+            }
+            else
+            {
+                e.Row.Cells[15].Visible = true;
+                e.Row.Cells[16].Visible = true;
+            }
+        }
     }
 }

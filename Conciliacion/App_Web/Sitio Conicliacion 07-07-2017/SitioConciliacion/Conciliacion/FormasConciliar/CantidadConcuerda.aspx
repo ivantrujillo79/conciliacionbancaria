@@ -630,7 +630,8 @@
                             PageSize="100" OnPageIndexChanging="grvCantidadConcuerdanArchivos_PageIndexChanging"
                             ShowHeaderWhenEmpty="True" OnRowCreated="grvCantidadConcuerdanArchivos_RowCreated"
                             DataKeyNames="FolioExt,SecuenciaExt,FolioInt,SecuenciaInt" AllowSorting="True"
-                            OnSorting="grvCantidadConcuerdanArchivos_Sorting">
+                            OnSorting="grvCantidadConcuerdanArchivos_Sorting" 
+                            OnRowDataBound="grvCantidadConcuerdanArchivos_RowDataBound">
                             <%--<EmptyDataTemplate>
                         <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen referencias con cantidades concordantes."></asp:Label>
                     </EmptyDataTemplate>--%>
