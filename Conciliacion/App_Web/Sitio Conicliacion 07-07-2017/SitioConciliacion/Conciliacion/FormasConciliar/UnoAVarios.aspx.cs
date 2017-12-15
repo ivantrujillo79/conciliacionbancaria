@@ -166,7 +166,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
         {
-            mpeSaldosAFavor.Show(); 
+            //mpeSaldosAFavor.Show(); 
         }
 
 
@@ -1494,14 +1494,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (grvExternos.Rows.Count > 0)
             {
                 ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
-
-                //ReferenciaNoConciliadaPedido rx = leerReferenciaPedidoSeleccionada(grvExternos.SelectedIndex);
                 if (!rfExterno.Completo)
                 {
                     if (rfExterno.ListaReferenciaConciliada.Count > 0)
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
-                        rfExterno.ConInterno = (formaConciliacion == 3 ? true : false);
+                        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+                        
+                        //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
+                        //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
+                        rfExterno.ConInterno = objSolicitdConciliacion.ConsultaArchivo();
                         if (rfExterno.GuardarReferenciaConciliada())
                         {
                             //Leer Variables URL 
@@ -1556,7 +1561,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                     ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
                                     if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
                                     {
-                                        mpeSaldosAFavor.Show(); 
+                                        //mpeSaldosAFavor.Show(); 
                                     }
                                     
                                 }
@@ -2410,8 +2415,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 if (ddlCelula.SelectedItem != null)
                 {
+                    int Celula = 0;
+                    SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                    tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                    objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                    objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+                    
+                    if (Convert.ToInt32(ddlCelula.SelectedItem.Value) == 0)
+                    {
+                        Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();    
+                    }
+
                     Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                        Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                        Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
                         cliente, false);
                 }
                 // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
@@ -2492,8 +2508,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                else
                App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");**/
                 int Celula;
-                if (int.TryParse(ddlCelula.SelectedValue, out Celula))
-                    Celula = Convert.ToInt32(ddlCelula.SelectedValue);
+                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+                Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();
+                if (Celula==0)
+                    if (int.TryParse(ddlCelula.SelectedValue, out Celula))
+                    {
+                        Celula = Convert.ToInt32(ddlCelula.SelectedValue);
+                    }
 
                 Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                       Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
@@ -5483,6 +5507,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void ibSaldosAFavor_Click(object sender, ImageClickEventArgs e)
     {
-        mpeSaldosAFavor.Show();
+        //mpeSaldosAFavor.Show();
     }
 }

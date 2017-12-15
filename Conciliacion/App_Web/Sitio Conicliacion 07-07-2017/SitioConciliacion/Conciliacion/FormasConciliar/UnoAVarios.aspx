@@ -2450,7 +2450,18 @@
     <!--        FIN POPUP CARGA ARCHIVO     -->
     
     <div id="la">
-        El monto depositado genera un saldo a favor por <%= lblMontoResto.Text%> <br/> ¿desea generar el saldo a favor?
+        <table>
+            <tr>
+                <td>
+                        <img src="~/App_Themes/GasMetropolitanoSkin/Imagenes/warning.png" />        
+                </td>
+                <td align="center">
+                    El monto depositado genera un saldo a favor por <%= lblMontoResto.Text%> <br/> <strong>¿desea generar el saldo a favor?</strong>
+                </td>
+            </tr>
+            
+            
+        </table>
     </div>
     
     
