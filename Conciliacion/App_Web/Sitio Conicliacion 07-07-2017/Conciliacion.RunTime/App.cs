@@ -281,6 +281,17 @@ namespace Conciliacion.RunTime
             }
         }
 
+        private static SaldoAFavor saldoafavor;
+        public static SaldoAFavor SaldoAFavor
+        {
+            get
+            {
+                if (saldoafavor == null)
+                    saldoafavor = new SaldoAFavorDatos(App.ImplementadorMensajes);
+                return saldoafavor;
+            }
+        }
+
         private static string cadenaconexion;
        
         
