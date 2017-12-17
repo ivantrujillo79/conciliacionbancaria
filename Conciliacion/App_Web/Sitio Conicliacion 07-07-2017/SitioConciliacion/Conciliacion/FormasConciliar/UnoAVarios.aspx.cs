@@ -194,6 +194,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             CargarConfiguracion_wucCargaExcel();
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            
             if (!Page.IsPostBack)
             {
                 //Leer variables de URL
@@ -207,6 +208,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+                imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
 
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;
@@ -237,8 +240,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
-                    HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 1;
-                    btnFiltraCliente.Visible = true;
+                    if (objSolicitdConciliacion.MuestraBuscadores())
+                    {
+                        HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 1;
+                        btnFiltraCliente.Visible = true;
+                    }
+                    else
+                    {
+                        HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 0;
+                        btnFiltraCliente.Visible = false;
+                    }
                 }
                 else
                 { 
@@ -250,6 +261,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblGridAP.Text = "PEDIDOS ";
                     lblSucursalCelula.Text = "Celula Interna";
                     lblPedidos.Visible = true;
+                    if (objSolicitdConciliacion.ConsultaTextoInternos().Trim() != "")
+                        lblPedidos.Text = objSolicitdConciliacion.ConsultaTextoInternos();
                 }
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
@@ -290,6 +303,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         lblGridAP.Text = "PEDIDOS ";
                         lblSucursalCelula.Text = "Celula Interna";
                         ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
+
+                        if (objSolicitdConciliacion.ConsultaTextoInternos().Trim() != "")
+                            lblPedidos.Text = objSolicitdConciliacion.ConsultaTextoInternos();
+
                         btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible =
                                                                             lblVer.Visible =
                                                                             txtDias.CausesValidation =
@@ -349,11 +366,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     GenerarAgregadosExcel();
                 }
                 MostrarPopUp_ConciliacionManual();
+
+                imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
+
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblGridAP.Text = "PEDIDOS ";
                     lblSucursalCelula.Text = "Celula Interna";
                     ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
+
+                    if (objSolicitdConciliacion.ConsultaTextoInternos().Trim() != "")
+                        lblPedidos.Text = objSolicitdConciliacion.ConsultaTextoInternos();
+
                     btnENPROCESOINTERNO.Visible = btnCANCELARINTERNO.Visible =
                                                                         lblVer.Visible =
                                                                        txtDias.CausesValidation =
