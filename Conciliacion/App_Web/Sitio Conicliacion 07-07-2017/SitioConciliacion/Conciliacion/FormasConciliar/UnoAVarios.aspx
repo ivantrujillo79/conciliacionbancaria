@@ -163,17 +163,17 @@
                 $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
                     height: 300,
-                    freezesize: 2,
+                    freezesize: 0,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
                     varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
                     harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
                     harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
                     headerrowcount: 1,
-                    startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
+                    <%--startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
                     startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
-                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
+                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}--%>
                 });
             } else {
                 $('#<%=grvInternos.ClientID%>').gridviewScroll({
@@ -1541,8 +1541,8 @@
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
-                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--EnableViewState="True"--%>
+                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="False" OnPageIndexChanging="grvPedidos_PageIndexChanging"
+                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--PageSize="5" EnableViewState="True"--%>
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
                             </EmptyDataTemplate>--%>
