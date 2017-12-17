@@ -146,7 +146,7 @@
         function gridviewScroll() {
             $('#<%=grvExternos.ClientID%>').gridviewScroll({
                 width: 595,
-                height: 370,
+                height: 389,
                 freezesize: 3,
                 arrowsize: 30,
                 varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
@@ -163,17 +163,17 @@
                 $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
                     height: 300,
-                    freezesize: 2,
+                    freezesize: 0,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
                     varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
                     harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
                     harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
                     headerrowcount: 1,
-                    startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
+                    <%--startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
                     startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
-                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
+                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}--%>
                 });
             } else {
                 $('#<%=grvInternos.ClientID%>').gridviewScroll({
@@ -195,7 +195,7 @@
             }
             $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
-                    height: 300,
+                    height: 250,
                     freezesize: 0,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
@@ -1550,8 +1550,8 @@
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
-                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--EnableViewState="True"--%>
+                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="False" OnPageIndexChanging="grvPedidos_PageIndexChanging"
+                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--PageSize="5" EnableViewState="True"--%>
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
                             </EmptyDataTemplate>--%>
@@ -1584,7 +1584,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Monto" SortExpression="Total">
                                     <ItemTemplate>
-                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:C}") %>'></asp:Label>
+                                        <b><asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:C}") %>'></asp:Label></b>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
