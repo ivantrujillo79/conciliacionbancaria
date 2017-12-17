@@ -2449,7 +2449,7 @@
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
     
-    <div id="la">
+    <div id="la" style="display: none;">
         <table>
             <tr>
                 <td>
