@@ -1351,7 +1351,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //{
             //DataTable dt = (DataTable)grvAgregadosPedidosPrima.DataSource;
             DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
-            if (dt.Rows.Count > 0)
+            if (dt!= null && dt.Rows.Count > 0)
                 {
                     MontoConciliado = 0;
                     foreach (DataRow gvRow in dt.Rows)
