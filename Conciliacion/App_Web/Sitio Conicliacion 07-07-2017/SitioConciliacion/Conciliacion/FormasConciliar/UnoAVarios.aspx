@@ -146,7 +146,7 @@
         function gridviewScroll() {
             $('#<%=grvExternos.ClientID%>').gridviewScroll({
                 width: 595,
-                height: 370,
+                height: 389,
                 freezesize: 3,
                 arrowsize: 30,
                 varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
@@ -195,7 +195,7 @@
             }
             $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
-                    height: 300,
+                    height: 250,
                     freezesize: 0,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
