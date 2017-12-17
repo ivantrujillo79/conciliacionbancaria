@@ -153,6 +153,7 @@
     <Compile Include="ReglasDeNegocio\TransferenciaBancarias.cs" />
     <Compile Include="ReglasDeNegocio\TransferenciaBancariasDetalle.cs" />
     <Compile Include="ReglasDeNegocio\ValidacionArchivosConciliacion.cs" />
+    <Compile Include="ReglasDeNegocio\VerificadorRemanentes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

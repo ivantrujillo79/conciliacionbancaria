@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -1521,6 +1522,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            VerificadorRemanentes objVerificadorRemanente = new VerificadorRemanentes();
+
+            List<DetalleVerificadorRemanente> ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos((DataTable) grvPedidos.DataSource,Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()));
+
+            if (ListaVerificacionRemanente.Count != 0)
+            {
+                //Se interrumple el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
+                throw new Exception("Existen " + ListaVerificacionRemanente.Count.ToString() + " pedidos que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
+                return;
+            }
+
             if (grvExternos.Rows.Count > 0)
             {
                 ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
@@ -1578,8 +1590,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             LlenarBarraEstado();
                             //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
                             //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-                            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                                              formaConciliacion);
+                            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,formaConciliacion);
                             GenerarTablaConciliados();
                             LlenaGridViewConciliadas();
 
