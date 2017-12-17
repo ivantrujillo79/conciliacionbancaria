@@ -823,6 +823,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
             lblAgregadosInternos.Text = dt.Rows.Count.ToString();
+            lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
             //lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
         }
         //else
@@ -1341,6 +1342,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
                     lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
+                    lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
                     lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
                     lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
                 }
@@ -1348,6 +1350,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
                     lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoPedido, 2).ToString("C2");
+                    lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
                     lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
                     lblMontoResto.Text = Decimal.Round(rE.Monto - rE.MontoPedido, 2).ToString("C2");
                 }
@@ -1355,6 +1358,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             else
             {
                 lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
+                lblResto.Text = Decimal.Round(0, 2).ToString("C2");
                 lblAgregadosInternos.Text = "0";
                 lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
             }
@@ -1385,6 +1389,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
 
                     lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
+                    lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
                     lblAgregadosInternos.Text = dt.Rows.Count.ToString();
                     //lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
                 }
@@ -1393,6 +1398,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
                     lblAgregadosInternos.Text = "0";
                     lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
+                    lblResto.Text = Decimal.Round(0, 2).ToString("C2");
                 }
             //}
         }

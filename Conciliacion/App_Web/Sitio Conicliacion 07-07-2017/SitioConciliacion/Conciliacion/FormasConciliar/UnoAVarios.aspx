@@ -1192,17 +1192,26 @@
                                     style="width: 10%; padding: 5px 5px 5px 5px">
                                     <asp:Label runat="server" ID="lblAgregadosInternos" Text="0"></asp:Label>
                                 </td>
-                                <td class="etiqueta lineaVertical centradoMedio" style="width: 25%; padding: 5px 5px 5px 5px">Monto Acumulado:
+                                <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Acumulado:
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio bg-color-grisOscuro fg-color-blanco"
                                     style="width: 15%; padding: 5px 5px 5px 5px">
                                     <asp:Label runat="server" ID="lblMontoAcumuladoInterno" Text="$ 0.00"></asp:Label>
                                 </td>
-                                <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Resto/Abono:
+                                <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Abono:
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio bg-color-azul fg-color-blanco" style="width: 15%; padding: 5px 5px 5px 5px">
                                     <asp:Label runat="server" ID="lblMontoResto"></asp:Label>
                                 </td>
+
+                                <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Resto:
+                                </td>
+                                <td class="etiqueta lineaVertical centradoMedio bg-color-purpura fg-color-blanco" style="width: 15%; padding: 5px 5px 5px 5px">
+                                    <asp:Label runat="server" ID="lblResto" Text="$ 0.00"></asp:Label>
+                                </td>
+
+
+
                                 <td class="etiqueta centradoMedio" style="width: 15%;">
                                     <asp:Button runat="server" ID="btnGuardarUnoAVarios" CssClass="boton bg-color-azulOscuro fg-color-blanco"
                                         Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarUnoAVarios_Click" />
