@@ -1524,13 +1524,37 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             VerificadorRemanentes objVerificadorRemanente = new VerificadorRemanentes();
+            List<DetalleVerificadorRemanente> ListaVerificacionRemanente;
+            DataTable dtBuffer = (DataTable)grvPedidos.DataSource;
+            byte Opcion = 1;
 
-            List<DetalleVerificadorRemanente> ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos((DataTable) grvPedidos.DataSource,Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()));
+            if (dtBuffer.Rows.Count == 0 || dtBuffer == null)
+            {
+                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                grvPedidos.DataBind();
+                dtBuffer = (DataTable)grvPedidos.DataSource;
+                if (dtBuffer != null)
+                {
+                    Opcion = 2;
+                }
+                else
+                {
+                    grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                    grvPedidos.DataBind();
+                    dtBuffer = (DataTable)grvPedidos.DataSource;
+                    Opcion = 1;
+                }
+            }
+
+            ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
+                
+            
 
             if (ListaVerificacionRemanente.Count != 0)
             {
                 //Se interrumple el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
-                throw new Exception("Existen " + ListaVerificacionRemanente.Count.ToString() + " pedidos que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
+                throw new Exception("Existe(n) " + ListaVerificacionRemanente.Count.ToString() + " pedido(s) que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
                 return;
             }
 
@@ -2855,7 +2879,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
         GenerarTablaAgregadosArchivosInternos(rcExterna, tipoConciliacion);
         ActualizarTotalesAgregados();
-
 
         HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
         if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
@@ -4308,7 +4331,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     celulaPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
                     añoPedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
                     rnc = listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
-                
                 }
                 else
                 {
@@ -4358,8 +4380,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     dtTemporal.Rows[gRowIn.RowIndex].Delete();
                     dtTemporal.AcceptChanges();
                 }
-
-
                 
                 if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
                 {

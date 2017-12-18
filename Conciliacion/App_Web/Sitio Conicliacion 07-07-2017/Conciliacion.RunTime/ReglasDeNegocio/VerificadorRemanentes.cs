@@ -9,14 +9,25 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
     public class VerificadorRemanentes
     {
 
-        public List<DetalleVerificadorRemanente> VerificarRemanentePedidos(DataTable dtPedidos, decimal MontoRemanente)
+        public List<DetalleVerificadorRemanente> VerificarRemanentePedidos(DataTable dtPedidos, decimal MontoRemanente, byte Opcion)
         {
             List<DetalleVerificadorRemanente> ListaRetorno = new List<DetalleVerificadorRemanente>();
 
             foreach (DataRow drPedido in dtPedidos.Rows)
             {
-                string PedidoReferencia = drPedido[1].ToString();
-                decimal TotalPedido = Convert.ToDecimal(drPedido[7]);
+                string PedidoReferencia = "";
+                decimal TotalPedido = 0;
+                if (Opcion == 1)
+                {//Match
+                    PedidoReferencia = drPedido[1].ToString();
+                    TotalPedido = Convert.ToDecimal(drPedido[7]);
+                }
+                else
+                {//Busqueda
+                    PedidoReferencia = drPedido[0].ToString();
+                    TotalPedido = Convert.ToDecimal(drPedido[5]);
+                }
+
                 if (MontoRemanente >= TotalPedido)
                 {
                     DetalleVerificadorRemanente objValidacion = new DetalleVerificadorRemanente
