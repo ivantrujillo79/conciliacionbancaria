@@ -193,6 +193,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
             }
 
+            //>>>>>>> RRV_bugfix
+            wucBuscaClientesFacturas.grvPedidos = grvPedidos;
+
+
             CargarConfiguracion_wucCargaExcel();
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             
@@ -253,7 +257,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                 }
                 else
-                { 
+                {
                     HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 0;
                     btnFiltraCliente.Visible = false;
                 }
@@ -355,6 +359,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     selectedListItem.Selected = true;
                 }
+
+                if (objControlPostBack == "btnBuscaFactura")
+                {
+                    if (Session["CBPedidosPorFactura"] != null)
+                    {
+                        grvPedidos.DataSource = Session["CBPedidosPorFactura"];
+                        grvPedidos.DataBind();
+                    }
+                }
+
             }
             else
             {
@@ -410,21 +424,27 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Carga_SucursalCorporativo(corporativo);
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
-                 /*   lblSucursalCelula.Text = "Sucursal Interna";
-                    lblGridAP.Text = "INTERNOS ";
-                    ddlSucursal.Visible = true;
-                    Carga_SucursalCorporativo(corporativo);
-                    ConsultarArchivosInternos();
-                    btnActualizarConfig.ValidationGroup = "UnoVarios";
-                    lblArchivosInternos.Visible = true;*/
+                    /*   lblSucursalCelula.Text = "Sucursal Interna";
+                       lblGridAP.Text = "INTERNOS ";
+                       ddlSucursal.Visible = true;
+                       Carga_SucursalCorporativo(corporativo);
+                       ConsultarArchivosInternos();
+                       btnActualizarConfig.ValidationGroup = "UnoVarios";
+                       lblArchivosInternos.Visible = true;*/
+                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
                 }
+                else
+                { 
                     txtDias.Enabled = true;
-
+                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
+                }
             }
+
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
             else
                 btnFiltraCliente.Visible = false;
+
         }
         catch (SqlException ex)
         {
@@ -967,7 +987,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void grvPedidos_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-    
         //btnAgregarPedido. btnAgregarPedido_Click
     }
 
@@ -1452,6 +1471,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     pintarFilaSeleccionadaArchivoInterno(indiceInternoSeleccionado);
                 }
             }
+            if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
+            {
+                if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
+                {
+                    e.Row.Cells[13].Visible = false;
+                    e.Row.Cells[14].Visible = false;
+                }
+                else
+                {
+                    e.Row.Cells[13].Visible = true;
+                    e.Row.Cells[14].Visible = true;
+                }
+            }
+
         }
         catch (Exception ex)
         {

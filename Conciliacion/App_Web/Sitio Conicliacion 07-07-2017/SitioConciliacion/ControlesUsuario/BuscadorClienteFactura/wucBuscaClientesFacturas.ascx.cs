@@ -26,10 +26,19 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     private DataTable dtOriginal;
     private DataTable dtFiltado;
 
+//<<<<<<< HEAD
     public string Cliente {
         get { return txtCliente.Text.Trim(); }
         set { NumeroClienteFiltrar = value; }
         } 
+//=======
+    private GridView grvpedidos;
+    public GridView grvPedidos
+    { 
+        get { return grvpedidos; }
+        set { grvpedidos = value; }
+    }
+//>>>>>>> RRV_bugfix
 
     protected override void OnInit(EventArgs e)
     {
@@ -43,6 +52,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Session["CBPedidosPorFactura"] = null;
         if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null)
         { 
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
@@ -119,13 +129,21 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     protected void btnBuscar_Click(object sender, ImageClickEventArgs e)
     {        
-        //if (Session["TABLADEAGREGADOS"] != null)
-        //{
-        //    GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];
-        //    _GridRelacionado.DataSource = FiltraCliente(grvAgregadosPedidosPrima);
-        //    _GridRelacionado.DataBind();
-        //    _GridRelacionado.DataBind();
-        //}
+        
     }
 
+
+    protected void btnBuscaFactura_Click(object sender, ImageClickEventArgs e)
+    {
+        DataTable tbPedidosPorFactura = null;
+        if (txtFactura.Text != string.Empty)
+            tbPedidosPorFactura = App.Consultas.CBPedidosPorFactura(txtFactura.Text);
+        Session["CBPedidosPorFactura"] = tbPedidosPorFactura;
+        if (grvpedidos != null)
+        { 
+            grvpedidos.DataSource = tbPedidosPorFactura;
+            grvpedidos.DataBind();
+            grvpedidos.DataBind();
+        }
+    }
 }
