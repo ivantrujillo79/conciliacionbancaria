@@ -402,6 +402,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     if (objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido")
                     {
+                        HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
                         grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                         grvPedidos.DataBind();
                     }
@@ -2854,7 +2855,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
         GenerarTablaAgregadosArchivosInternos(rcExterna, tipoConciliacion);
         ActualizarTotalesAgregados();
-        ConsultarPedidosInternos();
+
+
+        HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+        if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+        {
+            grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            grvPedidos.DataBind();
+        }
+        else
+        {
+            ConsultarPedidosInternos();
+        }
     }
 
     protected void btnAgregarArchivo_Click(object sender, EventArgs e)
