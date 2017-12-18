@@ -400,12 +400,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                     rvDiferencia.ValidationGroup = "UnoVariosPedidos";
 
-                    if (objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido")
-                    {
-                        HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
-                        grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                        grvPedidos.DataBind();
-                    }
+                    //if (objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido")
+                    //{
+                    //    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                    //    grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    //    grvPedidos.DataBind();
+                    //}
                 }
                 //Carga_SucursalCorporativo(corporativo);
                 if (objSolicitdConciliacion.ConsultaArchivo())
@@ -544,6 +544,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session["ParametrosReporte"] = null;
         HttpContext.Current.Session["NUEVOS_INTERNOS"] = null;
         HttpContext.Current.Session["DETALLEINTERNO"] = null;
+        HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = null;
+        HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = null;
 
         HttpContext.Current.Session.Remove("StatusFiltro");
         HttpContext.Current.Session.Remove("TipoFiltro");
@@ -1832,6 +1834,66 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    public void GenerarTablaPedidosBuscadosPorUsuario()
+    {
+        try
+        {
+            tblReferenciaInternas = new DataTable("ReferenciasInternas");
+            tblReferenciaInternas.Columns.Add("Pedido", typeof(int));
+            tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(string));
+            tblReferenciaInternas.Columns.Add("AñoPed", typeof(int));
+            tblReferenciaInternas.Columns.Add("Celula", typeof(int));
+            tblReferenciaInternas.Columns.Add("Cliente", typeof(string));
+            tblReferenciaInternas.Columns.Add("Nombre", typeof(string));
+            tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
+            tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
+            tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
+            tblReferenciaInternas.Columns.Add("Seriefactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
+
+            ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
+            foreach (
+                ReferenciaNoConciliadaPedido rc in
+                    listaReferenciaPedidos.Where(
+                        rc => !externoSelec.ExisteReferenciaConciliadaPedido(rc.Pedido, rc.CelulaPedido, rc.AñoPedido)))
+            {
+                tblReferenciaInternas.Rows.Add(
+                    rc.Pedido,
+                    rc.PedidoReferencia,
+                    rc.AñoPedido,
+                    rc.CelulaPedido,
+                    rc.Cliente,
+                    rc.Nombre,
+                    rc.FMovimiento,
+                    rc.Total,
+                    rc.Concepto,
+                    "HOLA DT SF",
+                    "HOLA DT CR"
+                    );
+            }
+            HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tblReferenciaInternas;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private void LlenaGridViewPedidosBuscadosPorUsuario()
+    {
+        try
+        {
+            DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            grvPedidos.PageIndex = 0;
+            grvPedidos.DataSource = tablaReferenciasP;
+            grvPedidos.DataBind();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public void GenerarTablaPedidos() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
         try
@@ -1869,14 +1931,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     "HOLA DT CR"
                     );
             }
-            HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
-            HttpContext.Current.Session["TAB_INTERNOS_AX"] = tblReferenciaInternas;
+                HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
+                HttpContext.Current.Session["TAB_INTERNOS_AX"] = tblReferenciaInternas;
         }
         catch (Exception ex)
         {
             throw ex;
         }
-       
     }
 
     private void LlenaGridViewPedidos() //Llena el gridview dePedidos
@@ -1892,7 +1953,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             throw ex;
         }
-        
     }
 
     public void Consulta_ExternosPendientesCancelados(int corporativoconciliacion, int sucursalconciliacion,
@@ -2502,6 +2562,64 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    public void GeneraPedidosBuscadosPorUsuario()
+    {
+        try
+        {
+            if (grvExternos.Rows.Count > 0)
+            {
+                //Obtener el la referencia externa seleccionada
+                ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
+                                                  ? leerReferenciaExternaSeleccionada()
+                                                  : tranExternaAnteriorSeleccionada;
+                //Leer Variables URL 
+                cargarInfoConciliacionActual();
+
+                if (rfEx.Referencia.Trim() == "")
+                    return;
+                
+                if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] != null)
+                {
+                    Session["POR_CONCILIAR_INTERNO"] =
+                        ConvierteTablaAReferenciaNoConciliadaPedido(
+                            (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"]);
+                    listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
+                }
+                else
+                {
+                    return;
+                }
+
+                GenerarTablaPedidosBuscadosPorUsuario();
+                LlenaGridViewPedidosBuscadosPorUsuario();
+                statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);
+                if (statusFiltro)
+                {
+                    //Leer el tipoConciliacion URL
+                    tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+                    cargar_ComboCampoFiltroDestino(tipoConciliacion, ddlFiltrarEn.SelectedItem.Value);
+                    tipoFiltro = Session["TipoFiltro"] as string;
+                    FiltrarInternos(tipoFiltro);
+                }
+            }
+            else
+            {
+                grvPedidos.DataSource = null;
+                grvPedidos.DataBind();
+            }
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+    }
+
 
     public void ConsultarPedidosInternos()
     {
@@ -2560,10 +2678,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = Convert.ToInt32(ddlCelula.SelectedValue);
                     }
-
-                Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                      Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                      cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
+                
+                    Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
+                          Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                          cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
                 LlenaGridViewPedidos();
                 statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);
@@ -2857,11 +2975,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ActualizarTotalesAgregados();
 
 
-        HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
-        if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+        //HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+        if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
         {
-            grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-            grvPedidos.DataBind();
+            //grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            //grvPedidos.DataBind();
+            GeneraPedidosBuscadosPorUsuario();
         }
         else
         {
@@ -4346,32 +4465,32 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
 
                 LsIndicePedidosSeleccionados.Reverse();
-                if (dtTemporal!=null)
-                foreach (int idx in LsIndicePedidosSeleccionados)
+                if (dtTemporal != null)
                 {
-                    dtTemporal.Rows[idx].Delete();
-                    dtTemporal.AcceptChanges();
+                    foreach (int idx in LsIndicePedidosSeleccionados)
+                    {
+                        dtTemporal.Rows[idx].Delete();
+                        dtTemporal.AcceptChanges();
+                    }
+                    if (!LsIndicePedidosSeleccionados.Any(X => X == gRowIn.RowIndex))
+                    {
+                        dtTemporal.Rows[gRowIn.RowIndex].Delete();
+                        dtTemporal.AcceptChanges();
+                    }
                 }
-
-                if (!LsIndicePedidosSeleccionados.Any(X => X == gRowIn.RowIndex))
-                {
-                    dtTemporal.Rows[gRowIn.RowIndex].Delete();
-                    dtTemporal.AcceptChanges();
-                }
-
 
                 
                 if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
                 {
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
                     grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = null;
+                    //HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = null;
                 }
                 else
                 {
                     HttpContext.Current.Session["TAB_INTERNOS"] = dtTemporal;
                     grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
-                    HttpContext.Current.Session["TAB_INTERNOS"] = null;
+                    //HttpContext.Current.Session["TAB_INTERNOS"] = null;
                 }
                 grvPedidos.DataBind();
             }
@@ -5598,6 +5717,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = wucBuscaClientesFacturas.BuscaCliente();
                     grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                     grvPedidos.DataBind();
                     grvPedidos.DataBind();
