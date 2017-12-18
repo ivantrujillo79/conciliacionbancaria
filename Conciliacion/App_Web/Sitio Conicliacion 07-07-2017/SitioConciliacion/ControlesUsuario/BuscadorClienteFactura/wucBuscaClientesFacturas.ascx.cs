@@ -26,6 +26,11 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     private DataTable dtOriginal;
     private DataTable dtFiltado;
 
+    public string Cliente {
+        get { return txtCliente.Text.Trim(); }
+        set { NumeroClienteFiltrar = value; }
+        } 
+
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);

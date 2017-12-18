@@ -4252,7 +4252,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (objSolicitdConciliacion.ConsultaPedido())
             {
-                DataTable tablaReferenciasP = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+                DataTable tablaReferenciasP;
+                if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+                {
+                    tablaReferenciasP = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                }
+                else
+                {
+                    tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];    
+                }
+                
                 grvPedidos.PageIndex = 0;
                 grvPedidos.DataSource = tablaReferenciasP;
                 grvPedidos.DataBind();
@@ -4326,28 +4335,33 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     dtTemporal = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
                 }
 
+                LsIndicePedidosSeleccionados.Reverse();
                 if (dtTemporal!=null)
                 foreach (int idx in LsIndicePedidosSeleccionados)
                 {
                     dtTemporal.Rows[idx].Delete();
+                    dtTemporal.AcceptChanges();
                 }
 
                 if (!LsIndicePedidosSeleccionados.Any(X => X == gRowIn.RowIndex))
                 {
                     dtTemporal.Rows[gRowIn.RowIndex].Delete();
+                    dtTemporal.AcceptChanges();
                 }
 
 
-                dtTemporal.AcceptChanges();
+                
                 if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
                 {
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtTemporal;
                     grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = null;
                 }
                 else
                 {
                     HttpContext.Current.Session["TAB_INTERNOS"] = dtTemporal;
                     grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+                    HttpContext.Current.Session["TAB_INTERNOS"] = null;
                 }
                 grvPedidos.DataBind();
             }
