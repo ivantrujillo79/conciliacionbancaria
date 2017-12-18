@@ -4319,7 +4319,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rnc = listaReferenciaPedidos.Single(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido && s.Foliofactura == folioFactura);
                 }
 
-                //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea uno de multiselección Reparar
                 ListSeleccionadosPedidos = ObtenerSeleccionadosPedidos(objSolicitdConciliacion);
 
                 if (ListSeleccionadosPedidos.Count == 0)
@@ -4328,7 +4327,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 else
                 {
-                    //>>>>>>>>>>>>>>>>><<<<<<<<<<Línea DOS de multiselección Reparar
                     //      Agregar referencia seleccionada por medio de botón
                     bool contiene =
                         ListSeleccionadosPedidos.Any(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
