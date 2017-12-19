@@ -2581,7 +2581,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] != null)
                 {
                     Session["POR_CONCILIAR_INTERNO"] =
-                        ConvierteTablaAReferenciaNoConciliadaPedido(
+                        ConvierteTablaAReferenciaNoConciliadaPedidoMultiseleccion(
                             (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"]);
                     listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
                 }
@@ -4409,7 +4409,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
                 {
                     Session["POR_CONCILIAR_INTERNO"] =
-                        ConvierteTablaAReferenciaNoConciliadaPedido(
+                        ConvierteTablaAReferenciaNoConciliadaPedidoMultiseleccion(
                             (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
                 }
 
@@ -4449,7 +4449,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     //      Agregar referencia seleccionada por medio de botón
                     bool contiene =
                         ListSeleccionadosPedidos.Any(s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
-                    if (!contiene) { ListSeleccionadosPedidos.Add(rnc); }
+                    if (!contiene)
+                    {
+                        ListSeleccionadosPedidos.Add(rnc);
+                        LsIndicePedidosSeleccionados.Add(gRowIn.RowIndex);
+                    }
                 }
 
                 GenerarAgregadosBusquedaPedidosDelCliente(ListSeleccionadosPedidos);
@@ -4463,18 +4467,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     dtTemporal = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
                 }
-
-                LsIndicePedidosSeleccionados.Reverse();
+                
+                LsIndicePedidosSeleccionados = LsIndicePedidosSeleccionados.OrderByDescending(i => i).ToList();
                 if (dtTemporal != null)
                 {
                     foreach (int idx in LsIndicePedidosSeleccionados)
                     {
                         dtTemporal.Rows[idx].Delete();
-                        dtTemporal.AcceptChanges();
-                    }
-                    if (!LsIndicePedidosSeleccionados.Any(X => X == gRowIn.RowIndex))
-                    {
-                        dtTemporal.Rows[gRowIn.RowIndex].Delete();
                         dtTemporal.AcceptChanges();
                     }
                 }
@@ -4514,17 +4513,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private List<ReferenciaNoConciliadaPedido> ObtenerSeleccionadosPedidos(SolicitudConciliacion objSolicitdConciliacion)
     {
         List<ReferenciaNoConciliadaPedido> ListPedidos = new List<ReferenciaNoConciliadaPedido>();
-        //List<GridViewRow> pedidosSeleccionados = new List<GridViewRow>();
-        //DataTable dtPedidos = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-        //GridView grvRespaldoPedidos = Session["grvPEDIDOS_RESPALDO"] as GridView;
 
-        //int i = 0;
         try
         {
             if ((DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
             {
                 Session["POR_CONCILIAR_INTERNO"] =
-                    ConvierteTablaAReferenciaNoConciliadaPedido(
+                    ConvierteTablaAReferenciaNoConciliadaPedidoMultiseleccion(
                         (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"]);
             }
             else
@@ -4572,8 +4567,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                 }
             }
-            //App.ImplementadorMensajes.MostrarMensaje("Pedido: " + pedido.ToString()
-            //            + "\nCelula: " + celulaPedido.ToString());
         }
         catch (Exception ex)
         {
@@ -4617,6 +4610,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private List<ReferenciaNoConciliadaPedido> ConvierteTablaAReferenciaNoConciliadaPedidoMultiseleccion(DataTable dtEntrada)
     {
         List<ReferenciaNoConciliadaPedido> ListaPedidosRegresar = new List<ReferenciaNoConciliadaPedido>();
+        string sDocumento = "";
+        decimal dMonto = 0M;
 
         if (dtEntrada.Rows.Count > 0)
         {
@@ -4625,20 +4620,33 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 //if (drPedido.RowState != DataRowState.Deleted)
                 //{
-                    ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
-                    string sDocumento = drPedido["PedidoReferencia"].ToString();
-                    decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
-                    RefNoConciliadaPedido.PedidoReferencia = sDocumento;
-                    RefNoConciliadaPedido.Total = dMonto;
-                    RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
-                    RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
-                    RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
-                    RefNoConciliadaPedido.Folio = 1;
-                    RefNoConciliadaPedido.Secuencia = 1;
-                    RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
-                    RefNoConciliadaPedido.Foliofactura = drPedido["SerieFactura"].ToString();
+                ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                if (drPedido.Table.Columns.Contains("PedidoReferencia"))
+                    sDocumento = drPedido["PedidoReferencia"].ToString();
+                if (drPedido.Table.Columns.Contains("Documento"))
+                    sDocumento = drPedido["Documento"].ToString();
+                dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
+                RefNoConciliadaPedido.PedidoReferencia = sDocumento;
+                RefNoConciliadaPedido.Total = dMonto;
+                RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
+                RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
+                RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
+                RefNoConciliadaPedido.Folio = 1;
+                RefNoConciliadaPedido.Secuencia = 1;
+                RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
 
-                    ListaPedidosRegresar.Add(RefNoConciliadaPedido);
+                if (drPedido.Table.Columns.Contains("SerieFactura"))
+                    RefNoConciliadaPedido.Foliofactura = drPedido["SerieFactura"].ToString();
+                if (drPedido.Table.Columns.Contains("Nombre"))
+                    RefNoConciliadaPedido.Nombre = drPedido["Nombre"].ToString();
+                if (drPedido.Table.Columns.Contains("Concepto"))
+                    RefNoConciliadaPedido.Concepto = drPedido["Concepto"].ToString();
+                if (drPedido.Table.Columns.Contains("Cliente"))
+                    RefNoConciliadaPedido.Cliente = Convert.ToInt32(drPedido["Cliente"].ToString());
+                if (drPedido.Table.Columns.Contains("FSuministro"))
+                    RefNoConciliadaPedido.FMovimiento = Convert.ToDateTime(drPedido["FSuministro"].ToString());
+
+                ListaPedidosRegresar.Add(RefNoConciliadaPedido);
                 //}
             }
         }
