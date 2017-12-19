@@ -981,14 +981,14 @@
                                 <asp:TemplateField  HeaderText="Factura" SortExpression="SerieFactura" >
                                     <ItemTemplate>
                                         <div class="parrafoTexto" style="width: 80px">
-                                            <asp:Label runat="server" ID="lblSerieFactura" Text=""> </asp:Label>
+                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("Factura").ToString()) %>'> </asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField  HeaderText="Cliente" SortExpression="ClienteReferencia" >
                                     <ItemTemplate>
                                         <div class="parrafoTexto" style="width: 80px">
-                                            <asp:Label runat="server" ID="lblClienteReferencia" Text=""> </asp:Label>
+                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("Cliente").ToString()) %>'> </asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>

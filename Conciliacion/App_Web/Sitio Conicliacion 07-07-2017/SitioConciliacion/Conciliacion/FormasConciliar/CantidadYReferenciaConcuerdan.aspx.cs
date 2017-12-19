@@ -147,7 +147,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                     GenerarTablaReferenciasAConciliarArchivos();
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
+                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
                 }
+                else
+                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
 
                 txtDias.Enabled = true;
 
@@ -507,6 +510,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
             tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));            
 
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPedido)
             {
@@ -534,7 +538,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rc.Cliente,
                     rc.Nombre,
                     rc.Total,
-                    rc.ConceptoPedido
+                    rc.ConceptoPedido,
+                    rc.FolioSat + rc.SerieSat
                     );
             }
             HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
@@ -792,7 +797,26 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         //    }
         //    list.SelectedValue = (grvCantidadReferenciaConcuerdanPedido.PageIndex + 1).ToString();
         //}
+
+        if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
+        {
+            if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
+            {
+                if (e.Row.Cells.Count >= 15)
+                    e.Row.Cells[15].Visible = false;
+                if (e.Row.Cells.Count >= 16)
+                    e.Row.Cells[16].Visible = false;
+            }
+            else
+            {
+                if (e.Row.Cells.Count >= 15)
+                    e.Row.Cells[15].Visible = true;
+                if (e.Row.Cells.Count >= 16)
+                    e.Row.Cells[16].Visible = true;
+            }
+        }
     }
+
     protected void grvCantidadReferenciaConcuerdanPedido_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         try

@@ -1796,8 +1796,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.FMovimiento,
                     rc.Total,
                     rc.Concepto,
-                    "HOLA DT SF",
-                    "HOLA DT CR"
+                    rc.FolioSat+rc.SerieSat, "HOLA DT SF",
+                    rc.Cliente//"HOLA DT CR"
                     );
             }
             HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
