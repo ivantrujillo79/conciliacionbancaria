@@ -4320,6 +4320,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (objSolicitdConciliacion.ConsultaPedido())
             {
+                if (wucBuscaClientesFacturas.TablaFacturas != null)
+                {
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.TablaFacturas;
+                    Console.WriteLine("Problemas");
+                }
+
                 DataTable tablaReferenciasP;
                 if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
                 {

@@ -13,10 +13,9 @@ using Conciliacion.RunTime.DatosSQL;
 
 public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFacturas : System.Web.UI.UserControl
 {
-    protected string MyString = "This is my string";
+    protected string MyString = "";
 
     private GridView _GridRelacionado = new GridView();
-    //public GridView GridRelacionado { get { return _GridRelacionado; } set { _GridRelacionado = GridRelacionado; } }
     public string HtmlIdGridRelacionado;
     public string HtmlIdGridCeldaID;
     public string HtmlIdGridCNodoID;
@@ -29,13 +28,27 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     public string Cliente {
         get { return txtCliente.Text.Trim(); }
         set { NumeroClienteFiltrar = value; }
-        } 
+        }
+
+    private string _Factura;
+    public string Factura {
+        get { return txtFactura.Text.Trim(); }
+        set { _Factura = value; }
+    }
 
     private GridView grvpedidos;
     public GridView grvPedidos
     { 
         get { return grvpedidos; }
         set { grvpedidos = value; }
+    }
+
+    private DataTable _TablaFacturas;
+    public DataTable TablaFacturas {
+        get
+        {
+            BuscarFactura(this.Factura); return _TablaFacturas; }
+        set { _TablaFacturas = value; }
     }
 
     protected override void OnInit(EventArgs e)
@@ -64,10 +77,6 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     public DataTable FiltraCliente(GridView GridView)
     {
-        //Método privado en el que durante su ejecución los registros asignados en el datasource del grid asignado por medio de 
-        //la propiedad "GridRelacionado", serán filtrados para sólo mostrar los pedidos relacionados con el cliente provisto por la 
-        //propiedad "NumeroClienteFiltrar".
-
         try
         {
             DataView dv = null;
@@ -96,11 +105,6 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     public DataTable BuscaCliente()
     {
-        //Método privado en el que durante su ejecución los registros asignados en el datasource del grid asignado por medio de 
-        //la propiedad "GridRelacionado", serán filtrados para sólo mostrar los pedidos relacionados con el cliente provisto por la 
-        //propiedad "NumeroClienteFiltrar".
-
-        //DataView dv = null;
         try
         {
             DataTable dtClientePedidos = null;
@@ -133,15 +137,24 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     protected void btnBuscaFactura_Click(object sender, ImageClickEventArgs e)
     {
+        BuscarFactura(txtFactura.Text);
+    }
+
+    private void BuscarFactura(string NumeroFactura)
+    {
+        _Factura = NumeroFactura;
         DataTable tbPedidosPorFactura = null;
-        if (txtFactura.Text != string.Empty)
-            tbPedidosPorFactura = App.Consultas.CBPedidosPorFactura(txtFactura.Text);
+        if (NumeroFactura != string.Empty)
+            tbPedidosPorFactura = App.Consultas.CBPedidosPorFactura(NumeroFactura);
         Session["CBPedidosPorFactura"] = tbPedidosPorFactura;
+        _TablaFacturas = tbPedidosPorFactura;
+
         if (grvpedidos != null)
-        { 
+        {
             grvpedidos.DataSource = tbPedidosPorFactura;
             grvpedidos.DataBind();
             grvpedidos.DataBind();
         }
     }
+
 }
