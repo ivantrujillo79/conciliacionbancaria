@@ -753,8 +753,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     rc.Nombre,
                     rc.Total,
                     rc.ConceptoPedido,
-                    "HOLA FACTURA",
-                    "CLIENTE REF"
+                    "",
+                    ""
                     );
             }
             HttpContext.Current.Session["TAB_REF_CONCILIAR"] = tblReferenciasAConciliar;

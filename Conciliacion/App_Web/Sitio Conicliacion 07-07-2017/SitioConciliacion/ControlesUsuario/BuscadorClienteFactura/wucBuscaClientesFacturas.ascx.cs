@@ -26,19 +26,17 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     private DataTable dtOriginal;
     private DataTable dtFiltado;
 
-//<<<<<<< HEAD
     public string Cliente {
         get { return txtCliente.Text.Trim(); }
         set { NumeroClienteFiltrar = value; }
         } 
-//=======
+
     private GridView grvpedidos;
     public GridView grvPedidos
     { 
         get { return grvpedidos; }
         set { grvpedidos = value; }
     }
-//>>>>>>> RRV_bugfix
 
     protected override void OnInit(EventArgs e)
     {
