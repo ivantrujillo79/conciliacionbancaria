@@ -433,9 +433,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 else
                 { 
-                    txtDias.Enabled = true;
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
                 }
+                txtDias.Enabled = true;
             }
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
