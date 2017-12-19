@@ -1919,7 +1919,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.FMovimiento,
                     rc.Total,
                     rc.Concepto,
-                    rc.FolioSat+rc.SerieSat, "HOLA DT SF",
+                    rc.FolioSat+rc.SerieSat,// "HOLA DT SF",
                     rc.Cliente//"HOLA DT CR"
                     );
             }
