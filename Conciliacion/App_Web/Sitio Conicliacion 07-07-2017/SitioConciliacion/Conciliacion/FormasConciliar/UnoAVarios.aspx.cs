@@ -4443,6 +4443,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (ListSeleccionadosPedidos.Count == 0)
                 {
                     ListSeleccionadosPedidos.Add(rnc);
+                    LsIndicePedidosSeleccionados.Add(gRowIn.RowIndex);
                 }
                 else
                 {
