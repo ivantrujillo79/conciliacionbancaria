@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
@@ -93,8 +94,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 6, FuenteInsumo = "Archivo", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 7, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 7, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 8, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 8, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = true, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = true, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 9, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 1, FormaConciliacion = 9, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             /*Tipo de conciliación 2 => CONCILIACION DE INGRESOS POR COBRANZA A ABONAR EDIFICIOS*/
@@ -123,7 +124,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 2, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 2, FormaConciliacion = 9, FuenteInsumo = "Pedido", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 2, FormaConciliacion = 9, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-
             /*Tipo de conciliación 3 => CONCILIACION DE EGRESOS*/
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 3, FormaConciliacion = 1, FuenteInsumo = "Pedido", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 3, FormaConciliacion = 1, FuenteInsumo = "Archivo", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
@@ -143,7 +143,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 3, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 3, FormaConciliacion = 9, FuenteInsumo = "Pedido", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 3, FormaConciliacion = 9, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-
             /*Tipo de conciliación 4 => CONCILIACION DE INGRESOS Y EGRESOS*/
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 1, FuenteInsumo = "Pedido", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 1, FuenteInsumo = "Archivo", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
@@ -159,12 +158,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 6, FuenteInsumo = "Archivo", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 7, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 7, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 8, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 8, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = true, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
+            ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 8, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = true, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 9, FuenteInsumo = "Pedido", CargaFuenteInsumo = true, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 4, FormaConciliacion = 9, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
-            
-            
             /*Tipo de conciliación 6 => CONCILIACION DE INGRESOS POR COBRANZA A ABONAR PEDIDO*/
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 1, FuenteInsumo = "Pedido", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
             ListaConfiguraciones.Add(new ConfiguracionTipoFormaConciliacion { TipoConciliacion = 6, FormaConciliacion = 1, FuenteInsumo = "Archivo", CargaFuenteInsumo = false, BuscadoresHabilitados = false, CelulaPorDefecto = 0, TextoInternos = "", ActivaPagare = false });
