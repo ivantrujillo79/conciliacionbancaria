@@ -28,6 +28,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     public string Cliente {
         get { return txtCliente.Text.Trim(); }
         set { NumeroClienteFiltrar = value; }
+//<<<<<<< HEAD
         }
 
     private string _Factura;
@@ -35,6 +36,9 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         get { return txtFactura.Text.Trim(); }
         set { _Factura = value; }
     }
+//=======
+//    } 
+//>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
 
     private GridView grvpedidos;
     public GridView grvPedidos
@@ -42,6 +46,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         get { return grvpedidos; }
         set { grvpedidos = value; }
     }
+//<<<<<<< HEAD
 
     private DataTable _TablaFacturas;
     public DataTable TablaFacturas {
@@ -50,6 +55,8 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
             BuscarFactura(this.Factura); return _TablaFacturas; }
         set { _TablaFacturas = value; }
     }
+//=======
+//>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
 
     protected override void OnInit(EventArgs e)
     {
@@ -132,6 +139,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     protected void btnBuscar_Click(object sender, ImageClickEventArgs e)
     {        
         
+//<<<<<<< HEAD
     }
 
 
@@ -155,6 +163,22 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
             grvpedidos.DataBind();
             grvpedidos.DataBind();
         }
+//=======
+//>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
     }
 
+/*
+    protected void btnBuscaFactura_Click(object sender, ImageClickEventArgs e)
+    {
+        DataTable tbPedidosPorFactura = null;
+        if (txtFactura.Text != string.Empty)
+            tbPedidosPorFactura = App.Consultas.CBPedidosPorFactura(txtFactura.Text);
+        Session["CBPedidosPorFactura"] = tbPedidosPorFactura;
+        if (grvpedidos != null)
+        { 
+            grvpedidos.DataSource = tbPedidosPorFactura;
+            grvpedidos.DataBind();
+            grvpedidos.DataBind();
+        }
+    }*/
 }

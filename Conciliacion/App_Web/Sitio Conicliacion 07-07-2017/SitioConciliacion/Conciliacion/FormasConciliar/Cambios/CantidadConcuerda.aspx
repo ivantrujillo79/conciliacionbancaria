@@ -1,12 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="CantidadYReferenciaConcuerdan.aspx.cs" Inherits="Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan"
-    Debug="true" EnableEventValidation="true" %>
+    CodeFile="CantidadConcuerda.aspx.cs" Inherits="Conciliacion_FormasConciliar_CantidadConcuerda"
+    Debug="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
-    CANTIDAD Y REFERENCIA CONCUERDAN
+<asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
+    CANTIDAD
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
     <!--Libreria jQuery-->
     <script src="../../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
@@ -17,15 +17,14 @@
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
-        //        $(document).ready(function () {
+      
         function pageLoad() {
             gridviewScroll();
         }
-        //        );
-        
+     
         function gridviewScroll() {
             if (<%= tipoConciliacion %> == 2) {
-                $('#<%=grvCantidadReferenciaConcuerdanPedido.ClientID%>').gridviewScroll({
+                $('#<%=grvCantidadConcuerdanPedidos.ClientID%>').gridviewScroll({
                     width: 1200,
                     height: 500,
                     arrowsize: 30,
@@ -36,12 +35,13 @@
                     headerrowcount: 1,
                     wheelstep: 20,
                     verticalbar:"auto",
-                    horizontalbar:"auto"               
+                    horizontalbar:"auto"
+
                 });
             } else {
-                $('#<%=grvCantidadReferenciaConcuerdanArchivos.ClientID%>').gridviewScroll({
+                $('#<%=grvCantidadConcuerdanArchivos.ClientID%>').gridviewScroll({
                     width: 1200,
-                    height:500,
+                    height: 500,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
                     varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
@@ -50,16 +50,34 @@
                     headerrowcount: 1,
                     wheelstep: 20,
                     verticalbar:"auto",
-                    horizontalbar:"auto" 
-                }); 
-            } 
+                    horizontalbar:"auto"
+
+                });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function LanzarFiltro() {
+            var mdlFiltro = '<%= mpeFiltrar.ClientID %>';
+            $find(mdlFiltro).show();
+        }
+    </script>
+    <!-- Validar: solo numeros-->
+    <script type="text/javascript">
+        function ValidNum(e) {
+            var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+            return ((tecla > 47 && tecla < 58) || tecla == 8);
+        }
+        function ValidNumDecimal(e) {
+            var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+            return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
         }
 
     </script>
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="server">
-    <asp:ScriptManager ID="smCantidadReferenciaConcuerda" runat="server" EnableScriptGlobalization="True"
-        AsyncPostBackTimeout="14400">
+<asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
+    <asp:ScriptManager runat="server" ID="smCantidadConcuerda" AsyncPostBackTimeout="14400"
+        EnableScriptGlobalization="True">
     </asp:ScriptManager>
     <script src="../../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
     <script type="text/javascript" language="javascript">
@@ -82,7 +100,6 @@
         function HideModalPopup() {
             $find("ModalBehaviour").hide();
         }
-
         function HideModalPopupInterno() {
             $find("ModalBehaviourInterno").hide();
         }
@@ -90,7 +107,6 @@
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%= mpeLoading.ClientID %>';        
     </script>
-
     <asp:UpdatePanel runat="server" ID="upBarraEstado" UpdateMode="Always">
         <ContentTemplate>
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
@@ -263,7 +279,7 @@
                                 <td class="lineaVertical">
                                     <asp:DropDownList ID="ddlStatusConcepto" runat="server" AppendDataBoundItems="True"
                                         CssClass="etiqueta dropDownPequeño" Style="margin-bottom: 3px; margin-right: 3px"
-                                        Width="130px" OnSelectedIndexChanged="ddlStatusConcepto_SelectedIndexChanged">
+                                        Width="130px">
                                         <asp:ListItem Text="NINGUNO" Value="0"></asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
@@ -277,19 +293,18 @@
                                 <td></td>
                                 <td colspan="4">
                                     <b>
-                                        <asp:RangeValidator ID="rvDias" runat="server" ControlToValidate="txtDias" CssClass="etiqueta fg-color-rojo"
-                                            Display="Dynamic" EnableClientScript="True" Font-Size="10px" Type="Integer" ValidationGroup="CantidadReferencia">
-                                        </asp:RangeValidator>
-                                        <asp:RequiredFieldValidator ID="rfvDiasVacio" runat="server" ControlToValidate="txtDias"
-                                            CssClass="etiqueta fg-color-rojo" Display="Dynamic" EnableClientScript="True"
-                                            ErrorMessage="Especifique los dias. " Font-Size="10px" ValidationGroup="CantidadReferencia"></asp:RequiredFieldValidator>
-                                        <asp:RangeValidator ID="rvDiferencia" runat="server" ControlToValidate="txtDiferencia"
-                                            CssClass="etiqueta fg-color-rojo" Display="Dynamic" EnableClientScript="True"
-                                            Font-Size="10px" Type="Double" ValidationGroup="CantidadReferencia">
-                                        </asp:RangeValidator>
-                                        <asp:RequiredFieldValidator ID="rfvDiferenciaVacio" runat="server" ControlToValidate="txtDiferencia"
-                                            CssClass="etiqueta fg-color-rojo" Display="Dynamic" EnableClientScript="True"
-                                            ErrorMessage="Especifique la diferencia " Font-Size="10px" ValidationGroup="CantidadReferencia"></asp:RequiredFieldValidator>
+                                        <asp:RangeValidator ID="rvDias" ControlToValidate="txtDias" Type="Integer" EnableClientScript="True"
+                                            runat="server" CssClass="etiqueta fg-color-rojo" Font-Size="10px" Display="Dynamic"
+                                            ValidationGroup="CantidadArchivos" />
+                                        <asp:RequiredFieldValidator ID="rfvDiasVacio" runat="server" ErrorMessage="Especifique los dias."
+                                            ControlToValidate="txtDias" Font-Size="10px" CssClass="etiqueta fg-color-rojo"
+                                            ValidationGroup="CantidadArchivos" EnableClientScript="True" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        <asp:RangeValidator ID="rvDiferencia" ControlToValidate="txtDiferencia" Type="Double"
+                                            EnableClientScript="True" runat="server" CssClass="etiqueta fg-color-rojo" Display="Dynamic"
+                                            Font-Size="10px" ValidationGroup="CantidadArchivos" />
+                                        <asp:RequiredFieldValidator ID="rfvDiferenciaVacio" runat="server" ErrorMessage="Especifique la diferencia."
+                                            ControlToValidate="txtDiferencia" Font-Size="10px" CssClass="etiqueta fg-color-rojo"
+                                            ValidationGroup="CantidadArchivos" EnableClientScript="True" Display="Dynamic"></asp:RequiredFieldValidator>
                                     </b>
                                 </td>
                             </tr>
@@ -301,6 +316,7 @@
                                 <td class="iconoOpcion bg-color-purpura" rowspan="2">
                                     <asp:ImageButton ID="imgFiltrar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                         ToolTip="FILTRAR" Width="25px" OnClick="imgFiltrar_Click" />
+                                    <%--OnClientClick="return LanzarFiltro()" --%>
                                 </td>
                                 <td>Filtrar en
                                 </td>
@@ -311,7 +327,7 @@
                                         Style="margin-bottom: 3px; margin-right: 3px" Width="85px">
                                         <asp:ListItem Value="Externos" Selected="True">Externos</asp:ListItem>
                                         <asp:ListItem Value="Internos">Internos</asp:ListItem>
-                                        <asp:ListItem Value="Conciliados"> Conciliados</asp:ListItem>
+                                        <asp:ListItem Value="Conciliados">Conciliados</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
                             </tr>
@@ -323,7 +339,6 @@
                                 <td class="iconoOpcion bg-color-naranja" rowspan="2">
                                     <asp:ImageButton ID="imgBuscar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                         ToolTip="BUSCAR" Width="25px" OnClientClick="ModalPopupBuscar('M');" />
-                                    <%--OnClientClick="ShowModalPopupBuscar();" OnClick="imgBuscar_Click"--%>
                                 </td>
                                 <td>Buscar en
                                 </td>
@@ -376,7 +391,7 @@
                             <tr>
                                 <td class="iconoOpcion bg-color-azulOscuro" style="height: 30px">
                                     <asp:ImageButton ID="btnGuardar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Guardar.png"
-                                        ToolTip="GUARDAR" Width="25px" OnClick="btnGuardar_Click" />
+                                        ToolTip="GUARDAR TODO" Width="25px" OnClick="btnGuardar_Click" />
                                 </td>
                             </tr>
                         </table>
@@ -407,7 +422,6 @@
             </table>
         </ContentTemplate>
     </asp:UpdatePanel>
-
 
     <table style="width: 100%">
         <tr>
@@ -471,52 +485,52 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
                                     <ItemTemplate>
-                                        <div class="parrafoTexto" style="width: 400px">
+                                        <div class="parrafoTexto" style="width: 200px">
                                             <asp:Label ID="lblConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeConceptoExt" runat="server" TargetControlID="lblConceptoExt"
-                                            PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="0" OffsetY="0">
+                                            PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-30" OffsetY="-10">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="500px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
-                                            <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                CssClass="etiqueta " Font-Size="10px" />
-                                        </asp:Panel>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Justify" Width="400px"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Width="400px"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Descripcion" SortExpression="Descripcion">
-                                    <ItemTemplate>
-                                        <div class="parrafoTexto" style="width: 200px">
-                                            <asp:Label ID="lblDescripcion" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'></asp:Label>
-                                        </div>
-                                        <asp:HoverMenuExtender ID="hmeDescripcionExt" runat="server" TargetControlID="lblDescripcion"
-                                            PopupControlID="pnlPopUpDescripcionExt" PopDelay="20" OffsetX="0" OffsetY="0">
-                                        </asp:HoverMenuExtender>
-                                        <asp:Panel ID="pnlPopUpDescripcionExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
                                             Width="200px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
-                                            <asp:Label ID="lblToolTipDescripcionExt" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'
+                                            <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
                                                 CssClass="etiqueta " Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Justify" Width="200px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="200px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Descripcion" SortExpression="Descripcion">
+                                    <ItemTemplate>
+                                        <div class="parrafoTexto" style="width: 400px">
+                                            <asp:Label ID="lblDescripcion" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'></asp:Label>
+                                        </div>
+                                        <asp:HoverMenuExtender ID="hmeDescripcionExt" runat="server" TargetControlID="lblDescripcion"
+                                            PopupControlID="pnlPopUpDescripcionExt" PopDelay="20" OffsetX="-30" OffsetY="-10">
+                                        </asp:HoverMenuExtender>
+                                        <asp:Panel ID="pnlPopUpDescripcionExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
+                                            Width="400px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
+                                            <asp:Label ID="lblToolTipDescripcionExt" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'
+                                                CssClass="etiqueta " Font-Size="10px" />
+                                        </asp:Panel>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Justify" Width="400px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="400px"></HeaderStyle>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
                                         <div>
-                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
+                                            <asp:Label runat="server" ID ="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
                                     <ItemTemplate>
                                         <div>
-                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
+                                            <asp:Label runat="server" ID ="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
                                         </div>
                                     </ItemTemplate>
-                                </asp:TemplateField>                                
+                                </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
@@ -557,7 +571,7 @@
 
     <asp:UpdatePanel runat="server" ID="upConciliar" UpdateMode="Always">
         <ContentTemplate>
-            <table style="width: 100%">
+            <table style="width: 100%; font-size:12px;">
                 <tr>
                     <td style="width: 100%; vertical-align: top; padding: 5px 5px 5px 5px" class="etiqueta fg-color-blanco bg-color-verdeFuerte"
                         colspan="3">Transacciones Por Conciliar
@@ -565,7 +579,7 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <table style="width: 100%">
+                        <table style="width: 100%" class="grids">
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%">Total Externo
                                 </td>
@@ -577,15 +591,16 @@
                                     <b>Archivos Externos</b>
                                 </td>
                                 <td class="bg-color-azulClaro" style="width: 5%">
-                                    <asp:Image ID="imgGuardarParcial" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                        CssClass="icono" Width="20px"></asp:Image>
+                                    <asp:ImageButton ID="imgGuardarParcial" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Guardar.png"
+                                        CssClass="icono" Width="20px" OnClientClick="return confirm('Solo se guardara información de la vista actual.')"
+                                        OnClick="imgGuardarParcial_Click" ToolTip="GUARDA VISTA PARCIAL"></asp:ImageButton>
                                 </td>
                             </tr>
                         </table>
                     </td>
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
-                        <table style="width: 100%; height: 20px">
+                        <table style="width: 100%;" class="grids">  <%--style ="height: 20px"--%>
                             <tr>
                                 <td class="bg-color-grisOscuro fg-color-blanco" style="width: 15%" id="tdEtiquetaMontoIn"
                                     runat="server">Total Interno
@@ -609,67 +624,31 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
-                        <div id="configuracionExternos" class="bg-color-grisClaro">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td style="width: 50%; vertical-align: top">
-                                        <table style="width: 300px">
-                                            <tr>
-                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Campo Externo
-                                                </td>
-                                                <td style="width: 70%">
-                                                    <asp:DropDownList runat="server" ID="ddlCampoExterno" CssClass="dropDownPequeño"
-                                                        Width="125px" OnDataBound="ddlCampoExterno_DataBound" OnSelectedIndexChanged="ddlCampoExterno_SelectedIndexChanged"
-                                                        AutoPostBack="True" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <asp:RequiredFieldValidator ID="rfvCampoExterno" runat="server" ControlToValidate="ddlCampoExterno"
-                                                        CssClass="etiqueta fg-color-amarillo" Display="Dynamic" EnableClientScript="True"
-                                                        ErrorMessage="Especifique la referencia externa" Font-Size="10px" ValidationGroup="CantidadReferencia"></asp:RequiredFieldValidator>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td style="width: 1%"></td>
-                                    <td style="width: 50%; vertical-align: top" class="centradoJustificado">
-                                        <table style="width: 300px">
-                                            <tr>
-                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Campo Interno
-                                                </td>
-                                                <td style="width: 70%">
-                                                    <asp:DropDownList runat="server" ID="ddlCampoInterno" CssClass="dropDown" Width="125px"
-                                                        AutoPostBack="True" OnSelectedIndexChanged="ddlCampoInterno_SelectedIndexChanged" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <asp:RequiredFieldValidator ID="rfvCampoInterno" runat="server" ControlToValidate="ddlCampoInterno"
-                                                        CssClass="etiqueta fg-color-amarillo" Display="Dynamic" EnableClientScript="True"
-                                                        ErrorMessage="Especifique la referencia interna" Font-Size="10px" ValidationGroup="CantidadReferencia"></asp:RequiredFieldValidator>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <asp:GridView ID="grvCantidadReferenciaConcuerdanArchivos" runat="server" AutoGenerateColumns="False"
-                            AllowPaging="True" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
-                            ShowFooter="false" PageSize="100" OnPageIndexChanging="grvCantidadReferenciaConcuerdanArchivos_PageIndexChanging"
-                            OnRowDataBound="grvCantidadReferenciaConcuerdanArchivos_RowDataBound" ShowHeaderWhenEmpty="True"
-                            OnRowCreated="grvCantidadReferenciaConcuerdanArchivos_RowCreated" DataKeyNames="FolioExt,SecuenciaExt,FolioInt,SecuenciaInt"
-                            AllowSorting="True" OnSorting="grvCantidadReferenciaConcuerdanArchivos_Sorting">
-                            <%-- <EmptyDataTemplate>
-                                <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen referencias con cantidades concordantes."></asp:Label></EmptyDataTemplate>--%>
+                    <td style="vertical-align: top" colspan="3">
+                        <asp:GridView ID="grvCantidadConcuerdanArchivos" runat="server" AutoGenerateColumns="False"
+                            AllowPaging="True" ShowHeader="True" ShowFooter="False" Width="100%" CssClass="grvResultadoConsultaCss"
+                            PageSize="100" OnPageIndexChanging="grvCantidadConcuerdanArchivos_PageIndexChanging"
+                            ShowHeaderWhenEmpty="True" OnRowCreated="grvCantidadConcuerdanArchivos_RowCreated"
+                            DataKeyNames="FolioExt,SecuenciaExt,FolioInt,SecuenciaInt" AllowSorting="True"
+                            OnSorting="grvCantidadConcuerdanArchivos_Sorting" 
+                            OnRowDataBound="grvCantidadConcuerdanArchivos_RowDataBound">
+                            <%--<EmptyDataTemplate>
+                        <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen referencias con cantidades concordantes."></asp:Label>
+                    </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:CheckBox ID="chkAllFolios" runat="server" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedArchivos" />
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkFolio" runat="server" Checked='<%# Bind("Selecciona") %>' />
+                                    </ItemTemplate>
+                                    <ControlStyle Width="100%"></ControlStyle>
+                                    <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" ForeColor="Black" VerticalAlign="Middle"
+                                        Width="25px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="25px"></HeaderStyle>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="F. Ext" SortExpression="FolioExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFolioExt" runat="server" Text='<%# resaltarBusqueda(Eval("FolioExt").ToString()) %>'></asp:Label>
@@ -713,10 +692,11 @@
                                             <asp:Label ID="lblConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoExt").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeConceptoExt" runat="server" TargetControlID="lblConceptoExt"
-                                            PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-100" OffsetY="-5">
+                                            PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-20" OffsetY="-10"
+                                            EnableViewState="True">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="300px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                            Width="150px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                             <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoExt").ToString()) %>'
                                                 CssClass="etiqueta centradoJustificado" Font-Size="10px" />
                                         </asp:Panel>
@@ -730,10 +710,10 @@
                                             <asp:Label ID="lblDescripcionExt" runat="server" Text='<%# resaltarBusqueda(Eval("DescripcionExt").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeDescripcionExt" runat="server" TargetControlID="lblDescripcionExt"
-                                            PopupControlID="pnlPopUpDescripcionExt" PopDelay="20" OffsetX="0" OffsetY="0">
+                                            PopupControlID="pnlPopUpDescripcionExt" PopDelay="20" OffsetX="-50" OffsetY="-10">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpDescripcionExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="100px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
+                                            Width="300px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
                                             <asp:Label ID="lblToolTipDescripcionExt" runat="server" Text='<%# resaltarBusqueda(Eval("DescripcionExt").ToString()) %>'
                                                 CssClass="etiqueta" Font-Size="10px" />
                                         </asp:Panel>
@@ -773,10 +753,12 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="M. Int" SortExpression="MontoInt">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblMontoInt" runat="server" Text='<%# resaltarBusqueda(Eval("MontoInt","{0:c2}").ToString()) %>'></asp:Label>
+                                        <b>
+                                            <asp:Label ID="lblMontoInt" runat="server" Text='<%# resaltarBusqueda(Eval("MontoInt","{0:c2}").ToString()) %>'></asp:Label>
+                                        </b>
                                     </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" Wrap="True" Width="70px"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Wrap="True" Width="70px"></HeaderStyle>
+                                    <ItemStyle HorizontalAlign="Center" Wrap="True" Width="100px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Wrap="True" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Concepto" SortExpression="ConceptoInt">
                                     <ItemTemplate>
@@ -784,7 +766,7 @@
                                             <asp:Label ID="lblConceptoInt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoInt").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeConceptoInt" runat="server" TargetControlID="lblConceptoInt"
-                                            PopupControlID="pnlPopUpConceptoInt" PopDelay="20" OffsetX="0" OffsetY="0">
+                                            PopupControlID="pnlPopUpConceptoInt" PopDelay="20" OffsetX="0" OffsetY="-10">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoInt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
                                             Width="100px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
@@ -801,7 +783,7 @@
                                             <asp:Label ID="lblDescripcionInt" runat="server" Text='<%# resaltarBusqueda(Eval("DescripcionInt").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeDescripcionInt" runat="server" TargetControlID="lblDescripcionInt"
-                                            PopupControlID="pnlPopUpDescripcionInt" PopDelay="20" OffsetX="-50" OffsetY="0">
+                                            PopupControlID="pnlPopUpDescripcionInt" PopDelay="20" OffsetX="-50" OffsetY="-10">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpDescripcionInt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
                                             Width="150px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
@@ -812,8 +794,23 @@
                                     <ItemStyle HorizontalAlign="Left" Width="120px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="120px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
+                                    <ItemTemplate>
+                                         <div class="parrafoTexto" style="width: 100px">
+                                            <asp:Label ID="lblSerieFactura" runat="server" Text='<%# resaltarBusqueda(Eval("SerieFactura").ToString()) %>'></asp:Label>
+                                        </div>
+                                     </ItemTemplate>  
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cliente" SortExpression="ClienteReferencia">
+                                    <ItemTemplate>
+                                         <div class="parrafoTexto" style="width: 100px">
+                                            <asp:Label ID="lblClienteReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
+                                        </div>
+                                     </ItemTemplate>  
+                                </asp:TemplateField>
+
                             </Columns>
-                            <%-- <PagerTemplate>
+                            <%--      <PagerTemplate>
                                 Página
                                 <asp:DropDownList ID="paginasDropDownList" Font-Size="12px" AutoPostBack="true" runat="server"
                                     OnSelectedIndexChanged="paginasDropDownList_SelectedIndexChanged" CssClass="dropDown"
@@ -833,19 +830,30 @@
                             </PagerTemplate>--%>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
-                        <asp:GridView ID="grvCantidadReferenciaConcuerdanPedido" runat="server" AllowPaging="True"
-                            AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" PageSize="100"
-                            OnPageIndexChanging="grvCantidadReferenciaConcuerdanPedido_PageIndexChanging"
-                            OnRowDataBound="grvCantidadReferenciaConcuerdanPedido_RowDataBound" ShowHeader="True"
-                            ShowHeaderWhenEmpty="True" Width="100%" DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed"
-                            AllowSorting="True" OnRowCreated="grvCantidadReferenciaConcuerdanPedido_RowCreated"
-                            OnSorting="grvCantidadReferenciaConcuerdanPedido_Sorting">
+                        <asp:GridView ID="grvCantidadConcuerdanPedidos" runat="server" AutoGenerateColumns="False"
+                            AllowPaging="True" AllowSorting="True" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
+                            PageSize="100" OnPageIndexChanging="grvCantidadConcuerdanPedidos_PageIndexChanging"
+                            ShowHeaderWhenEmpty="True" DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed"
+                            OnRowCreated="grvCantidadConcuerdanPedidos_RowCreated" OnSorting="grvCantidadConcuerdanPedidos_Sorting">
                             <%--<EmptyDataTemplate>
-                                <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen conciliaciones con Montos Concordantes"></asp:Label>
+                                <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen pedidos con cantidades concordantes."></asp:Label>
                             </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
-                            <AlternatingRowStyle BackColor="#CCCCCC" />
                             <Columns>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:CheckBox ID="chkAllFolios" runat="server" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedPedidos"
+                                            Checked="True" />
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <asp:CheckBox ID="chkFolio" runat="server" Checked='<%# Bind("Selecciona") %>' />
+                                        <%--    OnCheckedChanged="OnCheckedChangedPedidos"   AutoPostBack="True"--%>
+                                    </ItemTemplate>
+                                    <ControlStyle Width="100%"></ControlStyle>
+                                    <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" ForeColor="Black" VerticalAlign="Middle"
+                                        Width="25px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="25px"></HeaderStyle>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="F. Ext" SortExpression="FolioExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFolioExt" runat="server" Text='<%# resaltarBusqueda(Eval("FolioExt").ToString()) %>'></asp:Label>
@@ -861,21 +869,21 @@
                                     <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="F. Mov. Ext." SortExpression="FMovimientoExt">
+                                <asp:TemplateField HeaderText="F. Mov. Ext." SortExpression="FMovimiento">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFechaMovimientoExt" runat="server" Text='<%# resaltarBusqueda(Eval("FMovimiento","{0:d}").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="F. Op. Ext." SortExpression="FOperacionExt">
+                                <asp:TemplateField HeaderText="F. Op. Ext." SortExpression="FOperacion">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFechaOperacionExt" runat="server" Text='<%# resaltarBusqueda(Eval("FOperacion","{0:d}").ToString()) %>'></asp:Label>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="M. Conciliado" SortExpression="MontoConciliadoExt">
+                                <asp:TemplateField HeaderText="M. Conciliado" SortExpression="MontoConciliado">
                                     <ItemTemplate>
                                         <b>
                                             <asp:Label ID="lblMontoConciliado" runat="server" Text='<%# resaltarBusqueda(Eval("MontoConciliado","{0:c2}").ToString()) %>'></asp:Label></b>
@@ -883,13 +891,13 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Concepto" SortExpression="ConceptoExt">
+                                <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
                                     <ItemTemplate>
                                         <div class="parrafoTexto">
                                             <asp:Label ID="lblConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeConceptoExt" runat="server" TargetControlID="lblConceptoExt"
-                                            PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-100" OffsetY="-5"
+                                            PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-100" OffsetY="-20"
                                             EnableViewState="True">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
@@ -898,9 +906,10 @@
                                                 CssClass="etiqueta centradoJustificado" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
+                                    <HeaderStyle Width="150px"></HeaderStyle>
                                     <ItemStyle Width="150px"></ItemStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Descrip. Ext." SortExpression="DescripcionExt">
+                                <asp:TemplateField HeaderText="Descrip. Ext." SortExpression="Descripcion">
                                     <ItemTemplate>
                                         <div class="parrafoTexto" style="width: 120px">
                                             <asp:Label ID="lblDescripcionExt" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'></asp:Label>
@@ -914,16 +923,24 @@
                                                 CssClass="etiqueta" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
+                                    <HeaderStyle Width="120px"></HeaderStyle>
                                     <ItemStyle Width="120px"></ItemStyle>
                                 </asp:TemplateField>
-
+                                <asp:TemplateField HeaderText="Ped." SortExpression="Pedido">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblPedido" runat="server" Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>' />
+                                    </ItemTemplate>
+                                    <ControlStyle CssClass="centradoMedio" />
+                                    <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
                                     </ItemTemplate>
                                     <ControlStyle CssClass="centradoMedio" />
-                                    <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
+                                    <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Celula" SortExpression="Celula">
                                     <ItemTemplate>
@@ -936,7 +953,8 @@
                                 <asp:TemplateField HeaderText="Total Pedido" SortExpression="Total">
                                     <ItemTemplate>
                                         <b>
-                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# resaltarBusqueda(Eval("Total","{0:c2}").ToString()) %>'></asp:Label></b>
+                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# resaltarBusqueda(Eval("Total","{0:c2}").ToString()) %>'></asp:Label>
+                                        </b>
                                     </ItemTemplate>
                                     <FooterTemplate>
                                         <asp:Label runat="server" ID="lblTotalMontoPedido"></asp:Label>
@@ -967,7 +985,7 @@
                                             <asp:Label ID="lblCliente" runat="server" Text='<%# resaltarBusqueda(Eval("Nombre").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeCliente" runat="server" TargetControlID="lblCliente"
-                                            PopupControlID="pnlPopUpCliente" PopDelay="20" OffsetX="0" OffsetY="0">
+                                            PopupControlID="pnlPopUpCliente" PopDelay="20" OffsetX="-20" OffsetY="-20">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpCliente" runat="server" CssClass="grvResultadoConsultaCss ocultar"
                                             Width="150px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
@@ -978,50 +996,315 @@
                                     <ItemStyle HorizontalAlign="Center" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
-                                <asp:TemplateField  HeaderText="Factura" SortExpression="SerieFactura" >
-                                    <ItemTemplate>
-                                        <div class="parrafoTexto" style="width: 80px">
-                                            <asp:Label runat="server" ID="lblSerieFactura" Text='<%# resaltarBusqueda(Eval("Factura").ToString()) %>'> </asp:Label>
-                                        </div>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField  HeaderText="Cliente" SortExpression="ClienteReferencia" >
-                                    <ItemTemplate>
-                                        <div class="parrafoTexto" style="width: 80px">
-                                            <asp:Label runat="server" ID="lblClienteReferencia" Text='<%# resaltarBusqueda(Eval("Cliente").ToString()) %>'> </asp:Label>
-                                        </div>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
                             </Columns>
-                            <%--   <PagerTemplate>
+                            <%--  <PagerTemplate>
                                 Página
-                                <asp:DropDownList ID="paginasDropDownListPedidos" runat="server" AutoPostBack="true"
-                                    CssClass="dropDown" Font-Size="12px" Width="60px" OnSelectedIndexChanged="paginasDropDownListPedidos_SelectedIndexChanged">
+                                <asp:DropDownList ID="paginasDropDownList" Font-Size="12px" AutoPostBack="true" runat="server"
+                                    OnSelectedIndexChanged="paginasDropDownListPedidos_SelectedIndexChanged" CssClass="dropDown"
+                                    Width="60px">
                                 </asp:DropDownList>
                                 de
-                                <asp:Label ID="lblTotalNumPaginas" runat="server" CssClass="etiqueta"></asp:Label>
+                                <asp:Label ID="lblTotalNumPaginas" runat="server" CssClass="etiqueta" />
                                 &nbsp;&nbsp;
-                                <asp:Button ID="btnInicial" runat="server" CommandArgument="First" CommandName="Page"
-                                    CssClass="boton pagInicial" ToolTip="Prim. Pag" />
-                                <asp:Button ID="btnAnterior" runat="server" CommandArgument="Prev" CommandName="Page"
-                                    CssClass="boton pagAnterior" ToolTip="Pág. anterior" />
-                                <asp:Button ID="btnSiguiente" runat="server" CommandArgument="Next" CommandName="Page"
-                                    CssClass="boton pagSiguiente" ToolTip="Sig. página" />
-                                <asp:Button ID="btnUltima" runat="server" CommandArgument="Last" CommandName="Page"
-                                    CssClass="boton pagUltima" ToolTip="Últ. Pag" />
+                                <asp:Button ID="btnInicial" runat="server" CommandName="Page" ToolTip="Prim. Pag"
+                                    CommandArgument="First" CssClass="boton pagInicial" />
+                                <asp:Button ID="btnAnterior" runat="server" CommandName="Page" ToolTip="Pág. anterior"
+                                    CommandArgument="Prev" CssClass="boton pagAnterior" />
+                                <asp:Button ID="btnSiguiente" runat="server" CommandName="Page" ToolTip="Sig. página"
+                                    CommandArgument="Next" CssClass="boton pagSiguiente" />
+                                <asp:Button ID="btnUltima" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last"
+                                    CssClass="boton pagUltima" />
                             </PagerTemplate>--%>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
                     </td>
                 </tr>
+                
+               <%-- <tr>
+        <td>
+            <asp:HiddenField runat="server" ID="HiddenField1" />
+            <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" BackgroundCssClass="ModalBackground"
+                DropShadow="False" EnableViewState="false" PopupControlID="pnlDetalle" TargetControlID="hdfCerrarDetalle"
+                CancelControlID="btnCerrarDetalle">
+            </asp:ModalPopupExtender>
+            <asp:Panel ID="Panel1" runat="server" CssClass="ModalPopup" EnableViewState="false"
+                Width="880px" Style="display: none">
+                <table style="width: 100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                            <div class="floatDerecha bg-color-grisClaro01">
+                                <asp:ImageButton runat="server" ID="ImageButton1" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" />
+                            </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                DETALLE : TRANSACCIÓN CONCILIADA :
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center">
+                            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
+                                ShowHeader="True" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                                ShowFooter="False" DataKeyNames="SecuenciaInterno, FolioInterno">
+                                <EmptyDataTemplate>
+                                    <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
+                                        Text="No se encontraron referencias internas"></asp:Label>
+                                </EmptyDataTemplate>
+                                <HeaderStyle HorizontalAlign="Center" />
+                                <Columns>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Image ID="img" runat="server" CssClass="icono" Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
+                                                Width="15px"></asp:Image>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
+                                            Width="20px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Secuencia" SortExpression="secuenciaInt">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblSecuenciaInt" runat="server" Text='<%# Bind("SecuenciaInterno") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="centradoMedio" />
+                                        <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="50px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Folio" SortExpression="folioInterno">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFolioInterno" runat="server" Text='<%# Bind("FolioInterno") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="centradoMedio" />
+                                        <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="100px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFMovimiento" runat="server" Text='<%# Bind("FMovimientoInt","{0:d}") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="centradoMedio" />
+                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFOperacion" runat="server" Text='<%# Bind("FOperacionInt","{0:d}") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="centradoMedio" />
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Monto" SortExpression="monto">
+                                        <ItemTemplate>
+                                            <b>
+                                                <asp:Label ID="lblMonto" runat="server" Text='<%# Bind("MontoInterno","{0:c2}") %>'></asp:Label></b>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
+                                        <ItemTemplate>
+                                            <div class="parrafoTexto" style="width: 500px">
+                                                <asp:Label ID="lblConceptoInt" runat="server" Text='<%# Bind("ConceptoInterno") %>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="500px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="500px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                            <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False"
+                                ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                                DataKeyNames="Celula,Pedido,AñoPed">
+                                <HeaderStyle HorizontalAlign="Center" />
+                                <Columns>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Image ID="img" runat="server" CssClass="icono" Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
+                                                Width="15px"></asp:Image>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
+                                            Width="30px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="30px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Ped." SortExpression="Pedido">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblPedido" runat="server" Text='<%# Eval("Pedido") %>' />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Celula" SortExpression="Celula">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblCelula" runat="server" Text='<%# Eval("Celula") %>' />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Total Pedido" SortExpression="Total">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:c2}") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Concepto" SortExpression="ConceptoPedido">
+                                        <ItemTemplate>
+                                            <div class="parrafoTexto" style="width: 350px">
+                                                <asp:Label ID="lblConceptoPedido" runat="server" Text='<%# Eval("ConceptoPedido") %>'></asp:Label>
+                                            </div>
+                                            <asp:HoverMenuExtender ID="hmeConceptoPedido" runat="server" TargetControlID="lblConceptoPedido"
+                                                PopupControlID="pnlPopUpConceptoPedido" PopDelay="20" OffsetX="-20" OffsetY="-10">
+                                            </asp:HoverMenuExtender>
+                                            <asp:Panel ID="pnlPopUpConceptoPedido" runat="server" CssClass="grvResultadoConsultaCss ocultar"
+                                                Width="400px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
+                                                <asp:Label ID="lblToolTipConceptoPedido" runat="server" Text='<%# Eval("ConceptoPedido") %>'
+                                                    CssClass="etiqueta" Font-Size="10px" />
+                                            </asp:Panel>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Justify" Width="400px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="400px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
+                                        <ItemTemplate>
+                                            <div class="parrafoTexto" style="width: 350px">
+                                                <asp:Label ID="lblCliente" runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
+                                            </div>
+                                            <asp:HoverMenuExtender ID="hmeCliente" runat="server" TargetControlID="lblCliente"
+                                                PopupControlID="pnlPopUpCliente" PopDelay="20" OffsetX="-20" OffsetY="-10">
+                                            </asp:HoverMenuExtender>
+                                            <asp:Panel ID="pnlPopUpCliente" runat="server" CssClass="grvResultadoConsultaCss ocultar"
+                                                Width="300px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
+                                                <asp:Label ID="lblToolTipCliente" runat="server" Text='<%# Eval("Nombre") %>' CssClass="etiqueta"
+                                                    Font-Size="10px" />
+                                            </asp:Panel>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Justify" Width="350px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="350px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="bg-color-grisClaro01">&nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </asp:Panel>
+
+            <asp:HiddenField runat="server" ID="HiddenField2" />
+            <asp:ModalPopupExtender ID="ModalPopupExtender2" runat="server" BackgroundCssClass="ModalBackground"
+                CancelControlID="btnCerrar" DropShadow="False" EnableViewState="false" PopupControlID="pnlFiltrar"
+                TargetControlID="hdfCerrarFiltro">
+            </asp:ModalPopupExtender>
+            <asp:Panel ID="Panel2" runat="server" CssClass="ModalPopup" Width="500px" Style="display: none">
+                <table style="width: 100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                            <div class="floatDerecha">
+                                <asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" />
+                            </div>
+                            <div class="fg-color-blanco">
+                                FILTRAR
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 50%">
+                            <div class="etiqueta">
+                                Campo
+                            </div>
+                            <asp:DropDownList runat="server" ID="DropDownList1" CssClass="dropDown etiqueta"
+                                ClientIDMode="Static" ValidationGroup="Filtrar" Width="100%" Font-Size="10px"
+                                AutoPostBack="False" />
+                        </td>
+                        <td style="padding: 5px 5px 5px 5px; width: 30%">
+                            <div class="etiqueta">
+                                Operacion
+                            </div>
+                            <asp:DropDownList runat="server" ID="DropDownList2" CssClass="dropDown centradoMedio etiqueta"
+                                ValidationGroup="Filtrar" Width="100%" Font-Size="10px">
+                                <asp:ListItem Selected="True" Value="=">IGUAL</asp:ListItem>
+                                <asp:ListItem Value="&gt;">MAYOR</asp:ListItem>
+                                <asp:ListItem Value="&lt;">MENOR</asp:ListItem>
+                                <asp:ListItem Value="&gt;=">MAYOR O IGUAL</asp:ListItem>
+                                <asp:ListItem Value="&lt;=">MENOR O IGUAL</asp:ListItem>
+                                <asp:ListItem Value="&lt;&gt;">DIFERENTE</asp:ListItem>
+                                <asp:ListItem Value="LIKE">LIKE</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 15%" colspan="2">
+                            <div class="etiqueta">
+                                Valor
+                            </div>
+                            <asp:TextBox ID="TextBox1" runat="server" CssClass="cajaTexto" Font-Size="12px" Width="98%">
+                            </asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;" class="centradoDerecha" colspan="3">
+                            <asp:Button ID="Button1" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                Text="Filtrar" ValidationGroup="Filtro" OnClick="btnIrFiltro_Click" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-color-grisClaro01" colspan="4"></td>
+                    </tr>
+                </table>
+            </asp:Panel>
+
+            <asp:HiddenField runat="server" ID="HiddenField3" />
+            <asp:ModalPopupExtender ID="ModalPopupExtender3" runat="server" BackgroundCssClass="ModalBackground"
+                DropShadow="False" EnableViewState="false" PopupControlID="pnlBuscar" TargetControlID="hdfCerrarBuscar">
+            </asp:ModalPopupExtender>
+            <asp:Panel ID="Panel3" runat="server" CssClass="ModalPopup" Width="400px" Style="display: none">
+                <table style="width: 100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                            <div class="floatDerecha">
+                                <asp:ImageButton runat="server" ID="ImageButton3" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" />
+                            </div>
+                            <div class="fg-color-blanco">
+                                Buscar
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 85%">
+                            <div class="etiqueta">
+                                Valor
+                            </div>
+                            <asp:TextBox ID="TextBox2" runat="server" CssClass="cajaTexto" Font-Size="12px"
+                                Width="95%">
+                            </asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 5%">
+                            <asp:Button ID="Button2" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                Text="BUSCAR" OnClick="btnIrBuscar_Click" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-color-grisClaro01" colspan="4"></td>
+                    </tr>
+                </table>
+            </asp:Panel>
+        </td>
+    </tr>--%>
+                
             </table>
         </ContentTemplate>
     </asp:UpdatePanel>
 
+
     <asp:HiddenField runat="server" ID="hdfCerrarBuscar" />
     <asp:ModalPopupExtender ID="mpeBuscar" runat="server" BackgroundCssClass="ModalBackground"
-        DropShadow="False" EnableViewState="false" PopupControlID="pnlBuscar" TargetControlID="hdfCerrarBuscar"
-        CancelControlID="btnCerrarBuscar" BehaviorID="mpeBuscar">
+        DropShadow="False" EnableViewState="false" PopupControlID="pnlBuscar" TargetControlID="hdfCerrarBuscar" BehaviorID="mpeBuscar">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlBuscar" runat="server" CssClass="ModalPopup" Width="400px" Style="display: none">
         <asp:UpdatePanel runat="server" ID="upBuscar">
@@ -1062,75 +1345,11 @@
         </asp:UpdatePanel>
     </asp:Panel>
 
+
     <asp:UpdatePanel runat="server" ID="upModalesOpciones">
         <ContentTemplate>
-
+ 
             <%--No puede ser manejado desde JavaScript--%>
-            <asp:HiddenField runat="server" ID="hdfCerrar" />
-            <asp:ModalPopupExtender ID="mpeFiltrar" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlFiltrar" TargetControlID="hdfCerrar">
-            </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlFiltrar" runat="server" CssClass="ModalPopup" Width="500px" Style="display: none">
-                <table style="width: 100%;">
-                    <tr class="bg-color-grisOscuro">
-                        <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
-                            <div class="floatDerecha">
-                                <asp:ImageButton runat="server" ID="btnCerrar" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" />
-                            </div>
-                            <div class="fg-color-blanco">
-                                FILTRAR
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 5px 5px 5px 5px; width: 50%">
-                            <div class="etiqueta">
-                                Campo
-                            </div>
-                            <asp:DropDownList runat="server" ID="ddlCampoFiltrar" CssClass="dropDown etiqueta"
-                                ClientIDMode="Static" ValidationGroup="Filtrar" Width="100%" Font-Size="10px"
-                                AutoPostBack="False" />
-                            <%--OnSelectedIndexChanged="ddlCampoFiltrar_SelectedIndexChanged"--%>
-                        </td>
-                        <td style="padding: 5px 5px 5px 5px; width: 30%">
-                            <div class="etiqueta">
-                                Operacion
-                            </div>
-                            <asp:DropDownList runat="server" ID="ddlOperacion" CssClass="dropDown centradoMedio etiqueta"
-                                ValidationGroup="Filtrar" Width="100%" Font-Size="10px">
-                                <asp:ListItem Selected="True" Value="=">IGUAL</asp:ListItem>
-                                <asp:ListItem Value="&gt;">MAYOR</asp:ListItem>
-                                <asp:ListItem Value="&lt;">MENOR</asp:ListItem>
-                                <asp:ListItem Value="&gt;=">MAYOR O IGUAL</asp:ListItem>
-                                <asp:ListItem Value="&lt;=">MENOR O IGUAL</asp:ListItem>
-                                <asp:ListItem Value="&lt;&gt;">DIFERENTE</asp:ListItem>
-                                <asp:ListItem Value="LIKE">LIKE</asp:ListItem>
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 5px 5px 5px 5px; width: 15%" colspan="2">
-                            <div class="etiqueta">
-                                Valor
-                            </div>
-                            <asp:TextBox ID="txtValor" runat="server" CssClass="cajaTexto" Font-Size="12px" Width="98%">
-                            </asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 10%;" class="centradoDerecha" colspan="3">
-                            <asp:Button ID="btnIrFiltro" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                Text="Filtrar" ValidationGroup="Filtro" OnClick="btnIrFiltro_Click" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-color-grisClaro01" colspan="4"></td>
-                    </tr>
-                </table>
-            </asp:Panel>
-
-
             <asp:HiddenField runat="server" ID="hdfCerrarDetalle" />
             <asp:ModalPopupExtender ID="mpeLanzarDetalle" runat="server" BackgroundCssClass="ModalBackground"
                 DropShadow="False" EnableViewState="false" PopupControlID="pnlDetalle" TargetControlID="hdfCerrarDetalle"
@@ -1300,151 +1519,77 @@
                     </tr>
                 </table>
             </asp:Panel>
+
+            <asp:HiddenField runat="server" ID="hdfCerrarFiltro" />
+            <asp:ModalPopupExtender ID="mpeFiltrar" runat="server" BackgroundCssClass="ModalBackground"
+                CancelControlID="btnCerrar" DropShadow="False" EnableViewState="false" PopupControlID="pnlFiltrar"
+                TargetControlID="hdfCerrarFiltro">
+            </asp:ModalPopupExtender>
+            <asp:Panel ID="pnlFiltrar" runat="server" CssClass="ModalPopup" Width="500px" Style="display: none">
+                <table style="width: 100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                            <div class="floatDerecha">
+                                <asp:ImageButton runat="server" ID="btnCerrar" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" />
+                            </div>
+                            <div class="fg-color-blanco">
+                                FILTRAR
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 50%">
+                            <div class="etiqueta">
+                                Campo
+                            </div>
+                            <asp:DropDownList runat="server" ID="ddlCampoFiltrar" CssClass="dropDown etiqueta"
+                                ClientIDMode="Static" ValidationGroup="Filtrar" Width="100%" Font-Size="10px"
+                                AutoPostBack="False" />
+                        </td>
+                        <td style="padding: 5px 5px 5px 5px; width: 30%">
+                            <div class="etiqueta">
+                                Operacion
+                            </div>
+                            <asp:DropDownList runat="server" ID="ddlOperacion" CssClass="dropDown centradoMedio etiqueta"
+                                ValidationGroup="Filtrar" Width="100%" Font-Size="10px">
+                                <asp:ListItem Selected="True" Value="=">IGUAL</asp:ListItem>
+                                <asp:ListItem Value="&gt;">MAYOR</asp:ListItem>
+                                <asp:ListItem Value="&lt;">MENOR</asp:ListItem>
+                                <asp:ListItem Value="&gt;=">MAYOR O IGUAL</asp:ListItem>
+                                <asp:ListItem Value="&lt;=">MENOR O IGUAL</asp:ListItem>
+                                <asp:ListItem Value="&lt;&gt;">DIFERENTE</asp:ListItem>
+                                <asp:ListItem Value="LIKE">LIKE</asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 15%" colspan="2">
+                            <div class="etiqueta">
+                                Valor
+                            </div>
+                            <asp:TextBox ID="txtValor" runat="server" CssClass="cajaTexto" Font-Size="12px" Width="98%">
+                            </asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%;" class="centradoDerecha" colspan="3">
+                            <asp:Button ID="btnIrFiltro" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                                Text="Filtrar" ValidationGroup="Filtro" OnClick="btnIrFiltro_Click" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-color-grisClaro01" colspan="4"></td>
+                    </tr>
+                </table>
+            </asp:Panel>
             <%--No puede ser manejado desde JavaScript--%>
-
-
-            <%--No se utilizan--%>
-            <asp:HiddenField runat="server" ID="hdfDesconciliarConfirmar" />
-            <asp:ModalPopupExtender ID="mpeConfirmarDesconciliado" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlConfirmarDesconciliar"
-                TargetControlID="hdfDesconciliarConfirmar" CancelControlID="btnCancelarConfirmarDesconciliar">
-            </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlConfirmarDesconciliar" runat="server" CssClass="ModalPopup" EnableViewState="false"
-                Width="350px" Style="display: none">
-                <table style="width: 100%;">
-                    <tr class="bg-color-grisOscuro">
-                        <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
-                            <div class="lineaHorizontal fg-color-blanco">
-                                CONFIRMAR DESCONCILIACIÓN Folio:
-                                <asp:Label runat="server" ID="lblFolioTC"></asp:Label>
-                                :Secuencia
-                                <asp:Label runat="server" ID="lblSecuenciaTC"></asp:Label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 5px 5px 5px 5px; width: 10%" class="lineaVertical">
-                            <asp:Image runat="server" ID="imgAdvertencia" CssClass="icono bg-color-amarillo"
-                                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Advertencia.png" />
-                        </td>
-                        <td style="padding: 5px 5px 5px 5px; width: 90%; vertical-align: top">
-                            <div class="etiqueta">
-                                ¿Esta seguro de <b class="fg-color-rojo">DESCONCILIAR</b> la transaccion externa?<br />
-                                ¡Se actualizará la conciliacion y su detalle!
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="centradoMedio" colspan="2">
-                            <div class="lineaHorizontal">
-                            </div>
-                            <asp:Button runat="server" ID="btnAceptarConfirmar" Text="ACEPTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                OnClick="btnAceptarConfirmarDesconciliar_Click" />
-                            <asp:Button runat="server" ID="btnCancelarConfirmarDesconciliar" Text="CANCELAR"
-                                CssClass="boton fg-color-blanco bg-color-grisClaro" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="bg-color-grisClaro01">&nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </asp:Panel>
-
-
-            <asp:HiddenField ID="hdfCerrarConfirmar" runat="server" />
-            <asp:ModalPopupExtender ID="mpeConfirmarCerrar" runat="server" BackgroundCssClass="ModalBackground"
-                CancelControlID="btnCancelarConfirmarCerrar" DropShadow="False" EnableViewState="false"
-                PopupControlID="pnlConfirmarCerrar" TargetControlID="hdfCerrarConfirmar">
-            </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlConfirmarCerrar" runat="server" CssClass="ModalPopup" EnableViewState="false"
-                Style="display: none" Width="350px">
-                <table style="width: 100%;">
-                    <tr class="bg-color-grisOscuro">
-                        <td class="etiqueta" colspan="5" style="padding: 5px 5px 5px 5px">
-                            <div class="fg-color-blanco">
-                                CONFIRMAR CERRADO: CONCILIACIÓN:
-                                <asp:Label ID="lblFolioConciliacionCerrar" runat="server"></asp:Label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lineaVertical" style="padding: 5px 5px 5px 5px; width: 10%">
-                            <asp:Image ID="imgAdvertenciaCerrar" runat="server" CssClass="icono bg-color-amarillo"
-                                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Advertencia.png" />
-                        </td>
-                        <td style="padding: 5px 5px 5px 5px; width: 90%; vertical-align: top">
-                            <div class="etiqueta">
-                                ¿Esta seguro de <b class="fg-color-rojo">CERRAR</b> la conciliación actual?<br />
-                                ¡Se dara de baja definitiva dicha conciliacion, para efectos de seguridad!
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="centradoMedio" colspan="2">
-                            <div class="lineaHorizontal">
-                            </div>
-                            <asp:Button ID="btnAceptarConfirmarCerrar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                OnClick="btnAceptarConfirmarCerrar_Click" Text="ACEPTAR" />
-                            <asp:Button ID="btnCancelarConfirmarCerrar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                                Text="CANCELAR" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-color-grisClaro01" colspan="2">&nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </asp:Panel>
-
-
-            <asp:HiddenField ID="hdfCancelarConfirmar" runat="server" />
-            <asp:ModalPopupExtender ID="mpeConfirmarCancelar" runat="server" BackgroundCssClass="ModalBackground"
-                CancelControlID="btnCancelarConfirmarCancelar" DropShadow="False" EnableViewState="false"
-                PopupControlID="pnlConfirmarCancelar" TargetControlID="hdfCancelarConfirmar">
-            </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlConfirmarCancelar" runat="server" CssClass="ModalPopup" EnableViewState="false"
-                Style="display: none" Width="350px">
-                <table style="width: 100%;">
-                    <tr class="bg-color-grisOscuro">
-                        <td class="etiqueta" colspan="5" style="padding: 5px 5px 5px 5px">
-                            <div class="fg-color-blanco">
-                                CONFIRMAR CANCELACIÓN: CONCILIACIÓN:
-                                <asp:Label ID="lblFolioConciliacionCancelacion" runat="server"></asp:Label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="lineaVertical" style="padding: 5px 5px 5px 5px; width: 10%">
-                            <asp:Image ID="imgAdvertenciaCancelar" runat="server" CssClass="icono bg-color-amarillo"
-                                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Advertencia.png" />
-                        </td>
-                        <td style="padding: 5px 5px 5px 5px; width: 90%; vertical-align: top">
-                            <div class="etiqueta">
-                                ¿Esta seguro de <b class="fg-color-rojo">CANCELAR</b> la conciliación actual?<br />
-                                ¡Se dara de baja definitiva dicha conciliacion, para efectos de seguridad!
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="centradoMedio" colspan="2">
-                            <div class="lineaHorizontal">
-                            </div>
-                            <asp:Button ID="btnAceptarConfirmarCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                OnClick="btnAceptarConfirmarCancelar_Click" Text="ACEPTAR" />
-                            <asp:Button ID="btnCancelarConfirmarCancelar" runat="server" CssClass="boton fg-color-blanco bg-color-grisClaro"
-                                Text="CANCELAR" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-color-grisClaro01" colspan="2">&nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </asp:Panel>
-            <%--No se utilizan--%>
-        </ContentTemplate>
+           </ContentTemplate>
     </asp:UpdatePanel>
+ 
+
+
+
 
     <%--No puede ser manejado desde JavaScript--%>
     <asp:HiddenField runat="server" ID="hdfImportarArchivos" />
@@ -1452,7 +1597,7 @@
         TargetControlID="hdfImportarArchivos" BehaviorID="ModalBehaviour" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlImportarArchivos" runat="server" BackColor="#FFFFFF" Width="50%"
-        Style="display: none">
+        Style="display: none"><%--Style="display: none"--%>
         <asp:UpdatePanel ID="upImportarArchivos" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
@@ -1460,7 +1605,8 @@
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
                             <div class="floatDerecha">
                                 <asp:ImageButton runat="server" ID="imgCerrarImportar" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" OnClick="imgCerrarImportar_Click" />
+                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopup();" 
+                                    onclick="imgCerrarImportar_Click" /><%--OnClick="imgCerrarImportar_Click"--%>
                             </div>
                             <div class="fg-color-blanco">
                                 IMPORTAR ARCHIVO
@@ -1521,12 +1667,12 @@
                                 <tr>
                                     <td style="width: 40%">
                                         <div class="etiqueta">
-                                            Usuario Alta
-                                        </div>
+                                            Usuario Alta</div>
                                         <asp:TextBox ID="lblUsuarioAltaEx" runat="server" Width="95%" CssClass="cajaTexto"
                                             Enabled="False"></asp:TextBox>
                                     </td>
-                                    <td style="width: 1%"></td>
+                                    <td style="width: 1%">
+                                    </td>
                                     <td style="width: 60%">
                                         <div class="etiqueta">
                                             Status
@@ -1580,7 +1726,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="bg-color-grisClaro01" colspan="2"></td>
+                        <td class="bg-color-grisClaro01" colspan="2">
+                        </td>
                     </tr>
                 </table>
             </ContentTemplate>
@@ -1680,7 +1827,7 @@
     </asp:Panel>
     <%--No puede ser manejado desde JavaScript--%>
 
-    <asp:UpdateProgress ID="panelBloqueo" runat="server">
+    <asp:UpdateProgress ID="panelBloqueo" runat="server" >
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
