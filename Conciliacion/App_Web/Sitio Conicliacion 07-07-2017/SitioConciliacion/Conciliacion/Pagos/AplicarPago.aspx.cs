@@ -74,10 +74,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 LlenaGridViewReferenciasPagos();
 
                 decimal totalTemp = 0;
-
+                
                 foreach (ReferenciaConciliadaPedido objReferencia in listaReferenciaConciliadaPagos)
                 {
-                    totalTemp = totalTemp + objReferencia.Total;
+                    totalTemp = totalTemp + objReferencia.MontoConciliado;
                 }
 
                 movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
