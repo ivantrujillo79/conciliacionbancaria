@@ -11,7 +11,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <CR:CrystalReportViewer ID="crviewRep" runat="server" AutoDataBind="true" DisplayPage="True" />
+        <CR:CrystalReportViewer ID="crviewRep" runat="server" AutoDataBind="true" DisplayPage="True" />
     </form>
 </body>
 </html>

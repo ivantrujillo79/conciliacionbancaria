@@ -20,6 +20,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion", "SitioC
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "35908"
+		VWDVirtualPath = "/"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogoConciliacion", "CatalogoConciliacion\CatalogoConciliacion.csproj", "{F77FCEA1-5442-48A2-8FE4-43A655788CDD}"

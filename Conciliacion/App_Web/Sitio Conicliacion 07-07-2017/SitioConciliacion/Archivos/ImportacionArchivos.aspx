@@ -9,7 +9,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
     <asp:ScriptManager runat="server" ID="ScriptManager1" AsyncPostBackTimeout="14400">
     </asp:ScriptManager>
-    <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"

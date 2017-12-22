@@ -6,7 +6,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
     <%--Agregado--%>
-    <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.css"
         rel="stylesheet" type="text/css" />

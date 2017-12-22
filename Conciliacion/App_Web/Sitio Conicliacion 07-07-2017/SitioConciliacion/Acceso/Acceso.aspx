@@ -9,7 +9,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
     <script src="../App_Scripts/jsModalUpdateProgress.js" type="text/javascript"></script>
-    <script src="../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     
      <script type="text/javascript" language="javascript">
          var modalId = '<%:mpeLoading.ClientID%>';

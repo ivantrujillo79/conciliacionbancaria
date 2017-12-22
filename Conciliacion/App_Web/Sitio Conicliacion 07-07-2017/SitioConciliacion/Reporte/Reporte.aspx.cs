@@ -23,7 +23,7 @@ public partial class Reporte_Reporte : System.Web.UI.Page
             crviewRep.Visible = true;
             crviewRep.Width = Unit.Percentage(98);
             crviewRep.Height = Unit.Percentage(98);
-            //crviewRep.RefreshReport();
+            crviewRep.RefreshReport();
             crviewRep.DisplayGroupTree = false;
             crviewRep.HasPrintButton = false;
             crviewRep.DisplayToolbar = true;
