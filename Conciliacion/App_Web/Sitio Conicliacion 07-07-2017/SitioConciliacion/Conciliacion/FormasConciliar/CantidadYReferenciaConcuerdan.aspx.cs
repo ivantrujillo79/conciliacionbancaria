@@ -1782,11 +1782,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
         if (tipoConciliacion == 2)
         {
-            if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
+            if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)  //if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
             {
-                listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
-                if (listaReferenciaConciliadaPedido != null)
-                    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
+                //listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+                //if (listaReferenciaConciliadaPedido != null)
+                //    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
+                listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
+                if (listaReferenciaConciliada != null)
+                    listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
             }
             else
                 App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
