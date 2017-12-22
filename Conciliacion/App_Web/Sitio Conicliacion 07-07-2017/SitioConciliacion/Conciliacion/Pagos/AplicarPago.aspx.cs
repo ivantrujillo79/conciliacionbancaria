@@ -690,7 +690,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     objMCC.Guardar(conexion);
 
 
-                    List<ReferenciaConciliadaPedido> ListaConciliados = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
+                   /* List<ReferenciaConciliadaPedido> ListaConciliados = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
 
                     if (objMovimientoCaja.ListaCobros[0].SaldoAFavor)
                     {
@@ -732,7 +732,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                             FolioExterno = ListaConciliados[0].Folio,
                             SecuenciaExterno = ListaConciliados[0].Secuencia
                         };
-                    }
+                    }*/
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
