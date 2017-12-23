@@ -71,6 +71,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         private List<cReferencia> listareferenciaconciliada = new List<cReferencia>();
         private List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida = new List<ReferenciaConciliadaCompartida>();
+        private string statusMovimiento;
+        private int pedido;
         #region Constructores
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -117,6 +119,55 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.rfctercero = rfctercero;
 
             this.sucursalconciliacion = sucursalconciliacion;
+
+            this.selecciona = true;
+        }
+
+        public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
+           string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion,
+           short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
+           short mesconciliacion, decimal diferencia, bool coninterno,
+           string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
+           int año, string statusMovimiento, IMensajesImplementacion implementadorMensajes)
+        {
+            this.ImplementadorMensajes = implementadorMensajes;
+
+            this.folioconciliacion = folioconciliacion;
+            this.mesconciliacion = mesconciliacion;
+
+            this.corporativo = corporativo;
+            this.sucursal = sucursal;
+            this.sucursaldes = sucursaldes;
+            this.añoconciliacion = añoconciliacion;
+            this.año = año;
+            this.folio = folio;
+            this.secuencia = secuencia;
+            this.descripcion = descripcion;
+            this.concepto = concepto;
+
+            this.monto = deposito + retiro;
+            this.deposito = deposito;
+            this.retiro = retiro;
+            this.formaconciliacion = formaconciliacion;
+            this.statusconcepto = statusconcepto;
+            this.statusconciliacion = statusconciliacion;
+
+            this.foperacion = foperacion;
+            this.fmovimiento = fmovimiento;
+
+            this.completo = false;
+            this.diferencia = diferencia;
+            this.coninterno = coninterno;
+            this.motivonoconciliado = 0;
+            this.comentarionoconciliado = "";
+
+            this.cheque = cheque;
+            this.referencia = referencia;
+            this.nombretercero = nombretercero;
+            this.rfctercero = rfctercero;
+
+            this.sucursalconciliacion = sucursalconciliacion;
+            this.statusMovimiento = statusMovimiento;
 
             this.selecciona = true;
         }
@@ -489,6 +540,18 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return retiro; }
             set { retiro = value; }
+        }
+
+        public String StatusMovimiento
+        {
+            get { return statusMovimiento; }
+            set { statusMovimiento = value; }
+        }
+
+        public int Pedido
+        {
+            get { return pedido; }
+            set { pedido = value; }
         }
 
         public decimal MontoConciliado

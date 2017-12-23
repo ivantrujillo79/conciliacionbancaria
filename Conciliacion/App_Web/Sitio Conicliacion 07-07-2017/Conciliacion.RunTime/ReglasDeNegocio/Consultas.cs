@@ -205,6 +205,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool ValidaPedidoEspecifico(int corporativo, int sucursal,
             string pedidoReferencia);
 
+        public abstract bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, Conexion _conexion);
+
+
         public abstract ReferenciaNoConciliadaPedido ConsultaPedidoReferenciaEspecifico(
             int corporativoconciliacion,
             int sucursalconciliacion,
