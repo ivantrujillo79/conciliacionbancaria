@@ -3537,9 +3537,11 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
                                                             Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
+                        dato.SerieFactura = reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
+                        dato.ClienteReferencia = reader["CliReferencia"].ToString().Trim();
+                        dato.Pedido = Convert.ToInt32(reader["Pedido"]);
+                        dato.StatusMovimiento= reader["StatusMovimiento"].ToString().Trim();
 
-                        dato.SerieFactura = "";//reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
-                        dato.ClienteReferencia = "";//reader["CliReferencia"].ToString().Trim();
                         datos.Add(dato);
                     }
                 }
@@ -4349,6 +4351,38 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, Conexion _conexion)
+        {
+            bool valido = false;
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBActualizaStatusConciliacionPedido";
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.SmallInt)).Value = corporativo;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Sucursal", System.Data.SqlDbType.SmallInt)).Value = corporativo;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value =año;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = folio;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.Int)).Value = mes;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = pedido;
+                _conexion.Comando.ExecuteNonQuery();
+
+                valido = true;
+            }
+            catch (SqlException ex)
+            {
+                stackTrace = new StackTrace();
+                this.ImplementadorMensajes.MostrarMensaje("Erros al actualizar conciliacion pedido la informacion.\n\rClase :" +
+                                                          this.GetType().Name + "\n\r" + "Metodo :" +
+                                                          stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                          "Error :" + ex.Message);
+                stackTrace = null;
+            }
+
+            return valido;
+
+
+        }
 
         public override List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativo, int sucursal,
                                                                                  int año, short mes, int folio)

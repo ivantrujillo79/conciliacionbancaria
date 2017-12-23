@@ -598,7 +598,7 @@
                                 <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" AllowPaging="True"
                                     PageSize="5" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                                     OnPageIndexChanging="grvConciliadas_PageIndexChanging" OnRowDataBound="grvConciliadas_RowDataBound"
-                                    DataKeyNames="CorporativoConciliacion, SucursalConciliacion, AñoConciliacion, MesConciliacion, FolioConciliacion, FolioExterno, SecuenciaExterno"
+                                    DataKeyNames="CorporativoConciliacion,SucursalConciliacion,AñoConciliacion,MesConciliacion,FolioConciliacion,FolioExterno,SecuenciaExterno"
                                     OnRowCommand="grvConciliadas_RowCommand" OnSelectedIndexChanging="grvConciliadas_SelectedIndexChanging"
                                     OnRowCreated="grvConciliadas_RowCreated" AllowSorting="True" OnSorting="grvConciliadas_Sorting">
                                     <EmptyDataTemplate>
@@ -693,7 +693,14 @@
                                                     <asp:Label runat="server" ID="lblCliente" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
                                                 </div>
                                             </ItemTemplate>
-                                        </asp:TemplateField>                            
+                                        </asp:TemplateField> 
+                                       <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblPedido" Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                           
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
@@ -705,6 +712,7 @@
                                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="80px"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="80px"></HeaderStyle>
                                         </asp:TemplateField>
+                                        
                                     </Columns>
                                     <PagerTemplate>
                                         Página
