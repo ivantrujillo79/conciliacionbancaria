@@ -3620,7 +3620,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                     Convert.ToInt32(reader["Pedido"]),
                                                                     Convert.ToInt32(reader["RemisionPedido"]),
                                                                     Convert.ToString(reader["SeriePedido"]),
-                                                                    Convert.ToInt32(reader["FolioSat"]),
+                                                                    (reader["FolioSat"] == System.DBNull.Value ? 0 : 
+                                                                        Convert.ToInt32(reader["FolioSat"])),
                                                                     Convert.ToString(reader["SerieSat"]),
                                                                     Convert.ToString(reader["ConceptoInterno"]),
                                                                     Convert.ToDecimal(reader["Total"]),
