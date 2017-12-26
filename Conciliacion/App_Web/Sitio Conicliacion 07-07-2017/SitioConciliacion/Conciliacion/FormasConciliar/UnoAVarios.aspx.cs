@@ -1337,17 +1337,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-	    public void ActualizarTotalesAgregados_GridAgregados() 
+    public void ActualizarTotalesAgregados_GridAgregados() 
     {
         Decimal MontoConciliado;
         try
         {
             //GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];            
             //if (grvAgregadosPedidosPrima != null)
-            //{
-            //DataTable dt = (DataTable)grvAgregadosPedidosPrima.DataSource;
-            DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
-            if (dt.Rows.Count > 0)
+            if (grvAgregadosPedidos.DataSource != null)
+            {
+                //DataTable dt = (DataTable)grvAgregadosPedidosPrima.DataSource;
+                DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
+                if (dt.Rows.Count > 0)
                 {
                     MontoConciliado = 0;
                     foreach (DataRow gvRow in dt.Rows)
@@ -1366,7 +1367,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblAgregadosInternos.Text = "0";
                     lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
                 }
-            //}
+            }
         }
         catch (Exception ex)
         {
