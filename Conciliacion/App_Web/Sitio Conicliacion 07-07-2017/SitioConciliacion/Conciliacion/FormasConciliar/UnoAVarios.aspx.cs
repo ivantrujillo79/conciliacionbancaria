@@ -1120,6 +1120,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("MesConciliacion", typeof(int));
             tblTransaccionesConciliadas.Columns.Add("FolioConciliacion", typeof(int));
             tblTransaccionesConciliadas.Columns.Add("SecuenciaExterno", typeof(int));
+            tblTransaccionesConciliadas.Columns.Add("Pedido", typeof(int));
 
             tblTransaccionesConciliadas.Columns.Add("FolioExterno", typeof(int));
             tblTransaccionesConciliadas.Columns.Add("RFCTercero", typeof(string));
@@ -1135,6 +1136,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("Descripcion", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
+            
+            tblTransaccionesConciliadas.Columns.Add("StatusMovimiento", typeof(string));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -1145,6 +1148,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.MesConciliacion,
                     rc.FolioConciliacion,
                     rc.Secuencia,
+                    rc.Pedido,
                     rc.Folio,
                     rc.RFCTercero,
                     rc.Referencia,
@@ -1158,7 +1162,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Concepto,
                     rc.Descripcion,
                     rc.SerieFactura,
-                    rc.ClienteReferencia);
+                    rc.ClienteReferencia,
+                    
+                    rc.StatusMovimiento);
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1179,6 +1185,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             DataTable tablaConciliadas = (DataTable)HttpContext.Current.Session["TAB_CONCILIADAS"];
             grvConciliadas.DataSource = tablaConciliadas;
             grvConciliadas.DataBind();
+        
+            int i;
+            string a;
+            for (i=0; i<10; i++)
+            {
+               // a = grvConciliadas.sekHeaderRow.Cells[i].Text;
+            }
+            
         }
         catch (Exception ex)
         {
@@ -1210,6 +1224,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblDetalleTransaccionConciliada.Columns.Add("Nombre", typeof(string));
             tblDetalleTransaccionConciliada.Columns.Add("Total", typeof(decimal));
             tblDetalleTransaccionConciliada.Columns.Add("ConceptoPedido", typeof(string));
+            
         }
     }
 
@@ -2935,6 +2950,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Button imgDesconciliar = e.CommandSource as Button;
         GridViewRow gRowConciliado = (GridViewRow)(imgDesconciliar).Parent.Parent;
         //Leer Variables URL 
+
+
+
         cargarInfoConciliacionActual();
 
         int corporativoConcilacion =
@@ -2948,9 +2966,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         int folioExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioExterno"]);
         int secuenciaExterno =
             Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SecuenciaExterno"]);
-
         //Leer las TransaccionesConciliadas
         listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
+
+        int indice = gRowConciliado.RowIndex;
+
+        ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
+
+
+        int pedido = objReferencia.Pedido;
+
+
 
         tranDesconciliar = listaTransaccionesConciliadas.Single(
             x => x.Corporativo == corporativoConcilacion &&
@@ -2959,25 +2985,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                  x.MesConciliacion == mesConciliacion &&
                  x.FolioConciliacion == folioConciliacion &&
                  x.Folio == folioExterno &&
-                 x.Secuencia == secuenciaExterno);
+                 x.Secuencia == secuenciaExterno &&
+                 x.Pedido == pedido);
 
-        tranDesconciliar.DesConciliar();
-        //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-        //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-        Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                          formaConciliacion);
-        GenerarTablaConciliados();
-        LlenaGridViewConciliadas();
-        LlenarBarraEstado();
-        //Cargo y refresco nuevamente los archvos externos
-        Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
-                          tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
-        GenerarTablaExternos();
-        LlenaGridViewExternos();
-        if (tipoConciliacion == 2 || tipoConciliacion == 6)
-            ConsultarPedidosInternos();
+        string status = tranDesconciliar.StatusMovimiento;
+
+
+        if (status.CompareTo( "APLICADO")!=0)
+        {
+            tranDesconciliar.DesConciliar();
+            //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+            //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+                                              formaConciliacion);
+            GenerarTablaConciliados();
+            LlenaGridViewConciliadas();
+            LlenarBarraEstado();
+            //Cargo y refresco nuevamente los archvos externos
+            Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+                              tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+            GenerarTablaExternos();
+            LlenaGridViewExternos();
+            if (tipoConciliacion == 2 || tipoConciliacion == 6)
+                ConsultarPedidosInternos();
+            else
+                ConsultarArchivosInternos();
+        }
+
         else
-            ConsultarArchivosInternos();
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+        }
+
+        
     }
 
     protected void imgFiltrar_Click(object sender, ImageClickEventArgs e)

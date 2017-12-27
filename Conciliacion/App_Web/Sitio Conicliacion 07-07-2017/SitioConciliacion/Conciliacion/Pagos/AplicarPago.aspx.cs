@@ -644,13 +644,21 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
                     string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
 
+                    List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
+
+                    foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
+                    {
+                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(corporativoConciliacion, sucursalConciliacion, añoConciliacion,  folioConciliacion, mesConciliacion,objPedido.Pedido, conexion);
+
+                    }
+
 
                     if (aplicacobranza == "1")
                     {
                         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                         string strUsuario = usuario.IdUsuario.Trim();
 
-                        List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
+                        
 
                         Cobranza cobranza = Conciliacion.RunTime.App.Cobranza.CrearObjeto();
                         cobranza.FCobranza = DateTime.Now;
