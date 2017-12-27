@@ -5,6 +5,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
+<%@ Register Src="~/ControlesUsuario/SaldosAFavor/wucSaldoAFavor.ascx" TagPrefix="uc1" TagName="wucSaldoAFavor" %>
+
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
@@ -49,6 +51,10 @@
             $find("mpeCargaArchivo").hide();
         }
 
+        function OcultarPopUpSaldoAFavor() {
+            $find("mpeSaldosAFavor").hide();
+        }
+
         function popUpVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
@@ -57,6 +63,10 @@
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
         }
         
+        function popUpSaldoAFavorNoVisible() {
+            $('#<%= hdfSaldoAFavor.ClientID %>').val("0");
+        }
+
         /*              Botones del control wucCargaManualExcel         */
         function btnCargaManualCancelar_Click(){
             $('#<%= hdfCargaAgregado.ClientID %>').val("0");
@@ -89,6 +99,7 @@
                         $("#<%=txtFOInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
                     }
                 });
+
                 //DatePicker FMovimiento
                 $("#<%= txtFMInicio.ClientID%>").datepicker({
                     defaultDate: "+1w",
@@ -129,12 +140,13 @@
                     }
                 });
             }
+
         }
 
         function gridviewScroll() {
             $('#<%=grvExternos.ClientID%>').gridviewScroll({
                 width: 595,
-                height: 370,
+                height: 389,
                 freezesize: 3,
                 arrowsize: 30,
                 varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
@@ -151,17 +163,18 @@
                 $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
                     height: 300,
-                    freezesize: 2,
+                    freezesize: 0,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
                     varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
                     harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
                     harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
                     headerrowcount: 1,
-                    startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
+
+                    <%--startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
                     startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
-                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
+                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}--%>
                 });
             } else {
                 $('#<%=grvInternos.ClientID%>').gridviewScroll({
@@ -183,7 +196,7 @@
             }
             $('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
-                    height: 300,
+                    height: 250,
                     freezesize: 0,
                     arrowsize: 30,
                     varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
@@ -252,11 +265,20 @@
             }
         }
 
-    </script>
+        function ShowModalPopupSaldoAFavor() {
+           
+            var varBuscar = document.getElementById("<%=mpeSaldosAFavor.ClientID%>");
+            alert(varBuscar);
+            $find("mpeSaldosAFavor").show();
+            }
+            </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
     </script>
 
+    
+
+    
 
 
     <asp:UpdatePanel runat="server" ID="upBarraEstado" UpdateMode="Always">
@@ -598,7 +620,7 @@
                                 <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" AllowPaging="True"
                                     PageSize="5" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                                     OnPageIndexChanging="grvConciliadas_PageIndexChanging" OnRowDataBound="grvConciliadas_RowDataBound"
-                                    DataKeyNames="CorporativoConciliacion,SucursalConciliacion,AñoConciliacion,MesConciliacion,FolioConciliacion,FolioExterno,SecuenciaExterno"
+                                    DataKeyNames="CorporativoConciliacion, SucursalConciliacion, AñoConciliacion, MesConciliacion, FolioConciliacion, FolioExterno, SecuenciaExterno"
                                     OnRowCommand="grvConciliadas_RowCommand" OnSelectedIndexChanging="grvConciliadas_SelectedIndexChanging"
                                     OnRowCreated="grvConciliadas_RowCreated" AllowSorting="True" OnSorting="grvConciliadas_Sorting">
                                     <EmptyDataTemplate>
@@ -693,14 +715,7 @@
                                                     <asp:Label runat="server" ID="lblCliente" Text='<%# resaltarBusqueda(Eval("ClienteReferencia").ToString()) %>'></asp:Label>
                                                 </div>
                                             </ItemTemplate>
-                                        </asp:TemplateField> 
-                                       <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido">
-                                            <ItemTemplate>
-                                                <div>
-                                                    <asp:Label runat="server" ID="lblPedido" Text='<%# resaltarBusqueda(Eval("Pedido").ToString()) %>'></asp:Label>
-                                                </div>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>                           
+                                        </asp:TemplateField>                            
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
@@ -712,7 +727,6 @@
                                             <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="80px"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="80px"></HeaderStyle>
                                         </asp:TemplateField>
-                                        
                                     </Columns>
                                     <PagerTemplate>
                                         Página
@@ -792,7 +806,7 @@
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
                                         ToolTip="CARGAR ARCHIVO" Width="25px" Height="25px" OnClick="imgCargar_Click"  OnClientClick="popUpVisible();"
-                                        Enabled="false"></asp:ImageButton>
+                                        Visible="false"></asp:ImageButton>
                                 </td>
                                 <td class="bg-color-grisClaro fg-color-amarillo" style="width: 5%">
                                     <asp:Image ID="imgInt" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -1156,6 +1170,12 @@
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>
+
+                                            </td>
+                                            <td></td>
+                                       </tr>
                                     </table>		
                                     </ContentTemplate>
                             </asp:UpdatePanel>
@@ -1520,10 +1540,10 @@
                         </asp:GridView>
                         <br />
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                            CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="595"
+                            CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
-                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="True" PageSize="5" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" EnableViewState="True">
+                            OnRowCommand="grvPedidos_RowCommand" AllowPaging="False" OnPageIndexChanging="grvPedidos_PageIndexChanging"
+                            DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--PageSize="5" EnableViewState="True"--%>
                             <%-- <EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
                             </EmptyDataTemplate>--%>
@@ -1539,6 +1559,13 @@
                                     <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="25px"></HeaderStyle>
                                 </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox runat="server" ID="chkPedido" />
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="FSuministro" SortExpression="FSuministro">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFSuministro" runat="server" Text='<%# Eval("FSuministro","{0:d}") %>'></asp:Label>
@@ -1549,7 +1576,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Monto" SortExpression="Total">
                                     <ItemTemplate>
-                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:C}") %>'></asp:Label>
+                                        <b><asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:C}") %>'></asp:Label></b>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
@@ -1570,7 +1597,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Factura" SortExpression="SerieFactura">
                                     <ItemTemplate>
-                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("SerieFactura") %>'></asp:Label>
+                                            <asp:Label ID="lblFacturaPED" runat="server" Text='<%# Eval("Concepto") %>'></asp:Label>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
@@ -1583,7 +1610,7 @@
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                 </asp:TemplateField>
                                 
-                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="False">
+                                <asp:TemplateField HeaderText="Pedido" SortExpression="Pedido" Visible="True">
                                     <ItemTemplate>
                                             <asp:Label ID="lblPedidoPedido" runat="server" Text='<%# Eval("Pedido") %>'></asp:Label>
                                     </ItemTemplate>
@@ -2422,6 +2449,23 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
+    
+    <div id="la">
+        <table>
+            <tr>
+                <td>
+                        <img src="~/App_Themes/GasMetropolitanoSkin/Imagenes/warning.png" />        
+                </td>
+                <td align="center">
+                    El monto depositado genera un saldo a favor por <%= lblMontoResto.Text%> <br/> <strong>¿desea generar el saldo a favor?</strong>
+                </td>
+            </tr>
+            
+            
+        </table>
+    </div>
+    
+    
 
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
@@ -2432,4 +2476,38 @@
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
     </asp:ModalPopupExtender>
+    
+    <!-- MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
+    <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
+    <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" EnableViewState="True" />
+    <asp:ModalPopupExtender ID="mpeSaldosAFavor" runat="server" BackgroundCssClass="ModalBackground"
+                DropShadow="False" EnableViewState="false" PopupControlID="pnlSaldoAFavor"
+                TargetControlID="hdfSaldoAFavor">
+   </asp:ModalPopupExtender>
+        <asp:Panel ID="pnlSaldoAFavor" runat="server" CssClass="ModalPopup" Width="900px"
+                    Style="display: none">
+                    <asp:UpdatePanel ID="upSaldoAFavor" runat="server">
+            <ContentTemplate>
+                <div>
+                    <table style="width: 100%;">
+                        <tr class="bg-color-grisOscuro">
+                            <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                                <div class="floatDerecha bg-color-grisClaro01">
+                                    <asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                        CssClass="iconoPequeño bg-color-rojo" OnClientClick="popUpSaldoAFavorNoVisible(); OcultarPopUpSaldoAFavor();"/>
+                                </div>
+                                <div class="fg-color-blanco centradoJustificado">
+                                    CONSULTA SALDOS A FAVOR
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>  <uc1:wucSaldoAFavor runat="server" ID="wucSaldoAFavor" />  </td>
+                        </tr>
+                    </table>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </asp:Panel>
+    <!--TERMINA MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
 </asp:Content>
