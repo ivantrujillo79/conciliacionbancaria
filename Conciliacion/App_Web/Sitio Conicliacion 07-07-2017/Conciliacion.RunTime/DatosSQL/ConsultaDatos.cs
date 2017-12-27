@@ -3491,7 +3491,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaTransaccionesConciliadas", cnn);
+                    SqlCommand comando = new SqlCommand("spCBConsultaTransaccionesConciliadas2", cnn);
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativo;
                     comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursal;
