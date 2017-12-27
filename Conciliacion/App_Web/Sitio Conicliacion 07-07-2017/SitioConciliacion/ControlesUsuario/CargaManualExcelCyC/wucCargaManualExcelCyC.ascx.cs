@@ -75,6 +75,18 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
     }
     
+    public bool ConsultaPedido
+    {
+        get
+        {
+            if (ViewState["consultaPedido"] == null)
+                return false;
+            else
+                return (bool)ViewState["consultaPedido"];
+        }
+        set { ViewState["consultaPedido"] = value; }
+    }
+
     public int Corporativo
     {
         get
@@ -516,7 +528,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             if (DatosAConciliar.Rows.Count > 0)
             {
-                if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+                //if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 2 || Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+                //{
+                if (ConsultaPedido)
                 {
                     foreach (DataRow row in DatosAConciliar.Rows)
                     {

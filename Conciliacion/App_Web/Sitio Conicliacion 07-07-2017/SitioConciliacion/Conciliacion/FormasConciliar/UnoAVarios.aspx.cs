@@ -178,6 +178,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             formaConciliacion = 3;
         }
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
         GuardarSeleccionadosPedidos();
         try
@@ -202,8 +203,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
 
 //>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
-            CargarConfiguracion_wucCargaExcel();
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+            CargarConfiguracion_wucCargaExcel(objSolicitdConciliacion.ConsultaPedido());
             
             if (!Page.IsPostBack)
             {
@@ -496,18 +500,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             decimal monto = Convert.ToDecimal(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Deposito"].ToString());
             wucCargaExcelCyC.MontoPago = monto;
         }
-    }    
+    }
 
     /// <summary>
     /// Método para asignar propiedades del web user control
     /// "wucCargaExcelCyC"
     /// </summary>
-    private void CargarConfiguracion_wucCargaExcel()
+    private void CargarConfiguracion_wucCargaExcel(bool ConsultaPedido)
     {
         wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
         wucCargaExcelCyC.MostrarBotonCancelar = true;
         wucCargaExcelCyC.ClienteReferencia = -1;
         wucCargaExcelCyC.FormaConciliacion = formaConciliacion;
+        wucCargaExcelCyC.ConsultaPedido = ConsultaPedido;
     }
 
     /// <summary>
