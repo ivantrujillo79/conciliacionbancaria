@@ -170,6 +170,7 @@
                     harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
                     harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
                     headerrowcount: 1,
+
                     <%--startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
                     startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
