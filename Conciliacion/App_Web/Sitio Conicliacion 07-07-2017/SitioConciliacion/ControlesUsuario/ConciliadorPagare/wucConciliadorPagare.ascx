@@ -15,29 +15,29 @@
                         <asp:CheckBox runat="server" ID="chkTodos" CssClass="etiqueta fg-color-blanco centradoMedio"
                             text="Todos"/>
                     </td>
-                    <td style="padding: 5px;" align="left">
+                    <td style="padding: 5px; width:40%" align="left">
                         <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="cajaTexto" ToolTip="Fecha inicio"
                             ValidationGroup="vgFecha" Width="90px" Font-Size="11px"/>
                     </td>
-                    <td style="padding: 5px;" align="left">
+                    <td style="padding: 5px; width:40%" align="left">
                         <asp:TextBox runat="server" ID="txtFechaFin" CssClass="cajaTexto" ToolTip="Fecha fin"
                             ValidationGroup="vgFecha" Width="90px" Font-Size="11px"/>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="1"></td>
-                    <td>
+                    <td style="width:40%">
                         <div style="min-height:18px;">
                             <asp:RangeValidator ID="rvFechaInicio" runat="server" ControlToValidate="txtFechaInicio"
-                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Por favor insertar una fecha válida"
+                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Captura una fecha válida"
                                 MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFecha"
                                 Font-Size="12px"></asp:RangeValidator>
                         </div>
                     </td>
-                    <td>
+                    <td style="width:40%">
                         <div style="min-height:18px;">
                             <asp:RangeValidator ID="rvFechaFin" runat="server" ControlToValidate="txtFechaFin"
-                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Por favor insertar una fecha válida"
+                                CssClass="etiqueta fg-color-naranja" Display="Dynamic" ErrorMessage="Captura una fecha válida"
                                 MinimumValue="28/12/1000" MaximumValue="28/12/9999" Type="Date" ValidationGroup="vgFecha"
                                 Font-Size="12px"></asp:RangeValidator>
                         </div>
@@ -55,7 +55,18 @@
                 </tr>
                 <tr>
                     <td style="padding: 5px">
-                        <asp:TextBox ID="txtMonto" runat="server" CssClass="cajaTexto" Width="100px" Font-Size="11px"/>
+                        <asp:TextBox ID="txtMonto" runat="server" CssClass="cajaTexto" Width="100px" Font-Size="11px"
+                            onkeypress="return ValidaMoneda(event)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style1" style="width:100%">
+                        <asp:CompareValidator ID="cvMonto" runat="server" 
+                            ControlToValidate="txtMonto" 
+                            Operator="DataTypeCheck"
+                            CssClass="etiqueta fg-color-naranja"
+                            Font-Size="12px"
+                            Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMonto" />
                     </td>
                 </tr>
             </table>
@@ -63,7 +74,7 @@
         <td style="width:5%" align="left" class="iconoOpcion bg-color-naranja" colspan="1">
             <asp:ImageButton ID="imgBuscaPagares" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                 ToolTip="BUSCAR" style="padding: 10px 4px 7px 5px;" 
-                ValidationGroup="vgFecha"/>
+                ValidationGroup="vgFecha, vgMonto"/>
         </td>
     </tr>
     <tr>
@@ -74,7 +85,7 @@
                         Monto conciliar:
                     </td>
                     <td class="etiqueta lineaVertical centradoIzquierda">
-                        <div class="bg-color-grisOscuro fg-color-blanco" style="width: 25%; padding: 5px;">
+                        <div class="bg-color-grisOscuro fg-color-blanco" style="width: 50%; padding: 5px;">
                             <asp:Label runat="server" ID="lblMontoExterno" Text="$ 0.00"></asp:Label>
                         </div>
                     </td>
@@ -82,7 +93,7 @@
                         Resto:
                     </td>
                     <td class="etiqueta lineaVertical centradoIzquierda">
-                        <div class="bg-color-azul fg-color-blanco" style="width: 25%; padding: 5px;">
+                        <div class="bg-color-azul fg-color-blanco" style="width: 50%; padding: 5px;">
                             <asp:Label runat="server" ID="lblResto" Text="$ 0.00"></asp:Label>
                         </div>
                     </td>
@@ -90,6 +101,11 @@
             </table>
         </td>
         <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <div class="lineaHorizontal"></div>
+        </td>
     </tr>
     <tr class="etiqueta centradoJustificado">
         <td style="width:100%;" colspan="5">
@@ -162,8 +178,38 @@
         <td class="centradoMedio" colspan="5">
             <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-verdeClaro fg-color-blanco"
                 Text="GUARDAR" Width="100px" />
-            <asp:Button ID="btnCancelar" runat="server" CssClass="boton bg-color-grisClaro01 fg-color-blanco"
-                Text="CANCELAR" Width="100px" />
+            <asp:Button ID="btnCancelar" runat="server" CssClass="boton bg-color-grisClaro fg-color-blanco"
+                Text="CANCELAR" Width="100px" OnClientClick="btnConciliadorPagareCancelar_Click();"/>
         </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+
+    function CP_DatePickers() {
+        $("#<%= txtFechaInicio.ClientID%>").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#<%=txtFechaFin.ClientID%>").datepicker("option", "minDate", selectedDate);
+            }
+        });
+        $("#<%=txtFechaFin.ClientID%>").datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function (selectedDate) {
+                $("#<%=txtFechaInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+            }
+        });
+    }
+
+    function ValidaMoneda(e) {
+        var charCode = (e.which) ? e.which : e.keyCode;
+        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
+    }
+</script>

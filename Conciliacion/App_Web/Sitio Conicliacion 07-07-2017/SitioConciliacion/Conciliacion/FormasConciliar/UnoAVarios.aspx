@@ -6,7 +6,7 @@
 <%@ Register Src="~//ControlesUsuario/CargaManualExcelCyC/wucCargaManualExcelCyC.ascx" TagPrefix="uc1" TagName="WebUserControl" %>
 <%@ Register Src="~/ControlesUsuario/SaldosAFavor/wucSaldoAFavor.ascx" TagPrefix="uc1" TagName="wucSaldoAFavor" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
-
+<%@ Register Src="~/ControlesUsuario/ConciliadorPagare/wucConciliadorPagare.ascx" TagPrefix="uc1" TagName="wucConciliadorPagare" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
@@ -54,6 +54,10 @@
             $find("mpeSaldosAFavor").hide();
         }
 
+        function OcultarPopUpConciliarPagares() {
+            $find("mpeConciliarPagares").hide();
+        }
+
         function popUpVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
@@ -74,6 +78,11 @@
         function btnCargaManualAceptar_Click(){
             $("#<%= hdfCargaAgregado.ClientID %>").val("1");
             popUpNoVisible();
+        }
+
+        /*              Botones del control wucConciliadorPagare         */
+        function btnConciliadorPagareCancelar_Click() {
+            OcultarPopUpConciliarPagares();
         }
         
         function activarDatePickers() {
@@ -2451,6 +2460,9 @@
                                 <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
                                     CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="popUpNoVisible(); OcultarPopUpConciliacionManual();"/>
                             </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                CARGAR ARCHIVO
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -2464,7 +2476,43 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CARGA ARCHIVO     -->
-    
+
+    <!--        INICIO DE POPUP CONCILIAR PAGARES     -->
+    <asp:HiddenField runat="server" ID="hdfConciliarPagares" />
+    <asp:ModalPopupExtender ID="mpeConciliarPagares" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="False" PopupControlID="pnlConciliarPagares" TargetControlID="hdfConciliarPagares"
+        BehaviorID="mpeConciliarPagares" CancelControlID="imgCerrar_ConciliarPagares"> <%-- BehaviorID="ModalBehaviour" EnableViewState="false"--%>
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlConciliarPagares" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
+    <asp:UpdatePanel ID="upConciliarPagares" runat="server">
+        <ContentTemplate>
+            <div>
+                <table style="width:100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                            <div class="floatDerecha bg-color-grisClaro01">
+                                <asp:ImageButton runat="server" ID="imgCerrar_ConciliarPagares" CssClass="iconoPequeño bg-color-rojo" 
+                                    ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px" 
+                                    OnClientClick="OcultarPopUpConciliarPagares();"/>
+                            </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                CONCILIAR PAGARES
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <%--<asp:Label runat="server" ID="MyLabel" Text="Hola Mundo!"/>--%>
+                            <uc1:wucConciliadorPagare ID="wucConciliadorPagare" runat="server" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    </asp:Panel>
+    <!--        FIN POPUP CONCILIAR PAGARES     -->
+
     <div id="la" style="display: none;">
         <table>
             <tr>
