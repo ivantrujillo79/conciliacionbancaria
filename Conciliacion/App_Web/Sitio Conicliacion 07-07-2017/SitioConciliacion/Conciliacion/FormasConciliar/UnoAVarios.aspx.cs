@@ -1594,8 +1594,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             List<DetalleVerificadorRemanente> ListaVerificacionRemanente;
             DataTable dtBuffer = (DataTable)grvPedidos.DataSource;
             byte Opcion = 1;
-
-            if (dtBuffer.Rows.Count == 0 || dtBuffer == null)
+            //dtBuffer.Rows.Count == 0 ||
+            if (dtBuffer == null)
             {
                 HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
                 grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
