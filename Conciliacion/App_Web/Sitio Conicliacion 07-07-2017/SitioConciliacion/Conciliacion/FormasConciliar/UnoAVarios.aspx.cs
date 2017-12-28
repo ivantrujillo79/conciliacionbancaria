@@ -194,15 +194,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
             }
 
-/*<<<<<<< HEAD
-            //>>>>>>> RRV_bugfix
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
 
-
-=======*/
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
 
-//>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
@@ -445,15 +440,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 else
                 { 
-/*<<<<<<< HEAD
-                    txtDias.Enabled = true;
-                    HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
-                }
-=======*/
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
                 }
                 txtDias.Enabled = true;
-//>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
             }
 
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
@@ -1431,10 +1420,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             //GridView grvAgregadosPedidosPrima = (GridView)Session["TABLADEAGREGADOS"];            
             //if (grvAgregadosPedidosPrima != null)
-            //{
-            //DataTable dt = (DataTable)grvAgregadosPedidosPrima.DataSource;
-            DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
-            if (dt!= null && dt.Rows.Count > 0)
+            if (grvAgregadosPedidos.DataSource != null)
+            {            
+                //DataTable dt = (DataTable)grvAgregadosPedidosPrima.DataSource;
+                DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
+                if (dt!= null && dt.Rows.Count > 0)
                 {
                     MontoConciliado = 0;
                     foreach (DataRow gvRow in dt.Rows)
@@ -1455,7 +1445,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
                     lblResto.Text = Decimal.Round(0, 2).ToString("C2");
                 }
-            //}
+            }
         }
         catch (Exception ex)
         {
@@ -1956,8 +1946,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.FMovimiento,
                     rc.Total,
                     rc.Concepto,
-                    "HOLA DT SF",
-                    "HOLA DT CR"
+                    rc.FolioSat + rc.SerieSat, //"HOLA DT SF",
+                    rc.Cliente//"HOLA DT CR"                    
                     );
             }
             HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tblReferenciaInternas;
@@ -4697,30 +4687,32 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private List<ReferenciaNoConciliadaPedido> ConvierteTablaAReferenciaNoConciliadaPedido(DataTable dtEntrada)
     {
         List<ReferenciaNoConciliadaPedido> ListaPedidosRegresar = new List<ReferenciaNoConciliadaPedido>();
-
-        if (dtEntrada.Rows.Count > 0)
+        if (dtEntrada != null)
         {
-
-            foreach (DataRow drPedido in dtEntrada.Rows)
+            if (dtEntrada.Rows.Count > 0)
             {
-                if (drPedido.RowState == DataRowState.Unchanged)
-                {
-                    ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
-                    string sDocumento = drPedido["Documento"].ToString();
-                    decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
-                    RefNoConciliadaPedido.PedidoReferencia = sDocumento;
-                    RefNoConciliadaPedido.Total = dMonto;
-                    RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
-                    RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
-                    RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
-                    RefNoConciliadaPedido.Folio = 1;
-                    RefNoConciliadaPedido.Secuencia = 1;
-                    RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
-                    RefNoConciliadaPedido.Foliofactura = drPedido["FolioFactura"].ToString();
 
-                    ListaPedidosRegresar.Add(RefNoConciliadaPedido);
+                foreach (DataRow drPedido in dtEntrada.Rows)
+                {
+                    if (drPedido.RowState == DataRowState.Unchanged)
+                    {
+                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                        string sDocumento = drPedido["Documento"].ToString();
+                        decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
+                        RefNoConciliadaPedido.PedidoReferencia = sDocumento;
+                        RefNoConciliadaPedido.Total = dMonto;
+                        RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(drPedido["AñoPed"].ToString());
+                        RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(drPedido["Celula"].ToString());
+                        RefNoConciliadaPedido.Pedido = Convert.ToInt32(drPedido["Pedido"].ToString());
+                        RefNoConciliadaPedido.Folio = 1;
+                        RefNoConciliadaPedido.Secuencia = 1;
+                        RefNoConciliadaPedido.FormaConciliacion = formaConciliacion;
+                        RefNoConciliadaPedido.Foliofactura = drPedido["FolioFactura"].ToString();
+
+                        ListaPedidosRegresar.Add(RefNoConciliadaPedido);
+                    }
                 }
-            }   
+            }
         }
         return ListaPedidosRegresar;
     }
