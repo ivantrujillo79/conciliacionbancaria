@@ -753,8 +753,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     rc.Nombre,
                     rc.Total,
                     rc.ConceptoPedido,
-                    "",
-                    ""
+                    rc.FolioSat + rc.SerieSat, //"HOLA FACTURA",
+                    rc.Cliente//"CLIENTE REF"
                     );
             }
             HttpContext.Current.Session["TAB_REF_CONCILIAR"] = tblReferenciasAConciliar;
@@ -1939,15 +1939,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         {
             if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
             {
-/*<<<<<<< HEAD
-                e.Row.Cells[15].Visible = false;
-                e.Row.Cells[16].Visible = false;
-            }
-            else
-            {
-                e.Row.Cells[15].Visible = true;
-                e.Row.Cells[16].Visible = true;
-=======*/
                 if (e.Row.Cells.Count >= 15)
                     e.Row.Cells[15].Visible = false;
                 if (e.Row.Cells.Count >= 16)
@@ -1959,7 +1950,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     e.Row.Cells[15].Visible = true;
                 if (e.Row.Cells.Count >= 16)
                     e.Row.Cells[16].Visible = true;
-//>>>>>>> RRV_bugfix_ColumnaClienteFacturaVacias
             }
         }
     }
