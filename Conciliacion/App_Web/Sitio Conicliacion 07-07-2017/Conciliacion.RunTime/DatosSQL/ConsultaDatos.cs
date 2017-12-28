@@ -3082,12 +3082,6 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         ReferenciaNoConciliadaPedido dato = new ReferenciaNoConciliadaPedidoDatos(
-                            //Convert.ToDateTime(reader["FechaFactura"]),
-                            //Convert.ToInt32(reader["Cliente"]),
-                            //Convert.ToString(reader["NombreCliente"]),
-                            //Convert.ToString(reader["FolioFactura"]),
-                            //Convert.ToString(reader["Serie"]),
-                            //Convert.ToString(reader["Folio"]),
                             Convert.ToDateTime(reader["FFactura"]),
                             Convert.ToInt32(reader["Cliente"]),
                             Convert.ToString(reader["Nombre.Cliente"]),
@@ -3097,6 +3091,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             this.implementadorMensajes);
                         dato.Concepto = Convert.ToString(reader["Concepto"]);
                         dato.Total = Convert.ToDecimal(reader["Monto"]);
+                        dato.Factura = Convert.ToInt32(reader["Factura"]);
 
                         datos.Add(dato);
                     }
@@ -3104,7 +3099,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);

@@ -1906,6 +1906,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
         tblPedidos.Columns.Add("Cliente", typeof(string));
         tblPedidos.Columns.Add("Nombre", typeof(string));
+        tblPedidos.Columns.Add("Factura", typeof(int));
         tblPedidos.Columns.Add("FechaFactura", typeof(DateTime));
         tblPedidos.Columns.Add("FolioFactura", typeof(string));
         tblPedidos.Columns.Add("Concepto", typeof(string));
@@ -1918,6 +1919,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             tblPedidos.Rows.Add(
                 rc.Cliente,
                 rc.Nombre,
+                rc.Factura,
                 rc.Ffactura,
                 rc.Foliofactura,
                 rc.Concepto,
@@ -2063,6 +2065,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         bool resultado = false;
         try
         {
+            Conexion conexion = new Conexion();
+            conexion.AbrirConexion(false);
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+
             listaReferenciaFacturaConsulta = Session["FACTURAS_CONSULTAR_LISTA"] as List<ReferenciaNoConciliadaPedido>;
             if (listaReferenciaFacturaConsulta != null && listaReferenciaFacturaConsulta.Count > 0)
             {
@@ -2075,7 +2081,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                                .ToList();
                 if (pedidosSeleccionados.Count == 0)
                 {
-                    //App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna factura. Verifique su selección.");
                     throw new Exception("No ha seleccionado ninguna factura. Verifique su selección.");
                 }
                 // Asignar FormaConciliacion = Cociliación manual
@@ -2083,17 +2088,42 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
                 foreach (GridViewRow row in pedidosSeleccionados)
                 {
-                    string folioFactura = grvPedidosFacturados.DataKeys[row.RowIndex].Values["Foliofactura"].ToString();
-                    DateTime fechaFactura = Convert.ToDateTime(grvPedidosFacturados.DataKeys[row.RowIndex].Values["FechaFactura"]);
-                    decimal total = decimal.Parse(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Total"].ToString(), NumberStyles.Currency);
+                    int factura = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Factura"].ToString());
 
-                    ReferenciaNoConciliadaPedido rfPedido =
-                    listaReferenciaFacturaConsulta.Single(
-                       s => s.Foliofactura == folioFactura && s.Ffactura == fechaFactura && s.Total == total);
-                    if (!rfExterna.AgregarReferenciaConciliadaSinVerificacion(rfPedido)) return false;
+                    ReferenciaNoConciliadaPedido rfFactura =
+                        listaReferenciaFacturaConsulta.Single(s => s.Factura == factura);
+                    decimal montoInterno            = rfFactura.Total;
+                    string concepto                 = rfFactura.Concepto;
+
+                    FacturaManual facturaManual = new FacturaManualDatos(Conciliacion.RunTime.App.ImplementadorMensajes);
+                    byte corporativoConciliacion    = Convert.ToByte(rfExterna.CorporativoConciliacion);
+                    byte sucursalConciliacion       = Convert.ToByte(rfExterna.SucursalConciliacion);
+                    int añoConciliacion             = rfExterna.AñoConciliacion;
+                    short mesConciliacion           = rfExterna.MesConciliacion;
+                    int folioConciliacion           = rfExterna.FolioConciliacion;
+                    int secuenciaRelacion           = rfExterna.SecuenciaRelacion;
+                    byte corporativoExterno         = Convert.ToByte(rfExterna.CorporativoExterno);
+                    byte sucursalExterno            = Convert.ToByte(rfExterna.SucursalExterno);
+                    int añoExterno                  = rfExterna.AñoExterno;
+                    int folioExterno                = rfExterna.FolioExterno;
+                    int secuenciaExterno            = rfExterna.SecuenciaExterno;
+                    decimal montoConciliado         = rfExterna.MontoConciliado;
+                    decimal montoExterno            = rfExterna.MontoExterno;
+                    short formaConciliacion         = rfExterna.FormaConciliacion = 5;
+                    short statusConcepto            = rfExterna.StatusConcepto;
+                    string statusConciliacion       = rfExterna.StatusConciliacion;
+                    DateTime fAlta                  = DateTime.Now;
+                    DateTime fStatusConcepto        = DateTime.Now;
+                    string statusMovimiento         = rfExterna.StatusConciliacionMovimiento;
+                                                                                     
+                    facturaManual.Guardar(conexion, corporativoConciliacion, sucursalConciliacion, añoConciliacion,
+                                        mesConciliacion, folioConciliacion, secuenciaRelacion, factura, corporativoExterno,
+                                        sucursalExterno, añoExterno, folioExterno, secuenciaExterno, concepto, montoConciliado,
+                                        montoExterno, montoInterno, formaConciliacion, statusConcepto, statusConciliacion, statusMovimiento,
+                                        usuario.IdUsuario.Trim(), fAlta, "", usuario.IdUsuario.Trim(), fStatusConcepto);
                 }
-                resultado = rfExterna.GuardarReferenciaConciliada();
-            }
+                resultado = true;
+            }        
             else
             {
                 throw new Exception("No se ha cargado ninguna factura.");
@@ -2114,22 +2144,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             if (grvPedidosFacturados.Rows.Count > 0)
             {
                 //if (!RecuperarReferencias_wucCargaExcel()) return;
-                //ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
-                //rnc.BorrarReferenciaConciliada();
-                //ConciliacionExitosa = ConciliarFactura(rnc);
-                //mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
-                //if (!ConciliacionExitosa) return;
-                //App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
-
                 ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
                 rnc.BorrarReferenciaConciliada();
-
-
-
                 ConciliacionExitosa = ConciliarFactura(rnc);
                 mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
                 if (!ConciliacionExitosa) return;
-                App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+                App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
             }
             else
             {
