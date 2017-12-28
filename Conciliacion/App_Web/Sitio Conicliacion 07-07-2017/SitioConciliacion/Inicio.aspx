@@ -302,7 +302,7 @@
                                             <asp:Label runat="server" ID="lblStatusConciliacion" Text='<%# Bind("StatusConciliacion") %>'
                                                 Style="display: none"></asp:Label>
                                             <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                                Width="15px" Height="15px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                                Width="25px" Height="25px" CssClass="icono border-color-grisOscuro centradoMedio"
                                                 ToolTip='<%# Bind("StatusConciliacion") %>' />
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />

@@ -139,7 +139,7 @@ public partial class Inicio : System.Web.UI.Page
                     }
 
                     //Validacion Informe
-                    if (operaciones.EstaHabilitada(30, "Informe contabilidad") && tipoConciliacion == 2)
+                    if (operaciones.EstaHabilitada(30, "Informe contabilidad") && (tipoConciliacion == 1 || tipoConciliacion == 2 || tipoConciliacion == 4 || tipoConciliacion == 6))
                     {
                         lnkInformeM.Attributes.Add("onclick", "return fnInforme()");
                         lnkInformeM.Attributes.CssStyle.Add("opacity", "1");
