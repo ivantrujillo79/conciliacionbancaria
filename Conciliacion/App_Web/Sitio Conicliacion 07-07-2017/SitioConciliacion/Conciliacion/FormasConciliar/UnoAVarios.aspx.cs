@@ -2934,7 +2934,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Leer las TransaccionesConciliadas
         listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
 
-        ReferenciaNoConciliada tConciliada = listaTransaccionesConciliadas.Single(
+        ReferenciaNoConciliada tConciliada = listaTransaccionesConciliadas.First(
             x => x.Corporativo == corporativoConciliacion &&
                  x.Sucursal == sucursalConciliacion &&
                  x.Año == añoConciliacion &&
