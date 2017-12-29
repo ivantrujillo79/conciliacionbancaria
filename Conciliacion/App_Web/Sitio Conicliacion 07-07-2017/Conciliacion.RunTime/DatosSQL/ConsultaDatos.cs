@@ -3194,6 +3194,64 @@ namespace Conciliacion.RunTime.DatosSQL
                 return pedido;
             }
         }
+
+        public override ReferenciaNoConciliadaPedido ConsultaPedidoReferenciaEspecificoCliente(
+                                                                                     int corporativoconciliacion,
+                                                                                     int sucursalconciliacion,
+                                                                                     int añoconciliacion,
+                                                                                     short mesconciliacion,
+                                                                                     int folioconciliacion,
+                                                                                     decimal diferencia,
+                                                                                     string pedidoReferencia)
+        {
+            ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaUnPedidoEspecificoCliente", cnn);
+                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 1;
+                    comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value =
+                        corporativoconciliacion;
+                    comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value =
+                        sucursalconciliacion;
+                    comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = pedidoReferencia;
+                    comando.CommandTimeout = 600;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        pedido = new ReferenciaNoConciliadaPedidoDatos(
+                            Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]),
+                            Convert.ToString(reader["SucursalDes"]), añoconciliacion, folioconciliacion, mesconciliacion,
+                            Convert.ToInt32(reader["Celula"]), Convert.ToInt32(reader["AñoPed"]),
+                            Convert.ToInt32(reader["Pedido"]), Convert.ToString(reader["PedidoReferencia"]),
+                            Convert.ToInt32(reader["Cliente"]), Convert.ToString(reader["Nombre"]),
+                            Convert.ToInt32(reader["RemisionPedido"]), Convert.ToString(reader["SeriePedido"]),
+                            Convert.ToInt32(reader["FolioSat"]), Convert.ToString(reader["SerieSat"]),
+                            Convert.ToString(reader["Concepto"]), Convert.ToDecimal(reader["Monto"]),
+                            Convert.ToInt16(reader["FormaConciliacion"]), Convert.ToInt16(reader["StatusConcepto"]),
+                            Convert.ToString(reader["StatusConciliacion"]), Convert.ToDateTime(reader["FOperacion"]),
+                            Convert.ToDateTime(reader["FMovimiento"]), diferencia, this.implementadorMensajes);
+
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                return pedido;
+            }
+        }
+
+
+
         public override List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaPedidoVariosUno(
             BusquedaPedido configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
             short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, decimal diferencia,

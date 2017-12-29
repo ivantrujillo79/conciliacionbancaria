@@ -220,6 +220,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             decimal diferencia,
             string pedidoReferencia);
 
+    public abstract ReferenciaNoConciliadaPedido ConsultaPedidoReferenciaEspecificoCliente(
+    int corporativoconciliacion,
+    int sucursalconciliacion,
+    int añoconciliacion,
+    short mesconciliacion,
+    int folioconciliacion,
+    decimal diferencia,
+    string pedidoReferencia);
+
         public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaPedidoVariosUno(BusquedaPedido configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, decimal diferencia, int celula);
 
         public abstract List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaPedidoManual(BusquedaPedido configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, decimal diferencia, int celula);

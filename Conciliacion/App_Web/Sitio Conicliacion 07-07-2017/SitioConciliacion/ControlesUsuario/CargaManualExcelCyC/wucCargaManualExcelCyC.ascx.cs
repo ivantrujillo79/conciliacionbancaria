@@ -540,16 +540,15 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                         ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
 
-                        ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
+                        ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
 
 
                         RefNoConciliadaPedido.PedidoReferencia = sDocumento;
-                            RefNoConciliadaPedido.Total = dMonto;
-                            RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
-                            RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
-                        int Pedido;
-                        int.TryParse(sDocumento.Substring(5, sDocumento.Length - 5), out Pedido);
-                        RefNoConciliadaPedido.Pedido = Pedido;
+                        RefNoConciliadaPedido.Total = dMonto;
+                        RefNoConciliadaPedido.AñoPedido = ReferenciaNoConciliada.AñoPedido;//Convert.ToInt32(sDocumento.Substring(0, 4));
+                        RefNoConciliadaPedido.CelulaPedido = ReferenciaNoConciliada.CelulaPedido;//Convert.ToInt32(sDocumento.Substring(4, 1));
+                        //int.TryParse(sDocumento.Substring(5, sDocumento.Length - 5), out Pedido);
+                        RefNoConciliadaPedido.Pedido = ReferenciaNoConciliada.Pedido;
 
                         if (_referenciasPorConciliarExcel.Count > 0)
                         {
