@@ -1,19 +1,18 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucRangoFechas.ascx.cs" Inherits="ControlesUsuario_wucRangoFechas_wucRangoFechas" %>
 
 <script type="text/javascript">
-
     <%--function pageLoad() {
         //FInicio - FFinal
         activarDatePickers();
-    }
-
-    function activarDatePickers() {
+    }--%>
+    
+    function RF_DatePickers() {
         $("#<%= txtFechaInicial.ClientID%>").datepicker({
             defaultDate: "+1w",
             changeMonth: true,
             changeYear: true,
             onClose: function (selectedDate) {
-                $("#<%=txtFechaInicial.ClientID%>").datepicker("option", "minDate", selectedDate);
+                $("#<%=txtFechaFinal.ClientID%>").datepicker("option", "minDate", selectedDate);
             }
         });
 
@@ -22,11 +21,11 @@
             changeMonth: true,
             changeYear: true,
             onClose: function (selectedDate) {
-                $("#<%=txtFechaFinal.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                $("#<%=txtFechaInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
             }
         });
-    }--%>
-
+    }
+    
     function txtFecha_onblur(obj) {
         //debugger;
         if (document.getElementById("ctl00_contenidoPrincipal_wucRangoFechas_txtFechaInicial").value.trim() == ""

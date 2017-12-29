@@ -77,8 +77,8 @@
                 }
             });
 
-            /*          DatePicker wucRangoFechas         */
-            $("#<%= wucRangoFechas.FindControl("txtFechaInicial").ClientID %>").datepicker({
+            /*          DatePicker wucRangoFechas   [Se activan directamente desde el control]         */
+            <%--$("#<%= wucRangoFechas.FindControl("txtFechaInicial").ClientID %>").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true
@@ -87,7 +87,7 @@
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true
-            });
+            });--%>
 
             /*          DatePicker Busqueda Facturas         */
             $("#<%= txtFacturaFechaInicial.ClientID %>").datepicker({
