@@ -90,7 +90,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         this.RazonSocial = rdCliente.GetString(2);
                         this.Celula = rdCliente.GetByte(3);
                         this.Ruta = rdCliente.GetInt16(4);
-
+                        
                         if (rdCliente.GetBoolean(5))
                             this.Programacion = 1;
                         else

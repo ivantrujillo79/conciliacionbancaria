@@ -19,9 +19,9 @@
     <script type="text/javascript">
       
         function pageLoad() {
-            if(!isPostBack) {
+            /*if(!isPostBack) {
                 gridviewScroll();
-            }
+            }*/
         }
      
         function gridviewScroll() {
