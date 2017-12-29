@@ -521,6 +521,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         decimal dMonto;
         bool recupero = false;
         ReferenciaNoConciliada RefNoConciliada;
+        ReferenciaNoConciliadaPedido ReferenciaNoConciliada;
         _referenciasPorConciliarExcel = new List<ReferenciaNoConciliada>();  /*      Inicializar campo de la propiedad     */
         _referenciasPorConciliarPedidoExcel = new List<ReferenciaNoConciliadaPedido>();
 
@@ -539,12 +540,16 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                         ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
 
-                        RefNoConciliadaPedido.PedidoReferencia = sDocumento;
-                        RefNoConciliadaPedido.Total = dMonto;
-                        RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
-                        RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
-                        RefNoConciliadaPedido.Pedido = Convert.ToInt32(sDocumento.Substring(5, sDocumento.Length - 5));
+                        ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
 
+
+                        RefNoConciliadaPedido.PedidoReferencia = sDocumento;
+                            RefNoConciliadaPedido.Total = dMonto;
+                            RefNoConciliadaPedido.AñoPedido = Convert.ToInt32(sDocumento.Substring(0, 4));
+                            RefNoConciliadaPedido.CelulaPedido = Convert.ToInt32(sDocumento.Substring(4, 1));
+                        int Pedido;
+                        int.TryParse(sDocumento.Substring(5, sDocumento.Length - 5), out Pedido);
+                        RefNoConciliadaPedido.Pedido = Pedido;
 
                         if (_referenciasPorConciliarExcel.Count > 0)
                         {
