@@ -203,7 +203,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
             CargarConfiguracion_wucCargaExcel(objSolicitdConciliacion.ConsultaPedido());
-            
+
+            imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
+
             if (!Page.IsPostBack)
             {
                 limpiarVariablesSession();
@@ -218,9 +220,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-
-                imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
-
+                
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;
                 tipoFiltro = String.Empty;
@@ -386,8 +386,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     GenerarAgregadosExcel();
                 }
                 MostrarPopUp_ConciliacionManual();
-
-                imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -5775,7 +5773,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (grvExternos.Rows.Count > 0)
             {
-                //mpeConciliarPagares.Show();
+                mpeConciliarPagares.Show();
             }
         }
         catch(Exception ex)
