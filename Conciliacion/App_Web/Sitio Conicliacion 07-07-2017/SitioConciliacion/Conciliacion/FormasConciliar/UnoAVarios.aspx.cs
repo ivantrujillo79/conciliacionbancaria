@@ -848,23 +848,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (gvRow[7].ToString().Trim() != string.Empty)
                     MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow[7]);
             }
+            decimal dAbono      = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+            decimal dAcumulado  = Decimal.Round(MontoConciliado, 2);
+            decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
 
-            lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
-            lblAgregadosInternos.Text = dt.Rows.Count.ToString();
-            lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
-            //lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+            //lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
+            //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
+            lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
+            lblAgregadosInternos.Text       = dt.Rows.Count.ToString();
+            lblResto.Text                   = dResto.ToString("C2");
+
+            //lblAbono.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
         }
-        //else
-        //{
-        //    lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
-        //    lblAgregadosInternos.Text = "0";
-        //    lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
-        //}
-
-        //lblMontoAcumuladoInterno.Text = Decimal.Round(Monto, 2).ToString("C2");
-        //lblAgregadosInternos.Text = TotalRegistros.ToString();
-        //lblMontoResto.Text = Decimal.Round(Resto, 2).ToString("C2");
-        //lblMontoResto.Text = Decimal.Round(Referencia.Resto, 2).ToString("C2");
     }
 
     /// <summary>
@@ -1377,24 +1372,38 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-			
+
             if (grvExternos.Rows.Count > 0)
             {
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
-                    lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
-                    lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
-                    lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+                    decimal dAbono      = Decimal.Round(rE.Resto, 2);
+                    decimal dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
+                    decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
+
+                    //lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
+                    //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
+                    //lblAbono.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+                    lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
+                    lblResto.Text                   = dResto.ToString("C2");
+                    lblAgregadosInternos.Text       = rE.ListaReferenciaConciliada.Count.ToString();
+                    lblAbono.Text                   = dAbono.ToString("C2");
                 }
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoPedido, 2).ToString("C2");
-                    lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
-                    lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
-                    lblMontoResto.Text = Decimal.Round(rE.Monto - rE.MontoPedido, 2).ToString("C2");
+                    decimal dAbono      = Decimal.Round(rE.Monto - rE.MontoPedido, 2);
+                    decimal dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
+                    decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
+
+                    //lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoPedido, 2).ToString("C2");
+                    //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
+                    //lblAbono.Text = Decimal.Round(rE.Monto - rE.MontoPedido, 2).ToString("C2");
+                    lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
+                    lblResto.Text                   = dResto.ToString("C2");
+                    lblAgregadosInternos.Text       = rE.ListaReferenciaConciliada.Count.ToString();
+                    lblAbono.Text                   = dAbono.ToString("C2");
                 }
             }
             else
@@ -1402,7 +1411,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
                 lblResto.Text = Decimal.Round(0, 2).ToString("C2");
                 lblAgregadosInternos.Text = "0";
-                lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
+                lblAbono.Text = Decimal.Round(0, 2).ToString("C2");
             }
         }
         catch (Exception ex)
@@ -1432,15 +1441,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
 
                     lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
-                    lblResto.Text = (Convert.ToDecimal(lblMontoResto.Text.Replace("$", "").Trim() == "" ? "0" : lblMontoResto.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
+                    lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
                     lblAgregadosInternos.Text = dt.Rows.Count.ToString();
-                    //lblMontoResto.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+                    //lblAbono.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
                 }
                 else
                 {
                     lblMontoAcumuladoInterno.Text = Decimal.Round(0, 2).ToString("C2");
                     lblAgregadosInternos.Text = "0";
-                    lblMontoResto.Text = Decimal.Round(0, 2).ToString("C2");
+                    lblAbono.Text = Decimal.Round(0, 2).ToString("C2");
                     lblResto.Text = Decimal.Round(0, 2).ToString("C2");
                 }
             }
@@ -1674,9 +1683,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             GenerarTablaConciliados();
                             LlenaGridViewConciliadas();
 
-                            if (lblMontoResto.Text.Trim() != "")
+                            if (lblAbono.Text.Trim() != "")
                             {
-                                decimal SaldoAFavor = Convert.ToDecimal(lblMontoResto.Text.Replace("$",""));
+                                decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
                                 if (SaldoAFavor > 0)
                                 {
                                     /*ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);

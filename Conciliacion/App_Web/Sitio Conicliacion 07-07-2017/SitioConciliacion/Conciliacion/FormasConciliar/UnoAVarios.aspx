@@ -1217,7 +1217,7 @@
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Abono:
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio bg-color-azul fg-color-blanco" style="width: 15%; padding: 5px 5px 5px 5px">
-                                    <asp:Label runat="server" ID="lblMontoResto"></asp:Label>
+                                    <asp:Label runat="server" ID="lblAbono" Text="$ 0.00"></asp:Label>
                                 </td>
 
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Resto:
@@ -2520,7 +2520,7 @@
                         <img src="~/App_Themes/GasMetropolitanoSkin/Imagenes/warning.png" />        
                 </td>
                 <td align="center">
-                    El monto depositado genera un saldo a favor por <%= lblMontoResto.Text%> <br/> <strong>¿desea generar el saldo a favor?</strong>
+                    El monto depositado genera un saldo a favor por <%= lblAbono.Text%> <br/> <strong>¿desea generar el saldo a favor?</strong>
                 </td>
             </tr>
             
