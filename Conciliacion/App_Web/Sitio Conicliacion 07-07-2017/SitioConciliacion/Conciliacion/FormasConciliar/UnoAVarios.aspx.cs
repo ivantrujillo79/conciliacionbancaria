@@ -1925,7 +1925,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
             tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
             tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
-            tblReferenciaInternas.Columns.Add("Seriefactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("Foliofactura", typeof(string));
             tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
@@ -1985,7 +1985,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
             tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
             tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
-            tblReferenciaInternas.Columns.Add("Seriefactura", typeof(string));
+            tblReferenciaInternas.Columns.Add("Foliofactura", typeof(string));
             tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
