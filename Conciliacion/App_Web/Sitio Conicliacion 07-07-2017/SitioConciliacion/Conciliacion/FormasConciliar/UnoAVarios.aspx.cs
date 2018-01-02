@@ -1378,7 +1378,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    decimal dAbono      = Decimal.Round(rE.Resto, 2);
+                    //decimal dAbono      = Decimal.Round(rE.Resto, 2);
+                    decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
                     decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
 
@@ -1393,7 +1394,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    decimal dAbono      = Decimal.Round(rE.Monto - rE.MontoPedido, 2);
+                    decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
                     decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
 
