@@ -1,5 +1,30 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucClientePago.ascx.cs" Inherits="ControlesUsuario_ClientePago_wucClientePago" %>
 
+    <!-- Script se utiliza para el Scroll del GridView-->
+    <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"type="text/css" />
+    <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
+
+     <script type="text/javascript">
+        function gridviewScroll() {
+                $('#<%=grvClientes.ClientID%>').gridviewScroll({
+                    width: 595,
+                    height: 180,
+                    freezesize: 3,
+                    arrowsize: 30,
+                    varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
+                    varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
+                    harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
+                    harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
+                    headerrowcount: 1
+                });
+        }
+
+        function pageLoad() {
+             //if(!isPostback)
+             //gridviewScroll();
+        }
+
+    </script>
 
 
 <%--
@@ -16,6 +41,7 @@
                             Width="100%"
                             ShowHeaderWhenEmpty="True" 
                             AllowPaging="False"
+                            PageSize="5" 
                             OnRowCommand="grvClientes_RowCommand" CommandName="SeleccionarCliente"
                             OnRowDataBound="grvClientes_RowDataBound" >
 
@@ -60,3 +86,19 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+
+    <table>
+        <tr>
+            <td class="etiqueta centradoMedio" style="width: 15%;">
+
+                <asp:Button ID="btnAceptar" runat="server"
+                    CssClass="boton bg-color-azulOscuro fg-color-blanco"
+                    Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnAceptar_Click"/>
+                
+                <asp:Button ID="btnCancelar" runat="server"
+                    CssClass="boton bg-color-azulOscuro fg-color-blanco"
+                    Text="CANCELAR" Style="margin: 0 0 0 0;" ToolTip="CANCELAR" />
+
+            </td>
+        </tr>
+    </table>

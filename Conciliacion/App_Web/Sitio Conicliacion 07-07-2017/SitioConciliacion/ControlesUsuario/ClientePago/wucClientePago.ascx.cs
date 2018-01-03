@@ -1,4 +1,5 @@
-﻿using Conciliacion.RunTime.ReglasDeNegocio;
+﻿using AjaxControlToolkit;
+using Conciliacion.RunTime.ReglasDeNegocio;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,10 +11,10 @@ using System.Web.UI.WebControls;
 public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI.UserControl
 {
     private object controlcontenedor;
-    private List<String> clientes;
+    private List<int> clientes;
     private string clienteseleccionado;
 
-    public List<String> Clientes
+    public List<int> Clientes
     {
         get
         {
@@ -67,14 +68,16 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
         dt.Columns.Add("Nombre");
         dt.Columns.Add("Tipo");
 
+        dt.Columns["Cliente"].DataType = Type.GetType("System.Int32");
+
         DataRow row;
-        foreach (string cli in Clientes)
+        foreach (int cli in Clientes)
         {
-            //validar
+            //validar y cargar datos
             Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
             Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
             conexion.AbrirConexion(true);
-            objCliente.Referencia = cli;
+            objCliente.Referencia = cli.ToString();
             if (objCliente.ValidaClienteExiste(conexion))
             {
                 //asignar nombre y tipo 
@@ -86,17 +89,101 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
             }
         }
 
-        //El gridview deberá mostrar los registros ordenados por número de Cliente de forma ascendente 
-        dt.DefaultView.Sort = "Cliente";
+        if (dt.Rows.Count == 0)
+        {
+            throw new System.Exception("No existe cliente al cual asignar el pago.");
+        }
+        else
+        { 
+            //El gridview deberá mostrar los registros ordenados por número de Cliente de forma ascendente 
+            dt.DefaultView.Sort = "Cliente";
 
-        grvClientes.DataSource = dt;
-        grvClientes.DataBind();
-        
+            grvClientes.DataSource = dt;
+            grvClientes.DataBind();
+
+            //-Cuando el control sea mostrado el cliente padre(si lo hay) se elige por defecto
+            //-Si no hay cliente padre se elige por defecto la sucursal con el número de Cliente más pequeño
+            indiceExternoSeleccionado = -1;
+            int indexfila = 0;
+            foreach (GridViewRow fila in grvClientes.Rows)
+            {
+                if (fila.Cells[3].Text == "PADRE")
+                {
+                    indiceExternoSeleccionado = indexfila;
+                    break;
+                }
+                indexfila = indexfila + 1;
+            }
+            if (indiceExternoSeleccionado == -1)  //Si no hay cliente padre
+            {
+                indexfila = 0;
+                int idmenor = 999999999;
+                foreach (GridViewRow fila in grvClientes.Rows)
+                {
+                    if (fila.Cells[3].Text == "SUCURSAL")
+                    {
+                        if (int.Parse(fila.Cells[1].Text) < idmenor)
+                        { 
+                            idmenor = int.Parse(fila.Cells[1].Text);
+                            indiceExternoSeleccionado = indexfila;
+                        }
+                    }
+                    indexfila = indexfila + 1;
+                }
+            }
+
+            //RadioButton rdb = grvClientes.Rows[indiceExternoSeleccionado].Controls[0] as RadioButton;
+            //RadioButton1_CheckedChanged(rdb, null);
+
+            if (indiceExternoSeleccionado == -1)
+                indiceExternoSeleccionado = 0;
+            quitarSeleccionRadio();
+            pintarFilaSeleccionada(indiceExternoSeleccionado);
+            GridViewRowCollection filas = grvClientes.Rows;
+            indexfila = 0;
+            foreach (GridViewRow f in filas)
+            {
+                if (indiceExternoSeleccionado == indexfila)
+                {
+                    clienteseleccionado = f.Cells[1].Text;
+                    break;
+                }
+                indexfila = indexfila + 1;
+            }
+        }
     }
 
-    private void ObtieneDetalleClientes()
+    protected void RadioButton1_CheckedChanged(object sender, EventArgs e)
     {
+        try
+        {
+            quitarSeleccionRadio();
+            RadioButton rdb = sender as RadioButton;
+            rdb.Checked = true;
+            GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
+            pintarFilaSeleccionada(grv.RowIndex);
 
+            indiceExternoSeleccionado = grv.RowIndex;
+
+            int indexfila = 0;
+            GridViewRowCollection filas = grvClientes.Rows;
+            foreach (GridViewRow f in filas)
+            {
+                if (indiceExternoSeleccionado == indexfila)
+                {//f.RowIndex
+                    clienteseleccionado = f.Cells[1].Text;
+                    break;
+                }
+                indexfila = indexfila + 1;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -146,37 +233,6 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
         }
     }
 
-    protected void RadioButton1_CheckedChanged(object sender, EventArgs e)
-    {
-        try
-        {
-            quitarSeleccionRadio();
-            RadioButton rdb = sender as RadioButton;
-            rdb.Checked = true;
-            GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
-            pintarFilaSeleccionada(grv.RowIndex);
-
-            indiceExternoSeleccionado = grv.RowIndex;
-
-            int indexfila = 0;
-            GridViewRowCollection filas = grvClientes.Rows;
-            foreach (GridViewRow f in filas)
-            {
-                if (indiceExternoSeleccionado == indexfila) //f.RowIndex
-                    clienteseleccionado = f.Cells[1].Text; //break
-                indexfila = indexfila + 1;
-            }
-
-        }
-        catch (Exception ex)
-        {
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
-                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
-        }
-    }
-
-
     protected void grvClientes_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.Footer)
@@ -191,4 +247,9 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
         }
     }
 
+    protected void btnAceptar_Click(object sender, EventArgs e)
+    {
+        if (ControlContenedor != null)
+            (ControlContenedor as ModalPopupExtender).Hide();
+    }
 }
