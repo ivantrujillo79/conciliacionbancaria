@@ -38,6 +38,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         int idConceptoBanco;
         int idMotivoNoConciliado;
         private int tipoFuenteInformacion;
+        private int clientepago;
 
         //#region IObjetoBase Members
         //public virtual string CadenaConexion
@@ -311,6 +312,12 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             set { tipoFuenteInformacion = value; }
         }
 
+        public int ClientePago
+        {
+            get { return clientepago; }
+            set { clientepago = value; }
+        }
+
         public MotivoNoConciliado MotivoNoConciliado
         {
             get
@@ -319,8 +326,10 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             }
         }
 
+        public void ActualizarClientePago()
+        {
 
+        }
 
- 
     }
 }
