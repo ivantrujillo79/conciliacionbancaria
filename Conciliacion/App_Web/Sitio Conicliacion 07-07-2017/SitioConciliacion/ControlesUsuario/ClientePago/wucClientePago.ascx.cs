@@ -12,7 +12,7 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
 {
     private object controlcontenedor;
     private List<int> clientes;
-    private string clienteseleccionado;
+    //private string clienteseleccionado;
 
     public List<int> Clientes
     {
@@ -42,13 +42,13 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
     {
         get
         {
-            return clienteseleccionado;
+            return hdfClienteSeleccionado.Value; //clienteseleccionado;
         }
     }
 
     DataTable dt = new DataTable();
 
-    private int indiceExternoSeleccionado
+    private int indiceGridSeleccionado
     {
         get { return Convert.ToInt32(hdfIndiceFila.Value); }
         set { hdfIndiceFila.Value = value.ToString(); }
@@ -103,18 +103,18 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
 
             //-Cuando el control sea mostrado el cliente padre(si lo hay) se elige por defecto
             //-Si no hay cliente padre se elige por defecto la sucursal con el número de Cliente más pequeño
-            indiceExternoSeleccionado = -1;
+            indiceGridSeleccionado = -1;
             int indexfila = 0;
             foreach (GridViewRow fila in grvClientes.Rows)
             {
                 if (fila.Cells[3].Text == "PADRE")
                 {
-                    indiceExternoSeleccionado = indexfila;
+                    indiceGridSeleccionado = indexfila;
                     break;
                 }
                 indexfila = indexfila + 1;
             }
-            if (indiceExternoSeleccionado == -1)  //Si no hay cliente padre
+            if (indiceGridSeleccionado == -1)  //Si no hay cliente padre
             {
                 indexfila = 0;
                 int idmenor = 999999999;
@@ -125,27 +125,24 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
                         if (int.Parse(fila.Cells[1].Text) < idmenor)
                         { 
                             idmenor = int.Parse(fila.Cells[1].Text);
-                            indiceExternoSeleccionado = indexfila;
+                            indiceGridSeleccionado = indexfila;
                         }
                     }
                     indexfila = indexfila + 1;
                 }
             }
 
-            //RadioButton rdb = grvClientes.Rows[indiceExternoSeleccionado].Controls[0] as RadioButton;
-            //RadioButton1_CheckedChanged(rdb, null);
-
-            if (indiceExternoSeleccionado == -1)
-                indiceExternoSeleccionado = 0;
+            if (indiceGridSeleccionado == -1)
+                indiceGridSeleccionado = 0;
             quitarSeleccionRadio();
-            pintarFilaSeleccionada(indiceExternoSeleccionado);
+            pintarFilaSeleccionada(indiceGridSeleccionado);
             GridViewRowCollection filas = grvClientes.Rows;
             indexfila = 0;
             foreach (GridViewRow f in filas)
             {
-                if (indiceExternoSeleccionado == indexfila)
+                if (indiceGridSeleccionado == indexfila)
                 {
-                    clienteseleccionado = f.Cells[1].Text;
+                    hdfClienteSeleccionado.Value = f.Cells[1].Text;
                     break;
                 }
                 indexfila = indexfila + 1;
@@ -163,15 +160,15 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
             GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
             pintarFilaSeleccionada(grv.RowIndex);
 
-            indiceExternoSeleccionado = grv.RowIndex;
+            indiceGridSeleccionado = grv.RowIndex;
 
             int indexfila = 0;
             GridViewRowCollection filas = grvClientes.Rows;
             foreach (GridViewRow f in filas)
             {
-                if (indiceExternoSeleccionado == indexfila)
+                if (indiceGridSeleccionado == indexfila)
                 {//f.RowIndex
-                    clienteseleccionado = f.Cells[1].Text;
+                    hdfClienteSeleccionado.Value = f.Cells[1].Text;
                     break;
                 }
                 indexfila = indexfila + 1;
@@ -241,13 +238,19 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
             {
                 RadioButton rdb = grvClientes.Rows[0].FindControl("RadioButton1") as RadioButton;
                 rdb.Checked = true;
-                indiceExternoSeleccionado = 0;
+                indiceGridSeleccionado = 0;
                 pintarFilaSeleccionada(0);
             }
         }
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)
+    {
+        if (ControlContenedor != null)
+            (ControlContenedor as ModalPopupExtender).Hide();
+    }
+
+    protected void btnCancelar_Click(object sender, EventArgs e)
     {
         if (ControlContenedor != null)
             (ControlContenedor as ModalPopupExtender).Hide();

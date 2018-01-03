@@ -138,6 +138,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         //wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvPedidos";
                         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
                         wucBuscaClientesFacturas.HtmlIdGridCeldaID = "1";
+                        wucBuscaClientesFacturas.HtmlIdGridCNodoID = "0";
                     }
                 }
                 else
@@ -146,6 +147,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     {
                         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
                         wucBuscaClientesFacturas.HtmlIdGridCeldaID = "3";
+                        wucBuscaClientesFacturas.HtmlIdGridCNodoID = "0";
                     }
                 }
 
@@ -2759,7 +2761,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         ListPedidos.Add(rp);
                     }
                     Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
-                    return;
+                    //return;
                 }
                 grvInternos.DataBind();
                 grvInternos.DataBind();

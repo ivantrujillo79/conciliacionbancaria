@@ -2,6 +2,8 @@
     CodeFile="Inicio.aspx.cs" Inherits="Inicio" Debug="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register Src="~/ControlesUsuario/ClientePago/wucClientePago.ascx" TagPrefix="uc1" TagName="wucClientePago" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     CONCILIACIÓN
 </asp:Content>
@@ -188,6 +190,9 @@
                             </div>
                             <div class="lineaHorizontal">
                             </div>
+
+                            <uc1:wucClientePago runat="server" ID="wucClientePago" />
+
                             <br />
                             <asp:GridView ID="grvConciliacion" runat="server" AutoGenerateColumns="False" Width="100%"
                                 AllowPaging="True" ShowHeaderWhenEmpty="True" CssClass="grvResultadoConsultaCss"

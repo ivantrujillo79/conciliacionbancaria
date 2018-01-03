@@ -45,7 +45,6 @@ public partial class Inicio : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-
         try
         {
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -61,11 +60,24 @@ public partial class Inicio : System.Web.UI.Page
             }
             if (!Page.IsPostBack)
             {
+                wucClientePago.Clientes = new List<int>();
+                wucClientePago.Clientes.Add(3);
+                wucClientePago.Clientes.Add(2);
+                wucClientePago.Clientes.Add(1);
+                wucClientePago.Clientes.Add(1);
+                wucClientePago.Clientes.Add(1);
+                wucClientePago.Clientes.Add(4);
+                wucClientePago.Clientes.Add(5);
+                wucClientePago.Clientes.Add(6);
+                wucClientePago.Clientes.Add(7);
+                wucClientePago.Clientes.Add(8);
+                wucClientePago.Clientes.Add(9);
+                wucClientePago.Clientes.Add(10);
+                wucClientePago.Clientes.Add(11);
+
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 //Inicializacion de Propiedades
                 //listaConciliaciones = new List<cConciliacion>();
-
-                
 
                 Carga_TipoConciliacion(usuario.IdUsuario.Trim());
                 if (ddlEmpresa.Items.Count == 0) Carga_Corporativo();

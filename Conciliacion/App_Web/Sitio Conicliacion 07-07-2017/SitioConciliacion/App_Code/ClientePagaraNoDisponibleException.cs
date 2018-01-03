@@ -39,6 +39,7 @@ public class ClientePagaraNoDisponibleException
         ResultadoValidacion.CodigoError = 1;
         ResultadoValidacion.Mensaje = "No existe cliente al cual asignar el pago.";
         ResultadoValidacion.VerificacionValida = false;
-        throw new System.Exception("No existe cliente al cual asignar el pago.");
+        //throw new Exception("No existe cliente al cual asignar el pago.");
+
     }
 }
