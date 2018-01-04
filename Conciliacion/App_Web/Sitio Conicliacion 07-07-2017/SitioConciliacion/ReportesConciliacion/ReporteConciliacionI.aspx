@@ -35,7 +35,7 @@
             //grvPedidosScroll();
             //FInicio - FFinal
             activarDatePickers();
-            grvConciliacionCompartida_Scroll();
+            //grvConciliacionCompartida_Scroll();
             CargarEventoCheckBox();
         }
 
@@ -413,8 +413,9 @@
                         <asp:HiddenField ID="hfCompartidaSH" runat="server" />
                         <asp:HiddenField ID="hfStatusConciliacionFD" runat="server" />
                         <asp:HiddenField ID="hfStatusConceptoFiltro" runat="server" />
-                        <asp:GridView ID="grvConciliacionCompartida" runat="server" AutoGenerateColumns="False"
-                            Width="100%" AllowPaging="True" ShowHeaderWhenEmpty="True" CssClass="grvResultadoConsultaCss"
+                        <div style="width:1200px; height:500px; overflow:auto;">
+                            <asp:GridView ID="grvConciliacionCompartida" runat="server" AutoGenerateColumns="False"
+                            Width="100%" AllowPaging="False" ShowHeaderWhenEmpty="True" CssClass="grvResultadoConsultaCss"
                             DataKeyNames="FolioConciliacion,CorporativoConciliacion,SucursalConciliacion,AñoConciliacion,MesConciliacion,
                             Folio,Corporativo,Sucursal,Año,Secuencia,ConsecutivoFlujo" PageSize="25" OnPageIndexChanging="grvConciliacionCompartida_PageIndexChanging"
                             OnRowDataBound="grvConciliacionCompartida_RowDataBound" OnRowCreated="grvConciliacionCompartida_RowCreated"
@@ -448,7 +449,7 @@
                                 <asp:TemplateField HeaderText="Status" SortExpression="StatusConciliacion">
                                     <ItemTemplate>
                                         <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Eval("UbicacionIcono") %>'
-                                            Width="27px" Height="27px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                            Width="35px" Height="35px" CssClass="icono border-color-grisOscuro centradoMedio"
                                             ToolTip='<%# Eval("StatusConciliacion") %>' AlternateText='<%# Eval("StatusConciliacion") %>' />
                                     </ItemTemplate>
                                     <HeaderTemplate>
@@ -700,6 +701,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                     </td>
                 </tr>
             </table>
