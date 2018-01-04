@@ -916,8 +916,8 @@
                                         <ajaxToolkit:AccordionPane ID="apGridPedidos" runat="server">
                                             <Header>PEDIDOS</Header>
                                             <Content>                                                
-                                                <div>
-                                                    <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                                                <div style="width: 980px; height: 300px; overflow:auto;">
+                                                    <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="False"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                                         ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente,Total" AllowPaging="False">
                                   
