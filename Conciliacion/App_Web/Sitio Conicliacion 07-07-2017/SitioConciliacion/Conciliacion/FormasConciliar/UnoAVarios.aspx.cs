@@ -163,14 +163,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
         wucSaldoAFavor.Contenedor = mpeSaldosAFavor;
         wucSaldoAFavor.TipoOperacion = 2;
-
-
+        
         if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
         {
             //mpeSaldosAFavor.Show(); 
         }
-
-
+        
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
@@ -201,8 +199,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-
+            
+            //          Asignar propiedades de los Web User Control
             CargarConfiguracion_wucCargaExcel(objSolicitdConciliacion.ConsultaPedido());
+            CargarConfiguracion_wucClientePago();
 
             imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
 
@@ -220,7 +220,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-                
+
+                //mpeClientePago.Show();
+
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;
                 tipoFiltro = String.Empty;
@@ -490,8 +492,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
     /// <summary>
-    /// Método para asignar propiedades del web user control
-    /// "wucCargaExcelCyC"
+    /// Asigna propiedades del web user control "wucCargaExcelCyC"
     /// </summary>
     private void CargarConfiguracion_wucCargaExcel(bool ConsultaPedido)
     {
@@ -500,6 +501,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.ClienteReferencia = -1;
         wucCargaExcelCyC.FormaConciliacion = formaConciliacion;
         wucCargaExcelCyC.ConsultaPedido = ConsultaPedido;
+    }
+
+    /// <summary>
+    /// Asigna propiedades del web user control "wucClientePago"
+    /// </summary>
+    private void CargarConfiguracion_wucClientePago()
+    {
+        List<int> ListClientes = new List<int> { 123, 456, 789, 012, 345 };
+        wucClientePago.Clientes = ListClientes;
+        wucClientePago.ControlContenedor = mpeClientePago;
     }
 
     /// <summary>
@@ -1684,6 +1695,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             GenerarTablaConciliados();
                             LlenaGridViewConciliadas();
 
+                            MostrarClientePago(objSolicitdConciliacion.ConsultaPedido());
+
                             if (lblAbono.Text.Trim() != "")
                             {
                                 decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
@@ -1705,7 +1718,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");
                     }
                     else
-                        App.ImplementadorMensajes.MostrarMensaje("No se han agregado ninguna referencia interna aún");
+                        App.ImplementadorMensajes.MostrarMensaje("No se ha agregado ninguna referencia interna");
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("El archivo externo ya fue Conciliado");
@@ -1718,6 +1731,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " 
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    private void MostrarClientePago(bool EsPedido)
+    {
+        try
+        {
+            if (EsPedido)
+            {
+                decimal minSaldoAFavor = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
+                decimal resto = decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+                if (resto > minSaldoAFavor)
+                {
+                    mpeClientePago.Show();
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
         }
     }
 
