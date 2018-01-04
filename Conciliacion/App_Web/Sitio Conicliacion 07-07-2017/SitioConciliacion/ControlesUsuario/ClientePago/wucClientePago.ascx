@@ -5,24 +5,24 @@
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
 
      <script type="text/javascript">
-        function gridviewScroll() {
-                $('#<%=grvClientes.ClientID%>').gridviewScroll({
-                    width: 595,
-                    height: 180,
-                    freezesize: 3,
-                    arrowsize: 30,
-                    varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                    varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                    harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                    harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                    headerrowcount: 1
-                });
+        function CP_gridviewScroll() {
+            $('#<%=grvClientes.ClientID%>').gridviewScroll({
+                width: 595,
+                height: 180,
+                freezesize: 3,
+                arrowsize: 30,
+                varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
+                varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
+                harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
+                harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
+                headerrowcount: 1
+            });
         }
 
-        function pageLoad() {
-             //if(!isPostback)
-             //   gridviewScroll();
-        }
+        //function pageLoad() {
+        //     //if(!isPostback)
+        //     //   gridviewScroll();
+        //}
 
     </script>
 
@@ -34,7 +34,7 @@
     <asp:HiddenField ID="hdfIndiceFila" runat="server" />
     <asp:HiddenField ID="hdfClienteSeleccionado" runat="server" />
 
-    <table>
+    <table style="width:100%">
         <tr>
             <td class="etiqueta centradoMedio" style="width: 100%;">
             </td>
@@ -43,7 +43,7 @@
         <tr>
             <td class="etiqueta centradoMedio" style="width: 100%;">
 
-                <div class="etiqueta centradoMedio" style="height:170px;width:800px;overflow:auto;">
+                <div class="etiqueta centradoMedio" style="height:170px;overflow:auto;"> <!--width:800px-->
                     <asp:GridView ID="grvClientes" runat="server" 
                         ShowHeader="True"
                         AllowSorting="True" 
