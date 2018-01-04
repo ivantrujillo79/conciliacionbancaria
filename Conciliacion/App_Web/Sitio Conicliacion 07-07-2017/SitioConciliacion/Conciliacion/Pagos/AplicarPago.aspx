@@ -18,7 +18,7 @@
     <script type="text/javascript">
         //        $(document).ready(function () {
         function pageLoad() {
-            gridviewScroll();
+            //gridviewScroll();
         }
         //        );
 
@@ -319,7 +319,8 @@
                 </tr>
                 <tr>
                     <td style="vertical-align: top" colspan="3">
-                        <asp:GridView ID="grvPagos" runat="server" AutoGenerateColumns="False" AllowPaging="False"
+                        <div style="width:1200px; height: 500px; overflow:auto;">
+                            <asp:GridView ID="grvPagos" runat="server" AutoGenerateColumns="False" AllowPaging="False"
                             AllowSorting="True" ShowHeader="True" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed" OnRowCreated="grvPagos_RowCreated"
                             OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound">
@@ -489,6 +490,7 @@
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
+                        </div>
                     </td>
                 </tr>
                 <tr>

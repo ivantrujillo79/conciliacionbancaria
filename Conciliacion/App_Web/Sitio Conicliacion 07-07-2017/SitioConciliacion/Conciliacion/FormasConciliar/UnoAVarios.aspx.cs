@@ -1618,7 +1618,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             if (ListaVerificacionRemanente.Count != 0)
             {
-                //Se interrumple el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
+                //Se interrumpe el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
                 throw new Exception("Existe(n) " + ListaVerificacionRemanente.Count.ToString() + " pedido(s) que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
                 return;
             }
