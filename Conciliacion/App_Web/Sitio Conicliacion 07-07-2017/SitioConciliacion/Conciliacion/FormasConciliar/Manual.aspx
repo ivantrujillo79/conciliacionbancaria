@@ -750,8 +750,7 @@
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
-                            OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging"
-                            PageSize="100" AllowPaging="True">
+                            OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
                             <%--<EmptyDataTemplate>
                                     <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
                                         Text="No se encontraron referencias externas."></asp:Label>
@@ -1000,7 +999,7 @@
                         </div>
                         <div style="height:500px; width:590px; overflow:auto;">
                         <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                            AllowPaging="True" PageSize="100" CssClass="grvResultadoConsultaCss" AllowSorting="True"
+                            CssClass="grvResultadoConsultaCss" AllowSorting="True"
                             OnRowDataBound="grvInternos_RowDataBound" ShowHeaderWhenEmpty="True" ShowFooter="False"
                             Width="100%" DataKeyNames="Secuencia, Folio, Sucursal" OnRowCreated="grvInternos_RowCreated"
                             OnSorting="grvInternos_Sorting" OnPageIndexChanging="grvInternos_PageIndexChanging">
