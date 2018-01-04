@@ -23,7 +23,7 @@
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         function pageLoad() {
-            gridviewScroll();
+            //gridviewScroll();
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
@@ -745,7 +745,7 @@
                                 <tr>
                                     <td class="etiqueta lineaVertical centradoMedio" style="width: 1%; padding: 5px 5px 5px 5px">
                                         <asp:Image ID="imgMostrar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/grid.png"
-                                            Width="15px" Height="15px" CssClass="icono bg-color-blanco" />
+                                            Width="25px" Height="25px" CssClass="icono bg-color-blanco" />
                                     </td>
                                     <td class="etiqueta lineaVertical centradoMedio" style="width: 20%; padding: 5px 5px 5px 5px">Externos Agregados:
                                     </td>
@@ -774,11 +774,12 @@
                                 </tr>
                             </table>
                         </div>
-                        <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
+                        <div style="width: 595px; height:370px; overflow:auto;">
+                            <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
                             OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging"
-                            PageSize="100" AllowPaging="True">
+                            PageSize="100" AllowPaging="False">
                             <%--<EmptyDataTemplate>
                                     <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
                                         Text="No se encontraron referencias externas."></asp:Label>
@@ -894,6 +895,7 @@
                             <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
                     </td>
@@ -927,7 +929,7 @@
                                 <tr>
                                     <td class="etiqueta lineaVertical centradoMedio" style="width: 1%; padding: 5px 5px 5px 5px">
                                         <asp:Image ID="imgMostrar01" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/grid.png"
-                                            Width="15px" Height="15px" CssClass="icono bg-color-blanco" />
+                                            Width="25px" Height="25px" CssClass="icono bg-color-blanco" />
                                     </td>
                                     <td class="etiqueta lineaVertical centradoMedio" style="width: 25%; padding: 5px 5px 5px 5px">Monto Interno Seleccionado:
                                     </td>
