@@ -20,7 +20,7 @@
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         function pageLoad() {
-            gridviewScroll();
+            //gridviewScroll();
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
@@ -746,6 +746,7 @@
                                 </tr>
                             </table>
                         </div>
+                        <div style="height:500px; width:590px; overflow:auto;">                            
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
@@ -866,6 +867,7 @@
                             <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
                     </td>
@@ -996,6 +998,7 @@
                                 </tr>
                             </table>
                         </div>
+                        <div style="height:500px; width:590px; overflow:auto;">
                         <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             AllowPaging="True" PageSize="100" CssClass="grvResultadoConsultaCss" AllowSorting="True"
                             OnRowDataBound="grvInternos_RowDataBound" ShowHeaderWhenEmpty="True" ShowFooter="False"
@@ -1110,6 +1113,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnSorting="grvPedidos_Sorting"

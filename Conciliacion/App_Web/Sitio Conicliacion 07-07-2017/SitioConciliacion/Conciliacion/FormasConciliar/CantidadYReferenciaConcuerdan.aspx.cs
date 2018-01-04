@@ -117,7 +117,15 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Carga_SucursalCorporativo(corporativo);
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
-                Carga_CamposExternos(tipoConciliacion);
+                try
+                {
+                    Carga_CamposExternos(tipoConciliacion);
+                }
+                catch(Exception ex)
+                {
+                    App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                }
+
                 LlenarBarraEstado();
 
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
@@ -144,7 +152,16 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     btnActualizarConfig.ValidationGroup = "CantidadReferencia";
                     txtDias.Enabled = true;
                     lblArchivosInternos.Visible = true;
-                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    try
+                    {
+                        Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio, Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    }
+                    catch (Exception ex)
+                    {
+                        App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                    }
+
+
                     GenerarTablaReferenciasAConciliarArchivos();
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
@@ -1142,11 +1159,20 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         try
         {
             listCamposExternos = Conciliacion.RunTime.App.Consultas.ConsultaDestinoExterno(tipoConciliacion);
-            this.ddlCampoExterno.DataSource = listCamposExternos;
-            this.ddlCampoExterno.DataValueField = "Identificador";
-            this.ddlCampoExterno.DataTextField = "Descripcion";
-            this.ddlCampoExterno.DataBind();
-            this.ddlCampoExterno.Dispose();
+
+            if (listCamposExternos.Count > 0)
+            {
+
+                this.ddlCampoExterno.DataSource = listCamposExternos;
+                this.ddlCampoExterno.DataValueField = "Identificador";
+                this.ddlCampoExterno.DataTextField = "Descripcion";
+                this.ddlCampoExterno.DataBind();
+                this.ddlCampoExterno.Dispose();
+            }
+            else
+            {
+                throw new Exception("No existe configuración para los campos de referencia");
+            }
         }
         catch (SqlException ex)
         {
