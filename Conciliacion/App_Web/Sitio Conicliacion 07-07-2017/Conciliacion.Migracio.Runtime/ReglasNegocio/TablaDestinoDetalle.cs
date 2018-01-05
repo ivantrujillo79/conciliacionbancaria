@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Conciliacion.Migracion.Runtime.SqlDatos;
+using Conciliacion.RunTime.DatosSQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -68,7 +70,6 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                 return App.Consultas.ObtieneCorporativoPorId(this.IdCorporativo);
             }
         }
-
 
         public int IdSucursal
         {
@@ -328,7 +329,12 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
         public void ActualizarClientePago()
         {
+            App.Consultas.ActualizarClientePago(this);
+        }
 
+        public int ExisteClientePago()
+        {
+            return App.Consultas.ExisteClientePago(this);
         }
 
     }
