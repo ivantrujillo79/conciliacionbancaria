@@ -389,6 +389,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 MostrarPopUp_ConciliacionManual();
 
+                //ActualizarClientePago();
+
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblGridAP.Text = "PEDIDOS ";
@@ -479,8 +481,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
     /// <summary>
-    /// Método para actualizar propiedades del web user control
-    /// "wucCargaExcelCyC"
+    /// Actualiza las propiedades del web user control "wucCargaExcelCyC"
     /// </summary>
     private void ActualizarDatos_wucCargaExcel()
     {
@@ -504,12 +505,31 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
     /// <summary>
+    /// Actualiza las propiedades del web user control "wucClientePago"
+    /// </summary>
+    private void ActualizarDatos_ClientePago()
+    {
+        if (grvAgregadosPedidos.Rows.Count > 0)
+        {
+            List<int> listaClientes = new List<int>();
+            int cliente = 0;
+
+            foreach (GridViewRow row in grvAgregadosPedidos.Rows)
+            {
+                cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
+                listaClientes.Add(cliente);
+            }
+            wucClientePago.Clientes = listaClientes;
+        }
+    }
+
+    /// <summary>
     /// Asigna propiedades del web user control "wucClientePago"
     /// </summary>
     private void CargarConfiguracion_wucClientePago()
     {
-        List<int> ListClientes = new List<int> { 123, 456, 789, 012, 345 };
-        wucClientePago.Clientes = ListClientes;
+        //List<int> ListClientes = new List<int> { 123, 456, 789, 012, 345 };
+        //wucClientePago.Clientes = ListClientes;
         wucClientePago.ControlContenedor = mpeClientePago;
     }
 
@@ -539,6 +559,23 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 imgCargar.Visible = true;
             }
+        }
+    }
+
+    private void ActualizarClientePago()
+    {
+        try
+        {
+            if (hdfClientePagoAceptar.Value == "1")
+            {
+                Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle tdd = Conciliacion.Migracion.Runtime.App.TablaDestinoDetalle;
+                tdd.ClientePago = int.Parse(wucClientePago.ClienteSeleccionado);
+                tdd.ActualizarClientePago();
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
         }
     }
 
@@ -1624,8 +1661,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
 
             ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
-                
-            
+
+            ActualizarDatos_ClientePago();
+
 
             if (ListaVerificacionRemanente.Count != 0)
             {
@@ -1697,19 +1735,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                             MostrarClientePago(objSolicitdConciliacion.ConsultaPedido());
 
-                            if (lblAbono.Text.Trim() != "")
-                            {
-                                decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
-                                if (SaldoAFavor > 0)
-                                {
-                                    /*ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
-                                    if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
-                                    {
-                                        //mpeSaldosAFavor.Show(); 
-                                    }*/
+                            //if (lblAbono.Text.Trim() != "")
+                            //{
+                            //    decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
+                            //    if (SaldoAFavor > 0)
+                            //    {
+                            //        /*ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
+                            //        if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
+                            //        {
+                            //            //mpeSaldosAFavor.Show(); 
+                            //        }*/
                                     
-                                }
-                            }
+                            //    }
+                            //}
 
                             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                                 "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
@@ -1744,6 +1782,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 decimal resto = decimal.Parse(lblAbono.Text, NumberStyles.Currency);
                 if (resto > minSaldoAFavor)
                 {
+                    wucClientePago.CargarGrid();
                     mpeClientePago.Show();
                 }
             }

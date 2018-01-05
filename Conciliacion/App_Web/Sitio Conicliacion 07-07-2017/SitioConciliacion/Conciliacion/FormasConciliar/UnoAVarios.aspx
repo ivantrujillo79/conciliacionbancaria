@@ -89,6 +89,11 @@
         function btnConciliadorPagareCancelar_Click() {
             OcultarPopUpConciliarPagares();
         }
+
+        /*              Botones del control wucClientePago         */
+        function btnClientePagoAceptar_Click() {
+            $("#<%= hdfClientePagoAceptar.ClientID %>").val("1");
+        }
         
         function activarDatePickers() {
             //DataPicker Rango-Fechas 
@@ -1242,7 +1247,8 @@
                             <asp:GridView ID="grvAgregadosPedidos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging="False" ShowHeader="False" Width="100%" CssClass="grvResultadoConsultaCss"
                                 PageSize="10" OnRowDataBound="grvAgregadosPedidos_RowDataBound" ShowHeaderWhenEmpty="False"
-                                ShowFooter="False" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnRowCreated="grvAgregadosPedidos_RowCreated">
+                                ShowFooter="False" DataKeyNames="Celula,Pedido,AñoPed,Cliente" 
+                                OnRowCreated="grvAgregadosPedidos_RowCreated" ViewStateMode="Enabled">
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
                                     <asp:TemplateField>
@@ -2515,6 +2521,7 @@
     <!--        FIN POPUP CONCILIAR PAGARES     -->
 
     <!--        INICIO DE POPUP CLIENTE PAGO     -->
+    <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" />
     <asp:HiddenField runat="server" ID="hdfClientePago" />
     <asp:ModalPopupExtender ID="mpeClientePago" runat="server" BackgroundCssClass="ModalBackground"
         DropShadow="False" PopupControlID="pnlClientePago" TargetControlID="hdfClientePago"

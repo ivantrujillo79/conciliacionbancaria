@@ -75,7 +75,7 @@
                 </div>
 
                 <asp:Button ID="btnAceptar" runat="server"
-                    CssClass="boton bg-color-azulOscuro fg-color-blanco"
+                    CssClass="boton bg-color-azulOscuro fg-color-blanco" OnClientClick="btnClientePagoAceptar_Click();"
                     Text="ACEPTAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnAceptar_Click"/>
                 
                 <asp:Button ID="btnCancelar" runat="server"
