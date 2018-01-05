@@ -1614,8 +1614,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
                 
-            
-
             if (ListaVerificacionRemanente.Count != 0)
             {
                 //Se interrumpe el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
@@ -1684,19 +1682,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             GenerarTablaConciliados();
                             LlenaGridViewConciliadas();
 
-                            if (lblAbono.Text.Trim() != "")
+                            /*if (lblAbono.Text.Trim() != "")
                             {
                                 decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
                                 if (SaldoAFavor > 0)
                                 {
-                                    /*ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
+                                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
                                     if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
                                     {
                                         //mpeSaldosAFavor.Show(); 
-                                    }*/
+                                    }
                                     
                                 }
-                            }
+                            }*/
 
                             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                                 "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);

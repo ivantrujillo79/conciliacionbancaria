@@ -12,7 +12,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public List<DetalleVerificadorRemanente> VerificarRemanentePedidos(DataTable dtPedidos, decimal MontoRemanente, byte Opcion)
         {
             List<DetalleVerificadorRemanente> ListaRetorno = new List<DetalleVerificadorRemanente>();
-
             foreach (DataRow drPedido in dtPedidos.Rows)
             {
                 string PedidoReferencia = "";
@@ -27,7 +26,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     PedidoReferencia = drPedido[0].ToString();
                     TotalPedido = Convert.ToDecimal(drPedido[5]);
                 }
-
                 if (MontoRemanente >= TotalPedido)
                 {
                     DetalleVerificadorRemanente objValidacion = new DetalleVerificadorRemanente
@@ -38,7 +36,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     ListaRetorno.Add(objValidacion);
                 }
             }
-
             return ListaRetorno;
         }
 
