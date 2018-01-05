@@ -52,8 +52,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string foliofactura;
         int factura;
 
+        DetalleSaldoAFavor DetalleSaldo;
+
         //private List<ReferenciaConciliadaPedido> listareferenciaconciliadapedido = new List<ReferenciaConciliadaPedido>();
-        
+
         #region Constructores
 
         public ReferenciaNoConciliadaPedido(int corporativo, int sucursal, string sucursaldes, int año,int folioconciliacion,
@@ -139,8 +141,50 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //    this.diferencia = diferencia;
         //}
 
+        public ReferenciaNoConciliadaPedido(int corporativo, int sucursal, string sucursaldes, int año, int folioconciliacion,
+            short mesconciliacion, int celulapedido, int añopedido, int pedido, string pedidoreferencia, int cliente, string nombre, int remisionpedido, string seriepedido,
+            int foliosat, string seriesat, string concepto, decimal total, short formaconciliacion, short statusconcepto,
+                string statusconciliacion, DateTime foperacion, DateTime fmovimiento,
+            decimal diferencia, DetalleSaldoAFavor DetalleSaldo, IMensajesImplementacion implementadorMensajes)
+        {
+            this.ImplementadorMensajes = implementadorMensajes;
 
-      
+            this.folioconciliacion = folioconciliacion;
+            this.mesconciliacion = mesconciliacion;
+
+            this.corporativo = corporativo;
+            this.sucursal = sucursal;
+            this.sucursaldes = sucursaldes;
+            this.celulapedido = celulapedido;
+            this.añopedido = añopedido;
+            this.pedido = pedido;
+            this.pedidoreferencia = pedidoreferencia;
+            this.cliente = cliente;
+            this.nombre = nombre;
+            this.remisionpedido = remisionpedido;
+            this.seriepedido = seriepedido;
+            this.foliosat = foliosat;
+            this.seriesat = seriesat;
+
+            this.concepto = concepto;
+            this.total = total;
+            //this.deposito = 0;
+            //this.retiro = 0;
+            this.formaconciliacion = formaconciliacion;
+            this.statusconcepto = statusconcepto;
+            this.statusconciliacion = statusconciliacion;
+
+            this.foperacion = foperacion;
+            this.fmovimiento = fmovimiento;
+
+            this.completo = false;
+
+            this.diferencia = diferencia;
+            this.selecciona = true;
+
+            this.DetalleSaldo = DetalleSaldo;
+        }
+
         public ReferenciaNoConciliadaPedido(IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;

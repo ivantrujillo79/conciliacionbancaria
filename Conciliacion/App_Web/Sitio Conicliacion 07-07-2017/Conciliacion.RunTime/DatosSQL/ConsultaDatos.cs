@@ -3995,7 +3995,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["RFCTercero"]),
                                                                 sucursalconciliacion, Convert.ToString(reader["Tipo"]),
                                                                 Convert.ToString(reader["UbicacionIcono"]),
-                                                                Convert.ToInt16(reader["Año"]), 1,
+                                                                Convert.ToInt16(reader["Año"]), 1, null,
                                                                 this.implementadorMensajes);
                             datos.Add(dato);
                         }
@@ -4035,7 +4035,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["RFCTercero"]),
                                                                 sucursalconciliacion, Convert.ToString(reader["Tipo"]),
                                                                 Convert.ToString(reader["UbicacionIcono"]),
-                                                                Convert.ToInt16(reader["Año"]), 1,
+                                                                Convert.ToInt16(reader["Año"]), 1, null,
                                                                 this.implementadorMensajes);
                             datos.Add(dato);
                         }
@@ -5580,9 +5580,9 @@ namespace Conciliacion.RunTime.DatosSQL
                             Convert.ToInt16(reader["Año"]),
                             Convert.ToInt16(reader["Folio"]),
                             Convert.ToInt16(reader["Secuencia"])),
-
+                            null,
                                 this.ImplementadorMensajes
-
+                                
                             );
                         datos.Add(dato);
                     }

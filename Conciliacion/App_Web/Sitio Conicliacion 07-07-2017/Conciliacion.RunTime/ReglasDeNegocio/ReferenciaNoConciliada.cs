@@ -6,6 +6,13 @@ using System.Text;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
+
+    public struct DetalleSaldoConciliacion
+    {
+        int Cliente;
+        decimal MontoSaldoAFavor;
+    }
+
     public abstract class ReferenciaNoConciliada : EmisorMensajes
     {
         int corporativo;
@@ -67,12 +74,18 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int? foliotraspaso;
 
         public int cliente = 1;
-        
 
+        public DetalleSaldoAFavor DetalleSaldo;
+        
         private List<cReferencia> listareferenciaconciliada = new List<cReferencia>();
         private List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida = new List<ReferenciaConciliadaCompartida>();
         private string statusMovimiento;
         private int pedido;
+        private int corporativoex;
+        private int sucursalex;
+        private int añoex;
+        private int folioex;
+        private int secuenciaex;
         #region Constructores
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -121,6 +134,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = sucursalconciliacion;
 
             this.selecciona = true;
+
         }
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -170,6 +184,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.statusMovimiento = statusMovimiento;
 
             this.selecciona = true;
+
         }
 
 
@@ -220,6 +235,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = sucursalconciliacion;
 
             this.selecciona = true;
+            
         }
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -268,6 +284,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = sucursalconciliacion;
 
             this.selecciona = true;
+            
         }
 
 
@@ -276,7 +293,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
            short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
             short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
             string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string ubicacionicono,
-            int año, IMensajesImplementacion implementadorMensajes)
+            int año, DetalleSaldoAFavor DetalleSaldo, IMensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -317,6 +334,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = sucursalconciliacion;
 
             this.selecciona = true;
+
+            this.DetalleSaldo = DetalleSaldo;
         }
 
         //************************ NUEVO CONSTRUCTOR CONCILIACION COMPARTIDA***********************************************
@@ -404,6 +423,45 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = 0;
 
             this.selecciona = false;
+
+            this.DetalleSaldo = null;
+        }
+
+        public ReferenciaNoConciliada(int corporativo, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativoex, int sucursalex, int añoex, int folioex, int secuenciaex, int consecutivoflujo, bool coninterno, short statusconcepto, string statusconciliacion, string ubicacionicono, DateTime foperacion, DateTime fmovimiento, string referencia, string descripcion, decimal deposito, decimal retiro, decimal saldo, int caja, string sucursalbancaria, string tipotraspaso, decimal? montotraspaso, int? corporativotraspaso, int? sucursaltraspaso, int? añotraspaso, int? foliotraspaso, List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida, DetalleSaldoAFavor detalleSaldo, IMensajesImplementacion implementadorMensajes)
+        {
+            this.corporativo = corporativo;
+            this.sucursalconciliacion = sucursalconciliacion;
+            this.añoconciliacion = añoconciliacion;
+            this.mesconciliacion = mesconciliacion;
+            this.folioconciliacion = folioconciliacion;
+            this.corporativoex = corporativoex;
+            this.sucursalex = sucursalex;
+            this.añoex = añoex;
+            this.folioex = folioex;
+            this.secuenciaex = secuenciaex;
+            this.consecutivoflujo = consecutivoflujo;
+            this.coninterno = coninterno;
+            this.statusconcepto = statusconcepto;
+            this.statusconciliacion = statusconciliacion;
+            this.ubicacionicono = ubicacionicono;
+            this.foperacion = foperacion;
+            this.fmovimiento = fmovimiento;
+            this.referencia = referencia;
+            this.descripcion = descripcion;
+            this.deposito = deposito;
+            this.retiro = retiro;
+            this.saldo = saldo;
+            this.caja = caja;
+            this.sucursalbancaria = sucursalbancaria;
+            this.tipotraspaso = tipotraspaso;
+            this.montotraspaso = montotraspaso;
+            this.corporativotraspaso = corporativotraspaso;
+            this.sucursaltraspaso = sucursaltraspaso;
+            this.añotraspaso = añotraspaso;
+            this.foliotraspaso = foliotraspaso;
+            this.listareferenciaconciliadacompartida = listareferenciaconciliadacompartida;
+            DetalleSaldo = detalleSaldo;
+            this.implementadorMensajes = implementadorMensajes;
         }
 
         #endregion
