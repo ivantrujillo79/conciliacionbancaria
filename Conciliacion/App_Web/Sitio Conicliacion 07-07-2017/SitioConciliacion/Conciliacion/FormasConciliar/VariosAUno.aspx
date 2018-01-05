@@ -774,7 +774,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width: 595px; height:370px; overflow:auto;">
+                        <div style="width:595px; height:370px; overflow:auto;">
                             <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
@@ -1054,8 +1054,9 @@
                             <asp:Label ID="lblEspera" Text="...ESPERANDO SELECCIÓN DE EXTERNOS..." runat="server"
                                 CssClass="etiqueta"></asp:Label>
                         </div>
-                        <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                            AllowPaging="True" PageSize="100" CssClass="grvResultadoConsultaCss" AllowSorting="True"
+                        <div style="overflow:auto;">
+                            <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                            AllowPaging="False" PageSize="100" CssClass="grvResultadoConsultaCss" AllowSorting="True"
                             OnRowDataBound="grvInternos_RowDataBound" ShowHeaderWhenEmpty="True" ShowFooter="False"
                             Width="100%" DataKeyNames="Secuencia, Folio, Sucursal" OnRowCreated="grvInternos_RowCreated"
                             OnSorting="grvInternos_Sorting" OnDataBound="grvInternos_DataBound" OnPageIndexChanging="grvInternos_PageIndexChanging">
@@ -1179,6 +1180,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnSorting="grvPedidos_Sorting"

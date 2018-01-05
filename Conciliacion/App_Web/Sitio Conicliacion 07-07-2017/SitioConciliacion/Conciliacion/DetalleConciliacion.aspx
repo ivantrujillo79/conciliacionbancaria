@@ -20,7 +20,7 @@
     <script type="text/javascript">
         function pageLoad() 
         {
-            gridviewScroll();
+            //gridviewScroll();
             activarDatePickers();
         }
 
@@ -485,7 +485,8 @@
                 </tr>
                 <tr style="width: 100%">
                     <td colspan="2">
-                        <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" AllowPaging="True"
+                        <div style="width:1200px; height:200px; overflow:auto;">
+                            <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" AllowPaging="False"
                             PageSize="100" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             OnRowDataBound="grvConciliadas_RowDataBound" DataKeyNames="CorporativoConciliacion, SucursalConciliacion, AñoConciliacion, MesConciliacion, FolioConciliacion, Folio, Secuencia,Tipo"
                             OnSelectedIndexChanging="grvConciliadas_SelectedIndexChanging" OnRowCreated="grvConciliadas_RowCreated"
@@ -527,8 +528,8 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Style="display: none" Text='<%# Bind("StatusConciliacion") %>'></asp:Label>
                                         <asp:Image ID="imgStatusConciliacion" runat="server" AlternateText='<%# Bind("StatusConciliacion") %>'
-                                            CssClass="icono bg-color-blanco centradoMedio" Height="15px" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            ToolTip='<%# Bind("StatusConciliacion") %>' Width="15px" />
+                                            CssClass="icono bg-color-blanco centradoMedio" Height="25px" ImageUrl='<%# Bind("UbicacionIcono") %>'
+                                            ToolTip='<%# Bind("StatusConciliacion") %>' Width="25px" />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
                                     <HeaderStyle HorizontalAlign="Center" />
@@ -610,6 +611,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -680,10 +682,11 @@
                                 </tr>
                             </table>
                         </div>
-                        <asp:GridView ID="grvExternos" runat="server" AllowSorting="True" AutoGenerateColumns="False"
+                        <div style="width: 595px; height: 340px; overflow: auto;">
+                            <asp:GridView ID="grvExternos" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                             CssClass="grvResultadoConsultaCss" DataKeyNames="Secuencia,Folio" OnRowCreated="grvExternos_RowCreated"
                             OnRowDataBound="grvExternos_RowDataBound" OnSorting="grvExternos_Sorting" PageSize="100"
-                            ShowHeaderWhenEmpty="True" Width="100%" AllowPaging="True" OnPageIndexChanging="grvExternos_PageIndexChanging">
+                            ShowHeaderWhenEmpty="True" Width="100%" AllowPaging="False" OnPageIndexChanging="grvExternos_PageIndexChanging">
                             <%--<EmptyDataTemplate>
                         <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
                             Text="No se encontraron referencias externas."></asp:Label>
@@ -716,8 +719,8 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Style="display: none" Text='<%# Bind("StatusConciliacion") %>'></asp:Label>
                                         <asp:Image ID="imgStatusConciliacion" runat="server" AlternateText='<%# Bind("StatusConciliacion") %>'
-                                            CssClass="icono border-color-grisOscuro centradoMedio" Height="15px" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            ToolTip='<%# Bind("StatusConciliacion") %>' Width="15px" />
+                                            CssClass="icono border-color-grisOscuro centradoMedio" Height="25px" ImageUrl='<%# Bind("UbicacionIcono") %>'
+                                            ToolTip='<%# Bind("StatusConciliacion") %>' Width="25px" />
                                     </ItemTemplate>
                                     <ItemStyle BackColor="#ebecec" HorizontalAlign="Center" />
                                     <HeaderStyle HorizontalAlign="Center" />
@@ -794,6 +797,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
                     </td>
@@ -819,8 +823,8 @@
                                     </td>
                                     <td rowspan="2" style="vertical-align: top; width: 12%;">
                                         <asp:ImageButton ID="btnRangoFechasFO" runat="server" CssClass="icono bg-color-azulClaro"
-                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" Height="16px"
-                                            Width="16px" OnClick="btnRangoFechasFO_Click" ValidationGroup="vgFOperacion"
+                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" Height="25px"
+                                            Width="25px" OnClick="btnRangoFechasFO_Click" ValidationGroup="vgFOperacion"
                                             ToolTip="FILTRAR FOperacion"></asp:ImageButton>
                                         <asp:ImageButton ID="btnRangoFechasFS" runat="server" CssClass="icono bg-color-azulClaro"
                                             ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" Height="16px"
@@ -842,8 +846,8 @@
                                     </td>
                                     <td rowspan="2" style="vertical-align: top; width: 10%;">
                                         <asp:ImageButton ID="btnRangoFechasFM" runat="server" CssClass="icono bg-color-azulClaro"
-                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" Height="16px"
-                                            Width="16px" ValidationGroup="vgFMovimiento" OnClick="btnRangoFechasFM_Click"
+                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png" Height="25px"
+                                            Width="25px" ValidationGroup="vgFMovimiento" OnClick="btnRangoFechasFM_Click"
                                             ToolTip="FILTRAR FMovimiento"></asp:ImageButton>
                                     </td>
                                     <td class="centradoDerecha" rowspan="2" style="vertical-align: top; width: 10%;">
@@ -885,7 +889,8 @@
                         </div>
                         <asp:HiddenField ID="hfInternosSV" runat="server" />
                         <asp:HiddenField ID="hfInternosSH" runat="server" />
-                        <asp:GridView ID="grvInternos" runat="server" AllowPaging="True" AllowSorting="True"
+                        <div style="width: 595px; height: 340px; overflow:auto;">
+                            <asp:GridView ID="grvInternos" runat="server" AllowPaging="False" AllowSorting="True"
                             AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" DataKeyNames="Secuencia, Folio"
                             OnPageIndexChanging="grvInternos_PageIndexChanging" OnRowCreated="grvInternos_RowCreated"
                             OnRowDataBound="grvInternos_RowDataBound" OnSorting="grvInternos_Sorting" PageSize="100"
@@ -913,8 +918,8 @@
                                     <ItemTemplate>
                                         <asp:Label ID="lblStatusConciliacion" runat="server" Style="display: none" Text='<%# Bind("StatusConciliacion") %>'></asp:Label>
                                         <asp:Image ID="imgStatusConciliacion" runat="server" AlternateText='<%# Bind("StatusConciliacion") %>'
-                                            CssClass="icono border-color-grisOscuro centradoMedio" Height="15px" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            ToolTip='<%# Bind("StatusConciliacion") %>' Width="15px" />
+                                            CssClass="icono border-color-grisOscuro centradoMedio" Height="25px" ImageUrl='<%# Bind("UbicacionIcono") %>'
+                                            ToolTip='<%# Bind("StatusConciliacion") %>' Width="25px" />
                                     </ItemTemplate>
                                     <ControlStyle />
                                     <ItemStyle BackColor="#ebecec" HorizontalAlign="Center" />
@@ -999,7 +1004,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
-
+                        </div>
                         <!--    POPUP CARGA ARCHIVO    -->
                         <%-- 
                         <asp:HiddenField runat="server" ID="hdfCargaArchivo" />
@@ -1103,10 +1108,10 @@
                         </asp:Panel>
                         --%>
                         <!--    FIN POPUP CARGA ARCHIVO    -->
-
-                        <asp:GridView ID="grvPedidos" runat="server" AllowSorting="True" AutoGenerateColumns="False"
+                        <div style="overflow: auto;">
+                            <asp:GridView ID="grvPedidos" runat="server" AllowSorting="True" AutoGenerateColumns="False"
                             CssClass="grvResultadoConsultaCss" DataKeyNames="Celula,Pedido,AñoPed,Cliente"
-                            AllowPaging="True" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging"
+                            AllowPaging="False" PageSize="200" OnPageIndexChanging="grvPedidos_PageIndexChanging"
                             OnRowCreated="grvPedidos_RowCreated" OnSorting="grvPedidos_Sorting" ShowHeader="True"
                             ShowHeaderWhenEmpty="True" Width="100%">
                             <%-- <EmptyDataTemplate>
@@ -1181,6 +1186,7 @@
                             </Columns>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
+                        </div>
                     </td>
                 </tr>
             </table>
