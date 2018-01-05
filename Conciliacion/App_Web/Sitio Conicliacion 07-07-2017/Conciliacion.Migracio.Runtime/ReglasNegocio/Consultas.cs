@@ -121,6 +121,10 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
         public abstract bool GuardaListaTablaDestinoDetalle(TablaDestino table);
 
+        public abstract void ActualizarClientePago(TablaDestinoDetalle TablaDestinoDetalle);
+
+        public abstract int ExisteClientePago(TablaDestinoDetalle tablaDestinoDetalle);
+
         #endregion
 
         #region TablaDestino
@@ -205,5 +209,6 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             }
 
         }
+
     }
 }

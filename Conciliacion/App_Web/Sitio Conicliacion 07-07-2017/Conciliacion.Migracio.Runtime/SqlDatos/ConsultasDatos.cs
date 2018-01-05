@@ -262,10 +262,67 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
             return detalles;
         }
 
+        public override void ActualizarClientePago(TablaDestinoDetalle TablaDestinoDetalle)
+        {
+            using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
+            {
+                cnn.Open();
+                try
+                {
+                    TablaDestinoDetalleDatos tabladestinodetalle = new TablaDestinoDetalleDatos();
+                    tabladestinodetalle.Anio = TablaDestinoDetalle.Anio;
+                    tabladestinodetalle.IdCorporativo = TablaDestinoDetalle.IdCorporativo;
+                    tabladestinodetalle.IdSucursal = TablaDestinoDetalle.IdSucursal;
+                    tabladestinodetalle.Folio = TablaDestinoDetalle.Folio;
+                    tabladestinodetalle.Secuencia = TablaDestinoDetalle.Secuencia;
+                    tabladestinodetalle.ClientePago = TablaDestinoDetalle.ClientePago;
+
+                    tabladestinodetalle.ActualizarClientePago(cnn);
+
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    //#if (TestProyect)
+                    this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    //#else
+                    stackTrace = null;
+                    //#endif
+                }
+            }
+        }
+
+        public override int ExisteClientePago(TablaDestinoDetalle TablaDestinoDetalle)
+        {
+            int resultado = 0;
+            using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
+            {
+                cnn.Open();
+                try
+                {
+                    TablaDestinoDetalleDatos tabladestinodetalle = new TablaDestinoDetalleDatos();
+                    tabladestinodetalle.Anio = TablaDestinoDetalle.Anio;
+                    tabladestinodetalle.IdCorporativo = TablaDestinoDetalle.IdCorporativo;
+                    tabladestinodetalle.IdSucursal = TablaDestinoDetalle.IdSucursal;
+                    tabladestinodetalle.Folio = TablaDestinoDetalle.Folio;
+                    tabladestinodetalle.Secuencia = TablaDestinoDetalle.Secuencia;
+                    tabladestinodetalle.ClientePago = TablaDestinoDetalle.ClientePago;
+
+                    resultado = tabladestinodetalle.ExisteClientePago(cnn);
+
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+            }
+            return resultado;
+        }
+
         public override bool GuardaListaTablaDestinoDetalle(TablaDestino tabla)
         {
-
-
             bool resultado = false;
             int secuencia = 1;
 
@@ -982,7 +1039,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
             return lista;
         }
 
-        #region Etiqueta
+#region Etiqueta
 
         public override Etiqueta ObtieneEtiquetaPorId(int id)
         {
@@ -1188,10 +1245,10 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
 
         }
 
-        #endregion
+#endregion
 
 
-        #region FuenteInformacionDetalleEtiqueta
+#region FuenteInformacionDetalleEtiqueta
 
         public override FuenteInformacionDetalleEtiqueta ObtieneFuenteInformacionDetalleEtiquetaPorId(string cuentaBancoFinanciero,
         int idBancoFinanciero,
@@ -1310,10 +1367,10 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         }
 
 
-        #endregion
+#endregion
 
 
-        #region TipoDato
+#region TipoDato
 
 
         public override List<TipoDato> ObtieneListaTipoDato()
@@ -1346,7 +1403,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
 
         }
 
-        #endregion
+#endregion
 
 
         public override int VerificarArchivo(int corporativo, int sucursal, int anio, string cuentaBancoFinanciero, int tipoFuenteInformacion, int frecuencia, DateTime fechaInicial, DateTime fFinal)
