@@ -609,7 +609,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             rvDias.MaximumValue = DiferenciaDiasMaxima;
             rvDias.MinimumValue = DiferenciaDiasMinima;
-            rvDias.ErrorMessage = "[Dias entre " + DiferenciaDiasMinima + " - " + DiferenciaDiasMaxima + "]";
+            rvDias.ErrorMessage = "[Días entre " + DiferenciaDiasMinima + " - " + DiferenciaDiasMaxima + "]";
 
             rvDiferencia.MaximumValue = DiferenciaCentavosMaxima;
             rvDiferencia.MinimumValue = DiferenciaCentavosMinima;
