@@ -4278,32 +4278,68 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            DataTable dt = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
-            DataView dv = new DataView(dt);
-
-            string SearchExpression = String.Empty;
-            if (!(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
-                SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
-                    txtFOTermino.Text);
-            if (dv.Count <= 0)
+            if(((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
             {
-                statusFiltro = false;
-                Session["StatusFiltro"] = statusFiltro;
-                tipoFiltro = String.Empty;
-                Session["TipoFiltro"] = tipoFiltro;
-                return;
+                DataTable dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                DataView dv = new DataView(dt);
+
+                string SearchExpression = String.Empty;
+
+                if (!(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
+                { 
+                    SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
+                        txtFOTermino.Text);
+
+                    int a; int m; int d;
+                    a = Convert.ToDateTime(txtFOInicio.Text).Year;
+                    m = Convert.ToDateTime(txtFOInicio.Text).Month;
+                    d = Convert.ToDateTime(txtFOInicio.Text).Day;
+                    string Desde = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion >= #{0}#", new DateTime(a, m, d, 0, 0, 1));
+                    a = Convert.ToDateTime(txtFOTermino.Text).Year;
+                    m = Convert.ToDateTime(txtFOTermino.Text).Month;
+                    d = Convert.ToDateTime(txtFOTermino.Text).Day;
+                    string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
+                    dv.RowFilter = Desde + " and " + Hasta;
+
+                    grvPedidos.DataSource = dv.ToTable();
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
+
+                }
+                else
+                {
+                    grvPedidos.DataSource = dt;
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
+                }
             }
+            else
+            { 
+                DataTable dt = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+                DataView dv = new DataView(dt);
 
-            dv.RowFilter = SearchExpression;
-            HttpContext.Current.Session["TAB_INTERNOS_AX"] = dv.ToTable();
-            grvInternos.DataSource = HttpContext.Current.Session["TAB_INTERNOS_AX"] as DataTable;
-            grvInternos.DataBind();
-            statusFiltro = true;
-            Session["StatusFiltro"] = statusFiltro;
-            tipoFiltro = "FO";
-            Session["TipoFiltro"] = tipoFiltro;
-          
+                string SearchExpression = String.Empty;
+                if (!(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
+                    SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
+                        txtFOTermino.Text);
+                if (dv.Count <= 0)
+                {
+                    statusFiltro = false;
+                    Session["StatusFiltro"] = statusFiltro;
+                    tipoFiltro = String.Empty;
+                    Session["TipoFiltro"] = tipoFiltro;
+                    //return;
+                }
 
+                dv.RowFilter = SearchExpression;
+                HttpContext.Current.Session["TAB_INTERNOS_AX"] = dv.ToTable();
+                grvInternos.DataSource = HttpContext.Current.Session["TAB_INTERNOS_AX"] as DataTable;
+                grvInternos.DataBind();
+                statusFiltro = true;
+                Session["StatusFiltro"] = statusFiltro;
+                tipoFiltro = "FO";
+                Session["TipoFiltro"] = tipoFiltro;
+            }
         }
         catch (Exception ex)
         {
@@ -4323,31 +4359,41 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            DataTable dt = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
-            DataView dv = new DataView(dt);
+            if (((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
+            {
+                DataTable dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                grvPedidos.DataSource = dt;
+                grvPedidos.DataBind();
+                grvPedidos.DataBind();
+            }
+            else
+            {
+                DataTable dt = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                DataView dv = new DataView(dt);
 
-            string SearchExpression = String.Empty;
-            if (!(String.IsNullOrEmpty(txtFMInicio.Text) || String.IsNullOrEmpty(txtFMTermino.Text)))
-            {
-                SearchExpression = string.Format("FMovimiento >= '{0}' AND FMovimiento <= '{1}'", txtFMInicio.Text,
-                    txtFMTermino.Text);
-            }
-            if (dv.Count <= 0)
-            {
-                statusFiltro = false;
+                string SearchExpression = String.Empty;
+                if (!(String.IsNullOrEmpty(txtFMInicio.Text) || String.IsNullOrEmpty(txtFMTermino.Text)))
+                {
+                    SearchExpression = string.Format("FMovimiento >= '{0}' AND FMovimiento <= '{1}'", txtFMInicio.Text,
+                        txtFMTermino.Text);
+                }
+                if (dv.Count <= 0)
+                {
+                    statusFiltro = false;
+                    Session["StatusFiltro"] = statusFiltro;
+                    tipoFiltro = String.Empty;
+                    Session["TipoFiltro"] = tipoFiltro;
+                    return;
+                }
+                dv.RowFilter = SearchExpression;
+                HttpContext.Current.Session["TAB_INTERNOS_AX"] = dv.ToTable();
+                grvInternos.DataSource = HttpContext.Current.Session["TAB_INTERNOS_AX"] as DataTable;
+                grvInternos.DataBind();
+                statusFiltro = true;
                 Session["StatusFiltro"] = statusFiltro;
-                tipoFiltro = String.Empty;
+                tipoFiltro = "FM";
                 Session["TipoFiltro"] = tipoFiltro;
-                return;
             }
-            dv.RowFilter = SearchExpression;
-            HttpContext.Current.Session["TAB_INTERNOS_AX"] = dv.ToTable();
-            grvInternos.DataSource = HttpContext.Current.Session["TAB_INTERNOS_AX"] as DataTable;
-            grvInternos.DataBind();
-            statusFiltro = true;
-            Session["StatusFiltro"] = statusFiltro;
-            tipoFiltro = "FM";
-            Session["TipoFiltro"] = tipoFiltro;
         }
         catch (Exception ex)
         {
