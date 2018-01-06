@@ -899,6 +899,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             decimal dAbono      = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
             decimal dAcumulado  = Decimal.Round(MontoConciliado, 2);
             decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
+            dResto = (dResto <= 0 ? 0 : dResto);
 
             //lblMontoAcumuladoInterno.Text = Decimal.Round(MontoConciliado, 2).ToString("C2");
             //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
@@ -1430,6 +1431,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
                     decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
+                    dResto = (dResto <= 0 ? 0 : dResto);
 
                     //lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
                     //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
@@ -1445,6 +1447,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
                     decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
+                    dResto = (dResto <= 0 ? 0 : dResto);
 
                     //lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoPedido, 2).ToString("C2");
                     //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
