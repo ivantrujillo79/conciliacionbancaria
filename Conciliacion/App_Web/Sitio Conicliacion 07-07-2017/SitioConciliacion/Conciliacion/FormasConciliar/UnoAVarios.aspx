@@ -7,6 +7,7 @@
 <%@ Register Src="~/ControlesUsuario/SaldosAFavor/wucSaldoAFavor.ascx" TagPrefix="uc1" TagName="wucSaldoAFavor" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
 <%@ Register Src="~/ControlesUsuario/ConciliadorPagare/wucConciliadorPagare.ascx" TagPrefix="uc1" TagName="wucConciliadorPagare" %>
+<%@ Register Src="~/ControlesUsuario/ClientePago/wucClientePago.ascx" TagPrefix="uc1" TagName="wucClientePago" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
@@ -58,6 +59,10 @@
             $find("mpeConciliarPagares").hide();
         }
 
+        function OcultarPopUpClientePago() {
+            $find("ModalBehaviorClientePago").hide();
+        }
+        
         function popUpVisible() {
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("1");
         }
@@ -83,6 +88,11 @@
         /*              Botones del control wucConciliadorPagare         */
         function btnConciliadorPagareCancelar_Click() {
             OcultarPopUpConciliarPagares();
+        }
+
+        /*              Botones del control wucClientePago         */
+        function btnClientePagoAceptar_Click() {
+            $("#<%= hdfClientePagoAceptar.ClientID %>").val("1");
         }
         
         function activarDatePickers() {
@@ -1225,9 +1235,6 @@
                                 <td class="etiqueta lineaVertical centradoMedio bg-color-purpura fg-color-blanco" style="width: 15%; padding: 5px 5px 5px 5px">
                                     <asp:Label runat="server" ID="lblResto" Text="$ 0.00"></asp:Label>
                                 </td>
-
-
-
                                 <td class="etiqueta centradoMedio" style="width: 15%;">
                                     <asp:Button runat="server" ID="btnGuardarUnoAVarios" CssClass="boton bg-color-azulOscuro fg-color-blanco"
                                         Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarUnoAVarios_Click" />
@@ -1240,7 +1247,8 @@
                             <asp:GridView ID="grvAgregadosPedidos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging="False" ShowHeader="False" Width="100%" CssClass="grvResultadoConsultaCss"
                                 PageSize="10" OnRowDataBound="grvAgregadosPedidos_RowDataBound" ShowHeaderWhenEmpty="False"
-                                ShowFooter="False" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnRowCreated="grvAgregadosPedidos_RowCreated">
+                                ShowFooter="False" DataKeyNames="Celula,Pedido,AñoPed,Cliente" 
+                                OnRowCreated="grvAgregadosPedidos_RowCreated" ViewStateMode="Enabled">
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
                                     <asp:TemplateField>
@@ -2502,7 +2510,6 @@
                     </tr>
                     <tr>
                         <td>
-                            <%--<asp:Label runat="server" ID="MyLabel" Text="Hola Mundo!"/>--%>
                             <uc1:wucConciliadorPagare ID="wucConciliadorPagare" runat="server" />
                         </td>
                     </tr>
@@ -2512,6 +2519,43 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CONCILIAR PAGARES     -->
+
+    <!--        INICIO DE POPUP CLIENTE PAGO     -->
+    <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" />
+    <asp:HiddenField runat="server" ID="hdfClientePago" />
+    <asp:ModalPopupExtender ID="mpeClientePago" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="False" PopupControlID="pnlClientePago" TargetControlID="hdfClientePago"
+        BehaviorID="ModalBehaviorClientePago" CancelControlID="btnCerrar_ClientePago">
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlClientePago" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
+    <asp:UpdatePanel ID="upClientePago" runat="server">
+        <ContentTemplate>
+            <div>
+                <table style="width:100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                            <div class="floatDerecha bg-color-grisClaro01">
+                                <asp:ImageButton runat="server" ID="btnCerrar_ClientePago" CssClass="iconoPequeño bg-color-rojo" 
+                                    ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px" 
+                                    OnClientClick="OcultarPopUpClientePago();"/>
+                            </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                CLIENTE PAGO
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <%--<asp:Label ID="MyLabel" runat="server" Text="Hello World !!"/>--%>
+                            <uc1:wucClientePago ID="wucClientePago" runat="server" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    </asp:Panel>
+    <!--        FIN POPUP CLIENTE PAGO     -->
 
     <div id="la" style="display: none;">
         <table>
@@ -2527,18 +2571,6 @@
             
         </table>
     </div>
-    
-    
-
-    <asp:UpdateProgress ID="panelBloqueo" runat="server">
-        <ProgressTemplate>
-            <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
-                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
-        </ProgressTemplate>
-    </asp:UpdateProgress>
-    <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
-        PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
-    </asp:ModalPopupExtender>
     
     <!-- MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
     <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
@@ -2573,4 +2605,15 @@
             </asp:UpdatePanel>
         </asp:Panel>
     <!--TERMINA MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
+    
+    <asp:UpdateProgress ID="panelBloqueo" runat="server">
+        <ProgressTemplate>
+            <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
+                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+        PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
+    </asp:ModalPopupExtender>
+
 </asp:Content>

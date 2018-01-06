@@ -54,98 +54,100 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
         set { hdfIndiceFila.Value = value.ToString(); }
     }
 
-    private void CargarGrid()
+    public void CargarGrid()
     {
-        
-        //seleccion de cliente: se selecciona el padre, si no hay padre se selecciona el hijo con el numero de cliente mas pequeno
-        
-        //remover duplidos
-        Clientes = Clientes.Distinct().ToList();
-        
-        dt.Clear();
-        dt.Columns.Clear();
-        dt.Columns.Add("Cliente");
-        dt.Columns.Add("Nombre");
-        dt.Columns.Add("Tipo");
-
-        dt.Columns["Cliente"].DataType = Type.GetType("System.Int32");
-
-        DataRow row;
-        foreach (int cli in Clientes)
+        if (Clientes != null && Clientes.Count > 0)
         {
-            //validar y cargar datos
-            Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
-            Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
-            conexion.AbrirConexion(true);
-            objCliente.Referencia = cli.ToString();
-            if (objCliente.ValidaClienteExiste(conexion))
+            //seleccion de cliente: se selecciona el padre, si no hay padre se selecciona el hijo con el numero de cliente mas pequeno
+
+            //remover duplidos
+            Clientes = Clientes.Distinct().ToList();
+
+            dt.Clear();
+            dt.Columns.Clear();
+            dt.Columns.Add("Cliente");
+            dt.Columns.Add("Nombre");
+            dt.Columns.Add("Tipo");
+
+            dt.Columns["Cliente"].DataType = Type.GetType("System.Int32");
+
+            DataRow row;
+            foreach (int cli in Clientes)
             {
-                //asignar nombre y tipo 
-                row = dt.NewRow();
-                row["Cliente"] = cli;
-                row["Nombre"] = objCliente.Nombre;
-                row["Tipo"] = "SUCURSAL"; //FALTA
-                dt.Rows.Add(row);
-            }
-        }
-
-        if (dt.Rows.Count == 0)
-        {
-            throw new System.Exception("No existe cliente al cual asignar el pago.");
-        }
-        else
-        { 
-            //El gridview deberá mostrar los registros ordenados por número de Cliente de forma ascendente 
-            dt.DefaultView.Sort = "Cliente";
-
-            grvClientes.DataSource = dt;
-            grvClientes.DataBind();
-
-            //-Cuando el control sea mostrado el cliente padre(si lo hay) se elige por defecto
-            //-Si no hay cliente padre se elige por defecto la sucursal con el número de Cliente más pequeño
-            indiceGridSeleccionado = -1;
-            int indexfila = 0;
-            foreach (GridViewRow fila in grvClientes.Rows)
-            {
-                if (fila.Cells[3].Text == "PADRE")
+                //validar y cargar datos
+                Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+                Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
+                conexion.AbrirConexion(true);
+                objCliente.Referencia = cli.ToString();
+                if (objCliente.ValidaClienteExiste(conexion))
                 {
-                    indiceGridSeleccionado = indexfila;
-                    break;
+                    //asignar nombre y tipo 
+                    row = dt.NewRow();
+                    row["Cliente"] = cli;
+                    row["Nombre"] = objCliente.Nombre;
+                    row["Tipo"] = "SUCURSAL"; //FALTA
+                    dt.Rows.Add(row);
                 }
-                indexfila = indexfila + 1;
             }
-            if (indiceGridSeleccionado == -1)  //Si no hay cliente padre
+
+            if (dt.Rows.Count == 0)
             {
-                indexfila = 0;
-                int idmenor = 999999999;
+                throw new System.Exception("No existe cliente al cual asignar el pago.");
+            }
+            else
+            {
+                //El gridview deberá mostrar los registros ordenados por número de Cliente de forma ascendente 
+                dt.DefaultView.Sort = "Cliente";
+
+                grvClientes.DataSource = dt;
+                grvClientes.DataBind();
+
+                //-Cuando el control sea mostrado el cliente padre(si lo hay) se elige por defecto
+                //-Si no hay cliente padre se elige por defecto la sucursal con el número de Cliente más pequeño
+                indiceGridSeleccionado = -1;
+                int indexfila = 0;
                 foreach (GridViewRow fila in grvClientes.Rows)
                 {
-                    if (fila.Cells[3].Text == "SUCURSAL")
+                    if (fila.Cells[3].Text == "PADRE")
                     {
-                        if (int.Parse(fila.Cells[1].Text) < idmenor)
-                        { 
-                            idmenor = int.Parse(fila.Cells[1].Text);
-                            indiceGridSeleccionado = indexfila;
-                        }
+                        indiceGridSeleccionado = indexfila;
+                        break;
                     }
                     indexfila = indexfila + 1;
                 }
-            }
-
-            if (indiceGridSeleccionado == -1)
-                indiceGridSeleccionado = 0;
-            quitarSeleccionRadio();
-            pintarFilaSeleccionada(indiceGridSeleccionado);
-            GridViewRowCollection filas = grvClientes.Rows;
-            indexfila = 0;
-            foreach (GridViewRow f in filas)
-            {
-                if (indiceGridSeleccionado == indexfila)
+                if (indiceGridSeleccionado == -1)  //Si no hay cliente padre
                 {
-                    hdfClienteSeleccionado.Value = f.Cells[1].Text;
-                    break;
+                    indexfila = 0;
+                    int idmenor = 999999999;
+                    foreach (GridViewRow fila in grvClientes.Rows)
+                    {
+                        if (fila.Cells[3].Text == "SUCURSAL")
+                        {
+                            if (int.Parse(fila.Cells[1].Text) < idmenor)
+                            {
+                                idmenor = int.Parse(fila.Cells[1].Text);
+                                indiceGridSeleccionado = indexfila;
+                            }
+                        }
+                        indexfila = indexfila + 1;
+                    }
                 }
-                indexfila = indexfila + 1;
+
+                if (indiceGridSeleccionado == -1)
+                    indiceGridSeleccionado = 0;
+                quitarSeleccionRadio();
+                pintarFilaSeleccionada(indiceGridSeleccionado);
+                GridViewRowCollection filas = grvClientes.Rows;
+                indexfila = 0;
+                foreach (GridViewRow f in filas)
+                {
+                    if (indiceGridSeleccionado == indexfila)
+                    {
+                        hdfClienteSeleccionado.Value = f.Cells[1].Text;
+                        break;
+                    }
+                    indexfila = indexfila + 1;
+                }
             }
         }
     }
