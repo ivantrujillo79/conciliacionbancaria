@@ -552,6 +552,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 tdd.Secuencia       = int.Parse(hdfClientePagoSecuencia.Value);
                 tdd.IdSucursal      = int.Parse(hdfClientePagoSucursal.Value);
                 tdd.ActualizarClientePago();
+
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                    "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
+                    + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
+            }
+            else if (hdfClientePagoCancelar.Value == "1")
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                    "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
+                    + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
             }
         }
         catch (Exception ex)
@@ -561,6 +571,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         finally
         {
             hdfClientePagoAceptar.Value = "";
+            hdfClientePagoCancelar.Value = "";
         }
     }
 
@@ -1789,10 +1800,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                     
                             //    }
                             //}
-
-
-                            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                                "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
+                            
+                            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                            //    "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
+                            //    + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
                         }
                         //else
                         //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");

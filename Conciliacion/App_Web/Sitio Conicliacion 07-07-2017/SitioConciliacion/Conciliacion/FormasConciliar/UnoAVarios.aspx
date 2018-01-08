@@ -60,6 +60,7 @@
         }
 
         function OcultarPopUpClientePago() {
+            btnClientePagoCancelar_Click();
             $find("ModalBehaviorClientePago").hide();
         }
         
@@ -93,6 +94,11 @@
         /*              Botones del control wucClientePago         */
         function btnClientePagoAceptar_Click() {
             $("#<%= hdfClientePagoAceptar.ClientID %>").val("1");
+        }
+
+        /*              Botones del control wucClientePago         */
+        function btnClientePagoCancelar_Click() {
+            $("#<%= hdfClientePagoCancelar.ClientID %>").val("1");
         }
         
         function activarDatePickers() {
@@ -2535,6 +2541,7 @@
             <asp:HiddenField runat="server" ID="hdfClientePagoSecuencia"    />
             <asp:HiddenField runat="server" ID="hdfClientePagoSucursal"/>
             <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" Value=""/>
+            <asp:HiddenField runat="server" ID="hdfClientePagoCancelar" Value=""/>
             <div>
                 <table style="width:100%;">
                     <tr class="bg-color-grisOscuro">
