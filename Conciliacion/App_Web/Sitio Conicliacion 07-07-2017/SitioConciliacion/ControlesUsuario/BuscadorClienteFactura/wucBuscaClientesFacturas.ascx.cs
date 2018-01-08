@@ -142,6 +142,11 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
     private void BuscarFactura(string NumeroFactura)
     {
+        if (HttpContext.Current.Session["CBPedidosPorFactura"] != null)
+            ((DataTable)HttpContext.Current.Session["CBPedidosPorFactura"]).Clear();
+        if (HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+            ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Clear();
+
         _Factura = NumeroFactura;
         DataTable tbPedidosPorFactura = null;
         if (NumeroFactura != string.Empty)

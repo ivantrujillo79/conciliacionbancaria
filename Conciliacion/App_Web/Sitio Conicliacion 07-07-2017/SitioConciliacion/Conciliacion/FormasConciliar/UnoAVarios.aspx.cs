@@ -4278,27 +4278,35 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            if(((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
+            if ( (HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null && ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0) 
+                |
+                 (HttpContext.Current.Session["CBPedidosPorFactura"] != null && ((DataTable)HttpContext.Current.Session["CBPedidosPorFactura"]).Rows.Count > 0) )
             {
-                DataTable dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                DataView dv = new DataView(dt);
+                DataTable dt = null;
+                DataView dv;
+                if (HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null && ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
+                    dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                if (HttpContext.Current.Session["CBPedidosPorFactura"] != null && ((DataTable)HttpContext.Current.Session["CBPedidosPorFactura"]).Rows.Count > 0)
+                    dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
 
-                string SearchExpression = String.Empty;
-
-                if (!(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
-                { 
-                    SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
-                        txtFOTermino.Text);
+                if (dt != null || !(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
+                {
+                    dv = new DataView(dt);
+                    //string SearchExpression = String.Empty;
+                    //SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
+                    //    txtFOTermino.Text);
 
                     int a; int m; int d;
                     a = Convert.ToDateTime(txtFOInicio.Text).Year;
                     m = Convert.ToDateTime(txtFOInicio.Text).Month;
                     d = Convert.ToDateTime(txtFOInicio.Text).Day;
-                    string Desde = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion >= #{0}#", new DateTime(a, m, d, 0, 0, 1));
+                    //string Desde = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion >= #{0}#", new DateTime(a, m, d, 0, 0, 1));
+                    string Desde = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FSuministro >= #{0}#", new DateTime(a, m, d, 0, 0, 1));
                     a = Convert.ToDateTime(txtFOTermino.Text).Year;
                     m = Convert.ToDateTime(txtFOTermino.Text).Month;
                     d = Convert.ToDateTime(txtFOTermino.Text).Day;
-                    string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
+                    //string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
+                    string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FSuministro <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
                     dv.RowFilter = Desde + " and " + Hasta;
 
                     grvPedidos.DataSource = dv.ToTable();
@@ -4320,8 +4328,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 string SearchExpression = String.Empty;
                 if (!(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
-                    SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
-                        txtFOTermino.Text);
+                    //SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text, txtFOTermino.Text);
+                    SearchExpression = string.Format("FSuministro >= '{0}' AND FSuministro <= '{1}'", txtFOInicio.Text, txtFOTermino.Text);
                 if (dv.Count <= 0)
                 {
                     statusFiltro = false;
@@ -4359,12 +4367,48 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            if (((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
+            if ( (HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null && ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
+                |
+                 (HttpContext.Current.Session["CBPedidosPorFactura"] != null && ((DataTable)HttpContext.Current.Session["CBPedidosPorFactura"]).Rows.Count > 0) )
             {
-                DataTable dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                grvPedidos.DataSource = dt;
-                grvPedidos.DataBind();
-                grvPedidos.DataBind();
+                DataTable dt = null;
+                DataView dv;
+                if (HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null && ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Rows.Count > 0)
+                    dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                if (HttpContext.Current.Session["CBPedidosPorFactura"] != null && ((DataTable)HttpContext.Current.Session["CBPedidosPorFactura"]).Rows.Count > 0)
+                    dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+
+                if (dt != null || !(String.IsNullOrEmpty(txtFOInicio.Text) || String.IsNullOrEmpty(txtFOTermino.Text)))
+                {
+                    dv = new DataView(dt);
+                    string SearchExpression = String.Empty;
+                    SearchExpression = string.Format("FOperacion >= '{0}' AND FOperacion <= '{1}'", txtFOInicio.Text,
+                        txtFOTermino.Text);
+
+                    int a; int m; int d;
+                    a = Convert.ToDateTime(txtFOInicio.Text).Year;
+                    m = Convert.ToDateTime(txtFOInicio.Text).Month;
+                    d = Convert.ToDateTime(txtFOInicio.Text).Day;
+                    //string Desde = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion >= #{0}#", new DateTime(a, m, d, 0, 0, 1));
+                    string Desde = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FSuministro >= #{0}#", new DateTime(a, m, d, 0, 0, 1));
+                    a = Convert.ToDateTime(txtFOTermino.Text).Year;
+                    m = Convert.ToDateTime(txtFOTermino.Text).Month;
+                    d = Convert.ToDateTime(txtFOTermino.Text).Day;
+                    //string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FOperacion <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
+                    string Hasta = String.Format(CultureInfo.InvariantCulture.DateTimeFormat, "FSuministro <= #{0}#", new DateTime(a, m, d, 23, 59, 59));
+                    dv.RowFilter = Desde + " and " + Hasta;
+
+                    grvPedidos.DataSource = dv.ToTable();
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
+
+                }
+                else
+                {
+                    grvPedidos.DataSource = dt;
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
+                }
             }
             else
             {
@@ -5887,6 +5931,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
+                    if (HttpContext.Current.Session["CBPedidosPorFactura"] != null)
+                        ((DataTable)HttpContext.Current.Session["CBPedidosPorFactura"]).Clear();
+                    if (HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+                        ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"]).Clear();
+
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = wucBuscaClientesFacturas.BuscaCliente();
                     grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
