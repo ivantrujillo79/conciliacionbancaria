@@ -389,7 +389,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 MostrarPopUp_ConciliacionManual();
 
-                //ActualizarClientePago();
+                GuardarClientePago();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -507,19 +507,60 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// <summary>
     /// Actualiza las propiedades del web user control "wucClientePago"
     /// </summary>
-    private void ActualizarDatos_ClientePago()
+    private void ActualizarDatos_ClientePago(ReferenciaNoConciliada refExterna)
     {
-        if (grvAgregadosPedidos.Rows.Count > 0)
+        try
         {
-            List<int> listaClientes = new List<int>();
-            int cliente = 0;
-
-            foreach (GridViewRow row in grvAgregadosPedidos.Rows)
+            if (grvAgregadosPedidos.Rows.Count > 0 && refExterna.ListaReferenciaConciliada.Count > 0)
             {
-                cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
-                listaClientes.Add(cliente);
+                List<int> listaClientes = new List<int>();
+                int cliente = 0;
+
+                foreach (GridViewRow row in grvAgregadosPedidos.Rows)
+                {
+                    cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
+                    listaClientes.Add(cliente);
+                }
+                wucClientePago.Clientes = listaClientes;
+                hdfClientePagoAnio.Value = refExterna.Año.ToString();
+                hdfClientePagoCorporativo.Value = refExterna.Corporativo.ToString();
+                hdfClientePagoFolio.Value = refExterna.Folio.ToString();
+                hdfClientePagoSecuencia.Value = refExterna.Secuencia.ToString();
+                hdfClientePagoSucursal.Value = refExterna.Sucursal.ToString();
             }
-            wucClientePago.Clientes = listaClientes;
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    /// <summary>
+    /// Ejecuta el método "ActualizarClientePago()" de la clase TablaDestinoDetalle
+    /// </summary>
+    private void GuardarClientePago()
+    {
+        try
+        {
+            if (hdfClientePagoAceptar.Value == "1")
+            {
+                Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle tdd = Conciliacion.Migracion.Runtime.App.TablaDestinoDetalle;
+                tdd.ClientePago     = int.Parse(wucClientePago.ClienteSeleccionado);
+                tdd.Anio            = int.Parse(hdfClientePagoAnio.Value);
+                tdd.IdCorporativo   = int.Parse(hdfClientePagoCorporativo.Value);
+                tdd.Folio           = int.Parse(hdfClientePagoFolio.Value);
+                tdd.Secuencia       = int.Parse(hdfClientePagoSecuencia.Value);
+                tdd.IdSucursal      = int.Parse(hdfClientePagoSucursal.Value);
+                tdd.ActualizarClientePago();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            hdfClientePagoAceptar.Value = "";
         }
     }
 
@@ -528,8 +569,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// </summary>
     private void CargarConfiguracion_wucClientePago()
     {
-        //List<int> ListClientes = new List<int> { 123, 456, 789, 012, 345 };
-        //wucClientePago.Clientes = ListClientes;
         wucClientePago.ControlContenedor = mpeClientePago;
     }
 
@@ -559,23 +598,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 imgCargar.Visible = true;
             }
-        }
-    }
-
-    private void ActualizarClientePago()
-    {
-        try
-        {
-            if (hdfClientePagoAceptar.Value == "1")
-            {
-                Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle tdd = Conciliacion.Migracion.Runtime.App.TablaDestinoDetalle;
-                tdd.ClientePago = int.Parse(wucClientePago.ClienteSeleccionado);
-                tdd.ActualizarClientePago();
-            }
-        }
-        catch(Exception ex)
-        {
-            throw ex;
         }
     }
 
@@ -1667,7 +1689,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
 
-            ActualizarDatos_ClientePago();
+            //ActualizarDatos_ClientePago();
 
             if (ListaVerificacionRemanente.Count != 0)
             {
@@ -1688,7 +1710,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                         objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                         objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-                        
+
+                        ActualizarDatos_ClientePago(rfExterno);
+
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
                         rfExterno.ConInterno = objSolicitdConciliacion.ConsultaArchivo();
