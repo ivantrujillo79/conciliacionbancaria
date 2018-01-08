@@ -634,6 +634,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("ParametrosReporte");
         HttpContext.Current.Session.Remove("NUEVOS_INTERNOS");
         HttpContext.Current.Session.Remove("DETALLEINTERNO");
+        HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario");
+        HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario_AX");
 
     }
     //Cargar Rango DiasMaximo-Minimio-Default
