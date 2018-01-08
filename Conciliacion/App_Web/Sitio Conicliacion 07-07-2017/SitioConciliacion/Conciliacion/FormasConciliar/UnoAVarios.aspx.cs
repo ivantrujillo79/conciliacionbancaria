@@ -2900,6 +2900,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
                                               ? leerReferenciaExternaSeleccionada()
                                               : tranExternaAnteriorSeleccionada;
+
+            rfEx = leerReferenciaExternaSeleccionada();
             //Leer Variables URL 
             cargarInfoConciliacionActual();
 
