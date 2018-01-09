@@ -79,7 +79,7 @@
                     Text="ACEPTAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnAceptar_Click"/>
                 
                 <asp:Button ID="btnCancelar" runat="server"
-                    CssClass="boton bg-color-azulOscuro fg-color-blanco"
+                    CssClass="boton bg-color-azulOscuro fg-color-blanco" OnClientClick="btnClientePagoCancelar_Click();"
                     Text="CANCELAR" Style="margin: 0 0 0 0;" ToolTip="CANCELAR" OnClick="btnCancelar_Click" />
 
             </td>

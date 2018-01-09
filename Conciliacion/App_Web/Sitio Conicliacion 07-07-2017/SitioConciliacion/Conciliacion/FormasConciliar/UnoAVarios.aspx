@@ -60,6 +60,7 @@
         }
 
         function OcultarPopUpClientePago() {
+            btnClientePagoCancelar_Click();
             $find("ModalBehaviorClientePago").hide();
         }
         
@@ -93,6 +94,11 @@
         /*              Botones del control wucClientePago         */
         function btnClientePagoAceptar_Click() {
             $("#<%= hdfClientePagoAceptar.ClientID %>").val("1");
+        }
+
+        /*              Botones del control wucClientePago         */
+        function btnClientePagoCancelar_Click() {
+            $("#<%= hdfClientePagoCancelar.ClientID %>").val("1");
         }
         
         function activarDatePickers() {
@@ -2521,7 +2527,6 @@
     <!--        FIN POPUP CONCILIAR PAGARES     -->
 
     <!--        INICIO DE POPUP CLIENTE PAGO     -->
-    <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" />
     <asp:HiddenField runat="server" ID="hdfClientePago" />
     <asp:ModalPopupExtender ID="mpeClientePago" runat="server" BackgroundCssClass="ModalBackground"
         DropShadow="False" PopupControlID="pnlClientePago" TargetControlID="hdfClientePago"
@@ -2530,6 +2535,13 @@
     <asp:Panel ID="pnlClientePago" runat="server" CssClass="ModalPopup" width="700px" style="display: none;">  
     <asp:UpdatePanel ID="upClientePago" runat="server">
         <ContentTemplate>
+            <asp:HiddenField runat="server" ID="hdfClientePagoAnio"         />
+            <asp:HiddenField runat="server" ID="hdfClientePagoCorporativo"  />
+            <asp:HiddenField runat="server" ID="hdfClientePagoFolio"        />
+            <asp:HiddenField runat="server" ID="hdfClientePagoSecuencia"    />
+            <asp:HiddenField runat="server" ID="hdfClientePagoSucursal"/>
+            <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" Value=""/>
+            <asp:HiddenField runat="server" ID="hdfClientePagoCancelar" Value=""/>
             <div>
                 <table style="width:100%;">
                     <tr class="bg-color-grisOscuro">
@@ -2546,7 +2558,6 @@
                     </tr>
                     <tr>
                         <td>
-                            <%--<asp:Label ID="MyLabel" runat="server" Text="Hello World !!"/>--%>
                             <uc1:wucClientePago ID="wucClientePago" runat="server" />
                         </td>
                     </tr>
