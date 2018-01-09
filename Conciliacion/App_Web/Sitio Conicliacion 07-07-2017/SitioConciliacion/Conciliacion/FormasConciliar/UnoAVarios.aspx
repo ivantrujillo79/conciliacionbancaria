@@ -19,9 +19,10 @@
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
 
-    <!-- Script se utiliza para el Scroll del GridView-->
+    <!-- Script se utiliza para el Scroll del GridView
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
+        -->
     
     <!-- ScrollBar GridView -->
     <script type="text/javascript">

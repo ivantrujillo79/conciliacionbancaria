@@ -1674,8 +1674,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
             VerificadorRemanentes objVerificadorRemanente = new VerificadorRemanentes();
-            List<DetalleVerificadorRemanente> ListaVerificacionRemanente;
+            List<DetalleVerificadorRemanente> ListaVerificacionRemanente = new List<DetalleVerificadorRemanente>();
             DataTable dtBuffer = (DataTable)grvPedidos.DataSource;
             byte Opcion = 1;
             //dtBuffer.Rows.Count == 0 ||
@@ -1691,14 +1696,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 else
                 {
-                    grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
-                    grvPedidos.DataBind();
-                    dtBuffer = (DataTable)grvPedidos.DataSource;
+
+                    if (objSolicitdConciliacion.ConsultaArchivo())
+                    {
+                        grvInternos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                        grvInternos.DataBind();
+                        dtBuffer = (DataTable)grvInternos.DataSource;
+                        ListaVerificacionRemanente = new List<DetalleVerificadorRemanente>();//objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
+                    }
+                    if (objSolicitdConciliacion.ConsultaPedido())
+                    {
+                        grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                        grvPedidos.DataBind();
+                        dtBuffer = (DataTable)grvPedidos.DataSource;
+                        ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
+                    }
                     Opcion = 1;
                 }
             }
 
-            ListaVerificacionRemanente = objVerificadorRemanente.VerificarRemanentePedidos(dtBuffer, Convert.ToDecimal(lblResto.Text.Replace("$", "").Trim()), Opcion);
+            
 
             //ActualizarDatos_ClientePago();
 
@@ -1717,11 +1734,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     if (rfExterno.ListaReferenciaConciliada.Count > 0)
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
-                        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-                        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-                        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-
                         ActualizarDatos_ClientePago(rfExterno);
 
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
