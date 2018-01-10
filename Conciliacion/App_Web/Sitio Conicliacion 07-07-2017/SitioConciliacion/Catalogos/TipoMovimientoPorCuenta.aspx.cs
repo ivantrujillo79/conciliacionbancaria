@@ -56,11 +56,19 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
                 
                 this.grdExtractores.DataSource = tblImportacionAplicacion;
                 this.grdExtractores.DataBind();
-                
-                //Parametros para generar consultas
-                Consulta_TablaImportacionAplicacionCuenta(Convert.ToInt16(cboCuentaBanco.SelectedItem.Value),
+
+                if (cboCuentaBanco.SelectedItem == null || cboSucursal.SelectedItem == null)
+                {
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: La sucursal o la cuenta de banco por defecto no están configuradas.', function(){ alertify.error('Error en la solicitud'); });", true);
+                    return;
+                }
+                else
+                {
+                    //Parámetros para generar consultas
+                    Consulta_TablaImportacionAplicacionCuenta(Convert.ToInt16(cboCuentaBanco.SelectedItem.Value),
                                 Convert.ToInt16(cboSucursal.SelectedItem.Value),
                                 cboCuentaBanco.SelectedItem.Text.Trim());
+                }
                 GenerarTablaImportacionAplicacion();
                 LlenaGridViewTablaCuentasTransferencias();
             }
