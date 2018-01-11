@@ -1,11 +1,11 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucClientePago.ascx.cs" Inherits="ControlesUsuario_ClientePago_wucClientePago" %>
 
     <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"type="text/css" />
-    <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
+<%--    <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"type="text/css" />
+    <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>--%>
 
      <script type="text/javascript">
-        function gridviewScroll() {
+        <%--function gridviewScroll() {
                 $('#<%=grvClientes.ClientID%>').gridviewScroll({
                     width: 595,
                     height: 180,
@@ -17,11 +17,23 @@
                     harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
                     headerrowcount: 1
                 });
-        }
+        }--%>
 
-        function pageLoad() {
-             //if(!isPostback)
-             //   gridviewScroll();
+         function SelectSingleRadiobutton(rdbtnid) {
+             debugger;
+             var button = $('#grvClientes').find('RadioButton1');
+
+             //var rdBtn = document.getElementById(rdbtnid);
+             //var rdBtnList = document.getElementsByTagName("input");
+             //for (i = 0; i < rdBtnList.length; i++) {
+             //    if (rdBtnList[i].type == "radio" && rdBtnList[i].id != rdBtn.id) {
+             //        rdBtnList[i].checked = false;
+             //    }
+             //}
+         }
+
+         function pageLoad() {
+             SelectSingleRadiobutton(0);
         }
 
     </script>
@@ -61,9 +73,10 @@
                             <asp:TemplateField>
                                 <ItemTemplate>
                                     <asp:RadioButton ID="RadioButton1" runat="server" 
+                                        GroupName="Clientes"
                                         AutoPostBack="true"
                                         ToolTip="SELECCIONAR CLIENTE"
-                                        OnCheckedChanged="RadioButton1_CheckedChanged"
+                                        OnCheckedChanged="RadioButton1_CheckedChanged" Checked="true"
                                         />
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" Width="25px" BackColor="#ebecec"></ItemStyle>
