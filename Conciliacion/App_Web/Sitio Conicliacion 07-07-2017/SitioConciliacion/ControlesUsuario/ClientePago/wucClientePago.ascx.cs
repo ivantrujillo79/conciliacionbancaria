@@ -148,7 +148,25 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
                     }
                     indexfila = indexfila + 1;
                 }
+                ActivarSeleccionRadio(indiceGridSeleccionado);
             }
+        }
+    }
+
+    public void ActivarSeleccionRadio(int indice)
+    {
+        int fila = 0;
+        foreach (
+            RadioButton rb in
+            from GridViewRow gv in grvClientes.Rows
+            select (RadioButton)grvClientes.Rows[gv.RowIndex].FindControl("RadioButton1"))
+        {
+            if (indice == fila)
+            {
+                rb.Checked = true;
+                break;
+            }
+            fila = fila + 1;
         }
     }
 
