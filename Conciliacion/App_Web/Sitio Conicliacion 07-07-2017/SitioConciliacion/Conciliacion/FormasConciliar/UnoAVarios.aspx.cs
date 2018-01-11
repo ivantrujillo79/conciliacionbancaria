@@ -2725,19 +2725,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     catch (FormatException e)
                     {
-                        App.ImplementadorMensajes.MostrarMensaje(
-                            "Cliente no es valido, tendra que agregar el pedido directamenete.");
+                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamente.");
                     }
                     catch (Exception e)
                     {
-                        App.ImplementadorMensajes.MostrarMensaje(
-                            "Cliente no es válido, tendrá que agregar el pedido directamenete.");
+                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
                     }
 
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje(
-                        "Cliente no es válido, tendrá que agregar el pedido directamenete.");
+                    if (!(objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido" || objControlPostBack == "btnQuitarInterno"))
+                    {
+                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
+                    }
 
                 if (ddlCelula.SelectedItem != null)
                 {
