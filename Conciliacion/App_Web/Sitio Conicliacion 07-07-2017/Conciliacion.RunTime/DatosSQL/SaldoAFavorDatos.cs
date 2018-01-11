@@ -132,7 +132,8 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandText = "spCBInsertaMovimientoAConciliar";
                 _conexion.Comando.Parameters.Clear();
 
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioMovimiento", SqlDbType.Int)).Value = this.FolioMovimiento;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioMovimiento", SqlDbType.Int)).Value 
+                    = (this.FolioMovimiento == -1 ? (object)System.DBNull.Value : this.FolioMovimiento);
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoMovimiento", SqlDbType.Int)).Value = this.AñoMovimiento;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@TipoMovimientoAConciliar", SqlDbType.Int)).Value = this.TipoMovimientoAConciliar;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@EmpresaContable", SqlDbType.Int)).Value = this.EmpresaContable;
