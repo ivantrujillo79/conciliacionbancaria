@@ -265,7 +265,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public int FolioExterno
         {
             get { return folioexterno; }
-            set { añoexterno = value; }
+            set { folioexterno = value; }
         }
         public int SecuenciaExterno
         {
