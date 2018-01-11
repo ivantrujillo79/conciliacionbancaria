@@ -590,7 +590,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Conexion conexion = new Conexion();
         try
         {
-            decimal dSaldoAFavor = refExterna.Resto;
+            decimal dSaldoAFavor = refExterna.Resto - refExterna.Diferencia;
             decimal minSaldoAFavor = Decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
 
             if (dSaldoAFavor > 0 && dSaldoAFavor > minSaldoAFavor)
@@ -602,30 +602,30 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //refExterna.DetalleSaldo = (?);
 
                 SaldoAFavor saldoAFavor = App.SaldoAFavor.CrearObjeto();
-                saldoAFavor.FolioMovimiento         = refExterna.FolioConciliacion;     /* ? */
+                saldoAFavor.FolioMovimiento         = -1;
                 saldoAFavor.AñoMovimiento           = refExterna.AñoConciliacion;
-                //saldoAFavor.TipoMovimientoAConciliar = (?);
-                //saldoAFavor.EmpresaContable = (?);
-                saldoAFavor.Caja                    = Int16.Parse(refExterna.Caja.ToString());     /*      Corregir        */
-                saldoAFavor.FOperacion              = refExterna.FOperacion;
-                //saldoAFavor.TipoFicha = (?);
-                saldoAFavor.Consecutivo             = refExterna.ConsecutivoFlujo;      /* ? */
-                //saldoAFavor.TipoAplicacionIngreso = (?);
-                //saldoAFavor.ConsecutivoTipoAplicacion = (?);
-                //saldoAFavor.Factura = (?);
-                //saldoAFavor.AñoCobro = (?);
-                //saldoAFavor.Cobro = (?);
-                //saldoAFavor.Monto = refExterna.Monto;         /*          saldoAFavor.Monto = Int         */              ´
+                saldoAFavor.TipoMovimientoAConciliar= 1;
+                saldoAFavor.EmpresaContable         = 0;
+                saldoAFavor.Caja                    = 0;
+                saldoAFavor.FOperacion              = DateTime.Now;
+                saldoAFavor.TipoFicha               = 0;
+                saldoAFavor.Consecutivo             = 0;
+                saldoAFavor.TipoAplicacionIngreso   = 0;
+                saldoAFavor.ConsecutivoTipoAplicacion= 0;
+                saldoAFavor.Factura                 = 0;
+                saldoAFavor.AñoCobro                = 0; /*     Si falla probar Null    */
+                saldoAFavor.Cobro                   = 0;
+                saldoAFavor.Monto                   = 20;  /*          Resto         */             
                 saldoAFavor.StatusMovimiento        = "PENDIENTE";
                 saldoAFavor.FMovimiento             = refExterna.FMovimiento;
-                saldoAFavor.StatusConciliacion      = "PENDIENTE";
-                saldoAFavor.FConciliacion           = DateTime.Now;                     /* ? */
-                //saldoAFavor.CorporativoConciliacion = (?);    /*         Un solo corporativo en refExterna       */
+                saldoAFavor.StatusConciliacion      = "CONCILIADA";
+                saldoAFavor.FConciliacion           = DateTime.Now;
+                saldoAFavor.CorporativoConciliacion = refExterna.Corporativo;
                 saldoAFavor.SucursalConciliacion    = refExterna.SucursalConciliacion;
                 saldoAFavor.AñoConciliacion         = refExterna.AñoConciliacion;
                 saldoAFavor.MesConciliacion         = refExterna.MesConciliacion;
                 saldoAFavor.FolioConciliacion       = refExterna.FolioConciliacion;
-                saldoAFavor.CorporativoExterno      = refExterna.Corporativo;           /* ? */
+                saldoAFavor.CorporativoExterno      = refExterna.Corporativo;
                 saldoAFavor.SucursalExterno         = refExterna.Sucursal;
                 saldoAFavor.AñoExterno              = refExterna.Año;
                 saldoAFavor.FolioExterno            = refExterna.Folio;
@@ -1913,12 +1913,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (EsPedido)
             {
-                decimal minSaldoAFavor = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
-                decimal resto = decimal.Parse(lblAbono.Text, NumberStyles.Currency);
-                if (resto > minSaldoAFavor)
+                if (HttpContext.Current.Session["EXTERNO_SELECCIONADO"] != null)
                 {
-                    wucClientePago.CargarGrid();
-                    mpeClientePago.Show();
+                    ReferenciaNoConciliada refExterna = HttpContext.Current.Session["EXTERNO_SELECCIONADO"] as ReferenciaNoConciliada;
+
+                    decimal minSaldoAFavor = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
+                    decimal resto = refExterna.Resto - refExterna.Diferencia;
+                    if (resto > minSaldoAFavor)
+                    {
+                        wucClientePago.CargarGrid();
+                        mpeClientePago.Show();
+                    }
+                }
+                else
+                {
+                    throw new Exception("No se encontró registro externo.");
                 }
             }
         }
