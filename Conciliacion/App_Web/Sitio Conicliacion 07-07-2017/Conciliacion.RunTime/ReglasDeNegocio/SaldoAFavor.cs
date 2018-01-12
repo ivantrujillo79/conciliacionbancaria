@@ -21,7 +21,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int factura;
         private Int16 añocobro;
         private int cobro;
-        private int monto;
+        private decimal monto;
         private string statusmovimiento;
         private DateTime fmovimiento;
         private string statusconciliacion;
@@ -84,7 +84,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             int factura,
             Int16 añocobro,
             int cobro,
-            int monto,
+            decimal monto,
             string statusmovimiento,
             DateTime fmovimiento,
             string statusconciliacion,
@@ -197,7 +197,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return cobro; }
             set { cobro = value; }
         }
-        public int Monto
+        public decimal Monto
         {
             get { return monto; }
             set { monto = value; }
@@ -265,7 +265,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public int FolioExterno
         {
             get { return folioexterno; }
-            set { añoexterno = value; }
+            set { folioexterno = value; }
         }
         public int SecuenciaExterno
         {

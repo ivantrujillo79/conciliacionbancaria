@@ -9,8 +9,20 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
     public struct DetalleSaldoConciliacion
     {
-        int Cliente;
-        decimal MontoSaldoAFavor;
+        int cliente;
+        decimal montoSaldoAFavor;
+
+        public int Cliente
+        {
+            get { return cliente; }
+            set { cliente = value; }
+        }
+
+        public decimal MontoSaldoAFavor
+        {
+            get { return montoSaldoAFavor; }
+            set { montoSaldoAFavor = value; }
+        }
     }
 
     public abstract class ReferenciaNoConciliada : EmisorMensajes
