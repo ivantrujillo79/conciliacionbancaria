@@ -1042,10 +1042,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 RefConciliada.Secuencia = this.secuencia; //Secuencia del externo
                 RefConciliada.Año = this.año; //Año externo
 
-                RefConciliada.MontoConciliado = this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia)
+                if ((this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia) ? referencia.Total : ((this.Monto) - this.MontoPedido)) > 0)
+                {
+                    RefConciliada.MontoConciliado = this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia)
                                                     ? referencia.Total //Monto del pedido
                     //: (this.MontoPedido + referencia.Total) - this.Monto; //La diferencia
                                                     : ((this.Monto) - this.MontoPedido); //La diferencia
+                }
+                else
+                    throw new Exception("El total acumulado es mayor a monto del pedido.");
 
                 RefConciliada.Deposito = this.Monto;
                 RefConciliada.FMovimiento = referencia.FMovimiento;//Fecha Movimiento 
