@@ -613,9 +613,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 saldoAFavor.TipoAplicacionIngreso   = 0;
                 saldoAFavor.ConsecutivoTipoAplicacion= 0;
                 saldoAFavor.Factura                 = 0;
-                saldoAFavor.AñoCobro                = 0; /*     Si falla probar Null    */
+                saldoAFavor.AñoCobro                = 0;
                 saldoAFavor.Cobro                   = 0;
-                saldoAFavor.Monto                   = 20;  /*          Resto         */             
+                saldoAFavor.Monto                   = 20;  /*          cambiar por refExterna.DetalleSaldo.MontoConciliado         */
                 saldoAFavor.StatusMovimiento        = "PENDIENTE";
                 saldoAFavor.FMovimiento             = refExterna.FMovimiento;
                 saldoAFavor.StatusConciliacion      = "CONCILIADA";
@@ -2830,7 +2830,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();    
                     }
-
+                    //Celula = 6;
                     Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                         Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
                         cliente, false);
@@ -2981,7 +2981,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = Convert.ToInt32(ddlCelula.SelectedValue);
                     }
-                
+                //Celula = 6;
                     Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                           Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
                           cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
