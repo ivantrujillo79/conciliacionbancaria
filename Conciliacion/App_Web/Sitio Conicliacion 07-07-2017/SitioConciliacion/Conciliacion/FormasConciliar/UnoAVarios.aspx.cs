@@ -3310,9 +3310,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         rcExterna.QuitarReferenciaConciliada(pedido, celulaPedido, añoPedido);
         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
         GenerarTablaAgregadosArchivosInternos(rcExterna, tipoConciliacion);
-        ActualizarTotalesAgregados();
 
-        
+        //ActualizarTotalesAgregados(); este metodo no recalcua monto acumulado
+        ActualizarTotalesAgregadosExcel(grvAgregadosPedidos);
+
+
         if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
         {
             //grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
