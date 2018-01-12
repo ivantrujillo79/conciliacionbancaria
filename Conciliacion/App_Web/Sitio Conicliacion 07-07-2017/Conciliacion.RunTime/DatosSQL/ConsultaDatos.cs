@@ -5580,7 +5580,6 @@ namespace Conciliacion.RunTime.DatosSQL
                             Convert.ToInt16(reader["Año"]),
                             Convert.ToInt16(reader["Folio"]),
                             Convert.ToInt16(reader["Secuencia"])),
-                            null,
                                 this.ImplementadorMensajes
                                 
                             );
