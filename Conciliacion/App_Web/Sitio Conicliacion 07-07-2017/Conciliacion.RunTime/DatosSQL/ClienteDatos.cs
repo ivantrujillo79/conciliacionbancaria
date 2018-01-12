@@ -191,7 +191,7 @@ namespace Conciliacion.RunTime.DatosSQL
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";//"spCBPedidosSeparadosCliente";
+                _conexion.Comando.CommandText = "spCBPedidosSeparadosCliente";//"spCBPedidosClienteOPadre";
 
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value = Cliente;
