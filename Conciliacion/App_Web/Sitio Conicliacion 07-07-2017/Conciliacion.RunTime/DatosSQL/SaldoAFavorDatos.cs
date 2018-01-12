@@ -30,7 +30,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int Factura, 
             Int16 AñoCobro, 
             int Cobro, 
-            int Monto, 
+            decimal Monto, 
             string StatusMovimiento,
             DateTime FMovimiento, 
             string StatusConciliacion, 
@@ -146,7 +146,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Factura", SqlDbType.Int)).Value = this.Factura;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoCobro", SqlDbType.SmallInt)).Value = this.AñoCobro;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cobro", SqlDbType.Int)).Value = this.Cobro;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Monto", SqlDbType.Int)).Value = this.Monto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Monto", SqlDbType.Money)).Value = this.Monto;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusMovimiento", SqlDbType.VarChar)).Value = this.StatusMovimiento;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FMovimiento", SqlDbType.DateTime)).Value = this.FMovimiento;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", SqlDbType.VarChar)).Value = this.StatusConciliacion;

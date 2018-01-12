@@ -602,34 +602,34 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //refExterna.DetalleSaldo = (?);
 
                 SaldoAFavor saldoAFavor = App.SaldoAFavor.CrearObjeto();
-                saldoAFavor.FolioMovimiento         = -1;
-                saldoAFavor.AñoMovimiento           = refExterna.AñoConciliacion;
-                saldoAFavor.TipoMovimientoAConciliar= 1;
-                saldoAFavor.EmpresaContable         = 0;
-                saldoAFavor.Caja                    = 0;
-                saldoAFavor.FOperacion              = DateTime.Now;
-                saldoAFavor.TipoFicha               = 0;
-                saldoAFavor.Consecutivo             = 0;
-                saldoAFavor.TipoAplicacionIngreso   = 0;
-                saldoAFavor.ConsecutivoTipoAplicacion= 0;
-                saldoAFavor.Factura                 = 0;
-                saldoAFavor.AñoCobro                = 0;
-                saldoAFavor.Cobro                   = 0;
-                saldoAFavor.Monto                   = 20;  /*          cambiar por refExterna.DetalleSaldo.MontoConciliado         */
-                saldoAFavor.StatusMovimiento        = "PENDIENTE";
-                saldoAFavor.FMovimiento             = refExterna.FMovimiento;
-                saldoAFavor.StatusConciliacion      = "CONCILIADA";
-                saldoAFavor.FConciliacion           = DateTime.Now;
-                saldoAFavor.CorporativoConciliacion = refExterna.Corporativo;
-                saldoAFavor.SucursalConciliacion    = refExterna.SucursalConciliacion;
-                saldoAFavor.AñoConciliacion         = refExterna.AñoConciliacion;
-                saldoAFavor.MesConciliacion         = refExterna.MesConciliacion;
-                saldoAFavor.FolioConciliacion       = refExterna.FolioConciliacion;
-                saldoAFavor.CorporativoExterno      = refExterna.Corporativo;
-                saldoAFavor.SucursalExterno         = refExterna.Sucursal;
-                saldoAFavor.AñoExterno              = refExterna.Año;
-                saldoAFavor.FolioExterno            = refExterna.Folio;
-                saldoAFavor.SecuenciaExterno        = refExterna.Secuencia;
+                saldoAFavor.FolioMovimiento             = -1;
+                saldoAFavor.AñoMovimiento               = refExterna.AñoConciliacion;
+                saldoAFavor.TipoMovimientoAConciliar    = 1;
+                saldoAFavor.EmpresaContable             = 0;
+                saldoAFavor.Caja                        = 0;
+                saldoAFavor.FOperacion                  = DateTime.Now;
+                saldoAFavor.TipoFicha                   = 0;
+                saldoAFavor.Consecutivo                 = 0;
+                saldoAFavor.TipoAplicacionIngreso       = 0;
+                saldoAFavor.ConsecutivoTipoAplicacion   = 0;
+                saldoAFavor.Factura                     = 0;
+                saldoAFavor.AñoCobro                    = 0;
+                saldoAFavor.Cobro                       = 0;
+                saldoAFavor.Monto                       = dSaldoAFavor;  /*          cambiar por refExterna.DetalleSaldo.MontoConciliado         */
+                saldoAFavor.StatusMovimiento            = "PENDIENTE";
+                saldoAFavor.FMovimiento                 = refExterna.FMovimiento;
+                saldoAFavor.StatusConciliacion          = "CONCILIADA";
+                saldoAFavor.FConciliacion               = DateTime.Now;
+                saldoAFavor.CorporativoConciliacion     = refExterna.Corporativo;
+                saldoAFavor.SucursalConciliacion        = refExterna.SucursalConciliacion;
+                saldoAFavor.AñoConciliacion             = refExterna.AñoConciliacion;
+                saldoAFavor.MesConciliacion             = refExterna.MesConciliacion;
+                saldoAFavor.FolioConciliacion           = refExterna.FolioConciliacion;
+                saldoAFavor.CorporativoExterno          = refExterna.Corporativo;
+                saldoAFavor.SucursalExterno             = refExterna.Sucursal;
+                saldoAFavor.AñoExterno                  = refExterna.Año;
+                saldoAFavor.FolioExterno                = refExterna.Folio;
+                saldoAFavor.SecuenciaExterno            = refExterna.Secuencia;
 
                 saldoAFavor.Guardar(conexion);
             }
@@ -2982,9 +2982,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         Celula = Convert.ToInt32(ddlCelula.SelectedValue);
                     }
                 //Celula = 6;
-                    Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                          Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                          cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
+                Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
+                        Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                        cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
                 LlenaGridViewPedidos();
                 statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);
