@@ -158,6 +158,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void Page_Load(object sender, EventArgs e)
     {
         objControlPostBack = GetPostBackControlId(this.Page);
+        hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
+
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
@@ -389,7 +391,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 MostrarPopUp_ConciliacionManual();
 
-                GuardarClientePago();
+                if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
+                {
+                    GuardarClientePago();
+                }
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -1853,7 +1858,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,formaConciliacion);
                             GenerarTablaConciliados();
                             LlenaGridViewConciliadas();
-                            
+
                             /*if (lblAbono.Text.Trim() != "")
                             {
                                 decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
@@ -1867,7 +1872,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                     
                                 }
                             }*/
-                            MostrarClientePago(objSolicitdConciliacion.ConsultaPedido());
+                            if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
+                            {
+                                MostrarClientePago(objSolicitdConciliacion.ConsultaPedido());
+                            }
 
                             //if (lblAbono.Text.Trim() != "")
                             //{
