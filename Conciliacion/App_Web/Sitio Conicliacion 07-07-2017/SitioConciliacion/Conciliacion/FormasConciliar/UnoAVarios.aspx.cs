@@ -526,12 +526,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
                     listaClientes.Add(cliente);
                 }
+                
                 wucClientePago.Clientes = listaClientes;
                 hdfClientePagoAnio.Value = refExterna.Año.ToString();
                 hdfClientePagoCorporativo.Value = refExterna.Corporativo.ToString();
                 hdfClientePagoFolio.Value = refExterna.Folio.ToString();
                 hdfClientePagoSecuencia.Value = refExterna.Secuencia.ToString();
                 hdfClientePagoSucursal.Value = refExterna.Sucursal.ToString();
+                listaClientes = listaClientes.Distinct().ToList();
+
+                if (listaClientes.Count > 1) hdfClientePagoMostrar.Value = "1";
+                else hdfClientePagoMostrar.Value = "";
             }
         }
         catch(Exception ex)
@@ -1872,9 +1877,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                     
                                 }
                             }*/
+
                             if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
                             {
-                                MostrarClientePago(objSolicitdConciliacion.ConsultaPedido());
+                                // Si no se muestra el control presentar mensaje de éxito
+                                if (!MostrarClientePago(objSolicitdConciliacion.ConsultaPedido()))
+                                {
+                                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                                        "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
+                                        + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
+                                }
                             }
 
                             //if (lblAbono.Text.Trim() != "")
@@ -1887,10 +1899,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             //        {
                             //            //mpeSaldosAFavor.Show(); 
                             //        }*/
-                                    
+
                             //    }
                             //}
-                            
+
                             //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                             //    "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
                             //    + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
@@ -1915,11 +1927,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-    private void MostrarClientePago(bool EsPedido)
+    private bool MostrarClientePago(bool EsPedido)
     {
+        bool seMuestra = false;
         try
         {
-            if (EsPedido)
+            if (EsPedido && hdfClientePagoMostrar.Value == "1")
             {
                 if (HttpContext.Current.Session["EXTERNO_SELECCIONADO"] != null)
                 {
@@ -1930,6 +1943,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     if (resto > minSaldoAFavor)
                     {
                         wucClientePago.CargarGrid();
+                        seMuestra = true;
                         mpeClientePago.Show();
                     }
                 }
@@ -1938,6 +1952,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     throw new Exception("No se encontró registro externo.");
                 }
             }
+            return seMuestra;
         }
         catch(Exception ex)
         {
@@ -2838,10 +2853,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();    
                     }
-                    //Celula = 6;
+                    Celula = 6;
                     Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                         Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                        cliente, false);
+                        cliente, true);
                 }
                 // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
@@ -2989,10 +3004,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = Convert.ToInt32(ddlCelula.SelectedValue);
                     }
-                //Celula = 6;
+                Celula = 6;
                 Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                         Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                        cliente, false); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
+                        cliente, true); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
                 LlenaGridViewPedidos();
                 statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);

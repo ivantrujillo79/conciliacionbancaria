@@ -2541,6 +2541,7 @@
             <asp:HiddenField runat="server" ID="hdfClientePagoFolio"        />
             <asp:HiddenField runat="server" ID="hdfClientePagoSecuencia"    />
             <asp:HiddenField runat="server" ID="hdfClientePagoSucursal"/>
+            <asp:HiddenField runat="server" ID="hdfClientePagoMostrar" Value=""/>
             <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" Value=""/>
             <asp:HiddenField runat="server" ID="hdfClientePagoCancelar" Value=""/>
             <div>
