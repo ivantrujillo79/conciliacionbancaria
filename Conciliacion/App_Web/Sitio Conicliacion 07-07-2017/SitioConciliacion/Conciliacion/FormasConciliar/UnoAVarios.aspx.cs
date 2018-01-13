@@ -3311,9 +3311,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
         GenerarTablaAgregadosArchivosInternos(rcExterna, tipoConciliacion);
 
-        //ActualizarTotalesAgregados(); este metodo no recalcua monto acumulado
         ActualizarTotalesAgregadosExcel(grvAgregadosPedidos);
-
+        ActualizarTotalesAgregados(); //este metodo no recalcua monto acumulado
 
         if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
         {
