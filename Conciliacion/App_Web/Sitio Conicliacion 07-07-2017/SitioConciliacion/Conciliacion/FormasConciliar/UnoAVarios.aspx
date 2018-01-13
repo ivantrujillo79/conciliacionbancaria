@@ -1244,7 +1244,7 @@
                                 </td>
                                 <td class="etiqueta centradoMedio" style="width: 15%;">
                                     <asp:Button runat="server" ID="btnGuardarUnoAVarios" CssClass="boton bg-color-azulOscuro fg-color-blanco"
-                                        Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarUnoAVarios_Click" />
+                                        Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarUnoAVarios_Click" OnClientClick="var MontoSAF=document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML;var ValorParametro=document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;console.log(parseFloat(MontoSAF.replace('$','').trim()).toFixed(2));console.log(parseFloat(ValorParametro).toFixed(2));console.log(parseFloat(MontoSAF.replace('$','').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2));if(parseFloat(MontoSAF.replace('$','').trim()).toFixed(2)>=parseFloat(ValorParametro).toFixed(2)){var r=confirm('El monto depositado genera un saldo a favor por ' + MontoSAF + '\n¿Desea generar el saldo a favor?'); if(r==true){document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value='Aceptado';}else{document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value='Rechazado';}}" />
                                 </td>
                             </tr>
                         </table>
