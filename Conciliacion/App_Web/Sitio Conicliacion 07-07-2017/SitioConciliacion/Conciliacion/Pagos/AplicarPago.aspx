@@ -308,13 +308,15 @@
                 </tr>
                 <tr>
                     <td style="width: 50%" class="centradoMedio">
-                        <div class="etiqueta  border-color-verdeClaro fg-color-verdeClaro" style="padding: 5px 5px 5px 5px">
+                        <div class="etiqueta border-color-verdeClaro fg-color-verdeClaro" style="padding: 5px 5px 5px 5px">
                             <b>Referencias Externas</b></div>
                     </td>
                     <td rowspan="3" style="width: 1%">
                     </td>
-                    <td style="width: 50%; padding: 5px 5px 5px 5px" class="centradoMedio etiqueta border-color-amarillo">
-                        <b class="fg-color-amarillo">Referencias Internas: Pedidos </b>
+                    <td style="width: 50%;" class="centradoMedio">
+                        <div class="etiqueta border-color-amarillo fg-color-amarillo" style="padding:5px">
+                            <b>Referencias Internas: Pedidos </b>
+                        </div>
                     </td>
                 </tr>
                 <tr>
