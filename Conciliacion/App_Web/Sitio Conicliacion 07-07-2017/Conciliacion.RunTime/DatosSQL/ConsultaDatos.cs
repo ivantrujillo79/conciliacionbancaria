@@ -4684,7 +4684,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     Convert.ToBoolean(reader["SaldoAFavor"]),
                                                     Convert.ToInt32(reader["SucursalBancaria"]),
                                                     Convert.ToString(reader["Descripcion"]),
-                                                    Convert.ToInt32(reader["ClientePago"]),
+                                                    (reader["ClientePago"] == System.DBNull.Value ? 0 : Convert.ToInt32(reader["ClientePago"])),
                                                     ConsultaPagosPorAplicarCliente(corporativo, sucursal, año, mes,
                                                                                    folio,
                                                                                    Convert.ToInt32(reader["Cliente"]),
