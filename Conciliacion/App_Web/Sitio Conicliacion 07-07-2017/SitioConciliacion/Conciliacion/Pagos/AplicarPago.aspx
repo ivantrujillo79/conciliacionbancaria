@@ -339,7 +339,7 @@
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Image ID="imgStatusMovimiento" runat="server" CssClass="icono" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                            Width="15px" Height="15px" ToolTip='<%# Eval("StatusMovimiento").ToString() %>'
+                                            Width="25px" Height="25px" ToolTip='<%# Eval("StatusMovimiento").ToString() %>'
                                             AlternateText='<%# Eval("StatusMovimiento").ToString() %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" Width="25px"></ItemStyle>
