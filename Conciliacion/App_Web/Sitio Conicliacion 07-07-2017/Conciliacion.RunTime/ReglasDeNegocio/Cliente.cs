@@ -167,7 +167,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract List<ReferenciaNoConciliadaPedido> ObtienePedidosNoConciliadosCliente(cConciliacion Conciliacion, Conexion _conexion);
 
         public abstract DataTable ObtienePedidosCliente(int Cliente, Conexion _conexion);
-	}//end Cliente
+
+        public abstract DetalleClientePedidoExcel ObtieneDetalleClientePedidoExcel(string PedidoReferencia, Conexion _conexion);
+
+    }//end Cliente
 
 
     public class ClienteAuxiliar

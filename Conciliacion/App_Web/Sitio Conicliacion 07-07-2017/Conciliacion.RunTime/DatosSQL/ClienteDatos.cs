@@ -10,7 +10,7 @@ using System.Data;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
-    public class ClienteDatos: Cliente
+    public class ClienteDatos : Cliente
     {
 
         public ClienteDatos(IMensajesImplementacion implementadorMensajes)
@@ -90,7 +90,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         this.RazonSocial = rdCliente.GetString(2);
                         this.Celula = rdCliente.GetByte(3);
                         this.Ruta = rdCliente.GetInt16(4);
-                        
+
                         if (rdCliente.GetBoolean(5))
                             this.Programacion = 1;
                         else
@@ -208,7 +208,57 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
 
+        public override DetalleClientePedidoExcel ObtieneDetalleClientePedidoExcel(string PedidoReferencia, Conexion _conexion)
+        {
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBExcelDetalleClientePedido";
+
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@PedidoReferencia", System.Data.SqlDbType.VarChar,20)).Value = PedidoReferencia;
+                SqlDataReader reader = _conexion.Comando.ExecuteReader();
+
+                DetalleClientePedidoExcel objRespuesta = new DetalleClientePedidoExcel();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        objRespuesta.Cliente = Convert.ToInt32(reader["Cliente"]);
+                        objRespuesta.ClientePadre = Convert.ToInt32(reader["ClientePadre"]);
+                        objRespuesta.NombreCliente = Convert.ToString(reader["Nombre"]);
+                    }
+                    reader.Close();
+                }
+                     ClienteException ObjClienteException = new ClienteException();
+                    ObjClienteException.ResultadoValidacion.CodigoError = 0;
+                                    ObjClienteException.ResultadoValidacion.Mensaje = "Proceso exitoso";
+                                    ObjClienteException.ResultadoValidacion.VerificacionValida = true;
+
+                return objRespuesta;
+            }
+            catch (Exception ex)
+            {
+                ClienteException ObjClienteException = new ClienteException();
+                ObjClienteException.ResultadoValidacion.CodigoError = 204;
+                ObjClienteException.ResultadoValidacion.Mensaje = ex.Message;
+                ObjClienteException.ResultadoValidacion.VerificacionValida = false;
+                throw ex;
+            }
+            }
+
+
 
 	}//end ClienteDatos
+
+    public struct DetalleClientePedidoExcel
+    {
+        public int Cliente { get; set; }
+        public int ClientePadre { get; set; }
+        public string NombreCliente { get; set; }
+    }
+
+
 
 }//end namespace DatosSQL

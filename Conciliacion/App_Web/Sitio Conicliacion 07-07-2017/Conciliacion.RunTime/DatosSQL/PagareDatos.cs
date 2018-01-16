@@ -15,11 +15,32 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class PagareDatos : Pagare
     {
+        /// <summary>
+        /// Constructor sobrecargado de la clase
+        /// </summary>
+        /// <param name="implementadorMensajes"></param>
         public PagareDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
+        /// <summary>
+        /// Constructor sobrecargado de la clase
+        /// </summary>
+        /// <param name="foliocorte"></param>
+        /// <param name="foperacion"></param>
+        /// <param name="caja"></param>
+        /// <param name="consecutivo"></param>
+        /// <param name="descripcion"></param>
+        /// <param name="total"></param>
+        /// <param name="observaciones"></param>
+        /// <param name="anioPed"></param>
+        /// <param name="celula"></param>
+        /// <param name="pedido"></param>
+        /// <param name="cobranza"></param>
+        /// <param name="saldo"></param>
+        /// <param name="gestioninicial"></param>
+        /// <param name="implementadorMensajes"></param>
         public PagareDatos(
             int foliocorte,
             DateTime foperacion,
