@@ -72,5 +72,11 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
     protected void imgBuscaPagares_Click(object sender, ImageClickEventArgs e)
     {
         List<DetalleSaldoAFavor> ListaSaldoAFavor = new List<DetalleSaldoAFavor>();
+        ListaSaldoAFavor.Add( new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" } );
+        ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
+        ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
+        ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
+        grvSaldosAFavor.DataSource = ListaSaldoAFavor;
+        grvSaldosAFavor.DataBind();
     }
 }

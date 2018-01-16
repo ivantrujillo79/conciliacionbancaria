@@ -99,23 +99,27 @@
         <td class="auto-style1"></td>
     </tr>
     <tr>
+        <td colspan="7"></td>
+    </tr>
+    <tr>
         <td colspan="7">
-            <asp:GridView ID="gvSaldosAFavor" runat="server" AutoGenerateColumns="False">
-                <Columns>
-                    <asp:CheckBoxField AccessibleHeaderText="Seleccionar" />
-                    <asp:BoundField AccessibleHeaderText="Folio" HeaderText="Folio" />
-                    <asp:BoundField AccessibleHeaderText="Cliente" HeaderText="Cliente" />
-                    <asp:BoundField AccessibleHeaderText="Nombre Cliente" HeaderText="Nombre Cliente" />
-                    <asp:BoundField AccessibleHeaderText="Banco" HeaderText="Banco" />
-                    <asp:BoundField AccessibleHeaderText="Sucursal" HeaderText="Sucursal" />
-                    <asp:BoundField AccessibleHeaderText="Tipo Cargo" HeaderText="Tipo Cargo" />
-                    <asp:BoundField AccessibleHeaderText="Global" HeaderText="Global" />
-                    <asp:BoundField AccessibleHeaderText="Fsaldo" HeaderText="Fsaldo" />
-                    <asp:BoundField AccessibleHeaderText="Importe" HeaderText="Importe" />
-                    <asp:BoundField AccessibleHeaderText="Conciliada" HeaderText="Conciliada" />
-                </Columns>
-                
-            </asp:GridView>
+            <div style="width:700px; height:300px; overflow:auto;">
+                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False">
+                    <Columns>
+                        <asp:CheckBoxField AccessibleHeaderText="Seleccionar" />
+                        <asp:BoundField AccessibleHeaderText="Folio" HeaderText="Folio" />
+                        <asp:BoundField AccessibleHeaderText="Cliente" HeaderText="Cliente" />
+                        <asp:BoundField AccessibleHeaderText="Nombre Cliente" HeaderText="Nombre Cliente" />
+                        <asp:BoundField AccessibleHeaderText="Banco" HeaderText="Banco" />
+                        <asp:BoundField AccessibleHeaderText="Sucursal" HeaderText="Sucursal" />
+                        <asp:BoundField AccessibleHeaderText="Tipo Cargo" HeaderText="Tipo Cargo" />
+                        <asp:BoundField AccessibleHeaderText="Global" HeaderText="Global" />
+                        <asp:BoundField AccessibleHeaderText="Fsaldo" HeaderText="Fsaldo" />
+                        <asp:BoundField AccessibleHeaderText="Importe" HeaderText="Importe" />
+                        <asp:BoundField AccessibleHeaderText="Conciliada" HeaderText="Conciliada" />
+                    </Columns>
+                </asp:GridView>
+            </div>
         </td>
     </tr>
     <tr>

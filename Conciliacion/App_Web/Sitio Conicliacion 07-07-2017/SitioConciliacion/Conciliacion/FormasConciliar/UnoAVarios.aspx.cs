@@ -157,6 +157,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);
         hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
 
@@ -170,8 +171,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             //mpeSaldosAFavor.Show(); 
         }
-        
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (formaConciliacion == 0)
@@ -639,7 +639,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 SaldoAFavor saldoAFavor = App.SaldoAFavor.CrearObjeto();
                 saldoAFavor.FolioMovimiento             = -1;
-                saldoAFavor.AñoMovimiento               = refExterna.AñoConciliacion;
+                saldoAFavor.AñoMovimiento               = DateTime.Now.Year;
                 saldoAFavor.TipoMovimientoAConciliar    = 1;
                 saldoAFavor.EmpresaContable             = 0;
                 saldoAFavor.Caja                        = 0;
@@ -652,15 +652,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 saldoAFavor.AñoCobro                    = 0;
                 saldoAFavor.Cobro                       = 0;
                 saldoAFavor.Monto                       = dSaldoAFavor;  /*          cambiar por refExterna.DetalleSaldo.MontoConciliado         */
-                saldoAFavor.StatusMovimiento            = "PENDIENTE";
-                saldoAFavor.FMovimiento                 = refExterna.FMovimiento;
-                saldoAFavor.StatusConciliacion          = "CONCILIADA";
+                saldoAFavor.StatusMovimiento            = "REGISTRADO";
+                saldoAFavor.FMovimiento                 = DateTime.Now;
+                //saldoAFavor.StatusConciliacion          = "CONCILIADA";
                 saldoAFavor.FConciliacion               = DateTime.Now;
-                saldoAFavor.CorporativoConciliacion     = refExterna.Corporativo;
-                saldoAFavor.SucursalConciliacion        = refExterna.SucursalConciliacion;
-                saldoAFavor.AñoConciliacion             = refExterna.AñoConciliacion;
-                saldoAFavor.MesConciliacion             = refExterna.MesConciliacion;
-                saldoAFavor.FolioConciliacion           = refExterna.FolioConciliacion;
+                //saldoAFavor.CorporativoConciliacion     = refExterna.Corporativo;
+                //saldoAFavor.SucursalConciliacion        = refExterna.SucursalConciliacion;
+                //saldoAFavor.AñoConciliacion             = refExterna.AñoConciliacion;
+                //saldoAFavor.MesConciliacion             = refExterna.MesConciliacion;
+                //saldoAFavor.FolioConciliacion           = refExterna.FolioConciliacion;
                 saldoAFavor.CorporativoExterno          = refExterna.Corporativo;
                 saldoAFavor.SucursalExterno             = refExterna.Sucursal;
                 saldoAFavor.AñoExterno                  = refExterna.Año;
