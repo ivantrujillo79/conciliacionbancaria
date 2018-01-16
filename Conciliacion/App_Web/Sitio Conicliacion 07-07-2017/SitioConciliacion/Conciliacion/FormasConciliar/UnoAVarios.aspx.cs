@@ -2886,7 +2886,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();    
                     }
-                    Celula = 6;
+                    Celula = 0;
                     Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                         Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
                         cliente, true);
@@ -3037,7 +3037,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Celula = Convert.ToInt32(ddlCelula.SelectedValue);
                     }
-                Celula = 6;
+                Celula = 0;
                 Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
                         Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
                         cliente, true); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
