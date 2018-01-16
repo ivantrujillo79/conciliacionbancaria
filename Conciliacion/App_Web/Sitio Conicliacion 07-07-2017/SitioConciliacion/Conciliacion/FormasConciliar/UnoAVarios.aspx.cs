@@ -658,7 +658,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 saldoAFavor.Cobro                       = 0;
                 saldoAFavor.Monto                       = dSaldoAFavor;  /*          cambiar por refExterna.DetalleSaldo.MontoConciliado         */
                 saldoAFavor.StatusMovimiento            = "PENDIENTE";
-                saldoAFavor.FMovimiento                 = refExterna.FMovimiento;
+                saldoAFavor.FMovimiento                 = DateTime.Now;
                 saldoAFavor.StatusConciliacion          = "CONCILIADA";
                 saldoAFavor.FConciliacion               = DateTime.Now;
                 saldoAFavor.CorporativoConciliacion     = refExterna.Corporativo;
