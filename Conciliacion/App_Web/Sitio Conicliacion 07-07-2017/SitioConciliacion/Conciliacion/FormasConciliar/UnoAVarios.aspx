@@ -832,6 +832,9 @@
                                     </b>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
+                                    <asp:Button runat="server" Text="Saldo a favor" ID="btnSaldoAFavor" CssClass="boton bg-color-naranja fg-color-blanco" />
+                                </td>
+                                <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgPagare" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagare.png"
                                         ToolTip="CONCILIAR PAGARE" Width="25px" Height="25px" OnClick="imgPagare_Click" />
                                 </td>
