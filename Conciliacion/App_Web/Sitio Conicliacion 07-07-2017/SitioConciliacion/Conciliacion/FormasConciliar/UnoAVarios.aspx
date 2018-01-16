@@ -2587,15 +2587,14 @@
     
     <!-- MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
     <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
-    <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" EnableViewState="True" />
     <asp:ModalPopupExtender ID="mpeSaldosAFavor" runat="server" BackgroundCssClass="ModalBackground"
                 DropShadow="False" EnableViewState="false" PopupControlID="pnlSaldoAFavor"
                 TargetControlID="hdfSaldoAFavor">
    </asp:ModalPopupExtender>
-        <asp:Panel ID="pnlSaldoAFavor" runat="server" CssClass="ModalPopup" Width="900px"
-                    Style="display: none">
-                    <asp:UpdatePanel ID="upSaldoAFavor" runat="server">
+    <asp:Panel ID="pnlSaldoAFavor" runat="server" CssClass="ModalPopup" Width="900px" Style="display: none">
+        <asp:UpdatePanel ID="upSaldoAFavor" runat="server">
             <ContentTemplate>
+                <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" /> <%--EnableViewState="True"--%> 
                 <div>
                     <table style="width: 100%;">
                         <tr class="bg-color-grisOscuro">
@@ -2613,10 +2612,10 @@
                             <td>  <uc1:wucSaldoAFavor runat="server" ID="wucSaldoAFavor" />  </td>
                         </tr>
                     </table>
-                    </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-        </asp:Panel>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </asp:Panel>
     <!--TERMINA MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
     
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
