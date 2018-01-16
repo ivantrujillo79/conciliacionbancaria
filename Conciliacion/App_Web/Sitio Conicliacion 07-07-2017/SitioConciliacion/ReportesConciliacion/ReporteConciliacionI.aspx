@@ -821,7 +821,7 @@
         BackgroundCssClass="ModalBackground" >
     </asp:ModalPopupExtender>
     <%--Style="display: none"--%>
-	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="1000px" Height="95%" Style="display: none"
+	<asp:Panel ID="pnlConciliarMovPedido" runat="server" BackColor="#FFFFFF" Width="900px" Height="95%" Style="display: none"
         CssClass="ModalPopup">
         <asp:UpdatePanel ID="upConciliarMovPedido" runat="server" >
             <ContentTemplate>
@@ -916,7 +916,7 @@
                                         <ajaxToolkit:AccordionPane ID="apGridPedidos" runat="server">
                                             <Header>PEDIDOS</Header>
                                             <Content>                                                
-                                                <div style="width: 980px; height: 300px; overflow:auto;">
+                                                <%--<div style="width: 980px; height: 300px; overflow:auto;">--%>
                                                     <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="False"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                                         ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente,Total" AllowPaging="False">
@@ -1020,7 +1020,7 @@
                                                         </Columns>
                                                         <PagerStyle CssClass="grvPaginacionScroll" />
                                                     </asp:GridView>
-                                                </div>
+                                                <%--</div>--%>
                                                 <table width="100%">
                                                     <tr>
 						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
