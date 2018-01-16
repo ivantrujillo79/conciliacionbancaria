@@ -45,7 +45,7 @@
 
 <table style="width: 100%;">
     <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-        <td colspan="3">
+        <td>
             Fecha de saldos
         </td>
         <td></td>
@@ -56,7 +56,7 @@
         <td></td>
     </tr>
     <tr  class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-        <td colspan="3">
+        <td>
             <asp:CheckBox ID="cbTodos" runat="server" Text="Todos"/>
         </td>
         <td>
@@ -73,27 +73,29 @@
         </td>
         <td>
             <asp:TextBox ID="txtMonto" runat="server" onkeypress="return ValidaMoneda(event)"></asp:TextBox>
-            <br />
-
-        </td>  
-        <td>            
-            <asp:ImageButton ID="imgBuscaPagares" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                ToolTip="BUSCAR" style="padding: 10px 4px 7px 5px;" 
-                ValidationGroup="vgFecha, vgMoneda" OnClick="imgBuscaPagares_Click"/>
-        </td>       
-    </tr>
-    <tr>
-        <td class="auto-style1"></td>
-        <td class="auto-style1"></td>
-        <td class="auto-style1"></td>
-        <td class="auto-style1"></td>
-        <td class="auto-style1"></td>
-        <td class="auto-style1">
             <asp:CompareValidator id="cvMonto" runat="server" 
                 ControlToValidate="txtMonto" 
                 Operator="DataTypeCheck"
                 Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
-        </td>
+
+            <br />
+
+        </td>  
+        <td>            
+            <div class="bg-color-grisClaro fg-color-amarillo">
+                <asp:ImageButton ID="imgBuscaPagares" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                ToolTip="Buscar saldos a favor" Width="30px" Height="30px" style="padding: 5px 5px 5px 5px;" 
+                ValidationGroup="vgFecha, vgMoneda" OnClick="imgBuscaPagares_Click"/>
+            </div>
+        </td>       
+    </tr>
+    <tr class="centradoJustificado">
+        <td class="auto-style1"><asp:CheckBox ID="cbMontosIguales" runat="server" Text="Montos iguales"/></td>
+        <td class="auto-style1"></td>
+        <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/></td>
+        <td class="auto-style1"></td>
+        <td class="auto-style1"><asp:Label ID="lblResto" runat="server"/></td>
+        <td class="auto-style1"></td>
         <td class="auto-style1"></td>
     </tr>
     <tr>
@@ -121,8 +123,10 @@
     </tr>
         <tr>
         <td colspan="7">
-            <asp:Button ID="btnGuardar" runat="server" Text="Guardar" OnClick="btnGuardar_Click" />
-            <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" OnClick="btnCancelar_Click" />
+            <div class="centradoMedio">
+                <asp:Button ID="btnGuardar" runat="server" Text="Guardar" OnClick="btnGuardar_Click" CssClass="boton fg-color-blanco bg-color-azulClaro"/>
+                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" OnClick="btnCancelar_Click" CssClass="boton fg-color-blanco bg-color-grisClaro" />
+            </div>
         </td>
     </tr>
 </table>

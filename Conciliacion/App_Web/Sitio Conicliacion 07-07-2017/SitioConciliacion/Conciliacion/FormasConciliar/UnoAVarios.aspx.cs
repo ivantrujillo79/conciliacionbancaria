@@ -6142,4 +6142,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         //mpeSaldosAFavor.Show();
     }
+
+    protected void btnSaldoAFavor_Click(object sender, EventArgs e)
+    {
+        mpeSaldosAFavor.Show();
+    }
 }
