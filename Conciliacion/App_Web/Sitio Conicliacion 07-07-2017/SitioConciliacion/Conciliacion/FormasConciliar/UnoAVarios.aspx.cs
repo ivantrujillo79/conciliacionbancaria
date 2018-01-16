@@ -223,7 +223,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
-                //mpeClientePago.Show();
+                btnSaldoAFavor.Visible = objSolicitdConciliacion.MuestraSaldoAFavor() ? objSolicitdConciliacion.MuestraSaldoAFavor() : false;
 
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;
@@ -284,12 +284,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblGridAP.Text = "INTERNOS ";
                     lblArchivosInternos.Visible = true;
                 }
-
-                if (objSolicitdConciliacion.MuestraBuscadores())
-                {
-                    
-                }
-
+                
                 if (grvExternos.Rows.Count > 0)
                 {
                     if (tipoConciliacion == 2)
