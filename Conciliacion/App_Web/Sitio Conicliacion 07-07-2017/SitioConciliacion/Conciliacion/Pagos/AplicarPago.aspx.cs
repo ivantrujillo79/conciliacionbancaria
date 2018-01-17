@@ -154,6 +154,19 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
              //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
             listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC);
             HttpContext.Current.Session["LIST_REF_PAGAR"] = listaReferenciaConciliadaPagos;
+
+            Conexion _conexion = new Conexion();
+            SaldoAFavor saldoAFavor = App.SaldoAFavor.CrearObjeto();
+            foreach (ReferenciaConciliadaPedido referencia in listaReferenciaConciliadaPagos)
+            {
+                saldoAFavor.CorporativoExterno = referencia.Corporativo;
+                saldoAFavor.SucursalExterno = referencia.Sucursal;
+                saldoAFavor.AñoExterno = referencia.Año;
+                saldoAFavor.FolioExterno = referencia.Folio;
+                saldoAFavor.SecuenciaExterno = referencia.Secuencia;
+
+                App.ImplementadorMensajes.MostrarMensaje(saldoAFavor.ExisteExterno(_conexion).ToString());
+            }
         }
         catch (Exception ex)
         {
@@ -680,52 +693,50 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                          corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
                     objMCC.Guardar(conexion);
 
-                   /* List<ReferenciaConciliadaPedido> ListaConciliados = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
+                    List<ReferenciaConciliadaPedido> ListaConciliados = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
 
                     if (objMovimientoCaja.ListaCobros[0].SaldoAFavor)
                     {
-                        SaldoAFavor objSaldoAFavor = new SaldoAFavor
-                        {
-                            //PK de la tabla
-                            AñoMovimiento = DateTime.Now.Year,
-                            //FK TipoMovimientoAConciliar
-                            TipoMovimientoAConciliar = 1,
-                            //FK CorteCajaTipoFichaAplicacion						
-                            EmpresaContable = 99,
-                            Caja = objMovimientoCaja.Caja,
-                            FOperacion = DateTime.Now,
-                            TipoFicha = 1,
-                            Consecutivo = 1,
-                            TipoAplicacionIngreso = 1,
-                            ConsecutivoTipoAplicacion = 1,
-                            //FK Factura
-                            Factura = 9999,
-                            //FK Cobro
-                            AñoCobro = objMovimientoCaja.ListaCobros[0].AñoCobro,
-                            Cobro = movimientoCajaAlta.ListaCobros[0].NumCobro,
-                            //Datos del saldo a favor
-                            Monto = 20, /////CORREGIR
-                            StatusMovimiento = "PENDIENTE",
-                            FMovimiento = DateTime.Now,
-                            StatusConciliacion = objMCC.Status,
-                            FConciliacion = objMCC.FOperacion,
-                            //FK Conciliacion
-                            CorporativoConciliacion = objMCC.CorporativoConciliacion,
-                            SucursalConciliacion = objMCC.SucursalConciliacion,
-                            AñoConciliacion = objMCC.AñoConciliacion,
-                            MesConciliacion = objMCC.MesConciliacion,
-                            FolioConciliacion = objMCC.FolioConciliacion,
-                            //FK TablaDestinoDetalle
-                            CorporativoExterno = ListaConciliados[0].Corporativo,
-                            SucursalExterno = ListaConciliados[0].Sucursal,
-                            AñoExterno = ListaConciliados[0].Año,
-                            FolioExterno = ListaConciliados[0].Folio,
-                            SecuenciaExterno = ListaConciliados[0].Secuencia
-                        };
-                    }*/
+                        SaldoAFavor objSaldoAFavor = App.SaldoAFavor.CrearObjeto();
+                        // FK TablaDestinoDetalle
+                        objSaldoAFavor.CorporativoExterno   = ListaConciliados[0].Corporativo;
+                        objSaldoAFavor.SucursalExterno      = ListaConciliados[0].Sucursal;
+                        objSaldoAFavor.AñoExterno           = ListaConciliados[0].Año;
+                        objSaldoAFavor.FolioExterno         = ListaConciliados[0].Folio;
+                        objSaldoAFavor.SecuenciaExterno     = ListaConciliados[0].Secuencia;
+                        // FK Cobro
+                        objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
+                        objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
+                        //PK de la tabla
+                        //AñoMovimiento = DateTime.Now.Year,
+                        ////FK TipoMovimientoAConciliar
+                        //TipoMovimientoAConciliar = 1,
+                        ////FK CorteCajaTipoFichaAplicacion						
+                        //EmpresaContable = 99,
+                        //Caja = objMovimientoCaja.Caja,
+                        //FOperacion = DateTime.Now,
+                        //TipoFicha = 1,
+                        //Consecutivo = 1,
+                        //TipoAplicacionIngreso = 1,
+                        //ConsecutivoTipoAplicacion = 1,
+                        ////FK Factura
+                        //Factura = 9999,
+                        //Datos del saldo a favor
+                        //Monto = 20, /////CORREGIR
+                        //StatusMovimiento = "PENDIENTE",
+                        //FMovimiento = DateTime.Now,
+                        //StatusConciliacion = objMCC.Status,
+                        //FConciliacion = objMCC.FOperacion,
+                        //FK Conciliacion
+                        //CorporativoConciliacion = objMCC.CorporativoConciliacion,
+                        //SucursalConciliacion = objMCC.SucursalConciliacion,
+                        //AñoConciliacion = objMCC.AñoConciliacion,
+                        //MesConciliacion = objMCC.MesConciliacion,
+                        //FolioConciliacion = objMCC.FolioConciliacion,
+                    }
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje("Error al aplicar el pago de los pedidos, por favor verifique.");
+                    throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
             conexion.AbrirConexion(true);

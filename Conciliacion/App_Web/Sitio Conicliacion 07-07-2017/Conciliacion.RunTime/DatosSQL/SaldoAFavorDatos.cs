@@ -178,5 +178,72 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
 
+        public override bool RegistrarCobro(Conexion _conexion)
+        {
+            bool resultado = false;
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBSaldoAFavorRegistraCobro";
+                _conexion.Comando.Parameters.Clear();
+                
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoExterno", SqlDbType.TinyInt)).Value  = this.CorporativoExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalExterno", SqlDbType.TinyInt)).Value     = this.SucursalExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoExterno", SqlDbType.Int)).Value              = this.AñoExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioExterno", SqlDbType.Int)).Value            = this.FolioExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SecuenciaExterno", SqlDbType.Int)).Value        = this.SecuenciaExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoCobro", SqlDbType.SmallInt)).Value           = this.AñoCobro;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cobro", SqlDbType.Int)).Value                   = this.Cobro;
+
+                _conexion.Comando.ExecuteNonQuery();
+
+                resultado = true;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        public override bool ExisteExterno(Conexion _conexion)
+        {
+            bool resultado = false;
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBSaldoAFavorExiste";
+                _conexion.Comando.Parameters.Clear();
+
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoExterno", SqlDbType.TinyInt)).Value  = this.CorporativoExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalExterno", SqlDbType.TinyInt)).Value     = this.SucursalExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoExterno", SqlDbType.Int)).Value              = this.AñoExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioExterno", SqlDbType.Int)).Value            = this.FolioExterno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SecuenciaExterno", SqlDbType.Int)).Value        = this.SecuenciaExterno;
+
+                SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    resultado = Convert.ToInt32(reader["TotalRegistros"]) > 0;
+                    break;
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
     }
 }

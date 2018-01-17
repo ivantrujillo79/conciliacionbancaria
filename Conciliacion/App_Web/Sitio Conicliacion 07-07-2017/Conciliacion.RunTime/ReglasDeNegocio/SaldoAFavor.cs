@@ -278,7 +278,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract List<DetalleSaldoAFavor> ConsultaSaldoAFavor(string FInicial, string FFinal, string Cliente, decimal monto, Conexion conexion);
 
         public abstract bool Guardar(Conexion _conexion);
-    
+
+        public abstract bool RegistrarCobro(Conexion _conexion);
+        
+        public abstract bool ExisteExterno(Conexion _conexion);
+
         public virtual string CadenaConexion
         {
             get { return App.CadenaConexion; }
