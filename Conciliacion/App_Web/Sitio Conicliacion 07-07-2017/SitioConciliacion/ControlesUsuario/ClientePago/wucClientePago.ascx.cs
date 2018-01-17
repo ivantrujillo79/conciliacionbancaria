@@ -85,7 +85,7 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
                     row = dt.NewRow();
                     row["Cliente"] = cli;
                     row["Nombre"] = objCliente.Nombre;
-                    row["Tipo"] = "SUCURSAL"; //FALTA
+                    row["Tipo"] = objCliente.Tipo;
                     dt.Rows.Add(row);
                 }
             }

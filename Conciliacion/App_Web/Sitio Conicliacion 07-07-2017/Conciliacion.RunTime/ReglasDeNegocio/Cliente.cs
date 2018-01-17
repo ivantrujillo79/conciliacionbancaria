@@ -25,6 +25,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 		private decimal saldo;
 		private string email;
 		private string direccion;
+        private string tipo;
 
         public Cliente(IMensajesImplementacion implementadorMensajes)
         {
@@ -42,6 +43,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.saldo = 0;
             this.email = "";
             this.direccion = "";
+            this.tipo = "";
         }
 
         public Cliente(byte celula, 
@@ -56,7 +58,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                        string telefonoalternodos, 
                        decimal saldo, 
                        string email, 
-                       string direccion, IMensajesImplementacion implementadorMensajes)
+                       string direccion, 
+                       string tipo, IMensajesImplementacion implementadorMensajes)
         {
             this.celula = celula;
             this.digitoverificador = digitoverificador;
@@ -71,7 +74,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.saldo = saldo;
             this.email = email;
             this.direccion = direccion;
-            this.implementadorMensajes = implementadorMensajes;
+            this.tipo = tipo;
+            this.implementadorMensajes = implementadorMensajes;            
         }
 
         #region Propiedades
@@ -157,6 +161,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return cliente; }
             set { cliente = value; }
+        }
+
+        public string Tipo
+        {
+            get { return tipo; }
+            set { tipo = value; }
         }
         #endregion
 

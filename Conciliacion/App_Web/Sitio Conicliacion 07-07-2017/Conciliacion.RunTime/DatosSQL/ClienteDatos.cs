@@ -45,7 +45,7 @@ namespace Conciliacion.RunTime.DatosSQL
             decimal saldo,
             string email,
             string direccion,
-            IMensajesImplementacion implementadorMensajes)
+            string tipo, IMensajesImplementacion implementadorMensajes)
             : base(celula,
             digitoverificador,
             nombre,
@@ -58,7 +58,8 @@ namespace Conciliacion.RunTime.DatosSQL
             telefonoalternodos,
             saldo,
             email,
-            direccion, implementadorMensajes)
+            direccion,
+            tipo, implementadorMensajes)
         {
         }
 
@@ -102,6 +103,10 @@ namespace Conciliacion.RunTime.DatosSQL
                         this.Saldo = rdCliente.GetDecimal(9);
                         this.Email = rdCliente.GetString(10);
                         this.Direccion = rdCliente.GetString(11);
+                        if (rdCliente.GetInt32(12) == this.NumCliente)
+                            this.Tipo = "PADRE";
+                        else
+                            this.Tipo = "SUCURSAL";
 
                     }
                     rdCliente.Close();
