@@ -39,6 +39,41 @@
             });
         }
 
+        function registroElegido(Registro, Operacion) {
+            try {
+                var tabla = document.getElementById('ctl00_contenidoPrincipal_wucSaldoAFavor_grvSaldosAFavor');
+                console.log(tabla);
+                var filas = tabla.rows;
+                console.log(filas);
+                var fila = tabla.rows[Registro + 1];
+                console.log(fila);
+                console.log(fila.cells[9].innerHTML);
+
+                var acumulado = parseFloat(0).toFixed(2);
+                acumulado = parseFloat($("#cellResto")[0].innerHTML.replace('<span id="ctl00_contenidoPrincipal_wucSaldoAFavor_lblResto">', '').replace('</span>', '').replace('NaN', '').replace('Resto:', '').replace('$','').trim()).toFixed(2);
+
+                var elegido = fila.cells[0].innerHTML;
+                
+                if (Operacion == "SUMA")
+                {
+                    var nuevoMonto = parseFloat(acumulado) + parseFloat(fila.cells[9].innerHTML);
+                }
+                else
+                {
+                    var nuevoMonto = parseFloat(acumulado) - parseFloat(fila.cells[9].innerHTML);
+                }
+                
+                $("#cellResto").hide(500);
+                $("#cellResto")[0].innerHTML = "Resto: " + nuevoMonto;
+                $("#cellResto").show(500);
+                $("#cellResto")[0].style.backgroundColor = "yellow"; 
+            }
+            catch (err)
+            {
+                console.log('Error en función JS registroElegido: ' + err);
+            }
+        }
+
         function pageLoad() {
             //gridviewScroll();
             // Script se utiliza para llamar a  la funcion de jQuery desplegable

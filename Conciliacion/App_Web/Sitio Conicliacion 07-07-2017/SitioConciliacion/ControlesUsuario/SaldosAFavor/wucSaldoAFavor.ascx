@@ -74,7 +74,7 @@
         <td class="auto-style1"></td>
         <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
         <td id="ColConciliada2" class="auto-style1"></td>
-        <td class="auto-style1"><asp:Label ID="lblResto" runat="server"/></td>
+        <td id="cellResto" class="auto-style1"><asp:Label ID="lblResto" runat="server"/></td>
         <td class="auto-style1"></td>
         <td class="auto-style1"></td>
     </tr>
@@ -84,14 +84,13 @@
     <tr>
         <td colspan="7">
             <div style="width:900px; height:300px; overflow:auto;" >
-                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss">
+                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" OnRowDataBound="GVCity_RowDataBound">
                     <Columns>
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:CheckBox ID="chkRow" runat="server"/>
+                                <input type="checkbox" runat="server" id="cbSAF"/>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        
                         <asp:BoundField AccessibleHeaderText="Folio" HeaderText="Folio" DataField="Folio" />
                         <asp:BoundField AccessibleHeaderText="Cliente" HeaderText="Cliente" DataField="Cliente" />
                         <asp:BoundField AccessibleHeaderText="Nombre Cliente" HeaderText="Nombre Cliente" DataField="NombreCliente" />

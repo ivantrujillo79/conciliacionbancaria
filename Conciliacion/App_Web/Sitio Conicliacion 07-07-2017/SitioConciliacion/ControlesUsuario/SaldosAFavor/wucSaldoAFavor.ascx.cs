@@ -6,10 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AjaxControlToolkit;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using System.Web.UI.HtmlControls;
 
 public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.UI.UserControl
 {
     const string __strMontoAConciliar = "Monto a conciliar: ";
+    const string __strResto = "Resto: ";
 
     #region Propiedades del control
     private byte _TipoOperacion;
@@ -32,7 +34,8 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
     public object Contenedor { get; set; }
 
     public decimal MontoAConciliar
-    {   get
+    {
+        get
         {
             return this.MontoAConciliar;
         }
@@ -48,13 +51,14 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, typeof(Page), "Calendarios", "SAF_DatePickers();", true);
+        lblResto.Text = __strResto + "$0.00";
 
         if (this.TipoOperacion == 1)
         {
             ddStatusConciliacion.Visible = true;
 
             List<Conciliacion.RunTime.ReglasDeNegocio.OpcionSaldoAFavor> ListaOpciones = new List<Conciliacion.RunTime.ReglasDeNegocio.OpcionSaldoAFavor>();
-            ListaOpciones.Add(new OpcionSaldoAFavor{IDOpcion = 0, OpcionConciliacion = "Pendiente"});
+            ListaOpciones.Add(new OpcionSaldoAFavor { IDOpcion = 0, OpcionConciliacion = "Pendiente" });
             ListaOpciones.Add(new OpcionSaldoAFavor { IDOpcion = 1, OpcionConciliacion = "Conciliado" });
 
             ddStatusConciliacion.DataSource = ListaOpciones;
@@ -89,11 +93,29 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
     protected void imgBuscaPagares_Click(object sender, ImageClickEventArgs e)
     {
         List<DetalleSaldoAFavor> ListaSaldoAFavor = new List<DetalleSaldoAFavor>();
-        ListaSaldoAFavor.Add( new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" } );
+        ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
         ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
         ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
         ListaSaldoAFavor.Add(new DetalleSaldoAFavor { Folio = 1, Cliente = "763763", NombreCliente = "Marcos aurelio", Banco = "Banregio", Sucursal = "Monterrey", TipoCargo = "TipoA", Global = true, Fsaldo = DateTime.Now, Importe = Convert.ToDecimal("342.55"), Conciliada = "abc" });
         grvSaldosAFavor.DataSource = ListaSaldoAFavor;
         grvSaldosAFavor.DataBind();
+    }
+
+    protected void GVCity_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            HtmlInputCheckBox cbElegido = (HtmlInputCheckBox)e.Row.FindControl("cbSAF");
+            string Operacion = "SUMA";
+            if(cbElegido.Checked)
+            {
+                Operacion = "SUMA";
+            }
+            else
+            {
+                Operacion = "RESTA";
+            }
+            cbElegido.Attributes["onchange"] = "javascript:return registroElegido("+ e.Row.RowIndex + ",'"+ Operacion + "');";
+        }
     }
 }
