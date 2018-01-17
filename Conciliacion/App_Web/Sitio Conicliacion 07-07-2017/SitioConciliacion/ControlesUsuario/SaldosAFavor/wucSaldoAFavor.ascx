@@ -2,26 +2,6 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <script type="text/javascript">
-
-    function SAF_DatePickers() {
-        $("#<%= txtFechaInicio.ClientID%>").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            changeYear: true,
-            onClose: function(selectedDate) {
-                $("#<%=txtFechaFin.ClientID%>").datepicker("option", "minDate", selectedDate);
-            }
-        });
-        $("#<%=txtFechaFin.ClientID%>").datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            changeYear: true,
-            onClose: function(selectedDate) {
-                $("#<%=txtFechaInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-            }
-        });
-    }
-
     function ValidaNumero(e) {
         var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
         return ((tecla > 47 && tecla < 58));
@@ -29,7 +9,7 @@
     function ValidaMoneda(e) {
         var charCode = (e.which) ? e.which : e.keyCode;
         if (charCode != 46 && charCode > 31
-          && (charCode < 48 || charCode > 57))
+            && (charCode < 48 || charCode > 57))
             return false;
 
         return true;
@@ -103,20 +83,20 @@
     </tr>
     <tr>
         <td colspan="7">
-            <div style="width:700px; height:300px; overflow:auto;">
-                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False">
+            <div style="width:900px; height:300px; overflow:auto;" >
+                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss">
                     <Columns>
-                        <asp:CheckBoxField AccessibleHeaderText="Seleccionar" />
-                        <asp:BoundField AccessibleHeaderText="Folio" HeaderText="Folio" />
-                        <asp:BoundField AccessibleHeaderText="Cliente" HeaderText="Cliente" />
-                        <asp:BoundField AccessibleHeaderText="Nombre Cliente" HeaderText="Nombre Cliente" />
-                        <asp:BoundField AccessibleHeaderText="Banco" HeaderText="Banco" />
-                        <asp:BoundField AccessibleHeaderText="Sucursal" HeaderText="Sucursal" />
-                        <asp:BoundField AccessibleHeaderText="Tipo Cargo" HeaderText="Tipo Cargo" />
-                        <asp:BoundField AccessibleHeaderText="Global" HeaderText="Global" />
-                        <asp:BoundField AccessibleHeaderText="Fsaldo" HeaderText="Fsaldo" />
-                        <asp:BoundField AccessibleHeaderText="Importe" HeaderText="Importe" />
-                        <asp:BoundField AccessibleHeaderText="Conciliada" HeaderText="Conciliada" />
+                        <asp:CheckBoxField AccessibleHeaderText="Seleccionar"/>
+                        <asp:BoundField AccessibleHeaderText="Folio" HeaderText="Folio" DataField="Folio" />
+                        <asp:BoundField AccessibleHeaderText="Cliente" HeaderText="Cliente" DataField="Cliente" />
+                        <asp:BoundField AccessibleHeaderText="Nombre Cliente" HeaderText="Nombre Cliente" DataField="NombreCliente" />
+                        <asp:BoundField AccessibleHeaderText="Banco" HeaderText="Banco" DataField="Banco"/>
+                        <asp:BoundField AccessibleHeaderText="Sucursal" HeaderText="Sucursal" DataField="Sucursal" />
+                        <asp:BoundField AccessibleHeaderText="Tipo Cargo" HeaderText="Tipo Cargo" DataField ="TipoCargo" />
+                        <asp:BoundField AccessibleHeaderText="Global" HeaderText="Global" DataField = "Global" />
+                        <asp:BoundField AccessibleHeaderText="Fsaldo" HeaderText="Fsaldo" DataField = "Fsaldo"  />
+                        <asp:BoundField AccessibleHeaderText="Importe" HeaderText="Importe" DataField = "Importe"  />
+                        <asp:BoundField AccessibleHeaderText="Conciliada" HeaderText="Conciliada" DataField = "Conciliada"  />
                     </Columns>
                 </asp:GridView>
             </div>

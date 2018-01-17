@@ -13,7 +13,7 @@
     UNO A VARIOS</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <!--Libreria jQuery-->
-    <script src="../../App_Scripts/jQueryScripts/jquery.min.js" type="text/javascript"></script>
+    <script src="../../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
@@ -26,6 +26,14 @@
     
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
+
+        
+
+
+
+
+
+
         //Funcion para mostrar el calendar
         function datapicker_modal(fDiaMin, fMesMin, fAñoMin, fDiaMax, fMesMax, fAñoMax) {
             var cadenaMin = fDiaMin+'/'+fMesMin+'/'+fAñoMin;
@@ -40,20 +48,42 @@
         }
 
         function pageLoad() {
-            gridviewScroll();
+            //gridviewScroll();
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
             });
             activarDatePickers();
+            SAF_DatePickers();
         }
+
+        //////////////////////////////////
+        function SAF_DatePickers() {
+            $("#ctl00_contenidoPrincipal_wucSaldoAFavor_txtFechaInicio").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#ctl00_contenidoPrincipal_wucSaldoAFavor_txtFechaFin").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#ctl00_contenidoPrincipal_wucSaldoAFavor_txtFechaFin").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#ctl00_contenidoPrincipal_wucSaldoAFavor_txtFechaInicio").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        }
+        //////////////////////////////////
 
         function OcultarPopUpConciliacionManual() {
             $find("mpeCargaArchivo").hide();
         }
 
         function OcultarPopUpSaldoAFavor() {
-            $find("mpeSaldosAFavor").hide();
+            $find("<%= mpeSaldosAFavor.ClientID %>").hide(1000);
         }
 
         function OcultarPopUpConciliarPagares() {
@@ -2577,7 +2607,7 @@
         <table>
             <tr>
                 <td>
-                        <img src="~/App_Themes/GasMetropolitanoSkin/Imagenes/warning.png" />        
+                        
                 </td>
                 <td align="center">
                     El monto depositado genera un saldo a favor por <%= lblAbono.Text%> <br/> <strong>¿desea generar el saldo a favor?</strong>
@@ -2604,7 +2634,7 @@
                             <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
                                 <div class="floatDerecha bg-color-grisClaro01">
                                     <asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                        CssClass="iconoPequeño bg-color-rojo" OnClientClick="popUpSaldoAFavorNoVisible(); OcultarPopUpSaldoAFavor();"/>
+                                        CssClass="iconoPequeño bg-color-rojo" OnClientClick="OcultarPopUpSaldoAFavor();"/>
                                 </div>
                                 <div class="fg-color-blanco centradoJustificado">
                                     CONSULTA SALDOS A FAVOR
