@@ -57,7 +57,6 @@
             SAF_DatePickers();
         }
 
-        //////////////////////////////////
         function SAF_DatePickers() {
             $("#ctl00_contenidoPrincipal_wucSaldoAFavor_txtFechaInicio").datepicker({
                 defaultDate: "+1w",
@@ -76,7 +75,6 @@
                 }
             });
         }
-        //////////////////////////////////
 
         function OcultarPopUpConciliacionManual() {
             $find("mpeCargaArchivo").hide();
