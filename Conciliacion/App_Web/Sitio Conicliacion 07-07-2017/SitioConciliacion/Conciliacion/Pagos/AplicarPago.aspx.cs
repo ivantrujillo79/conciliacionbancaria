@@ -154,19 +154,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
              //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
             listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC);
             HttpContext.Current.Session["LIST_REF_PAGAR"] = listaReferenciaConciliadaPagos;
-
-            Conexion _conexion = new Conexion();
-            SaldoAFavor saldoAFavor = App.SaldoAFavor.CrearObjeto();
-            foreach (ReferenciaConciliadaPedido referencia in listaReferenciaConciliadaPagos)
-            {
-                saldoAFavor.CorporativoExterno = referencia.Corporativo;
-                saldoAFavor.SucursalExterno = referencia.Sucursal;
-                saldoAFavor.AñoExterno = referencia.Año;
-                saldoAFavor.FolioExterno = referencia.Folio;
-                saldoAFavor.SecuenciaExterno = referencia.Secuencia;
-
-                App.ImplementadorMensajes.MostrarMensaje(saldoAFavor.ExisteExterno(_conexion).ToString());
-            }
         }
         catch (Exception ex)
         {
@@ -698,15 +685,24 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     if (objMovimientoCaja.ListaCobros[0].SaldoAFavor)
                     {
                         SaldoAFavor objSaldoAFavor = App.SaldoAFavor.CrearObjeto();
-                        // FK TablaDestinoDetalle
-                        objSaldoAFavor.CorporativoExterno   = ListaConciliados[0].Corporativo;
-                        objSaldoAFavor.SucursalExterno      = ListaConciliados[0].Sucursal;
-                        objSaldoAFavor.AñoExterno           = ListaConciliados[0].Año;
-                        objSaldoAFavor.FolioExterno         = ListaConciliados[0].Folio;
-                        objSaldoAFavor.SecuenciaExterno     = ListaConciliados[0].Secuencia;
-                        // FK Cobro
-                        objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
-                        objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
+
+                        foreach(ReferenciaConciliadaPedido referencia in ListaConciliados)
+                        {
+                            // FK TablaDestinoDetalle
+                            objSaldoAFavor.CorporativoExterno   = referencia.Corporativo;
+                            objSaldoAFavor.SucursalExterno      = referencia.Sucursal;
+                            objSaldoAFavor.AñoExterno           = referencia.Año;
+                            objSaldoAFavor.FolioExterno         = referencia.Folio;
+                            objSaldoAFavor.SecuenciaExterno     = referencia.Secuencia;
+                            // FK Cobro
+                            objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
+                            objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
+
+                            if (objSaldoAFavor.ExisteExterno(conexion))
+                            {
+                                objSaldoAFavor.RegistrarCobro(conexion);
+                            }
+                        }
                         //PK de la tabla
                         //AñoMovimiento = DateTime.Now.Year,
                         ////FK TipoMovimientoAConciliar
