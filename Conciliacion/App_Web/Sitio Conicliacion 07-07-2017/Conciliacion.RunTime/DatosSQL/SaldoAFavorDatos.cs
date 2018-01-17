@@ -230,9 +230,9 @@ namespace Conciliacion.RunTime.DatosSQL
                 while (reader.Read())
                 {
                     resultado = Convert.ToInt32(reader["TotalRegistros"]) > 0;
-                    reader.Close();
                     break;
                 }
+                reader.Close();
             }
             catch (SqlException ex)
             {
