@@ -84,7 +84,7 @@
     <tr>
         <td colspan="7">
             <div style="width:900px; height:300px; overflow:auto;" >
-                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" OnRowDataBound="GVCity_RowDataBound">
+                <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" OnRowDataBound="gvSaldoAFavor_RowDataBound">
                     <Columns>
                         <asp:TemplateField>
                             <ItemTemplate>

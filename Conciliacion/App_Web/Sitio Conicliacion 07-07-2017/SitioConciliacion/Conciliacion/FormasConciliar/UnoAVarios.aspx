@@ -39,7 +39,7 @@
             });
         }
 
-        function registroElegido(Registro, Operacion) {
+        function registroElegido(Registro) {
             try {
                 var tabla = document.getElementById('ctl00_contenidoPrincipal_wucSaldoAFavor_grvSaldosAFavor');
                 console.log(tabla);
@@ -54,7 +54,7 @@
 
                 var elegido = fila.cells[0].innerHTML;
                 
-                if (Operacion == "SUMA")
+                if (elegido)
                 {
                     var nuevoMonto = parseFloat(acumulado) + parseFloat(fila.cells[9].innerHTML);
                 }

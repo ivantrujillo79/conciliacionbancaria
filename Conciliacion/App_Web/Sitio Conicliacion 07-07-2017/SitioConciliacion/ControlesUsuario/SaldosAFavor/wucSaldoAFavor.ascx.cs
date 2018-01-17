@@ -101,12 +101,12 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
         grvSaldosAFavor.DataBind();
     }
 
-    protected void GVCity_RowDataBound(object sender, GridViewRowEventArgs e)
+    protected void gvSaldoAFavor_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             HtmlInputCheckBox cbElegido = (HtmlInputCheckBox)e.Row.FindControl("cbSAF");
-            string Operacion = "SUMA";
+            /*string Operacion = "SUMA";
             if(cbElegido.Checked)
             {
                 Operacion = "SUMA";
@@ -114,8 +114,8 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
             else
             {
                 Operacion = "RESTA";
-            }
-            cbElegido.Attributes["onchange"] = "javascript:return registroElegido("+ e.Row.RowIndex + ",'"+ Operacion + "');";
+            }*/
+            cbElegido.Attributes["onchange"] = "javascript:return registroElegido("+ e.Row.RowIndex +");";
         }
     }
 }
