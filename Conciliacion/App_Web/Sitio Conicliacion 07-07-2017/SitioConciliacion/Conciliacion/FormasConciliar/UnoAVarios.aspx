@@ -25,15 +25,7 @@
         -->
     
     <!-- ScrollBar GridView -->
-    <script type="text/javascript">
-
-        
-
-
-
-
-
-
+    <script type="text/javascript">   
         //Funcion para mostrar el calendar
         function datapicker_modal(fDiaMin, fMesMin, fAñoMin, fDiaMax, fMesMax, fAñoMax) {
             var cadenaMin = fDiaMin+'/'+fMesMin+'/'+fAñoMin;
@@ -58,6 +50,9 @@
         }
 
         function SAF_DatePickers() {
+            $("#ColConciliada").hide();
+
+
             $("#ctl00_contenidoPrincipal_wucSaldoAFavor_txtFechaInicio").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
@@ -939,7 +934,8 @@
                                 </tr>
                             </table>
                         </div>
-                        <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
+                        <div style="width:600px; height:350px; overflow:auto;">
+                            <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             AllowPaging="True" PageSize="100" AllowSorting="True" CssClass="grvResultadoConsultaCss"
                             DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion,Referencia,Deposito"
@@ -1062,6 +1058,7 @@
                             <PagerStyle CssClass="grvPaginacionScroll" />
                             <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                         </asp:GridView>
+                        </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
                     </td>

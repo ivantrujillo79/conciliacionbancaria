@@ -30,7 +30,7 @@
         </td>
         <td></td>
         <td></td>
-        <td>Conciliada</td>
+        <td id="ColConciliada">Conciliada</td>
         <td>Cliente</td>
         <td>Monto</td>
         <td></td>
@@ -45,7 +45,7 @@
         <td>
             <asp:TextBox runat="server" ID="txtFechaFin" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="90px" Font-Size="11px"/>
         </td>
-        <td>
+        <td id="ColConciliada1">
             <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
         </td>      
         <td>
@@ -72,8 +72,8 @@
     <tr class="centradoJustificado">
         <td class="auto-style1"><asp:CheckBox ID="cbMontosIguales" runat="server" Text="Montos iguales"/></td>
         <td class="auto-style1"></td>
-        <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/></td>
-        <td class="auto-style1"></td>
+        <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
+        <td id="ColConciliada2" class="auto-style1"></td>
         <td class="auto-style1"><asp:Label ID="lblResto" runat="server"/></td>
         <td class="auto-style1"></td>
         <td class="auto-style1"></td>
@@ -86,7 +86,12 @@
             <div style="width:900px; height:300px; overflow:auto;" >
                 <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss">
                     <Columns>
-                        <asp:CheckBoxField AccessibleHeaderText="Seleccionar"/>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <asp:CheckBox ID="chkRow" runat="server"/>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        
                         <asp:BoundField AccessibleHeaderText="Folio" HeaderText="Folio" DataField="Folio" />
                         <asp:BoundField AccessibleHeaderText="Cliente" HeaderText="Cliente" DataField="Cliente" />
                         <asp:BoundField AccessibleHeaderText="Nombre Cliente" HeaderText="Nombre Cliente" DataField="NombreCliente" />

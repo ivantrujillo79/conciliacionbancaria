@@ -9,6 +9,9 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.UI.UserControl
 {
+    const string __strMontoAConciliar = "Monto a conciliar: ";
+
+    #region Propiedades del control
     private byte _TipoOperacion;
     public byte TipoOperacion
     {
@@ -27,6 +30,20 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
         }
     }
     public object Contenedor { get; set; }
+
+    public decimal MontoAConciliar
+    {   get
+        {
+            return this.MontoAConciliar;
+        }
+        set
+        {
+            this.MontoAConciliar = value;
+            lblMontoConciliar.Text = __strMontoAConciliar + this.MontoAConciliar.ToString();
+        }
+    }
+
+    #endregion
 
     protected void Page_Load(object sender, EventArgs e)
     {
