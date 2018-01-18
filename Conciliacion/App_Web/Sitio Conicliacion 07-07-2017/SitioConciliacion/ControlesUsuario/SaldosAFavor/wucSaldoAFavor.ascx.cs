@@ -42,7 +42,7 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
         set
         {
             this.MontoAConciliar = value;
-            lblMontoConciliar.Text = __strMontoAConciliar + this.MontoAConciliar.ToString();
+            //lblMontoConciliar.Text = __strMontoAConciliar + this.MontoAConciliar.ToString();
         }
     }
 
@@ -50,29 +50,29 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        ScriptManager.RegisterStartupScript(this, typeof(Page), "Calendarios", "SAF_DatePickers();", true);
-        lblResto.Text = __strResto + "$0.00";
+        //ScriptManager.RegisterStartupScript(this, typeof(Page), "Calendarios", "SAF_DatePickers();", true);
+        //lblResto.Text = __strResto + "$0.00";
 
         if (this.TipoOperacion == 1)
         {
-            ddStatusConciliacion.Visible = true;
+            //ddStatusConciliacion.Visible = true;
 
             List<Conciliacion.RunTime.ReglasDeNegocio.OpcionSaldoAFavor> ListaOpciones = new List<Conciliacion.RunTime.ReglasDeNegocio.OpcionSaldoAFavor>();
             ListaOpciones.Add(new OpcionSaldoAFavor { IDOpcion = 0, OpcionConciliacion = "Pendiente" });
             ListaOpciones.Add(new OpcionSaldoAFavor { IDOpcion = 1, OpcionConciliacion = "Conciliado" });
 
-            ddStatusConciliacion.DataSource = ListaOpciones;
+            /*ddStatusConciliacion.DataSource = ListaOpciones;
             ddStatusConciliacion.DataValueField = "IDOpcion";
             ddStatusConciliacion.DataTextField = "OpcionConciliacion";
             ddStatusConciliacion.DataBind();
 
-            ddStatusConciliacion.Visible = true;
+            ddStatusConciliacion.Visible = true;*/
             btnCancelar.Visible = false;
             btnGuardar.Visible = false;
         }
         else
         {
-            ddStatusConciliacion.Visible = false;
+            //ddStatusConciliacion.Visible = false;
             btnCancelar.Visible = true;
             btnGuardar.Visible = true;
         }
@@ -103,10 +103,11 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
 
     protected void gvSaldoAFavor_RowDataBound(object sender, GridViewRowEventArgs e)
     {
+        /*
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             HtmlInputCheckBox cbElegido = (HtmlInputCheckBox)e.Row.FindControl("cbSAF");
-            /*string Operacion = "SUMA";
+            string Operacion = "SUMA";
             if(cbElegido.Checked)
             {
                 Operacion = "SUMA";
@@ -114,8 +115,8 @@ public partial class ControlesUsuario_SaldosAFavor_wucSaldoAFavor : System.Web.U
             else
             {
                 Operacion = "RESTA";
-            }*/
+            }
             cbElegido.Attributes["onchange"] = "javascript:return registroElegido("+ e.Row.RowIndex +");";
-        }
+        }*/
     }
 }

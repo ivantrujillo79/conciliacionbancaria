@@ -164,8 +164,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
-        wucSaldoAFavor.Contenedor = mpeSaldosAFavor;
-        wucSaldoAFavor.TipoOperacion = 2;
+        wucSaldoAFavorPanel.Contenedor = null;
+        wucSaldoAFavorPanel.TipoOperacion = 1;
         
         if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
         {
@@ -223,7 +223,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
-                btnSaldoAFavor.Visible = objSolicitdConciliacion.MuestraSaldoAFavor() ? objSolicitdConciliacion.MuestraSaldoAFavor() : false;
+                //btnSaldoAFavor.Visible = objSolicitdConciliacion.MuestraSaldoAFavor() ? objSolicitdConciliacion.MuestraSaldoAFavor() : false;
 
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;
@@ -6137,14 +6137,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
-
-    protected void ibSaldosAFavor_Click(object sender, ImageClickEventArgs e)
+    
+    /*protected void btnSaldoAFavor_Click(object sender, EventArgs e)
     {
         //mpeSaldosAFavor.Show();
-    }
-
-    protected void btnSaldoAFavor_Click(object sender, EventArgs e)
-    {
-        mpeSaldosAFavor.Show();
-    }
+    }*/
 }
