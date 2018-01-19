@@ -34,7 +34,6 @@
           box-shadow: 0 4px #333333;
         }
 
-
         .button:hover {background-color: #da532c}
 
         .button:active {
@@ -46,25 +45,48 @@
 
     <script type="text/javascript">   
         $(document).ready(function () {
-                $("#seccionSaldoAFavor").hide();
-                $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    onClose: function (selectedDate) {
-                        $("#ctl00_contenidoPrincipal_txtFechaFin").datepicker("option", "minDate", selectedDate);
-                    }
-                });
-                $("#ctl00_contenidoPrincipal_txtFechaFin").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    onClose: function (selectedDate) {
-                        $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
+            $('#seccionFiltrosSaldoAFavor').hide();
+            $("#seccionSaldoAFavor").hide();
+            
+            $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#ctl00_contenidoPrincipal_txtFechaFin").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#ctl00_contenidoPrincipal_txtFechaFin").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+            activarDatePickers();
         });
 
+        function clickBotonMuestraSaldoAFavor()
+        {            
+            if ($('#hfMuestraSeccionSaldoAFavor')[0].value == 0) {
+                $('#seccionFiltrosSaldoAFavor').show(500);
+                $('#seccionSaldoAFavor').show(500);
+                $('#seccionGridPedidos').hide(500);                
+                $('#hfMuestraSeccionSaldoAFavor').val('1');
+                $('#btnMuestraSaldoAFavor').css("background-color", "yellow");
+                $('#btnMuestraSaldoAFavor').html('Ocultar');
+            }
+            else {
+                $('#seccionFiltrosSaldoAFavor').hide(500);
+                $('#seccionSaldoAFavor').hide(500);
+                $('#seccionGridPedidos').show(500);
+                $('#hfMuestraSeccionSaldoAFavor').val('0');
+                $('#btnMuestraSaldoAFavor').css("background-color", "green");
+                $('#btnMuestraSaldoAFavor').html('Mostrar');
+            }
+            
+        }
 
         //Funcion para mostrar el calendar
         function datapicker_modal(fDiaMin, fMesMin, fAñoMin, fDiaMax, fMesMax, fAñoMax) {
@@ -152,10 +174,7 @@
             $('#<%= hdfVisibleCargaArchivo.ClientID %>').val("0");
         }
         
-        function popUpSaldoAFavorNoVisible() {
-            $('#<%= hdfSaldoAFavor.ClientID %>').val("0");
-        }
-
+        
         /*              Botones del control wucCargaManualExcel         */
         function btnCargaManualCancelar_Click(){
             $('#<%= hdfCargaAgregado.ClientID %>').val("0");
@@ -911,11 +930,11 @@
                                     </b>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
-                                    <input type="button"  name="btnMuestraSaldoAFavor" value="Saldo a favor" class="button" onclick="$('#seccionSaldoAFavor').show(500);">
+                                    <input type="hidden" id="hfMuestraSeccionSaldoAFavor" value="0" />
+                                    <input type="button" name="btnMuestraSaldoAFavor" value="Saldo a favor" class="button" onclick="clickBotonMuestraSaldoAFavor();">
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
-                                    <asp:ImageButton ID="imgPagare" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagare.png"
-                                        ToolTip="CONCILIAR PAGARE" Width="25px" Height="25px" OnClick="imgPagare_Click" />
+                                    <asp:ImageButton ID="imgPagare" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagare.png" ToolTip="CONCILIAR PAGARE" Width="25px" Height="25px" OnClick="imgPagare_Click" />
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
@@ -1296,6 +1315,70 @@
                                     </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
+
+                        <div id="seccionFiltrosSaldoAFavor">
+                                <table style="width: 100%;">
+                                    <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                                        <td>
+                                            Fecha de saldos
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td id="ColConciliada">Conciliada</td>
+                                        <td>Cliente</td>
+                                        <td>Monto</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr  class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                                        <td>
+                                            <asp:CheckBox ID="cbTodos" runat="server" Text="Todos"/>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="cajaTexto" ToolTip="Fecha inicio" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox runat="server" ID="txtFechaFin" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
+                                        </td>
+                                        <td id="ColConciliada1">
+                                            <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
+                                        </td>      
+                                        <td>
+                                            <asp:TextBox ID="txtClienteSAF" runat="server" Width="90px" onkeypress="return ValidaNumero(event)"></asp:TextBox>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtMonto" runat="server" Width="90px" onkeypress="return ValidaMoneda(event)"></asp:TextBox>
+                                            <asp:CompareValidator id="cvMonto" runat="server" 
+                                                ControlToValidate="txtMonto" 
+                                                Operator="DataTypeCheck"
+                                                Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
+
+                                            <br />
+
+                                        </td>  
+                                        <td>            
+                                            <div class="bg-color-grisClaro fg-color-amarillo">
+                                                <asp:ImageButton ID="imgBuscaSaldoAFavor" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                ToolTip="Buscar saldos a favor" Width="30px" Height="30px" style="padding: 5px 5px 5px 5px;" 
+                                                ValidationGroup="vgFecha, vgMoneda"/>
+                                            </div>
+                                        </td>       
+                                    </tr>
+                                    <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                                        <td class="auto-style1"><asp:CheckBox ID="cbMontosIguales" runat="server" Text="Montos iguales"/></td>
+                                        <td class="auto-style1"></td>
+                                        <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
+                                        <td id="ColConciliada2" class="auto-style1"></td>
+                                        <td id="cellResto" class="auto-style1"><asp:Label ID="Label1" runat="server"/></td>
+                                        <td class="auto-style1"></td>
+                                        <td class="auto-style1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7"></td>
+                                    </tr>
+                                </table>
+                        </div>
+
+
                         <table style="width: 100%;" class="lineaVertical bg-color-grisClaro01">
                             <tr>
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 1%; padding: 5px 5px 5px 5px">
@@ -1664,7 +1747,8 @@
                             </asp:GridView>
                             <br />
 
-                            <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                            <div id="seccionGridPedidos">
+                                <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                                 CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                 ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
                                 OnRowCommand="grvPedidos_RowCommand" AllowPaging="False" OnPageIndexChanging="grvPedidos_PageIndexChanging"
@@ -1763,69 +1847,11 @@
                                 </Columns>
                                 <PagerStyle CssClass="grvPaginacionScroll" />
                             </asp:GridView>
+                            </div>
                             <asp:HiddenField ID="hfInternosSV" runat="server" />
                             <asp:HiddenField ID="hfInternosSH" runat="server" />
 
                             <div id="seccionSaldoAFavor" style="width:600px; height:200px; overflow:auto;">
-                                <table style="width: 100%;">
-                                    <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                                        <td>
-                                            Fecha de saldos
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td id="ColConciliada">Conciliada</td>
-                                        <td>Cliente</td>
-                                        <td>Monto</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr  class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                                        <td>
-                                            <asp:CheckBox ID="cbTodos" runat="server" Text="Todos"/>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="cajaTexto" ToolTip="Fecha inicio" ValidationGroup="vgFecha" Width="90px" Font-Size="11px"/>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox runat="server" ID="txtFechaFin" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="90px" Font-Size="11px"/>
-                                        </td>
-                                        <td id="ColConciliada1">
-                                            <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
-                                        </td>      
-                                        <td>
-                                            <asp:TextBox ID="txtCliente" runat="server" onkeypress="return ValidaNumero(event)"></asp:TextBox>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtMonto" runat="server" onkeypress="return ValidaMoneda(event)"></asp:TextBox>
-                                            <asp:CompareValidator id="cvMonto" runat="server" 
-                                                ControlToValidate="txtMonto" 
-                                                Operator="DataTypeCheck"
-                                                Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
-
-                                            <br />
-
-                                        </td>  
-                                        <td>            
-                                            <div class="bg-color-grisClaro fg-color-amarillo">
-                                                <asp:ImageButton ID="imgBuscaSaldoAFavor" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                ToolTip="Buscar saldos a favor" Width="30px" Height="30px" style="padding: 5px 5px 5px 5px;" 
-                                                ValidationGroup="vgFecha, vgMoneda"/>
-                                            </div>
-                                        </td>       
-                                    </tr>
-                                    <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                                        <td class="auto-style1"><asp:CheckBox ID="cbMontosIguales" runat="server" Text="Montos iguales"/></td>
-                                        <td class="auto-style1"></td>
-                                        <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
-                                        <td id="ColConciliada2" class="auto-style1"></td>
-                                        <td id="cellResto" class="auto-style1"><asp:Label ID="Label1" runat="server"/></td>
-                                        <td class="auto-style1"></td>
-                                        <td class="auto-style1"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7"></td>
-                                    </tr>
-                                </table>
                                 <uc1:wucSaldoAFavor runat="server" ID="wucSaldoAFavorPanel" />
                             </div>
                         </div>

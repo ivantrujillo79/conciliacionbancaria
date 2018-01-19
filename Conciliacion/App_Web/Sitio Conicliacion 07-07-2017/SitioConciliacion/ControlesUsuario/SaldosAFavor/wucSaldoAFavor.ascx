@@ -8,8 +8,7 @@
     }
     function ValidaMoneda(e) {
         var charCode = (e.which) ? e.which : e.keyCode;
-        if (charCode != 46 && charCode > 31
-            && (charCode < 48 || charCode > 57))
+        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
 
         return true;
@@ -26,7 +25,7 @@
 <table style="width: 100%;">
     <tr>
         <td colspan="7">
-            <div style="width:900px; height:300px; overflow:auto; align-content:center;">
+            <div style="width:500px; height:300px; overflow:auto; align-content:center;">
                 <asp:GridView ID="grvSaldosAFavor" runat="server" AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" OnRowDataBound="gvSaldoAFavor_RowDataBound">
                     <Columns>
                         <asp:TemplateField>
