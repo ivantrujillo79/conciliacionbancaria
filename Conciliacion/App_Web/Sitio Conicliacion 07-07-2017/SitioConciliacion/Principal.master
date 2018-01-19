@@ -13,15 +13,16 @@
 
     <!--        Alertify        -->
     <!-- JavaScript -->
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+    <script type="text/javascript" src="/App_Scripts/alertify/alertify.min.js"></script>
     <!-- CSS -->
-    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="/App_Scripts/alertify/css/alertify.min.css"/>
     <!-- Default theme -->
-    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
+    <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/default.min.css"/>
     <!-- Semantic UI theme -->
-    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/semantic.min.css"/>
+    <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/semantic.min.css"/>
     <!-- Bootstrap theme -->
-    <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/bootstrap.min.css"/>
+
 </head>
 <body>
     <form id="formPrincipal" runat="server" onload="Page_Load">
