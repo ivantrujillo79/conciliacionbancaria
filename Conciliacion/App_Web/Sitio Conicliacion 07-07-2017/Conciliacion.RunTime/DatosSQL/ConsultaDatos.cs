@@ -6180,6 +6180,55 @@ namespace Conciliacion.RunTime.DatosSQL
             }
 
         }
+
+        public override List<DetalleSaldoAFavor> ConsultaDetalleSaldoAFavor(DateTime FInicio, DateTime FFin, int Cliente, Decimal Monto)
+        {
+            List<DetalleSaldoAFavor> ListaDSAF = new List<DetalleSaldoAFavor>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaDetalleSaldoAFavor", cnn);
+                    comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value    = (FInicio == DateTime.MinValue ? (object)System.DBNull.Value : FInicio);
+                    comando.Parameters.Add("@FFin", System.Data.SqlDbType.DateTime).Value       = (FFin == DateTime.MinValue ? (object)System.DBNull.Value : FFin);
+                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.Int).Value         = (Cliente == -1 ? (object)System.DBNull.Value : Cliente);
+                    comando.Parameters.Add("@Monto", System.Data.SqlDbType.Money).Value         = (Monto == -1 ? (object)System.DBNull.Value : Monto);
+
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        DetalleSaldoAFavor detalle = new DetalleSaldoAFavor();
+                        detalle.Seleccionado        = false;
+                        detalle.Folio               = Convert.ToInt32(reader["Folio"]);
+                        detalle.Cliente             = Convert.ToString(reader["Cliente"]);
+                        detalle.NombreCliente       = Convert.ToString(reader["NombreCliente"]);
+                        detalle.CuentaBancaria      = Convert.ToString(reader["CuentaBancaria"]);
+                        detalle.Banco               = "";
+                        detalle.Sucursal            = Convert.ToString(reader["Sucursal"]);
+                        detalle.TipoCargo           = "";
+                        detalle.Global              = false;
+                        detalle.Fsaldo              = Convert.ToDateTime(reader["FSaldo"]);
+                        detalle.Importe             = Convert.ToDecimal(reader["Importe"]);
+                        detalle.Conciliada          = Convert.ToString(reader["Conciliada"]);
+
+                        ListaDSAF.Add(detalle);
+                    }
+                    reader.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return ListaDSAF;
+            }
+        }
     }
 
 
