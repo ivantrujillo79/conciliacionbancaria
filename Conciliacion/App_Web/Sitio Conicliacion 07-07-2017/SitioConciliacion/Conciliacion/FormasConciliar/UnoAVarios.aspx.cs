@@ -159,7 +159,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);
-        hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
+        //hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
 
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
@@ -167,11 +167,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucSaldoAFavorPanel.Contenedor = null;
         wucSaldoAFavorPanel.TipoOperacion = 1;
         
-        if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
-        {
-            //mpeSaldosAFavor.Show(); 
-        }
-
+        
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (formaConciliacion == 0)
@@ -1925,23 +1921,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                         "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
                                         + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
                             }
-
-                            //if (lblAbono.Text.Trim() != "")
-                            //{
-                            //    decimal SaldoAFavor = Convert.ToDecimal(lblAbono.Text.Replace("$",""));
-                            //    if (SaldoAFavor > 0)
-                            //    {
-                            //        /*ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "var pre = document.createElement('pre'); pre.style.maxHeight = '400px'; pre.style.margin = '0'; pre.style.padding = '24px'; pre.style.whiteSpace = 'pre-wrap'; pre.style.textAlign = 'justify'; pre.appendChild(document.createTextNode($('#la').text())); alertify.confirm(pre, function(){ document.getElementById('" + hdfAceptaAplicarSaldoAFavor.ClientID + "').value = 'Aceptado'; alert(" + hdfAceptaAplicarSaldoAFavor.ClientID + ".value); ShowModalPopupSaldoAFavor();},function(){alertify.error('Declinado');}).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});", true);
-                            //        if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
-                            //        {
-                            //            //mpeSaldosAFavor.Show(); 
-                            //        }*/
-
-                            //    }
-                            //}
                         }
-                        //else
-                        //    App.ImplementadorMensajes.MostrarMensaje("Error al guardar");
                     }
                     else
                         App.ImplementadorMensajes.MostrarMensaje("No se ha agregado ninguna referencia interna");
@@ -6138,8 +6118,5 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
     
-    /*protected void btnSaldoAFavor_Click(object sender, EventArgs e)
-    {
-        //mpeSaldosAFavor.Show();
-    }*/
+
 }

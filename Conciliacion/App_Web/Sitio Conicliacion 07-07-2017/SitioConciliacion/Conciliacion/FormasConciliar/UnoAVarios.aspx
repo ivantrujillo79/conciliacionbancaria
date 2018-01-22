@@ -148,15 +148,8 @@
             //SAF_DatePickers();
         }*/
 
-        
-        
-
         function OcultarPopUpConciliacionManual() {
             $find("mpeCargaArchivo").hide();
-        }
-
-        function OcultarPopUpSaldoAFavor() {
-            $find("<%= mpeSaldosAFavor.ClientID %>").hide(1000);
         }
 
         function OcultarPopUpConciliarPagares() {
@@ -389,12 +382,6 @@
             }
         }
 
-        function ShowModalPopupSaldoAFavor() {
-           
-            var varBuscar = document.getElementById("<%=mpeSaldosAFavor.ClientID%>");
-            alert(varBuscar);
-            $find("mpeSaldosAFavor").show();
-            }
             </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
@@ -2326,7 +2313,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Folias Agregados" SortExpression="fAgregados">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFoliosAgregados" runat="server" Text="<%# Bind('Folio') %>"></asp:Label>
+                                            <asp:Label ID="lblFoliosAgregados" runat="server" Text = '<%# Eval("Folio")%>'></asp:Label>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" Wrap="True" />
@@ -2391,28 +2378,28 @@
                                 <Columns>
                                     <asp:TemplateField HeaderText="Documento" SortExpression="referencia">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
+                                            <asp:Label ID="lblReferencia" runat="server" Text='<%# Eval("Referencia") %>'></asp:Label>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="100px" />
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFOperracion" runat="server" Text="<%# Bind('FOperacion', '{0:d}') %>"></asp:Label>
+                                            <asp:Label ID="lblFOperracion" runat="server" Text='<%# Eval("FOperacion", "{0:d}") %>'></asp:Label>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" />
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblFMovimiento" runat="server" Text="<%# Bind('FMovimiento','{0:d}') %>"></asp:Label>
+                                            <asp:Label ID="lblFMovimiento" runat="server" Text='<%# Eval("FMovimiento","{0:d}") %>'></asp:Label>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="50px" />
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Descripcion" SortExpression="descripcion">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblDescripcion" runat="server" Text="<%# Bind('Descripcion') %>"></asp:Label>
+                                            <asp:Label ID="lblDescripcion" runat="server" Text='<%# Eval("Descripcion") %>'></asp:Label>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="150px" />
@@ -2420,7 +2407,7 @@
                                     <asp:TemplateField HeaderText="Deposito" SortExpression="deposito">
                                         <ItemTemplate>
                                             <b>
-                                                <asp:Label ID="lblDeposito" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Deposito','{0:c2}') %>"></asp:Label></b>
+                                                <asp:Label ID="lblDeposito" runat="server" Font-Size="10px" Width="100px" Text='<%# Eval("Deposito") %>'></asp:Label></b>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
@@ -2429,7 +2416,7 @@
                                     <asp:TemplateField HeaderText="Retiro" SortExpression="retiro">
                                         <ItemTemplate>
                                             <b>
-                                                <asp:Label ID="lblRetiro" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Retiro','{0:c2}') %>"></asp:Label></b>
+                                                <asp:Label ID="lblRetiro" runat="server" Font-Size="10px" Width="100px" Text='<%# Bind("Retiro","{0:c2}") %>'></asp:Label></b>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
@@ -2437,7 +2424,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblConcepto" runat="server" Text="<%# Bind('Concepto') %>"></asp:Label>
+                                            <asp:Label ID="lblConcepto" runat="server" Text=<%# Bind("Concepto") %>></asp:Label>
                                         </ItemTemplate>
                                         <HeaderStyle HorizontalAlign="Center" />
                                         <ItemStyle HorizontalAlign="Justify" Wrap="True" Width="500px" />
@@ -2748,13 +2735,7 @@
     </asp:Panel>
     <!--        FIN POPUP CLIENTE PAGO     -->
 
-<!--MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
-<!--FUNCIONALIDAD REMOVIDA DEBIDO A CAMBIO DE ESPECIFICACIÓN 18/ENERO/2018-->
-<!--    <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
-    <asp:ModalPopupExtender ID="mpeSaldosAFavor" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlSaldoAFavor"
-                TargetControlID="hdfSaldoAFavor">
-   </asp:ModalPopupExtender>
+<!--
     <asp:Panel ID="pnlSaldoAFavor" runat="server" CssClass="ModalPopup" Width="900px" Style="display: none">
         <asp:UpdatePanel ID="upSaldoAFavor" runat="server">
             <ContentTemplate>
