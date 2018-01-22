@@ -164,9 +164,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
-        wucSaldoAFavorPanel.Contenedor = null;
-        wucSaldoAFavorPanel.TipoOperacion = 1;
-        
         
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);

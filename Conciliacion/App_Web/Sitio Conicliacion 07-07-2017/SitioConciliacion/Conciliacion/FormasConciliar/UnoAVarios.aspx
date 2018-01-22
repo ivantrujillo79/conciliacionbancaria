@@ -46,7 +46,7 @@
     <script type="text/javascript">   
         $(document).ready(function () {
             $('#seccionFiltrosSaldoAFavor').hide();
-            $("#seccionSaldoAFavor").hide();
+            //$("#seccionSaldoAFavor").hide();
             
             $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker({
                 defaultDate: "+1w",
@@ -72,7 +72,7 @@
             if ($('#hfMuestraSeccionSaldoAFavor')[0].value == 0) {
                 $('#configuracionInternosPedidos').hide(500);
                 $('#seccionFiltrosSaldoAFavor').show(500);
-                $('#seccionSaldoAFavor').show(500);
+                //$('#seccionSaldoAFavor').show(500);
                 $('#seccionGridPedidos').hide(500);                
                 $('#hfMuestraSeccionSaldoAFavor').val('1');
                 $('#btnMuestraSaldoAFavor').css("background-color", "yellow");
@@ -81,7 +81,7 @@
             else {
                 $('#configuracionInternosPedidos').show(500);
                 $('#seccionFiltrosSaldoAFavor').hide(500);
-                $('#seccionSaldoAFavor').hide(500);
+                //$('#seccionSaldoAFavor').hide(500);
                 $('#seccionGridPedidos').show(500);
                 $('#hfMuestraSeccionSaldoAFavor').val('0');
                 $('#btnMuestraSaldoAFavor').css("background-color", "green");
@@ -1840,9 +1840,6 @@
                             <asp:HiddenField ID="hfInternosSV" runat="server" />
                             <asp:HiddenField ID="hfInternosSH" runat="server" />
 
-                            <div id="seccionSaldoAFavor" style="width:600px; height:200px; overflow:auto;">
-                                <uc1:wucSaldoAFavor runat="server" ID="wucSaldoAFavorPanel" />
-                            </div>
                         </div>
                     </td>
                 </tr>
