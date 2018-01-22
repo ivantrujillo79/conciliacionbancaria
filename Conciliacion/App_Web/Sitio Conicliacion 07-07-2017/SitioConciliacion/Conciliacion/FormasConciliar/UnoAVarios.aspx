@@ -70,6 +70,7 @@
         function clickBotonMuestraSaldoAFavor()
         {            
             if ($('#hfMuestraSeccionSaldoAFavor')[0].value == 0) {
+                $('#configuracionInternosPedidos').hide(500);
                 $('#seccionFiltrosSaldoAFavor').show(500);
                 $('#seccionSaldoAFavor').show(500);
                 $('#seccionGridPedidos').hide(500);                
@@ -78,6 +79,7 @@
                 $('#btnMuestraSaldoAFavor').html('Ocultar');
             }
             else {
+                $('#configuracionInternosPedidos').show(500);
                 $('#seccionFiltrosSaldoAFavor').hide(500);
                 $('#seccionSaldoAFavor').hide(500);
                 $('#seccionGridPedidos').show(500);
