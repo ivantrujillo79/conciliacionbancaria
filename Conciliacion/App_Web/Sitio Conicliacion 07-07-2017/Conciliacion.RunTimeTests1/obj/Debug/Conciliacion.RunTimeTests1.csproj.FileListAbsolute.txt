@@ -6,12 +6,3 @@ C:\Users\Ricardo Rojas\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio
 C:\Users\Ricardo Rojas\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csprojResolveAssemblyReference.cache
 C:\Users\Ricardo Rojas\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
 C:\Users\Ricardo Rojas\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.dll
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.pdb
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.dll
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.pdb
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csprojResolveAssemblyReference.cache
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CoreCompileInputs.cache
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
-C:\Users\Desarollo_Transforma\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
