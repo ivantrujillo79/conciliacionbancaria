@@ -2735,33 +2735,8 @@
     </asp:Panel>
     <!--        FIN POPUP CLIENTE PAGO     -->
 
-<!--
-    <asp:Panel ID="pnlSaldoAFavor" runat="server" CssClass="ModalPopup" Width="900px" Style="display: none">
-        <asp:UpdatePanel ID="upSaldoAFavor" runat="server">
-            <ContentTemplate>
-                <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" /> 
-                <div>
-                    <table style="width: 100%;">
-                        <tr class="bg-color-grisOscuro">
-                            <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
-                                <div class="floatDerecha bg-color-grisClaro01">
-                                    <asp:ImageButton runat="server" ID="ImageButton2" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                        CssClass="iconoPequeño bg-color-rojo" OnClientClick="OcultarPopUpSaldoAFavor();"/>
-                                </div>
-                                <div class="fg-color-blanco centradoJustificado">
-                                    CONSULTA SALDOS A FAVOR
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>  <uc1:wucSaldoAFavor runat="server" ID="wucSaldoAFavor" />  </td>
-                        </tr>
-                    </table>
-                </div>
-            </ContentTemplate>
-        </asp:UpdatePanel>
-    </asp:Panel>-->
-    <!--TERMINA MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
+    <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" /> 
+
     
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
