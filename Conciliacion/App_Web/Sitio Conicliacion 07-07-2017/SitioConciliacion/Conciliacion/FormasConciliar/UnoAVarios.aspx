@@ -2748,21 +2748,6 @@
     </asp:Panel>
     <!--        FIN POPUP CLIENTE PAGO     -->
 
-    <div id="la" style="display: none;">
-        <table>
-            <tr>
-                <td>
-                        
-                </td>
-                <td align="center">
-                    El monto depositado genera un saldo a favor por <%= lblAbono.Text%> <br/> <strong>¿desea generar el saldo a favor?</strong>
-                </td>
-            </tr>
-            
-            
-        </table>
-    </div>
-
 <!--MODAL POP UP EXTENDER PARA SALDOS A FAVOR-->
 <!--FUNCIONALIDAD REMOVIDA DEBIDO A CAMBIO DE ESPECIFICACIÓN 18/ENERO/2018-->
 <!--    <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
