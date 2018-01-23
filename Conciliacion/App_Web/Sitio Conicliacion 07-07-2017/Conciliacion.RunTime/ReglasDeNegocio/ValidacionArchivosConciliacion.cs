@@ -516,18 +516,19 @@ namespace ValidacionArchivosConciliacion
                     }
                 }
             }
-
-            DataTable dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaPedidoCliente[0].Cliente));
-            
-            List<string> ListaFamilia = (from DataRow row in dtClienteFamilia.Rows select row["Cliente"].ToString()).Distinct().ToList();
-
-            foreach (var Cliente in ListaPedidoCliente)
-            {
-                if (!ListaFamilia.Exists(e => e.Contains(Cliente.Cliente)))
+            DataTable dtClienteFamilia;
+            if (ListaPedidoCliente.Count > 0)
+            { 
+                dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaPedidoCliente[0].Cliente));
+                List<string> ListaFamilia = (from DataRow row in dtClienteFamilia.Rows select row["Cliente"].ToString()).Distinct().ToList();
+                foreach (var Cliente in ListaPedidoCliente)
                 {
-                    var ListaPedidos = ListaPedidoCliente.Where(x => x.Cliente == Cliente.Cliente).ToList();
-                    ListaPedidos.ForEach(x => DetalleError += " \n " + x.PedidoReferencia.ToString().Trim()+ " del cliente: " + x.Cliente.ToString().Trim() + ",");
-                    ResultadoValidacion = false;
+                    if (!ListaFamilia.Exists(e => e.Contains(Cliente.Cliente)))
+                    {
+                        var ListaPedidos = ListaPedidoCliente.Where(x => x.Cliente == Cliente.Cliente).ToList();
+                        ListaPedidos.ForEach(x => DetalleError += " \n " + x.PedidoReferencia.ToString().Trim()+ " del cliente: " + x.Cliente.ToString().Trim() + ",");
+                        ResultadoValidacion = false;
+                    }
                 }
             }
 
