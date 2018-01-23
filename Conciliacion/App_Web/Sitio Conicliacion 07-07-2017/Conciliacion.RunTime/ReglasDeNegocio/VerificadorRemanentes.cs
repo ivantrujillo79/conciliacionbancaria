@@ -12,28 +12,31 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public List<DetalleVerificadorRemanente> VerificarRemanentePedidos(DataTable dtPedidos, decimal MontoRemanente, byte Opcion)
         {
             List<DetalleVerificadorRemanente> ListaRetorno = new List<DetalleVerificadorRemanente>();
-            foreach (DataRow drPedido in dtPedidos.Rows)
+            if (dtPedidos != null)
             {
-                string PedidoReferencia = "";
-                decimal TotalPedido = 0;
-                if (Opcion == 1)
-                {//Match
-                    PedidoReferencia = drPedido[1].ToString();
-                    TotalPedido = Convert.ToDecimal(drPedido[7]);
-                }
-                else
-                {//Busqueda
-                    PedidoReferencia = drPedido[0].ToString();
-                    TotalPedido = Convert.ToDecimal(drPedido[5]);
-                }
-                if (MontoRemanente >= TotalPedido)
+                foreach (DataRow drPedido in dtPedidos.Rows)
                 {
-                    DetalleVerificadorRemanente objValidacion = new DetalleVerificadorRemanente
+                    string PedidoReferencia = "";
+                    decimal TotalPedido = 0;
+                    if (Opcion == 1)
+                    {//Match
+                        PedidoReferencia = drPedido[1].ToString();
+                        TotalPedido = Convert.ToDecimal(drPedido[7]);
+                    }
+                    else
+                    {//Busqueda
+                        PedidoReferencia = drPedido[0].ToString();
+                        TotalPedido = Convert.ToDecimal(drPedido[5]);
+                    }
+                    if (MontoRemanente >= TotalPedido)
                     {
-                        PedidoReferencia = PedidoReferencia,
-                        TotalPedido = TotalPedido
-                    };
-                    ListaRetorno.Add(objValidacion);
+                        DetalleVerificadorRemanente objValidacion = new DetalleVerificadorRemanente
+                        {
+                            PedidoReferencia = PedidoReferencia,
+                            TotalPedido = TotalPedido
+                        };
+                        ListaRetorno.Add(objValidacion);
+                    }
                 }
             }
             return ListaRetorno;
