@@ -6119,20 +6119,24 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
     {
-        DateTime FInicio = Convert.ToDateTime("16/01/2018");
+        cargarInfoConciliacionActual();
+       
+
+    DateTime FInicio = Convert.ToDateTime("16/01/2018");
         DateTime FFin = Convert.ToDateTime("17/01/2018");
 
         List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(FInicio, FFin, -1, 51.18M);
 
         List<ReferenciaNoConciliada> ListaSaldosAFavor = new List<ReferenciaNoConciliada>();
 
+        int secuencia = 1;
         foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
         {
             ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
-            rc.Secuencia = 1;
+            rc.Secuencia = secuencia;
             rc.Folio = dsaf.Folio;
-            rc.Sucursal = 1;
-            rc.Año = 2017;
+            rc.Sucursal = sucursal;
+            rc.Año = año;
             rc.FMovimiento = DateTime.Now;
             rc.FOperacion = DateTime.Now;
             rc.Retiro = dsaf.Importe;
@@ -6147,7 +6151,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             rc.StatusConciliacion = "CONCILIACION ABIERTA";
             rc.UbicacionIcono = "";
             rc.cliente = Convert.ToInt32(dsaf.Cliente);
+            rc.FormaConciliacion = formaConciliacion;
             listaReferenciaArchivosInternos.Add(rc);
+            secuencia++;
         }
         Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
         GenerarTablaArchivosInternos();
