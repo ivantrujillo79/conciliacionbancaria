@@ -215,8 +215,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-
-                //btnSaldoAFavor.Visible = objSolicitdConciliacion.MuestraSaldoAFavor() ? objSolicitdConciliacion.MuestraSaldoAFavor() : false;
+                
+                if (objSolicitdConciliacion.MuestraSaldoAFavor())
+                {
+                    btnMuestraSaldoAFavorID.Attributes.Add("style", "visibility:visible");
+                }
 
                 statusFiltro = false;
                 Session["StatusFiltro"] = statusFiltro;

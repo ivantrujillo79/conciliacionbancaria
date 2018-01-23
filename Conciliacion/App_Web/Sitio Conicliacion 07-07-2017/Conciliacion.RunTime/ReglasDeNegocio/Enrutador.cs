@@ -310,7 +310,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             Retorno = ListaConfiguraciones.Where(x => x.TipoConciliacion == this.TipoConciliacion
                                                      && x.FormaConciliacion == this.FormaConciliacion
-                                                     && x.FuenteInsumo == "Pedido").Single().ActivaSaldoAFavor;
+                                                     && x.FuenteInsumo == "Archivo").Single().ActivaSaldoAFavor;
 
             return Retorno;
         }
