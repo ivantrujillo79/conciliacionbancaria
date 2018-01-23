@@ -46,8 +46,7 @@
     <script type="text/javascript">   
         $(document).ready(function () {
             $('#seccionFiltrosSaldoAFavor').hide();
-            //$("#seccionSaldoAFavor").hide();
-            
+           
             $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
@@ -1373,7 +1372,7 @@
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 1%; padding: 5px 5px 5px 5px">
                                     <img src="../../App_Themes/GasMetropolitanoSkin/Imagenes/grid.png" id="btnMostrarAgregados"
                                         alt="MOSTRAR AGREGADOS" class="icono bg-color-blanco" style="width: 25px; height: 25px; cursor: pointer"
-                                        title="MOSTRAR AGREGADOS" />
+                                        title="MOSTRAR AGREGADOS" onclick="$('#dvAgregados').slideToggle();" />
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 15%; padding: 5px 5px 5px 5px">Agregados:
                                 </td>
