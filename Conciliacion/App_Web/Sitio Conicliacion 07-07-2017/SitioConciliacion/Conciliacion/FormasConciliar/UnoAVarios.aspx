@@ -43,28 +43,10 @@
         }
     </style>
 
-    <script type="text/javascript">   
-        $(document).ready(function () {
-            $('#seccionFiltrosSaldoAFavor').hide();
-           
-            $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (selectedDate) {
-                    $("#ctl00_contenidoPrincipal_txtFechaFin").datepicker("option", "minDate", selectedDate);
-                }
-            });
-            $("#ctl00_contenidoPrincipal_txtFechaFin").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (selectedDate) {
-                    $("#ctl00_contenidoPrincipal_txtFechaInicio").datepicker("option", "maxDate", selectedDate);
-                }
-            });
+    <script type="text/javascript">
+        function pageLoad() {
             activarDatePickers();
-        });
+        }
 
         function clickBotonMuestraSaldoAFavor()
         {            
@@ -195,6 +177,26 @@
         }
         
         function activarDatePickers() {
+            // DatePickers SALDO A FAVOR
+            $("#<%= txtFechaInicioSAF.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFechaFinSAF.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    //$("#ctl00_contenidoPrincipal_txtFechaFinSAF").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%= txtFechaFinSAF.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFechaInicioSAF.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    //$("#ctl00_contenidoPrincipal_txtFechaInicioSAF").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
             //DataPicker Rango-Fechas 
             if (<%= tipoConciliacion %> != 2) {
                 //DatePicker FOperacion
@@ -1305,7 +1307,7 @@
                             </asp:UpdatePanel>
                         </div>
 
-                        <div id="seccionFiltrosSaldoAFavor">
+                        <div id="seccionFiltrosSaldoAFavor" style="display:none;">
                                 <table style="width: 100%;">
                                     <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
                                         <td>
@@ -1323,10 +1325,10 @@
                                             <asp:CheckBox ID="cbTodos" runat="server" Text="Todos"/>
                                         </td>
                                         <td>
-                                            <asp:TextBox runat="server" ID="txtFechaInicio" CssClass="cajaTexto" ToolTip="Fecha inicio" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
+                                            <asp:TextBox runat="server" ID="txtFechaInicioSAF" CssClass="cajaTexto" ToolTip="Fecha inicio" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
                                         </td>
                                         <td>
-                                            <asp:TextBox runat="server" ID="txtFechaFin" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
+                                            <asp:TextBox runat="server" ID="txtFechaFinSAF" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
                                         </td>
                                         <td id="ColConciliada1">
                                             <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
