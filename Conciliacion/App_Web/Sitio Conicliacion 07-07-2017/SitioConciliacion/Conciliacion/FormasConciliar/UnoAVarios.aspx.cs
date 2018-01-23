@@ -6130,26 +6130,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
             rc.Secuencia = 1;
-            rc.Folio = 1;
+            rc.Folio = dsaf.Folio;
             rc.Sucursal = 1;
-            rc.Año = 2018;
+            rc.Año = 2017;
             rc.FMovimiento = DateTime.Now;
             rc.FOperacion = DateTime.Now;
-            rc.Retiro = 500;
+            rc.Retiro = dsaf.Importe;
             rc.Deposito = 0;
             rc.Referencia = "";
-            rc.Descripcion = "";
-            rc.Monto = 50;
-            rc.Concepto = "";
+            rc.Descripcion = "Saldo a favor";
+            rc.Monto = dsaf.Importe;
+            rc.Concepto = dsaf.TipoCargo;
             rc.RFCTercero = "";
-            rc.NombreTercero = "";
+            rc.NombreTercero = dsaf.NombreCliente;
             rc.Cheque = "";
             rc.StatusConciliacion = "CONCILIACION ABIERTA";
             rc.UbicacionIcono = "";
-            rc.cliente = 222;
+            rc.cliente = Convert.ToInt32(dsaf.Cliente);
             listaReferenciaArchivosInternos.Add(rc);
         }
-
+        Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
         GenerarTablaArchivosInternos();
         grvInternos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
         grvInternos.DataBind();
