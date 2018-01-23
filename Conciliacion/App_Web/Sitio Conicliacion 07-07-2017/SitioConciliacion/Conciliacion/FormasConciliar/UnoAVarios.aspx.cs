@@ -6114,6 +6114,44 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
-    
 
+
+
+    protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
+    {
+        DateTime FInicio = Convert.ToDateTime("16/01/2018");
+        DateTime FFin = Convert.ToDateTime("17/01/2018");
+
+        List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(FInicio, FFin, -1, 51.18M);
+
+        List<ReferenciaNoConciliada> ListaSaldosAFavor = new List<ReferenciaNoConciliada>();
+
+        foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
+        {
+            ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
+            rc.Secuencia = 1;
+            rc.Folio = 1;
+            rc.Sucursal = 1;
+            rc.Año = 2018;
+            rc.FMovimiento = DateTime.Now;
+            rc.FOperacion = DateTime.Now;
+            rc.Retiro = 500;
+            rc.Deposito = 0;
+            rc.Referencia = "";
+            rc.Descripcion = "";
+            rc.Monto = 50;
+            rc.Concepto = "";
+            rc.RFCTercero = "";
+            rc.NombreTercero = "";
+            rc.Cheque = "";
+            rc.StatusConciliacion = "CONCILIACION ABIERTA";
+            rc.UbicacionIcono = "";
+            rc.cliente = 222;
+            listaReferenciaArchivosInternos.Add(rc);
+        }
+
+        GenerarTablaArchivosInternos();
+        grvInternos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+        grvInternos.DataBind();
+    }
 }

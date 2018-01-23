@@ -1348,7 +1348,7 @@
                                             <div class="bg-color-grisClaro fg-color-amarillo">
                                                 <asp:ImageButton ID="imgBuscaSaldoAFavor" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                 ToolTip="Buscar saldos a favor" Width="30px" Height="30px" style="padding: 5px 5px 5px 5px;" 
-                                                ValidationGroup="vgFecha, vgMoneda"/>
+                                                ValidationGroup="vgFecha, vgMoneda" OnClick="imgBuscaSaldoAFavor_Click"/>
                                             </div>
                                         </td>       
                                     </tr>
