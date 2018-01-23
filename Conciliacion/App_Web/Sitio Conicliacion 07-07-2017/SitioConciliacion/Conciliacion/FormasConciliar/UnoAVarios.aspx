@@ -46,16 +46,37 @@
     <script type="text/javascript">
         function pageLoad() {
             activarDatePickers();
+            MuestraSaldoAFavor();
+        }
+
+        function MuestraSaldoAFavor() {
+            //if ( $('#hfMuestraSeccionSaldoAFavor')[0].value == 1 ) {
+            if ($('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val() == "1") {
+                $('#configuracionInternosPedidos').hide();
+                $('#seccionGridPedidos').hide();
+                $('#seccionFiltrosSaldoAFavor').show();
+                <%--console.log('Mostrar');
+                console.log($('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val());--%>
+            }
+            else {
+                $('#seccionFiltrosSaldoAFavor').hide();
+                $('#configuracionInternosPedidos').show();
+                $('#seccionGridPedidos').show();
+                <%--console.log('Ocultar');
+                console.log($('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val());--%>
+            }
         }
 
         function clickBotonMuestraSaldoAFavor()
         {            
-            if ($('#hfMuestraSeccionSaldoAFavor')[0].value == 0) {
+            //if ($('#hfMuestraSeccionSaldoAFavor')[0].value == 0) {
+            if ( $('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val() == "0" ) {
                 $('#configuracionInternosPedidos').hide(500);
                 $('#seccionFiltrosSaldoAFavor').show(500);
                 //$('#seccionSaldoAFavor').show(500);
                 $('#seccionGridPedidos').hide(500);                
-                $('#hfMuestraSeccionSaldoAFavor').val('1');
+                //$('#hfMuestraSeccionSaldoAFavor').val('1');
+                $('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val("1");
                 $('#btnMuestraSaldoAFavor').css("background-color", "yellow");
                 $('#btnMuestraSaldoAFavor').html('Ocultar');
             }
@@ -64,7 +85,8 @@
                 $('#seccionFiltrosSaldoAFavor').hide(500);
                 //$('#seccionSaldoAFavor').hide(500);
                 $('#seccionGridPedidos').show(500);
-                $('#hfMuestraSeccionSaldoAFavor').val('0');
+                //$('#hfMuestraSeccionSaldoAFavor').val('0');
+                $('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val("0");
                 $('#btnMuestraSaldoAFavor').css("background-color", "green");
                 $('#btnMuestraSaldoAFavor').html('Mostrar');
             }
@@ -920,7 +942,7 @@
                                     </b>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
-                                    <input type="hidden" id="hfMuestraSeccionSaldoAFavor" value="0" />
+                                    <input type="hidden" id="hfMuestraSeccionSaldoAFavor" value="0" runat="server"/>
                                     <input type="button" name="btnMuestraSaldoAFavor" value="Saldo a favor" class="button" onclick="clickBotonMuestraSaldoAFavor();"
                                         style="visibility:hidden" runat="server" ID="btnMuestraSaldoAFavorID"/>
                                 </td>
