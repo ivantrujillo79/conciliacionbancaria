@@ -1329,66 +1329,67 @@
                             </asp:UpdatePanel>
                         </div>
 
-                        <div id="seccionFiltrosSaldoAFavor" style="display:none;">
-                                <table style="width: 100%;">
-                                    <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                                        <td>
-                                            Fecha de saldos
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td id="ColConciliada">Conciliada</td>
-                                        <td>Cliente</td>
-                                        <td>Monto</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr  class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                                        <td>
-                                            <asp:CheckBox ID="cbTodos" runat="server" Text="Todos"/>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox runat="server" ID="txtFechaInicioSAF" CssClass="cajaTexto" ToolTip="Fecha inicio" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox runat="server" ID="txtFechaFinSAF" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
-                                        </td>
-                                        <td id="ColConciliada1">
-                                            <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
-                                        </td>      
-                                        <td>
-                                            <asp:TextBox ID="txtClienteSAF" runat="server" Width="90px" onkeypress="return ValidaNumero(event)"></asp:TextBox>
-                                        </td>
-                                        <td>
-                                            <asp:TextBox ID="txtMonto" runat="server" Width="90px" onkeypress="return ValidaMoneda(event)"></asp:TextBox>
-                                            <asp:CompareValidator id="cvMonto" runat="server" 
-                                                ControlToValidate="txtMonto" 
-                                                Operator="DataTypeCheck"
-                                                Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
-
-                                            <br />
-
-                                        </td>  
-                                        <td>            
-                                            <div class="bg-color-grisClaro fg-color-amarillo">
-                                                <asp:ImageButton ID="imgBuscaSaldoAFavor" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                        <div id="seccionFiltrosSaldoAFavor" style="display:none; padding:3px;" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                            <table style="width: 100%;" >
+                                <tr>
+                                    <td>
+                                        FECHA DE SALDOS
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td id="ColConciliada">Conciliada</td>
+                                    <td>Cliente</td>
+                                    <td>Monto</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:CheckBox ID="cbTodos" runat="server" Text="Todos"/>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox runat="server" ID="txtFechaInicioSAF" CssClass="cajaTexto" ToolTip="Fecha inicio" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox runat="server" ID="txtFechaFinSAF" CssClass="cajaTexto" ToolTip="Fecha fin" ValidationGroup="vgFecha" Width="70px" Font-Size="11px"/>
+                                    </td>
+                                    <td id="ColConciliada1">
+                                        <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
+                                    </td>      
+                                    <td>
+                                        <asp:TextBox ID="txtClienteSAF" runat="server" Width="90px" onkeypress="return ValidaNumero(event)"
+                                            CssClass="cajaTexto" Font-Size="11px"></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtMontoSAF" runat="server" Width="90px" onkeypress="return ValidaMoneda(event)"
+                                            CssClass="cajaTexto" Font-Size="11px"></asp:TextBox>
+                                    </td>  
+                                    <td>            
+                                        <div class="bg-color-naranja fg-color-blanco"> <%--bg-color-grisClaro fg-color-amarillo--%>
+                                            <asp:ImageButton ID="imgBuscaSaldoAFavor" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                 ToolTip="Buscar saldos a favor" Width="30px" Height="30px" style="padding: 5px 5px 5px 5px;" 
                                                 ValidationGroup="vgFecha, vgMoneda" OnClick="imgBuscaSaldoAFavor_Click"/>
-                                            </div>
-                                        </td>       
-                                    </tr>
-                                    <tr class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                                        <td class="auto-style1"><asp:CheckBox ID="cbMontosIguales" runat="server" Text="Montos iguales"/></td>
-                                        <td class="auto-style1"></td>
-                                        <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
-                                        <td id="ColConciliada2" class="auto-style1"></td>
-                                        <td id="cellResto" class="auto-style1"><asp:Label ID="Label1" runat="server"/></td>
-                                        <td class="auto-style1"></td>
-                                        <td class="auto-style1"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7"></td>
-                                    </tr>
-                                </table>
+                                        </div>
+                                    </td>       
+                                </tr>
+                                <tr>
+                                    <td class="auto-style1"><asp:CheckBox ID="cbMontosIguales" runat="server" Text="Montos iguales"/></td>
+                                    <td class="auto-style1"></td>
+                                    <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
+                                    <td id="ColConciliada2" class="auto-style1"></td>
+                                    <td id="cellResto" class="auto-style1"><asp:Label ID="Label1" runat="server"/></td>
+                                    <td>
+                                        <asp:CompareValidator id="cvMonto" runat="server" 
+                                            ControlToValidate="txtMontoSAF" 
+                                            Operator="DataTypeCheck"
+                                            Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
+                                    </td>
+                                    <td class="auto-style1"></td>
+                                    <%--<td class="auto-style1"></td>--%>
+                                </tr>
+                                <tr>
+                                    <td colspan="7"></td>
+                                </tr>
+                            </table>
                         </div>
 
 
