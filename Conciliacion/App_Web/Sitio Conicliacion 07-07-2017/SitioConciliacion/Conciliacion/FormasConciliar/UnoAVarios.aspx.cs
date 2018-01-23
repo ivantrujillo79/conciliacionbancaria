@@ -242,7 +242,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
                 GenerarTablaExternos();
                 LlenaGridViewExternos();
-                ActualizarDatos_wucCargaExcel();
                 ActualizarTotalesAgregados();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
@@ -440,6 +439,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 txtDias.Enabled = true;
             }
 
+            ActualizarDatos_wucCargaExcel();
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
             else
