@@ -2758,6 +2758,7 @@
     <!--        FIN POPUP CLIENTE PAGO     -->
 
     <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" /> 
+    <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
     
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
