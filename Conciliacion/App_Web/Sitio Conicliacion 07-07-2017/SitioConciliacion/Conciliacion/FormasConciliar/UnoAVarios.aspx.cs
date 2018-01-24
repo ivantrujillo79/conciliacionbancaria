@@ -521,41 +521,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         }
                     }
                     else
-                    {
-                        throw new Exception("No se encontraron pedidos agregados.");
-                    }
+                        return cliente;
                     break;
                 case "ARCHIVO":
+                    if (grvAgregadosInternos.Rows.Count > 0 && refExterna.ListaReferenciaConciliada.Count > 0)
+                    {
+                        foreach (GridViewRow row in grvAgregadosInternos.Rows)
+                        {
+                            cliente = Convert.ToInt32(grvAgregadosInternos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
+                            listaClientes.Add(cliente);
+                        }
+                    }
+                    else
+                        return cliente;
                     break;
                 default:
-                    break;
+                    return cliente;
             }
-            //if (grvAgregadosPedidos.Rows.Count > 0 && refExterna.ListaReferenciaConciliada.Count > 0)
-            //{
-            //    List<int> listaClientes = new List<int>();
-
-            //    foreach (GridViewRow row in grvAgregadosPedidos.Rows)
-            //    {
-            //        cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
-            //        listaClientes.Add(cliente);
-            //    }
                 
-                wucClientePago.Clientes = listaClientes;
-                hdfClientePagoAnio.Value = refExterna.Año.ToString();
-                hdfClientePagoCorporativo.Value = refExterna.Corporativo.ToString();
-                hdfClientePagoFolio.Value = refExterna.Folio.ToString();
-                hdfClientePagoSecuencia.Value = refExterna.Secuencia.ToString();
-                hdfClientePagoSucursal.Value = refExterna.Sucursal.ToString();
-                listaClientes = listaClientes.Distinct().ToList();
+            wucClientePago.Clientes = listaClientes;
+            hdfClientePagoAnio.Value = refExterna.Año.ToString();
+            hdfClientePagoCorporativo.Value = refExterna.Corporativo.ToString();
+            hdfClientePagoFolio.Value = refExterna.Folio.ToString();
+            hdfClientePagoSecuencia.Value = refExterna.Secuencia.ToString();
+            hdfClientePagoSucursal.Value = refExterna.Sucursal.ToString();
+            listaClientes = listaClientes.Distinct().ToList();
 
-                if (listaClientes.Count > 1) hdfClientePagoMostrar.Value = "1";
-                else
-                {
-                    if (listaClientes.Count == 1)
-                        cliente = listaClientes[0];
-                    hdfClientePagoMostrar.Value = "";
-                }
-            //}
+            if (listaClientes.Count > 1) hdfClientePagoMostrar.Value = "1";
+            else
+            {
+                if (listaClientes.Count == 1)
+                    cliente = listaClientes[0];
+                hdfClientePagoMostrar.Value = "";
+            }
             return cliente;
         }
         catch(Exception ex)
@@ -1927,7 +1925,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             if (hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
                             {
                                 // Si no se muestra el control presentar mensaje de éxito
-                                if (!MostrarClientePago(objSolicitdConciliacion.ConsultaPedido()))
+                                if (!MostrarClientePago())
                                 {
                                     hdfAceptaAplicarSaldoAFavor.Value = "";
                                     mostrarClientePago = false;
@@ -1969,12 +1967,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-    private bool MostrarClientePago(bool EsPedido)
+    //private bool MostrarClientePago(bool EsPedido)
+    private bool MostrarClientePago()
     {
         bool seMuestra = false;
         try
         {
-            if (EsPedido && hdfClientePagoMostrar.Value == "1")
+            //if (EsPedido && hdfClientePagoMostrar.Value == "1")
+            if (hdfClientePagoMostrar.Value == "1")
             {
                 if (HttpContext.Current.Session["EXTERNO_SELECCIONADO"] != null)
                 {
@@ -2412,6 +2412,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof (DateTime));
                 tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof (decimal));
                 tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof (string));
+                tblReferenciaAgregadasInternas.Columns.Add("Cliente", typeof(string));
 
                 //Llena GridView con lista de Agregados del Externo (INTERNOS)
                 foreach (ReferenciaConciliada rc in refExternaSelec.ListaReferenciaConciliada)
@@ -2424,7 +2425,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         rc.FMovimientoInt,
                         rc.FOperacionInt,
                         rc.MontoInterno,
-                        rc.ConceptoInterno
+                        rc.ConceptoInterno,
+                        rc.ClienteReferencia
                         );
 
                 }

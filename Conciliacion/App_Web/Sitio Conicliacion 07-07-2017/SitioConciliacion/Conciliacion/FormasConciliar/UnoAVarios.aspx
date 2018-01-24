@@ -1520,7 +1520,7 @@
 						
                             <asp:GridView ID="grvAgregadosInternos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging="False" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
-                                PageSize="10" ShowHeaderWhenEmpty="False" ShowFooter="False" DataKeyNames="Folio,Secuencia,Año,Sucursal"
+                                PageSize="10" ShowHeaderWhenEmpty="False" ShowFooter="False" DataKeyNames="Folio,Secuencia,Año,Sucursal,Cliente"
                                 OnRowCreated="grvAgregadosInternos_RowCreated">
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
@@ -1589,6 +1589,14 @@
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                         <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Cliente" SortExpression="cliente">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblClienteInt" runat="server" Text='<%# Eval("Cliente").ToString() %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="centradoMedio" />
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
                                     </asp:TemplateField>
                                 </Columns>
                                 <PagerTemplate>
