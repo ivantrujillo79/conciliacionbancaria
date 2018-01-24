@@ -597,6 +597,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            if (Cliente <= 0)
+                return;
             Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle tdd = Conciliacion.Migracion.Runtime.App.TablaDestinoDetalle;
             tdd.ClientePago     = Cliente;
             tdd.Anio            = refExterna.Año;
