@@ -159,7 +159,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);
-        //hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
+        hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
 
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
