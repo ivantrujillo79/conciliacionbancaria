@@ -503,20 +503,42 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// <summary>
     /// Actualiza las propiedades del web user control "wucClientePago"
     /// </summary>
-    private int ActualizarDatos_ClientePago(ReferenciaNoConciliada refExterna)
+    private int ActualizarDatos_ClientePago(ReferenciaNoConciliada refExterna, string fuenteInsumo)
     {
         int cliente = 0;
         try
         {
-            if (grvAgregadosPedidos.Rows.Count > 0 && refExterna.ListaReferenciaConciliada.Count > 0)
+            List<int> listaClientes = new List<int>();
+            switch (fuenteInsumo)
             {
-                List<int> listaClientes = new List<int>();
+                case "PEDIDO":
+                    if (grvAgregadosPedidos.Rows.Count > 0 && refExterna.ListaReferenciaConciliada.Count > 0)
+                    {
+                        foreach (GridViewRow row in grvAgregadosPedidos.Rows)
+                        {
+                            cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
+                            listaClientes.Add(cliente);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("No se encontraron pedidos agregados.");
+                    }
+                    break;
+                case "ARCHIVO":
+                    break;
+                default:
+                    break;
+            }
+            //if (grvAgregadosPedidos.Rows.Count > 0 && refExterna.ListaReferenciaConciliada.Count > 0)
+            //{
+            //    List<int> listaClientes = new List<int>();
 
-                foreach (GridViewRow row in grvAgregadosPedidos.Rows)
-                {
-                    cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
-                    listaClientes.Add(cliente);
-                }
+            //    foreach (GridViewRow row in grvAgregadosPedidos.Rows)
+            //    {
+            //        cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
+            //        listaClientes.Add(cliente);
+            //    }
                 
                 wucClientePago.Clientes = listaClientes;
                 hdfClientePagoAnio.Value = refExterna.Año.ToString();
@@ -533,7 +555,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         cliente = listaClientes[0];
                     hdfClientePagoMostrar.Value = "";
                 }
-            }
+            //}
             return cliente;
         }
         catch(Exception ex)
@@ -1841,8 +1863,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     if (rfExterno.ListaReferenciaConciliada.Count > 0)
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
-                        int clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno);
-
+                        int clienteSaldoAFavor = 0;
+                        if (objSolicitdConciliacion.ConsultaPedido())
+                        {
+                            clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno, "PEDIDO");
+                        }
+                        else if (objSolicitdConciliacion.ConsultaArchivo())
+                        {
+                            clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno, "ARCHIVO");
+                        }
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
                         rfExterno.ConInterno = objSolicitdConciliacion.ConsultaArchivo();
