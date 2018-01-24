@@ -2035,7 +2035,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            throw ex;
+            //throw ex;
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
         
     }
@@ -6123,10 +6126,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
     {
         cargarInfoConciliacionActual();
-       
 
-    DateTime FInicio = Convert.ToDateTime("16/01/2018");
-        DateTime FFin = Convert.ToDateTime("17/01/2018");
+        DateTime FInicio = Convert.ToDateTime(txtFechaInicioSAF.Text);
+        DateTime FFin = Convert.ToDateTime(txtFechaFinSAF.Text);
 
         List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(FInicio, FFin, -1, 51.18M);
 
