@@ -32,10 +32,9 @@
           border: none;
           border-radius: 5px;
           box-shadow: 0 4px #333333;
-          
         }
 
-        .blue{
+        .blue {
           background-color: #2d89ef;
         }
 
@@ -1370,18 +1369,19 @@
                                         <asp:DropDownList ID="ddStatusConciliacion" runat="server"></asp:DropDownList>
                                     </td>      
                                     <td>
-                                        <asp:TextBox ID="txtClienteSAF" runat="server" Width="90px" onkeypress="return ValidaNumero(event)"
-                                            CssClass="cajaTexto" Font-Size="11px"></asp:TextBox>
+                                        <asp:TextBox ID="txtClienteSAF" runat="server" Width="90px"
+                                            CssClass="cajaTexto" Font-Size="11px"></asp:TextBox><%-- onkeypress="return ValidaNumero(event)"--%>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtMontoSAF" runat="server" Width="90px" onkeypress="return ValidaMoneda(event)"
-                                            CssClass="cajaTexto" Font-Size="11px"></asp:TextBox>
+                                        <asp:TextBox ID="txtMontoSAF" runat="server" Width="90px" 
+                                            CssClass="cajaTexto" Font-Size="11px"></asp:TextBox><%--onkeypress="return ValidaMoneda(event)"--%>
                                     </td>  
                                     <td>            
                                         <div class="bg-color-naranja fg-color-blanco"> <%--bg-color-grisClaro fg-color-amarillo--%>
                                             <asp:ImageButton ID="imgBuscaSaldoAFavor" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                 ToolTip="Buscar saldos a favor" Width="30px" Height="30px" style="padding: 5px 5px 5px 5px;" 
-                                                ValidationGroup="vgFecha, vgMoneda" OnClick="imgBuscaSaldoAFavor_Click"/>
+                                                ValidationGroup="vgFecha, vgMoneda, vgEntero" OnClick="imgBuscaSaldoAFavor_Click"
+                                                CausesValidation="true"/>
                                         </div>
                                     </td>       
                                 </tr>
@@ -1390,12 +1390,18 @@
                                     <td class="auto-style1"></td>
                                     <td class="auto-style1"><asp:Label ID="lblMontoConciliar" runat="server"/>Monto a conciliar:</td>
                                     <td id="ColConciliada2" class="auto-style1"></td>
-                                    <td id="cellResto" class="auto-style1"><asp:Label ID="Label1" runat="server"/></td>
+                                    <%--<td id="cellResto" class="auto-style1"><asp:Label ID="Label1" runat="server"/></td>--%>
+                                    <td>
+                                        <asp:CompareValidator id="cvCliente" runat="server" 
+                                            ControlToValidate="txtClienteSAF" 
+                                            Operator="DataTypeCheck"
+                                            Type="Integer" ErrorMessage="Formato incorrecto" ValidationGroup="vgEntero" Font-Size="12px"/>
+                                    </td>
                                     <td>
                                         <asp:CompareValidator id="cvMonto" runat="server" 
                                             ControlToValidate="txtMontoSAF" 
                                             Operator="DataTypeCheck"
-                                            Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" />
+                                            Type="Currency" ErrorMessage="Formato incorrecto" ValidationGroup="vgMoneda" Font-Size="12px"/>
                                     </td>
                                     <td class="auto-style1"></td>
                                     <%--<td class="auto-style1"></td>--%>

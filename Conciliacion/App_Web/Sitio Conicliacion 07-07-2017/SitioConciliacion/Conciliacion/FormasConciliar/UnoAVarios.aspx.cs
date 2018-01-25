@@ -6133,44 +6133,60 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
     {
-        cargarInfoConciliacionActual();
-
-        DateTime FInicio = Convert.ToDateTime(txtFechaInicioSAF.Text);
-        DateTime FFin = Convert.ToDateTime(txtFechaFinSAF.Text);
-
-        List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(FInicio, FFin, -1, 51.18M);
-
-        List<ReferenciaNoConciliada> ListaSaldosAFavor = new List<ReferenciaNoConciliada>();
-
-        int secuencia = 1;
-        foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
+        try
         {
-            ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
-            rc.Secuencia = secuencia;
-            rc.Folio = dsaf.Folio;
-            rc.Sucursal = sucursal;
-            rc.Año = año;
-            rc.FMovimiento = DateTime.Now;
-            rc.FOperacion = DateTime.Now;
-            rc.Retiro = dsaf.Importe;
-            rc.Deposito = 0;
-            rc.Referencia = "";
-            rc.Descripcion = "Saldo a favor";
-            rc.Monto = dsaf.Importe;
-            rc.Concepto = dsaf.TipoCargo;
-            rc.RFCTercero = "";
-            rc.NombreTercero = dsaf.NombreCliente;
-            rc.Cheque = "";
-            rc.StatusConciliacion = "CONCILIACION ABIERTA";
-            rc.UbicacionIcono = "";
-            rc.cliente = Convert.ToInt32(dsaf.Cliente);
-            rc.FormaConciliacion = formaConciliacion;
-            listaReferenciaArchivosInternos.Add(rc);
-            secuencia++;
+            cargarInfoConciliacionActual();
+            string sFInicio = txtFechaInicioSAF.Text.Trim();
+            string sFFin    = txtFechaFinSAF.Text.Trim();
+            string sCliente = txtClienteSAF.Text.Trim();
+            string sMonto   = txtMontoSAF.Text.Trim();
+
+            DateTime FInicio = (sFInicio.Length > 0 ? Convert.ToDateTime(sFInicio) : DateTime.MinValue);
+            DateTime FFin    = (sFFin.Length > 0 ? Convert.ToDateTime(sFFin) : DateTime.MinValue);
+            int iCliente     = (sCliente.Length > 0 ? Convert.ToInt32(sCliente) : -1);
+            decimal dMonto   = (sMonto.Length > 0 ? Convert.ToDecimal(sMonto) : -1M);
+
+            List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(
+                                            FInicio, FFin, iCliente, dMonto, 1);
+
+            List<ReferenciaNoConciliada> ListaSaldosAFavor = new List<ReferenciaNoConciliada>();
+
+            int secuencia = 1;
+            foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
+            {
+                ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
+                rc.Secuencia = secuencia;
+                rc.Folio = dsaf.Folio;
+                rc.Sucursal = sucursal;
+                rc.Año = año;
+                rc.FMovimiento = DateTime.Now;
+                rc.FOperacion = DateTime.Now;
+                rc.Retiro = dsaf.Importe;
+                rc.Deposito = 0;
+                rc.Referencia = "";
+                rc.Descripcion = "Saldo a favor";
+                rc.Monto = dsaf.Importe;
+                rc.Concepto = dsaf.TipoCargo;
+                rc.RFCTercero = "";
+                rc.NombreTercero = dsaf.NombreCliente;
+                rc.Cheque = "";
+                rc.StatusConciliacion = "CONCILIACION ABIERTA";
+                rc.UbicacionIcono = "";
+                rc.cliente = Convert.ToInt32(dsaf.Cliente);
+                rc.FormaConciliacion = formaConciliacion;
+                listaReferenciaArchivosInternos.Add(rc);
+                secuencia++;
+            }
+            Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
+            GenerarTablaArchivosInternos();
+            grvInternos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+            grvInternos.DataBind();
         }
-        Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
-        GenerarTablaArchivosInternos();
-        grvInternos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
-        grvInternos.DataBind();
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 }
