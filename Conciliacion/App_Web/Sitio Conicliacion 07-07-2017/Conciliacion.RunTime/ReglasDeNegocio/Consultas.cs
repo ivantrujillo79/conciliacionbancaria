@@ -318,7 +318,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract DataTable FamiliaresCliente(int Cliente);
 
         //  SALDO A FAVOR
-        public abstract List<DetalleSaldoAFavor> ConsultaDetalleSaldoAFavor(DateTime FInicio, DateTime FFin, int Cliente, Decimal Monto);
+        public abstract List<DetalleSaldoAFavor> ConsultaDetalleSaldoAFavor(DateTime FInicio, DateTime FFin, int Cliente, Decimal Monto, short TipoMovimiento);
 
         public abstract Consultas CrearObjeto();
 

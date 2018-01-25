@@ -6181,19 +6181,24 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
-        public override List<DetalleSaldoAFavor> ConsultaDetalleSaldoAFavor(DateTime FInicio, DateTime FFin, int Cliente, Decimal Monto)
+        public override List<DetalleSaldoAFavor> ConsultaDetalleSaldoAFavor(DateTime FInicio, DateTime FFin, int Cliente, Decimal Monto, short TipoMovimiento)
         {
             List<DetalleSaldoAFavor> ListaDSAF = new List<DetalleSaldoAFavor>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
+                    if (TipoMovimiento <= 0)
+                    {
+                        throw new Exception("El parámetro TipoMovimiento no es válido.");
+                    }
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBConsultaDetalleSaldoAFavor", cnn);
                     comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value    = (FInicio == DateTime.MinValue ? (object)System.DBNull.Value : FInicio);
                     comando.Parameters.Add("@FFin", System.Data.SqlDbType.DateTime).Value       = (FFin == DateTime.MinValue ? (object)System.DBNull.Value : FFin);
                     comando.Parameters.Add("@Cliente", System.Data.SqlDbType.Int).Value         = (Cliente == -1 ? (object)System.DBNull.Value : Cliente);
                     comando.Parameters.Add("@Monto", System.Data.SqlDbType.Money).Value         = (Monto == -1 ? (object)System.DBNull.Value : Monto);
+                    comando.Parameters.Add("@TipoMovimientoAConciliar", System.Data.SqlDbType.SmallInt).Value = TipoMovimiento;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
