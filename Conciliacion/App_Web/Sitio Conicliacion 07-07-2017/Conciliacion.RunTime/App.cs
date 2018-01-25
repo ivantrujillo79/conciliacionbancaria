@@ -281,6 +281,17 @@ namespace Conciliacion.RunTime
             }
         }
 
+        private static DetallePagare detallepagare;
+        public static DetallePagare DetallePagare
+        {
+            get
+            {
+                if (detallepagare == null)
+                    detallepagare = new DetallePagareDatos(App.ImplementadorMensajes);
+                return detallepagare;
+            }
+        }
+
         private static SaldoAFavor saldoafavor;
         public static SaldoAFavor SaldoAFavor
         {
