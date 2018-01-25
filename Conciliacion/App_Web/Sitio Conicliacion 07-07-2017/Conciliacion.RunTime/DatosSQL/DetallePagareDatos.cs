@@ -49,34 +49,45 @@ namespace Conciliacion.RunTime.DatosSQL
             return new DetallePagareDatos(this.ImplementadorMensajes);
         }
 
-        public override List<DetallePagare> ConsultaSaldoAFavor(int TipoMovimientoAConciliar, string FInicial, string FFinal, string Cliente, decimal monto, Conexion conexion)
+        public override List<DetallePagare> ConsultaSaldoAFavor(DateTime FInicial, DateTime FFinal, int Cliente, Decimal Monto, short TipoMovimientoAConciliar)
         {
             List<DetallePagare> ListaRetorno = new List<DetallePagare>();
             try
             {
                 using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
                 {
+                    if (TipoMovimientoAConciliar <= 0)
+                    {
+                        throw new Exception("El parámetro TipoMovimiento no es válido.");
+                    }
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaSaldosAFavor", cnn);
+                    SqlCommand comando = new SqlCommand("spCBConsultaDetalleSaldoAFavor", cnn);
+                    comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value    = (FInicial == DateTime.MinValue ? (object)System.DBNull.Value : FInicial);
+                    comando.Parameters.Add("@FFin", System.Data.SqlDbType.DateTime).Value       = (FFinal == DateTime.MinValue ? (object)System.DBNull.Value : FFinal);
+                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.Int).Value         = (Cliente == -1 ? (object)System.DBNull.Value : Cliente);
+                    comando.Parameters.Add("@Monto", System.Data.SqlDbType.Money).Value         = (Monto == -1 ? (object)System.DBNull.Value : Monto);
+                    comando.Parameters.Add("@TipoMovimientoAConciliar", System.Data.SqlDbType.SmallInt).Value = TipoMovimientoAConciliar;
+
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
-                        DetallePagare objDetalle = Conciliacion.RunTime.App.DetallePagare.CrearObjeto();
-                        {
-                            Folio = Convert.ToInt32(reader["Folio"]);
-                            Cliente = reader["Cliente"].ToString();
-                            NombreCliente = reader["NombreCliente"].ToString();
-                            CuentaBancaria = reader["CuentaBancaria"].ToString();
-                            Banco = reader["Banco"].ToString();
-                            Sucursal = reader["Sucursal"].ToString();
-                            TipoCargo = reader["TipoCargo"].ToString();
-                            Global = bool.Parse(reader["Global"].ToString());
-                            Fsaldo = DateTime.Parse(reader["Fsaldo"].ToString());
-                            Importe = decimal.Parse(reader["Importe"].ToString());
-                            Conciliada = reader["Conciliada"].ToString();
-                        };
-                        ListaRetorno.Add(objDetalle);
+                        DetallePagare detalle = new DetallePagareDatos(this.ImplementadorMensajes);
+                        detalle.Seleccionado = false;
+                        detalle.Folio = Convert.ToInt32(reader["Folio"]);
+                        detalle.Cliente = Convert.ToString(reader["Cliente"]);
+                        detalle.NombreCliente = Convert.ToString(reader["NombreCliente"]);
+                        detalle.CuentaBancaria = Convert.ToString(reader["CuentaBancaria"]);
+                        detalle.Banco = "";
+                        detalle.Sucursal = Convert.ToString(reader["Sucursal"]);
+                        detalle.TipoCargo = "";
+                        detalle.Global = false;
+                        detalle.Fsaldo = Convert.ToDateTime(reader["FSaldo"]);
+                        detalle.Importe = Convert.ToDecimal(reader["Importe"]);
+                        detalle.Conciliada = Convert.ToString(reader["Conciliada"]);
+                        ListaRetorno.Add(detalle);
                     }
+                    reader.Close();
                 }
             }
             catch (SqlException ex)

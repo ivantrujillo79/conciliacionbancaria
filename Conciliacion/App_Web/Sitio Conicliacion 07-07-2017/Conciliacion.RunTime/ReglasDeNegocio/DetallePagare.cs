@@ -57,7 +57,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
         public abstract DetallePagare CrearObjeto();
-        public abstract List<DetallePagare> ConsultaSaldoAFavor(int TipoMovimientoAConciliar, string FInicial, string FFinal, string Cliente, decimal monto, Conexion conexion);
+        //public abstract List<DetallePagare> ConsultaSaldoAFavor(string FInicial, string FFinal, string Cliente, decimal monto, short TipoMovimientoAConciliar, Conexion conexion);
+        public abstract List<DetallePagare> ConsultaSaldoAFavor(DateTime FInicial, DateTime FFinal, int Cliente, Decimal Monto, short TipoMovimientoAConciliar);
 
         public virtual string CadenaConexion
         {
