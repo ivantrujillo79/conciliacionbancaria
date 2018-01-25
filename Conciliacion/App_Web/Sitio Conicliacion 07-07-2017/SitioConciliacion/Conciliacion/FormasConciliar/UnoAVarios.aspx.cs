@@ -6133,6 +6133,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
     {
+        const short SALDO  = 1;
+        const short PAGARE = 2;
         try
         {
             cargarInfoConciliacionActual();
@@ -6146,36 +6148,72 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             int iCliente     = (sCliente.Length > 0 ? Convert.ToInt32(sCliente) : -1);
             decimal dMonto   = (sMonto.Length > 0 ? Convert.ToDecimal(sMonto) : -1M);
 
-            List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(
-                                            FInicio, FFin, iCliente, dMonto, 1);
-
-            List<ReferenciaNoConciliada> ListaSaldosAFavor = new List<ReferenciaNoConciliada>();
-
-            int secuencia = 1;
-            foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
+            listaReferenciaArchivosInternos.Clear();
+            if (hfActivaPagoOSaldo.Value == "SALDO")
             {
-                ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
-                rc.Secuencia = secuencia;
-                rc.Folio = dsaf.Folio;
-                rc.Sucursal = sucursal;
-                rc.Año = año;
-                rc.FMovimiento = DateTime.Now;
-                rc.FOperacion = DateTime.Now;
-                rc.Retiro = dsaf.Importe;
-                rc.Deposito = 0;
-                rc.Referencia = "";
-                rc.Descripcion = "Saldo a favor";
-                rc.Monto = dsaf.Importe;
-                rc.Concepto = dsaf.TipoCargo;
-                rc.RFCTercero = "";
-                rc.NombreTercero = dsaf.NombreCliente;
-                rc.Cheque = "";
-                rc.StatusConciliacion = "CONCILIACION ABIERTA";
-                rc.UbicacionIcono = "";
-                rc.cliente = Convert.ToInt32(dsaf.Cliente);
-                rc.FormaConciliacion = formaConciliacion;
-                listaReferenciaArchivosInternos.Add(rc);
-                secuencia++;
+                List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(
+                                                FInicio, FFin, iCliente, dMonto, SALDO);
+                
+                int secuencia = 1;
+                foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
+                {
+                    ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
+                    rc.Secuencia = secuencia;
+                    rc.Folio = dsaf.Folio;
+                    rc.Sucursal = sucursal;
+                    rc.Año = año;
+                    //rc.FMovimiento = DateTime.Now;
+                    //rc.FOperacion = DateTime.Now;
+                    rc.FMovimiento = dsaf.Fsaldo;
+                    rc.FOperacion = dsaf.Fsaldo;
+                    rc.Retiro = dsaf.Importe;
+                    rc.Deposito = 0;
+                    rc.Referencia = "";
+                    rc.Descripcion = "Saldo a favor";
+                    rc.Monto = dsaf.Importe;
+                    rc.Concepto = dsaf.TipoCargo;
+                    rc.RFCTercero = "";
+                    rc.NombreTercero = dsaf.NombreCliente;
+                    rc.Cheque = "";
+                    rc.StatusConciliacion = "CONCILIACION ABIERTA";
+                    rc.UbicacionIcono = "";
+                    rc.cliente = Convert.ToInt32(dsaf.Cliente);
+                    rc.FormaConciliacion = formaConciliacion;
+                    listaReferenciaArchivosInternos.Add(rc);
+                    secuencia++;
+                }
+            }
+            else if (hfActivaPagoOSaldo.Value == "PAGARE")
+            {
+                List<DetallePagare> ListaDetalle = Conciliacion.RunTime.App.DetallePagare.ConsultaSaldoAFavor(
+                                                FInicio, FFin, iCliente, dMonto, PAGARE);
+                
+                int secuencia = 1;
+                foreach (DetallePagare objPagare in ListaDetalle)
+                {
+                    ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
+                    rc.Secuencia            = secuencia;
+                    rc.Folio                = objPagare.Folio;
+                    rc.Sucursal             = sucursal;
+                    rc.Año                  = año;
+                    rc.FMovimiento          = objPagare.Fsaldo;
+                    rc.FOperacion           = objPagare.Fsaldo;
+                    rc.Retiro               = objPagare.Importe;
+                    rc.Deposito             = 0;
+                    rc.Referencia           = "";
+                    rc.Descripcion          = "Pagaré";
+                    rc.Monto                = objPagare.Importe;
+                    rc.Concepto             = objPagare.TipoCargo;
+                    rc.RFCTercero           = "";
+                    rc.NombreTercero        = objPagare.NombreCliente;
+                    rc.Cheque               = "";
+                    rc.StatusConciliacion   = "CONCILIACION ABIERTA";
+                    rc.UbicacionIcono       = "";
+                    rc.cliente              = String.IsNullOrEmpty(objPagare.Cliente) ? 0 : Convert.ToInt32(objPagare.Cliente);
+                    rc.FormaConciliacion    = formaConciliacion;
+                    listaReferenciaArchivosInternos.Add(rc);
+                    secuencia++;
+                }
             }
             Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
             GenerarTablaArchivosInternos();

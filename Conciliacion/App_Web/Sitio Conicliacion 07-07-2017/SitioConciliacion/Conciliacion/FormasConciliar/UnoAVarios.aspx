@@ -950,7 +950,7 @@
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <input type="hidden" id="hfActivaPagoOSaldo" value="" runat="server"/>
-                                    <input type="button" name="btnMuestraPagare" value="Pagaré" class="button blue" onclick="clickBotonMuestraSaldoAFavor('PAGO');"
+                                    <input type="button" name="btnMuestraPagare" value="Pagaré" class="button blue" onclick="clickBotonMuestraSaldoAFavor('PAGARE');"
                                         style="visibility:hidden" runat="server" ID="btnMuestraPagareID"/>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
