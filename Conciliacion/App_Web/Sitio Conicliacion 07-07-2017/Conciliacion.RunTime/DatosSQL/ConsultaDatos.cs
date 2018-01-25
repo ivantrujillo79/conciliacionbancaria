@@ -4565,7 +4565,6 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
-
                         ReferenciaConciliadaPedido dato =
                             new ReferenciaConciliadaPedidoDatos(Convert.ToInt16(reader["CorporativoConciliacion"]),
                                                                 Convert.ToInt32(reader["AñoConciliacion"]),
@@ -4669,7 +4668,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     Convert.ToInt32(reader["Cobro"]),
                                                     Convert.ToString(reader["NumeroCheque"]),
                                                     _total,
-                                                    Convert.ToDecimal(reader["Saldo"]),
+                                                    (reader["Saldo"] == System.DBNull.Value ? 0M : Convert.ToDecimal(reader["Saldo"])),
+                                                    //Convert.ToDecimal(reader["Saldo"]),
                                                     Convert.ToString(reader["NumeroCuenta"]),
                                                     Convert.ToString(reader["NumeroCuentaDestino"]),
                                                     Convert.ToDateTime(reader["FCheque"]),
@@ -4681,7 +4681,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     Convert.ToInt16(reader["TipoCobro"]),
                                                     Convert.ToBoolean(reader["Alta"]),
                                                     Convert.ToString(reader["Usuario"]),
-                                                    Convert.ToBoolean(reader["SaldoAFavor"]),
+                                                    (reader["SaldoAFavor"] == System.DBNull.Value ? false : Convert.ToBoolean(reader["SaldoAFavor"])),
+                                                    //Convert.ToBoolean(reader["SaldoAFavor"]),
                                                     Convert.ToInt32(reader["SucursalBancaria"]),
                                                     Convert.ToString(reader["Descripcion"]),
                                                     (reader["ClientePago"] == System.DBNull.Value ? 0 : Convert.ToInt32(reader["ClientePago"])),
