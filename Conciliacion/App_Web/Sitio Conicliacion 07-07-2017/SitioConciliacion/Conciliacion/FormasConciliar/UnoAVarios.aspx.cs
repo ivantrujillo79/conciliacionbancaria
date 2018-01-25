@@ -199,7 +199,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             CargarConfiguracion_wucCargaExcel(objSolicitdConciliacion.ConsultaPedido());
             CargarConfiguracion_wucClientePago();
 
-            imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
+            //imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
 
             if (!Page.IsPostBack)
             {
@@ -216,9 +216,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
                 
+                //          ACTIVAR BOTONES SALDO A FAVOR Y PAGARÉ
                 if (objSolicitdConciliacion.MuestraSaldoAFavor())
                 {
                     btnMuestraSaldoAFavorID.Attributes.Add("style", "visibility:visible");
+                }
+                if (objSolicitdConciliacion.ConsultaActivaPagare())
+                {
+                    btnMuestraPagareID.Attributes.Add("style", "visibility:visible");
                 }
 
                 statusFiltro = false;

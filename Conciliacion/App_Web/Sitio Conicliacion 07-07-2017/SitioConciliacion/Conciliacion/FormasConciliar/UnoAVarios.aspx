@@ -32,6 +32,11 @@
           border: none;
           border-radius: 5px;
           box-shadow: 0 4px #333333;
+          
+        }
+
+        .blue{
+          background-color: #2d89ef;
         }
 
         .button:hover {background-color: #da532c}
@@ -67,7 +72,7 @@
             }
         }
 
-        function clickBotonMuestraSaldoAFavor()
+        function clickBotonMuestraSaldoAFavor(Tipo)
         {            
             //if ($('#hfMuestraSeccionSaldoAFavor')[0].value == 0) {
             if ( $('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val() == "0" ) {
@@ -77,8 +82,11 @@
                 $('#seccionGridPedidos').hide(500);                
                 //$('#hfMuestraSeccionSaldoAFavor').val('1');
                 $('#<%= hfMuestraSeccionSaldoAFavor.ClientID %>').val("1");
+                $('#<%= hfActivaPagoOSaldo.ClientID %>').val(Tipo);
                 $('#btnMuestraSaldoAFavor').css("background-color", "yellow");
                 $('#btnMuestraSaldoAFavor').html('Ocultar');
+                
+                console.log($('#<%= hfActivaPagoOSaldo.ClientID %>').val());
             }
             else {
                 $('#configuracionInternosPedidos').show(500);
@@ -942,12 +950,18 @@
                                     </b>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
+                                    <input type="hidden" id="hfActivaPagoOSaldo" value="" runat="server"/>
+                                    <input type="button" name="btnMuestraPagare" value="Pagaré" class="button blue" onclick="clickBotonMuestraSaldoAFavor('PAGO');"
+                                        style="visibility:hidden" runat="server" ID="btnMuestraPagareID"/>
+                                </td>
+                                <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <input type="hidden" id="hfMuestraSeccionSaldoAFavor" value="0" runat="server"/>
-                                    <input type="button" name="btnMuestraSaldoAFavor" value="Saldo a favor" class="button" onclick="clickBotonMuestraSaldoAFavor();"
+                                    <input type="button" name="btnMuestraSaldoAFavor" value="Saldo a favor" class="button" onclick="clickBotonMuestraSaldoAFavor('SALDO');"
                                         style="visibility:hidden" runat="server" ID="btnMuestraSaldoAFavorID"/>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
-                                    <asp:ImageButton ID="imgPagare" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagare.png" ToolTip="CONCILIAR PAGARE" Width="25px" Height="25px" OnClick="imgPagare_Click" />
+                                    <asp:ImageButton ID="imgPagare" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagare.png" 
+                                        ToolTip="CONCILIAR PAGARE" Width="25px" Height="25px" OnClick="imgPagare_Click" Visible="false"/>
                                 </td>
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <asp:ImageButton ID="imgCargar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/FormatosExp/EXCEL.png"
