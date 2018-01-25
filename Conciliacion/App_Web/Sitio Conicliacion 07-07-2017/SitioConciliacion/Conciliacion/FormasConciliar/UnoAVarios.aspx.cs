@@ -2000,6 +2000,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaInternas.Columns.Add("Cliente", typeof(int));
             tblReferenciaInternas.Columns.Add("SerieFactura", typeof(string));
             tblReferenciaInternas.Columns.Add("ClienteReferencia", typeof(string));
+            tblReferenciaInternas.Columns.Add("Celula", typeof(string));
 
             ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
             foreach (
@@ -2027,8 +2028,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.UbicacionIcono,
                     rc.cliente,
                     "HOLA DT SF",
-                    "HOL DT CR"
-
+                    "HOL DT CR",
+                    "0"
                     );
             }
 
