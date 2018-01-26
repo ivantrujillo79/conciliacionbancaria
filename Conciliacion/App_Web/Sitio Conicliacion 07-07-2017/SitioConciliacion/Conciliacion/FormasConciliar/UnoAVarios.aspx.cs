@@ -51,7 +51,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public DataTable tblDetalleTransaccionConciliada;
     public DataTable tblReferenciaAgregadasInternas;
 
-
+    private const string DESCRIPCION_SAF = "Saldo a favor";
+    private const string DESCRIPCION_PAGARE = "Pagaré";
 
     #endregion
 
@@ -1788,6 +1789,42 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         LlenaGridViewArchivosInternos();
     }
 
+    private void ActualizarStatusMovimientoAConciliar(ReferenciaNoConciliada RefExterna)
+    {
+        try
+        {
+            int Año = 0;
+            int Folio = 0;
+            
+            if (RefExterna.ListaReferenciaConciliada.Count > 0)
+            {
+                foreach (ReferenciaConciliada referencia in RefExterna.ListaReferenciaConciliada)
+                {
+                    if (referencia.DescripcionInterno == DESCRIPCION_PAGARE || referencia.DescripcionInterno == DESCRIPCION_SAF)
+                    {
+                        Año = referencia.AñoInterno;
+                        Folio = referencia.FolioInterno;
+
+                        if (referencia.DescripcionInterno == DESCRIPCION_PAGARE)
+                        {
+                            DetallePagare Pagare = new DetallePagareDatos(App.ImplementadorMensajes);
+                            Pagare.ActualizarStatusMovimientoAConciliar(Folio, Año);
+                        }
+                        if (referencia.DescripcionInterno == DESCRIPCION_SAF)
+                        {
+                            DetalleSaldoAFavor DSaldoAFavor = new DetalleSaldoAFavor();
+                            DSaldoAFavor.ActualizarStatusMovimientoAConciliar(Folio, Año);
+                        }
+                    }
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     protected void btnGuardarUnoAVarios_Click(object sender, EventArgs e)
     {
         try
@@ -1857,6 +1894,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         {
                             // Guardar externo para pasarlo al método GuardarSaldoAFavor()
                             HttpContext.Current.Session["EXTERNO_SELECCIONADO"] = rfExterno;
+
+                            //          Actualizar status de pagaré o saldo a favor
+                            ActualizarStatusMovimientoAConciliar(rfExterno);
 
                             //Leer Variables URL 
                             cargarInfoConciliacionActual();
@@ -6158,27 +6198,28 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
                 {
                     ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
-                    rc.Secuencia = secuencia;
-                    rc.Folio = dsaf.Folio;
-                    rc.Sucursal = sucursal;
-                    rc.Año = año;
+                    rc.Secuencia            = secuencia;
+                    rc.Folio                = dsaf.Folio;
+                    rc.Sucursal             = sucursal;
+                    //rc.Año = año;
+                    rc.Año                  = dsaf.Año;
                     //rc.FMovimiento = DateTime.Now;
                     //rc.FOperacion = DateTime.Now;
-                    rc.FMovimiento = dsaf.Fsaldo;
-                    rc.FOperacion = dsaf.Fsaldo;
-                    rc.Retiro = dsaf.Importe;
-                    rc.Deposito = 0;
-                    rc.Referencia = "";
-                    rc.Descripcion = "Saldo a favor";
-                    rc.Monto = dsaf.Importe;
-                    rc.Concepto = dsaf.TipoCargo;
-                    rc.RFCTercero = "";
-                    rc.NombreTercero = dsaf.NombreCliente;
-                    rc.Cheque = "";
-                    rc.StatusConciliacion = "CONCILIACION ABIERTA";
-                    rc.UbicacionIcono = "";
-                    rc.cliente = Convert.ToInt32(dsaf.Cliente);
-                    rc.FormaConciliacion = formaConciliacion;
+                    rc.FMovimiento          = dsaf.Fsaldo;
+                    rc.FOperacion           = dsaf.Fsaldo;
+                    rc.Retiro               = dsaf.Importe;
+                    rc.Deposito             = 0;
+                    rc.Referencia           = "";
+                    rc.Descripcion          = DESCRIPCION_SAF;
+                    rc.Monto                = dsaf.Importe;
+                    rc.Concepto             = dsaf.TipoCargo;
+                    rc.RFCTercero           = "";
+                    rc.NombreTercero        = dsaf.NombreCliente;
+                    rc.Cheque               = "";
+                    rc.StatusConciliacion   = "CONCILIACION ABIERTA";
+                    rc.UbicacionIcono       = "";
+                    rc.cliente              = Convert.ToInt32(dsaf.Cliente);
+                    rc.FormaConciliacion    = formaConciliacion;
                     listaReferenciaArchivosInternos.Add(rc);
                     secuencia++;
                 }
@@ -6195,13 +6236,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Secuencia            = secuencia;
                     rc.Folio                = objPagare.Folio;
                     rc.Sucursal             = sucursal;
-                    rc.Año                  = año;
+                    //rc.Año                  = año;
+                    rc.Año                  = objPagare.Año;
                     rc.FMovimiento          = objPagare.Fsaldo;
                     rc.FOperacion           = objPagare.Fsaldo;
                     rc.Retiro               = objPagare.Importe;
                     rc.Deposito             = 0;
                     rc.Referencia           = "";
-                    rc.Descripcion          = "Pagaré";
+                    rc.Descripcion          = DESCRIPCION_PAGARE;
                     rc.Monto                = objPagare.Importe;
                     rc.Concepto             = objPagare.TipoCargo;
                     rc.RFCTercero           = "";
