@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Conciliacion.RunTime.DatosSQL;
+using System.Data.SqlClient;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -312,6 +313,36 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public decimal Importe { get; set; }
         public string Conciliada { get; set; }
 
+        public void ActualizarStatusMovimientoAConciliar(int Folio, int Año)
+        {
+            if (Folio <= 0 || Año <= 0)
+                throw new Exception("Parámetros incorrectos.");
+
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBActualizaStatusMovimientoAConciliar", cnn);
+                    comando.Parameters.Add("@FolioMovimiento", System.Data.SqlDbType.Int).Value = Folio;
+                    comando.Parameters.Add("@AñoMovimiento", System.Data.SqlDbType.Int).Value = Año;
+
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    int RegistrosAfectados = comando.ExecuteNonQuery();
+
+                    if (RegistrosAfectados == 0)
+                        throw new Exception("No se encontró registro para actualizar estatus.");
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
 
         //public List<DetalleSaldoAFavor> ConsultaSaldoAFavor(string FInicial, string FFinal, string Cliente, decimal monto)
         //{

@@ -62,6 +62,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //public abstract List<DetallePagare> ConsultaSaldoAFavor(string FInicial, string FFinal, string Cliente, decimal monto, short TipoMovimientoAConciliar, Conexion conexion);
         public abstract List<DetallePagare> ConsultaSaldoAFavor(DateTime FInicial, DateTime FFinal, int Cliente, Decimal Monto, short TipoMovimientoAConciliar);
 
+        public abstract void ActualizarStatusMovimientoAConciliar(int Folio, int Año);
+
         public virtual string CadenaConexion
         {
             get { return App.CadenaConexion; }
