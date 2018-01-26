@@ -17,6 +17,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public DetallePagareDatos(
             bool seleccionado, 
             int folio, 
+            int año,
             string cliente, 
             string nombrecliente, 
             string cuentabancaria, 
@@ -30,6 +31,7 @@ namespace Conciliacion.RunTime.DatosSQL
             IMensajesImplementacion implementadorMensajes)
             : base(seleccionado,
                    folio,
+                   año,
                    cliente,
                    nombrecliente,
                    cuentabancaria,
@@ -73,18 +75,19 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         DetallePagare detalle = new DetallePagareDatos(this.ImplementadorMensajes);
-                        detalle.Seleccionado = false;
-                        detalle.Folio = Convert.ToInt32(reader["Folio"]);
-                        detalle.Cliente = Convert.ToString(reader["Cliente"]);
-                        detalle.NombreCliente = Convert.ToString(reader["NombreCliente"]);
-                        detalle.CuentaBancaria = Convert.ToString(reader["CuentaBancaria"]);
-                        detalle.Banco = "";
-                        detalle.Sucursal = Convert.ToString(reader["Sucursal"]);
-                        detalle.TipoCargo = "";
-                        detalle.Global = false;
-                        detalle.Fsaldo = Convert.ToDateTime(reader["FSaldo"]);
-                        detalle.Importe = Convert.ToDecimal(reader["Importe"]);
-                        detalle.Conciliada = Convert.ToString(reader["Conciliada"]);
+                        detalle.Seleccionado        = false;
+                        detalle.Folio               = Convert.ToInt32(reader["Folio"]);
+                        detalle.Año                 = Convert.ToInt32(reader["Año"]);
+                        detalle.Cliente             = Convert.ToString(reader["Cliente"]);
+                        detalle.NombreCliente       = Convert.ToString(reader["NombreCliente"]);
+                        detalle.CuentaBancaria      = Convert.ToString(reader["CuentaBancaria"]);
+                        detalle.Banco               = "";
+                        detalle.Sucursal            = Convert.ToString(reader["Sucursal"]);
+                        detalle.TipoCargo           = "";
+                        detalle.Global              = false;
+                        detalle.Fsaldo              = Convert.ToDateTime(reader["FSaldo"]);
+                        detalle.Importe             = Convert.ToDecimal(reader["Importe"]);
+                        detalle.Conciliada          = Convert.ToString(reader["Conciliada"]);
                         ListaRetorno.Add(detalle);
                     }
                     reader.Close();

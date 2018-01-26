@@ -6207,6 +6207,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         DetalleSaldoAFavor detalle = new DetalleSaldoAFavor();
                         detalle.Seleccionado        = false;
                         detalle.Folio               = Convert.ToInt32(reader["Folio"]);
+                        detalle.Año                 = Convert.ToInt32(reader["Año"]);
                         detalle.Cliente             = Convert.ToString(reader["Cliente"]);
                         detalle.NombreCliente       = Convert.ToString(reader["NombreCliente"]);
                         detalle.CuentaBancaria      = Convert.ToString(reader["CuentaBancaria"]);
