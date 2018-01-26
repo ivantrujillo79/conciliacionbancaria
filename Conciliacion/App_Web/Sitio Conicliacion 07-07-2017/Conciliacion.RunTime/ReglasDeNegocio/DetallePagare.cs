@@ -11,6 +11,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private Conexion conexion;
         private bool seleccionado;
         private int folio;
+        private int año;
         private string cliente;
         private string nombrecliente;
         private string cuentabancaria;
@@ -39,10 +40,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.Conciliada = "";
         }
 
-        public DetallePagare(bool seleccionado, int folio, string cliente, string nombrecliente, string cuentabancaria, string banco, string sucursal, string tipocargo, bool global, DateTime fsaldo, decimal importe, string conciliada, IMensajesImplementacion implementadorMensajes)
+        public DetallePagare(bool seleccionado, int folio, int año, string cliente, string nombrecliente, string cuentabancaria, string banco, string sucursal, string tipocargo, bool global, DateTime fsaldo, decimal importe, string conciliada, IMensajesImplementacion implementadorMensajes)
         {
             this.seleccionado = false;
             this.folio = 0;
+            this.año = 0;
             this.cliente = "";
             this.nombrecliente = "";
             this.cuentabancaria = "";
@@ -73,6 +75,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return folio; }
             set { folio = value; }
+        }
+        public int Año
+        {
+            get { return año; }
+            set { año = value; }
         }
         public string Cliente
         {

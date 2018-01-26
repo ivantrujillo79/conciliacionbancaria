@@ -300,6 +300,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
     {
         public bool Seleccionado { get; set; }
         public int Folio  { get; set; }
+        public int Año { get; set; }
         public string Cliente   { get; set; }
         public string  NombreCliente { get; set; }
         public string CuentaBancaria { get; set; }
