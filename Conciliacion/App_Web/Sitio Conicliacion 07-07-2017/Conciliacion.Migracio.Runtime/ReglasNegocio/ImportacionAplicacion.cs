@@ -92,8 +92,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                 BaseDeDatos = extractor.BaseDeDatos;
                 UsuarioConsulta = extractor.UsuarioConsulta;
                 Pass = Seguridad.DesencriptaClave(extractor.Pass);
-                TablaDestino.IdTipoFuenteInformacion = extractor.Identificador;
-
+                TablaDestino.IdTipoFuenteInformacion = extractor.TipoFuenteInformacion; //extractor.Identificador;
 
                 TablaDestino.Detalles.AddRange(LlenarObjetosDestinoDestalle());
 
