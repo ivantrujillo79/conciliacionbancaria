@@ -49,9 +49,6 @@
                         &nbsp;</div>
                     <div id="tituloPagina">
                         <asp:SiteMapPath runat="server" ID="smPath" SiteMapProvider="SiteMapPrincipal" />
-                        <%--<asp:Panel ID="pnlTitulo" runat="server" SkinID="pnlTituloPrincipal">
-                            <asp:Label ID="lblTitulo" runat="server" SkinID="lblTituloPrincipal"></asp:Label>
-                        </asp:Panel>--%>
                     </div>
                     <div>
                         <asp:ContentPlaceHolder ID="contenidoPrincipal" runat="server">
