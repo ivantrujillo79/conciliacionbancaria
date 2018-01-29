@@ -6187,6 +6187,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             DateTime FFin    = (sFFin.Length > 0 ? Convert.ToDateTime(sFFin) : DateTime.MinValue);
             int iCliente     = (sCliente.Length > 0 ? Convert.ToInt32(sCliente) : -1);
             decimal dMonto   = (sMonto.Length > 0 ? Convert.ToDecimal(sMonto) : -1M);
+            DateTime dtMinValue = DateTime.MinValue;
+            
+            if ((FInicio > dtMinValue && FFin > dtMinValue) && (FInicio == FFin))
+            {
+                FFin = FFin.AddDays(1D);
+            }
 
             listaReferenciaArchivosInternos.Clear();
             if (hfActivaPagoOSaldo.Value == "SALDO")
