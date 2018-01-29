@@ -4647,14 +4647,23 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         decimal _total = 0;
                         decimal _saldo = 0;
-                        if (reader["Total"] != System.DBNull.Value)
+                        try
                         {
-                            _total = Convert.ToDecimal(reader["Total"]);
+                            if (reader["Total"] != System.DBNull.Value)
+                            {
+                                _total = Convert.ToDecimal(reader["Total"]);
+                            }
+                            else
+                            {
+                                _total = 0;
+                            }
                         }
-                        else
+                        catch(IndexOutOfRangeException ex)
                         {
+                            //throw new Exception("");
                             _total = 0;
                         }
+
 
                         if (reader["Saldo"] != System.DBNull.Value)
                         {
@@ -4665,6 +4674,16 @@ namespace Conciliacion.RunTime.DatosSQL
                             _saldo = 0;
                         }
 
+                        Int32 _Cliente = 0;
+                        try
+                        {
+                            _Cliente = Convert.ToInt32(reader["Cliente"]);
+                        }
+                        catch(IndexOutOfRangeException ex)
+                        {
+                            _Cliente = 0;
+                        }
+
                         Cobro dato = new CobroDatos(Convert.ToInt16(reader["AñoCobro"]),
                                                     Convert.ToInt32(reader["Cobro"]),
                                                     Convert.ToString(reader["NumeroCheque"]),
@@ -4673,7 +4692,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     Convert.ToString(reader["NumeroCuenta"]),
                                                     Convert.ToString(reader["NumeroCuentaDestino"]),
                                                     Convert.ToDateTime(reader["FCheque"]),
-                                                    Convert.ToInt32(reader["Cliente"]), 
+                                                    _Cliente, 
                                                     Convert.ToInt16(reader["Banco"]),
                                                     Convert.ToInt16(reader["BancoOrigen"]),
                                                     Convert.ToString(reader["Observaciones"]),
@@ -4687,7 +4706,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     (reader["ClientePago"] == System.DBNull.Value ? 0 : Convert.ToInt32(reader["ClientePago"])),
                                                     ConsultaPagosPorAplicarCliente(corporativo, sucursal, año, mes,
                                                                                    folio,
-                                                                                   Convert.ToInt32(reader["Cliente"]),
+                                                                                   _Cliente,
                                                                                    Convert.ToInt32(reader["Corporativo"]),
                                                                                    Convert.ToInt32(reader["Sucursal"]),
                                                                                    Convert.ToInt32(reader["Año"]),
