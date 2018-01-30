@@ -1986,12 +1986,15 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //int año = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grv.RowIndex].Values["Año"]);
             //int secuencia = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grv.RowIndex].Values["Secuencia"]);
             int secuenciarelacion = Convert.ToInt32(grvMCE.DataKeys[grvRMCE.RowIndex].Values["SecuenciaRelacion"]);
-
+            
             decimal deposito = decimal.Parse((grvRCC.FindControl("lblDeposito") as Label).Text, NumberStyles.Currency);
             //int corporativo = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grvRCC.RowIndex].Values["CorporativoConciliacion"].ToString());
             //int sucursal = Convert.ToInt32(grvConciliacionCompartida.DataKeys[grvRCC.RowIndex].Values["SucursalConciliacion"].ToString());
             int corporativo = Convert.ToInt32(hdfCorporativo.Value);
             short sucursal = Convert.ToInt16(hdfSucursal.Value);
+
+            DropDownList DDL = (grvRMCE.FindControl("ddlStatusConcepto") as DropDownList);
+            int iStatus = Int32.Parse(DDL.SelectedItem.Value);
 
             ReferenciaNoConciliada referencia = LeerReferenciaConciliadaCompartida(grvRCC.RowIndex);
             listMovimientosConciliadosEx =
@@ -2027,6 +2030,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 return;
             }
 
+            if (iStatus == 28) // Deposito por pago anticipado
+            {
+                ValidarClientePagoAnticipado(clienteBuscar);
+            }
+
             Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
             Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
             conexion.AbrirConexion(true);
@@ -2049,7 +2057,15 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
-    
+
+    /// <summary>
+    /// Verifica que el cliente se encuentra en la tabla ClientePagoAnticipado
+    /// </summary>
+    private void ValidarClientePagoAnticipado(Int64 Cliente)
+    {
+
+    }
+
     private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
     {
         wucCargaExcelCyC.CuentaBancaria = cuenta;
