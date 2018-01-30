@@ -1896,7 +1896,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             HttpContext.Current.Session["EXTERNO_SELECCIONADO"] = rfExterno;
 
                             //          Actualizar status de pagaré o saldo a favor
-                            ActualizarStatusMovimientoAConciliar(rfExterno);
+                            if (objSolicitdConciliacion.ConsultaActivaPagare() || objSolicitdConciliacion.MuestraSaldoAFavor())
+                            {
+                                ActualizarStatusMovimientoAConciliar(rfExterno);
+                            }
 
                             //Leer Variables URL 
                             cargarInfoConciliacionActual();
