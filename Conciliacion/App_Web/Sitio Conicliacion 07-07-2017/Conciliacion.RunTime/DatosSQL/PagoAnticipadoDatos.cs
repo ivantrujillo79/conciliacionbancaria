@@ -29,6 +29,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int secuenciaexterno,
             decimal montoexterno,
             int formaconciliacion,
+            int statusconcepto,
             int statusconciliacion,
             int motivonoconciliado,
             string comentarionoconciliado,
@@ -50,6 +51,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     secuenciaexterno,
                     montoexterno,
                     formaconciliacion,
+                    statusconcepto,
                     statusconciliacion,
                     motivonoconciliado,
                     comentarionoconciliado,
@@ -66,7 +68,7 @@ namespace Conciliacion.RunTime.DatosSQL
             return new PagoAnticipadoDatos(this.ImplementadorMensajes);
         }
 
-        public override bool ValidarClientePagoAnticipado(Conexion _conexion, int NumeroCliente)
+        public override bool ValidarClientePagoAnticipado(Conexion _conexion, Int64 NumeroCliente)
         {
             bool resultado = false;
             try
@@ -95,12 +97,13 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
 
-        public override bool RegistraConciliacionReferencia(Conexion _conexion, int CorporativoConciliacion, int SucursalConciliacion, int AñoConciliacion, int MesConciliacion, int FolioConciliacion, int SecuenciaRelacion, int CorporativoExterno, int SucursalExterno, int AñoExterno, int FolioExterno, int SecuenciaExterno, decimal MontoExterno, int FormaConciliacion, int StatusConcepto, string StatusConciliacion, int MotivoNoConciliado, string ComentarioNoConciliado, string Usuario, DateTime FAlta, string Descripcion, string UsuarioStatusConcepto, DateTime FStatusConcepto)
+        public override bool RegistraConciliacionReferencia(Conexion _conexion)
+            //,int CorporativoConciliacion, int SucursalConciliacion, int AñoConciliacion, int MesConciliacion, int FolioConciliacion, int SecuenciaRelacion, int CorporativoExterno, int SucursalExterno, int AñoExterno, int FolioExterno, int SecuenciaExterno, decimal MontoExterno, int FormaConciliacion, int StatusConcepto, string StatusConciliacion, int MotivoNoConciliado, string ComentarioNoConciliado, string Usuario, DateTime FAlta, string Descripcion, string UsuarioStatusConcepto, DateTime FStatusConcepto)
         {
             bool resultado = false;
-            StatusConcepto = 28;
-            StatusConciliacion = "CONCILIACION CANCELADA";
-            MotivoNoConciliado = 1;
+            this.StatusConcepto = 28;
+            this.StatusConciliacion = 1; // "CONCILIACION CANCELADA";
+            this.MotivoNoConciliado = 1;
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
