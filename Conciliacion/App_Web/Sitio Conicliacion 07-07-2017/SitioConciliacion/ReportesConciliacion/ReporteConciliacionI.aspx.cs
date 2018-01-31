@@ -2089,6 +2089,42 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
     }
 
+    private bool RegistraConciliacionReferencia(Conexion conexion, ReferenciaConciliadaCompartida Referencia)
+    {
+        try
+        {
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+
+            PagoAnticipado Pago = Conciliacion.RunTime.App.PagoAnticipado.CrearObjeto();
+            Pago.CorporativoConciliacion        = Referencia.Corporativo;
+            Pago.SucursalConciliacion           = Referencia.SucursalConciliacion;
+            Pago.AñoConciliacion                = Referencia.AñoConciliacion;
+            Pago.MesConciliacion                = Referencia.MesConciliacion;
+            Pago.FolioConciliacion              = Referencia.FolioConciliacion;
+            Pago.SecuenciaRelacion              = Referencia.SecuenciaRelacion;
+            Pago.CorporativoExteno              = Referencia.Corporativo;
+            Pago.SucursalExterno                = Referencia.Sucursal;
+            Pago.AñoExterno                     = Referencia.Año;
+            Pago.FolioExterno                   = Referencia.Folio;
+            Pago.SecuenciaExterno               = Referencia.Secuencia;
+            Pago.MontoExterno                   = Referencia.Deposito;
+            Pago.FormaConciliacion              = Referencia.FormaConciliacion;
+            Pago.ComentarioNoConciliado         = "";
+            Pago.Usuario                        = usuario.IdUsuario.Trim();
+            Pago.FAlta                          = DateTime.Now;
+            Pago.Descripcion                    = Referencia.Descripcion;
+            Pago.MotivoNoConciliado             = 0;
+            //Pago.UsuarioStatusConcepto;
+            //Pago.FStatusConcepto;
+            //Pago.StatusConciliacion;
+            return Pago.RegistraConciliacionReferencia(conexion);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
     {
         wucCargaExcelCyC.CuentaBancaria = cuenta;
@@ -2099,13 +2135,13 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         wucCargaExcelCyC.Sucursal = sucursal;
     }
 
-    public bool ConciliarFactura(ReferenciaConciliadaCompartida rfExterna)
+    public bool ConciliarFactura(Conexion conexion, ReferenciaConciliadaCompartida rfExterna)
     {
         bool resultado = false;
         try
         {
-            Conexion conexion = new Conexion();
-            conexion.AbrirConexion(false);
+            //Conexion conexion = new Conexion();
+            //conexion.AbrirConexion(false);
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
             listaReferenciaFacturaConsulta = Session["FACTURAS_CONSULTAR_LISTA"] as List<ReferenciaNoConciliadaPedido>;
@@ -2177,17 +2213,33 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     protected void btnConciliarFACT_Click(object sender, EventArgs e)
     {
-        bool ConciliacionExitosa = false;
+        bool conciliacionFactura = false;
+        bool registraConciliacion = false;
+        Conexion conexion = new Conexion();
         try
         {
             if (grvPedidosFacturados.Rows.Count > 0)
             {
+                conexion.AbrirConexion(true);
                 //if (!RecuperarReferencias_wucCargaExcel()) return;
                 ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
                 rnc.BorrarReferenciaConciliada();
-                ConciliacionExitosa = ConciliarFactura(rnc);
+
+                conciliacionFactura      = ConciliarFactura(conexion, rnc);
+                if (hdfStatusConcepto.Value == "28")
+                {
+                    registraConciliacion = RegistraConciliacionReferencia(conexion, rnc);
+                }
+                conexion.CommitTransaction();
+
                 mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
-                if (!ConciliacionExitosa) return;
+                if (hdfStatusConcepto.Value == "28")
+                {
+                    if (!conciliacionFactura || !registraConciliacion) return;
+                }
+                else 
+                    if (!conciliacionFactura) return;
+
                 App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
             }
             else
@@ -2201,10 +2253,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
+            conexion.RollBackTransaction();
             App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
         finally
         {
+            conexion.CerrarConexion();
             LimpiarCamposFacturas();
         }
     }

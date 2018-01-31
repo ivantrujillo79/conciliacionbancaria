@@ -123,17 +123,21 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MontoExterno", System.Data.SqlDbType.Decimal)).Value = MontoExterno;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FormaConciliacion", System.Data.SqlDbType.SmallInt)).Value = FormaConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", System.Data.SqlDbType.SmallInt)).Value = 28;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", System.Data.SqlDbType.VarChar)).Value = StatusConciliacion;
+                //_conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", System.Data.SqlDbType.VarChar)).Value = StatusConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", System.Data.SqlDbType.VarChar)).Value = "CONCILIADA";
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MotivoNoConciliado", System.Data.SqlDbType.SmallInt)).Value = MotivoNoConciliado;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar)).Value = ComentarioNoConciliado;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Usuario", System.Data.SqlDbType.Char)).Value = Usuario;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FAlta", System.Data.SqlDbType.DateTime)).Value = FAlta;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Descripcion", System.Data.SqlDbType.VarChar)).Value = Descripcion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@UsuarioStatusConcepto", System.Data.SqlDbType.Char)).Value = UsuarioStatusConcepto;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FStatusConcepto", System.Data.SqlDbType.DateTime)).Value = FStatusConcepto;
+                //_conexion.Comando.Parameters.Add(new SqlParameter("@Descripcion", System.Data.SqlDbType.VarChar)).Value = Descripcion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Descripcion", System.Data.SqlDbType.VarChar)).Value = System.DBNull.Value;
+                //_conexion.Comando.Parameters.Add(new SqlParameter("@UsuarioStatusConcepto", System.Data.SqlDbType.Char)).Value = UsuarioStatusConcepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@UsuarioStatusConcepto", System.Data.SqlDbType.Char)).Value = System.DBNull.Value;
+                //_conexion.Comando.Parameters.Add(new SqlParameter("@FStatusConcepto", System.Data.SqlDbType.DateTime)).Value = FStatusConcepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FStatusConcepto", System.Data.SqlDbType.DateTime)).Value = System.DBNull.Value;
 
                 int RegistrosAfectados = _conexion.Comando.ExecuteNonQuery();
-                resultado = RegistrosAfectados == 0;
+                resultado = RegistrosAfectados == 1;
 
             }
             catch (Exception ex)
