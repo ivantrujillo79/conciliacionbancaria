@@ -895,7 +895,7 @@
                                         <td>
                                             <asp:Button runat="server" ID="btnBusquFact" 
                                             Visible="True" Enabled="True" CssClass="iconoOpcion bg-color-azul centradoMedio fg-color-blanco"
-                                            Text="BUSCAR FACTURAS" style="padding: 5px; border: none; cursor:pointer;" Font-size="11px"
+                                            Text="FACTURAS MANUALES" style="padding: 5px; border: none; cursor:pointer;" Font-size="11px"
                                             OnClick="btnBuscarFactura_Click" />
                                         </td>
                                     </tr>
