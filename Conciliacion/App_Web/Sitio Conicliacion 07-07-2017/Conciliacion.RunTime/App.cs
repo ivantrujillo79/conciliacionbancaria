@@ -246,6 +246,17 @@ namespace Conciliacion.RunTime
 
         }
 
+        private static PagoAnticipado pagoAnticipado;
+        public static PagoAnticipado PagoAnticipado
+        {
+            get
+            {
+                if (pagoAnticipado == null)
+                    pagoAnticipado = new PagoAnticipadoDatos(App.ImplementadorMensajes);
+                return pagoAnticipado;
+            }
+        }
+
         private static PedidoCobranza pedidoCobranza;
         public static PedidoCobranza PedidoCobranza
         {
