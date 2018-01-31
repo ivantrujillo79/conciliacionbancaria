@@ -21,6 +21,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int secuenciaexterno;
         private decimal montoexterno;
         private int formaconciliacion;
+        private int statusconcepto;
         private int statusconciliacion;
         private int motivonoconciliado;
         private string comentarionoconciliado;
@@ -46,6 +47,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.secuenciaexterno = 0;
             this.montoexterno = 0;
             this.formaconciliacion = 0;
+            this.statusconcepto = 0;
             this.statusconciliacion = 0;
             this.motivonoconciliado = 0;
             this.comentarionoconciliado = "";
@@ -70,6 +72,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             int secuenciaexterno,
             decimal montoexterno,
             int formaconciliacion,
+            int statusconcepto,
             int statusconciliacion,
             int motivonoconciliado,
             string comentarionoconciliado,
@@ -93,6 +96,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.secuenciaexterno = 0;
             this.montoexterno = 0;
             this.formaconciliacion = 0;
+            this.statusconcepto = 0;
             this.statusconciliacion = 0;
             this.motivonoconciliado = 0;
             this.comentarionoconciliado = "";
@@ -169,6 +173,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return formaconciliacion; }
             set { formaconciliacion = value; }
         }
+        public int StatusConcepto
+        {
+            get { return statusconcepto; }
+            set { statusconcepto = value; }
+        }
         public int StatusConciliacion
         {
             get { return statusconciliacion; }
@@ -211,8 +220,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
         public abstract PagoAnticipado CrearObjeto();
-        public abstract bool ValidarClientePagoAnticipado(Conexion _conexion, int NumeroCliente);
-        public abstract bool RegistraConciliacionReferencia(Conexion _conexion, int CorporativoConciliacion, int SucursalConciliacion, int AñoConciliacion, int MesConciliacion, int FolioConciliacion, int SecuenciaRelacion, int CorporativoExterno, int SucursalExterno, int AñoExterno, int FolioExterno, int SecuenciaExterno, decimal MontoExterno, int FormaConciliacion, int StatusConcepto, string StatusConciliacion, int MotivoNoConciliado, string ComentarioNoConciliado, string Usuario, DateTime FAlta, string Descripcion, string UsuarioStatusConcepto, DateTime FStatusConcepto);
+        public abstract bool ValidarClientePagoAnticipado(Conexion _conexion, Int64 NumeroCliente);
+        public abstract bool RegistraConciliacionReferencia(Conexion _conexion);
+            //,int CorporativoConciliacion, int SucursalConciliacion, int AñoConciliacion, int MesConciliacion, int FolioConciliacion, int SecuenciaRelacion, int CorporativoExterno, int SucursalExterno, int AñoExterno, int FolioExterno, int SecuenciaExterno, decimal MontoExterno, int FormaConciliacion, int StatusConcepto, string StatusConciliacion, int MotivoNoConciliado, string ComentarioNoConciliado, string Usuario, DateTime FAlta, string Descripcion, string UsuarioStatusConcepto, DateTime FStatusConcepto)
 
     }
 }
