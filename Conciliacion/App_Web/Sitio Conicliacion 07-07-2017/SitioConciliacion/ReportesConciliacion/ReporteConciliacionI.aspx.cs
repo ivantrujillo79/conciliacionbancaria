@@ -1995,6 +1995,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             DropDownList DDL = (grvRMCE.FindControl("ddlStatusConcepto") as DropDownList);
             int iStatus = Int32.Parse(DDL.SelectedItem.Value);
+            this.hdfStatusConcepto.Value = iStatus.ToString();
 
             ReferenciaNoConciliada referencia = LeerReferenciaConciliadaCompartida(grvRCC.RowIndex);
             listMovimientosConciliadosEx =
@@ -2030,30 +2031,44 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 return;
             }
 
-            if (iStatus == 28) // Deposito por pago anticipado
-            {
-                ValidarClientePagoAnticipado(clienteBuscar);
-            }
-
-            Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
             Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
-            conexion.AbrirConexion(true);
-            objCliente.Referencia = clienteBuscar.ToString();
-            if (objCliente.ValidaClienteExiste(conexion))
+            try
             {
-                BuscarPedidosClientes();
+                conexion.AbrirConexion(true);
+
+                if (iStatus == 28) // 28 = Deposito por pago anticipado
+                {
+                    bool clienteValido;
+                    clienteValido = ValidarClientePagoAnticipado(conexion, clienteBuscar);
+
+                    if (!clienteValido)
+                        throw new Exception("El cliente indicado no existe en la relación de pagos anticipados.");
+                }
+
+                Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+                objCliente.Referencia = clienteBuscar.ToString();
+                if (objCliente.ValidaClienteExiste(conexion))
+                {
+                    BuscarPedidosClientes();
+                }
+                else
+                    throw new Exception("El número de cliente introducido no existe, por favor verifique");
             }
-            else
-                App.ImplementadorMensajes.MostrarMensaje("El número de cliente introducido no existe, por favor verifique");
+            finally
+            {
+                conexion.CerrarConexion();
+            }
 
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
 
             /*      Asignar propiedades de Carga archivo Excel      */
             ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value.ToString().Replace(" ", "")), deposito, clienteBuscar, corporativo, sucursal);
-            
+
         }
         catch (Exception ex)
         {
+            this.hfVisibleConciliar.Value = "";     // No mostrar Popup popUpConciliarMovPedido
+            this.popUpConciliarMovPedido.Hide();
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
@@ -2061,9 +2076,17 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     /// <summary>
     /// Verifica que el cliente se encuentra en la tabla ClientePagoAnticipado
     /// </summary>
-    private void ValidarClientePagoAnticipado(Int64 Cliente)
+    private bool ValidarClientePagoAnticipado(Conexion conexion, Int64 Cliente)
     {
-
+        try
+        {
+            PagoAnticipado Pago = Conciliacion.RunTime.App.PagoAnticipado.CrearObjeto();
+            return Pago.ValidarClientePagoAnticipado(conexion, Cliente);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)

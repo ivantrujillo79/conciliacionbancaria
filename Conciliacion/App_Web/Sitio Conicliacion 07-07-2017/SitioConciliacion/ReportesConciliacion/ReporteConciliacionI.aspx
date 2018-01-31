@@ -260,6 +260,7 @@
     </script>
     <asp:UpdatePanel runat="server" ID="upConciliacionCompartida" UpdateMode="Always">
         <ContentTemplate>
+            <asp:HiddenField ID="hdfStatusConcepto" runat="server" />
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 70%">
@@ -815,7 +816,6 @@
     <asp:HiddenField runat="server" ID="hdfConciliarMovPedido" />
     <asp:HiddenField ID="hfPedidoSV" runat="server" />
     <asp:HiddenField ID="hfPedidoSH" runat="server" />
-    <asp:HiddenField ID="hfVisibleConciliar" runat="server" />
     <asp:ModalPopupExtender ID="popUpConciliarMovPedido" runat="server" PopupControlID="pnlConciliarMovPedido"
         TargetControlID="hdfConciliarMovPedido" BehaviorID="ModalBehaviourConciliarMovPedido"
         BackgroundCssClass="ModalBackground" >
@@ -825,6 +825,7 @@
         CssClass="ModalPopup">
         <asp:UpdatePanel ID="upConciliarMovPedido" runat="server" >
             <ContentTemplate>
+                <asp:HiddenField ID="hfVisibleConciliar" runat="server" />
                 <table style="width: 100%;">
                     <tr class="bg-color-grisOscuro">
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
