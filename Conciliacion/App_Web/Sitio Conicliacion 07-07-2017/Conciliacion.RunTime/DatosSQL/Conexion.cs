@@ -100,6 +100,23 @@ namespace Conciliacion.RunTime.DatosSQL
                 throw;
             }
         }
-    
+
+        public void CommitTransaction()
+        {
+            try
+            {
+                if (Transaccion != null)
+                {
+                    Transaccion.Commit();
+
+                    Transaccion = null;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
     }
 }
