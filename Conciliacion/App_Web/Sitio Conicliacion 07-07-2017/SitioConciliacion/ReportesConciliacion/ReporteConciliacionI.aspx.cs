@@ -958,12 +958,21 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //Consulta_Pedidos(rfc.CorporativoConciliacion, rfc.SucursalConciliacion, rfc.AñoConciliacion, rfc.MesConciliacion,
             //    rfc.FolioConciliacion,
             //    rfc.FolioExterno, rfc.SecuenciaExterno, clienteBuscar, rblClienteTipo.SelectedItem.Value.Equals("PADRE"));
+            
+            string sFInicio     = txtFacturaFechaInicial.Text.Trim();
+            string sFFin        = txtFacturaFechaFinal.Text.Trim();
+            DateTime FInicio    = (sFInicio.Length > 0 ? Convert.ToDateTime(sFInicio) : DateTime.MinValue);
+            DateTime FFin       = (sFFin.Length > 0 ? Convert.ToDateTime(sFFin) : DateTime.MinValue);
+            if (FFin > DateTime.MinValue)
+            {
+                FFin = FFin.AddDays(1D);
+            }
 
             Consulta_FacturasManual(Convert.ToInt32(clienteBuscar),
                                     rblTipoClienteFactura.SelectedItem.Value.Equals("PADREL"),
                                     txtFacturaBusqueda.Text,
-                                    txtFacturaFechaInicial.Text.Trim() == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaInicial.Text),
-                                    txtFacturaFechaFinal.Text.Trim() == "" ? DateTime.MinValue : Convert.ToDateTime(txtFacturaFechaFinal.Text));
+                                    FInicio,
+                                    FFin);
 
             GenerarTablaFacturas();
             LlenaGridViewFacturasManuales();
