@@ -291,6 +291,29 @@
 
         }
 
+        function ConfirmarSaldoAFavor(){
+            var MontoSAF = document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML;
+            var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
+
+            console.log(parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2));
+            console.log(parseFloat(ValorParametro).toFixed(2));
+            console.log(parseFloat(MontoSAF.replace('$', '').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2));
+
+            if (parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2)) {
+                var r = confirm('El monto depositado genera un saldo a favor por ' + MontoSAF + '\n¿Desea generar el saldo a favor?');
+                if (r == true) {
+                    document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Aceptado';
+                }
+                else {
+                    document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Rechazado';
+                    if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
+                        $('#<%= hdfCambiarEstatusPedido.ClientID %>').val("1");
+                        alert("Se guardará el saldo restante para conciliación a futuro.");
+                    }
+                }
+            }
+        }
+
         function gridviewScroll() {
             $('#<%=grvExternos.ClientID%>').gridviewScroll({
                 width: 595,
@@ -428,6 +451,9 @@
             <!-- Controles INDICES -->
             <asp:HiddenField ID="hdfIndiceExterno" runat="server" />
             <asp:HiddenField ID="hdfIndiceInterno" runat="server" />
+
+            <asp:HiddenField ID="hdfEsPedido" runat="server" />
+            <asp:HiddenField ID="hdfCambiarEstatusPedido" runat="server" />
 
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
                 <tr>
@@ -1446,7 +1472,7 @@
                                 <td class="etiqueta centradoMedio" style="width: 15%;">
                                     <asp:Button runat="server" ID="btnGuardarUnoAVarios" CssClass="boton bg-color-azulOscuro fg-color-blanco"
                                         Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarUnoAVarios_Click" 
-                                        OnClientClick="var MontoSAF=document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML;var ValorParametro=document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;console.log(parseFloat(MontoSAF.replace('$','').replace(',','').trim()).toFixed(2)); console.log(parseFloat(ValorParametro).toFixed(2));console.log(parseFloat(MontoSAF.replace('$','').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2));if(parseFloat(MontoSAF.replace('$','').replace(',','').trim()).toFixed(2)>=parseFloat(ValorParametro).toFixed(2)){var r=confirm('El monto depositado genera un saldo a favor por ' + MontoSAF + '\n¿Desea generar el saldo a favor?'); if(r==true){document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value='Aceptado';}else{document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value='Rechazado';}}" />
+                                        OnClientClick="ConfirmarSaldoAFavor();"/>
                                 </td>
                             </tr>
                         </table>

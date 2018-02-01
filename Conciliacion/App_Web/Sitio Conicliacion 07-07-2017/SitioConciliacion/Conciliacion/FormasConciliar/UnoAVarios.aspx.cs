@@ -216,6 +216,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    this.hdfEsPedido.Value = "1";
+                }
                 
                 //          ACTIVAR BOTONES SALDO A FAVOR Y PAGARÉ
                 if (objSolicitdConciliacion.MuestraSaldoAFavor())
@@ -1901,6 +1906,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                 ActualizarStatusMovimientoAConciliar(rfExterno);
                             }
 
+                            //          Actualizar estatus de pedido
+                            if (this.hdfCambiarEstatusPedido.Value == "1")
+                            {
+                                this.hdfCambiarEstatusPedido.Value = "";
+                                ActualizarStatusConceptoPedido(rfExterno);
+                            }
+
                             //Leer Variables URL 
                             cargarInfoConciliacionActual();
 
@@ -1987,6 +1999,32 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " 
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    private void ActualizarStatusConceptoPedido(ReferenciaNoConciliada RExterna)
+    {
+        const short STATUSCONCEPTO = 28;    // Depósito por pago anticipado
+        try
+        {
+            ReferenciaConciliadaCompartida RConciliadaCompartida = new ReferenciaConciliadaCompartidaDatos(App.ImplementadorMensajes);
+            //      PK
+            RConciliadaCompartida.Corporativo           = RExterna.Corporativo;
+            RConciliadaCompartida.Sucursal              = RExterna.Sucursal;
+            RConciliadaCompartida.AñoConciliacion       = RExterna.AñoConciliacion;
+            RConciliadaCompartida.FolioConciliacion     = RExterna.FolioConciliacion;
+            RConciliadaCompartida.MesConciliacion       = RExterna.MesConciliacion;
+            RConciliadaCompartida.Año                   = RExterna.Año;
+            RConciliadaCompartida.Folio                 = RExterna.Folio;
+            RConciliadaCompartida.Secuencia             = RExterna.Secuencia;
+            //      Valores a modificar
+            RConciliadaCompartida.StatusConcepto        = STATUSCONCEPTO;
+
+            RConciliadaCompartida.ActualizarStatusConceptoDescripcionConciliacionPedido();
+        }
+        catch(Exception ex)
+        {
+            throw ex;
         }
     }
 
