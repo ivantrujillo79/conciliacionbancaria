@@ -66,6 +66,11 @@
                 return true;
     }
 
+    function RF_LimpiarCampos() {
+        $('#<%= txtFechaInicial.ClientID %>').val("");
+        $('#<%= txtFechaFinal.ClientID %>').val("");
+    }
+
 </script>
 
  <table style="width: 100%">

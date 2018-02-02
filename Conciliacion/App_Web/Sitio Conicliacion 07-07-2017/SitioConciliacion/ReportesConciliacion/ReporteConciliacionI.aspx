@@ -140,7 +140,12 @@
             });
          }
         //aqui va lo que corte
-        
+
+        function LimpiarCamposConciliarMovPedido() {
+            $('#<%= txtFactura.ClientID %>').val("");
+            RF_LimpiarCampos();
+        }
+
     </script>
  <script type="text/javascript">
      function FormatToCurrency(num) {
@@ -831,7 +836,7 @@
                         <td colspan="4" style="padding: 5px 5px 5px 5px" class="etiqueta">
                             <div class="floatDerecha">
                                 <asp:ImageButton runat="server" ID="img_cerrarConciliarMovPedido" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" /><%--OnClick="imgCerrarImportar_Click"--%>
+                                    CssClass="iconoPequeño bg-color-rojo" OnClientClick="LimpiarCamposConciliarMovPedido(); HideModalPopupConciliarMovPedido(); popUpNoVisible();"/>
                             </div>
                             <div class="fg-color-blanco">
                                 CONCILIAR MOVIMIENTO
@@ -1028,7 +1033,8 @@
 							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
 								                                Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
 							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro fg-color-blanco"
-								                                Text="CANCELAR" OnClientClick="HideModalPopupConciliarMovPedido(); popUpNoVisible();" Width="100px"/>
+								                                Text="CANCELAR" OnClientClick="LimpiarCamposConciliarMovPedido(); HideModalPopupConciliarMovPedido(); popUpNoVisible();" 
+                                                                Width="100px" />
 						                                </td>	
                                                     </tr>
                                                 </table>
