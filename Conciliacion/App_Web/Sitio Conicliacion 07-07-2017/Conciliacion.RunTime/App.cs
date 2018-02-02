@@ -314,6 +314,17 @@ namespace Conciliacion.RunTime
             }
         }
 
+        private static ConciliacionReferencia conciliacionrefencia;
+        public static ConciliacionReferencia ConciliacionReferencia
+        {
+            get
+            {
+                if (conciliacionrefencia  == null)
+                    conciliacionrefencia = new ConciliacionReferenciaDatos(App.ImplementadorMensajes);
+                return conciliacionrefencia;
+            }
+        }
+
         private static string cadenaconexion;
        
         
