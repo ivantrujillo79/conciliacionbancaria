@@ -1911,6 +1911,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             {
                                 this.hdfCambiarEstatusPedido.Value = "";
                                 ActualizarStatusConceptoPedido(rfExterno);
+                                ActualizarStatusConceptoReferencia(rfExterno);
                             }
 
                             //Leer Variables URL 
@@ -2021,6 +2022,41 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             RConciliadaCompartida.StatusConcepto        = STATUSCONCEPTO;
 
             RConciliadaCompartida.ActualizarStatusConceptoDescripcionConciliacionPedido();
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private void ActualizarStatusConceptoReferencia(ReferenciaNoConciliada RExterna)
+    {
+        const short STATUSCONCEPTO = 28;
+        const string STATUSCONCILIACION = "CONCILIACION CANCELADA";
+        const byte MOTIVONOCONCILIADO = 1;
+        const string COMENTARIONOCONCILIADO = "SALDO DE PAGO ANTICIPADO";
+        try
+        {
+            ConciliacionReferencia _ConciliacionReferencia = new ConciliacionReferenciaDatos(App.ImplementadorMensajes);
+            byte CorporativoConciliacion        = Convert.ToByte(RExterna.Corporativo);
+            byte SucursalConciliacion           = Convert.ToByte(RExterna.Sucursal);
+            int AñoConciliacion                 = RExterna.AñoConciliacion;
+            int MesConciliacion                 = Convert.ToByte(RExterna.MesConciliacion);
+            int FolioConciliacion               = RExterna.FolioConciliacion;
+            int SecuenciaRelacion               = RExterna.Secuencia;
+            decimal MontoExterno                = (RExterna.Resto - RExterna.Diferencia);
+
+            _ConciliacionReferencia.ActualizaPagoAnticipado(CorporativoConciliacion,
+                                                            SucursalConciliacion,
+                                                            AñoConciliacion,
+                                                            MesConciliacion,
+                                                            FolioConciliacion,
+                                                            SecuenciaRelacion,
+                                                            STATUSCONCEPTO,
+                                                            STATUSCONCILIACION,
+                                                            MOTIVONOCONCILIADO,
+                                                            COMENTARIONOCONCILIADO,
+                                                            MontoExterno);
         }
         catch(Exception ex)
         {
