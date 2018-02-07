@@ -394,12 +394,21 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void cboBancoFinanciero_SelectedIndexChanged(object sender, EventArgs e)
     {
-        cboCuentaFinanciero.DataSource = App.Consultas.ObtieneListaCuentaFinancieroPorBanco(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(cboBancoFinanciero.SelectedValue));
-        cboCuentaFinanciero.DataBind();
+        try
+        {
+            cboCuentaFinanciero.DataSource = App.Consultas.ObtieneListaCuentaFinancieroPorBanco(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(cboBancoFinanciero.SelectedValue));
+            cboCuentaFinanciero.DataBind();
 
-        LlenarComboConsecutivo();
-        ConfigurarImportacion();
-
+            LlenarComboConsecutivo();
+            ConfigurarImportacion();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+            //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+            //    + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     protected void cboCuentaFinanciero_SelectedIndexChanged(object sender, EventArgs e)
@@ -434,24 +443,31 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     private void ConfigurarImportacion()
     {
-        HttpContext.Current.Session["FInformacion"] = null;
-        HttpContext.Current.Session["IController"] = null;
-        cboColumnaOrigen.Items.Clear();
-        if (this.cboTipoFuenteInformacion.Items.Count > 0)
+        try
         {
-            finformacion = App.Consultas.ObtieneFuenteInformacionPorId(Convert.ToInt32(this.cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedValue.ToString(), Convert.ToInt32(this.cboTipoFuenteInformacion.SelectedValue));
+            HttpContext.Current.Session["FInformacion"] = null;
+            HttpContext.Current.Session["IController"] = null;
+            cboColumnaOrigen.Items.Clear();
+            if (this.cboTipoFuenteInformacion.Items.Count > 0)
+            {
+                finformacion = App.Consultas.ObtieneFuenteInformacionPorId(Convert.ToInt32(this.cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedValue.ToString(), Convert.ToInt32(this.cboTipoFuenteInformacion.SelectedValue));
 
-            HttpContext.Current.Session["FInformacion"] = finformacion;
-            string ruta = "~/Plantillas/ImportacionArchivos/Muestras/";
-            string rutaCompleta = MapPath(ruta) + finformacion.RutaArchivo;
-            iController = new ImportacionController(finformacion, rutaCompleta);
+                HttpContext.Current.Session["FInformacion"] = finformacion;
+                string ruta = "~/Plantillas/ImportacionArchivos/Muestras/";
+                string rutaCompleta = MapPath(ruta) + finformacion.RutaArchivo;
+                iController = new ImportacionController(finformacion, rutaCompleta);
 
-            HttpContext.Current.Session["IController"] = iController;
-            cboColumnaOrigen.DataSource = iController.ObtenerCamposEstadoCuenta();
-            cboColumnaOrigen.DataBind();
-            cboColumnaOrigen.SelectedIndex = 0;
-            cboTabla.SelectedIndex = 0;
-            cboColumna.Items.Clear();
+                HttpContext.Current.Session["IController"] = iController;
+                cboColumnaOrigen.DataSource = iController.ObtenerCamposEstadoCuenta();
+                cboColumnaOrigen.DataBind();
+                cboColumnaOrigen.SelectedIndex = 0;
+                cboTabla.SelectedIndex = 0;
+                cboColumna.Items.Clear();
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
         }
     }
 
