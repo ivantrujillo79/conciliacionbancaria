@@ -1103,7 +1103,7 @@
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlBusquedaFactura" runat="server" BackColor="#FFFFFF" Width="800px" Style="display: none;"
-        CssClass="ModalPopup" Height="507px">
+        CssClass="ModalPopup" Height="527px">
         <asp:UpdatePanel ID="upBusquedaFactura" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">
