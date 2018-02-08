@@ -2242,14 +2242,31 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 conexion.CommitTransaction();
 
                 mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
+                popUpConciliarMovPedido.Hide(); popUpConciliarMovPedido.Dispose();
                 if (hdfStatusConcepto.Value == "28")
                 {
                     if (!conciliacionFactura || !registraConciliacion) return;
                 }
                 else 
                     if (!conciliacionFactura) return;
-
+                
                 App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
+
+                //      Recargar la Vista con los datos
+                if (FiltroCorrecto())
+                {
+                    usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                    GrupoConciliacionUsuario gcu = LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim());
+                    ConsultaMovimientosConciliacionCompartida(gcu.AccesoTotal,
+                        Convert.ToInt16(ddlEmpresa.SelectedItem.Value),
+                        Convert.ToInt16(ddlSucursal.SelectedItem.Value),
+                        ddlCuentaBancaria.SelectedItem.Text.Trim(),
+                         Convert.ToDateTime(txtFInicial.Text),
+                         Convert.ToDateTime(txtFFinal.Text)
+                        );
+                    GenerarTablaConciliacionCompartida();
+                    LlenaGridViewConciliacionCompartida();
+                }
             }
             else
             {
