@@ -909,7 +909,7 @@
                             </div>
                             <br />
                             <%--        AJAX Accordion        --%>
-                            <div style="width:100%; padding-top:5px; max-height:367px; overflow:auto; box-sizing:border-box;">
+                            <%--<div style="width:100%; padding-top:5px; max-height:367px; overflow:auto; box-sizing:border-box;">--%>
                                 <asp:Accordion ID="Accordion1" runat="server" HeaderCssClass="accordion-header"
                                     HeaderSelectedCssClass="accordion-selected" SelectedIndex="1" ContentCssClass="accordion-content" Width="100%">
                                     <Panes>
@@ -922,7 +922,7 @@
                                         <ajaxToolkit:AccordionPane ID="apGridPedidos" runat="server">
                                             <Header>PEDIDOS</Header>
                                             <Content>                                                
-                                                <%--<div style="width: 980px; height: 300px; overflow:auto;">--%>
+                                                <div style="width:100%; height:280px; overflow: scroll;">
                                                     <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="False"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                                         ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente,Total" AllowPaging="False">
@@ -1026,7 +1026,7 @@
                                                         </Columns>
                                                         <PagerStyle CssClass="grvPaginacionScroll" />
                                                     </asp:GridView>
-                                                <%--</div>--%>
+                                                </div>
                                                 <table width="100%">
                                                     <tr>
 						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
@@ -1042,7 +1042,7 @@
                                         </ajaxToolkit:AccordionPane>
                                     </Panes>
                                 </asp:Accordion>
-                            </div>						
+                            <%--</div>--%>						
                         </td>			
                     </tr>
                 </table>                    
