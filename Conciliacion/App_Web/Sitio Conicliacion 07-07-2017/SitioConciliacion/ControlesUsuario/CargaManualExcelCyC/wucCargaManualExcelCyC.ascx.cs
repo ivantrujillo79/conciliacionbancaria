@@ -299,6 +299,11 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
     }
 
+    public void Cancelar(object sender, EventArgs e)
+    {
+        btnCancelar_Click(sender, e);
+    }
+
     protected void btnSubirArchivo_Click(object sender, EventArgs e)
     {
         DataTable dtTabla = new DataTable();

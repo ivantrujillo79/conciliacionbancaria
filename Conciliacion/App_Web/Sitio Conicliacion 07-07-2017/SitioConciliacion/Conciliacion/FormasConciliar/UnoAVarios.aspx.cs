@@ -6245,9 +6245,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
-
-
-
+    
     protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
     {
         const short SALDO  = 1;
@@ -6343,6 +6341,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             GenerarTablaArchivosInternos();
             grvInternos.DataSource = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
             grvInternos.DataBind();
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    protected void btnCerrarCargaArchivo_Click(object sender, ImageClickEventArgs e)
+    {
+        try
+        {
+            wucCargaExcelCyC.Cancelar(sender, e);
         }
         catch(Exception ex)
         {

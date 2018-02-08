@@ -2707,7 +2707,8 @@
                         <td style="padding: 5px 5px 5px 5px; box-sizing:border-box;" class="etiqueta">
                             <div class="floatDerecha">
                                 <asp:ImageButton runat="server" ID="btnCerrarCargaArchivo" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="popUpNoVisible(); OcultarPopUpConciliacionManual();"/>
+                                    CssClass="iconoPequeño bg-color-rojo" Width="20px" Height="20px" OnClientClick="btnCargaManualCancelar_Click();"
+                                    OnClick="btnCerrarCargaArchivo_Click"/> <%--OnClientClick="popUpNoVisible(); OcultarPopUpConciliacionManual();"--%>
                             </div>
                             <div class="fg-color-blanco centradoJustificado">
                                 CARGAR ARCHIVO
