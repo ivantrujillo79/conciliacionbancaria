@@ -5,6 +5,8 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using System.Data.SqlTypes;
+
 namespace Conciliacion.RunTime.DatosSQL
 {
     public class MovimientoCajaConciliacionDatos: MovimientoCajaConciliacion {
@@ -41,7 +43,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.SmallInt)).Value = this.MesConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = this.FolioConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.TinyInt)).Value = 1;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@cobranza", System.Data.SqlDbType.Int)).Value = this.Cobranza;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@cobranza", System.Data.SqlDbType.Int)).Value = this.Cobranza == 0 ? SqlInt32.Null : Cobranza;
                 _conexion.Comando.ExecuteNonQuery();
                 
             }
