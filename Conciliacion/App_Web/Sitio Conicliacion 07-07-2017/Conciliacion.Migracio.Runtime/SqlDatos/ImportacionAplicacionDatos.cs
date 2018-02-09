@@ -22,6 +22,35 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
         }
 
+        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal)
+        {
+            bool resultado = false;
+            using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spExisteFechaTablaDestino", cnn);
+                    comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = Finicio;
+                    comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.CommandTimeout = 500;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        resultado = Convert.ToBoolean(reader["Existe"]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.StackTrace);
+                    stackTrace = null;
+                }
+                return resultado;
+            }
+        }
+
         public override List<TablaDestinoDetalle> LlenarObjetosDestinoDestalle()
         {
             List<TablaDestinoDetalle> datos = new List<TablaDestinoDetalle>();
