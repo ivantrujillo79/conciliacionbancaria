@@ -71,7 +71,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                         dato.IdStatusConciliacion = Convert.ToString(reader["IdStatusConciliacion"]);
                         dato.IdConceptoBanco = Convert.ToInt32(reader["IdConceptoBanco"]);
                         dato.IdMotivoNoConciliado = Convert.ToInt32(reader["IdMotivoNoConciliado"]);
-
+                        dato.TipoFuenteInformacion = this.TablaDestino.TipoFuenteInformacion.Id;
                         datos.Add(dato);
                     }
                 }
