@@ -583,14 +583,18 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                                                               pass, listadoExtractores
                                                                               );
 
-                if (ia.GuardaEnTablaDestinoDetalle())
+                if (! ia.PeriodoFechasOcupado(fi, ff))
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("Guardado con Exito.");
-                    Limpiar();
-                    txtFInicial.Text = txtFFinal.Text = String.Empty;
-                    ia = null;
+                    if (ia.GuardaEnTablaDestinoDetalle())
+                    {
+                        App.ImplementadorMensajes.MostrarMensaje("Guardado con Exito.");
+                        Limpiar();
+                        txtFInicial.Text = txtFFinal.Text = String.Empty;
+                        ia = null;
+                    }
+                    else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
                 }
-                else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
+                else { App.ImplementadorMensajes.MostrarMensaje("El periodo de fecha ya esta ocupado."); }
             }
             else
             {

@@ -99,7 +99,6 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             }            
         }
 
-       
 
         #region propiedades
 
@@ -150,7 +149,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         }
 
         public abstract List<TablaDestinoDetalle> LlenarObjetosDestinoDestalle();
-
+        
         public virtual string CadenaConexion
         {
             get
@@ -159,5 +158,6 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             }
         }
 
+        public abstract bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal);
     }
 }
