@@ -43,9 +43,16 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         App.ImplementadorMensajes.ContenedorActual = this;
-        if (!IsPostBack)
+        try
         {
-            LlenarCombos();
+            if (!IsPostBack)
+            {
+                LlenarCombos();
+            }
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -102,63 +109,82 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void btnAdd_Click(object sender, ImageClickEventArgs e)
     {
-        ImageButton imgButton = (sender as ImageButton);
-        GridViewRow row = imgButton.Parent.Parent as GridViewRow;
-        Label lblCuenta = (Label)row.FindControl("colIdCuentaBanco");
-        Label lblBanco = (Label)row.FindControl("colIdBanco");
-        Label lblFuenteInformacion = (Label)row.FindControl("colIdFuenteInformacion");
-        Label lblSecuencia = (Label)row.FindControl("lblGVSecuencia");
-        FuenteInformacionDetalleEtiqueta etiqueta = (FuenteInformacionDetalleEtiqueta)App.FuenteInformacionDetalleEtiqueta.CrearObjeto();
-        etiqueta.CuentaBancoFinanciero = lblCuenta.Text;
-        etiqueta.IdBancoFinanciero = Convert.ToInt32(lblBanco.Text);
-        etiqueta.IdFuenteInformacion = Convert.ToInt32(lblFuenteInformacion.Text);
-        etiqueta.Secuencia = Convert.ToInt32(lblSecuencia.Text);
-        HttpContext.Current.Session["Etiqueta"] = etiqueta;
-        this.GridViewEtiquetas.DataSource = App.Consultas.ObtieneListaFuenteInformacionDetalleEtiqueta(etiqueta.CuentaBancoFinanciero, etiqueta.IdBancoFinanciero, etiqueta.IdFuenteInformacion, etiqueta.Secuencia); ;
-        this.GridViewEtiquetas.DataBind();
-        this.popUpEtiquetas.Show();
+        try
+        {
+            ImageButton imgButton = (sender as ImageButton);
+            GridViewRow row = imgButton.Parent.Parent as GridViewRow;
+            Label lblCuenta = (Label)row.FindControl("colIdCuentaBanco");
+            Label lblBanco = (Label)row.FindControl("colIdBanco");
+            Label lblFuenteInformacion = (Label)row.FindControl("colIdFuenteInformacion");
+            Label lblSecuencia = (Label)row.FindControl("lblGVSecuencia");
+            FuenteInformacionDetalleEtiqueta etiqueta = (FuenteInformacionDetalleEtiqueta)App.FuenteInformacionDetalleEtiqueta.CrearObjeto();
+            etiqueta.CuentaBancoFinanciero = lblCuenta.Text;
+            etiqueta.IdBancoFinanciero = Convert.ToInt32(lblBanco.Text);
+            etiqueta.IdFuenteInformacion = Convert.ToInt32(lblFuenteInformacion.Text);
+            etiqueta.Secuencia = Convert.ToInt32(lblSecuencia.Text);
+            HttpContext.Current.Session["Etiqueta"] = etiqueta;
+            this.GridViewEtiquetas.DataSource = App.Consultas.ObtieneListaFuenteInformacionDetalleEtiqueta(etiqueta.CuentaBancoFinanciero, etiqueta.IdBancoFinanciero, etiqueta.IdFuenteInformacion, etiqueta.Secuencia); ;
+            this.GridViewEtiquetas.DataBind();
+            this.popUpEtiquetas.Show();
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void btnDelete_Click(object sender, ImageClickEventArgs e)
     {
-
-        ImageButton imgButton = (sender as ImageButton);
-        GridViewRow row = imgButton.Parent.Parent as GridViewRow;
-        Label lblCuenta = (Label)row.FindControl("colIdCuentaBanco");
-        Label lblBanco = (Label)row.FindControl("colIdBanco");
-        Label lblFuenteInformacion = (Label)row.FindControl("colIdFuenteInformacion");
-        Label lblSecuencia = (Label)row.FindControl("lblGVSecuencia");
-
-        FuenteInformacionDetalle fid = (FuenteInformacionDetalle)App.FuenteInformacionDetalle.CrearObjeto();
-        fid.CuentaBancoFinanciero = lblCuenta.Text;
-        fid.BancoFinanciero = Convert.ToInt32(lblBanco.Text);
-        fid.IdFuenteInformacion = Convert.ToInt32(lblFuenteInformacion.Text);
-        fid.Secuencia = Convert.ToInt32(lblSecuencia.Text);
-        if (fid.Eliminar())
+        try
         {
-            iController = (ImportacionController)HttpContext.Current.Session["IController"];
-            if (iController != null)
+            ImageButton imgButton = (sender as ImageButton);
+            GridViewRow row = imgButton.Parent.Parent as GridViewRow;
+            Label lblCuenta = (Label)row.FindControl("colIdCuentaBanco");
+            Label lblBanco = (Label)row.FindControl("colIdBanco");
+            Label lblFuenteInformacion = (Label)row.FindControl("colIdFuenteInformacion");
+            Label lblSecuencia = (Label)row.FindControl("lblGVSecuencia");
+
+            FuenteInformacionDetalle fid = (FuenteInformacionDetalle)App.FuenteInformacionDetalle.CrearObjeto();
+            fid.CuentaBancoFinanciero = lblCuenta.Text;
+            fid.BancoFinanciero = Convert.ToInt32(lblBanco.Text);
+            fid.IdFuenteInformacion = Convert.ToInt32(lblFuenteInformacion.Text);
+            fid.Secuencia = Convert.ToInt32(lblSecuencia.Text);
+            if (fid.Eliminar())
             {
-                cboColumna.DataSource = iController.ObtenerColumnasDestino(this.cboTabla.Text.ToString());
-                cboColumna.DataBind();
-                this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
-                this.grvMapeos.DataBind();
+                iController = (ImportacionController)HttpContext.Current.Session["IController"];
+                if (iController != null)
+                {
+                    cboColumna.DataSource = iController.ObtenerColumnasDestino(this.cboTabla.Text.ToString());
+                    cboColumna.DataBind();
+                    this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
+                    this.grvMapeos.DataBind();
+                }
             }
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
     protected void btnDeleteEtiquetae_Click(object sender, ImageClickEventArgs e)
     {
-
-        ImageButton imgButton = (sender as ImageButton);
-        GridViewRow row = imgButton.Parent.Parent as GridViewRow;
-        Label lblCuenta = (Label)row.FindControl("lblGVIdEtiqueta");
-        FuenteInformacionDetalleEtiqueta etiqueta = (FuenteInformacionDetalleEtiqueta)HttpContext.Current.Session["Etiqueta"];
-        etiqueta.IdEtiqueta = Convert.ToInt32(lblCuenta.Text);
-        if (etiqueta.Eliminar())
+        try
         {
-            this.GridViewEtiquetas.DataSource = App.Consultas.ObtieneListaFuenteInformacionDetalleEtiqueta(etiqueta.CuentaBancoFinanciero, etiqueta.IdBancoFinanciero, etiqueta.IdFuenteInformacion, etiqueta.Secuencia); ;
-            this.GridViewEtiquetas.DataBind();
+            ImageButton imgButton = (sender as ImageButton);
+            GridViewRow row = imgButton.Parent.Parent as GridViewRow;
+            Label lblCuenta = (Label)row.FindControl("lblGVIdEtiqueta");
+            FuenteInformacionDetalleEtiqueta etiqueta = (FuenteInformacionDetalleEtiqueta)HttpContext.Current.Session["Etiqueta"];
+            etiqueta.IdEtiqueta = Convert.ToInt32(lblCuenta.Text);
+            if (etiqueta.Eliminar())
+            {
+                this.GridViewEtiquetas.DataSource = App.Consultas.ObtieneListaFuenteInformacionDetalleEtiqueta(etiqueta.CuentaBancoFinanciero, etiqueta.IdBancoFinanciero, etiqueta.IdFuenteInformacion, etiqueta.Secuencia); ;
+                this.GridViewEtiquetas.DataBind();
+            }
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -235,31 +261,63 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void btnGuardarDatos_Click(object sender, EventArgs e)
     {
-        if (tabNuevaConciliacion.ActiveTabIndex == 0)
+        try
         {
-            if (ValidarDatos(tabNuevaConciliacion.ActiveTabIndex))
+            if (tabNuevaConciliacion.ActiveTabIndex == 0)
             {
-                finformacion = (FuenteInformacion)HttpContext.Current.Session["FInformacion"];
-                iController = (ImportacionController)HttpContext.Current.Session["IController"];
+                if (ValidarDatos(tabNuevaConciliacion.ActiveTabIndex))
+                {
+                    finformacion = (FuenteInformacion)HttpContext.Current.Session["FInformacion"];
+                    iController = (ImportacionController)HttpContext.Current.Session["IController"];
 
-                bool existeFecha = false;
-                if (chkTipoFecha.Checked)
-                {
-                    existeFecha = verificarFecha(iController);
+                    bool existeFecha = false;
+                    if (chkTipoFecha.Checked)
+                    {
+                        existeFecha = verificarFecha(iController);
+                    }
+                    if (!existeFecha)
+                    {
+                        FuenteInformacionDetalle FID = App.FuenteInformacionDetalle;
+                        FID.CuentaBancoFinanciero = cboCuentaFinanciero.SelectedValue.ToString();
+                        FID.BancoFinanciero = Convert.ToInt32(cboBancoFinanciero.SelectedValue);
+                        FID.IdFuenteInformacion = finformacion.IdFuenteInformacion;
+                        FID.Secuencia = App.Consultas.ObtieneFuenteInformacionDetalleNumeroMaximo(finformacion.BancoFinanciero, finformacion.CuentaBancoFinanciero, finformacion.IdFuenteInformacion) + 1;
+                        FID.ColumnaOrigen = cboColumnaOrigen.SelectedValue.ToString();
+                        FID.IdConceptoBanco = 0;
+                        FID.TablaDestino = cboTabla.SelectedValue.ToString();
+                        FID.ColumnaDestino = cboColumna.SelectedValue.ToString();
+                        FID.EsTipoFecha = chkTipoFecha.Checked;
+                        if (FID.Guardar())
+                        {
+                            this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
+                            this.grvMapeos.DataBind();
+                            cboColumna.DataSource = iController.ObtenerColumnasDestino(this.cboTabla.SelectedValue.ToString());
+                            cboColumna.DataBind();
+                            cboColumnaOrigen.DataSource = iController.ObtenerCamposEstadoCuenta();
+                            cboColumnaOrigen.DataBind();
+                            Limpiar();
+                            BloquearControles();
+
+                        }
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Ya existe un campo de Fecha.');", true);
+                    }
                 }
-                if (!existeFecha)
+                else
                 {
-                    FuenteInformacionDetalle FID = App.FuenteInformacionDetalle;
-                    FID.CuentaBancoFinanciero = cboCuentaFinanciero.SelectedValue.ToString();
-                    FID.BancoFinanciero = Convert.ToInt32(cboBancoFinanciero.SelectedValue);
-                    FID.IdFuenteInformacion = finformacion.IdFuenteInformacion;
-                    FID.Secuencia = App.Consultas.ObtieneFuenteInformacionDetalleNumeroMaximo(finformacion.BancoFinanciero, finformacion.CuentaBancoFinanciero, finformacion.IdFuenteInformacion) + 1;
-                    FID.ColumnaOrigen = cboColumnaOrigen.SelectedValue.ToString();
-                    FID.IdConceptoBanco = 0;
-                    FID.TablaDestino = cboTabla.SelectedValue.ToString();
-                    FID.ColumnaDestino = cboColumna.SelectedValue.ToString();
-                    FID.EsTipoFecha = chkTipoFecha.Checked;
-                    if (FID.Guardar())
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(mensaje.ToString()) + "');", true);
+                }
+            }
+            else
+            {
+                if (ValidarDatos(tabNuevaConciliacion.ActiveTabIndex))
+                {
+                    iController = (ImportacionController)HttpContext.Current.Session["IController"];
+                    finformacion = (FuenteInformacion)HttpContext.Current.Session["FInformacion"];
+
+                    if (finformacion.CopiarFuenteInformacionDetalle(ddlCuentaBancariaFuente.SelectedValue))
                     {
                         this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
                         this.grvMapeos.DataBind();
@@ -269,44 +327,18 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
                         cboColumnaOrigen.DataBind();
                         Limpiar();
                         BloquearControles();
-
                     }
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Ya existe un campo de Fecha.');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(mensaje.ToString()) + "');", true);
                 }
             }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(mensaje.ToString()) + "');", true);
-            }
         }
-        else
+        catch(Exception ex)
         {
-            if (ValidarDatos(tabNuevaConciliacion.ActiveTabIndex))
-            {
-                iController = (ImportacionController)HttpContext.Current.Session["IController"];
-                finformacion = (FuenteInformacion)HttpContext.Current.Session["FInformacion"];
-
-                if (finformacion.CopiarFuenteInformacionDetalle(ddlCuentaBancariaFuente.SelectedValue))
-                {
-                    this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
-                    this.grvMapeos.DataBind();
-                    cboColumna.DataSource = iController.ObtenerColumnasDestino(this.cboTabla.SelectedValue.ToString());
-                    cboColumna.DataBind();
-                    cboColumnaOrigen.DataSource = iController.ObtenerCamposEstadoCuenta();
-                    cboColumnaOrigen.DataBind();
-                    Limpiar();
-                    BloquearControles();
-                }
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(mensaje.ToString()) + "');", true);
-            }
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
-
     }
 
     private string LimpiarTexto(string texto)
@@ -370,26 +402,39 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void btnCancelarDatos_Click(object sender, EventArgs e)
     {
-        if (this.btnCerrarMapeo.Enabled)
-            Limpiar();
-        else
-            LimpiezaTotal();
+        try
+        {
+            if (this.btnCerrarMapeo.Enabled)
+                Limpiar();
+            else
+                LimpiezaTotal();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboCorporativo_SelectedIndexChanged(object sender, EventArgs e)
     {
+        try
+        {
+            cboBancoFinanciero.DataValueField = "Id";
+            cboBancoFinanciero.DataTextField = "Descripcion";
+            cboBancoFinanciero.DataSource = App.Consultas.ObtieneListaBancoFinanciero(Convert.ToInt32(cboCorporativo.SelectedValue));
+            cboBancoFinanciero.DataBind();
+            cboBancoFinanciero.SelectedIndex = 0;
 
-        cboBancoFinanciero.DataValueField = "Id";
-        cboBancoFinanciero.DataTextField = "Descripcion";
-        cboBancoFinanciero.DataSource = App.Consultas.ObtieneListaBancoFinanciero(Convert.ToInt32(cboCorporativo.SelectedValue));
-        cboBancoFinanciero.DataBind();
-        cboBancoFinanciero.SelectedIndex = 0;
 
-
-        this.cboCuentaFinanciero.Items.Clear();
-        this.ddlCuentaBancariaFuente.Items.Clear();
-        this.cboTipoFuenteInformacion.Items.Clear();
-        this.cboColumnaOrigen.Items.Clear();
+            this.cboCuentaFinanciero.Items.Clear();
+            this.ddlCuentaBancariaFuente.Items.Clear();
+            this.cboTipoFuenteInformacion.Items.Clear();
+            this.cboColumnaOrigen.Items.Clear();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboBancoFinanciero_SelectedIndexChanged(object sender, EventArgs e)
@@ -583,19 +628,32 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void cboColumnaOrigen_DataBound(object sender, EventArgs e)
     {
-        cboColumnaOrigen.Items.Insert(0, new ListItem(" ", "0"));
+        try
+        {
+            cboColumnaOrigen.Items.Insert(0, new ListItem(" ", "0"));
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void chkLongitud_CheckedChanged(object sender, EventArgs e)
     {
-        this.lblLongitud.Visible = !chkLongitud.Checked;
-        this.txtLongitud.Visible = !chkLongitud.Checked;
-        this.lblFinaliza.Visible = chkLongitud.Checked;
-        this.txtFinaliza.Visible = chkLongitud.Checked;
+        try
+        {
+            this.lblLongitud.Visible = !chkLongitud.Checked;
+            this.txtLongitud.Visible = !chkLongitud.Checked;
+            this.lblFinaliza.Visible = chkLongitud.Checked;
+            this.txtFinaliza.Visible = chkLongitud.Checked;
 
-        this.txtLongitud.Text = string.Empty;
-        this.txtFinaliza.Text = string.Empty;
-
+            this.txtLongitud.Text = string.Empty;
+            this.txtFinaliza.Text = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     private void LimpiarControlesEtiquetas()
@@ -616,7 +674,14 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void cboEtiqueta_DataBound(object sender, EventArgs e)
     {
-        cboEtiqueta.Items.Insert(0, new ListItem(" ", "0"));
+        try
+        {
+            cboEtiqueta.Items.Insert(0, new ListItem(" ", "0"));
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     private bool ValidarDatosEtiquetas()
@@ -655,30 +720,42 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void btnGuardarEtiqueta_Click(object sender, EventArgs e)
     {
-        if (ValidarDatosEtiquetas())
+        try
         {
-            FuenteInformacionDetalleEtiqueta etiqueta = (FuenteInformacionDetalleEtiqueta)HttpContext.Current.Session["Etiqueta"];
-            etiqueta.IdEtiqueta = Convert.ToInt32(this.cboEtiqueta.SelectedValue);
-            etiqueta.LongitudFija = !this.chkLongitud.Checked ? Convert.ToInt32(this.txtLongitud.Text) : 0;
-            etiqueta.Finaliza = this.chkLongitud.Checked ? this.txtFinaliza.Text : null;
-            if (etiqueta.Guardar())
+            if (ValidarDatosEtiquetas())
             {
-                this.GridViewEtiquetas.DataSource = App.Consultas.ObtieneListaFuenteInformacionDetalleEtiqueta(etiqueta.CuentaBancoFinanciero, etiqueta.IdBancoFinanciero, etiqueta.IdFuenteInformacion, etiqueta.Secuencia); ;
-                this.GridViewEtiquetas.DataBind();
-                LimpiarControlesEtiquetas();
+                FuenteInformacionDetalleEtiqueta etiqueta = (FuenteInformacionDetalleEtiqueta)HttpContext.Current.Session["Etiqueta"];
+                etiqueta.IdEtiqueta = Convert.ToInt32(this.cboEtiqueta.SelectedValue);
+                etiqueta.LongitudFija = !this.chkLongitud.Checked ? Convert.ToInt32(this.txtLongitud.Text) : 0;
+                etiqueta.Finaliza = this.chkLongitud.Checked ? this.txtFinaliza.Text : null;
+                if (etiqueta.Guardar())
+                {
+                    this.GridViewEtiquetas.DataSource = App.Consultas.ObtieneListaFuenteInformacionDetalleEtiqueta(etiqueta.CuentaBancoFinanciero, etiqueta.IdBancoFinanciero, etiqueta.IdFuenteInformacion, etiqueta.Secuencia); ;
+                    this.GridViewEtiquetas.DataBind();
+                    LimpiarControlesEtiquetas();
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(mensaje.ToString()) + "');", true);
             }
         }
-        else
+        catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(mensaje.ToString()) + "');", true);
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
-
-
     }
 
     protected void btnCancelarCargaPedidos_Click(object sender, EventArgs e)
     {
-        LimpiarControlesEtiquetas();
+        try
+        {
+            LimpiarControlesEtiquetas();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void grvMapeos_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -690,45 +767,66 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
             this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
             this.grvMapeos.DataBind();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
     protected void grvMapeos_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType == DataControlRowType.Pager && (grvMapeos.DataSource != null))
+        try
         {
-
-            Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
-            _TotalPags.Text = grvMapeos.PageCount.ToString();
-
-            DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownList");
-            for (int i = 1; i <= Convert.ToInt32(grvMapeos.PageCount); i++)
+            if (e.Row.RowType == DataControlRowType.Pager && (grvMapeos.DataSource != null))
             {
-                list.Items.Add(i.ToString());
+
+                Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
+                _TotalPags.Text = grvMapeos.PageCount.ToString();
+
+                DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownList");
+                for (int i = 1; i <= Convert.ToInt32(grvMapeos.PageCount); i++)
+                {
+                    list.Items.Add(i.ToString());
+                }
+                list.SelectedValue = (grvMapeos.PageIndex + 1).ToString();
             }
-            list.SelectedValue = (grvMapeos.PageIndex + 1).ToString();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
     protected void paginasDropDownList_SelectedIndexChanged(object sender, EventArgs e)
     {
-        DropDownList oIraPag = (DropDownList)sender;
-        int iNumPag;
-        grvMapeos.PageIndex = int.TryParse(oIraPag.Text.Trim(), out iNumPag) && iNumPag > 0 &&
-                                    iNumPag <= grvMapeos.PageCount
-                                        ? iNumPag - 1
-                                        : 0;
-        iController = (ImportacionController)HttpContext.Current.Session["IController"];
-        this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
-        this.grvMapeos.DataBind();
+        try
+        {
+            DropDownList oIraPag = (DropDownList)sender;
+            int iNumPag;
+            grvMapeos.PageIndex = int.TryParse(oIraPag.Text.Trim(), out iNumPag) && iNumPag > 0 &&
+                                        iNumPag <= grvMapeos.PageCount
+                                            ? iNumPag - 1
+                                            : 0;
+            iController = (ImportacionController)HttpContext.Current.Session["IController"];
+            this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
+            this.grvMapeos.DataBind();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboTipoFuenteInformacion_DataBound(object sender, EventArgs e)
     {
-        ddlCuentaBancariaFuente.DataSource = App.Consultas.ConsultaCuentaExistenteFuenteInformacion(Convert.ToSByte(cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedItem.Value, Convert.ToSByte(cboTipoFuenteInformacion.SelectedValue));
-        ddlCuentaBancariaFuente.DataBind();
+        try
+        {
+            ddlCuentaBancariaFuente.DataSource = App.Consultas.ConsultaCuentaExistenteFuenteInformacion(Convert.ToSByte(cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedItem.Value, Convert.ToSByte(cboTipoFuenteInformacion.SelectedValue));
+            ddlCuentaBancariaFuente.DataBind();
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 }
