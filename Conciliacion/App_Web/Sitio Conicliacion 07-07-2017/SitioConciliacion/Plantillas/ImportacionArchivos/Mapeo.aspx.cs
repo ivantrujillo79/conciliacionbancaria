@@ -413,9 +413,15 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void cboCuentaFinanciero_SelectedIndexChanged(object sender, EventArgs e)
     {
-        LlenarComboConsecutivo();
-        ConfigurarImportacion();
-
+        try
+        {
+            LlenarComboConsecutivo();
+            ConfigurarImportacion();
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
 
     }
 
@@ -473,56 +479,105 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void cboTabla_SelectedIndexChanged(object sender, EventArgs e)
     {
-        iController = (ImportacionController)HttpContext.Current.Session["IController"];
-        if (iController != null)
+        try
         {
-            cboColumna.DataSource = iController.ObtenerColumnasDestino(this.cboTabla.SelectedItem.Text);
-            cboColumna.DataBind();
-            this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
-            this.grvMapeos.DataBind();
+            iController = (ImportacionController)HttpContext.Current.Session["IController"];
+            if (iController != null)
+            {
+                cboColumna.DataSource = iController.ObtenerColumnasDestino(this.cboTabla.SelectedItem.Text);
+                cboColumna.DataBind();
+                this.grvMapeos.DataSource = iController.ObtieneCamposMapeados();
+                this.grvMapeos.DataBind();
+            }
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
     protected void cboBancoFinanciero_DataBound(object sender, EventArgs e)
     {
-        cboBancoFinanciero.Items.Insert(0, new ListItem(" ", "0"));
+        try
+        {
+            cboBancoFinanciero.Items.Insert(0, new ListItem(" ", "0"));
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboTabla_DataBound(object sender, EventArgs e)
     {
-        cboTabla.Items.Insert(0, new ListItem(" ", "0"));
+        try
+        {
+            cboTabla.Items.Insert(0, new ListItem(" ", "0"));
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboColumna_DataBound(object sender, EventArgs e)
     {
-        cboColumna.Items.Insert(0, new ListItem(" ", "0"));
+        try
+        {
+            cboColumna.Items.Insert(0, new ListItem(" ", "0"));
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboCorporativo_DataBound(object sender, EventArgs e)
     {
-        this.cboCorporativo.Items.Insert(0, new ListItem(" ", "0"));
+        try
+        {
+            this.cboCorporativo.Items.Insert(0, new ListItem(" ", "0"));
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void cboConsecutivo_SelectedIndexChanged(object sender, EventArgs e)
     {
-        this.grvMapeos.DataBind();
-        ConfigurarImportacion();
-        ddlCuentaBancariaFuente.DataSource = App.Consultas.ConsultaCuentaExistenteFuenteInformacion(Convert.ToSByte(cboBancoFinanciero.SelectedItem.Value), cboCuentaFinanciero.SelectedItem.Value, Convert.ToSByte(cboTipoFuenteInformacion.SelectedItem.Value));
-        ddlCuentaBancariaFuente.DataBind();
+        try
+        {
+            this.grvMapeos.DataBind();
+            ConfigurarImportacion();
+            ddlCuentaBancariaFuente.DataSource = App.Consultas.ConsultaCuentaExistenteFuenteInformacion(Convert.ToSByte(cboBancoFinanciero.SelectedItem.Value), cboCuentaFinanciero.SelectedItem.Value, Convert.ToSByte(cboTipoFuenteInformacion.SelectedItem.Value));
+            ddlCuentaBancariaFuente.DataBind();
+        }
+        catch(Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     protected void btnCerrarMapeo_Click(object sender, EventArgs e)
     {
-        finformacion = (FuenteInformacion)HttpContext.Current.Session["FInformacion"];
-        iController = (ImportacionController)HttpContext.Current.Session["IController"];
-        if (verificarFecha(iController))
+        try
         {
-            DesbloquearControles();
-            LimpiezaTotal();
+            finformacion = (FuenteInformacion)HttpContext.Current.Session["FInformacion"];
+            iController = (ImportacionController)HttpContext.Current.Session["IController"];
+            if (verificarFecha(iController))
+            {
+                DesbloquearControles();
+                LimpiezaTotal();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No existe ningún campo de tipo fecha, configure uno.');", true);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No existe ningún campo de tipo fecha, configure uno.');", true);
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
