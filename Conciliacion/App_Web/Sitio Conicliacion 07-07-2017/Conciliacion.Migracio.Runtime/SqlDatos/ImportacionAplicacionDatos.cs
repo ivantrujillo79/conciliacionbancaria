@@ -22,7 +22,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
         }
 
-        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal)
+        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal, string CuentaBancoFinanciero)
         {
             bool resultado = false;
             using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
@@ -33,6 +33,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                     SqlCommand comando = new SqlCommand("spExisteFechaTablaDestino", cnn);
                     comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = Finicio;
                     comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
+                    comando.Parameters.Add("@CuentaBancoFinanciero", System.Data.SqlDbType.DateTime).Value = CuentaBancoFinanciero;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.CommandTimeout = 500;
                     SqlDataReader reader = comando.ExecuteReader();
