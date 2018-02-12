@@ -3331,78 +3331,79 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void grvConciliadas_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        if (!e.CommandName.Equals("DESCONCILIAR")) return;
-        Button imgDesconciliar = e.CommandSource as Button;
-        GridViewRow gRowConciliado = (GridViewRow)(imgDesconciliar).Parent.Parent;
-        //Leer Variables URL 
-
-
-
-        cargarInfoConciliacionActual();
-
-        int corporativoConcilacion =
-            Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["CorporativoConciliacion"]);
-        int sucursalConciliacion =
-            Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SucursalConciliacion"]);
-        int añoConciliacion = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["AñoConciliacion"]);
-        int mesConciliacion = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["MesConciliacion"]);
-        int folioConciliacion =
-            Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioConciliacion"]);
-        int folioExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioExterno"]);
-        int secuenciaExterno =
-            Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SecuenciaExterno"]);
-        //Leer las TransaccionesConciliadas
-        listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
-
-        int indice = gRowConciliado.RowIndex;
-
-        ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
-
-
-        int pedido = objReferencia.Pedido;
-
-
-
-        tranDesconciliar = listaTransaccionesConciliadas.Single(
-            x => x.Corporativo == corporativoConcilacion &&
-                 x.Sucursal == sucursalConciliacion &&
-                 x.Año == añoConciliacion &&
-                 x.MesConciliacion == mesConciliacion &&
-                 x.FolioConciliacion == folioConciliacion &&
-                 x.Folio == folioExterno &&
-                 x.Secuencia == secuenciaExterno &&
-                 x.Pedido == pedido);
-
-        string status = tranDesconciliar.StatusMovimiento;
-
-
-        if (status.CompareTo( "APLICADO")!=0)
+        try
         {
-            tranDesconciliar.DesConciliar();
-            //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-            //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
-                                              formaConciliacion);
-            GenerarTablaConciliados();
-            LlenaGridViewConciliadas();
-            LlenarBarraEstado();
-            //Cargo y refresco nuevamente los archvos externos
-            Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
-                              tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
-            GenerarTablaExternos();
-            LlenaGridViewExternos();
-            if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                ConsultarPedidosInternos();
+            if (!e.CommandName.Equals("DESCONCILIAR")) return;
+            Button imgDesconciliar = e.CommandSource as Button;
+            GridViewRow gRowConciliado = (GridViewRow)(imgDesconciliar).Parent.Parent;
+            //Leer Variables URL 
+            cargarInfoConciliacionActual();
+
+            int corporativoConcilacion =
+                Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["CorporativoConciliacion"]);
+            int sucursalConciliacion =
+                Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SucursalConciliacion"]);
+            int añoConciliacion = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["AñoConciliacion"]);
+            int mesConciliacion = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["MesConciliacion"]);
+            int folioConciliacion =
+                Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioConciliacion"]);
+            int folioExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioExterno"]);
+            int secuenciaExterno =
+                Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SecuenciaExterno"]);
+            //Leer las TransaccionesConciliadas
+            listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
+
+            int indice = gRowConciliado.RowIndex;
+
+            ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
+
+            //int pedido = objReferencia.Pedido;
+            int pedido = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["Pedido"]);
+
+            tranDesconciliar = listaTransaccionesConciliadas.Single(
+                x => x.Corporativo == corporativoConcilacion &&
+                     x.Sucursal == sucursalConciliacion &&
+                     x.Año == añoConciliacion &&
+                     x.MesConciliacion == mesConciliacion &&
+                     x.FolioConciliacion == folioConciliacion &&
+                     x.Folio == folioExterno &&
+                     x.Secuencia == secuenciaExterno &&
+                     x.Pedido == pedido);
+
+            string status = tranDesconciliar.StatusMovimiento;
+
+
+            if (status.CompareTo("APLICADO") != 0)
+            {
+                tranDesconciliar.DesConciliar();
+                //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+                //                                  Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,
+                                                  formaConciliacion);
+                GenerarTablaConciliados();
+                LlenaGridViewConciliadas();
+                LlenarBarraEstado();
+                //Cargo y refresco nuevamente los archvos externos
+                Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+                                  tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+                GenerarTablaExternos();
+                LlenaGridViewExternos();
+                if (tipoConciliacion == 2 || tipoConciliacion == 6)
+                    ConsultarPedidosInternos();
+                else
+                    ConsultarArchivosInternos();
+            }
+
             else
-                ConsultarArchivosInternos();
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+            }
         }
-
-        else
+        catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
-
-        
     }
 
     protected void imgFiltrar_Click(object sender, ImageClickEventArgs e)
