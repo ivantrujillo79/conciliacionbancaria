@@ -677,6 +677,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     {
                         SaldoAFavor objSaldoAFavor = App.SaldoAFavor.CrearObjeto();
 
+                        int indice = 0;
                         foreach(ReferenciaConciliadaPedido referencia in ListaConciliados)
                         {
                             // FK TablaDestinoDetalle
@@ -686,9 +687,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                             objSaldoAFavor.FolioExterno         = referencia.Folio;
                             objSaldoAFavor.SecuenciaExterno     = referencia.Secuencia;
                             // FK Cobro
-                            objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
-                            objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
+                            //objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
+                            //objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
 
+                            objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[indice].AñoCobro;
+                            objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[indice].NumCobro;
+                            indice = indice + 1;
                             if (objSaldoAFavor.ExisteExterno(conexion))
                             {
                                 objSaldoAFavor.RegistrarCobro(conexion);
@@ -696,6 +700,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         }
                     }
                 }
+
                 else
                     throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
