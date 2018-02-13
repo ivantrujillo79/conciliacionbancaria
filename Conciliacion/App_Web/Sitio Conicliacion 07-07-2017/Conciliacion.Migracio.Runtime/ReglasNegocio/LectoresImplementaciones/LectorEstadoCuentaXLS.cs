@@ -33,7 +33,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio.LectoresImplementaciones
                         {
                             contenido.Rows.Add(filaEstadoCuenta.ItemArray);
                         }
-                        contenido.Rows.Remove(contenido.Rows[0]);
+                        //contenido.Rows.Remove(contenido.Rows[0]);
                         return contenido;
                     }
                 }
