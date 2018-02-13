@@ -22,34 +22,48 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
         }
 
-        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal, string CuentaBancoFinanciero)
+        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal, string CuentaBancoFinanciero, int Año, List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores, int Corporativo, int Sucursal)
         {
             bool resultado = false;
-            using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
+            int TipoFuenteInformacion;
+
+            foreach(Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion item in listadoExtractores)
             {
-                try
+                TipoFuenteInformacion = item.TipoFuenteInformacion;
+                using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
                 {
-                    cnn.Open();
-                    SqlCommand comando = new SqlCommand("spExisteFechaTablaDestino", cnn);
-                    comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = Finicio;
-                    comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
-                    comando.Parameters.Add("@CuentaBancoFinanciero", System.Data.SqlDbType.DateTime).Value = CuentaBancoFinanciero;
-                    comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    comando.CommandTimeout = 500;
-                    SqlDataReader reader = comando.ExecuteReader();
-                    while (reader.Read())
+                    try
                     {
-                        resultado = Convert.ToBoolean(reader["Existe"]);
+                        cnn.Open();
+                        SqlCommand comando = new SqlCommand("spCBExisteFechaTablaDestino", cnn);
+                        comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = Finicio;
+                        comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
+                        comando.Parameters.Add("@CuentaBancoFinanciero", System.Data.SqlDbType.VarChar).Value = CuentaBancoFinanciero;
+                        comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = Año;
+                        comando.Parameters.Add("@TipoFuenteInformacion", System.Data.SqlDbType.Int).Value = TipoFuenteInformacion;
+                        comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = Corporativo;
+                        comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = Sucursal;
+
+                        comando.CommandType = System.Data.CommandType.StoredProcedure;
+                        comando.CommandTimeout = 500;
+                        SqlDataReader reader = comando.ExecuteReader();
+                        while (reader.Read())
+                            resultado = Convert.ToBoolean(reader["Existe"]);
+                        if (! resultado)
+                        {
+                            App.ImplementadorMensajes.MostrarMensaje("El periodo de fecha ya esta ocupado. Tipo Fuente Informacion: "+ TipoFuenteInformacion.ToString());
+                            break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        stackTrace = new StackTrace();
+                        this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.StackTrace);
+                        stackTrace = null;
                     }
                 }
-                catch (Exception ex)
-                {
-                    stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.StackTrace);
-                    stackTrace = null;
-                }
-                return resultado;
             }
+            return resultado;
         }
 
         public override List<TablaDestinoDetalle> LlenarObjetosDestinoDestalle()

@@ -158,7 +158,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             }
         }
 
-        public abstract bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal, string CuentaBancoFinanciero);
+        public abstract bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal, string CuentaBancoFinanciero, int Año, List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores, int Corporativo, int Sucursal);
 
     }
 }

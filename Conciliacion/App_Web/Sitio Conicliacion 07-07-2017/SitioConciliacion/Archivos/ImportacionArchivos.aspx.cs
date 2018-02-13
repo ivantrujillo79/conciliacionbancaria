@@ -583,7 +583,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                                                               pass, listadoExtractores
                                                                               );
 
-                if (! ia.PeriodoFechasOcupado(fi, ff, this.cboCuentaFinanciero.SelectedValue))
+                if (! ia.PeriodoFechasOcupado(fi, ff, this.cboCuentaFinanciero.SelectedValue, Convert.ToInt32(this.cboAnio.SelectedValue), listadoExtractores, Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue)))
                 {
                     if (ia.GuardaEnTablaDestinoDetalle())
                     {
@@ -594,7 +594,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                     }
                     else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
                 }
-                else { App.ImplementadorMensajes.MostrarMensaje("El periodo de fecha ya esta ocupado."); }
+                
             }
             else
             {
