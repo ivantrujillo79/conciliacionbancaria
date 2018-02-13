@@ -677,7 +677,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     {
                         SaldoAFavor objSaldoAFavor = App.SaldoAFavor.CrearObjeto();
 
-                        int indice = 0;
+                        //int indice = 0;
                         foreach(ReferenciaConciliadaPedido referencia in ListaConciliados)
                         {
                             // FK TablaDestinoDetalle
@@ -690,9 +690,31 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                             //objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
                             //objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
 
-                            objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[indice].AñoCobro;
-                            objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[indice].NumCobro;
-                            indice = indice + 1;
+                            //objSaldoAFavor.AñoCobro = objMovimientoCaja.ListaCobros[indice].AñoCobro;
+                            //objSaldoAFavor.Cobro = movimientoCajaAlta.ListaCobros[indice].NumCobro;
+                            //indice = indice + 1;
+
+                            objSaldoAFavor.AñoCobro = 0;
+                            objSaldoAFavor.Cobro = 0;
+                            foreach (Cobro icobro in objMovimientoCaja.ListaCobros)
+                            {
+                                foreach (ReferenciaConciliadaPedido iRefConPed in icobro.ListaPedidos)
+                                {
+                                    if (iRefConPed.Corporativo == referencia.Corporativo &&
+                                       iRefConPed.Sucursal == referencia.Sucursal &&
+                                       iRefConPed.Año == referencia.Año &&
+                                       iRefConPed.Folio == referencia.Folio &&
+                                       iRefConPed.Secuencia == referencia.Secuencia)
+                                    {
+                                        objSaldoAFavor.AñoCobro = icobro.AñoCobro;
+                                        objSaldoAFavor.Cobro = icobro.NumCobro;
+                                        break;
+                                    }
+                                }
+                                if (objSaldoAFavor.AñoCobro >= 0 && objSaldoAFavor.Cobro >= 0)
+                                    break;
+                            }
+
                             if (objSaldoAFavor.ExisteExterno(conexion))
                             {
                                 objSaldoAFavor.RegistrarCobro(conexion);
