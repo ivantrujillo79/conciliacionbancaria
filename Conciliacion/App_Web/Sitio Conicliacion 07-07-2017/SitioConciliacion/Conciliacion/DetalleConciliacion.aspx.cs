@@ -590,33 +590,47 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     //Ver el detalle de la Transaccion Conciliada
     protected void grvConciliadas_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
     {
+        try
+        {
+            int corporativoCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["CorporativoConciliacion"]);
+            int sucursalCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["SucursalConciliacion"]);
+            int añoCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["AñoConciliacion"]);
+            int mesCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["MesConciliacion"]);
+            int folioCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["FolioConciliacion"]);
+            int folio = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["Folio"]);
+            int secuencia = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["Secuencia"]);
 
-        int corporativoCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["CorporativoConciliacion"]);
-        int sucursalCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["SucursalConciliacion"]);
-        int añoCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["AñoConciliacion"]);
-        int mesCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["MesConciliacion"]);
-        int folioCon = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["FolioConciliacion"]);
-        int folio = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["Folio"]);
-        int secuencia = Convert.ToInt32(grvConciliadas.DataKeys[e.NewSelectedIndex].Values["Secuencia"]);
+            //Leer las TransaccionesConciliadas
+            listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
 
-        //Leer las TransaccionesConciliadas
-        listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
+            //ReferenciaNoConciliada tConciliada = listaTransaccionesConciliadas.Single(
+            //            x => x.Corporativo == corporativoCon &&
+            //            x.Sucursal == sucursalCon &&
+            //            x.Año == añoCon &&
+            //            x.MesConciliacion == mesCon &&
+            //            x.FolioConciliacion == folioCon &&
+            //            x.Folio == folio &&
+            //            x.Secuencia == secuencia);
 
-        ReferenciaNoConciliada tConciliada = listaTransaccionesConciliadas.Single(
-                    x => x.Corporativo == corporativoCon &&
-                    x.Sucursal == sucursalCon &&
-                    x.Año == añoCon &&
-                    x.MesConciliacion == mesCon &&
-                    x.FolioConciliacion == folioCon &&
-                    x.Folio == folio &&
-                    x.Secuencia == secuencia);
+            ReferenciaNoConciliada tConciliada = listaTransaccionesConciliadas.First(
+                        x => x.Corporativo == corporativoCon &&
+                        x.Sucursal == sucursalCon &&
+                        x.Año == añoCon &&
+                        x.MesConciliacion == mesCon &&
+                        x.FolioConciliacion == folioCon &&
+                        x.Folio == folio &&
+                        x.Secuencia == secuencia);
 
-        GeneraTablaDetalleArchivosInternos(tConciliada);
-        ConsultaDetalleTransaccionConciliada(tConciliada);
-        LlenarGridDetalleInterno(tConciliada);
-        mpeLanzarDetalle.Show();
-
-
+            GeneraTablaDetalleArchivosInternos(tConciliada);
+            ConsultaDetalleTransaccionConciliada(tConciliada);
+            LlenarGridDetalleInterno(tConciliada);
+            mpeLanzarDetalle.Show();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
     protected void grvConciliadas_RowCreated(object sender, GridViewRowEventArgs e)
     {
