@@ -1333,7 +1333,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
                 if (tipo.Equals("CONCILIADO") || tipo.Equals("CANCELADO EXTERNO") || tipo.Equals("CONCILIADO S/REFERENCIA"))
                 {
 
-                    resultado = listaTransaccionesConciliadas.Single(
+                    resultado = listaTransaccionesConciliadas.First(
                        x => x.Corporativo == corporativoCon &&
                        x.Sucursal == sucursalCon &&
                        x.Año == añoCon &&
@@ -1344,7 +1344,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
                 }
                 else
                 {
-                    resultado = listaTransaccionesConciliadas.Single(
+                    resultado = listaTransaccionesConciliadas.First(
                         x => x.Corporativo == corporativoCon &&
                         x.Sucursal == sucursalCon &&
                         x.Año == añoCon &&
