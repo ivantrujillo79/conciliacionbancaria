@@ -3353,12 +3353,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //Leer las TransaccionesConciliadas
             listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
 
-            int indice = gRowConciliado.RowIndex;
-
-            ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
-
+            //ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
             //int pedido = objReferencia.Pedido;
-            int pedido = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["Pedido"]);
+            //int pedido = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["Pedido"]);
+            int indice = gRowConciliado.DataItemIndex;
+            ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
+            int pedido = objReferencia.Pedido;
+
 
             tranDesconciliar = listaTransaccionesConciliadas.Single(
                 x => x.Corporativo == corporativoConcilacion &&
@@ -3371,7 +3372,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                      x.Pedido == pedido);
 
             string status = tranDesconciliar.StatusMovimiento;
-
 
             if (status.CompareTo("APLICADO") != 0)
             {
