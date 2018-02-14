@@ -1304,6 +1304,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         else
             App.ImplementadorMensajes.MostrarMensaje("LA CONCILIACIÓN ESTA CERRADA, NO LA PUEDE MODIFICAR");
     }
+
     public void desconciliarTransExternas()
     {
         try
@@ -1382,7 +1383,10 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message 
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void btnAceptarConfirmar_Click(object sender, EventArgs e)
@@ -1396,41 +1400,58 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 
     protected void imgAutomatica_Click(object sender, ImageClickEventArgs e)
     {
-        //Leer info Actual de la Conciliacion
-        cargarInfoConciliacionActual();
+        try
+        {
+            //Leer info Actual de la Conciliacion
+            cargarInfoConciliacionActual();
 
-
-        Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToSByte(ddlCriteriosConciliacion.SelectedItem.Value), tipoConciliacion);
-        GenerarTablaConciliados();
-        LlenaGridViewConciliadas();
+            Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToSByte(ddlCriteriosConciliacion.SelectedItem.Value), tipoConciliacion);
+            GenerarTablaConciliados();
+            LlenaGridViewConciliadas();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message 
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
     protected void btnActualizarConfig_Click(object sender, ImageClickEventArgs e)
     {
-        //Leer info Actual de la Conciliacion
-        cargarInfoConciliacionActual();
-
-        switch (ddlStatusEn.SelectedItem.Value)
+        try
         {
-            case "Externos":
-                Consulta_Externos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-                GenerarTablaExternos();
-                LlenaGridViewExternos();
-                break;
-            case "Internos":
-                if (tipoConciliacion == 2)
-                {
-                    Consulta_Pedidos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCelula.SelectedItem.Value));
-                    GenerarTablaPedidos();
-                    LlenaGridViewPedidos();
-                }
-                else
-                {
-                    Consulta_ArchivosInternos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value), Convert.ToInt16(ddlSucursal.SelectedItem.Value));
-                    GenerarTablaArchivosInternos();
-                    LlenaGridViewArchivosInternos();
-                }
-                break;
+            //Leer info Actual de la Conciliacion
+            cargarInfoConciliacionActual();
+
+            switch (ddlStatusEn.SelectedItem.Value)
+            {
+                case "Externos":
+                    Consulta_Externos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaExternos();
+                    LlenaGridViewExternos();
+                    break;
+                case "Internos":
+                    if (tipoConciliacion == 2)
+                    {
+                        Consulta_Pedidos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCelula.SelectedItem.Value));
+                        GenerarTablaPedidos();
+                        LlenaGridViewPedidos();
+                    }
+                    else
+                    {
+                        Consulta_ArchivosInternos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value), Convert.ToInt16(ddlSucursal.SelectedItem.Value));
+                        GenerarTablaArchivosInternos();
+                        LlenaGridViewArchivosInternos();
+                    }
+                    break;
+            }
         }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }        
     }
     protected void Nueva_Ventana(string Pagina, string Titulo, int Ancho, int Alto, int X, int Y)
     {
@@ -1482,12 +1503,18 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                    + "', function(){ alertify.error('Error en la solicitud'); });", true);
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
 
@@ -1510,8 +1537,6 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     {
         try
         {
-
-
             if (existenCheckSeleccionados("Externos"))
             {
                 int folioEx, secuenciaExt;
@@ -1555,27 +1580,46 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
             mpeStatusTransaccion.Hide();
         }
     }
 
     protected void btnCANCELAREXTERNO_Click(object sender, ImageClickEventArgs e)
     {
-        if (!lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
+        try
         {
-            if (existenCheckSeleccionados("Externos"))
+            if (!lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
             {
-                btnAceptarStatusExterno.Visible = true;
-                btnAceptarStatusInterno.Visible = false;
-                txtComentario.Text = String.Empty;
-                mpeStatusTransaccion.Show();
+                if (existenCheckSeleccionados("Externos"))
+                {
+                    btnAceptarStatusExterno.Visible = true;
+                    btnAceptarStatusInterno.Visible = false;
+                    txtComentario.Text = String.Empty;
+                    mpeStatusTransaccion.Show();
+                }
+                else
+                    //App.ImplementadorMensajes.MostrarMensaje("NO HAY TRANSACCIONES SELECCIONADAS");
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','NO HAY TRANSACCIONES SELECCIONADAS', "
+                        + " function(){ alertify.error('Error en la solicitud'); });", true);
+
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("NO HAY TRANSACCIONES SELECCIONADAS");
+                //App.ImplementadorMensajes.MostrarMensaje("CONCILIACION CERRADA, NO PUEDE CANCELAR TRANSACCIONES EXTERNAS");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','CONCILIACION CERRADA, NO PUEDE CANCELAR TRANSACCIONES EXTERNAS', "
+                    + " function(){ alertify.error('Error en la solicitud'); });", true);
         }
-        else
-            App.ImplementadorMensajes.MostrarMensaje("CONCILIACION CERRADA, NO PUEDE CANCELAR TRANSACCIONES EXTERNAS");
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
     public void ocultarFiltroFechas(int tpConciliacion)
     {
@@ -1605,20 +1649,35 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 
     protected void btnCANCELARINTERNO_Click(object sender, ImageClickEventArgs e)
     {
-        if (!lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
+        try
         {
-            if (existenCheckSeleccionados("Internos"))
+            if (!lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
             {
-                btnAceptarStatusExterno.Visible = false;
-                btnAceptarStatusInterno.Visible = true;
-                txtComentario.Text = String.Empty;
-                mpeStatusTransaccion.Show();
+                if (existenCheckSeleccionados("Internos"))
+                {
+                    btnAceptarStatusExterno.Visible = false;
+                    btnAceptarStatusInterno.Visible = true;
+                    txtComentario.Text = String.Empty;
+                    mpeStatusTransaccion.Show();
+                }
+                else
+                    //App.ImplementadorMensajes.MostrarMensaje("NO HAY TRANSACCIONES SELECCIONADAS");
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','NO HAY TRANSACCIONES SELECCIONADAS', "
+                        + " function(){ alertify.error('Error en la solicitud'); });", true);
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("NO HAY TRANSACCIONES SELECCIONADAS");
+                //App.ImplementadorMensajes.MostrarMensaje("CONCILIACION CERRADA, NO PUEDE CANCELAR TRANSACCIONES INTERNAS");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','CONCILIACION CERRADA, NO PUEDE CANCELAR TRANSACCIONES INTERNAS', "
+                    + " function(){ alertify.error('Error en la solicitud'); });", true);
         }
-        else
-            App.ImplementadorMensajes.MostrarMensaje("CONCILIACION CERRADA, NO PUEDE CANCELAR TRANSACCIONES INTERNAS");
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
     protected void btnAceptarStatusInterno_Click(object sender, EventArgs e)
     {
@@ -1661,42 +1720,60 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
             }
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN REFERENCIAS INTERNAS SELECCIONADAS");
+                //App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN REFERENCIAS INTERNAS SELECCIONADAS");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','NO EXISTEN REFERENCIAS INTERNAS SELECCIONADAS', "
+                    + "function(){ alertify.error('Error en la solicitud'); });", true);
                 mpeStatusTransaccion.Hide();
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void imgCerrarConciliacion_Click(object sender, ImageClickEventArgs e)
     {
-        if (lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
+        try
         {
-            App.ImplementadorMensajes.MostrarMensaje("La conciliación actual esta CERRADA");
-            return;
-        }
-        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-        //Leer info Actual de la Conciliacion
-        cargarInfoConciliacionActual();
+            if (lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
+            {
+                App.ImplementadorMensajes.MostrarMensaje("La conciliación actual esta CERRADA");
+                return;
+            }
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            //Leer info Actual de la Conciliacion
+            cargarInfoConciliacionActual();
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-        if (c.CerrarConciliacion(usuario.IdUsuario))
-        {
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+            if (c.CerrarConciliacion(usuario.IdUsuario))
+            {
 
-            App.ImplementadorMensajes.MostrarMensaje("Conciliación CERRADA exitosamente.");
-            mpeConfirmarCerrar.Hide();
-            limpiarVariablesSession();
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
-                                    "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
-                                    mesConciliacion + "&TipoConciliacion=" + tipoConciliacion);
+                App.ImplementadorMensajes.MostrarMensaje("Conciliación CERRADA exitosamente.");
+                mpeConfirmarCerrar.Hide();
+                limpiarVariablesSession();
+                System.Threading.Thread.Sleep(3000);
+                Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
+                                        "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
+                                        mesConciliacion + "&TipoConciliacion=" + tipoConciliacion);
+            }
+            else
+            {
+                //App.ImplementadorMensajes.MostrarMensaje("Error al CERRAR la conciliación.");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Error al CERRAR la conciliaci&oacute;n.', "
+                    + "function(){ alertify.error('Error en la solicitud'); });", true);
+                mpeConfirmarCerrar.Hide();
+            }
         }
-        else
+        catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al CERRAR la conciliación.");
-            mpeConfirmarCerrar.Hide();
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void btnAceptarConfirmarCerrar_Click(object sender, EventArgs e)
@@ -1705,28 +1782,46 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void imgCancelarConciliacion_Click(object sender, ImageClickEventArgs e)
     {
-        if (lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
+        try
         {
-            App.ImplementadorMensajes.MostrarMensaje("La conciliación actual esta CERRADA");
-            return;
-        }
-        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-        //Leer info Actual de la Conciliacion
-        cargarInfoConciliacionActual();
+            if (lblStatusConciliacion.Text.Equals("CONCILIACION CERRADA"))
+            {
+                //App.ImplementadorMensajes.MostrarMensaje("La conciliación actual esta CERRADA");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','La conciliaci&oacute;n actual esta CERRADA', "
+                    + "function(){ alertify.error('Error en la solicitud'); });", true);
+                return;
+            }
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            //Leer info Actual de la Conciliacion
+            cargarInfoConciliacionActual();
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-        if (c.CancelarConciliacion(usuario.IdUsuario))
-        {
-            App.ImplementadorMensajes.MostrarMensaje("Conciliación CANCELADA exitosamente.");
-            mpeConfirmarCancelar.Hide();
-            limpiarVariablesSession();
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Inicio.aspx");
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+            if (c.CancelarConciliacion(usuario.IdUsuario))
+            {
+                //App.ImplementadorMensajes.MostrarMensaje("Conciliación CANCELADA exitosamente.");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Conciliaci&oacute;n CANCELADA exitosamente.', "
+                    + "function(){ alertify.success('solicitud exitosa'); });", true);
+                mpeConfirmarCancelar.Hide();
+                limpiarVariablesSession();
+                System.Threading.Thread.Sleep(3000);
+                Response.Redirect("~/Inicio.aspx");
+            }
+            else
+            {
+                //App.ImplementadorMensajes.MostrarMensaje("Errores al CANCELAR la conciliación-");
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Errores al CANCELAR la conciliaci&oacute;n.', "
+                    + "function(){ alertify.error('Error en la solicitud'); });", true);
+                mpeConfirmarCancelar.Hide();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Errores al CANCELAR la conciliación-");
-            mpeConfirmarCancelar.Hide();
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void btnAceptarConfirmarCancelar_Click(object sender, EventArgs e)
@@ -1754,7 +1849,10 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void btnRangoFechasFM_Click(object sender, ImageClickEventArgs e)
@@ -1778,7 +1876,10 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void btnRangoFechasFS_Click(object sender, ImageClickEventArgs e)
@@ -1802,7 +1903,10 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     //------------------------------INICIO MODULO "AGREGAR NUEVO INTERNO"---------------------------------
@@ -1839,7 +1943,10 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
 
@@ -1861,18 +1968,27 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void ddlSucursalInterno_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //Leer Variables URL 
-        cargarInfoConciliacionActual();
+        try
+        {
+            //Leer Variables URL 
+            cargarInfoConciliacionActual();
 
-        Carga_FoliosInternos(
-                              corporativoConciliacion,
-                              Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value),
-                              añoConciliacion,
-                              mesConciliacion,
-                              lblCuenta.Text,
-                              Convert.ToSByte(ddlTipoFuenteInfoInterno.SelectedItem.Value)
-                              );
-        enlazarComboFolioInterno();
+            Carga_FoliosInternos(
+                                  corporativoConciliacion,
+                                  Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value),
+                                  añoConciliacion,
+                                  mesConciliacion,
+                                  lblCuenta.Text,
+                                  Convert.ToSByte(ddlTipoFuenteInfoInterno.SelectedItem.Value)
+                                  );
+            enlazarComboFolioInterno();
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     /// <summary>
@@ -1903,21 +2019,29 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void ddlFolioInterno_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //Leer Variables URL 
-        cargarInfoConciliacionActual();
+        try
+        {
+            //Leer Variables URL 
+            cargarInfoConciliacionActual();
 
-        Carga_FoliosInternos(
-                       corporativoConciliacion,
-                       Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value),
-                       añoConciliacion,
-                       mesConciliacion,
-                       lblCuenta.Text,
-                       Convert.ToSByte(ddlTipoFuenteInfoInterno.SelectedItem.Value)
-                       );
+            Carga_FoliosInternos(
+                           corporativoConciliacion,
+                           Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value),
+                           añoConciliacion,
+                           mesConciliacion,
+                           lblCuenta.Text,
+                           Convert.ToSByte(ddlTipoFuenteInfoInterno.SelectedItem.Value)
+                           );
 
-        this.lblStatusFolioInterno.Text = listFoliosInterno[ddlFolioInterno.SelectedIndex].Campo1;
-        this.lblUsuarioAltaEx.Text = listFoliosInterno[ddlFolioInterno.SelectedIndex].Campo3;
-
+            this.lblStatusFolioInterno.Text = listFoliosInterno[ddlFolioInterno.SelectedIndex].Campo1;
+            this.lblUsuarioAltaEx.Text = listFoliosInterno[ddlFolioInterno.SelectedIndex].Campo3;
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
     protected void ddlFolioInterno_DataBound(object sender, EventArgs e)
     {
@@ -1939,37 +2063,44 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void btnAñadirFolio_Click(object sender, ImageClickEventArgs e)
     {
-        listArchivosInternos = Session["NUEVOS_INTERNOS"] != null ?
-                               Session["NUEVOS_INTERNOS"] as List<DatosArchivo> :
-                               new List<DatosArchivo>();
-
-        if (listArchivosInternos != null && listArchivosInternos.Exists(x => x.Folio == Convert.ToInt32(ddlFolioInterno.SelectedItem.Value)))
+        try
         {
-            App.ImplementadorMensajes.MostrarMensaje("Este Folio Interno ya esta Agregado");
+            listArchivosInternos = Session["NUEVOS_INTERNOS"] != null ?
+                                   Session["NUEVOS_INTERNOS"] as List<DatosArchivo> :
+                                   new List<DatosArchivo>();
+
+            if (listArchivosInternos != null && listArchivosInternos.Exists(x => x.Folio == Convert.ToInt32(ddlFolioInterno.SelectedItem.Value)))
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Este Folio Interno ya esta Agregado");
+            }
+            else
+            {
+                //Leer Variables URL 
+                cargarInfoConciliacionActual();
+
+                cConciliacion conciliacion =
+                    App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                DatosArchivo datosArchivoInterno = App.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
+
+                datosArchivoInterno.FolioConciliacion = conciliacion.Folio;
+                datosArchivoInterno.SucursalConciliacion = conciliacion.Sucursal;
+                datosArchivoInterno.Folio = Convert.ToInt32(ddlFolioInterno.SelectedItem.Value);
+                datosArchivoInterno.Corporativo = conciliacion.Corporativo;
+                datosArchivoInterno.Sucursal = Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value);
+                datosArchivoInterno.Año = conciliacion.Año;
+                datosArchivoInterno.MesConciliacion = conciliacion.Mes;
+                listArchivosInternos.Add(datosArchivoInterno);
+                //Guardar los arhivos interno que se estan agregando
+                Session["NUEVOS_INTERNOS"] = listArchivosInternos;
+                LlenaGridViewFoliosAgregados();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            //Leer Variables URL 
-            cargarInfoConciliacionActual();
-
-            cConciliacion conciliacion =
-                App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-            DatosArchivo datosArchivoInterno = App.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
-
-            datosArchivoInterno.FolioConciliacion = conciliacion.Folio;
-            datosArchivoInterno.SucursalConciliacion = conciliacion.Sucursal;
-            datosArchivoInterno.Folio = Convert.ToInt32(ddlFolioInterno.SelectedItem.Value);
-            datosArchivoInterno.Corporativo = conciliacion.Corporativo;
-            datosArchivoInterno.Sucursal = Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value);
-            datosArchivoInterno.Año = conciliacion.Año;
-            datosArchivoInterno.MesConciliacion = conciliacion.Mes;
-            listArchivosInternos.Add(datosArchivoInterno);
-            //Guardar los arhivos interno que se estan agregando
-            Session["NUEVOS_INTERNOS"] = listArchivosInternos;
-            LlenaGridViewFoliosAgregados();
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
-
-
     }
     /// <summary>
     /// Llena el GridView de Folios Internos Agregados
@@ -1993,54 +2124,72 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void btnGuardarInterno_Click(object sender, EventArgs e)
     {
-        bool resultado = false;
-        listArchivosInternos = Session["NUEVOS_INTERNOS"] != null ?
-                               Session["NUEVOS_INTERNOS"] as List<DatosArchivo> :
-                               listArchivosInternos;
-
-        if (listArchivosInternos != null && listArchivosInternos.Count > 0)
+        try
         {
-            //Leer Variables URL 
-            cargarInfoConciliacionActual();
+            bool resultado = false;
+            listArchivosInternos = Session["NUEVOS_INTERNOS"] != null ?
+                                   Session["NUEVOS_INTERNOS"] as List<DatosArchivo> :
+                                   listArchivosInternos;
 
-            cConciliacion conciliacion =
-                App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-            listArchivosInternos.ForEach(x => resultado = conciliacion.AgregarArchivo(x, cConciliacion.Operacion.Edicion));
-
-            if (resultado)
+            if (listArchivosInternos != null && listArchivosInternos.Count > 0)
             {
-                //ACTUALIZAR GRID INTERNOS
-                LlenarBarraEstado();
-                Consulta_ArchivosInternos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value), Convert.ToInt16(ddlSucursal.SelectedItem.Value));
-                GenerarTablaArchivosInternos();
-                LlenaGridViewArchivosInternos();
+                //Leer Variables URL 
+                cargarInfoConciliacionActual();
 
-                App.ImplementadorMensajes.MostrarMensaje("Agregado de Folios Internos exitoso.");
+                cConciliacion conciliacion =
+                    App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+                listArchivosInternos.ForEach(x => resultado = conciliacion.AgregarArchivo(x, cConciliacion.Operacion.Edicion));
+
+                if (resultado)
+                {
+                    //ACTUALIZAR GRID INTERNOS
+                    LlenarBarraEstado();
+                    Consulta_ArchivosInternos(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value), Convert.ToInt16(ddlSucursal.SelectedItem.Value));
+                    GenerarTablaArchivosInternos();
+                    LlenaGridViewArchivosInternos();
+
+                    App.ImplementadorMensajes.MostrarMensaje("Agregado de Folios Internos exitoso.");
+                }
+                else
+                    App.ImplementadorMensajes.MostrarMensaje("Ocurrieron problemas al agregar el nuevo Folio");
+                //Limpiar Remover Variable (Session) de Internos 
+                limpiarVistaImportarInterno();
+
+                popUpImportarArchivos.Hide();
+                popUpImportarArchivos.Dispose();
+
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Ocurrieron problemas al agregar el nuevo Folio");
-            //Limpiar Remover Variable (Session) de Internos 
-            limpiarVistaImportarInterno();
-
-            popUpImportarArchivos.Hide();
-            popUpImportarArchivos.Dispose();
-
+            {
+                App.ImplementadorMensajes.MostrarMensaje("No se ha agregado un nuevo Archivo Interno");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("No se ha agregado un nuevo Archivo Interno");
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void grvAgregados_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        listArchivosInternos = Session["NUEVOS_INTERNOS"] != null ?
-                               Session["NUEVOS_INTERNOS"] as List<DatosArchivo> :
-                               listArchivosInternos;
+        try
+        {
+            listArchivosInternos = Session["NUEVOS_INTERNOS"] != null ?
+                                   Session["NUEVOS_INTERNOS"] as List<DatosArchivo> :
+                                   listArchivosInternos;
 
-        int folioInterno = Convert.ToInt32(grvAgregados.DataKeys[e.RowIndex].Value);
-        listArchivosInternos.RemoveAll(x => x.Folio == folioInterno);
-        Session["NUEVOS_INTERNOS"] = listArchivosInternos;
-        LlenaGridViewFoliosAgregados();
+            int folioInterno = Convert.ToInt32(grvAgregados.DataKeys[e.RowIndex].Value);
+            listArchivosInternos.RemoveAll(x => x.Folio == folioInterno);
+            Session["NUEVOS_INTERNOS"] = listArchivosInternos;
+            LlenaGridViewFoliosAgregados();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
     protected void grvAgregados_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -2049,18 +2198,27 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void ddlTipoFuenteInfoInterno_DataBound(object sender, EventArgs e)
     {
-        //Leer Variables URL 
-        cargarInfoConciliacionActual();
+        try
+        {
+            //Leer Variables URL 
+            cargarInfoConciliacionActual();
 
-        Carga_FoliosInternos(
-                       corporativoConciliacion,
-                       Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value),
-                       añoConciliacion,
-                       mesConciliacion,
-                       lblCuenta.Text,
-                       Convert.ToSByte(ddlTipoFuenteInfoInterno.SelectedItem.Value)
-                       );
-        enlazarComboFolioInterno();
+            Carga_FoliosInternos(
+                           corporativoConciliacion,
+                           Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value),
+                           añoConciliacion,
+                           mesConciliacion,
+                           lblCuenta.Text,
+                           Convert.ToSByte(ddlTipoFuenteInfoInterno.SelectedItem.Value)
+                           );
+            enlazarComboFolioInterno();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     /// <summary>
@@ -2128,18 +2286,26 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void btnVerDatalleInterno_Click(object sender, ImageClickEventArgs e)
     {
-        //Leer Variables URL 
-        cargarInfoConciliacionActual();
+        try
+        {
+            //Leer Variables URL 
+            cargarInfoConciliacionActual();
 
-        Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion.Previo,
-                                            corporativoConciliacion,
-                                            Convert.ToInt16(ddlSucursalInterno.SelectedItem.Value),
-                                            añoConciliacion, Convert.ToInt32(ddlFolioInterno.SelectedItem.Value));
-        GenerarTablaDestinoDetalleInterno();
-        LlenaGridViewDestinoDetalleInterno();
-        lblFolioInterno.Text = ddlFolioInterno.SelectedItem.Value;
-        grvVistaRapidaInterno_ModalPopupExtender.Show();
-
+            Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion.Previo,
+                                                corporativoConciliacion,
+                                                Convert.ToInt16(ddlSucursalInterno.SelectedItem.Value),
+                                                añoConciliacion, Convert.ToInt32(ddlFolioInterno.SelectedItem.Value));
+            GenerarTablaDestinoDetalleInterno();
+            LlenaGridViewDestinoDetalleInterno();
+            lblFolioInterno.Text = ddlFolioInterno.SelectedItem.Value;
+            grvVistaRapidaInterno_ModalPopupExtender.Show();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message
+                + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
