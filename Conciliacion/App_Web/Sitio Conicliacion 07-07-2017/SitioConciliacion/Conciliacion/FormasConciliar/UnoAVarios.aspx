@@ -1347,19 +1347,31 @@
                                 <ContentTemplate>
                                     <table style="width: 100%">
                                         <tr>
-                                            <td style="width: 50%;">
+                                            <td style="width: 25%;">
                                                 <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
                                             </td>
-                                            <td style="width: 50%;">
+                                            <td style="width: 10%;">
                                                 <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
                                                     Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                     ToolTip="FILTRAR cliente" Width="25px"
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
+                                            <td style="width: 25%;">
+                                                <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
+                                            </td>
+                                            <td style="width: 25%;">
+                                                <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
+                                            </td>
+                                            <td style="width: 10%;">
+                                                <asp:ImageButton ID="btnFiltraPedidoReferencia" runat="server" CssClass="icono bg-color-verdeClaro"
+                                                    Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                    ToolTip="FILTRAR cliente" Width="25px"
+                                                    OnClick="btnFiltraPedidoReferencia_Click"
+                                                    />
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>
-
                                             </td>
                                             <td></td>
                                        </tr>
