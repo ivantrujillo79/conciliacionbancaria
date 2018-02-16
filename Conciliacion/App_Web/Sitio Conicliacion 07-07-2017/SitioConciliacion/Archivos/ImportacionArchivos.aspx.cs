@@ -583,7 +583,12 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                                                               pass, listadoExtractores
                                                                               );
 
-                if (! ia.PeriodoFechasOcupado(fi, ff))
+                if (!ia.PeriodoFechasOcupado(fi, ff,
+                        Convert.ToInt32(this.cboCorporativo.SelectedValue),
+                        Convert.ToInt32(this.cboSucursal.SelectedValue),
+                        Convert.ToInt32(this.cboAnio.SelectedValue),
+                        this.cboCuentaFinanciero.SelectedValue,
+                        listadoExtractores))
                 {
                     if (ia.GuardaEnTablaDestinoDetalle())
                     {

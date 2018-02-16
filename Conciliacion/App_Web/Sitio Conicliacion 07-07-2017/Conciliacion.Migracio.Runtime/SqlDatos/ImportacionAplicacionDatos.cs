@@ -22,7 +22,8 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
         }
 
-        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal)
+        public override bool PeriodoFechasOcupado(DateTime Finicio, DateTime FFinal, int Corporativo, int Sucursal, int Año, string CuentaBancoFinanciero,
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listadoExtractores)
         {
             bool resultado = false;
             using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
@@ -30,16 +31,30 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spExisteFechaTablaDestino", cnn);
-                    comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = Finicio;
-                    comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
-                    comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    comando.CommandTimeout = 500;
-                    SqlDataReader reader = comando.ExecuteReader();
-                    while (reader.Read())
+                    SqlCommand comando = new SqlCommand("spCBExisteFechaTablaDestino", cnn);
+
+                    foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion extractor in listadoExtractores)
                     {
-                        resultado = Convert.ToBoolean(reader["Existe"]);
+                        comando.Parameters.Clear();
+                        comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = Corporativo;
+                        comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = Sucursal;
+                        comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = Año;
+                        comando.Parameters.Add("@TipoFuenteInformacion", System.Data.SqlDbType.Int).Value = extractor.TipoFuenteInformacion;
+                        comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = Finicio;
+                        comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
+                        comando.Parameters.Add("@CuentaBancoFinanciero", System.Data.SqlDbType.VarChar).Value = CuentaBancoFinanciero;
+                        comando.CommandType = System.Data.CommandType.StoredProcedure;
+                        comando.CommandTimeout = 500;
+                        SqlDataReader reader = comando.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            resultado = Convert.ToBoolean(reader["Existe"]);
+                        }
+                        reader.Close();
+                        if (resultado == true)
+                            break;
                     }
+                    cnn.Close();
                 }
                 catch (Exception ex)
                 {
