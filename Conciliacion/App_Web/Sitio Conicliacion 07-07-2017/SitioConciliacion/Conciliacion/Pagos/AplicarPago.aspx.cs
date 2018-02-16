@@ -574,6 +574,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
+    private bool HaySaldoAFavor(List<Cobro> ListaCobros)
+    {
+        bool resultado = false;
+        foreach(Cobro cobro in ListaCobros)
+        {
+            resultado = cobro.SaldoAFavor;
+            if (cobro.SaldoAFavor == true)
+                break;
+        }
+        return resultado;
+    }
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
         Conexion conexion  = new Conexion(); ;
@@ -673,11 +684,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     List<ReferenciaConciliadaPedido> ListaConciliados = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
 
-                    if (objMovimientoCaja.ListaCobros[0].SaldoAFavor)
+                    if (HaySaldoAFavor(objMovimientoCaja.ListaCobros))
                     {
                         SaldoAFavor objSaldoAFavor = App.SaldoAFavor.CrearObjeto();
 
-                        //int indice = 0;
                         foreach(ReferenciaConciliadaPedido referencia in ListaConciliados)
                         {
                             // FK TablaDestinoDetalle
@@ -686,13 +696,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                             objSaldoAFavor.AñoExterno           = referencia.Año;
                             objSaldoAFavor.FolioExterno         = referencia.Folio;
                             objSaldoAFavor.SecuenciaExterno     = referencia.Secuencia;
-                            // FK Cobro
-                            //objSaldoAFavor.AñoCobro             = objMovimientoCaja.ListaCobros[0].AñoCobro;
-                            //objSaldoAFavor.Cobro                = movimientoCajaAlta.ListaCobros[0].NumCobro;
-
-                            //objSaldoAFavor.AñoCobro = objMovimientoCaja.ListaCobros[indice].AñoCobro;
-                            //objSaldoAFavor.Cobro = movimientoCajaAlta.ListaCobros[indice].NumCobro;
-                            //indice = indice + 1;
 
                             objSaldoAFavor.AñoCobro = 0;
                             objSaldoAFavor.Cobro = 0;
@@ -711,8 +714,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                                         break;
                                     }
                                 }
-                                if (objSaldoAFavor.AñoCobro >= 0 && objSaldoAFavor.Cobro >= 0)
-                                    break;
                             }
 
                             if (objSaldoAFavor.ExisteExterno(conexion))
@@ -722,7 +723,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         }
                     }
                 }
-
                 else
                     throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
