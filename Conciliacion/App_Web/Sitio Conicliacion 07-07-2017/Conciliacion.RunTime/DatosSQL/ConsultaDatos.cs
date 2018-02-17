@@ -89,6 +89,41 @@ namespace Conciliacion.RunTime.DatosSQL
             return dtResultados;
         }
 
+        public override DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia)
+        {
+            DataTable dtResultados = null;
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBPedidosPorPedidoReferencia", cnn);
+                    comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    DataSet ds = new DataSet();
+
+                    SqlDataAdapter dap = new SqlDataAdapter(comando);
+                    dap.Fill(ds);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        dtResultados = ds.Tables[0];
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+            }
+            return dtResultados;
+        }
+
         public override List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria)
         {
             List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> datos = new List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion>();
