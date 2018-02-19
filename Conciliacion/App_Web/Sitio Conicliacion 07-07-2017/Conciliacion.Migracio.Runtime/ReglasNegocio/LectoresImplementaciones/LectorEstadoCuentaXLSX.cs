@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.OleDb;
 using System.Data;
+using System.IO;
 
 namespace Conciliacion.Migracion.Runtime.ReglasNegocio.LectoresImplementaciones
 {
@@ -54,36 +55,41 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio.LectoresImplementaciones
                 using (System.Data.OleDb.OleDbConnection objOleConnection = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + rutaArchivo + ";Mode=ReadWrite;Extended Properties=\"Excel 12.0 Xml;HDR=NO;IMEX=1\""))
                 {
                     System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter();
-                    objOleConnection.Open();
-                    DataTable worksheets = objOleConnection.GetSchema("Tables");
-                    string hoja = worksheets.Rows[0][2].ToString();
-                    System.Data.OleDb.OleDbCommand select = new System.Data.OleDb.OleDbCommand("SELECT  * FROM [" + hoja + "]", objOleConnection);
-                    select.CommandType = CommandType.Text;
-                    adapter.SelectCommand = select;
-                    dsMsExcel.Tables.Clear();
-                    adapter.Fill(dsMsExcel);
-                    if (dsMsExcel.Tables.Count > 0)
+                    if (File.Exists(rutaArchivo))
                     {
-                        DataRow col = dsMsExcel.Tables[0].Rows[0];
-                        DataColumn[] columnas = new DataColumn[col.ItemArray.Length];
-                        int index = 0;
-                        string nombre;
-                        foreach (object campo in col.ItemArray)
+                        objOleConnection.Open();
+                        DataTable worksheets = objOleConnection.GetSchema("Tables");
+                        string hoja = worksheets.Rows[0][2].ToString();
+                        System.Data.OleDb.OleDbCommand select = new System.Data.OleDb.OleDbCommand("SELECT  * FROM [" + hoja + "]", objOleConnection);
+                        select.CommandType = CommandType.Text;
+                        adapter.SelectCommand = select;
+                        dsMsExcel.Tables.Clear();
+                        adapter.Fill(dsMsExcel);
+                        if (dsMsExcel.Tables.Count > 0)
                         {
-
-                            if (!string.IsNullOrEmpty(campo.ToString()))
+                            DataRow col = dsMsExcel.Tables[0].Rows[0];
+                            DataColumn[] columnas = new DataColumn[col.ItemArray.Length];
+                            int index = 0;
+                            string nombre;
+                            foreach (object campo in col.ItemArray)
                             {
-                                nombre = campo.ToString().Trim();
+
+                                if (!string.IsNullOrEmpty(campo.ToString()))
+                                {
+                                    nombre = campo.ToString().Trim();
+                                }
+                                else
+                                    nombre = "-----------" + index.ToString();
+
+                                columnas[index] = new DataColumn(nombre);
+                                index++;
+
                             }
-                            else
-                                nombre = "-----------" + index.ToString();
-
-                            columnas[index] = new DataColumn(nombre);
-                            index++;
-
+                            return columnas;
                         }
-                        return columnas;
                     }
+                    else
+                        throw new Exception("El archivo "+Path.GetFileName(rutaArchivo)+" no existe. Corrija el mapeo y vuelva a intentarlo.");
                 }
 
             }
