@@ -248,12 +248,24 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                             tablaDestino.Usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario;
                             tablaDestino.IdTipoFuenteInformacion = finformacion.IdTipoFuenteInformacion;
                             ImportacionController importador = new ImportacionController(finformacion, rutaCompleta);
-                            if (importador.ImportarArchivo(tablaDestino))
-                                Limpiar();
+                            if (App.Consultas.VerificarArchivo(tablaDestino.IdCorporativo, 
+                                    tablaDestino.IdSucursal, 
+                                    tablaDestino.Anio, 
+                                    cboCuentaFinanciero.SelectedValue.ToString(), 
+                                    tablaDestino.IdFrecuencia) == 0)
+                            { 
+                                if (importador.ImportarArchivo(tablaDestino))
+                                    Limpiar();
+                                else
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(),
+                                                                        "alert('Ocurrieron errores al importar el archivo);",
+                                                                        true);
+                            }
                             else
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(),
-                                                                    "alert('Ocurrieron errores al importar el archivo);",
-                                                                    true);
+                            {
+                                App.ImplementadorMensajes.MostrarMensaje("Configuracion de archivo de importacion ya existe. Corrija para continuar.");
+                            }
+
                             if (File.Exists(rutaCompleta))
                                 File.Delete(rutaCompleta);
                         }
@@ -599,7 +611,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                     }
                     else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
                 }
-                else { App.ImplementadorMensajes.MostrarMensaje("El periodo de fecha ya esta ocupado."); }
+                else { App.ImplementadorMensajes.MostrarMensaje("El periodo de fechas ya esta ocupado."); }
             }
             else
             {
