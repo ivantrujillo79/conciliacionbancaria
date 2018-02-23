@@ -4878,6 +4878,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (objSolicitdConciliacion.ConsultaPedido())
             {
+                if (txtPedidoReferencia.Text.Trim() != "")
+                {
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+                }
+                else
                 if (wucBuscaClientesFacturas.TablaFacturas != null)
                 {
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.TablaFacturas;
@@ -6368,7 +6373,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnFiltraPedidoReferencia_Click(object sender, ImageClickEventArgs e)
     {
         if(txtPedidoReferencia.Text.Trim() != "")
-        { 
+        {
+            wucBuscaClientesFacturas.TablaFacturas = null;
             grvPedidos.DataSource = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
             grvPedidos.DataBind();
         }
