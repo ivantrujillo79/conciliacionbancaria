@@ -248,23 +248,13 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                             tablaDestino.Usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario;
                             tablaDestino.IdTipoFuenteInformacion = finformacion.IdTipoFuenteInformacion;
                             ImportacionController importador = new ImportacionController(finformacion, rutaCompleta);
-                            if (App.Consultas.VerificarArchivo(tablaDestino.IdCorporativo, 
-                                    tablaDestino.IdSucursal, 
-                                    tablaDestino.Anio, 
-                                    cboCuentaFinanciero.SelectedValue.ToString(), 
-                                    tablaDestino.IdFrecuencia) == 0)
-                            { 
-                                if (importador.ImportarArchivo(tablaDestino))
-                                    Limpiar();
-                                else
-                                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(),
-                                                                        "alert('Ocurrieron errores al importar el archivo);",
-                                                                        true);
-                            }
+
+                            if (importador.ImportarArchivo(tablaDestino))
+                                Limpiar();
                             else
-                            {
-                                App.ImplementadorMensajes.MostrarMensaje("Configuracion de archivo de importacion ya existe. Corrija para continuar.");
-                            }
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(),
+                                                                    "alert('Ocurrieron errores al importar el archivo);",
+                                                                    true);
 
                             if (File.Exists(rutaCompleta))
                                 File.Delete(rutaCompleta);
@@ -594,13 +584,20 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                                                                               folio,
                                                                               pass, listadoExtractores
                                                                               );
-
-                if (!ia.PeriodoFechasOcupado(fi, ff,
-                        Convert.ToInt32(this.cboCorporativo.SelectedValue),
-                        Convert.ToInt32(this.cboSucursal.SelectedValue),
-                        Convert.ToInt32(this.cboAnio.SelectedValue),
-                        this.cboCuentaFinanciero.SelectedValue,
-                        listadoExtractores))
+                int Existe = 1;
+                short TipoFuenteInformacion = 0;
+                foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion extractor in listadoExtractores)
+                {
+                    TipoFuenteInformacion = extractor.TipoFuenteInformacion;
+                    Existe = App.Consultas.VerificarArchivo(Convert.ToInt32(this.cboCorporativo.SelectedValue),
+                                                            Convert.ToInt32(this.cboSucursal.SelectedValue),
+                                                            Convert.ToInt32(this.cboAnio.SelectedValue),
+                                                            this.cboCuentaFinanciero.SelectedValue,
+                                                            TipoFuenteInformacion, 1, fi, ff);
+                    if (Existe > 0)
+                        break;
+                }
+                if (Existe == 0)
                 {
                     if (ia.GuardaEnTablaDestinoDetalle())
                     {
@@ -609,9 +606,11 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                         txtFInicial.Text = txtFFinal.Text = String.Empty;
                         ia = null;
                     }
-                    else { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
+                    else
+                        { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
                 }
-                else { App.ImplementadorMensajes.MostrarMensaje("El periodo de fechas ya esta ocupado."); }
+                else
+                    { App.ImplementadorMensajes.MostrarMensaje("El periodo de fechas ya esta ocupado. Tipo Fuente Informacion: "+ TipoFuenteInformacion.ToString()); }
             }
             else
             {
