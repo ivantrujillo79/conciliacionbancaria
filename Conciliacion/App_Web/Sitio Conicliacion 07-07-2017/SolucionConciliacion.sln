@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion(3)", "SitioConciliacion\", "{7A5FA135-BF53-4A16-AC90-49DC4884C944}"
 	ProjectSection(WebsiteProperties) = preProject
