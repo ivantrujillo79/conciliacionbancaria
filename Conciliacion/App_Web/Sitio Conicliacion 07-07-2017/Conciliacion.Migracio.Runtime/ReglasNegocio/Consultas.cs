@@ -131,7 +131,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
         public abstract int ObtieneTablaDestinoNumeroMaximo(int corporativo, int sucursal, int anio);
         public abstract int VerificarArchivo(int corporativo, int sucursal, int anio, string cuentaBancoFinanciero, int tipoFuenteInformacion, int frecuencia, DateTime fechaInicial, DateTime fFinal);
-        public abstract int VerificarArchivo(int corporativo, int sucursal, int anio, string cuentaBancoFinanciero, int frecuencia);
+        //public abstract int VerificarArchivo(int corporativo, int sucursal, int anio, string cuentaBancoFinanciero, int frecuencia);
         #endregion
 
         #region Separador
