@@ -4,6 +4,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio {
 
 		private int id;
 		private string descripcion;
+        
+        public Caja(int id, string descripcion)
+        {
+            this.id = id;
+            this.descripcion = descripcion;
+        }
+
+        #region Propiedades
 
         public int ID
         {
@@ -16,7 +24,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio {
             get { return descripcion; }
             set { descripcion = value; }
         }
-        
-	}//end Caja
+
+        #endregion
+
+    }//end Caja
 
 }//end namespace ReglasDeNegocio
