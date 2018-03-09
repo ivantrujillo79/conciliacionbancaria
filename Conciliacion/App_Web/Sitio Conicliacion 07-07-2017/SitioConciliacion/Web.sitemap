@@ -84,6 +84,9 @@
       <siteMapNode title="Consulta de saldos a favor" description="Consulta de saldos a favor" resourceKey="4" url="~/ReportesConciliacion/ConsultaSaldoAFavor.aspx">
       </siteMapNode>
       
+      <siteMapNode title="Posición Diaria De Bancos" description="Consulta de Posición Diaria De Bancos" resourceKey="5" url="~/ReportesConciliacion/PosicionDiariaBancos.aspx">
+      </siteMapNode>
+    
     </siteMapNode>
 
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
