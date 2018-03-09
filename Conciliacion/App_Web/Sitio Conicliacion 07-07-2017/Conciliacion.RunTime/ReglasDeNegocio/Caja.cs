@@ -5,18 +5,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio {
 		private int id;
 		private string descripcion;
 
-		//public Caja(){
-
-		//}
-
-		//~Caja(){
-
-		//}
-
-		//public virtual void Dispose(){
-
-		//}
-
         public int ID
         {
             get { return id; }
