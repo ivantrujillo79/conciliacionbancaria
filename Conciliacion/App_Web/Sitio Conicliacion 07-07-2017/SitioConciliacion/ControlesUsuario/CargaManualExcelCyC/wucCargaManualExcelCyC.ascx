@@ -79,7 +79,7 @@
         </tr>
         <tr> 
             <td style="padding: 5px 5px 5px 5px; width: 100%; text-align: center; box-sizing:border-box;">
-                <div style="margin: 5px 5px 5px 3px; overflow: auto;">
+                <div style="margin: 5px 5px 5px 3px; height:auto; max-height:260px; overflow: auto;">
                     <!--        GRIDVIEW DETALLE CONCILIACION MANUAL       -->
                     <asp:GridView ID="grvDetalleConciliacionManual" runat="server" style="align-content:center;"
                         CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True" Width="100%" 

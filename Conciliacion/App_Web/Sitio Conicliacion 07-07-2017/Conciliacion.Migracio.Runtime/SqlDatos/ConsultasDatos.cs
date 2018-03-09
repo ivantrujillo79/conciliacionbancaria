@@ -1440,40 +1440,6 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
             return resultado;
         }
 
-        public override int VerificarArchivo(int corporativo, int sucursal, int anio, string cuentaBancoFinanciero, int frecuencia)
-        {
-
-            int resultado = 0;
-            try
-            {
-                using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
-                {
-                    cnn.Open();
-                    SqlCommand cmd = new SqlCommand("spCBVerificaArchivo", cnn);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value = corporativo;
-                    cmd.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
-                    cmd.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = anio;
-                    cmd.Parameters.Add("@CuentaBancoFinanciero", System.Data.SqlDbType.VarChar).Value = cuentaBancoFinanciero;
-                    cmd.Parameters.Add("@Frecuencia", System.Data.SqlDbType.SmallInt).Value = frecuencia;
-                    cmd.Parameters.Add("@TipoFuenteInformacion", System.Data.SqlDbType.SmallInt).Value = null;
-                    cmd.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = null;
-                    cmd.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = null;
-                    resultado = (int)cmd.ExecuteScalar();
-
-                }
-            }
-            catch (SqlException ex)
-            {
-
-                stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
-                stackTrace = null;
-            }
-
-            return resultado;
-        }
-
         public override List<StatusConcepto> ObtenieneStatusConceptosGrupoConciliacion(int configuracion,
           int grupoconciliacion)
         {
