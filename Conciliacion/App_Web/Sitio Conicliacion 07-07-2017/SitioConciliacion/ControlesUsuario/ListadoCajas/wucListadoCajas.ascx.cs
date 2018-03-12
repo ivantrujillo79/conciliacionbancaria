@@ -10,37 +10,37 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 public partial class ControlesUsuario_ListadoCajas_wucListadoCajas : System.Web.UI.UserControl
 {
-    private List<Caja> listaCajas;
-    private List<Caja> listaCajasSeleccionadas;
+    private List<Caja> cajas;
+    private List<Caja> cajasSeleccionadas;
 
     #region Propiedades
 
-    public List<Caja> ListaCajas
+    public List<Caja> Cajas
     {
-        get { return listaCajas; }
-        set { listaCajas = value; }
-        //get
-        //{
-        //    if (ViewState["listaCajas"] == null)
-        //        return null;
-        //    else
-        //        return (List<Caja>)ViewState["listaCajas"];
-        //}
-        //set { ViewState["listaCajas"] = value; }
+        //get { return cajas; }
+        //set { cajas = value; }
+        get
+        {
+            if (ViewState["listaCajas"] == null)
+                return null;
+            else
+                return (List<Caja>)ViewState["listaCajas"];
+        }
+        set { ViewState["listaCajas"] = value; }
     }
 
-    public List<Caja> ListaCajasSeleccionadas
+    public List<Caja> CajasSeleccionadas
     {
-        get { return listaCajasSeleccionadas; }
-        set { listaCajasSeleccionadas = value; }
-        //get
-        //{
-        //    if (ViewState["listaCajasSeleccionadas"] == null)
-        //        return null;
-        //    else
-        //        return (List<Caja>)ViewState["listaCajasSeleccionadas"];
-        //}
-        //set { ViewState["listaCajasSeleccionadas"] = value; }
+        //get { return cajasSeleccionadas; }
+        //set { cajasSeleccionadas = value; }
+        get
+        {
+            if (ViewState["cajasSeleccionadas"] == null)
+                return null;
+            else
+                return (List<Caja>)ViewState["cajasSeleccionadas"];
+        }
+        set { ViewState["cajasSeleccionadas"] = value; }
     }
 
     #endregion
@@ -51,12 +51,7 @@ public partial class ControlesUsuario_ListadoCajas_wucListadoCajas : System.Web.
         {
             if (!Page.IsPostBack)
             {
-                CargarListaCajas();
-            }
-            else if (Page.IsPostBack)
-            {
-                //ActualizarListaCajas();
-                //ActualizarSeleccionadosRepetidor();
+                CargarRepetidor();
             }
         }
         catch(Exception ex)
@@ -65,14 +60,13 @@ public partial class ControlesUsuario_ListadoCajas_wucListadoCajas : System.Web.
                 "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + 
                 "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
-    }
+    }// end Page_Load
 
-    private void CargarListaCajas()
+    private void CargarRepetidor()
     {
         try
         {
-            HttpContext.Current.Session["LISTA_CAJAS"] = ListaCajas;
-            repCajas.DataSource = ListaCajas;
+            repCajas.DataSource = Cajas;
             repCajas.DataBind();
         }
         catch(Exception ex)
@@ -80,72 +74,68 @@ public partial class ControlesUsuario_ListadoCajas_wucListadoCajas : System.Web.
             throw ex;
         }
     }
-
-    private void ActualizarListaCajas()
-    {
-        try
-        {
-            ListaCajas = HttpContext.Current.Session["LISTA_CAJAS"] as List<Caja>;
-            repCajas.DataSource = ListaCajas;
-            repCajas.DataBind();
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
+    
     private void ActualizarCajasSeleccionadas()
     {
-        List<int> lstIndices = new List<int>();
-        CheckBox chkElemento = new CheckBox();
-        int id = 0;
-        StringBuilder sbMensaje = new StringBuilder();
-
-        foreach (RepeaterItem riElemento in repCajas.Items)
-        {
-            chkElemento = (CheckBox)riElemento.FindControl("chkElementoCaja");
-
-            if (chkElemento.Checked)
-            {
-                id = Int32.Parse(((HiddenField)riElemento.FindControl("hdfIndiceCaja")).Value.ToString());
-                ListaCajasSeleccionadas.Add(ListaCajas.First(x => x.ID == id));
-            }
-            HttpContext.Current.Session["LISTA_CAJAS_SELECCIONADAS"] = ListaCajasSeleccionadas;
-        }
-
-        foreach (Caja cCaja in ListaCajasSeleccionadas)
-        {
-            sbMensaje.Append("Caja: " + cCaja.Descripcion + "\n");
-        }
-
-        App.ImplementadorMensajes.MostrarMensaje(sbMensaje.ToString());
-    }
-
-    private void ActualizarSeleccionadosRepetidor()
-    {
-        CheckBox chkElemento = new CheckBox();
-        int id = 0;
         try
         {
-            ListaCajasSeleccionadas = HttpContext.Current.Session["LISTA_CAJAS_SELECCIONADAS"] as List<Caja>;
+            List<int> lstIDs = new List<int>();
+            CheckBox chkElemento = new CheckBox();
+            int id = 0;
+            
+            // Limpiar lista antes de agregar instancias
+            CajasSeleccionadas = new List<Caja>();
 
             foreach (RepeaterItem riElemento in repCajas.Items)
             {
-                id = Int32.Parse(((HiddenField)riElemento.FindControl("hdfIndiceCaja")).Value.ToString());
+                chkElemento = (CheckBox)riElemento.FindControl("chkElementoCaja");
 
-                if (ListaCajasSeleccionadas.Exists(caja => caja.ID == id))
+                if (chkElemento.Checked)
                 {
-                    chkElemento = (CheckBox)riElemento.FindControl("chkElementoCaja");
-                    chkElemento.Checked = true;
+                    id = Int32.Parse(((HiddenField)riElemento.FindControl("hdfIndiceCaja")).Value.ToString());
+                    lstIDs.Add(id);
                 }
+            }
+
+            foreach (int idx in lstIDs)
+            {
+                CajasSeleccionadas.Add(Cajas.First(caja => caja.ID == idx));
             }
         }
         catch (Exception ex)
         {
             throw ex;
         }
-    }
+    }// end ActualizarCajasSeleccionadas()
+
+    private void SeleccionarTodos(bool seleccionados)
+    {
+        try
+        {
+            if (seleccionados)
+            {
+                foreach(RepeaterItem riElemento in repCajas.Items)
+                {
+                    ((CheckBox)riElemento.FindControl("chkElementoCaja")).Checked = true;
+                }
+
+                CajasSeleccionadas = Cajas;
+            }
+            else
+            {
+                foreach (RepeaterItem riElemento in repCajas.Items)
+                {
+                    ((CheckBox)riElemento.FindControl("chkElementoCaja")).Checked = false;
+                }
+
+                CajasSeleccionadas.Clear();
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+    }// end SeleccionarTodos()
 
     protected void chkElementoCaja_CheckedChanged(object sender, EventArgs e)
     {
@@ -155,7 +145,31 @@ public partial class ControlesUsuario_ListadoCajas_wucListadoCajas : System.Web.
         }
         catch (Exception ex)
         {
-            throw ex;
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    protected void chkTodos_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox chkTodos;
+        try
+        {
+            chkTodos = sender as CheckBox;
+
+            if (chkTodos.Checked)
+            {
+                SeleccionarTodos(true);
+            }
+            else
+            {
+                SeleccionarTodos(false);
+            }
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
 
