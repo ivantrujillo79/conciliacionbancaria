@@ -1,5 +1,8 @@
+using System;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio {
+
+    [Serializable]
 	public struct Caja {
 
 		private int id;
