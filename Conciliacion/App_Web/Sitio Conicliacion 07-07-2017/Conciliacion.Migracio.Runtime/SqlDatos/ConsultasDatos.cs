@@ -156,7 +156,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
             throw new NotImplementedException();
         }
 
-        public override Caja ObtieneCajaPorId(int id)
+        public override Conciliacion.Migracion.Runtime.ReglasNegocio.Caja ObtieneCajaPorId(int id)
         {
             throw new NotImplementedException();
         }
