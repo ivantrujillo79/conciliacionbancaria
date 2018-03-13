@@ -124,6 +124,7 @@
     <Compile Include="ReglasDeNegocio\ConciliacionReferencia.cs" />
     <Compile Include="ReglasDeNegocio\ConsultarMultiplesDocumentosTransBan.cs" />
     <Compile Include="ReglasDeNegocio\Consultas.cs" />
+    <Compile Include="ReglasDeNegocio\Cuenta.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivo.cs" />
     <Compile Include="ReglasDeNegocio\DatosArchivoDetalle.cs" />
     <Compile Include="ReglasDeNegocio\DetallePagare.cs" />
