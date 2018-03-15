@@ -87,6 +87,9 @@
       <siteMapNode title="Posición Diaria De Bancos" description="Consulta de Posición Diaria De Bancos" resourceKey="5" url="~/ReportesConciliacion/PosicionDiariaBancos.aspx">
       </siteMapNode>
 
+      <siteMapNode title="Estado de cuenta por día" description="Estado de cuenta por día" resourceKey="7" url="~/ReportesConciliacion/ReporteEstadoCuentaPorDia.aspx">
+      </siteMapNode>
+
     </siteMapNode>
 
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
