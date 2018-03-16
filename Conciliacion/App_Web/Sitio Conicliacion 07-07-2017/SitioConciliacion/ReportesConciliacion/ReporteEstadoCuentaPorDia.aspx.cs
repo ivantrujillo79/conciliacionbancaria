@@ -31,4 +31,26 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaPorDia : System.Web
             throw ex;
         }      
     }
+
+    private bool ValidarFechas()
+    {
+        return false;
+    }
+
+    protected void btnConsultar_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (ValidarFechas())
+            {
+
+            }
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "UpdateMsg",
+                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
+                "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
 }

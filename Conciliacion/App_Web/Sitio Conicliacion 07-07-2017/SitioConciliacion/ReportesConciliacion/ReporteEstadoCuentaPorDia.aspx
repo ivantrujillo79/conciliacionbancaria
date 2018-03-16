@@ -47,6 +47,46 @@
                 }
             });
         }
+        
+        // #region Fechas
+
+        function ValidarFechas() {
+            try {
+                var valido = false;
+                var fecha1 = document.getElementById('<%=txtFechaInicial.ClientID%>').value;
+                var fecha2 = document.getElementById('<%=txtFechaFinal.ClientID%>').value;
+
+                var fechaInicial = ParseDate(fecha1);
+                var fechaFinal = ParseDate(fecha2);
+
+                if (fechaInicial.getMonth() === fechaFinal.getMonth() && fechaInicial.getFullYear() === fechaFinal.getFullYear()) {
+                    valido = true;
+                }
+                else {
+                    MostrarMensajeError();
+                }
+                return valido;
+            }
+            catch (err) {
+                MostrarMensajeError();
+                return false;
+            }
+        }
+
+        // Cambiar formato de fecha a 'MM/DD/YYYY'
+        function ParseDate(input) {
+            var parts = input.match(/(\d+)/g);
+            // note parts[1]-1
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function MostrarMensajeError() {
+            var mensaje = document.getElementById('<%= dvAlertaError.ClientID %>');
+            mensaje.hidden = false;
+        }
+
+        // #endregion Fechas
+
     </script>
 
 </asp:Content>
@@ -73,11 +113,12 @@
                     <table width="75%">
                         <tr>
                             <td>
-                                <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" Visible="false"
+                                <!-- Mensaje de error -->
+                                <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
                                     style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
-                                    </button>
+                                    </button> -->
                                     <strong>Error: </strong>
                                     <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
                                         y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada." />
@@ -149,7 +190,7 @@
                                         <tr>
                                             <td colspan="2" style="padding:5px;" class="centradoMedio">
                                                 <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                                    runat="server" OnClick="btnConsultar_Click"/>
+                                                    runat="server" OnClick="btnConsultar_Click" OnClientClick="return ValidarFechas();" />
                                             </td>
                                         </tr>
                                     </table>
