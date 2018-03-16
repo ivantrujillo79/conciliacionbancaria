@@ -10,7 +10,17 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaPorDia : System.Web
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        InicializarCuentas();
+        try
+        {
+            InicializarCuentas();
+            InicializarBancos();
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "UpdateMsg",
+                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
+                "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
     }
 
     private void InicializarCuentas()
@@ -18,9 +28,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaPorDia : System.Web
         List<Cuenta> ListaCuentas = new List<Cuenta>();
         try
         {
-            for (int i = 1; i <= 6; i++)
+            for (int i = 1; i <= 15; i++)
             {
-                Cuenta cuenta = new Cuenta(i, "Banco " + i);
+                Cuenta cuenta = new Cuenta(i, "Cuenta " + (400 + (300 * i)));
                 ListaCuentas.Add(cuenta);
             }
 
@@ -30,6 +40,28 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaPorDia : System.Web
         {
             throw ex;
         }      
+    }
+
+    private void InicializarBancos()
+    {
+        List<Cuenta> ListaBancos = new List<Cuenta>();
+        try
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                Cuenta cuenta = new Cuenta(i, "Banco " + i);
+                ListaBancos.Add(cuenta);
+            }
+
+            ddlBanco.DataValueField = "ID";
+            ddlBanco.DataTextField = "Descripcion";
+            ddlBanco.DataSource = ListaBancos;
+            ddlBanco.DataBind();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     private bool ValidarFechas()
