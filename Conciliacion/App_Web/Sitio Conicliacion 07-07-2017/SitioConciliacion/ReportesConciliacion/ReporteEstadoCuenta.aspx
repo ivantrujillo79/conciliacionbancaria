@@ -26,8 +26,15 @@
     <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
 
+   
+    <link rel="stylesheet" href="../App_Scripts/alertify/alertify.js" />
+    <link rel="stylesheet" href="../App_Scripts/alertify/alertify.min.js" />
+    <link rel="stylesheet" href="../App_Scripts/alertify/css/alertify.min.css" />
+    <link rel="stylesheet" href="../App_Scripts/alertify/css/themes/bootstrap.css" />
+
+
     <script type="text/javascript">
-       // #region Fechas
+       
          function pageLoad() {
             activarDatePickers();
         }
@@ -39,6 +46,9 @@
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
+                showOn: "button",
+                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImageOnly: true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate);
                 }
@@ -47,6 +57,9 @@
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
+                showOn: "button",
+                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImageOnly:true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
                 }
@@ -86,10 +99,10 @@
         function MostrarMensajeError() {
             var mensaje = document.getElementById('<%= dvAlertaError.ClientID %>');
             mensaje.hidden = false;
-        }
-
+        }        
         
     </script>
+
 
     <style type="text/css">
         .auto-style2 {
@@ -119,12 +132,13 @@
         EnableScriptGlobalization="True">
 
     </asp:ScriptManager>
+
      <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
                   style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px">
                 <strong>Error: </strong>
                 <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
                 y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada." />
-           </div> 
+     </div> 
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">                      
@@ -144,7 +158,7 @@
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
                                 
-                                <td class="lineaVertical" style="width: 8.4%">
+                                <td class="" style="width: 8.4%; text-align:center;">
                                      Fecha Inicial
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
@@ -158,7 +172,7 @@
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="lineaVertical" style="width: 8.4%">
+                                <td class="" style="width: 8.4%; text-align:center;">
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
@@ -172,10 +186,10 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="lineaVertical" style="width: 8.3%">
+                                <td class="" style="width: 8.3%; text-align:center;">
                                      Banco
                                 </td>
-                                <td class="lineaVertical" style="width: 16%">
+                                <td class="" style="width: 16%">
                                     <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
@@ -186,8 +200,8 @@
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                 
-                                <td class="lineaVertical" style="width: 18%; text-underline-position:below;">
-                                     Cuenta Bancaria
+                                <td class="" style="width: 18%; text-underline-position:below; text-align:center;">
+                                   Cuenta Bancaria
                                 </td>
                                 <td class="lineaVertical" style="width: 7%">
                                     <div class="auto-style4">                                        
@@ -201,6 +215,7 @@
                         </table>   
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
                              runat="server"  OnClientClick="return ValidarFechas();" />       
+                           
                     </td>           
                 </tr>
             </table>
