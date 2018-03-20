@@ -117,8 +117,14 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
      <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
+
     </asp:ScriptManager>
-      
+     <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
+                  style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px">
+                <strong>Error: </strong>
+                <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
+                y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada." />
+           </div> 
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">                      
@@ -198,12 +204,7 @@
                     </td>           
                 </tr>
             </table>
-           <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
-                  style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px">
-                <strong>Error: </strong>
-                <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
-                y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada." />
-           </div>
+          
                
 </asp:Content>
 
