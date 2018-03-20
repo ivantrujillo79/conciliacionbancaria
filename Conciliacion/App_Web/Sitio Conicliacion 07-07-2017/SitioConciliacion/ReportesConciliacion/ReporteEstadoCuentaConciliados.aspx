@@ -40,6 +40,9 @@
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
+                showOn: "button",
+                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImageOnly:true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate);                   
                     fechaini = $("#<%=txtFInicial.ClientID%>").val();                    
@@ -49,6 +52,9 @@
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
+                showOn: "button",
+                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImageOnly: true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
                     fechafin = $("#<%=txtFFinal.ClientID%>").val();
@@ -99,22 +105,6 @@
 
     </script>
     <style type="text/css">
-        .auto-style2 {
-            border-right: 1px solid rgb(201, 201, 201);
-            height: 100%;
-            width: 5%;
-            border-left-style: solid;
-            border-top-style: solid;
-            border-bottom-style: solid;
-        }
-        .auto-style3 {
-            border-right: 1px solid rgb(201, 201, 201);
-            height: 100%;
-            width: 15%;
-            border-left-style: solid;
-            border-top-style: solid;
-            border-bottom-style: solid;
-        }
         .auto-style4 {
             height: 250px;
             width: 150px;
@@ -151,10 +141,10 @@
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
                                 
-                                <td class="lineaVertical" style="width: 8.4%">
+                                <td class="" style="width: 8.4%;text-align:center;">
                                      Fecha Inicial
                                 </td>
-                                <td class="lineaVertical" style="width: 16%">
+                                <td class="" style="width: 16%">
                                     <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                     <asp:HiddenField ID="hdfFFinal" runat="server" />
                                 </td>                             
@@ -165,10 +155,10 @@
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="lineaVertical" style="width: 8.4%">
+                                <td class="" style="width: 8.4%;text-align:center;">
                                      Fecha Final
                                 </td>
-                                <td class="lineaVertical" style="width: 16%">
+                                <td class="" style="width: 16%">
                                     <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
                                 </td>                               
@@ -179,10 +169,10 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="lineaVertical" style="width: 8%">
+                                <td class="" style="width: 8%;text-align:center;">
                                      Estatus
                                 </td>
-                                <td class="lineaVertical" style="width: 16.5%">
+                                <td class="" style="width: 16.5%">
                                     <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
@@ -192,37 +182,37 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="lineaVertical" style="width: 7%">
+                                <td class="" style="width: 7%;text-align:center;">
                                      Estatus Concepto
                                 </td>
-                                <td class="lineaVertical" style="width: 17.5%">
+                                <td class="" style="width: 17.5%">
                                     <asp:DropDownList runat="server" ID="DropDownList1" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField1" runat="server" />
                                 </td>                               
                              
                             </tr>
                         </table>
-                         <table class="etiqueta opcionBarra" style="width:25%;">
+                         <table class="etiqueta opcionBarra" style="width:25%;text-align:center;">
                             <tr>
                                
-                                <td class="lineaVertical" style="width: 8.3%">
+                                <td class="" style="width: 5.7%">
                                      Banco
                                 </td>
-                                <td class="lineaVertical" style="width: 16%">
-                                    <asp:DropDownList runat="server" ID="DropDownList2" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                <td class="" style="width: 19.3%">
+                                    <asp:DropDownList runat="server" ID="DropDownList2" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="20px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField4" runat="server" />
                                 </td>                               
                              
                             </tr>
                         </table>
 
-                        <table class="etiqueta opcionBarra" style="width:25%;">
+                        <table class="etiqueta opcionBarra" style="width:25%; text-align:center;">
                             <tr>
                                 
-                                <td class="lineaVertical" style="width: 18%; text-underline-position:below;">
+                                <td class="" style="width: 18%; text-underline-position:below;">
                                      Cuenta Bancaria
                                 </td>
-                                <td class="lineaVertical" style="width: 7%">
+                                <td class="" style="width: 7%">
                                     <div class="auto-style4">                                        
                                         <uc1:WUCListadoCuentasBancarias ID="WUCListadoCuentasBancarias1" runat="server" />
                                     </div>                                   
