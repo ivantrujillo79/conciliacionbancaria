@@ -25,14 +25,7 @@
     <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
     <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
-
-   
-    <link rel="stylesheet" href="../App_Scripts/alertify/alertify.js" />
-    <link rel="stylesheet" href="../App_Scripts/alertify/alertify.min.js" />
-    <link rel="stylesheet" href="../App_Scripts/alertify/css/alertify.min.css" />
-    <link rel="stylesheet" href="../App_Scripts/alertify/css/themes/bootstrap.css" />
-
-
+    
     <script type="text/javascript">
        
          function pageLoad() {
@@ -42,15 +35,16 @@
         function activarDatePickers() {
           
             //DatePicker FOperacion
-            $("#<%= txtFInicial.ClientID%>").datepicker({
+            $('#<%=txtFInicial.ClientID%>').datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
-                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",             
                 buttonImageOnly: true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    $(".ui-datepicker-trigger").css("width", "24px");
                 }
             });
             $("#<%=txtFFinal.ClientID%>").datepicker({
@@ -58,12 +52,14 @@
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
-                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
-                buttonImageOnly:true,
+                buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",                
+                buttonImageOnly: true,                
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    $(".ui-datepicker-trigger").css("width", "24px");
                 }
-            });       
+            });
+            $(".ui-datepicker-trigger").css("width", "24px");
         }
 
         function ValidarFechas() {
@@ -99,7 +95,9 @@
         function MostrarMensajeError() {
             var mensaje = document.getElementById('<%= dvAlertaError.ClientID %>');
             mensaje.hidden = false;
-        }        
+        }
+
+      
         
     </script>
 
@@ -146,7 +144,7 @@
                             <tr>
                                 <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
                                     <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
-                                        ToolTip="CONSULTAR" Width="100px" ValidationGroup="Configuracion"
+                                        ToolTip="CONSULTAR"   Width="100px" ValidationGroup="Configuracion"
                                          />
                                 </td>
                             </tr>
@@ -162,16 +160,14 @@
                                      Fecha Inicial
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
-                                    <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
-                                    <asp:HiddenField ID="hdfFFinal" runat="server" />
-                                </td>                             
-                              
+                                    <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>                                    
+                                    <asp:HiddenField ID="hdfFFinal" runat="server" />                           
+                               </td>                             
                             </tr>
                         </table>
 
                         <table class="etiqueta opcionBarra" style="width:25%;">
-                            <tr>
-                               
+                            <tr>                               
                                 <td class="" style="width: 8.4%; text-align:center;">
                                      Fecha Final
                                 </td>
@@ -207,19 +203,13 @@
                                     <div class="auto-style4">                                        
                                         <uc1:WUCListadoCuentasBancarias ID="WUCListadoCuentasBancarias1" runat="server" />
                                     </div>
-                                </td>                               
-                             
-                            </tr>
-                            
-                              
-                        </table>   
+                                </td>                             
+                              </tr>                           
+                          </table>   
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                             runat="server"  OnClientClick="return ValidarFechas();" />       
-                           
+                             runat="server"  OnClientClick="return ValidarFechas();" />                                  
                     </td>           
                 </tr>
-            </table>
-          
-               
-</asp:Content>
+            </table>         
+      </asp:Content>
 
