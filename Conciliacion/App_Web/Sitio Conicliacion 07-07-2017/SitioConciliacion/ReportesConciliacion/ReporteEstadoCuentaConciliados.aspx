@@ -41,11 +41,11 @@
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
-                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",
                 buttonImageOnly:true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate);                   
-                    fechaini = $("#<%=txtFInicial.ClientID%>").val();                    
+                    $(".ui-datepicker-trigger").css("width", "24px");                  
                 }
             });
             $("#<%=txtFFinal.ClientID%>").datepicker({
@@ -53,16 +53,16 @@
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
-                buttonImage: "/App_Themes/GasMetropolitanoSkin/Iconos/calendario.png",
+                buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",
                 buttonImageOnly: true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    fechafin = $("#<%=txtFFinal.ClientID%>").val();
+                    $(".ui-datepicker-trigger").css("width", "24px");
                     
                 }
             }
             );       
-            
+            $(".ui-datepicker-trigger").css("width", "24px");
         }       
 
         function ValidarFechas() {
