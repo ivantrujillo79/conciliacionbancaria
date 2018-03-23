@@ -21,3 +21,7 @@ Procedimiento de instalación:
 https://www.tektutorialshub.com/download-crystal-reports-for-visual-studio/
 Descarga de esta pagina Crystal Reports Developer Edition for Visual Studio:
 https://www.tektutorialshub.com/download-crystal-reports-for-visual-studio/#Crystal-Reports-For-Visual-Studio-2015
+
+
+INCIDENT LOG
+
