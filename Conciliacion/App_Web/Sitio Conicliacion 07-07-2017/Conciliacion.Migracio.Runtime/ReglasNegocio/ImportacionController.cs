@@ -58,6 +58,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                                         tablaDestino.Detalles = LlenarObjetosDestinoDestalle(dtDestinoDetalle, fuenteInformacion.TipoArchivo);
                                         if (tablaDestino.Detalles != null)
                                         {
+                                            tablaDestino.Detalles.ForEach(detalle => detalle.TipoFuenteInformacion = tablaDestino.IdTipoFuenteInformacion);
                                             resultado = GuardaEnTablaDestinoDetalle(tablaDestino);
                                             this.ImplementadorMensajes.MostrarMensaje("La migración se realizó  con éxito.");
                                         }
