@@ -166,7 +166,7 @@
                                 ValidationGroup="Conciliacion"></asp:RequiredFieldValidator>
                             <div class="centradoMedio">
                                 <asp:Button ID="btnConsultar" runat="server" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                    Text="CONSULTAR" ToolTip="CONSULTAR" ValidationGroup="Conciliacion" OnClick="btnConsultar_Click" />
+                                    Text="CONSULTAR" ToolTip="CONSULTAR" ValidationGroup="Conciliacion" OnClick="CrearExcel" /> <%--btnConsultar_Click--%>
                                 <asp:Button ID="btnNuevaConciliacion" runat="server" CssClass="boton fg-color-blanco bg-color-naranja"
                                     Text="NUEVA CONCILIACIÓN" ToolTip="NUEVA CONCILIACIÓN" OnClick="btnNuevaConciliacion_Click" />
                             </div>
