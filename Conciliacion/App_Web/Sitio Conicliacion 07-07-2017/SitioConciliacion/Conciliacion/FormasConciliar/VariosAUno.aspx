@@ -1054,7 +1054,7 @@
                             <asp:Label ID="lblEspera" Text="...ESPERANDO SELECCIÓN DE EXTERNOS..." runat="server"
                                 CssClass="etiqueta"></asp:Label>
                         </div>
-                        <div style="overflow:auto;">
+                        <div style="width:595px; height:343px; overflow:auto;">
                             <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             AllowPaging="False" PageSize="100" CssClass="grvResultadoConsultaCss" AllowSorting="True"
                             OnRowDataBound="grvInternos_RowDataBound" ShowHeaderWhenEmpty="True" ShowFooter="False"
@@ -1169,18 +1169,18 @@
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Justify"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField Visible="false">
-                                    <ItemTemplate>
-                                        <div class="parrafoTexto">
-                                            <asp:Label ID="lblCliente" runat="server" Text='<%# resaltarBusqueda(Eval("Cliente").ToString()) %>'></asp:Label>
-                                        </div>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                            <PagerStyle CssClass="grvPaginacionScroll" />
-                        </asp:GridView>
-                        </div>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField Visible="false">
+                                        <ItemTemplate>
+                                            <div class="parrafoTexto">
+                                                <asp:Label ID="lblCliente" runat="server" Text='<%# resaltarBusqueda(Eval("Cliente").ToString()) %>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <PagerStyle CssClass="grvPaginacionScroll" />
+                            </asp:GridView>
+                        <%--</div>--%>
                         <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnSorting="grvPedidos_Sorting"
@@ -1266,6 +1266,7 @@
                         </asp:GridView>
                         <asp:HiddenField ID="hfInternosSV" runat="server" />
                         <asp:HiddenField ID="hfInternosSH" runat="server" />
+                        </div>
                     </div>
                 </tr>
             </table>
