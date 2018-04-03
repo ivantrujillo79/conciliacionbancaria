@@ -601,4 +601,20 @@ public partial class Inicio : System.Web.UI.Page
         HttpContext.Current.Session["filtros"] = filtros;
         Response.Redirect("~/Conciliacion/ConsultarDocumentos.aspx");
     }
+
+    protected void CrearExcel(object sender, EventArgs e)
+    {
+        try
+        {
+            ExportadorInformeBancario oExportador = new ExportadorInformeBancario(null,
+                "C:\\Users\\DELL-Transforma\\Desktop\\", "MiExcel.xlsx", "Reporte");
+
+            oExportador.generar();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
 }
