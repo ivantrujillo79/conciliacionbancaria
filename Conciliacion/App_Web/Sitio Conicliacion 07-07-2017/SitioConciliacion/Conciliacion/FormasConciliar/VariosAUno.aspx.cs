@@ -880,18 +880,35 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
             //extSeleccionados.Select(s => { s.FormaConciliacion = formaConciliacion; return s; }).ToList();
 
-            foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
-            {
-                rfNC.FormaConciliacion = formaConciliacion;
-                foreach (ReferenciaConciliada rfC in rfNC.ListaReferenciaConciliada)
+            if (formaConciliacion == 6)
+            { 
+                foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
                 {
-                    rfC.FormaConciliacion = formaConciliacion;
+                    rfNC.FormaConciliacion = formaConciliacion;
+                    foreach (ReferenciaConciliada rfC in rfNC.ListaReferenciaConciliada)
+                    {
+                        rfC.FormaConciliacion = formaConciliacion;
+                    }
+                }
+            }
+            if (formaConciliacion == 9)
+            {
+                foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
+                {
+                    rfNC.FormaConciliacion = formaConciliacion;
+                    foreach (ReferenciaConciliadaPedido rfC in rfNC.ListaReferenciaConciliada)
+                    {
+                        rfC.FormaConciliacion = formaConciliacion;
+                    }
                 }
             }
 
-            int numRegInter = tipoConciliacion == 2 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
+            //int numRegInter = tipoConciliacion == 2 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
+            int numRegInter = tipoConciliacion == 4 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
             {
+                throw new Exception("detenerse");
+
                 foreach (ReferenciaNoConciliada ex in extSeleccionados)
                 {
                     if (ex.GuardarReferenciaConciliada())
@@ -936,7 +953,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             else
                 App.ImplementadorMensajes.MostrarMensaje("No se ha seleccionado una referencia interna de forma correcta.");
         }
-        catch (Exception) { App.ImplementadorMensajes.MostrarMensaje("Error\nVerifique su selección."); }
+        catch (Exception Ex) { App.ImplementadorMensajes.MostrarMensaje("Error\nVerifique su selección. DEtalles:"+Ex.Message); }
     }
 
     public void GenerarTablaArchivosInternos()//Genera la tabla Referencias a Conciliar de Archivos Internos

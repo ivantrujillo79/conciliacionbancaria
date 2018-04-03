@@ -30,7 +30,6 @@
         }
 
         function activarDatePickers() {
-            debugger;
             //DatePicker FOperacion
             $("#<%= txtFInicial.ClientID%>").datepicker({
                 defaultDate: "+1w",
@@ -50,6 +49,43 @@
             });       
         }
 
+        function ValidaFiltro() {
+            //debugger;
+
+            if (document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value.trim() == ""
+                &&
+                document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value.trim() != "") {
+                alert("Capture un periodo de fechas valido");
+                document.getElementById("ctl00_contenidoPrincipal_txtFInicial").focus();
+                return false
+            }
+            else
+                if (document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value.trim() == ""
+                    &&
+                    document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value.trim() != "") {
+                    alert("Capture un periodo de fechas valido");
+                    document.getElementById("ctl00_contenidoPrincipal_txtFFinal").focus();
+                    return false
+                }
+                else {
+                    var finicial = document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value;
+                    var ffinal = document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value;
+                    var mesini = parseInt(finicial.substr(3, 2));
+                    var mesfin = parseInt(ffinal.substr(3, 2));
+                    var anoini = parseInt(finicial.substr(6, 4));
+                    var anofin = parseInt(ffinal.substr(6, 4));
+                    if (mesini != mesfin || anoini != anofin)
+                    {
+                        alertify.alert(
+                            'Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.',
+                            function () { alertify.error('Error en la solicitud'); }
+                            );
+                    }
+                    else
+                        return true;
+                }
+        }
+
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
@@ -64,36 +100,41 @@
                         <table class="etiqueta opcionBarra">
                             <tr>
                                 <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
-                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
+                                    <asp:ImageButton ID="btnBuscar" runat="server" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
                                         ToolTip="CONSULTAR" Width="25px" ValidationGroup="Configuracion"
-                                         />
+                                        OnClientClick="return ValidaFiltro();"
+                                        />
                                 </td>
                             </tr>
                         </table>
                     </td>
 
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 59%">
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>
+                                <table class="etiqueta opcionBarra">
+                                    <tr>
+                                        <td class="lineaVertical" style="width: 30%">
+                                        </td>
+                                        <td class="lineaVertical" style="width: 10%">
+                                             Fecha Inicial
+                                        </td>
+                                        <td class="lineaVertical" style="width: 20%">
+                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                            <asp:HiddenField ID="hdfFFinal" runat="server" />
+                                        </td>
+                                        <td class="lineaVertical" style="width: 15%">
+                                            Caja
+                                        </td>
+                                        <td class="lineaVertical" style="width: 15%">
+                                        </td>
+                                        <td class="lineaVertical" style="width: 10%">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                         
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="lineaVertical" style="width: 30%">
-                                </td>
-                                <td class="lineaVertical" style="width: 10%">
-                                     Fecha Inicial
-                                </td>
-                                <td class="lineaVertical" style="width: 20%">
-                                    <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
-                                    <asp:HiddenField ID="hdfFFinal" runat="server" />
-                                </td>
-                                <td class="lineaVertical" style="width: 15%">
-                                    Caja
-                                </td>
-                                <td class="lineaVertical" style="width: 15%">
-                                </td>
-                                <td class="lineaVertical" style="width: 10%">
-                                </td>
-                            </tr>
-                        </table>
 
                         <table class="etiqueta opcionBarra">
                             <tr>
@@ -103,7 +144,7 @@
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 20%">
-                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
                                 </td>
                                 <td class="lineaVertical" style="width: 15%">
