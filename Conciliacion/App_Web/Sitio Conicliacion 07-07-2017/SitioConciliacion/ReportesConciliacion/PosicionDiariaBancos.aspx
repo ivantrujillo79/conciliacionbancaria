@@ -80,6 +80,7 @@
                             'Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.',
                             function () { alertify.error('Error en la solicitud'); }
                             );
+                        return false
                     }
                     else
                         return true;
