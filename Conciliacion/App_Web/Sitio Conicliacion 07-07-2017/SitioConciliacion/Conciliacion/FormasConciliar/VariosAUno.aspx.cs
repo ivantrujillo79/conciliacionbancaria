@@ -1316,10 +1316,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
             ReferenciaNoConciliadaPedido pedSeleccionado = leerReferenciaPedidoSeleccionada();
 
-            List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
-            lblMontoInterno.Text = Decimal.Round(pedSeleccionado.Total, 2).ToString("C2");
-            foreach (ReferenciaNoConciliada ex in extSeleccionados)
-                ex.AgregarReferenciaConciliada(pedSeleccionado);
+            if (pedSeleccionado != null)
+            {
+                List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
+                lblMontoInterno.Text = Decimal.Round(pedSeleccionado.Total, 2).ToString("C2");
+                foreach (ReferenciaNoConciliada ex in extSeleccionados)
+                    ex.AgregarReferenciaConciliada(pedSeleccionado);
+            }
         }
         catch (Exception ex)
         {
@@ -1858,7 +1861,14 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         int añoPed = Convert.ToInt32(grvPedidos.DataKeys[indiceInternoSeleccionado].Values["AñoPed"]);
         int cliente = Convert.ToInt32(grvPedidos.DataKeys[indiceInternoSeleccionado].Values["Cliente"]);
 
-        return listaReferenciaPedidos.Single(x => x.CelulaPedido == celula && x.Pedido == pedido && x.AñoPedido == añoPed && x.Cliente == cliente);
+        if (listaReferenciaPedidos != null)
+        {
+            if (listaReferenciaPedidos.Count > 0)
+            {
+                return listaReferenciaPedidos.Single(x => x.CelulaPedido == celula && x.Pedido == pedido && x.AñoPedido == añoPed && x.Cliente == cliente);
+            }
+        }
+        return null;
     }
 
     protected void btnENPROCESOEXTERNO_Click(object sender, ImageClickEventArgs e)
