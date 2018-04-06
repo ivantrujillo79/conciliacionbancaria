@@ -12,25 +12,11 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ClienteDatos : Cliente
     {
-
         public ClienteDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
-        //public ClienteDatos(string Referencia) {
-        //    try
-        //    {
-        //        this.Referencia = Referencia;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ClienteException ObjClienteException = new ClienteException();
-        //        ObjClienteException.ResultadoValidacion.CodigoError = 203;
-        //        ObjClienteException.ResultadoValidacion.Mensaje = ex.Message;
-        //        ObjClienteException.ResultadoValidacion.VerificacionValida = false;
-        //        throw ex;
-        //    }
-        //}
+
         public ClienteDatos(int cliente,
             byte celula,
             Int16 digitoverificador,

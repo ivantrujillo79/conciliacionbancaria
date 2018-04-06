@@ -83,6 +83,7 @@
     <Compile Include="DatosSQL\DispersorPagoDatos.cs" />
     <Compile Include="DatosSQL\FacturaManualDatos.cs" />
     <Compile Include="DatosSQL\FacturasComplementoDatos.cs" />
+    <Compile Include="DatosSQL\InformeBancarioDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\PagareDatos.cs" />
     <Compile Include="DatosSQL\PagoAnticipadoDatos.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="ReglasDeNegocio\GrupoConciliacionDiasDiferencia.cs" />
     <Compile Include="ReglasDeNegocio\IConciliacion.cs" />
     <Compile Include="ReglasDeNegocio\ImportacionAplicacion.cs" />
+    <Compile Include="ReglasDeNegocio\InformeBancario.cs" />
     <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
