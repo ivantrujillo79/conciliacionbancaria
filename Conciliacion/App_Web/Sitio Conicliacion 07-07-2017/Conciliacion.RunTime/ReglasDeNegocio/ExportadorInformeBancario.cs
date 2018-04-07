@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
+using System.Globalization;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -40,12 +41,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #endregion
 
-        public void generar()
+        public void generarPosicionDiariaBancos()
         {
             try
             {
                 inicializar();
                 crearEncabezado();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Ocurrió un error en la creación del reporte: " + ex.Message);
             }
             finally
             {
@@ -87,22 +92,49 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             Excel.Range xlRango;
             string rutaCompleta = _Ruta + _Archivo;
+            DateTime fecha1;
+            DateTime fecha2;
+            string dia1;
+            string dia2;
+            CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
 
-            xlHoja.Cells[1, 1] = "Reporte\n" + "POSICION DIARIA DE BANCOS";
-            //xlHoja.Cells[2, 1] = "POSICION DIARIA DE BANCOS";
-            xlHoja.Cells[3, 1] = "Tercera columna";
-
-            xlRango = xlHoja.Cells[1, 1];
-            xlRango = xlHoja.Cells.Range["A1:F1", "A2:F2"];
+            // Nombre del reporte
+            xlHoja.Cells[1, 1] = "Reporte\nPOSICION DIARIA DE BANCOS";
+            xlRango = xlHoja.Cells.Range["A1:E2"];
             xlRango.Merge();
-
-
-            //xlRango = xlHoja.Range["A1", "A2"];
             xlRango.Font.Bold = true;
-
-            xlRango = xlHoja.Cells[3, 1];
+            xlRango.RowHeight = 15;
             xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+            xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
 
+            // Día de la semana
+            fecha1 = DateTime.Now;
+            fecha2 = DateTime.Now.AddDays(1);
+            dia1 = fecha1.ToString("dddd", cultureInfo).ToUpper();
+            dia2 = fecha2.AddDays(1).ToString("dddd", cultureInfo).ToUpper();
+            xlRango = xlHoja.Cells.Range["F1:G1"];
+            xlRango.Merge();
+            xlRango.Value2 = dia1;
+            // Día 2
+            xlRango = xlHoja.Cells.Range["H1:I1"];
+            xlRango.Merge();
+            xlRango.Value2 = dia2;
+
+            // Kilos
+            //xlHoja.Cells[2, 6].Value2 = "KILOS";
+            xlHoja.Cells["F5"].Value2 = "KILOS";
+            xlHoja.Cells[2, 8].Value2 = "KILOS";
+
+            //Fecha
+            xlHoja.Cells[2, 7].Value2 = fecha1.ToString("d-MMM-yyyy", cultureInfo);
+            xlHoja.Cells[2, 9].Value2 = fecha2.ToString("d-MMM-yyyy", cultureInfo);
+
+            // Formato
+            xlRango = xlHoja.Cells.Range["F1:I2"];
+            xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            xlRango.ColumnWidth = 15;
+            
             if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
 
             xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
