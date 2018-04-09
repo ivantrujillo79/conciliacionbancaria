@@ -5,56 +5,23 @@ using System.Text;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
     public class InformeBancarioDatos : InformeBancario
     {
         public InformeBancarioDatos(IMensajesImplementacion implementadorMensajes)
+                    : base(implementadorMensajes)
+        {
+        }
+
+        public InformeBancarioDatos(DetallePosicionDiariaBancos detalleposiciondiariabancos, IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
-        
-        public InformeBancarioDatos(
-            string corporativo,
-            string sucursal,
-            int año,
-            int mes,
-            string cuentabancofinanciero,
-            int consecutivoflujo,
-            DateTime fecha,
-            string referencia,
-            string concepto,
-            decimal retiros,
-            decimal depositos,
-            decimal saldofinal,
-            string conceptoconciliado,
-            string documentoconciliado, 
-            IMensajesImplementacion implementadorMensajes)
-            : base(
-                   corporativo,
-                   sucursal, 
-                   año,
-                   mes,
-                   cuentabancofinanciero,
-                   consecutivoflujo,
-                   fecha,
-                   referencia,
-                   concepto,
-                   retiros,
-                   depositos,
-                   saldofinal,
-                   conceptoconciliado,
-                   documentoconciliado,
-                   implementadorMensajes)
-        {
-        }
-        public override InformeBancario CrearObjeto()
-        {
-            return new InformeBancarioDatos(this.ImplementadorMensajes);
-        }
 
-        public override List<InformeBancario> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto)
+        public override List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto)
         {
             try
             {
@@ -70,28 +37,27 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", System.Data.SqlDbType.VarChar)).Value = StatusConcepto;
 
                 SqlDataReader reader = _conexion.Comando.ExecuteReader();
-                List<InformeBancario> lstInformeBancario = new List<InformeBancario>();
+                List<DetallePosicionDiariaBancos> lstInformeBancario = new List<DetallePosicionDiariaBancos>();
 
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        InformeBancario dato = new InformeBancarioDatos(
+                        DetallePosicionDiariaBancos dato = new DetallePosicionDiariaBancos(
                                 Convert.ToString(reader["Corporativo"]),
                                 Convert.ToString(reader["Sucursal"]),
                                 Convert.ToInt32(reader["Año"]),
-                                Convert.ToInt32(reader["Mes"]), 
+                                Convert.ToInt32(reader["Mes"]),
                                 Convert.ToString(reader["CuentaBancoFinanciero"]),
                                 Convert.ToInt32(reader["ConsecutivoFlujo"]),
-                                Convert.ToDateTime(reader["Fecha"]), 
+                                Convert.ToDateTime(reader["Fecha"]),
                                 Convert.ToString(reader["Referencia"]),
-                                Convert.ToString(reader["Concepto"]), 
+                                Convert.ToString(reader["Concepto"]),
                                 Convert.ToDecimal(reader["Retiros"]),
                                 Convert.ToDecimal(reader["Depositos"]),
-                                Convert.ToDecimal(reader["SaldoFinal"]),    
-                                Convert.ToString(reader["ConceptoConciliado"]), 
-                                Convert.ToString(reader["DocumentoConciliado"]), 
-                                implementadorMensajes
+                                Convert.ToDecimal(reader["SaldoFinal"]),
+                                Convert.ToString(reader["ConceptoConciliado"]),
+                                Convert.ToString(reader["DocumentoConciliado"])                                
                                 );
                         lstInformeBancario.Add(dato);
                     }
@@ -104,8 +70,33 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 throw ex;
             }
+        }
 
+        public override InformeBancario CrearObjeto()
+        {
+            return new InformeBancarioDatos(this.ImplementadorMensajes);
+        }
+
+        public class DetallePosicionDiariaBancos
+        {
+            public DetallePosicionDiariaBancos(string corporativo,
+                        string sucursal,
+                        int año,
+                        int mes,
+                        string cuentabancofinanciero,
+                        int consecutivoflujo,
+                        DateTime fecha,
+                        string referencia,
+                        string concepto,
+                        decimal retiros,
+                        decimal depositos,
+                        decimal saldofinal,
+                        string conceptoconciliado,
+                        string documentoconciliado)
+            {
+            }
         }
 
     }
+
 }

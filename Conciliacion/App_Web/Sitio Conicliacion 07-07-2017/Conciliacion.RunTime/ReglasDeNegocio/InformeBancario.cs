@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static Conciliacion.RunTime.DatosSQL.InformeBancarioDatos;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -138,7 +139,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract InformeBancario CrearObjeto();
 
-        public abstract List<InformeBancario> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto);
+        //public abstract List<InformeBancario> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto);
+
+        public abstract List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto);
 
     }
 }
