@@ -9,14 +9,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class InformeBancario : EmisorMensajes
     {
-        //public List<DetalleCuentaBanco> consultarCuentasBancarias(Conexion _conexion, short Corporativo, short Banco)
-        //{
-            //List<DetalleCuentaBanco> ListaResultado;
-            //InformeBancarioDatos.DetalleCuentaBanco objDatos = InformeBancarioDatos.DetalleCuentaBanco;
-            //ListaResultado = objDatos.consultarCuentasBancarias(_conexion, Corporativo, Banco);
-
-            //return ListaResultado;
-        //}
+        public List<DetalleCuentaBanco> consultarCuentasBancarias(Conexion _conexion, short Corporativo, short Banco)
+        {
+            List<DetalleCuentaBanco> ListaResultado;
+            DetalleCuentaBanco objDatos = new DetalleCuentaBanco();
+            ListaResultado = objDatos.consultarCuentasBancarias(_conexion, Corporativo, Banco);
+            return ListaResultado;
+        }
 
         public InformeBancario(IMensajesImplementacion implementadorMensajes)
         {

@@ -79,7 +79,6 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public class DetallePosicionDiariaBancos
         {
-
             private string corporativo;
             private string sucursal;
             private int año;
@@ -182,10 +181,19 @@ namespace Conciliacion.RunTime.DatosSQL
                         string documentoconciliado)
             {
             }
+
+            //public DetallePosicionDiariaBancos CrearObjeto()
+            //{
+                //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
+            //}
         }
 
         public class DetalleCuentaBanco
         {
+
+            public DetalleCuentaBanco()
+            {
+            }
 
             public DetalleCuentaBanco(
                     int IDCuenta,
