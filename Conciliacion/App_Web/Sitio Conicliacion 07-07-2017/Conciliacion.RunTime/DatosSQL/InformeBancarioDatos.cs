@@ -57,7 +57,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToDecimal(reader["Depositos"]),
                                 Convert.ToDecimal(reader["SaldoFinal"]),
                                 Convert.ToString(reader["ConceptoConciliado"]),
-                                Convert.ToString(reader["DocumentoConciliado"])                                
+                                Convert.ToString(reader["DocumentoConciliado"])
                                 );
                         lstInformeBancario.Add(dato);
                     }
@@ -79,6 +79,93 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public class DetallePosicionDiariaBancos
         {
+
+            private string corporativo;
+            private string sucursal;
+            private int año;
+            private int mes;
+            private string cuentabancofinanciero;
+            private int consecutivoflujo;
+            private DateTime fecha;
+            private string referencia;
+            private string concepto;
+            private decimal retiros;
+            private decimal depositos;
+            private decimal saldofinal;
+            private string conceptoconciliado;
+            private string documentoconciliado;
+
+            public string Corporativo
+            {
+                get { return corporativo; }
+                set { corporativo = value; }
+            }
+            public string Sucursal
+            {
+                get { return sucursal; }
+                set { sucursal = value; }
+            }
+            public int Año
+            {
+                get { return año; }
+                set { año = value; }
+            }
+            public int Mes
+            {
+                get { return mes; }
+                set { mes = value; }
+            }
+            public string CuentaBancoFinanciero
+            {
+                get { return cuentabancofinanciero; }
+                set { cuentabancofinanciero = value; }
+            }
+            public int ConsecutivoFlujo
+            {
+                get { return consecutivoflujo; }
+                set { consecutivoflujo = value; }
+            }
+            public DateTime Fecha
+            {
+                get { return fecha; }
+                set { fecha = value; }
+            }
+            public string Referencia
+            {
+                get { return referencia; }
+                set { referencia = value; }
+            }
+            public string Concepto
+            {
+                get { return concepto; }
+                set { concepto = value; }
+            }
+            public decimal Retiros
+            {
+                get { return retiros; }
+                set { retiros = value; }
+            }
+            public decimal Depositos
+            {
+                get { return depositos; }
+                set { depositos = value; }
+            }
+            public decimal SaldoFinal
+            {
+                get { return saldofinal; }
+                set { saldofinal = value; }
+            }
+            public string ConceptoConciliado
+            {
+                get { return conceptoconciliado; }
+                set { conceptoconciliado = value; }
+            }
+            public string DocumentoConciliado
+            {
+                get { return documentoconciliado; }
+                set { documentoconciliado = value; }
+            }
+
             public DetallePosicionDiariaBancos(string corporativo,
                         string sucursal,
                         int año,
@@ -95,6 +182,50 @@ namespace Conciliacion.RunTime.DatosSQL
                         string documentoconciliado)
             {
             }
+        }
+
+        public class DetalleCuentaBanco
+        {
+
+            public DetalleCuentaBanco(
+                    int IDCuenta,
+                    string Descripcion)
+            {
+            }
+
+            public List<DetalleCuentaBanco> consultarCuentasBancarias(Conexion _conexion, Int16 Corporativo, Int16 Banco)
+            {
+                try
+                { 
+                    List<DetalleCuentaBanco> ListaRetorno = new List<DetalleCuentaBanco>();
+
+                    _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                    _conexion.Comando.CommandText = "spCBConsultaCuentaBanco";
+                    _conexion.Comando.Parameters.Clear();
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.TinyInt)).Value = Corporativo;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value = Banco;
+                    SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                    
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            DetalleCuentaBanco dato = new DetalleCuentaBanco(
+                                    Convert.ToInt32(reader["Identificador"]),
+                                    Convert.ToString(reader["Descripcion"])
+                                    );
+                            ListaRetorno.Add(dato);
+                        }
+                        reader.Close();
+                    }
+                    return ListaRetorno;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+         }
+
         }
 
     }
