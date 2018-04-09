@@ -606,13 +606,17 @@ public partial class Inicio : System.Web.UI.Page
     {
         try
         {
-            ExportadorInformeBancario oExportador = new ExportadorInformeBancario(null,
+            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(null,
                 "C:\\Users\\DELL-Transforma\\Desktop\\", "MiExcel.xlsx", "Reporte");
 
-            oExportador.generar();
+            obExportador.generarPosicionDiariaBancos();
+
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Archivo creado!', function(){ console.log('success') });", true);
         }
         catch (Exception ex)
         {
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
