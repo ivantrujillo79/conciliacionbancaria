@@ -18,6 +18,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private Microsoft.Office.Interop.Excel.Application xlAplicacion;
         private Microsoft.Office.Interop.Excel.Workbooks xlLibros;
         private Microsoft.Office.Interop.Excel.Workbook xlLibro;
+        private Microsoft.Office.Interop.Excel.Sheets xlHojas;
         private Microsoft.Office.Interop.Excel.Worksheet xlHoja;
         private Microsoft.Office.Interop.Excel.Range xlRango;
 
@@ -63,17 +64,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 
-                if (xlRango != null)
-                {
-                    Marshal.ReleaseComObject(xlRango);
-                }
-                Marshal.ReleaseComObject(xlHoja);
-                Marshal.ReleaseComObject(xlLibro);
-                Marshal.ReleaseComObject(xlLibros);
-                Marshal.ReleaseComObject(xlAplicacion);
-                //xlAplicacion = null;
-                //xlLibro = null;
-                //xlHoja = null;
+                if (xlRango != null)        Marshal.ReleaseComObject(xlRango);
+                if (xlHoja != null)         Marshal.ReleaseComObject(xlHoja);
+                if (xlHojas != null)        Marshal.ReleaseComObject(xlHojas);
+                if (xlLibro != null)        Marshal.ReleaseComObject(xlLibro);
+                if (xlLibros != null)       Marshal.ReleaseComObject(xlLibros);
+                if (xlAplicacion != null)   Marshal.ReleaseComObject(xlAplicacion);
             }
         }
 
@@ -92,18 +88,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
 
-            //string workbookPath = Ruta + Archivo;
+            xlHojas = xlLibro.Sheets;
 
-            //exLibro = exAplicacion.Workbooks.Open(_NombreLibro, Type.Missing, false, 5, Type.Missing,
-            //                                        Type.Missing, false, Excel.XlPlatform.xlWindows, 
-            //                                        Type.Missing, true, false, Type.Missing, true, 
-            //                                        false, false);
+            //xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
 
-            //exLibro = exAplicacion.Workbooks.Open(_NombreLibro, 0, false, 5, "", "", false, 
-            //                                        Excel.XlPlatform.xlWindows, "", true, false, 
-            //                                        0, true, false, false);
-
-            xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
+            xlHoja = xlHojas.Add();
         }
 
         private void crearEncabezado()
@@ -116,8 +105,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
 
             // Nombre del reporte
-            xlHoja.Cells[1, 1] = "Reporte\nPOSICION DIARIA DE BANCOS";
-            xlRango = xlHoja.Cells.Range["A1:E2"];
+            xlRango = xlHoja.Range["A1"];
+            xlRango.Value2 = "Reporte\nPOSICION DIARIA DE BANCOS";
+            xlRango = xlHoja.Range["A1:E2"];
             xlRango.Merge();
             xlRango.Font.Bold = true;
             xlRango.RowHeight = 15;
@@ -128,26 +118,27 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             fecha2 = DateTime.Now.AddDays(1);
             dia1 = fecha1.ToString("dddd", cultureInfo).ToUpper();
             dia2 = fecha2.AddDays(1).ToString("dddd", cultureInfo).ToUpper();
-            xlRango = xlHoja.Cells.Range["F1:G1"];
+            xlRango = xlHoja.Range["F1:G1"];
             xlRango.Merge();
             xlRango.Value2 = dia1;
             // Día 2
-            xlRango = xlHoja.Cells.Range["H1:I1"];
+            xlRango = xlHoja.Range["H1:I1"];
             xlRango.Merge();
             xlRango.Value2 = dia2;
             // Kilos
-            xlHoja.Cells[2, 6].Value2 = "KILOS";
-            xlHoja.Cells[2, 8].Value2 = "KILOS";
+            xlRango = xlHoja.Range["F2,H2"];
+            xlRango.Value2 = "KILOS";
             //Fecha
-            xlHoja.Cells[2, 7].Value2 = fecha1.ToString("d-MMM-yyyy", cultureInfo);
-            xlHoja.Cells[2, 9].Value2 = fecha2.ToString("d-MMM-yyyy", cultureInfo);
+            xlRango = xlHoja.Range["G2,I2"];
+            xlRango[1].Value2 = fecha1.ToString("d-MMM-yyyy", cultureInfo);
+            xlRango[1,3].Value2 = fecha2.ToString("d-MMM-yyyy", cultureInfo);
             // Formato
-            xlRango = xlHoja.Cells.Range["F1:I2"];
+            xlRango = xlHoja.Range["F1:I2"];
             xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
             xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             xlRango.ColumnWidth = 15;
-
-            xlRango = xlHoja.Cells.Range["A3:E200"];
+            
+            xlRango = xlHoja.Range["A3:E200"];
             xlRango.Merge(true);
         }
 
@@ -159,10 +150,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             foreach(DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
                 celda = "A" + contador;
-                xlRango = xlHoja.Cells[celda, celda];
+                xlRango = xlHoja.Range[celda];
                 xlRango.Value2 = item.ToString();
                 ++contador;
-                //item.
+                item.Año.ToString();
             }
         }
 
@@ -189,21 +180,21 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             if (_DetallePosicionDiariaBancos is null)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía." + Environment.NewLine);
+                mensajeExcepcion.Append("La lista del informe bancario está vacía. " + Environment.NewLine);
             }
             else if (_DetallePosicionDiariaBancos.Count == 0)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía." + Environment.NewLine);
+                mensajeExcepcion.Append("La lista del informe bancario está vacía. " + Environment.NewLine);
             }
 
             if (string.IsNullOrEmpty(_NombreLibro))
             {
-                mensajeExcepcion.Append("El nombre del libro es incorrecto." + Environment.NewLine);
+                mensajeExcepcion.Append("El nombre del libro es incorrecto. " + Environment.NewLine);
             }
 
             if (string.IsNullOrEmpty(_Ruta))
             {
-                mensajeExcepcion.Append("La ruta para almacenar el archivo es incorrecta." + Environment.NewLine);
+                mensajeExcepcion.Append("La ruta para almacenar el archivo es incorrecta. " + Environment.NewLine);
             }
 
             if (string.IsNullOrEmpty(_Archivo))
