@@ -9,6 +9,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class InformeBancario : EmisorMensajes
     {
+
+        public List<DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+        {
+            List<DetalleReporteEstadoCuenta> ListaResultado;
+            DetalleReporteEstadoCuenta objDatos = new DetalleReporteEstadoCuenta();
+            ListaResultado = objDatos.consultaReporteEstadoCuenta(_conexion, FechaIni, FechaFin, Banco, CuentaBanco);
+            return ListaResultado;
+        }
+
         public List<DetalleCuentaBanco> consultarCuentasBancarias(Conexion _conexion, short Corporativo, short Banco)
         {
             List<DetalleCuentaBanco> ListaResultado;
