@@ -29,8 +29,8 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaConciliado";
 
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.SmallInt)).Value = FechaIni;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.SmallInt)).Value = FechaFin;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.DateTime)).Value = FechaFin;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.VarChar)).Value = Status;
@@ -49,15 +49,18 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToInt32(reader["Año"]),
                                 Convert.ToInt32(reader["Mes"]),
                                 Convert.ToString(reader["CuentaBancoFinanciero"]),
-                                Convert.ToInt32(reader["ConsecutivoFlujo"]),
+                                reader["ConsecutivoFlujo"] == System.DBNull.Value ? 0 : Convert.ToInt32(reader["ConsecutivoFlujo"]),
+                                //Convert.ToInt32(reader["ConsecutivoFlujo"]),
                                 Convert.ToDateTime(reader["Fecha"]),
                                 Convert.ToString(reader["Referencia"]),
                                 Convert.ToString(reader["Concepto"]),
                                 Convert.ToDecimal(reader["Retiros"]),
                                 Convert.ToDecimal(reader["Depositos"]),
                                 Convert.ToDecimal(reader["SaldoFinal"]),
-                                Convert.ToString(reader["ConceptoConciliado"]),
-                                Convert.ToString(reader["DocumentoConciliado"])
+                                reader["ConceptoConciliado"] == System.DBNull.Value ? "" : Convert.ToString(reader["ConceptoConciliado"]),
+                                reader["DocumentoConciliado"] == System.DBNull.Value ? "" : Convert.ToString(reader["DocumentoConciliado"])
+                                //Convert.ToString(reader["ConceptoConciliado"]),
+                                //Convert.ToString(reader["DocumentoConciliado"])
                                 );
                         lstInformeBancario.Add(dato);
                     }
@@ -180,11 +183,25 @@ namespace Conciliacion.RunTime.DatosSQL
                         string conceptoconciliado,
                         string documentoconciliado)
             {
+                this.corporativo = corporativo;
+                this.sucursal = sucursal;
+                this.año = año;
+                this.mes = mes;
+                this.cuentabancofinanciero = cuentabancofinanciero;
+                this.consecutivoflujo = consecutivoflujo;
+                this.fecha = fecha;
+                this.referencia = referencia;
+                this.concepto = concepto;
+                this.retiros = retiros;
+                this.depositos = depositos;
+                this.saldofinal = saldofinal;
+                this.conceptoconciliado = conceptoconciliado;
+                this.documentoconciliado = documentoconciliado;
             }
 
             //public DetallePosicionDiariaBancos CrearObjeto()
             //{
-                //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
+            //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
             //}
         }
 
