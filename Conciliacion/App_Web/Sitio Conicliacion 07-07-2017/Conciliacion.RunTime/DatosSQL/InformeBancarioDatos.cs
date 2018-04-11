@@ -190,7 +190,6 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public class DetalleCuentaBanco
         {
-
             public DetalleCuentaBanco()
             {
             }
@@ -236,18 +235,13 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
-        public class DetalleReporteEstadoCuenta
+        public class DetalleReporteEstadoCuentaDia
         {
             private string corporativo;
             private string sucursal;
-            private string año;
-            private string mes;
             private string cuentabancofinanciero;
-            private string consecutivoflujo;
-            private string foperacion;
-            private string referencia;
-            private string concepto;
-            private string retiros;
+            private string fecha;
+            private string retiro;
             private string depositos;
             private string saldofinal;
 
@@ -261,45 +255,20 @@ namespace Conciliacion.RunTime.DatosSQL
                 get { return sucursal; }
                 set { sucursal = value; }
             }
-            public string Año
-            {
-                get { return año; }
-                set { año = value; }
-            }
-            public string Mes
-            {
-                get { return mes; }
-                set { mes = value; }
-            }
             public string CuentaBancoFinanciero
             {
                 get { return cuentabancofinanciero; }
                 set { cuentabancofinanciero = value; }
             }
-            public string ConsecutivoFlujo
+            public string Fecha
             {
-                get { return consecutivoflujo; }
-                set { consecutivoflujo = value; }
+                get { return fecha; }
+                set { fecha = value; }
             }
-            public string FOpercion
+            public string Retiro
             {
-                get { return foperacion; }
-                set { foperacion = value; }
-            }
-            public string Referencia
-            {
-                get { return referencia; }
-                set { referencia = value; }
-            }
-            public string Concepto
-            {
-                get { return concepto; }
-                set { concepto = value; }
-            }
-            public string Retiros
-            {
-                get { return retiros; }
-                set { retiros = value; }
+                get { return retiro; }
+                set { retiro = value; }
             }
             public string Depositos
             {
@@ -312,61 +281,45 @@ namespace Conciliacion.RunTime.DatosSQL
                 set { saldofinal = value; }
             }
 
-            public DetalleReporteEstadoCuenta()
+            public DetalleReporteEstadoCuentaDia()
             {
             }
 
-            public DetalleReporteEstadoCuenta(
-                string corporativo,
-                string sucursal,
-                string año,
-                string mes,
-                string cuentabancofinanciero,
-                string consecutivoflujo,
-                string foperacion,
-                string referencia,
-                string concepto,
-                string retiros,
-                string depositos,
-                string saldofinal)
+            public List<DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentaPorDia(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
             {
-            }
-
-            public List<DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
-            {
-                List<DetalleReporteEstadoCuenta> ListaResultado = new List<DetalleReporteEstadoCuenta>();
+                List<DetalleReporteEstadoCuentaDia> ListaResultado = new List<DetalleReporteEstadoCuentaDia>();
                 try
                 {
                     _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                    _conexion.Comando.CommandText = "spCBReporteEstadoDeCuenta";
+                    _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaPorDia";
+
                     _conexion.Comando.Parameters.Clear();
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.DateTime)).Value = FechaFin;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.SmallInt)).Value = FechaIni;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.SmallInt)).Value = FechaFin;
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
                     _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
+
                     SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                    List<DetalleReporteEstadoCuentaDia> lstInformeBancario = new List<DetalleReporteEstadoCuentaDia>();
+
                     if (reader.HasRows)
                     {
                         while (reader.Read())
                         {
-                            DetalleReporteEstadoCuenta dato = new DetalleReporteEstadoCuenta();
-                            dato.Corporativo = Convert.ToString(reader["corporativo"]);
-                            dato.Sucursal = Convert.ToString(reader["sucursal"]);
-                            dato.Año = Convert.ToString(reader["año"]);
-                            dato.Mes = Convert.ToString(reader["mes"]);
-                            dato.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]);
-                            dato.ConsecutivoFlujo = Convert.ToString(reader["consecutivoflujo"]);
-                            dato.FOpercion = Convert.ToString(reader["foperacion"]);
-                            dato.Referencia = Convert.ToString(reader["referencia"]);
-                            dato.Concepto = Convert.ToString(reader["concepto"]);
-                            dato.Retiros = Convert.ToString(reader["retiros"]);
-                            dato.Depositos = Convert.ToString(reader["depositos"]);
-                            dato.SaldoFinal = Convert.ToString(reader["saldofinal"]);
-                            ListaResultado.Add(dato);
+                            DetalleReporteEstadoCuentaDia dato = new DetalleReporteEstadoCuentaDia();
+                            dato.Corporativo = Convert.ToString(reader["Corporativo"]);
+                            dato.Sucursal = Convert.ToString(reader["Sucursal"]);
+                            dato.CuentaBancoFinanciero = Convert.ToString(reader["CuentaBancoFinanciero"]);
+                            dato.Fecha = Convert.ToString(reader["Fecha"]);
+                            dato.Retiro = Convert.ToString(reader["Retiro"]);
+                            dato.Depositos = Convert.ToString(reader["Depositos"]);
+                            dato.SaldoFinal = Convert.ToString(reader["SaldoFinal"]);
+                            lstInformeBancario.Add(dato);
                         }
                         reader.Close();
                     }
-                    return ListaResultado;
+
+                    return lstInformeBancario;
                 }
                 catch (Exception ex)
                 {
