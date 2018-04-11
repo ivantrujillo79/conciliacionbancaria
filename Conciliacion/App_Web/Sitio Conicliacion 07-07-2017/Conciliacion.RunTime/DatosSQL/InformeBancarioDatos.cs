@@ -190,7 +190,6 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public class DetalleCuentaBanco
         {
-
             public DetalleCuentaBanco()
             {
             }
@@ -233,6 +232,100 @@ namespace Conciliacion.RunTime.DatosSQL
                     throw ex;
                 }
          }
+
+        }
+
+        public class DetalleReporteEstadoCuentaDia
+        {
+            private string corporativo;
+            private string sucursal;
+            private string cuentabancofinanciero;
+            private string fecha;
+            private string retiro;
+            private string depositos;
+            private string saldofinal;
+
+            public string Corporativo
+            {
+                get { return corporativo; }
+                set { corporativo = value; }
+            }
+            public string Sucursal
+            {
+                get { return sucursal; }
+                set { sucursal = value; }
+            }
+            public string CuentaBancoFinanciero
+            {
+                get { return cuentabancofinanciero; }
+                set { cuentabancofinanciero = value; }
+            }
+            public string Fecha
+            {
+                get { return fecha; }
+                set { fecha = value; }
+            }
+            public string Retiro
+            {
+                get { return retiro; }
+                set { retiro = value; }
+            }
+            public string Depositos
+            {
+                get { return depositos; }
+                set { depositos = value; }
+            }
+            public string SaldoFinal
+            {
+                get { return saldofinal; }
+                set { saldofinal = value; }
+            }
+
+            public DetalleReporteEstadoCuentaDia()
+            {
+            }
+
+            public List<DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentaPorDia(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+            {
+                List<DetalleReporteEstadoCuentaDia> ListaResultado = new List<DetalleReporteEstadoCuentaDia>();
+                try
+                {
+                    _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                    _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaPorDia";
+
+                    _conexion.Comando.Parameters.Clear();
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.SmallInt)).Value = FechaIni;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.SmallInt)).Value = FechaFin;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
+
+                    SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                    List<DetalleReporteEstadoCuentaDia> lstInformeBancario = new List<DetalleReporteEstadoCuentaDia>();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            DetalleReporteEstadoCuentaDia dato = new DetalleReporteEstadoCuentaDia();
+                            dato.Corporativo = Convert.ToString(reader["Corporativo"]);
+                            dato.Sucursal = Convert.ToString(reader["Sucursal"]);
+                            dato.CuentaBancoFinanciero = Convert.ToString(reader["CuentaBancoFinanciero"]);
+                            dato.Fecha = Convert.ToString(reader["Fecha"]);
+                            dato.Retiro = Convert.ToString(reader["Retiro"]);
+                            dato.Depositos = Convert.ToString(reader["Depositos"]);
+                            dato.SaldoFinal = Convert.ToString(reader["SaldoFinal"]);
+                            lstInformeBancario.Add(dato);
+                        }
+                        reader.Close();
+                    }
+
+                    return lstInformeBancario;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
         }
 
