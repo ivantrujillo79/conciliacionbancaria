@@ -54,6 +54,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private ReferenciaConciliadaCompartida movSeleccionado;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();
+    private string StatusConciliacionSel = "";
 
     #endregion
 
@@ -231,9 +232,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
-
             DropDownList ddlStatus = sender as DropDownList;
             string status = ddlStatus.SelectedItem.Text;
+            StatusConciliacionSel = status;
             FiltrarStatusConciliacionMovimiento(status);
         }
         catch (Exception ex)
@@ -1098,6 +1099,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     public void ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo, int sucursal,
         string cuentaBancaria, DateTime finicial, DateTime ffinal)
     {
+        string statusconciliacion = "";
         System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
@@ -1105,9 +1107,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         try
         {
+            if (StatusConciliacionSel == "TODOS")
+                statusconciliacion = "";
             listMovimientos =
                 Conciliacion.RunTime.App.Consultas.ConsultaMovimientosConciliacionCompartida(accesoTotal, corporativo,
-                    sucursal, cuentaBancaria, finicial, ffinal);
+                    sucursal, cuentaBancaria, finicial, ffinal, statusconciliacion);
 
             //Session["MOVIMIENTOS"] = listMovimientos;
             listMovimientos = LeerListaReferenciasNoRepetidos(listMovimientos);
@@ -1476,6 +1480,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
+
 
 
             if (FiltroCorrecto())

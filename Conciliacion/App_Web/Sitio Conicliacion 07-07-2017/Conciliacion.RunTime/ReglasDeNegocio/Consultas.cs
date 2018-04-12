@@ -298,7 +298,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract Boolean ObtieneExternosTransferencia(short corporativoTD, short sucursalTD,
                                                                                      int añoTD, int folioTD, int secuenciaTD);
         public abstract List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo, int sucursal,
-        string cuentaBancaria, DateTime finicial, DateTime ffinal);
+        string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion);
 
         public abstract List<ReferenciaConciliadaCompartida> ConsultaMovimientosConciliadosMovExterno(int corporativoconciliacion, int sucursalconciliacion,
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativo, int sucursal, int año, int folio, int secuencia);
