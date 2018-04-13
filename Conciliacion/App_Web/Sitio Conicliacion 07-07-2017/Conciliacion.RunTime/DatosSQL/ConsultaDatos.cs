@@ -5563,7 +5563,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo,
            int sucursal,
-           string cuentaBancaria, DateTime finicial, DateTime ffinal)
+           string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -5578,6 +5578,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = cuentaBancaria;
                     comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = finicial;
                     comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = ffinal;
+                    comando.Parameters.Add("@StatusConciliacion", SqlDbType.VarChar).Value = (statusconciliacion != string.Empty ? statusconciliacion : SqlString.Null);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
