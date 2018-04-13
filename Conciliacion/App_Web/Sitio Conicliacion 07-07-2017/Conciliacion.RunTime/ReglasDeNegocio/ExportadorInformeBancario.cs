@@ -46,12 +46,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public ExportadorInformeBancario(List<DetallePosicionDiariaBancos> DetallePosicionDiariaBancos, 
                                         string Ruta, string Archivo, string Nombre)
         {
-            _DetallePosicionDiariaBancos = DetallePosicionDiariaBancos;
-            _Ruta = Ruta.Trim();
-            _Archivo = Archivo.Trim();
-            _NombreLibro = Nombre.Trim();
+            try
+            {
+                _DetallePosicionDiariaBancos = DetallePosicionDiariaBancos;
+                _Ruta = Ruta.Trim();
+                _Archivo = Archivo.Trim();
+                _NombreLibro = Nombre.Trim();
 
-            //ValidarParametrosConstructor();
+                ValidarMiembros();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
+            }
         }
         
         #endregion
@@ -68,7 +75,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
             catch (Exception ex)
             {
-                throw new Exception("Ocurrió un error en la creación del reporte: " + ex.Message);
+                throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
             }
             finally
             {
@@ -109,9 +116,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private void crearEncabezado()
         {
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
-            DateTime fecha = _DetallePosicionDiariaBancos[0].Fecha;
+            DateTime fecha = _DetallePosicionDiariaBancos
+                                                    .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+                                                    .Fecha;
             string dia = fecha.ToString("dddd", cultureInfo).ToUpper();
-            string caja = Convert.ToString(_DetallePosicionDiariaBancos[0].Caja);
+            string caja = Convert.ToString(_DetallePosicionDiariaBancos
+                                                    .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+                                                    .Caja);
 
             // Nombre del reporte
             xlRango = xlHoja.Range["A1"];
@@ -292,28 +303,28 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlAplicacion.Quit();
         }
 
-        private bool ValidarParametrosConstructor()
+        private bool ValidarMiembros()
         {
             StringBuilder mensajeExcepcion = new StringBuilder();
             bool valido = false;
 
             if (_DetallePosicionDiariaBancos is null)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía. " + Environment.NewLine);
+                mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
             }
             else if (_DetallePosicionDiariaBancos.Count == 0)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía. " + Environment.NewLine);
+                mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
             }
 
             if (string.IsNullOrEmpty(_NombreLibro))
             {
-                mensajeExcepcion.Append("El nombre del libro es incorrecto. " + Environment.NewLine);
+                mensajeExcepcion.Append("El nombre del libro es incorrecto. <br/>");
             }
 
             if (string.IsNullOrEmpty(_Ruta))
             {
-                mensajeExcepcion.Append("La ruta para almacenar el archivo es incorrecta. " + Environment.NewLine);
+                mensajeExcepcion.Append("La ruta para almacenar el archivo es incorrecta. <br/>");
             }
 
             if (string.IsNullOrEmpty(_Archivo))
@@ -331,8 +342,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
 
             return valido;
-        } // end ValidarParametrosConstructor()
-        
+        } // end ValidarMiembros()
+
         private string RemoverAcentos(string text)
         {
             return string.Concat(
