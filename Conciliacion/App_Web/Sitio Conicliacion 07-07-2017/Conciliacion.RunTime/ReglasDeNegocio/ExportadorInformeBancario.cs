@@ -253,8 +253,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                 if ( (!concepto.Equals("CREDI")) && (!concepto.Equals("TOTAL")) )
                 {
-                    totalIngresoDia += item.Importe;
-                    totalIngresoDiaKilos += item.Kilos;
+                    //totalIngresoDia += item.Importe;
+                    //totalIngresoDiaKilos += item.Kilos;
+                    totalNeto += item.Importe;
+                    totalNetoKilos += item.Kilos;
                 }
                 else if (concepto.Equals("CREDI"))
                 {
@@ -263,8 +265,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
             }
 
-            totalNeto = totalIngresoDia + totalCredito;
-            totalNetoKilos = totalIngresoDiaKilos + totalCreditoKilos;
+            totalIngresoDia = totalNeto + totalCredito;
+            totalIngresoDiaKilos = totalNetoKilos + totalCreditoKilos;
 
             xlRango = xlHoja.Range["F16:G19"];
             // Total kilos
