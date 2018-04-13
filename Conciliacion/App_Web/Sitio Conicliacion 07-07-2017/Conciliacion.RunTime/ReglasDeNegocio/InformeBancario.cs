@@ -25,6 +25,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return ListaResultado;
         }
 
+        public List<DetalleBanco> consultarBancos(Conexion _conexion, int Corporativo )
+        {
+            List<DetalleBanco> ListaResultado;
+            DetalleBanco objDatos = new DetalleBanco();            
+            ListaResultado = objDatos.consultarBancos(_conexion,Corporativo);
+            return ListaResultado;
+        }
+
         public InformeBancario(IMensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;

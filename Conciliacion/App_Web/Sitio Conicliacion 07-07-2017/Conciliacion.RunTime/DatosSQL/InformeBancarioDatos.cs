@@ -184,7 +184,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             //public DetallePosicionDiariaBancos CrearObjeto()
             //{
-                //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
+            //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
             //}
         }
 
@@ -203,7 +203,7 @@ namespace Conciliacion.RunTime.DatosSQL
             public List<DetalleCuentaBanco> consultarCuentasBancarias(Conexion _conexion, Int16 Corporativo, Int16 Banco)
             {
                 try
-                { 
+                {
                     List<DetalleCuentaBanco> ListaRetorno = new List<DetalleCuentaBanco>();
 
                     _conexion.Comando.CommandType = CommandType.StoredProcedure;
@@ -212,7 +212,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.TinyInt)).Value = Corporativo;
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value = Banco;
                     SqlDataReader reader = _conexion.Comando.ExecuteReader();
-                    
+
                     if (reader.HasRows)
                     {
                         while (reader.Read())
@@ -231,7 +231,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 {
                     throw ex;
                 }
-         }
+            }
 
         }
 
@@ -329,6 +329,62 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
-    }
+        public class DetalleBanco
+        {
+            private int idbanco;
+            private string descripcion;
 
+
+            public int IDBanco
+            {
+                get { return idbanco; }
+                set { idbanco = value; }
+            }
+
+            public string Descripcion
+            {
+                get { return descripcion; }
+                set { descripcion = value; }
+            }
+
+            public DetalleBanco()
+            { }
+
+            public DetalleBanco(int idbanco,string descripcion)
+            { }
+
+            public List<DetalleBanco> consultarBancos(Conexion _conexion,int Corporativo )
+            {
+                List<DetalleBanco> ListaRetorno = new List<DetalleBanco>();
+                try
+                {               
+                    _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                    _conexion.Comando.CommandText = "spCBConsultaBanco";
+                    _conexion.Comando.Parameters.Clear();
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.SmallInt)).Value = Corporativo;
+                    SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            DetalleBanco dato = new DetalleBanco(
+                                    Convert.ToInt32(reader["IDBanco"]),
+                                    Convert.ToString(reader["Descripcion"])
+                                    );
+                            ListaRetorno.Add(dato);
+                        }
+                        reader.Close();
+                    }
+              
+                return ListaRetorno;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+        }
+       
+    }
 }
