@@ -161,8 +161,10 @@
                                 </td>
                             </tr>
                         </table>
-
+                        <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                        runat="server" OnClick="btnConsultar_Click" OnClientClick="alert('Prueba');" />
                     </td>
+                    
 
                    <%-- <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">
                         <table class="etiqueta opcionBarra">
