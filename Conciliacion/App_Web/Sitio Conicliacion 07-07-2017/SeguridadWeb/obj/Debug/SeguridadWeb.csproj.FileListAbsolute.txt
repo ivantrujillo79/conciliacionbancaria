@@ -43,3 +43,8 @@ C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Siti
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csproj.CoreCompileInputs.cache
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.dll
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Debug\SeguridadWeb.pdb
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csprojResolveAssemblyReference.cache

@@ -24,3 +24,11 @@ C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Siti
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CoreCompileInputs.cache
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.dll
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.pdb
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.dll
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.pdb
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csprojResolveAssemblyReference.cache
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
+C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb

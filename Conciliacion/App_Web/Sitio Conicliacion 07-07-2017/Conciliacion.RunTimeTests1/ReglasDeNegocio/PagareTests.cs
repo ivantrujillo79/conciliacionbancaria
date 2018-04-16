@@ -28,5 +28,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio.Tests
         {
             Assert.AreEqual(1,1);
         }
+
+        [TestMethod()]
+        public void detalleBanco()
+        {
+             
+
+            Assert.AreEqual(1, 1);
+        }
+
     }
 }

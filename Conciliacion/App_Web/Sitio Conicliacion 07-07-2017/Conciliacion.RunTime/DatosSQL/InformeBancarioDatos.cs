@@ -537,6 +537,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             dtReporteEstadosCuentaConciliado.DocumentoConciliado = Convert.ToString(reader["DocumentoConciliado"]);
 
                             ListaResultado.Add(dtReporteEstadosCuentaConciliado);
+
                         }
                         reader.Close();
                     }                  
