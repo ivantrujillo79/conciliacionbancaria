@@ -310,7 +310,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             StringBuilder mensajeExcepcion = new StringBuilder();
             bool valido = false;
 
-            if (_DetallePosicionDiariaBancos is null)
+            if (_DetallePosicionDiariaBancos == null)
             {
                 mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
             }
