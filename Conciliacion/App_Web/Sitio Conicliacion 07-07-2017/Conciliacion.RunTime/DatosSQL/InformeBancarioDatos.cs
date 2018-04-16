@@ -367,10 +367,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         while (reader.Read())
                         {
-                            DetalleBanco dato = new DetalleBanco(
-                                    Convert.ToInt32(reader["IDBanco"]),
-                                    Convert.ToString(reader["Descripcion"])
-                                    );
+                            DetalleBanco dato = new DetalleBanco();
+                            dato.IDBanco = Convert.ToInt32(reader["IDBanco"]);
+                            dato.Descripcion = Convert.ToString(reader["Descripcion"]);
                             ListaRetorno.Add(dato);
                         }
                         reader.Close();
