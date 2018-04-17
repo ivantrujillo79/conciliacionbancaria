@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="PosicionDiariaBancos.aspx.cs" Inherits="ReportesConciliacion_PosicionDiariaBancos" %>
 
+<%@ Register Src="~/ControlesUsuario/ListadoCajas/wucListadoCajas.ascx" TagName="WUCCajas" TagPrefix="uc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
     Posici&oacute;n Diaria de Bancos
 </asp:Content>
@@ -117,47 +119,34 @@
                                     <tr>
                                         <td class="lineaVertical" style="width: 30%">
                                         </td>
-                                        <td class="lineaVertical" style="width: 10%">
+                                        <td class="lineaVertical" style="width: 10%; padding-top:7px;">
                                              Fecha Inicial
                                         </td>
-                                        <td class="lineaVertical" style="width: 20%">
+                                        <td class="lineaVertical" style="width: 20%; padding-top:7px;">
                                             <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
                                             <asp:HiddenField ID="hdfFFinal" runat="server" />
                                         </td>
-                                        <td class="lineaVertical" style="width: 15%">
-                                            Caja
-                                        </td>
-                                        <td class="lineaVertical" style="width: 15%">
-                                        </td>
-                                        <td class="lineaVertical" style="width: 10%">
+                                        <td class="lineaVertical" style="width: 40%">
+                                            Cajas
                                         </td>
                                     </tr>
                                 </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         
-
                         <table class="etiqueta opcionBarra">
-                            <tr>
+                            <tr valign="top">
                                 <td class="lineaVertical" style="width: 30%">
                                 </td>
-                                <td class="lineaVertical" style="width: 10%">
+                                <td class="lineaVertical" style="width: 10%; padding-top:7px;">
                                      Fecha Final
                                 </td>
-                                <td class="lineaVertical" style="width: 20%">
+                                <td class="lineaVertical" style="width: 20%; padding-top:7px;">
                                     <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
                                 </td>
-                                <td class="lineaVertical" style="width: 15%">
-                                    <asp:CheckBox ID="CheckBox1" Text="Todos" runat="server" />
-                                    <asp:CheckBox ID="CheckBox2" Text="Caja 1" runat="server" />
-                                </td>
-                                <td class="lineaVertical" style="width: 15%">
-                                    <asp:CheckBox ID="CheckBox3" Text="Caja 2" runat="server" />
-                                    <asp:CheckBox ID="CheckBox4" Text="Caja 5" runat="server" />
-                                </td>
-                                <td class="lineaVertical" style="width: 10%">
-                                    <asp:CheckBox ID="CheckBox5" Text="Caja 6" runat="server" />
+                                <td class="lineaVertical" style="width: 40%;">
+                                    <uc1:WUCCajas ID="wucCajas" runat="server"/>
                                 </td>
                             </tr>
                         </table>
