@@ -360,53 +360,71 @@ namespace Conciliacion.RunTime.DatosSQL
                     throw ex;
                 }
             }
+            
+        }
 
-            public class DetalleCaja
+        public class DetalleCaja
+        {
+            private int idCaja;
+            private string descripcion;
+
+            public int IDCaja
             {
-                public DetalleCaja()
-                {
-                }
-
-                public DetalleCaja(
-                        int IDCaja,
-                        string Descripcion)
-                {
-                }
-
-                public List<DetalleCaja> consultarCajas(Conexion _conexion, int Caja)
-                {
-                    try
-                    {
-                        List<DetalleCaja> ListaRetorno = new List<DetalleCaja>();
-                        _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                        _conexion.Comando.CommandText = "spCBConsultaCajasCorte";
-                        _conexion.Comando.Parameters.Clear();
-                        _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = Caja;
-                        SqlDataReader reader = _conexion.Comando.ExecuteReader();
-
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                DetalleCaja dato = new DetalleCaja(
-                                        Convert.ToInt32(reader["Caja"]),
-                                        Convert.ToString(reader["Descripcion"])
-                                        );
-                                ListaRetorno.Add(dato);
-                            }
-                            reader.Close();
-                        }
-                        return ListaRetorno;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-
-                }
-
+                get { return idCaja; }
+                set { idCaja = value; }
             }
 
+            public string Descripcion
+            {
+                get { return descripcion; }
+                set { descripcion = value; }
+            }
+
+            public DetalleCaja()
+            {
+            }
+
+            public DetalleCaja(
+                    int IDCaja,
+                    string Descripcion)
+            {
+                this.idCaja = IDCaja;
+                this.descripcion = Descripcion;
+            }
+
+            public List<DetalleCaja> consultarCajas(Conexion _conexion, short Caja)
+            {
+                try
+                {
+                    List<DetalleCaja> ListaRetorno = new List<DetalleCaja>();
+                    _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                    _conexion.Comando.CommandText = "spCBConsultaCajasCorte";
+                    _conexion.Comando.Parameters.Clear();
+                    if (Caja > 0)
+                    {
+                        _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = Caja;
+                    }
+                    SqlDataReader reader = _conexion.Comando.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            DetalleCaja dato = new DetalleCaja(
+                                    Convert.ToInt32(reader["Caja"]),
+                                    Convert.ToString(reader["Descripcion"]).Trim()
+                                    );
+                            ListaRetorno.Add(dato);
+                        }
+                        reader.Close();
+                    }
+                    return ListaRetorno;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
     }
