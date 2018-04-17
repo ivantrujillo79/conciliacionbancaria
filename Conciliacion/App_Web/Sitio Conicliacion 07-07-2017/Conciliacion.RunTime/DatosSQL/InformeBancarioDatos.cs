@@ -409,6 +409,182 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
+        public class DetalleReporteEstadoCuentaConciliado
+        {            
+            private string Corporativo;
+            private string Sucursal;
+            private string Año;
+            private string Mes;
+            private string CuentaBancoFinanciero;
+            private string ConsecutivoFlujo;
+            private string Fecha;
+            private string Referencia;
+            private string Concepto;
+            private string Retiros;
+            private string Depositos;
+            private string SaldoFinal;
+            private string ConceptoConciliado;
+            private string DocumentoConciliado;
+
+            public string _Corporativo
+            {
+                get { return Corporativo; }
+                set { Corporativo = value; }
+            }
+
+            public string _Sucursal
+            {
+                get { return Sucursal; }
+                set { Sucursal = value; }
+            }
+
+            public string _Año
+            {
+                get { return Año; }
+                set { Año = value; }
+            }
+
+            public string _Mes
+            {
+                get { return Mes; }
+                set { Mes = value; }
+            }
+
+            public string _CuentaBancoFinanciero
+            {
+                get { return CuentaBancoFinanciero; }
+                set { CuentaBancoFinanciero = value; }
+            }
+
+            public string _ConsecutivoFlujo
+            {
+                get { return ConsecutivoFlujo; }
+                set { ConsecutivoFlujo = value; }
+            }
+
+            public string _Fecha
+            {
+                get { return Fecha; }
+                set { Fecha = value; }
+            }
+
+            public string _Referencia
+            {
+                get { return Referencia; }
+                set { Referencia = value; }
+            }
+
+            public string _Concepto
+            {
+                get { return Concepto; }
+                set { Concepto = value; }
+            }
+
+            public string _Retiros
+            {
+                get { return Retiros; }
+                set { Retiros = value; }
+            }
+
+            public string _Depositos
+            {
+                get { return Depositos; }
+                set { Depositos = value; }
+            }
+
+            public string _SaldoFinal
+            {
+                get { return SaldoFinal; }
+                set { SaldoFinal = value; }
+            }
+
+            public string _ConceptoConciliado
+            {
+                get { return ConceptoConciliado; }
+                set { ConceptoConciliado = value; }
+            }
+
+            public string _DocumentoConciliado
+            {
+                get { return DocumentoConciliado; }
+                set { DocumentoConciliado = value; }
+            }
+
+            #region Metodo
+            public DetalleReporteEstadoCuentaConciliado()
+            {
+            }
+
+            public DetalleReporteEstadoCuentaConciliado(
+            string Corporativo,
+            string Sucursal,
+            string Año,
+            string Mes,
+            string CuentaBancoFinanciero,
+            string ConsecutivoFlujo,
+            string Fecha,
+            string Referencia,
+            string Concepto,
+            string Retiros,
+            string Depositos,
+            string SaldoFinal,
+            string ConceptoConciliado,
+            string DocumentoConciliado
+                )
+            {}
+
+
+            public List<DetalleReporteEstadoCuentaConciliado> consultaReporteEstadoCuentaConciliado(Conexion _conexion, DateTime FechaIni , DateTime FechaFin, string Banco , string CuentaBanco, string Status, string StatusConcepto)
+            {
+                List<DetalleReporteEstadoCuentaConciliado> ListaResultado = new List<DetalleReporteEstadoCuentaConciliado>();
+                try
+                {                    
+                    _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                    _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaConciliado";
+                    _conexion.Comando.Parameters.Clear();
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.DateTime)).Value = FechaFin;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.VarChar)).Value = Status;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", System.Data.SqlDbType.VarChar)).Value = StatusConcepto;
+                    SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                        DetalleReporteEstadoCuentaConciliado  dtReporteEstadosCuentaConciliado = new DetalleReporteEstadoCuentaConciliado ();
+                            dtReporteEstadosCuentaConciliado.Corporativo = Convert.ToString(reader["corporativo"]);
+                            dtReporteEstadosCuentaConciliado.Sucursal = Convert.ToString(reader["sucursal"]);
+                            dtReporteEstadosCuentaConciliado.Año = Convert.ToString(reader["año"]);
+                            dtReporteEstadosCuentaConciliado.Mes = Convert.ToString(reader["mes"]);
+                            dtReporteEstadosCuentaConciliado.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]);
+                            dtReporteEstadosCuentaConciliado.ConsecutivoFlujo = Convert.ToString(reader["consecutivoflujo"]);
+                            dtReporteEstadosCuentaConciliado.Fecha = Convert.ToString(reader["foperacion"]);
+                            dtReporteEstadosCuentaConciliado.Referencia = Convert.ToString(reader["referencia"]);
+                            dtReporteEstadosCuentaConciliado.Concepto = Convert.ToString(reader["concepto"]);
+                            dtReporteEstadosCuentaConciliado.Retiros = Convert.ToString(reader["retiros"]);
+                            dtReporteEstadosCuentaConciliado.Depositos = Convert.ToString(reader["depositos"]);
+                            dtReporteEstadosCuentaConciliado.SaldoFinal = Convert.ToString(reader["saldofinal"]);
+                            dtReporteEstadosCuentaConciliado.ConceptoConciliado = Convert.ToString(reader["ConceptoConciliado"]);
+                            dtReporteEstadosCuentaConciliado.DocumentoConciliado = Convert.ToString(reader["DocumentoConciliado"]);
+
+                            ListaResultado.Add(dtReporteEstadosCuentaConciliado);
+
+                        }
+                        reader.Close();
+                    }                  
+                    return ListaResultado;                       
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            #endregion
+        }
+
     }
 
 }
