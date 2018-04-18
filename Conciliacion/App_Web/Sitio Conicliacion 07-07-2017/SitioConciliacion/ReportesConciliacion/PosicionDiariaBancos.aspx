@@ -23,6 +23,7 @@
     <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
 
+    
     <script type="text/javascript">
     
         function pageLoad() {
@@ -87,7 +88,10 @@
                 }
         }
 
+      
+
     </script>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
  
@@ -111,8 +115,8 @@
                     </td>
 
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 59%">
-                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                            <ContentTemplate>
+                        <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">--%>
+                            <%--<ContentTemplate>--%>
                                 <table class="etiqueta opcionBarra">
                                     <tr>
                                         <td class="lineaVertical" style="width: 30%">
@@ -121,7 +125,7 @@
                                              Fecha Inicial
                                         </td>
                                         <td class="lineaVertical" style="width: 20%">
-                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"  ></asp:TextBox>
                                             <asp:HiddenField ID="hdfFFinal" runat="server" />
                                         </td>
                                         <td class="lineaVertical" style="width: 15%">
@@ -133,8 +137,8 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+                            <%--</ContentTemplate>--%>
+                        <%--</asp:UpdatePanel>--%>
                         
 
                         <table class="etiqueta opcionBarra">
@@ -145,7 +149,7 @@
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 20%">
-                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%" ></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
                                 </td>
                                 <td class="lineaVertical" style="width: 15%">
@@ -162,7 +166,11 @@
                             </tr>
                         </table>
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                        runat="server" OnClick="btnConsultar_Click" OnClientClick="alert('Prueba');" />
+                        runat="server" OnClick="btnConsultar_Click" />
+                       <a id="LigaDescarga" href="../InformesExcel/Prueba.xlsx"></a> 
+                       
+                       
+                       <%--  --%>
                     </td>
                     
 

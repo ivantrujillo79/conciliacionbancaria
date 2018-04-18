@@ -10,22 +10,22 @@ using System.Web.UI.WebControls;
 
 public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.Page
 {
-
+   
     protected void btnConsultar_Click(object sender, EventArgs e)
     {
         try
         {
-            List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
+        //    List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
 
-            lstDetalle = ConsultarPosicionDiariaBancos();
+          //  lstDetalle = ConsultarPosicionDiariaBancos();
 
-            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-                "C:\\Users\\DELL-Transforma\\Desktop\\", "MiExcel.xlsx", "Reporte");
+//            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
+  //              @"C:\Users\Transforma1\Source\repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\InformesExcel\", "Prueba.xlsx", "Reporte");
 
-            obExportador.generarPosicionDiariaBancos();
+        //    obExportador.generarPosicionDiariaBancos();
 
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                @"alertify.alert('Conciliaci&oacute;n bancaria','Archivo creado!', function(){ console.log('success') });", true);
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Archivo creado!', function(){document.getElementById('LigaDescarga').click(); });", true);
 
         }
         catch (Exception ex)
@@ -37,11 +37,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         }
     }
 
-
-    protected void CrearExcel(object sender, EventArgs e)
-    {
-      
-    }
+       
 
     private List<InformeBancarioDatos.DetallePosicionDiariaBancos> ConsultarPosicionDiariaBancos()
     {
@@ -50,12 +46,10 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
 
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            var fechaInicio = new DateTime(2017, 12, 1);
-            var fechaFin = new DateTime(2017, 12, 1);
-
-            conexion.AbrirConexion(false);
-
+          var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+          DateTime   fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+          DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);   
+          conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultaPosicionDiariaBanco(conexion, fechaInicio, fechaFin, 1);
         }
         catch (Exception ex)
