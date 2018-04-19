@@ -121,7 +121,7 @@
                                              Fecha Inicial
                                         </td>
                                         <td class="lineaVertical" style="width: 20%">
-                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                             <asp:HiddenField ID="hdfFFinal" runat="server" />
                                         </td>
                                         <td class="lineaVertical" style="width: 15%">
@@ -145,7 +145,7 @@
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 20%">
-                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
                                 </td>
                                 <td class="lineaVertical" style="width: 15%">

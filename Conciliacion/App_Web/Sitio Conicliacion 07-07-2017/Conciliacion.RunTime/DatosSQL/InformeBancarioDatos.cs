@@ -22,20 +22,73 @@ namespace Conciliacion.RunTime.DatosSQL
         {
         }
 
-       /* public override List<DetallePosicionDiariaBancos>  consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto)
+        /* public override List<DetallePosicionDiariaBancos>  consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto)
+         {
+             try
+             {
+                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                 _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaConciliado";
+
+                 _conexion.Comando.Parameters.Clear();
+                 _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.SmallInt)).Value = FechaIni;
+                 _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.SmallInt)).Value = FechaFin;
+                 _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
+                 _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
+                 _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.VarChar)).Value = Status;
+                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", System.Data.SqlDbType.VarChar)).Value = StatusConcepto;
+
+                 SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                 List<DetallePosicionDiariaBancos> lstInformeBancario = new List<DetallePosicionDiariaBancos>();
+
+                 if (reader.HasRows)
+                 {
+                     while (reader.Read())
+                     {
+                         DetallePosicionDiariaBancos dato = new DetallePosicionDiariaBancos(
+                                 Convert.ToString(reader["Corporativo"]),
+                                 Convert.ToString(reader["Sucursal"]),
+                                 Convert.ToInt32(reader["Año"]),
+                                 Convert.ToInt32(reader["Mes"]),
+                                 Convert.ToString(reader["CuentaBancoFinanciero"]),
+                                 Convert.ToInt32(reader["ConsecutivoFlujo"]),
+                                 Convert.ToDateTime(reader["Fecha"]),
+                                 Convert.ToString(reader["Referencia"]),
+                                 Convert.ToString(reader["Concepto"]),
+                                (reader["Fecha"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["Fecha"])),
+                                 Convert.ToByte(reader["Caja"]),
+                                 Convert.ToDecimal(reader["Kilos"]),
+                                 Convert.ToDecimal(reader["Importe"]),
+                                 Convert.ToDecimal(reader["Retiros"]),
+                                 Convert.ToDecimal(reader["Depositos"]),
+                                 Convert.ToDecimal(reader["SaldoFinal"]),
+                                 Convert.ToString(reader["ConceptoConciliado"]),
+                                 Convert.ToString(reader["DocumentoConciliado"])
+                                 );
+                         lstInformeBancario.Add(dato);
+                     }
+                     reader.Close();
+                 }
+
+                 return lstInformeBancario;
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
+         }
+       */
+
+        public override List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, byte Caja)
         {
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaConciliado";
+                _conexion.Comando.CommandText = "spCBReportePosicionDiariaBancos";
 
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.SmallInt)).Value = FechaIni;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.SmallInt)).Value = FechaFin;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.VarChar)).Value = Status;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", System.Data.SqlDbType.VarChar)).Value = StatusConcepto;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.DateTime)).Value = FechaFin;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = Caja;
 
                 SqlDataReader reader = _conexion.Comando.ExecuteReader();
                 List<DetallePosicionDiariaBancos> lstInformeBancario = new List<DetallePosicionDiariaBancos>();
@@ -45,24 +98,11 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         DetallePosicionDiariaBancos dato = new DetallePosicionDiariaBancos(
-                                Convert.ToString(reader["Corporativo"]),
-                                Convert.ToString(reader["Sucursal"]),
-                                Convert.ToInt32(reader["Año"]),
-                                Convert.ToInt32(reader["Mes"]),
-                                Convert.ToString(reader["CuentaBancoFinanciero"]),
-                                Convert.ToInt32(reader["ConsecutivoFlujo"]),
-                                Convert.ToDateTime(reader["Fecha"]),
-                                Convert.ToString(reader["Referencia"]),
                                 Convert.ToString(reader["Concepto"]),
-                               (reader["Fecha"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["Fecha"])),
+                                (reader["Fecha"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["Fecha"])),
                                 Convert.ToByte(reader["Caja"]),
                                 Convert.ToDecimal(reader["Kilos"]),
-                                Convert.ToDecimal(reader["Importe"]),
-                                Convert.ToDecimal(reader["Retiros"]),
-                                Convert.ToDecimal(reader["Depositos"]),
-                                Convert.ToDecimal(reader["SaldoFinal"]),
-                                Convert.ToString(reader["ConceptoConciliado"]),
-                                Convert.ToString(reader["DocumentoConciliado"])
+                                Convert.ToDecimal(reader["Importe"])
                                 );
                         lstInformeBancario.Add(dato);
                     }
@@ -76,151 +116,207 @@ namespace Conciliacion.RunTime.DatosSQL
                 throw ex;
             }
         }
-      */
+
         public override InformeBancario CrearObjeto()
         {
             return new InformeBancarioDatos(this.ImplementadorMensajes);
         }
 
-        public override List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, byte Caja)
-        {
-            throw new NotImplementedException();
-        }
+        //public class DetallePosicionDiariaBancos
+        //{
+        //    private string corporativo;
+        //    private string sucursal;
+        //    private int año;
+        //    private int mes;
+        //    private string cuentabancofinanciero;
+        //    private int consecutivoflujo;
+        //    private DateTime fecha;
+        //    private string referencia;
+        //    private string concepto;
+        //    private decimal retiros;
+        //    private decimal depositos;
+        //    private decimal saldofinal;
+        //    private string conceptoconciliado;
+        //    private string documentoconciliado;
+
+        //    public string Corporativo
+        //    {
+        //        get { return corporativo; }
+        //        set { corporativo = value; }
+        //    }
+        //    public string Sucursal
+        //    {
+        //        get { return sucursal; }
+        //        set { sucursal = value; }
+        //    }
+        //    public int Año
+        //    {
+        //        get { return año; }
+        //        set { año = value; }
+        //    }
+        //    public int Mes
+        //    {
+        //        get { return mes; }
+        //        set { mes = value; }
+        //    }
+        //    public string CuentaBancoFinanciero
+        //    {
+        //        get { return cuentabancofinanciero; }
+        //        set { cuentabancofinanciero = value; }
+        //    }
+        //    public int ConsecutivoFlujo
+        //    {
+        //        get { return consecutivoflujo; }
+        //        set { consecutivoflujo = value; }
+        //    }
+        //    public DateTime Fecha
+        //    {
+        //        get { return fecha; }
+        //        set { fecha = value; }
+        //    }
+        //    public string Referencia
+        //    {
+        //        get { return referencia; }
+        //        set { referencia = value; }
+        //    }
+        //    public string Concepto
+        //    {
+        //        get { return concepto; }
+        //        set { concepto = value; }
+        //    }
+        //    public decimal Retiros
+        //    {
+        //        get { return retiros; }
+        //        set { retiros = value; }
+        //    }
+        //    public decimal Depositos
+        //    {
+        //        get { return depositos; }
+        //        set { depositos = value; }
+        //    }
+        //    public decimal SaldoFinal
+        //    {
+        //        get { return saldofinal; }
+        //        set { saldofinal = value; }
+        //    }
+        //    public string ConceptoConciliado
+        //    {
+        //        get { return conceptoconciliado; }
+        //        set { conceptoconciliado = value; }
+        //    }
+        //    public string DocumentoConciliado
+        //    {
+        //        get { return documentoconciliado; }
+        //        set { documentoconciliado = value; }
+        //    }
+
+        //    public DetallePosicionDiariaBancos()
+        //    {
+
+        //    }
+
+        //    public DetallePosicionDiariaBancos(string corporativo,
+        //                string sucursal,
+        //                int año,
+        //                int mes,
+        //                string cuentabancofinanciero,
+        //                int consecutivoflujo,
+        //                DateTime fecha,
+        //                string referencia,
+        //                string concepto,
+        //                decimal retiros,
+        //                decimal depositos,
+        //                decimal saldofinal,
+        //                string conceptoconciliado,
+        //                string documentoconciliado)
+        //    {
+        //        this.corporativo = corporativo;
+        //        this.sucursal = sucursal;
+        //        this.año = año;
+        //        this.mes = mes;
+        //        this.cuentabancofinanciero = cuentabancofinanciero;
+        //        this.consecutivoflujo = consecutivoflujo;
+        //        this.fecha = fecha;
+        //        this.referencia = referencia;
+        //        this.concepto = concepto;
+        //        this.retiros = retiros;
+        //        this.depositos = depositos;
+        //        this.saldofinal = saldofinal;
+        //        this.conceptoconciliado = conceptoconciliado;
+        //        this.documentoconciliado = documentoconciliado;
+        //    }
+
+        //    //public DetallePosicionDiariaBancos CrearObjeto()
+        //    //{
+        //    //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
+        //    //}
+        //}
 
         public class DetallePosicionDiariaBancos
-        {   private byte _Caja;
+        {
+            private string _Concepto;
+            private DateTime _Fecha;
+            private byte _Caja;
             private decimal _Kilos;
             private decimal _Importe;
 
-            #region Propiedades           
-
-            private string corporativo;
-            private string sucursal;
-            private int año;
-            private int mes;
-            private string cuentabancofinanciero;
-            private int consecutivoflujo;
-            private DateTime fecha;
-            private string referencia;
-            private string concepto;
-            private decimal retiros;
-            private decimal depositos;
-            private decimal saldofinal;
-            private string conceptoconciliado;
-            private string documentoconciliado;
-
-            public string Corporativo
-            {
-                get { return corporativo; }
-                set { corporativo = value; }
-            }
-            public string Sucursal
-            {
-                get { return sucursal; }
-                set { sucursal = value; }
-            }
-            public int Año
-            {
-                get { return año; }
-                set { año = value; }
-            }
-            public int Mes
-            {
-                get { return mes; }
-                set { mes = value; }
-            }
-            public string CuentaBancoFinanciero
-            {
-                get { return cuentabancofinanciero; }
-                set { cuentabancofinanciero = value; }
-            }
-            public int ConsecutivoFlujo
-            {
-                get { return consecutivoflujo; }
-                set { consecutivoflujo = value; }
-            }
-            public DateTime Fecha
-            {
-                get { return fecha; }
-                set { fecha = value; }
-            }
-            public byte Caja
-            {
-                get { return _Caja; }
-                set { _Caja = value; }               
-            }
-
-            public string Referencia
-            {
-                get { return referencia; }
-                set { referencia = value; }
-            }
-            public decimal Kilos            
-            {
-                get { return _Kilos; }
-                set { _Kilos = value; }                
-            }
-
-            public decimal Importe            
-            {
-                get { return _Importe; }
-                set { _Importe = value; }               
-            }
+            #region Propiedades
 
             public string Concepto
             {
-                get { return concepto; }
-                set { concepto = value; }
-            }
-            public decimal Retiros
-            {
-                get { return retiros; }
-                set { retiros = value; }
+                get { return _Concepto; }
+                set { _Concepto = value; }
             }
 
-            public decimal Depositos
+            public DateTime Fecha
             {
-                get { return depositos; }
-                set { depositos = value; }
+                get { return _Fecha; }
+                set { _Fecha = value; }
             }
-            public decimal SaldoFinal
+
+            public byte Caja
             {
-                get { return saldofinal; }
-                set { saldofinal = value; }
+                get { return _Caja; }
+                set { _Caja = value; }
             }
-            public string ConceptoConciliado
+
+            public decimal Kilos
             {
-                get { return conceptoconciliado; }
-                set { conceptoconciliado = value; }
+                get { return _Kilos; }
+                set { _Kilos = value; }
             }
-            public string DocumentoConciliado
+
+            public decimal Importe
             {
-                get { return documentoconciliado; }
-                set { documentoconciliado = value; }
+                get { return _Importe; }
+                set { _Importe = value; }
             }
+
             #endregion
 
-            public DetallePosicionDiariaBancos(string corporativo,
-                        string sucursal,
-                        int año,
-                        int mes,
-                        string cuentabancofinanciero,
-                        int consecutivoflujo,
-                        DateTime fecha,
-                        string referencia,
-                        string concepto,
-                        decimal retiros,
-                        decimal depositos,
-                        decimal saldofinal,
-                        string conceptoconciliado,
-                        string documentoconciliado)
+            #region Constructores
+
+            public DetallePosicionDiariaBancos()
             {
+
             }
 
-            //public DetallePosicionDiariaBancos CrearObjeto()
-            //{
-            //return new DetallePosicionDiariaBancos(this.ImplementadorMensajes);
-            //}
+            public DetallePosicionDiariaBancos(
+                                                string concepto,
+                                                DateTime fecha,
+                                                byte caja,
+                                                decimal kilos,
+                                                decimal importe)
+            {
+                this._Concepto = concepto;
+                this._Fecha = fecha;
+                this._Caja = caja;
+                this._Kilos = kilos;
+                this._Importe = importe;
+            }
+
+            #endregion
+
         }
 
         public class DetalleCuentaBanco
