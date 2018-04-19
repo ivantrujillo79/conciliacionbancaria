@@ -17,7 +17,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
           List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
            lstDetalle = ConsultarPosicionDiariaBancos();
            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-           @"C:\Users\Transforma1\Source\repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\InformesExcel\", "Prueba.xlsx", "Reporte");
+           @"C:\Users\Transforma1\Source\repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\InformesExcel\", "InformePosicionDiariaBancos.xlsx", "Reporte");
 
            obExportador.generarPosicionDiariaBancos();
            

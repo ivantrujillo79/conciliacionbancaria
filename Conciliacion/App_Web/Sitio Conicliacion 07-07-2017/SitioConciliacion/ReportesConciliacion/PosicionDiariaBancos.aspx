@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="PosicionDiariaBancos.aspx.cs" Inherits="ReportesConciliacion_PosicionDiariaBancos" %>
 
+<%@ Register src="../ControlesUsuario/ListadoCajas/wucListadoCajas.ascx" tagname="wucListadoCajas" tagprefix="uc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
     Posici&oacute;n Diaria de Bancos
 </asp:Content>
@@ -35,18 +37,27 @@
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
+                showOn: "button",
+                buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",
+                buttonImageOnly: true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    $(".ui-datepicker-trigger").css("width", "24px");
                 }
             });
             $("#<%=txtFFinal.ClientID%>").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
                 changeYear: true,
+                showOn: "button",
+                buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",
+                buttonImageOnly: true,
                 onClose: function (selectedDate) {
                     $("#<%=txtFInicial.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    $(".ui-datepicker-trigger").css("width", "24px");
                 }
-            });       
+            });
+           $(".ui-datepicker-trigger").css("width", "24px");
         }
 
         function ValidaFiltro() {
@@ -55,7 +66,7 @@
             if (document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value.trim() == ""
                 &&
                 document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value.trim() != "") {
-                alert("Capture un periodo de fechas valido");
+                alertify.alert('Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.');
                 document.getElementById("ctl00_contenidoPrincipal_txtFInicial").focus();
                 return false
             }
@@ -63,7 +74,7 @@
                 if (document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value.trim() == ""
                     &&
                     document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value.trim() != "") {
-                    alert("Capture un periodo de fechas valido");
+                    alertify.alert('Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.');
                     document.getElementById("ctl00_contenidoPrincipal_txtFFinal").focus();
                     return false
                 }
@@ -76,17 +87,18 @@
                     var anofin = parseInt(ffinal.substr(6, 4));
                     if (mesini != mesfin || anoini != anofin)
                     {
-                        alertify.alert(
-                            'Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.',
-                            function () { alertify.error('Error en la solicitud'); }
-                            );
+                        alertify.alert('Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.'); 
+                        
                         return false
                     }
                     else
                         return true;
                 }
-        }
+          
+          
+            }
 
+     
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
@@ -101,119 +113,72 @@
                         <table class="etiqueta opcionBarra">
                             <tr>
                                 <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
-                                    <asp:ImageButton ID="btnBuscar" runat="server" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
-                                        ToolTip="CONSULTAR" Width="25px" ValidationGroup="Configuracion"
-                                        OnClientClick="return ValidaFiltro();"
-                                        />
+                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
+                                        ToolTip="CONSULTAR"   Width="100px" ValidationGroup="Configuracion"
+                                         />
                                 </td>
                             </tr>
                         </table>
                     </td>
 
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 59%">
-                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                            <ContentTemplate>
-                                <table class="etiqueta opcionBarra">
-                                    <tr>
-                                        <td class="lineaVertical" style="width: 30%">
-                                        </td>
-                                        <td class="lineaVertical" style="width: 10%">
-                                             Fecha Inicial
-                                        </td>
-                                        <td class="lineaVertical" style="width: 20%">
-                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
-                                            <asp:HiddenField ID="hdfFFinal" runat="server" />
-                                        </td>
-                                        <td class="lineaVertical" style="width: 15%">
-                                            Caja
-                                        </td>
-                                        <td class="lineaVertical" style="width: 15%">
-                                        </td>
-                                        <td class="lineaVertical" style="width: 10%">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                        
-
-                        <table class="etiqueta opcionBarra">
+                        <table class="etiqueta opcionBarra " style="width:25%;">
+                            <tr>                                
+                                <td class="" style="width: 8.3%; text-align:center;">
+                                     Posición diaria de bancos
+                                </td>                                                        
+                            </tr>
+                        </table>
+                        <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
-                                <td class="lineaVertical" style="width: 30%">
+                                
+                                <td class="" style="width: 8.4%; text-align:center;">
+                                     Fecha Inicial
                                 </td>
-                                <td class="lineaVertical" style="width: 10%">
+                                <td class="lineaVertical" style="width: 16%">
+                                    <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>                                    
+                                    <asp:HiddenField ID="hdfFFinal" runat="server" />                           
+                               </td>                             
+                            </tr>
+                        </table>
+
+                        <table class="etiqueta opcionBarra" style="width:25%;">
+                            <tr>                               
+                                <td class="" style="width: 8.4%; text-align:center;">
                                      Fecha Final
                                 </td>
-                                <td class="lineaVertical" style="width: 20%">
+                                <td class="lineaVertical" style="width: 16%">
                                     <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
-                                </td>
-                                <td class="lineaVertical" style="width: 15%">
-                                    <asp:CheckBox ID="CheckBox1" Text="Todos" runat="server" />
-                                    <asp:CheckBox ID="CheckBox2" Text="Caja 1" runat="server" />
-                                </td>
-                                <td class="lineaVertical" style="width: 15%">
-                                    <asp:CheckBox ID="CheckBox3" Text="Caja 2" runat="server" />
-                                    <asp:CheckBox ID="CheckBox4" Text="Caja 5" runat="server" />
-                                </td>
-                                <td class="lineaVertical" style="width: 10%">
-                                    <asp:CheckBox ID="CheckBox5" Text="Caja 6" runat="server" />
-                                </td>
+                                </td>                               
+                             
                             </tr>
-                        </table>
-                         
+                        </table>                         
+
+                        <table class="etiqueta opcionBarra" style="width:25%;">
+                            <tr>
+                                
+                                <td class="" style="width: 8.5%; text-underline-position:below; text-align:center; ">
+                                   Caja
+                                </td>
+                                <td class="lineaVertical" style="width: 16.5%">
+                                    <div class="auto-style4">                                        
+                                        
+                                        <uc1:wucListadoCajas ID="wucListadoCajas1" runat="server" />
+                                        
+                                    </div>
+                                </td>                             
+                              </tr>                           
+                          </table>   
+                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
+                         runat="server" OnClick="btnConsultar_Click"  OnClientClick="return ValidaFiltro();" />
+                         <a id="LigaDescarga" href="../InformesExcel/InformePosicionDiariaBancos.xlsx"></a> 
                     </td>
                    
-
-                   <%-- <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="iconoOpcion bg-color-naranja" style="height: 30px">
-                                    <asp:ImageButton ID="imgBuscar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                        ToolTip="BUSCAR" Width="25px" 
-                                        />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td id="tdExportar" runat="server" class="iconoOpcion bg-color-rojo" style="height: 30px">
-                                    <asp:ImageButton ID="imgExportar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exportar.png"
-                                        ToolTip="EXPORTAR RESULTADOS" Width="25px" 
-                                        />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="iconoOpcion bg-color-azulOscuro" style="height: 30px">
-                                    <asp:ImageButton ID="imgGuardar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Guardar.png"
-                                        ToolTip="GUARDAR VISTA" Width="25px" 
-                                         />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="iconoOpcion bg-color-grisOscuro" style="height: 30px">
-                                    <asp:ImageButton ID="imgCerrarMesConciliacion" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                        ToolTip="CERRAR MES" Width="25px" 
-                                        OnClientClick="return confirm('¿Esta seguro de CERRAR el MES de Conciliaciones.?\nNota: Verificar antes de que no existan CONCILIACIONES abiertas de este mes.')" />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>--%>
+                   
+                 
 
                 </tr>
             </table>
-    <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-     runat="server" OnClick="btnConsultar_Click" />
-    <a id="LigaDescarga" href="../InformesExcel/Prueba.xlsx"></a> 
 </asp:Content>
 
