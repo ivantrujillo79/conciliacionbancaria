@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Collections;
 using Conciliacion.RunTime.DatosSQL;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -92,7 +93,11 @@ namespace Conciliacion.RunTime.DatosSQL
 
                 SqlDataReader reader = _conexion.Comando.ExecuteReader();
                 List<DetallePosicionDiariaBancos> lstInformeBancario = new List<DetallePosicionDiariaBancos>();
-
+                /*  var fechaInicio = new DateTime(2017, 12, 1);
+                  decimal x= 182968.00m;
+                  decimal s = 1890999.50m;
+                  DetallePosicionDiariaBancos datoY = new DetallePosicionDiariaBancos("Estacionario", fechaInicio,3, x,s );
+                  lstInformeBancario.Add(datoY);*/
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -108,7 +113,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     }
                     reader.Close();
                 }
-
+                
                 return lstInformeBancario;
             }
             catch (Exception ex)
