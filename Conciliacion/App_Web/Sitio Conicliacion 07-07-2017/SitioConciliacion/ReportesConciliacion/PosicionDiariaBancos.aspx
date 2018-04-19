@@ -1,7 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="PosicionDiariaBancos.aspx.cs" Inherits="ReportesConciliacion_PosicionDiariaBancos" %>
 
-<%@ Register Src="~/ControlesUsuario/ListadoCajas/wucListadoCajas.ascx" TagName="WUCCajas" TagPrefix="uc1" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
     Posici&oacute;n Diaria de Bancos
 </asp:Content>
@@ -119,39 +117,53 @@
                                     <tr>
                                         <td class="lineaVertical" style="width: 30%">
                                         </td>
-                                        <td class="lineaVertical" style="width: 10%; padding-top:7px;">
+                                        <td class="lineaVertical" style="width: 10%">
                                              Fecha Inicial
                                         </td>
-                                        <td class="lineaVertical" style="width: 20%; padding-top:7px;">
-                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                        <td class="lineaVertical" style="width: 20%">
+                                            <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                             <asp:HiddenField ID="hdfFFinal" runat="server" />
                                         </td>
-                                        <td class="lineaVertical" style="width: 40%">
-                                            Cajas
+                                        <td class="lineaVertical" style="width: 15%">
+                                            Caja
+                                        </td>
+                                        <td class="lineaVertical" style="width: 15%">
+                                        </td>
+                                        <td class="lineaVertical" style="width: 10%">
                                         </td>
                                     </tr>
                                 </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         
+
                         <table class="etiqueta opcionBarra">
-                            <tr valign="top">
+                            <tr>
                                 <td class="lineaVertical" style="width: 30%">
                                 </td>
-                                <td class="lineaVertical" style="width: 10%; padding-top:7px;">
+                                <td class="lineaVertical" style="width: 10%">
                                      Fecha Final
                                 </td>
-                                <td class="lineaVertical" style="width: 20%; padding-top:7px;">
-                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%" ReadOnly="true"></asp:TextBox>
+                                <td class="lineaVertical" style="width: 20%">
+                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
                                 </td>
-                                <td class="lineaVertical" style="width: 40%;">
-                                    <uc1:WUCCajas ID="wucCajas" runat="server"/>
+                                <td class="lineaVertical" style="width: 15%">
+                                    <asp:CheckBox ID="CheckBox1" Text="Todos" runat="server" />
+                                    <asp:CheckBox ID="CheckBox2" Text="Caja 1" runat="server" />
+                                </td>
+                                <td class="lineaVertical" style="width: 15%">
+                                    <asp:CheckBox ID="CheckBox3" Text="Caja 2" runat="server" />
+                                    <asp:CheckBox ID="CheckBox4" Text="Caja 5" runat="server" />
+                                </td>
+                                <td class="lineaVertical" style="width: 10%">
+                                    <asp:CheckBox ID="CheckBox5" Text="Caja 6" runat="server" />
                                 </td>
                             </tr>
                         </table>
-
+                         
                     </td>
+                   
 
                    <%-- <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">
                         <table class="etiqueta opcionBarra">
@@ -200,6 +212,8 @@
 
                 </tr>
             </table>
-
+    <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
+     runat="server" OnClick="btnConsultar_Click" />
+    <a id="LigaDescarga" href="../InformesExcel/Prueba.xlsx"></a> 
 </asp:Content>
 

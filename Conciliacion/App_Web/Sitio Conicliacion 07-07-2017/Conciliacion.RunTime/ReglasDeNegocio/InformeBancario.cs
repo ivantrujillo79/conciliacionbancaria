@@ -40,6 +40,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             DetalleBanco objDatos = new DetalleBanco();            
             ListaResultado = objDatos.consultarBancos(_conexion,Corporativo);
             return ListaResultado;
+
         }
 
         public InformeBancario(IMensajesImplementacion implementadorMensajes)
