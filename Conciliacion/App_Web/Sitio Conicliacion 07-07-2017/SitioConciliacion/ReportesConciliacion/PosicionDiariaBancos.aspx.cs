@@ -27,7 +27,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+        //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
