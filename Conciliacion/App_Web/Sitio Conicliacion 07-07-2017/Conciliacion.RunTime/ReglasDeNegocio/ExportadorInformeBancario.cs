@@ -27,6 +27,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string _Archivo;
         private string _NombreLibro;
 
+        private List<DateTime> _Fechas;
+        private List<Coordenada> _Coordenadas;
+
         private const string CONCEPTO1 = "PORTATIL";
         private const string CONCEPTO2 = "ESTACIONARIO";
         private const string CONCEPTO3 = "EDIFICIOS";
@@ -52,15 +55,47 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
                 _NombreLibro = Nombre.Trim();
+                _Coordenadas = new List<Coordenada>();
 
                 ValidarMiembros();
+
             }
             catch(Exception ex)
             {
                 throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
             }
         }
-        
+
+        #endregion
+
+        #region Estructuras
+
+        /* Estructura para determinar en qué columna imprimir los registros
+         * de una fecha determinada
+        */
+        private struct Coordenada
+        {
+            private DateTime _Fecha;
+            private int _Columna;
+
+            public DateTime Fecha
+            {
+                get { return _Fecha; }
+                set { _Fecha = value; }
+            }
+            public int Columna
+            {
+                get { return _Columna; }
+                set { _Columna = value; }
+            }
+
+            public Coordenada(DateTime fecha, int columna)
+            {
+                _Fecha = fecha;
+                _Columna = columna;
+            }
+        }
+
         #endregion
 
         public void generarPosicionDiariaBancos()
@@ -68,6 +103,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             try
             {
                 inicializar();
+                agruparPorFecha();
                 crearEncabezado();
                 exportarPosicionDiariaBancos();
                 calcularTotalizadores();
@@ -82,15 +118,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 
-                if (xlRango != null)        Marshal.ReleaseComObject(xlRango);
-                if (xlHoja != null)         Marshal.ReleaseComObject(xlHoja);
-                if (xlHojas != null)        Marshal.ReleaseComObject(xlHojas);
-                if (xlLibro != null)        Marshal.ReleaseComObject(xlLibro);
-                if (xlLibros != null)       Marshal.ReleaseComObject(xlLibros);
-                if (xlAplicacion != null)   Marshal.ReleaseComObject(xlAplicacion);
+                if (xlRango != null) Marshal.ReleaseComObject(xlRango);
+                if (xlHoja != null) Marshal.ReleaseComObject(xlHoja);
+                if (xlHojas != null) Marshal.ReleaseComObject(xlHojas);
+                if (xlLibro != null) Marshal.ReleaseComObject(xlLibro);
+                if (xlLibros != null) Marshal.ReleaseComObject(xlLibros);
+                if (xlAplicacion != null) Marshal.ReleaseComObject(xlAplicacion);
             }
         }
-
+        
         private void inicializar()
         {
             xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
@@ -113,16 +149,34 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlHoja = xlHojas.Add();
         }
 
+        private void agruparPorFecha()
+        {
+            _Fechas = _DetallePosicionDiariaBancos.Select(detalle => detalle.Fecha)
+                                                  .Where(fecha => fecha != DateTime.MinValue)
+                                                  .Distinct()
+                                                  .ToList();
+        }
+
         private void crearEncabezado()
         {
+            Excel.Range celdaDiaInicial = null;
+            Excel.Range celdaDiaFinal   = null;
+            Excel.Range celdaKilos      = null;
+            Excel.Range celdaFecha      = null;
+            int celda = 6;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
-            DateTime fecha = _DetallePosicionDiariaBancos
-                                                    .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-                                                    .Fecha;
-            string dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+            //DateTime fecha;
+            //string dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+            string dia;
             string caja = Convert.ToString(_DetallePosicionDiariaBancos
-                                                    .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-                                                    .Caja);
+                                            .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+                                            .Caja);
+            Coordenada coordenada;
+            //DateTime fecha = _DetallePosicionDiariaBancos
+            //                                .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+            //                                .Fecha;
+            //string dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+
 
             // Nombre del reporte
             xlRango = xlHoja.Range["A1"];
@@ -133,31 +187,60 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.RowHeight = 15;
             xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
             xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-            // Día
-            xlRango = xlHoja.Range["F1:G1"];
-            xlRango.Merge();
-            xlRango.Value2 = dia;
-            // Kilos
-            xlRango = xlHoja.Range["F2,G2"];
-            xlRango[1, 1].Value2 = "KILOS";
-            // Fecha
-            xlRango[1, 2].Value2 = fecha.ToString("d-MMM-yyyy", cultureInfo);
-            // Formato
-            xlRango = xlHoja.Range["F1:G2"];
-            xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            xlRango.ColumnWidth = 16;
-            // Caja
-            xlRango = xlHoja.Range["A3:E3"];
-            xlRango.Merge();
-            xlRango.Value2 = "CAJA MATRIZ " + caja;
-            xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+            try
+            {
+                foreach(DateTime fecha in _Fechas)
+                {
+                    coordenada = new Coordenada(fecha, celda);
+                    _Coordenadas.Add(coordenada);
+
+                    dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+
+                    // Día
+                    celdaDiaInicial = xlHoja.Cells[1, celda];
+                    celdaDiaFinal = xlHoja.Cells[1, celda + 1];
+                    xlRango = xlHoja.Range[celdaDiaInicial, celdaDiaFinal];
+                    xlRango.Merge();
+                    xlRango.Value2 = dia;
+
+                    // Kilos
+                    celdaKilos = celdaDiaInicial.Offset[1, 0];
+                    celdaKilos.Value2 = "KILOS";
+
+                    // Fecha
+                    celdaFecha = celdaKilos.Offset[0, 1];
+                    celdaFecha.Value2 = fecha.ToString("d-MMM-yyyy", cultureInfo);
+
+                    // Formato
+                    xlRango = xlHoja.Range[celdaDiaInicial, celdaFecha];
+                    xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+                    xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                    xlRango.ColumnWidth = 16;
+
+                    celda += 2;
+                }
+                
+                // Caja
+                xlRango = xlHoja.Range["A3:E3"];
+                xlRango.Merge();
+                xlRango.Value2 = "CAJA MATRIZ " + caja;
+                xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+                xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            }
+            finally
+            {
+                if (celdaDiaInicial != null)    Marshal.ReleaseComObject(celdaDiaInicial);
+                if (celdaDiaFinal != null)      Marshal.ReleaseComObject(celdaDiaFinal);
+                if (celdaKilos != null)         Marshal.ReleaseComObject(celdaKilos);
+                if (celdaFecha != null)         Marshal.ReleaseComObject(celdaFecha);
+            }
         }
 
         private void exportarPosicionDiariaBancos()
         {
             string concepto;
+            int columna;
 
             xlRango = xlHoja.Range["A4:E19"];
             xlRango.Merge(true);
@@ -180,56 +263,62 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.Font.Bold = true;
 
             // Seleccionar cuadro de celdas donde se imprimirán los datos
-            xlRango = xlHoja.Range["F4:G14"];
+            //xlRango = xlHoja.Range["F4:G14"];
+            xlRango = xlHoja.Range["A4:B4"];
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
+                if (item.Fecha == DateTime.MinValue)
+                    break;
+
                 concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
+                columna = _Coordenadas.Single(x => x.Fecha == item.Fecha)
+                                      .Columna;
 
                 switch (concepto)
                 {
                     case CONCEPTO1:
-                        xlRango[1, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[1, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[1, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[1, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO2:
-                        xlRango[2, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[2, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[2, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[2, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO3:
-                        xlRango[3, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[3, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[3, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[3, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO4:
-                        xlRango[4, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[4, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[4, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[4, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO5:
-                        xlRango[5, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[5, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[5, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[5, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO6:
-                        xlRango[6, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[6, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[6, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[6, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO7:
-                        xlRango[7, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[7, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[7, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[7, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO8:
-                        xlRango[8, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[8, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[8, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[8, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO9:
-                        xlRango[9, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[9, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[9, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[9, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO10:
-                        xlRango[10, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[10, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[10, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[10, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO11:
-                        xlRango[11, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[11, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[11, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[11, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     default:
                         break;
@@ -285,7 +374,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // Formato
             xlRango = xlHoja.Range["A16:G19"];
             xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-            xlRango = xlHoja.Range["A1:G19"];
+
+            int columnaFinal = _Coordenadas.Select(x => x.Columna)
+                                           .Max() 
+                                           + 1;
+
+            var celdaInicial = xlHoja.Cells[1, 1];
+            var celdaFinal = xlHoja.Cells[19, columnaFinal];
+
+            //xlRango = xlHoja.Range["A1:G19"];
+            xlRango = xlHoja.Range[celdaInicial, celdaFinal];
             xlRango.BorderAround2(Excel.XlLineStyle.xlDouble, Excel.XlBorderWeight.xlThin, 
                 Excel.XlColorIndex.xlColorIndexAutomatic);
         }
