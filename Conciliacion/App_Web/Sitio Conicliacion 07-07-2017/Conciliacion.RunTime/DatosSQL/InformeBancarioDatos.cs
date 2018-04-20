@@ -92,12 +92,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = Caja;
 
                 SqlDataReader reader = _conexion.Comando.ExecuteReader();
-                List<DetallePosicionDiariaBancos> lstInformeBancario = new List<DetallePosicionDiariaBancos>();
-                /*  var fechaInicio = new DateTime(2017, 12, 1);
-                  decimal x= 182968.00m;
-                  decimal s = 1890999.50m;
-                  DetallePosicionDiariaBancos datoY = new DetallePosicionDiariaBancos("Estacionario", fechaInicio,3, x,s );
-                  lstInformeBancario.Add(datoY);*/
+                List<DetallePosicionDiariaBancos> lstInformeBancario = new List<DetallePosicionDiariaBancos>();            
                 if (reader.HasRows)
                 {
                     while (reader.Read())

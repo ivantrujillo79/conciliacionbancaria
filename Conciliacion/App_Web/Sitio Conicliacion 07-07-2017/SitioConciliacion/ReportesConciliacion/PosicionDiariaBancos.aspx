@@ -66,7 +66,7 @@
             if (document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value.trim() == ""
                 &&
                 document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value.trim() != "") {
-                alertify.alert('Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.');
+                MostrarMensajeError();
                 document.getElementById("ctl00_contenidoPrincipal_txtFInicial").focus();
                 return false
             }
@@ -74,7 +74,7 @@
                 if (document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value.trim() == ""
                     &&
                     document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value.trim() != "") {
-                    alertify.alert('Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.');
+                    MostrarMensajeError();
                     document.getElementById("ctl00_contenidoPrincipal_txtFFinal").focus();
                     return false
                 }
@@ -87,7 +87,7 @@
                     var anofin = parseInt(ffinal.substr(6, 4));
                     if (mesini != mesfin || anoini != anofin)
                     {
-                        alertify.alert('Conciliaci&oacute;n bancaria', 'Error: Debe especificar una fecha inicial y final y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada.'); 
+                        MostrarMensajeError();
                         
                         return false
                     }
@@ -95,18 +95,25 @@
                         return true;
                 }
           
-          
+          function MostrarMensajeError() {
+            var mensaje = document.getElementById('<%= dvAlertaError.ClientID %>');
+            mensaje.hidden = false;
+        }
             }
 
      
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
- 
-    <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
+   <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
-
+  <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
+                  style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px; width:1185px">
+                <strong>Error: </strong>
+                <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
+                y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada." />
+  </div>    
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">                      
@@ -124,7 +131,7 @@
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 59%">
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>                                
-                                <td class="" style="width: 8.3%; text-align:center;">
+                                <td class="" style="width: 8.3%; text-align:center; color:white">
                                      Posición diaria de bancos
                                 </td>                                                        
                             </tr>
@@ -132,7 +139,7 @@
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
                                 
-                                <td class="" style="width: 8.4%; text-align:center;">
+                                <td class="" style="width: 8.4%; text-align:center; color:white;">
                                      Fecha Inicial
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
@@ -144,7 +151,7 @@
 
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>                               
-                                <td class="" style="width: 8.4%; text-align:center;">
+                                <td class="" style="width: 8.4%; text-align:center; color:white;">
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
@@ -158,8 +165,8 @@
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                 
-                                <td class="" style="width: 8.5%; text-underline-position:below; text-align:center; ">
-                                   Caja
+                                <td class="" style="width: 8.5%; text-underline-position:below; text-align:center; vertical-align:text-top;  ">
+                                  <p style="color:white; " > Caja</p>
                                 </td>
                                 <td class="lineaVertical" style="width: 16.5%">
                                     <div class="auto-style4">                                        

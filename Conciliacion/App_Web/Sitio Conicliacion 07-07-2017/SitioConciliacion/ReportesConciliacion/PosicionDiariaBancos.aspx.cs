@@ -10,6 +10,40 @@ using System.Web.UI.WebControls;
 
 public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.Page
 {
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            InicializarCajas();
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "UpdateMsg",
+                "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message +
+                "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+    }
+
+    private void InicializarCajas()
+    {
+        List<Caja> ListaCajas = new List<Caja>();
+        try
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                Caja Caja = new Caja(i, "Caja " +i);
+                ListaCajas.Add(Caja);
+            }
+
+            wucListadoCajas1.Cajas = ListaCajas;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    // se inicializa la funcion de exprtar datos
+
     protected void btnConsultar_Click(object sender, EventArgs e)
     {
         try
@@ -22,7 +56,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
            obExportador.generarPosicionDiariaBancos();
            
            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-           @"alertify.alert('Conciliaci&oacute;n bancaria','Archivo creado!', function(){document.getElementById('LigaDescarga').click(); });", true);
+           @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
 
         }
         catch (Exception ex)
