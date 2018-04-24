@@ -149,6 +149,18 @@ public partial class Principal : System.Web.UI.MasterPage
                     case 25:
                         e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Catálogos de Seguridad");
                         break;
+                    case 27:
+                        e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Informe Posicion Bancos");
+                        break;
+                    case 28:
+                        e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Informe Estados Cuenta");
+                        break;
+                    case 29:
+                        e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Informe Estados Cuenta Dia");
+                        break;
+                    case 30:
+                        e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Informe Estado Cuenta Conciliado");
+                        break;
                     default:
                         e.Item.Enabled = false;
                         break;
