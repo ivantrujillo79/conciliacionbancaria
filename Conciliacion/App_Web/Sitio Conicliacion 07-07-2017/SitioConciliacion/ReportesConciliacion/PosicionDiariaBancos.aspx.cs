@@ -45,19 +45,27 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
     // se inicializa la funcion de exprtar datos
 
     protected void btnConsultar_Click(object sender, EventArgs e)
-    {
-        try
+    {        
+       try
         {
           List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
            lstDetalle = ConsultarPosicionDiariaBancos();
-           ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-           @"C:\Users\Transforma1\Source\repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\InformesExcel\", "InformePosicionDiariaBancos.xlsx", "Reporte");
-
-           obExportador.generarPosicionDiariaBancos();
-           
+            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+            string cero;
+            if (fechaInicio.Month < 10)
+            {
+                cero = "0";
+            }
+            else
+            {
+                cero = "";
+            }
+                ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
+                @"C:\Users\Transforma1\Source\repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\InformesExcel\", "PosicionDiariaGM"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                obExportador.generarPosicionDiariaBancos();              
            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
            @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
-
+           
         }
         catch (Exception ex)
         {

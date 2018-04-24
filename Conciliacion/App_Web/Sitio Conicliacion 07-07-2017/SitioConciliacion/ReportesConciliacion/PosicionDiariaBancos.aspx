@@ -28,7 +28,7 @@
     <script type="text/javascript">
     
         function pageLoad() {
-            activarDatePickers();
+            activarDatePickers();            
         }
 
         function activarDatePickers() {
@@ -95,17 +95,29 @@
                         return true;
                 }
           
-          function MostrarMensajeError() {
-            var mensaje = document.getElementById('<%= dvAlertaError.ClientID %>');
-            mensaje.hidden = false;
+            function MostrarMensajeError() {
+                var mensaje = document.getElementById('<%= dvAlertaError.ClientID %>');
+                mensaje.hidden = false;
+            }  
         }
+        function LinkNombreArchivoDescarga() {
+            var finicial = document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value;
+            var ffinal = document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value;
+            var mesini = parseInt(finicial.substr(3, 2));
+            var anoini = parseInt(finicial.substr(6, 4));
+            var cero;
+            if (mesini < 10) {
+                cero = "0";
             }
-
-     
+            else {
+                cero = "";
+            }           
+            document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
-   <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
+    <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
   <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
@@ -131,7 +143,7 @@
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 59%">
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>                                
-                                <td class="" style="width: 8.3%; text-align:center; color:white">
+                                <td class="" style="width: 8.3%; text-align:center; color:white;font-weight: bold;">
                                      Posición diaria de bancos
                                 </td>                                                        
                             </tr>
@@ -139,7 +151,7 @@
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
                                 
-                                <td class="" style="width: 8.4%; text-align:center; color:white;">
+                                <td class="" style="width: 8.4%; text-align:center; color:white;font-weight: bold;">
                                      Fecha Inicial
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
@@ -151,7 +163,7 @@
 
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>                               
-                                <td class="" style="width: 8.4%; text-align:center; color:white;">
+                                <td class="" style="width: 8.4%; text-align:center; color:white;font-weight: bold;">
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
@@ -166,10 +178,10 @@
                             <tr>
                                 
                                 <td class="" style="width: 8.5%; text-underline-position:below; text-align:center; vertical-align:text-top;  ">
-                                  <p style="color:white; " > Caja</p>
+                                  <p style="color:white;font-weight: bold; " > Caja</p>
                                 </td>
                                 <td class="lineaVertical" style="width: 16.5%">
-                                    <div class="auto-style4">                                        
+                                    <div class="auto-style4" style="color: white">                                        
                                         
                                         <uc1:wucListadoCajas ID="wucListadoCajas1" runat="server" />
                                         
@@ -179,7 +191,7 @@
                           </table>   
                          <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
                          runat="server" OnClick="btnConsultar_Click"  OnClientClick="return ValidaFiltro();" />
-                         <a id="LigaDescarga" href="../InformesExcel/InformePosicionDiariaBancos.xlsx"></a> 
+                         <a  id="LigaDescarga" onclick="return LinkNombreArchivoDescarga() " ></a> 
                     </td>
                    
                    
