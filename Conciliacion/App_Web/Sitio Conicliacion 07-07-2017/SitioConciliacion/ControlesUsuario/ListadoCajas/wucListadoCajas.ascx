@@ -5,7 +5,7 @@
 <div style="height: 250px; padding:5px; overflow:auto;" class="etiqueta centradoJustificado">
     <asp:Repeater ID="repCajas" runat="server" >
         <HeaderTemplate>
-            <table style="width: 100%;">
+            <table class="usercontrolCajas"style="width: 100%; color:white;font-weight: bold;">
                 <tr>
                     <td>
                         <asp:CheckBox ID="chkTodos" runat="server" Text="Todos" OnCheckedChanged="chkTodos_CheckedChanged"
