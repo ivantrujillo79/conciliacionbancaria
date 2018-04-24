@@ -27,6 +27,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string _Archivo;
         private string _NombreLibro;
 
+        private List<DateTime> _Fechas;
+        private List<PosicionDiaria> _PosicionesDiarias;
+        private DateTime _FechaAOmitir = new DateTime(1900, 1, 1);
+
         private const string CONCEPTO1 = "PORTATIL";
         private const string CONCEPTO2 = "ESTACIONARIO";
         private const string CONCEPTO3 = "EDIFICIOS";
@@ -52,15 +56,88 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
                 _NombreLibro = Nombre.Trim();
+                _PosicionesDiarias = new List<PosicionDiaria>();
 
                 ValidarMiembros();
+
             }
             catch(Exception ex)
             {
                 throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
             }
         }
-        
+
+        #endregion
+
+        #region Clases
+
+        private class PosicionDiaria
+        {
+            private DateTime _Fecha;
+            private int _Columna;
+            //private decimal _TotalDiaKilos;
+            //private decimal _TotalDiaImporte;
+            private decimal _TotalCreditoKilos;
+            private decimal _TotalCreditoImporte;
+            private decimal _TotalNetoKilos;
+            private decimal _TotalNetoImporte;
+
+            public DateTime Fecha
+            {
+                get { return _Fecha; }
+                set { _Fecha = value; }
+            }
+            public int Columna
+            {
+                get { return _Columna; }
+                set { _Columna = value; }
+            }
+            public decimal TotalDiaKilos
+            {
+                //get { return _TotalDiaKilos; }
+                //set { _TotalDiaKilos = value; }
+                get { return _TotalNetoKilos + _TotalCreditoKilos; }
+            }
+            public decimal TotalDiaImporte
+            {
+                //get { return _TotalDiaImporte; }
+                //set { _TotalDiaImporte = value; }
+                get { return _TotalNetoImporte + _TotalCreditoImporte; }
+            }
+            public decimal TotalCreditoKilos
+            {
+                get { return _TotalCreditoKilos; }
+                set { _TotalCreditoKilos = value; }
+            }
+            public decimal TotalCreditoImporte
+            {
+                get { return _TotalCreditoImporte; }
+                set { _TotalCreditoImporte = value; }
+            }
+            public decimal TotalNetoKilos
+            {
+                get { return _TotalNetoKilos; }
+                set { _TotalNetoKilos = value; }
+            }
+            public decimal TotalNetoImporte
+            {
+                get { return _TotalNetoImporte; }
+                set { _TotalNetoImporte = value; }
+            }
+
+            public PosicionDiaria(DateTime fecha, int columna)
+            {
+                _Fecha = fecha;
+                _Columna = columna;
+                //_TotalDiaKilos = 0m;
+                //_TotalDiaImporte = 0m;
+                _TotalCreditoKilos = 0m;
+                _TotalCreditoImporte = 0m;
+                _TotalNetoKilos = 0m;
+                _TotalNetoImporte = 0m;
+            }
+        }
+
         #endregion
 
         public void generarPosicionDiariaBancos()
@@ -68,6 +145,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             try
             {
                 inicializar();
+                agruparPorFecha();
                 crearEncabezado();
                 exportarPosicionDiariaBancos();
                 calcularTotalizadores();
@@ -90,7 +168,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 if (xlAplicacion != null)   Marshal.ReleaseComObject(xlAplicacion);
             }
         }
-
+        
         private void inicializar()
         {
             xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
@@ -113,16 +191,27 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlHoja = xlHojas.Add();
         }
 
+        private void agruparPorFecha()
+        {
+            _Fechas = _DetallePosicionDiariaBancos.Select(detalle => detalle.Fecha)
+                                                  .Where(fecha => fecha != DateTime.MinValue && fecha != _FechaAOmitir)
+                                                  .Distinct()
+                                                  .ToList();
+        }
+
         private void crearEncabezado()
         {
+            Excel.Range celdaDiaInicial = null;
+            Excel.Range celdaDiaFinal   = null;
+            Excel.Range celdaKilos      = null;
+            Excel.Range celdaFecha      = null;
+            int celda = 6;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
-            DateTime fecha = _DetallePosicionDiariaBancos
-                                                    .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-                                                    .Fecha;
-            string dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+            string dia;
             string caja = Convert.ToString(_DetallePosicionDiariaBancos
-                                                    .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-                                                    .Caja);
+                                            .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+                                            .Caja);
+            PosicionDiaria posicionDiaria;
 
             // Nombre del reporte
             xlRango = xlHoja.Range["A1"];
@@ -133,31 +222,60 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.RowHeight = 15;
             xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
             xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-            // Día
-            xlRango = xlHoja.Range["F1:G1"];
-            xlRango.Merge();
-            xlRango.Value2 = dia;
-            // Kilos
-            xlRango = xlHoja.Range["F2,G2"];
-            xlRango[1, 1].Value2 = "KILOS";
-            // Fecha
-            xlRango[1, 2].Value2 = fecha.ToString("d-MMM-yyyy", cultureInfo);
-            // Formato
-            xlRango = xlHoja.Range["F1:G2"];
-            xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            xlRango.ColumnWidth = 16;
-            // Caja
-            xlRango = xlHoja.Range["A3:E3"];
-            xlRango.Merge();
-            xlRango.Value2 = "CAJA MATRIZ " + caja;
-            xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+            try
+            {
+                foreach(DateTime fecha in _Fechas)
+                {
+                    posicionDiaria = new PosicionDiaria(fecha, celda);
+                    _PosicionesDiarias.Add(posicionDiaria);
+
+                    dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+
+                    // Día
+                    celdaDiaInicial = xlHoja.Cells[1, celda];
+                    celdaDiaFinal = xlHoja.Cells[1, celda + 1];
+                    xlRango = xlHoja.Range[celdaDiaInicial, celdaDiaFinal];
+                    xlRango.Merge();
+                    xlRango.Value2 = dia;
+
+                    // Kilos
+                    celdaKilos = celdaDiaInicial.Offset[1, 0];
+                    celdaKilos.Value2 = "KILOS";
+
+                    // Fecha
+                    celdaFecha = celdaKilos.Offset[0, 1];
+                    celdaFecha.Value2 = fecha.ToString("d-MMM-yyyy", cultureInfo);
+
+                    // Formato
+                    xlRango = xlHoja.Range[celdaDiaInicial, celdaFecha];
+                    xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+                    xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                    xlRango.ColumnWidth = 16;
+
+                    celda += 2;
+                }
+                
+                // Caja
+                xlRango = xlHoja.Range["A3:E3"];
+                xlRango.Merge();
+                xlRango.Value2 = "CAJA MATRIZ " + caja;
+                xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+                xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            }
+            finally
+            {
+                if (celdaDiaInicial != null)    Marshal.ReleaseComObject(celdaDiaInicial);
+                if (celdaDiaFinal != null)      Marshal.ReleaseComObject(celdaDiaFinal);
+                if (celdaKilos != null)         Marshal.ReleaseComObject(celdaKilos);
+                if (celdaFecha != null)         Marshal.ReleaseComObject(celdaFecha);
+            }
         }
 
         private void exportarPosicionDiariaBancos()
         {
             string concepto;
+            int columna;
 
             xlRango = xlHoja.Range["A4:E19"];
             xlRango.Merge(true);
@@ -180,56 +298,61 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.Font.Bold = true;
 
             // Seleccionar cuadro de celdas donde se imprimirán los datos
-            xlRango = xlHoja.Range["F4:G14"];
+            xlRango = xlHoja.Range["A4:B4"];
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
+                if (item.Fecha == DateTime.MinValue || item.Fecha == _FechaAOmitir)
+                    break;
+
                 concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
+                columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
+                                      .Columna;
 
                 switch (concepto)
                 {
                     case CONCEPTO1:
-                        xlRango[1, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[1, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[1, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[1, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO2:
-                        xlRango[2, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[2, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[2, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[2, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO3:
-                        xlRango[3, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[3, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[3, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[3, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO4:
-                        xlRango[4, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[4, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[4, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[4, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO5:
-                        xlRango[5, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[5, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[5, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[5, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO6:
-                        xlRango[6, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[6, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[6, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[6, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO7:
-                        xlRango[7, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[7, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[7, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[7, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO8:
-                        xlRango[8, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[8, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[8, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[8, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO9:
-                        xlRango[9, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[9, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[9, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[9, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO10:
-                        xlRango[10, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[10, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[10, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[10, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     case CONCEPTO11:
-                        xlRango[11, 1].Value2 = item.Kilos.ToString("0,0.##");
-                        xlRango[11, 2].Value2 = item.Importe.ToString("C");
+                        xlRango[11, columna].Value2 = item.Kilos.ToString("0,0.##");
+                        xlRango[11, columna + 1].Value2 = item.Importe.ToString("C");
                         break;
                     default:
                         break;
@@ -240,53 +363,64 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private void calcularTotalizadores()
         {
             string concepto;
-            decimal totalIngresoDia = 0m;
-            decimal totalCredito = 0m;
-            decimal totalNeto = 0m;
-            decimal totalIngresoDiaKilos = 0m;
-            decimal totalCreditoKilos = 0m;
-            decimal totalNetoKilos = 0m;
+            int indice = 0;
+            int columnaFinal = 0;
+            int columna = 0;
+            PosicionDiaria posicionDiaria;
 
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
-                concepto = RemoverAcentos(item.Concepto.Substring(0, 5).ToUpper().Trim());
+                if (item.Fecha == DateTime.MinValue || item.Fecha == _FechaAOmitir)
+                    break;
 
-                if ( (!concepto.Equals("CREDI")) && (!concepto.Equals("TOTAL")) )
+                concepto = RemoverAcentos(item.Concepto.Substring(0, 5).ToUpper().Trim());
+                posicionDiaria = _PosicionesDiarias.First(posicion => posicion.Fecha == item.Fecha);
+                indice = _PosicionesDiarias.IndexOf(posicionDiaria);
+
+                if ((!concepto.Equals("CREDI")) && (!concepto.Equals("TOTAL")))
                 {
-                    //totalIngresoDia += item.Importe;
-                    //totalIngresoDiaKilos += item.Kilos;
-                    totalNeto += item.Importe;
-                    totalNetoKilos += item.Kilos;
+                    _PosicionesDiarias[indice].TotalNetoImporte += item.Importe;
+                    _PosicionesDiarias[indice].TotalNetoKilos += item.Kilos;
                 }
                 else if (concepto.Equals("CREDI"))
                 {
-                    totalCredito += item.Importe;
-                    totalCreditoKilos += item.Kilos;
+                    _PosicionesDiarias[indice].TotalCreditoImporte += item.Importe;
+                    _PosicionesDiarias[indice].TotalCreditoKilos += item.Kilos;
                 }
             }
 
-            totalIngresoDia = totalNeto + totalCredito;
-            totalIngresoDiaKilos = totalNetoKilos + totalCreditoKilos;
+            foreach(PosicionDiaria posicion in _PosicionesDiarias)
+            {
+                columna = posicion.Columna;
 
-            xlRango = xlHoja.Range["F16:G19"];
-            // Total kilos
-            xlRango[1, 1].Value2 = totalIngresoDiaKilos.ToString("0,0.##");
-            xlRango[2, 1].Value2 = totalCreditoKilos.ToString("0,0.##");
-            xlRango[3, 1].Value2 = "-   ";
-            xlRango[3, 1].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
-            xlRango[4, 1].Value2 = totalNetoKilos.ToString("0,0.##");
-            // Total importe
-            xlRango[1, 2].Value2 = totalIngresoDia.ToString("C");
-            xlRango[2, 2].Value2 = totalCredito.ToString("C");
-            xlRango[3, 2].Value2 = "-   ";
-            xlRango[3, 2].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
-            xlRango[4, 2].Value2 = totalNeto.ToString("C");
+                xlRango = xlHoja.Range["A16:B16"];
+                // Total kilos
+                xlRango[1, columna].Value2 = posicion.TotalDiaKilos.ToString("0,0.##");
+                xlRango[2, columna].Value2 = posicion.TotalCreditoKilos.ToString("0,0.##");
+                xlRango[3, columna].Value2 = "-   ";
+                xlRango[3, columna].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+                xlRango[4, columna].Value2 = posicion.TotalNetoKilos.ToString("0,0.##");
+                // Total importe
+                xlRango[1, columna + 1].Value2 = posicion.TotalDiaImporte.ToString("C");
+                xlRango[2, columna + 1].Value2 = posicion.TotalCreditoImporte.ToString("C");
+                xlRango[3, columna + 1].Value2 = "-   ";
+                xlRango[3, columna + 1].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+                xlRango[4, columna + 1].Value2 = posicion.TotalNetoImporte.ToString("C");
+            }
 
-            // Formato
-            xlRango = xlHoja.Range["A16:G19"];
+            // Color de fondo azul cielo
+            columnaFinal = _PosicionesDiarias.Select(x => x.Columna)
+                                             .Max()
+                                             + 1;
+            var celdaInicial = xlHoja.Cells[16, 1];
+            var celdaFinal = xlHoja.Cells[19, columnaFinal];
+            xlRango = xlHoja.Range[celdaInicial, celdaFinal];
             xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-            xlRango = xlHoja.Range["A1:G19"];
-            xlRango.BorderAround2(Excel.XlLineStyle.xlDouble, Excel.XlBorderWeight.xlThin, 
+            
+            // Borde exterior
+            celdaInicial = xlHoja.Cells[1, 1];
+            xlRango = xlHoja.Range[celdaInicial, celdaFinal];
+            xlRango.BorderAround2(Excel.XlLineStyle.xlDouble, Excel.XlBorderWeight.xlThin,
                 Excel.XlColorIndex.xlColorIndexAutomatic);
         }
 
