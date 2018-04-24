@@ -84,12 +84,17 @@
       <siteMapNode title="Consulta de saldos a favor" description="Consulta de saldos a favor" resourceKey="4" url="~/ReportesConciliacion/ConsultaSaldoAFavor.aspx">
       </siteMapNode>
 
-      <siteMapNode title="Posición Diaria De Bancos" description="Consulta de Posición Diaria De Bancos" resourceKey="5" url="~/ReportesConciliacion/PosicionDiariaBancos.aspx">
+      <siteMapNode title="Informes" description="Informes" resourceKey="1" url="">
+        <siteMapNode title="Posición diaria de bancos" description="Reporte posición diaria de bancos" resourceKey="27" url="~/ReportesConciliacion/PosicionDiariaBancos.aspx">
+        </siteMapNode>
+        <siteMapNode title="Estado de cuenta" description="Reporte estado de cuenta" resourceKey="28" url="~/ReportesConciliacion/ReporteEstadoCuenta.aspx">
+        </siteMapNode>
+        <siteMapNode title="Estado de cuenta por día" description="Reporte estado de cuenta por día" resourceKey="29" url="~/ReportesConciliacion/ReporteEstadoCuentaPorDia.aspx">
+        </siteMapNode>
+        <siteMapNode title="Estado de cuenta conciliados" description="Reporte estado de cuenta conciliados" resourceKey="30" url="~/ReportesConciliacion/ReporteEstadoCuentaConciliados.aspx">
+        </siteMapNode>
       </siteMapNode>
-
-      <siteMapNode title="Estado de cuenta por día" description="Estado de cuenta por día" resourceKey="7" url="~/ReportesConciliacion/ReporteEstadoCuentaPorDia.aspx">
-      </siteMapNode>
-
+      
     </siteMapNode>
 
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
