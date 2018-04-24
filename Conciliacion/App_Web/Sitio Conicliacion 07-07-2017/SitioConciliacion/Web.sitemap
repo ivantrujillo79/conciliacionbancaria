@@ -89,6 +89,9 @@
 
       <siteMapNode title="Estado de cuenta por día" description="Estado de cuenta por día" resourceKey="7" url="~/ReportesConciliacion/ReporteEstadoCuentaPorDia.aspx">
       </siteMapNode>
+      
+      <siteMapNode title="Estado de cuenta" description="Estado de cuenta" resourceKey="7" url="~/ReportesConciliacion/ReporteEstadoCuenta.aspx">
+      </siteMapNode>
 
     </siteMapNode>
 
