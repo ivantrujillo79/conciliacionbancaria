@@ -254,6 +254,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public class DetalleReporteEstadoCuenta
         {
+            private string banco;
             private string corporativo;
             private string sucursal;
             private string año;
@@ -267,6 +268,11 @@ namespace Conciliacion.RunTime.DatosSQL
             private string depositos;
             private string saldofinal;
 
+            public string Banco
+            {
+                get { return banco; }
+                set { banco = value; }
+            }
             public string Corporativo
             {
                 get { return corporativo; }
@@ -333,6 +339,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
 
             public DetalleReporteEstadoCuenta(
+                string banco,
                 string corporativo,
                 string sucursal,
                 string año,
@@ -346,6 +353,19 @@ namespace Conciliacion.RunTime.DatosSQL
                 string depositos,
                 string saldofinal)
             {
+                this.banco = banco;
+                this.corporativo = corporativo;
+                this.sucursal = sucursal;
+                this.año = año;
+                this.mes = mes;
+                this.cuentabancofinanciero = cuentabancofinanciero;
+                this.consecutivoflujo = consecutivoflujo;
+                this.foperacion = foperacion;
+                this.referencia = referencia;
+                this.concepto = concepto;
+                this.retiros = retiros;
+                this.depositos = depositos;
+                this.saldofinal = saldofinal;
             }
 
             public List<DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
@@ -366,6 +386,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         while (reader.Read())
                         {
                             DetalleReporteEstadoCuenta dato = new DetalleReporteEstadoCuenta();
+                            dato.Banco = (reader["banco"] == DBNull.Value ? "" : Convert.ToString(reader["banco"]));
                             dato.Corporativo = Convert.ToString(reader["corporativo"]);
                             dato.Sucursal = Convert.ToString(reader["sucursal"]);
                             dato.Año = Convert.ToString(reader["año"]);
