@@ -261,7 +261,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             dato.Sucursal = Convert.ToString(reader["sucursal"]);
                             dato.Año = Convert.ToInt16(reader["año"]);
                             dato.Mes = Convert.ToInt16(reader["mes"]);
-                            dato.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]);
+                            dato.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]).Trim();
                             dato.ConsecutivoFlujo = Convert.ToInt32(reader["consecutivoflujo"]);
                             dato.FOperacion = Convert.ToDateTime(reader["foperacion"]);
                             dato.Referencia = Convert.ToString(reader["referencia"]);
