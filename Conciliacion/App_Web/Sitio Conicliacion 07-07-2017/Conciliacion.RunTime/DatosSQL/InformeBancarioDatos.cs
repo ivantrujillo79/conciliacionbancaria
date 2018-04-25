@@ -639,7 +639,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         while (reader.Read())
                         {
                             DetalleBanco dato = new DetalleBanco();
-                            dato.IDBanco = Convert.ToInt32(reader["IDBanco"]);
+                            dato.IDBanco = Convert.ToInt32(reader["IDENTIFICADOR"]);
                             dato.Descripcion = Convert.ToString(reader["Descripcion"]);
                             ListaRetorno.Add(dato);
                         }

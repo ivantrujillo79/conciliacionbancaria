@@ -103,22 +103,6 @@
 
 
     <style type="text/css">
-        .auto-style2 {
-            border-right: 1px solid rgb(201, 201, 201);
-            height: 100%;
-            width: 5%;
-            border-left-style: solid;
-            border-top-style: solid;
-            border-bottom-style: solid;
-        }
-        .auto-style3 {
-            border-right: 1px solid rgb(201, 201, 201);
-            height: 100%;
-            width: 15%;
-            border-left-style: solid;
-            border-top-style: solid;
-            border-bottom-style: solid;
-        }
         .auto-style4 {
             height: 250px;
             width: 150px;
@@ -186,7 +170,7 @@
                                      Banco
                                 </td>
                                 <td class="" style="width: 16%">
-                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="26px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
                              
