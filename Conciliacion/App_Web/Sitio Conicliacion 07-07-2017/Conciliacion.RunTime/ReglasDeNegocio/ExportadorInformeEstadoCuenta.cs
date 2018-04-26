@@ -118,45 +118,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         private void crearEncabezado()
         {
-            //CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
-            //DateTime fecha = _DetallePosicionDiariaBancos
-            //                                        .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-            //                                        .Fecha;
-            //string dia = fecha.ToString("dddd", cultureInfo).ToUpper();
-            //string caja = Convert.ToString(_DetallePosicionDiariaBancos
-            //                                        .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-            //                                        .Caja);
-
-            //// Nombre del reporte
-            //xlRango = xlHoja.Range["A1"];
-            //xlRango.Value2 = "Reporte\nPOSICION DIARIA DE BANCOS";
-            //xlRango = xlHoja.Range["A1:E2"];
-            //xlRango.Merge();
-            //xlRango.Font.Bold = true;
-            //xlRango.RowHeight = 15;
-            //xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            //xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-            //// Día
-            //xlRango = xlHoja.Range["F1:G1"];
-            //xlRango.Merge();
-            //xlRango.Value2 = dia;
-            //// Kilos
-            //xlRango = xlHoja.Range["F2,G2"];
-            //xlRango[1, 1].Value2 = "KILOS";
-            //// Fecha
-            //xlRango[1, 2].Value2 = fecha.ToString("d-MMM-yyyy", cultureInfo);
-            //// Formato
-            //xlRango = xlHoja.Range["F1:G2"];
-            //xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            //xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            //xlRango.ColumnWidth = 16;
-            //// Caja
-            //xlRango = xlHoja.Range["A3:E3"];
-            //xlRango.Merge();
-            //xlRango.Value2 = "CAJA MATRIZ " + caja;
-            //xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            //xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-
             string banco, cuenta, empresa;
             DateTime fecha;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
@@ -186,12 +147,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.Font.Size = 13;
             xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             xlRango.Interior.Color = Excel.XlRgbColor.rgbBlue;
-
+            
+            // Fecha
             xlRango = xlHoja.Range["I1:K3"];
             xlRango.Merge(true);
             xlRango.Font.Bold = true;
-
-            // Fecha
             xlRango[1, 1].Value2 = fecha.ToString("MMMM DE yyyy").ToUpper();
             xlRango[1, 1].Font.Color = Excel.XlRgbColor.rgbWhite;
             xlRango[1, 1].Interior.Color = Excel.XlRgbColor.rgbBlue;
@@ -200,6 +160,42 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango[2, 1].Value2 = "CLABE INTERBANCARIA";
             xlRango[2, 1].IndentLevel = 3;
 
+            // Depósito - retiro - saldos
+            xlRango = xlHoja.Range["L1:O4"];
+            xlRango.Merge(true);
+            xlRango[1, 1].Value2 = "Depósito";
+            xlRango[2, 1].Value2 = "Retiro";
+            xlRango[3, 1].Value2 = "Saldo final calculado";
+            xlRango[4, 1].Value2 = "Saldo final bancario";
+            xlRango.Font.Bold = true;
+
+            // Columnas
+            xlRango = xlHoja.Range["B4:K4"];
+            xlRango[1, 1].Value2 = "Fecha";
+            xlRango[1, 2].Value2 = "Referencia";
+            xlRango[1, 3].Value2 = "Concepto";
+            xlRango[1, 8].Value2 = "Retiros";
+            xlRango[1, 9].Value2 = "Depósitos";
+            xlRango[1, 10].Value2 = "Saldo";
+            //xlRango.Font.Color = Excel.XlRgbColor.blue;
+            xlRango.Font.ColorIndex = 23;
+            xlRango.Font.Size = 10;
+            xlRango.Interior.Color = Excel.XlRgbColor.rgbWhite;
+            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            xlRango.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            xlRango.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlMedium);
+
+            xlRango = xlHoja.Columns["A"];
+            xlRango.ColumnWidth = 4;
+            xlRango = xlHoja.Range["D4:H4"];
+            xlRango.Merge();
+            xlRango = xlHoja.Range["I4:K4"];
+            xlRango.Font.Bold = true;
+            xlRango.ColumnWidth = 13;
+            xlRango = xlHoja.Range["I:K"];
+            xlRango.ColumnWidth = 13;
+            xlRango = xlHoja.Range["B:H"];
+            xlRango.ColumnWidth = 10;
         }
 
         //private void exportarPosicionDiariaBancos()
