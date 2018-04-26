@@ -111,7 +111,11 @@
             }
             //debe de agregar el nombre del archivo como debe de quedar
             // document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";            
-            var Pagina =<%= Request.QueryString["Reporte"]%>;
+            
+            let params = (new URL(document.location)).searchParams;
+            let Pagina = params.get("Reporte");
+            console.log(Pagina);
+
             if (Pagina == '2'){
                 document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuenta1.xlsx";
             }

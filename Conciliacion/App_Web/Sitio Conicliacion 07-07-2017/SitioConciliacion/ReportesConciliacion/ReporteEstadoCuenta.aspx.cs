@@ -86,7 +86,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         catch (Exception ex)
         {
             //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message.Replace("'","") + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
         finally
         {
@@ -109,12 +109,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             if (Pagina == "2")
             {
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-         @"alertify.alert('Conciliaci&oacute;n bancaria','Informe Estado de cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+         @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe Estado de cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
             }
             if (Pagina == "3")
             {
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-         @"alertify.alert('Conciliaci&oacute;n bancaria','Informe Estado de cuenta por dia generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+         @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe Estado de cuenta por día generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
             }
 
         }
