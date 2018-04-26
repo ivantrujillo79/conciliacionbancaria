@@ -113,10 +113,11 @@
             // document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";            
             var Pagina =<%= Request.QueryString["Reporte"]%>;
             if (Pagina == '2'){
-                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuenta.xlsx";
+                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuenta1.xlsx";
             }
             if(Pagina == '3'){
-                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuentaPordia.xlsx";
+                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuentaPordia1.xlsx";
+
             }
         }
         
