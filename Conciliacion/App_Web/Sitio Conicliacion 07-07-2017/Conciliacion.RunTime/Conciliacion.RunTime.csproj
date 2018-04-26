@@ -140,6 +140,7 @@
     <Compile Include="ReglasDeNegocio\Enrutador.cs" />
     <Compile Include="ReglasDeNegocio\ExportadorInformeBancario.cs" />
     <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuenta.cs" />
+    <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuentaConciliado.cs" />
     <Compile Include="ReglasDeNegocio\FacturaManual.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
     <Compile Include="ReglasDeNegocio\FacturasComplemento.cs" />
