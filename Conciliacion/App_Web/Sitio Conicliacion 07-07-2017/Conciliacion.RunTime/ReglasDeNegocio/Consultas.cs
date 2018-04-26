@@ -331,5 +331,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 return App.CadenaConexion;
             }
         }
+
+        //MCC 26-04-2018
+        public abstract List<Cuenta> ConsultaCuentasUsuario
+       (string Usuario);
     }
 }

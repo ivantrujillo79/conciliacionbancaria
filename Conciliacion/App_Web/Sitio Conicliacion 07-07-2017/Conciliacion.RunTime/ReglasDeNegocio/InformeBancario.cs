@@ -42,11 +42,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return ListaResultado;
         }
 
-        public List<DetalleBanco> consultarBancos(Conexion _conexion, int Corporativo )
+        public List<DetalleBanco> consultarBancos(Conexion _conexion, int Corporativo,string Usuario )
         {
             List<DetalleBanco> ListaResultado;
             DetalleBanco objDatos = new DetalleBanco();            
-            ListaResultado = objDatos.consultarBancos(_conexion,Corporativo);
+            ListaResultado = objDatos.consultarBancos(_conexion,Corporativo,Usuario);
             return ListaResultado;
 
         }

@@ -624,7 +624,7 @@ namespace Conciliacion.RunTime.DatosSQL
             public DetalleBanco(int idbanco, string descripcion)
             { }
 
-            public List<DetalleBanco> consultarBancos(Conexion _conexion, int Corporativo)
+            public List<DetalleBanco> consultarBancos(Conexion _conexion, int Corporativo,string Usuario)
             {
                 List<DetalleBanco> ListaRetorno = new List<DetalleBanco>();
                 try
@@ -633,6 +633,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     _conexion.Comando.CommandText = "spCBConsultaBanco";
                     _conexion.Comando.Parameters.Clear();
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.SmallInt)).Value = Corporativo;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@Usuario", System.Data.SqlDbType.Char)).Value = Usuario;
                     SqlDataReader reader = _conexion.Comando.ExecuteReader();
                     if (reader.HasRows)
                     {
