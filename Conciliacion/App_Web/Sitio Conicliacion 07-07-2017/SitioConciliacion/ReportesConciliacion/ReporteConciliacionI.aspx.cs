@@ -53,9 +53,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private DataTable tblPedidos;
     private ReferenciaConciliadaCompartida movSeleccionado;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
-    private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();
-    private string StatusConciliacionSel = "";
-
+    private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();//RRV quita private string StatusConciliacionSel = "";
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -234,7 +232,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             DropDownList ddlStatus = sender as DropDownList;
             string status = ddlStatus.SelectedItem.Text;
-            StatusConciliacionSel = status;
+            hdfStatusConciliacionSel.Value = status;//RRV
             FiltrarStatusConciliacionMovimiento(status);
         }
         catch (Exception ex)
@@ -1026,6 +1024,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     /////////////////////////////////////// EXPORTAR 
     protected void imgExportar_Click(object sender, ImageClickEventArgs e)
     {
+        btnActualizarConfig_Click(btnActualizarConfig,null);//RRV
         try
         {
             AppSettingsReader settings = new AppSettingsReader();
@@ -1107,8 +1106,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         try
         {
-            if (StatusConciliacionSel == "TODOS")
+            if (hdfStatusConciliacionSel.Value == "TODOS")//RRV
                 statusconciliacion = "";
+            else//RRV
+                statusconciliacion = hdfStatusConciliacionSel.Value;//RRV
             listMovimientos =
                 Conciliacion.RunTime.App.Consultas.ConsultaMovimientosConciliacionCompartida(accesoTotal, corporativo,
                     sucursal, cuentaBancaria, finicial, ffinal, statusconciliacion);

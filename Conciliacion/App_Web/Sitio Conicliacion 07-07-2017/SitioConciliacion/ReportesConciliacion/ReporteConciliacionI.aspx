@@ -266,6 +266,7 @@
     <asp:UpdatePanel runat="server" ID="upConciliacionCompartida" UpdateMode="Always">
         <ContentTemplate>
             <asp:HiddenField ID="hdfStatusConcepto" runat="server" />
+            <asp:HiddenField ID="hdfStatusConciliacionSel" runat="server" />
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 70%">

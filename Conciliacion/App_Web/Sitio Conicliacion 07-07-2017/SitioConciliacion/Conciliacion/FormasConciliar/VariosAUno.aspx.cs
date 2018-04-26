@@ -184,6 +184,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     selectedListItem.Selected = true;
                 }
             }
+            dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
             else
@@ -905,12 +906,17 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
             //int numRegInter = tipoConciliacion == 2 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
             int numRegInter = tipoConciliacion == 4 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
-            if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
-            {
-                throw new Exception("detenerse");
+            if (tipoConciliacion == 4 || tipoConciliacion == 2 || tipoConciliacion == 1)//RRV
+                numRegInter = grvPedidos.Rows.Count;//RRV
+            else//RRV
+                numRegInter = grvInternos.Rows.Count;//RRV
 
+            (extSeleccionados[0] as ReferenciaNoConciliada).ConInterno = false;//RRV
+            if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
+            {//quitar throw new...
                 foreach (ReferenciaNoConciliada ex in extSeleccionados)
                 {
+                    ex.ConInterno = false;//RRV
                     if (ex.GuardarReferenciaConciliada())
                     {
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
@@ -923,7 +929,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         LlenaGridViewConciliadas();
                         LlenarBarraEstado();
 
-                        dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = true;
+                        dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV  //dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = true;
                         btnRegresarExternos.Visible = false;
                         if (tipoConciliacion == 2)
                         {
@@ -943,7 +949,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
                         ocultarOpciones("INTERNO");
                         encenderOpciones("EXTERNO");
-
+                        grvPedidos.DataSource = null;//RRV
+                        grvPedidos.DataBind();//RRV
                         App.ImplementadorMensajes.MostrarMensaje("Transacciones guardadas correctamente.");
                     }
                     else
@@ -2294,6 +2301,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
         const short _FormaConciliacion = 6;
 
+        dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
+
         SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
         objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
         objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
@@ -2313,6 +2322,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             {
                 
             }
+            //if (grvPedidos.Rows.Count > 0)//RRV
+            //    agregarPedidoInternoExterno();//RRV
         }
         else
         {
@@ -2322,7 +2333,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     }
     protected void btnRegresarExternos_Click(object sender, ImageClickEventArgs e)
     {
-        dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = true;
+        //dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = true;//RRV
+        dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
         btnRegresarExternos.Visible = false;
 
         //Leer el tipoConciliacion URL
@@ -2766,6 +2778,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
                     dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
+                    dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
                     if (dtPedidos.Rows.Count == 0) return;
 
                     grvPedidos.DataSource = dtPedidos;
@@ -2786,12 +2799,19 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         ListPedidos.Add(rp);
                     }
                     Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
+                    dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
+
+                    //agregarPedidoInternoExterno();
+
                     return;
                 }
                 grvInternos.DataBind();
                 grvInternos.DataBind();
                 //ActualizarTotalesAgregados_GridAgregados();
             }
+            dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
+            //if (grvPedidos.Rows.Count > 0)//RRV
+            //    rdbPedido_CheckedChanged(grvPedidos.Rows[0].DataItem, null);//RRV
         }
         catch(Exception ex)
         {

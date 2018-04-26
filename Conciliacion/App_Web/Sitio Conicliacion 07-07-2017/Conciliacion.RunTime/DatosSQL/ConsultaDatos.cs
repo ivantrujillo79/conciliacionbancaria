@@ -5578,7 +5578,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = cuentaBancaria;
                     comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = finicial;
                     comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = ffinal;
-                    comando.Parameters.Add("@StatusConciliacion", SqlDbType.VarChar).Value = (statusconciliacion != string.Empty ? statusconciliacion : SqlString.Null);
+                    comando.Parameters.Add("@StatusConciliacion", SqlDbType.VarChar).Value = statusconciliacion; //RRV
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();

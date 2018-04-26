@@ -48,9 +48,60 @@
     </style>
 
     <script type="text/javascript">
+        var sumapreconciliadas = 0;
         function pageLoad() {
             activarDatePickers();
             MuestraSaldoAFavor();
+        }
+
+        function btnAgregarPedidoConciliacion(grid, fila){
+            //debugger;
+            
+            dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML);
+            var total = parseFloat(0).toFixed(2);
+
+            var dChequeados = 0.0;
+            grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
+            for (i = 1; i < grv.rows.length; i++) {
+                if (grv.rows[i].cells[1].children[0].checked == true)
+                        dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$','').trim());
+            }
+
+            var dResto = 0;
+            if (parseFloat(dChequeados) > 0.01)
+            {
+                if (dChequeados < sumapreconciliadas)
+                    sumapreconciliadas = dChequeados;
+                var dAbono      = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$','').trim());
+                var dAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML;
+                var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$','').trim());
+                //        0                           595.40                     34.87
+                //    34.87                           861.04                     34.87
+                if ((parseFloat(sumapreconciliadas) + parseFloat(dSeleccion) <= (parseFloat(dAbono) + parseFloat(0.99)) ? parseFloat(dSeleccion) : (parseFloat(dAbono) - parseFloat(sumapreconciliadas))) > 0)
+                {
+                    sumapreconciliadas = parseFloat(dChequeados);    
+                    if (dAbono > 0)
+                        dResto      = parseFloat(dAbono - sumapreconciliadas);
+                    if (dResto <= 0)
+                        dResto      = 0;
+                    document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = dResto.toFixed(2);
+                    document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = sumapreconciliadas;
+                    return true;
+                }
+                else
+                {
+                    (grid.parentNode.parentNode.children[fila].children[0]).checked = false;
+                    alert('El total acumulado es mayor a monto del pedido.');
+                    return false;
+                }
+            }
+            else
+            {
+                document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML;
+                document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = "0.00";
+                sumapreconciliadas = 0;
+            }
+
         }
 
         function MuestraSaldoAFavor() {
@@ -1843,7 +1894,8 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:CheckBox runat="server" ID="chkPedido" />
+                                            <%--<asp:CheckBox runat="server" ID="chkPedido" OnClick="return btnAgregarPedidoConciliacion(this.RowIndex);"/>--%>
+                                            <asp:CheckBox runat="server" ID="chkPedido" OnClick="return btnAgregarPedidoConciliacion(this,this.parentNode.parentNode.rowIndex);" />
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                         <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>

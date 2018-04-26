@@ -742,7 +742,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         catch (Exception ex)
         {
             
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            App.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar .Detalles: "+ex.Message);//RRV
             try
             {
                 conexion.Comando.Transaction.Rollback();
