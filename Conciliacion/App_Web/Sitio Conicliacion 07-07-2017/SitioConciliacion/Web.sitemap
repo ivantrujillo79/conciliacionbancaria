@@ -87,9 +87,9 @@
       <siteMapNode title="Informes" description="Informes" resourceKey="1" url="">
         <siteMapNode title="Posición diaria de bancos" description="Reporte posición diaria de bancos" resourceKey="27" url="~/ReportesConciliacion/PosicionDiariaBancos.aspx">
         </siteMapNode>
-        <siteMapNode title="Estado de cuenta" description="Reporte estado de cuenta" resourceKey="28" url="~/ReportesConciliacion/ReporteEstadoCuenta.aspx">
+        <siteMapNode title="Estado de cuenta" description="Reporte estado de cuenta" resourceKey="28" url="~/ReportesConciliacion/ReporteEstadoCuenta.aspx?Reporte=2">
         </siteMapNode>
-        <siteMapNode title="Estado de cuenta por día" description="Reporte estado de cuenta por día" resourceKey="29" url="~/ReportesConciliacion/ReporteEstadoCuentaPorDia.aspx">
+        <siteMapNode title="Estado de cuenta por día" description="Reporte estado de cuenta por día" resourceKey="29" url="~/ReportesConciliacion/ReporteEstadoCuenta.aspx?Reporte=3">
         </siteMapNode>
         <siteMapNode title="Estado de cuenta conciliados" description="Reporte estado de cuenta conciliados" resourceKey="30" url="~/ReportesConciliacion/ReporteEstadoCuentaConciliados.aspx">
         </siteMapNode>
