@@ -108,8 +108,37 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
 
             if (Pagina == "2")
             {
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-         @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe Estado de cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+         /*       try
+                {
+                    List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
+                    lstDetalleCuenta = consultaReporteEstadoCuenta();
+                    DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+                    string cero;
+                    if (fechaInicio.Month < 10)
+                    {
+                        cero = "0";
+                    }
+                    else
+                    {
+                        cero = "";
+                    }
+
+                    ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalleCuenta,
+                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "PosicionDiariaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                    obExportador.generarPosicionDiariaBancos();*/
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado de cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+
+              /*  }
+                catch (Exception ex)
+                {
+                    //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                        + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+                }
+
+*/                
             }
             if (Pagina == "3")
             {
@@ -120,4 +149,32 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         }
 
     }
+
+
+    private List<InformeBancarioDatos.DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta()
+    {
+        Conexion conexion = new Conexion();
+        var lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
+
+        try
+        {
+            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+            DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
+            conexion.AbrirConexion(false);
+            lstDetalleCuenta = informeBancario.consultaReporteEstadoCuenta(conexion, fechaInicio, fechaFin,"BANAMEX","092904I8");
+        }
+        catch (Exception ex)
+        {
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+        finally
+        {
+            conexion.CerrarConexion();
+        }
+        return lstDetalleCuenta;
+    }
+
+
 }

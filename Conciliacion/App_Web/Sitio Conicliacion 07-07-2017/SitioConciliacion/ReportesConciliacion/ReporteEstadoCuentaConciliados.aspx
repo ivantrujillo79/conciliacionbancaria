@@ -124,12 +124,12 @@
     </div>
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
-                    <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">                      
+                    <td style="padding: 3px 3px 3px 50px; vertical-align: top; width: 1%">                      
                         <table class="etiqueta opcionBarra">
                             <tr>
-                                <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
-                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
-                                        ToolTip="CONSULTAR" Width="100px" ValidationGroup="Configuracion"
+                                <td class="iconoOpcion  bg-color-grisClaro01" rowspan="2" style="width: 100%">
+                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="100px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ImgInformes.png"
+                                        ToolTip="CONSULTAR" Width="80px" ValidationGroup="Configuracion"
                                          />
                                 </td>
                             </tr>
@@ -141,7 +141,7 @@
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
                                 
-                                <td class="" style="width: 8.4%;text-align:center;">
+                                <td class="" style="width: 8.4%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Fecha Inicial
                                 </td>
                                 <td class="" style="width: 16%">
@@ -155,7 +155,7 @@
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="" style="width: 8.4%;text-align:center;">
+                                <td class="" style="width: 8.4%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Fecha Final
                                 </td>
                                 <td class="" style="width: 16%">
@@ -169,11 +169,11 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="" style="width: 8%;text-align:center;">
+                                <td class="" style="width: 8%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Estatus
                                 </td>
                                 <td class="" style="width: 16.5%">
-                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="ddlEstatus" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="25px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
                              
@@ -182,11 +182,11 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="" style="width: 7%;text-align:center;">
+                                <td class="" style="width: 7%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Estatus Concepto
                                 </td>
                                 <td class="" style="width: 17.5%">
-                                    <asp:DropDownList runat="server" ID="DropDownList1" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="ddlEstatusConcepto" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="25px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField1" runat="server" />
                                 </td>                               
                              
@@ -195,11 +195,11 @@
                          <table class="etiqueta opcionBarra" style="width:25%;text-align:center;">
                             <tr>
                                
-                                <td class="" style="width: 5.7%">
+                                <td class="" style="width: 5.7%;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Banco
                                 </td>
                                 <td class="" style="width: 19.3%">
-                                    <asp:DropDownList runat="server" ID="DropDownList2" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="ddlBanco" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="25px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField4" runat="server" />
                                 </td>                               
                              
@@ -209,7 +209,7 @@
                         <table class="etiqueta opcionBarra" style="width:25%; text-align:center;">
                             <tr>
                                 
-                                <td class="" style="width: 18%; text-underline-position:below;">
+                                <td class="" style="width: 18%; text-underline-position:below;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Cuenta Bancaria
                                 </td>
                                 <td class="" style="width: 7%">
