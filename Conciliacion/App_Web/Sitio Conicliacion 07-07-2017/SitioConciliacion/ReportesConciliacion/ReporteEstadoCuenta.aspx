@@ -97,7 +97,29 @@
             mensaje.hidden = false;
         }
 
-      
+        function LinkNombreArchivoDescarga() {
+            var finicial = document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value;
+            var ffinal = document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value;
+            var mesini = parseInt(finicial.substr(3, 2));
+            var anoini = parseInt(finicial.substr(6, 4));
+            var cero;
+            if (mesini < 10) {
+                cero = "0";
+            }
+            else {
+                cero = "";
+            }
+            //debe de agregar el nombre del archivo como debe de quedar
+            // document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";            
+            var Pagina =<%= Request.QueryString["Reporte"]%>;
+            if (Pagina == '2'){
+                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuenta1.xlsx";
+            }
+            if(Pagina == '3'){
+                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuentaPordia1.xlsx";
+
+            }
+        }
         
     </script>
 
@@ -191,7 +213,8 @@
                               </tr>                           
                           </table>   
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                             runat="server"  OnClientClick="return ValidarFechas();" />                                  
+                             runat="server" OnClick="btnConsultar_Click"   OnClientClick="return ValidarFechas();" />       
+                        <a  id="LigaDescarga" onclick="return LinkNombreArchivoDescarga() " ></a>                            
                     </td>           
                 </tr>
             </table>         
