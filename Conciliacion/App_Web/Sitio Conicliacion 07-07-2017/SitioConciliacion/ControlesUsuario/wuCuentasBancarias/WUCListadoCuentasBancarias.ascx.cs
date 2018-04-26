@@ -25,7 +25,12 @@ public partial class ControlesUsuario_wuCuentasBancarias_WUCListadoCuentasBancar
             else
                 return (List<Cuenta>)ViewState["listaCuentas"];
         }
-        set { ViewState["listaCuentas"] = value; }
+        set { ViewState["listaCuentas"] = value;
+             if(IsPostBack)
+            {
+                CargarRepetidor();
+            }
+        }
     }
 
     public List<Cuenta> CuentasSeleccionadas
@@ -51,6 +56,7 @@ public partial class ControlesUsuario_wuCuentasBancarias_WUCListadoCuentasBancar
             {
                 CargarRepetidor();
             }
+
         }
         catch (Exception ex)
         {

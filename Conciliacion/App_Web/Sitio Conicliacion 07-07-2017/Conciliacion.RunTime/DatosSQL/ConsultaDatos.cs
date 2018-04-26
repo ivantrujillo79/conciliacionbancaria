@@ -6290,6 +6290,43 @@ namespace Conciliacion.RunTime.DatosSQL
                 return ListaDSAF;
             }
         }
+
+
+
+        public override List<Cuenta> ConsultaCuentasUsuario (string Usuario)
+        {
+            List<Cuenta> lista = new List<Cuenta>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaUsuarioCuenta", cnn);
+                    comando.Parameters.Add("@Usuario", System.Data.SqlDbType.Char).Value = Usuario;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Cuenta dato =
+                            new Cuenta(Convert.ToInt16(reader["IdUsuarioCuenta"]), Convert.ToString(reader["CUENTABANCO"]),
+                            Convert.ToInt16(reader["BANCO"]), Convert.ToString(reader["DSCBANCO"]));
+                        lista.Add(dato);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+            }
+            return lista;
+        }
     }
 
 
