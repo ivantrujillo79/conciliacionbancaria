@@ -128,12 +128,12 @@
   </div>    
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
-                    <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">                      
+                    <td style="padding: 3px 3px 3px 50px; vertical-align: top; width: 1%">                      
                         <table class="etiqueta opcionBarra">
                             <tr>
-                                <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
-                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
-                                        ToolTip="CONSULTAR"   Width="100px" ValidationGroup="Configuracion"
+                                <td class="iconoOpcion  bg-color-grisClaro01" rowspan="2" style="width: 100%">
+                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="100px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ImgInformes.png"
+                                        ToolTip="CONSULTAR"   Width="80px" ValidationGroup="Configuracion"
                                          />
                                 </td>
                             </tr>

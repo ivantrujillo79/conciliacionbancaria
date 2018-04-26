@@ -409,19 +409,23 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
 
             // Color de fondo azul cielo
-            columnaFinal = _PosicionesDiarias.Select(x => x.Columna)
-                                             .Max()
-                                             + 1;
-            var celdaInicial = xlHoja.Cells[16, 1];
-            var celdaFinal = xlHoja.Cells[19, columnaFinal];
-            xlRango = xlHoja.Range[celdaInicial, celdaFinal];
-            xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-            
-            // Borde exterior
-            celdaInicial = xlHoja.Cells[1, 1];
-            xlRango = xlHoja.Range[celdaInicial, celdaFinal];
-            xlRango.BorderAround2(Excel.XlLineStyle.xlDouble, Excel.XlBorderWeight.xlThin,
-                Excel.XlColorIndex.xlColorIndexAutomatic);
+            if (_PosicionesDiarias.Select(x => x.Columna).Count() != 0)
+            {
+                columnaFinal = _PosicionesDiarias.Select(x => x.Columna)
+                                    .Max()
+                                    + 1;
+
+                var celdaInicial = xlHoja.Cells[16, 1];
+                var celdaFinal = xlHoja.Cells[19, columnaFinal];
+                xlRango = xlHoja.Range[celdaInicial, celdaFinal];
+                xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
+
+                // Borde exterior
+                celdaInicial = xlHoja.Cells[1, 1];
+                xlRango = xlHoja.Range[celdaInicial, celdaFinal];
+                xlRango.BorderAround2(Excel.XlLineStyle.xlDouble, Excel.XlBorderWeight.xlThin,
+                    Excel.XlColorIndex.xlColorIndexAutomatic);
+            }
         }
 
         private void cerrar()

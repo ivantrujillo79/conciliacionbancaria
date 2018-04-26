@@ -13,7 +13,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
     protected void Page_Load(object sender, EventArgs e)
     {
         try
-        {
+        {          
             InicializarCajas();
         }
         catch (Exception ex)
@@ -60,8 +60,9 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
             {
                 cero = "";
             }
-                ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-                @"C:\Users\Transforma1\Source\repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SitioConciliacion\InformesExcel\", "PosicionDiariaGM"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+          
+            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
+             HttpRuntime.AppDomainAppPath+@"InformesExcel\", "PosicionDiariaGM"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
                 obExportador.generarPosicionDiariaBancos();              
            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
            @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
