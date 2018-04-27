@@ -70,7 +70,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
             conexion.AbrirConexion(false);
-            lstDetalle = informeBancario.consultarBancos(conexion, 1);
+            lstDetalle = informeBancario.consultarBancos(conexion, 1,"ROPIMA");
         }
         catch (Exception ex)
         {
