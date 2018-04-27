@@ -40,7 +40,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
                 _NombreHoja = Nombre.Trim();
-
                 ValidarMiembros();
             }
             catch (Exception ex)

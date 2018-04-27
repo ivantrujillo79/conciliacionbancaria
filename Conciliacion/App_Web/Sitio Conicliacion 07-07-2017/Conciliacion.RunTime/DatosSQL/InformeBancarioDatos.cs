@@ -23,6 +23,49 @@ namespace Conciliacion.RunTime.DatosSQL
         {
         }
 
+        public List<DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentaPorDia(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+        {
+            List<DetalleReporteEstadoCuentaDia> ListaResultado = new List<DetalleReporteEstadoCuentaDia>();
+            try
+            {
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaPorDiaEV";
+
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.DateTime)).Value = FechaFin;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
+
+                SqlDataReader reader = _conexion.Comando.ExecuteReader();
+                List<DetalleReporteEstadoCuentaDia> lstInformeBancario = new List<DetalleReporteEstadoCuentaDia>();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        DetalleReporteEstadoCuentaDia dato = new DetalleReporteEstadoCuentaDia();
+                        dato.Corporativo = Convert.ToString(reader["Corporativo"]);
+                        dato.Sucursal = Convert.ToString(reader["Sucursal"]);
+                        dato.CuentaBancoFinanciero = Convert.ToString(reader["CuentaBancoFinanciero"]);
+                        dato.Fecha = Convert.ToString(reader["Fecha"]);
+                        dato.Retiro = Convert.ToString(reader["Retiro"]);
+                        dato.Depositos = Convert.ToString(reader["Depositos"]);
+                        dato.SaldoFinal = Convert.ToString(reader["SaldoFinal"]);
+                        lstInformeBancario.Add(dato);
+                    }
+                    reader.Close();
+                }
+
+                return lstInformeBancario;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         /* public override List<DetallePosicionDiariaBancos>  consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto)
          {
              try
@@ -443,52 +486,9 @@ namespace Conciliacion.RunTime.DatosSQL
                 set { saldofinal = value; }
             }
 
-            public DetalleReporteEstadoCuentaDia()
-            {
-            }
+          
 
-            public List<DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentaPorDia(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
-            {
-                List<DetalleReporteEstadoCuentaDia> ListaResultado = new List<DetalleReporteEstadoCuentaDia>();
-                try
-                {
-                    _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                    _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaPorDia";
-
-                    _conexion.Comando.Parameters.Clear();
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.SmallInt)).Value = FechaIni;
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.SmallInt)).Value = FechaFin;
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBanco", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
-
-                    SqlDataReader reader = _conexion.Comando.ExecuteReader();
-                    List<DetalleReporteEstadoCuentaDia> lstInformeBancario = new List<DetalleReporteEstadoCuentaDia>();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            DetalleReporteEstadoCuentaDia dato = new DetalleReporteEstadoCuentaDia();
-                            dato.Corporativo = Convert.ToString(reader["Corporativo"]);
-                            dato.Sucursal = Convert.ToString(reader["Sucursal"]);
-                            dato.CuentaBancoFinanciero = Convert.ToString(reader["CuentaBancoFinanciero"]);
-                            dato.Fecha = Convert.ToString(reader["Fecha"]);
-                            dato.Retiro = Convert.ToString(reader["Retiro"]);
-                            dato.Depositos = Convert.ToString(reader["Depositos"]);
-                            dato.SaldoFinal = Convert.ToString(reader["SaldoFinal"]);
-                            lstInformeBancario.Add(dato);
-                        }
-                        reader.Close();
-                    }
-
-                    return lstInformeBancario;
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-
+          
         }
 
         public class DetalleBanco
