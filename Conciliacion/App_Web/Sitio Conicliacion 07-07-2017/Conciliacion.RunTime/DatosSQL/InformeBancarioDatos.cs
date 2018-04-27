@@ -754,11 +754,11 @@ namespace Conciliacion.RunTime.DatosSQL
             {
             }
 
-            public List<DetalleCaja> consultarCajas(Conexion _conexion, int Caja)
+            public List<Caja> consultarCajas(Conexion _conexion, int Caja)
             {
                 try
                 {
-                    List<DetalleCaja> ListaRetorno = new List<DetalleCaja>();
+                    List<Caja> ListaRetorno = new List<Caja>();
                     _conexion.Comando.CommandType = CommandType.StoredProcedure;
                     _conexion.Comando.CommandText = "spCBConsultaCajasCorte";
                     _conexion.Comando.Parameters.Clear();
@@ -769,7 +769,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         while (reader.Read())
                         {
-                            DetalleCaja dato = new DetalleCaja(
+                            Caja dato = new Caja(
                                     Convert.ToInt32(reader["Caja"]),
                                     Convert.ToString(reader["Descripcion"])
                                     );

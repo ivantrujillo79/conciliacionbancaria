@@ -10,9 +10,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class InformeBancario : EmisorMensajes
     {
-        public List<DetalleCaja> consultarCajas(Conexion _conexion, short Caja)
+        public List<Caja> consultarCajas(Conexion _conexion, short Caja)
         {
-            List<DetalleCaja> ListaResultado;
+            List<Caja> ListaResultado;
             DetalleCaja objDatos = new DetalleCaja();
             ListaResultado = objDatos.consultarCajas(_conexion, Caja);
             return ListaResultado;

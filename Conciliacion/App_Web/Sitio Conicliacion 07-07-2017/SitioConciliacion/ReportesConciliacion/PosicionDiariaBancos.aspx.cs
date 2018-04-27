@@ -26,20 +26,21 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
 
     private void InicializarCajas()
     {
-        List<Caja> ListaCajas = new List<Caja>();
+        InformeBancarioDatos.DetalleCaja obDetalleCaja = new InformeBancarioDatos.DetalleCaja();
+        Conexion conexion = new Conexion();
         try
         {
-            for (int i = 1; i <= 6; i++)
-            {
-                Caja Caja = new Caja(i, "Caja " +i);
-                ListaCajas.Add(Caja);
-            }
+            conexion.AbrirConexion(false);
 
-            wucListadoCajas1.Cajas = ListaCajas;
+            wucListadoCajas1.Cajas = obDetalleCaja.consultarCajas(conexion, 0);
         }
         catch (Exception ex)
         {
             throw ex;
+        }
+        finally
+        {
+            conexion.CerrarConexion();
         }
     }
     // se inicializa la funcion de exprtar datos
