@@ -25,43 +25,43 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaPorDia : System.Web
 
     private void InicializarCuentas()
     {
-        List<Cuenta> ListaCuentas = new List<Cuenta>();
-        try
-        {
-            for (int i = 1; i <= 15; i++)
-            {
-                Cuenta cuenta = new Cuenta(i, "Cuenta " + (400 + (300 * i)));
-                ListaCuentas.Add(cuenta);
-            }
+        //List<Cuenta> ListaCuentas = new List<Cuenta>();
+        //try
+        //{
+        //    for (int i = 1; i <= 15; i++)
+        //    {
+        //        Cuenta cuenta = new Cuenta(i, "Cuenta " + (400 + (300 * i)));
+        //        ListaCuentas.Add(cuenta);
+        //    }
 
-            WUCCuentasBancarias.Cuentas = ListaCuentas;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }      
+        //    WUCCuentasBancarias.Cuentas = ListaCuentas;
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw ex;
+        //}      
     }
 
     private void InicializarBancos()
     {
-        List<Cuenta> ListaBancos = new List<Cuenta>();
-        try
-        {
-            for (int i = 1; i <= 6; i++)
-            {
-                Cuenta cuenta = new Cuenta(i, "Banco " + i);
-                ListaBancos.Add(cuenta);
-            }
+        //List<Cuenta> ListaBancos = new List<Cuenta>();
+        //try
+        //{
+        //    for (int i = 1; i <= 6; i++)
+        //    {
+        //        Cuenta cuenta = new Cuenta(i, "Banco " + i);
+        //        ListaBancos.Add(cuenta);
+        //    }
 
-            ddlBanco.DataValueField = "ID";
-            ddlBanco.DataTextField = "Descripcion";
-            ddlBanco.DataSource = ListaBancos;
-            ddlBanco.DataBind();
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+        //    ddlBanco.DataValueField = "ID";
+        //    ddlBanco.DataTextField = "Descripcion";
+        //    ddlBanco.DataSource = ListaBancos;
+        //    ddlBanco.DataBind();
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw ex;
+        //}
     }
 
     private bool ValidarFechas()

@@ -100,6 +100,23 @@
             mensaje.hidden = false;
         }
 
+
+
+        function LinkNombreArchivoDescarga() {
+            var finicial = document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value;
+            var ffinal = document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value;
+            var mesini = parseInt(finicial.substr(3, 2));
+            var anoini = parseInt(finicial.substr(6, 4));
+            var cero;
+            if (mesini < 10) {
+                cero = "0";
+            }
+            else {
+                cero = "";
+            }
+            document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaCon" + cero + mesini + anoini + ".xlsx";
+        }
+
       
         
 
@@ -173,7 +190,11 @@
                                      Estatus
                                 </td>
                                 <td class="" style="width: 16.5%">
-                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpEstatus" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px">
+                                        <asp:ListItem Value="0">TODOS</asp:ListItem>
+                                        <asp:ListItem>ACTIVO</asp:ListItem>
+                                        <asp:ListItem>INACTIVO</asp:ListItem>
+                                    </asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
                              
@@ -186,7 +207,7 @@
                                      Estatus Concepto
                                 </td>
                                 <td class="" style="width: 17.5%">
-                                    <asp:DropDownList runat="server" ID="DropDownList1" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpEstatusConcepto" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField1" runat="server" />
                                 </td>                               
                              
@@ -199,7 +220,7 @@
                                      Banco
                                 </td>
                                 <td class="" style="width: 19.3%">
-                                    <asp:DropDownList runat="server" ID="DropDownList2" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpBancos" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="20px" AutoPostBack="True" OnSelectedIndexChanged="DrpBancos_SelectedIndexChanged"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField4" runat="server" />
                                 </td>                               
                              
@@ -221,7 +242,8 @@
                             
                         </table>
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                         runat="server"  OnClientClick="return ValidarFechas();" />
+                                         runat="server"  OnClientClick="return ValidarFechas();" OnClick="btnConsultar_Click" />
+                        <a  id="LigaDescarga" onclick="return LinkNombreArchivoDescarga() " ></a> 
                         
 
                     </td>
