@@ -26,6 +26,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return ListaResultado;
         }
 
+        public List<DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentadia(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+        {
+            List<DetalleReporteEstadoCuentaDia> ListaResultado;
+            DetalleReporteEstadoCuentaDia objDatos = new DetalleReporteEstadoCuentaDia();
+            ListaResultado = objDatos.consultaReporteEstadoCuentaPorDia(_conexion, FechaIni, FechaFin, Banco, CuentaBanco);
+            return ListaResultado;
+        }
+
         public List<DetalleReporteEstadoCuentaConciliado> consultaReporteEstadoCuentaConciliado(Conexion _conexion, DateTime FechaIni , DateTime FechaFin, string Banco , string CuentaBanco, string Status, string StatusConcepto)
         {
             List<DetalleReporteEstadoCuentaConciliado> ListaResultado;

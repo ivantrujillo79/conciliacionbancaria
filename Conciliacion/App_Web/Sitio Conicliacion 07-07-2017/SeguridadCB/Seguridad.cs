@@ -8,6 +8,7 @@ namespace SeguridadCB
 {
     public class Seguridad
     {
+        private static string _InicialCorporativo = "";
         private Seguridad()
         {
 
@@ -26,16 +27,18 @@ namespace SeguridadCB
 
         public static Usuario DatosUsuario(string usuario)
         {
+            _InicialCorporativo = SeguridadDataLayer.InicialCorporativosUsuario(usuario);
             DataTable dtCorporativos = new DataTable("Corporativos");
-            dtCorporativos = SeguridadDataLayer.CorporativosUsuario(usuario);
-            //Se quito AreasUsuario como parametro para la lectura de un usuario.
+            dtCorporativos = SeguridadDataLayer.CorporativosUsuario(usuario);                          
+            //Se quitó AreasUsuario como parametro para la lectura de un usuario.
             //DataTable dtAreas = SeguridadDataLayer.AreasUsuario(usuario);
             SqlDataReader rdr = null;
             try
             {
                 rdr = SeguridadDataLayer.DatosUsuario(usuario);
                 rdr.Read();
-                return new Usuario(rdr["Usuario"].ToString(), rdr["Nombre"].ToString(), Convert.ToInt32(rdr["Empleado"]), Encripter.ImplicitUnencript(rdr["Clave"].ToString()), Encripter.ImplicitUnencript(rdr["Clave"].ToString()), Convert.ToByte(rdr["Corporativo"]), rdr["NombreCorporativo"].ToString(), Convert.ToInt16(rdr["Sucursal"]), rdr["SucursalDescripcion"].ToString(), dtCorporativos);//Convert.ToInt16(rdr["Area"]), rdr["NombreArea"].ToString(), dtAreas
+                return  new Usuario(rdr["Usuario"].ToString(), rdr["Nombre"].ToString(), Convert.ToInt32(rdr["Empleado"]), Encripter.ImplicitUnencript(rdr["Clave"].ToString()), Encripter.ImplicitUnencript(rdr["Clave"].ToString()), Convert.ToByte(rdr["Corporativo"]), rdr["NombreCorporativo"].ToString(), Convert.ToInt16(rdr["Sucursal"]), rdr["SucursalDescripcion"].ToString(), dtCorporativos, _InicialCorporativo);//Convert.ToInt16(rdr["Area"]), rdr["NombreArea"].ToString(), dtAreas
+                
             }
             catch (SqlException ex)
             {

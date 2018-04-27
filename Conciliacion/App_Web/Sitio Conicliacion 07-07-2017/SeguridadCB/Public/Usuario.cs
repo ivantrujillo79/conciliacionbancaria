@@ -30,6 +30,30 @@ namespace SeguridadCB.Public
           //  this.tablaAreaAcceso = tablaAreaAcceso;
         }
 
+        internal Usuario(string usuario, string nombre, int empleado, string clave, string clavedesencriptada,
+                         byte corporativo, string nombreCorporativo, int sucursal, string nombreSucursal,
+                         DataTable tablaCorporativoAcceso,string inicial)//short area,string nombreArea, DataTable tablaAreaAcceso
+        {
+            this.usuario = usuario;
+            this.nombre = nombre;
+            this.empleado = empleado;
+            this.clave = clave;
+            this.clavedesencriptada = clavedesencriptada;
+
+            this.corporativo = corporativo;
+            this.nombreCorporativo = nombreCorporativo;
+
+            this.sucursal = sucursal;
+            this.nombreSucursal = nombreSucursal;
+
+            //this.area = area;
+            //this.nombreArea = nombreArea;
+
+            this.tablaCorporativoAcceso = tablaCorporativoAcceso;
+            //  this.tablaAreaAcceso = tablaAreaAcceso;
+            this._inicialCorporativo = inicial;
+        }
+
         #endregion
         #region "Variables globales"
         string usuario, nombre, clave, clavedesencriptada, nombreCorporativo, nombreSucursal, nombreArea;
@@ -38,6 +62,7 @@ namespace SeguridadCB.Public
         //short area;
         int empleado;
         DataTable tablaCorporativoAcceso;//, tablaAreaAcceso;
+        private string _inicialCorporativo;
         #endregion
         #region "Propiedades"
         public string IdUsuario
@@ -91,6 +116,11 @@ namespace SeguridadCB.Public
         public DataTable SucursalAcceso
         {
             get { return this.tablaCorporativoAcceso; }
+        }
+
+        public string InicialCorporativo
+        {
+            get { return _inicialCorporativo; }
         }
 
         //public DataTable AreaAcceso

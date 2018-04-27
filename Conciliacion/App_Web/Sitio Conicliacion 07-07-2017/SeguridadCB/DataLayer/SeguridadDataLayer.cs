@@ -230,6 +230,31 @@ namespace SeguridadCB.DataLayer
                 TerminaConsulta(false, true);
             }
         }
+
+        public static string InicialCorporativosUsuario(string usuario)
+        {
+
+            SqlCommand cmd = new SqlCommand("spCBCorporativosUsuarioInicial", SeguridadDataLayer.conexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+            string res;
+            cmd.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario;
+            try
+            {
+                IniciaConsulta(true, false);
+                res = (string)cmd.ExecuteScalar();
+                return res;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                TerminaConsulta(false, true);
+            }            
+        }
+
+
         //Se quito AreasUsuario
         //public static DataTable AreasUsuario(string usuario)
         //{
