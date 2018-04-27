@@ -57,7 +57,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 inicializar();
                 crearEncabezado();
-                //exportarDatos();
+                exportarDatos();
                 cerrar();
             }
             catch (Exception ex)
@@ -199,10 +199,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             xlRango = xlHoja.Columns["A"];
             xlRango.ColumnWidth = 4;
-            xlRango = xlHoja.Columns["P"];
-            xlRango.ColumnWidth = 13;
             xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             xlRango.Font.Bold = true;
+            xlRango = xlHoja.Columns["P"];
+            xlRango.ColumnWidth = 13;
             xlRango = xlHoja.Range["D7:H7"];
             xlRango.Merge();
             xlRango = xlHoja.Range["I7:K7"];
@@ -218,43 +218,46 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.ColumnWidth = 10;
         }
 
-        //private void exportarDatos()
-        //{
-        //    int i = 5;
-        //    Excel.Range celdaInicio;
-        //    Excel.Range celdaFin;
-        //    //_DetalleReporteEstadoCuenta = _DetalleReporteEstadoCuenta.OrderBy(detalle => detalle.ConsecutivoFlujo)
-        //    //                                                         .ToList();
-        //    xlRango = xlHoja.Range["A5:K5"];
+        private void exportarDatos()
+        {
+            int i = 8;
+            Excel.Range celdaInicio;
+            Excel.Range celdaFin;
 
-        //    foreach (DetalleReporteEstadoCuenta detalle in _DetalleReporteEstadoCuenta)
-        //    {
-        //        celdaInicio = xlHoja.Cells[i, 1];
-        //        celdaFin = xlHoja.Cells[i, 11];
+            foreach (DetalleReporteEstadoCuentaConciliado detalle in _ReporteEstadoCuentaConciliado)
+            {
+                celdaInicio = xlHoja.Cells[i, 1];
+                celdaFin = xlHoja.Cells[i, 16];
 
-        //        xlRango = xlHoja.Range[celdaInicio, celdaFin];
+                xlRango = xlHoja.Range[celdaInicio, celdaFin];
 
-        //        xlRango[1, 1].Value2 = detalle.ConsecutivoFlujo.ToString();
-        //        xlRango[1, 2].Value2 = detalle.FOperacion.ToString("dd/MM/yyyy");
-        //        xlRango[1, 3].Value2 = detalle.Referencia;
-        //        xlRango[1, 4].Value2 = detalle.Concepto;
-        //        xlRango[1, 9].Value2 = detalle.Retiros.ToString("C");
-        //        xlRango[1, 10].Value2 = detalle.Depositos.ToString("C");
-        //        xlRango[1, 11].Value2 = detalle.SaldoFinal.ToString("C");
+                xlRango[1, 1].Value2 = detalle.ConsecutivoFlujo.ToString();
+                xlRango[1, 2].Value2 = detalle.Fecha.ToString("dd/MM/yyyy");
+                xlRango[1, 3].Value2 = detalle.Referencia;
+                xlRango[1, 4].Value2 = detalle.Concepto;
+                xlRango[1, 9].Value2 = detalle.Retiros.ToString("C");
+                xlRango[1, 10].Value2 = detalle.Depositos.ToString("C");
+                xlRango[1, 11].Value2 = detalle.SaldoFinal.ToString("C");
+                xlRango[1, 12].Value2 = detalle.ConceptoConciliado;
+                xlRango[1, 16].Value2 = detalle.DocumentoConciliado;
 
-        //        i++;
-        //    }
-        //    celdaInicio = xlHoja.Cells[5, 1];
-        //    celdaFin = xlHoja.Cells[i, 8];
-        //    xlRango = xlHoja.Range[celdaInicio, celdaFin];
-        //    xlRango.Font.Size = 10;
+                i++;
+            }
+            celdaInicio = xlHoja.Cells[8, 1];
+            celdaFin = xlHoja.Cells[i, 8];
+            xlRango = xlHoja.Range[celdaInicio, celdaFin];
+            xlRango.Font.Size = 10;
 
-        //    celdaInicio = xlHoja.Cells[5, 4];   // D5
-        //    celdaFin = xlHoja.Cells[i, 8];  // H#
+            celdaInicio = xlHoja.Cells[8, 4];   // D8
+            celdaFin = xlHoja.Cells[i, 8];  // H#
+            xlRango = xlHoja.Range[celdaInicio, celdaFin];
+            xlRango.Merge(true);
 
-        //    xlRango = xlHoja.Range[celdaInicio, celdaFin];
-        //    xlRango.Merge(true);
-        //}
+            celdaInicio = xlHoja.Cells[8, 12];   // L8
+            celdaFin = xlHoja.Cells[i, 15];  // O#
+            xlRango = xlHoja.Range[celdaInicio, celdaFin];
+            xlRango.Merge(true);
+        }
 
         private void cerrar()
         {
