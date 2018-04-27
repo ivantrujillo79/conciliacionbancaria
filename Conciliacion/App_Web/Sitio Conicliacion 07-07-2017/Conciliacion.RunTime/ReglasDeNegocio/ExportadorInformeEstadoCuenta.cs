@@ -27,18 +27,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string _Archivo;
         private string _NombreHoja;
 
-        private const string CONCEPTO1 = "PORTATIL";
-        private const string CONCEPTO2 = "ESTACIONARIO";
-        private const string CONCEPTO3 = "EDIFICIOS";
-        private const string CONCEPTO4 = "SERVICIOS TECNICOS";
-        private const string CONCEPTO5 = "CREDITO PORTATIL";
-        private const string CONCEPTO6 = "CREDITO ESTACIONARIO";
-        private const string CONCEPTO7 = "CREDITO EDIFICIOS";
-        private const string CONCEPTO8 = "CREDITO SERVICIOS TECNICOS";
-        private const string CONCEPTO9 = "COBRANZA";
-        private const string CONCEPTO10 = "COBRANZA FILIAL";
-        private const string CONCEPTO11 = "OTROS INGRESOS";
-
         #endregion
 
         #region Constructores
@@ -53,7 +41,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _Archivo = Archivo.Trim();
                 _NombreHoja = Nombre.Trim();
 
-                //ValidarMiembros();
+                ValidarMiembros();
             }
             catch (Exception ex)
             {
