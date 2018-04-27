@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Reportecuenta" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="ReporteEstadoCuenta.aspx.cs" Inherits="ReportesConciliacion_ReporteEstadoCuenta" %>
-
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register src="~/ControlesUsuario/wuCuentasBancarias/WUCListadoCuentasBancarias.ascx" tagname="WUCListadoCuentasBancarias" tagprefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
@@ -149,12 +149,12 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
-     <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
-        EnableScriptGlobalization="True">
+     <asp:ScriptManager ID="ScriptManager1" runat="server"
+        EnableScriptGlobalization="True">    </asp:ScriptManager>
 
-    </asp:ScriptManager>
-
-     <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
+    <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
+        <ContentTemplate>
+            <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
                   style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px">
                 <strong>Error: </strong>
                 <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
@@ -234,6 +234,19 @@
                         <a  id="LigaDescarga" onclick="return LinkNombreArchivoDescarga() " ></a>                            
                     </td>           
                 </tr>
-            </table>         
+            </table>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+
+    <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
+        <ProgressTemplate>
+            <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
+                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+        <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+            PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
+        </asp:ModalPopupExtender>
+             
       </asp:Content>
 

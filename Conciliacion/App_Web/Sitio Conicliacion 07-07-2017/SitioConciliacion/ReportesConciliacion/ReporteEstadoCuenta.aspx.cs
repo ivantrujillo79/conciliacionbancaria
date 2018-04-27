@@ -162,7 +162,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                 Usuario usuario;
                 usuario = (Usuario)HttpContext.Current.Session["Usuario"];
                 dtEmpresas = usuario.CorporativoAcceso;
-                /*try
+                try
                 {
                     List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia> lstDetalleCuentadia = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>();
                     lstDetalleCuentadia = consultaReporteEstadoCuentaPorDia();
@@ -176,10 +176,14 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                     {
                         cero = "";
                     }
-
+                    List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
+                    lstDetalleCuenta = consultaReporteEstadoCuenta();
                     ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
-                 HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaDiaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
                     obExportador.generarInforme();
+                    //ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
+                    //    HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaDiaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                    //         obExportador.generarInforme();
                     ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
               @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
                 }
@@ -191,7 +195,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                         + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
                 }
             
-            */
+            
             }
 
         }
