@@ -70,11 +70,11 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
             conexion.AbrirConexion(false);
-            lstDetalle = informeBancario.consultarBancos(conexion, 1,"ROPIMA");
+            SeguridadCB.Public.Usuario Usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            lstDetalle = informeBancario.consultarBancos(conexion, 1, Usuario.IdUsuario);
         }
         catch (Exception ex)
         {
-            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message.Replace("'", "") + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
         finally

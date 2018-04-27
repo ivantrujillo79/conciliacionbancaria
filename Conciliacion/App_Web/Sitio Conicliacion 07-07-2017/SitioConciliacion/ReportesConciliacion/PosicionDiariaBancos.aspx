@@ -26,7 +26,20 @@
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-    
+        $(document).ready(function () {
+            var d = new Date();
+
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var output = (('' + day).length < 2 ? '0' : '') + day + '/' +
+                (('' + month).length < 2 ? '0' : '') + month + '/' +
+                d.getFullYear();
+
+            $('#ctl00_contenidoPrincipal_txtFInicial').val(output);
+            $('#ctl00_contenidoPrincipal_txtFFinal').val(output);            
+            });
+
         function pageLoad() {
             activarDatePickers();            
         }
