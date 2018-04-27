@@ -21,9 +21,15 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             if (!IsPostBack)
             {
                 InicializarBancos();
+                if (btnlista.Items.Count > 0)
+                {
+                    btnlista_SelectedIndexChanged(sender, e);
+                }
             }
+            else
+            {
 
-
+            }
         }
         catch (Exception ex)
         {
@@ -79,7 +85,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
     {
         SeguridadCB.Public.Usuario usuario;
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-
+        
         List<InformeBancarioDatos.DetalleBanco> lstDetalle = new List<InformeBancarioDatos.DetalleBanco>();
         lstDetalle = consultarBancos(usuario.IdUsuario.ToString().Trim());
         btnlista.DataValueField = "IDBanco";

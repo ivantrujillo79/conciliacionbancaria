@@ -209,7 +209,7 @@
                                 <p >Banco</p>
                                 </td>
                                 <td class="" style="width: 16%">
-                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="26px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="26px" AutoPostBack="True" OnSelectedIndexChanged="btnlista_SelectedIndexChanged"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
                              
