@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.IO;
+using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
-using DetalleReporteEstadoCuenta = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuenta;
+using DetalleReporteEstadoCuentaConciliado = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado;
+using System.IO;
+using System.Globalization;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
-    public class ExportadorInformeEstadoCuenta
+    public class ExportadorInformeEstadoCuentaConciliado
     {
 
         #region Miembros privados
@@ -22,7 +22,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private Microsoft.Office.Interop.Excel.Worksheet xlHoja;
         private Microsoft.Office.Interop.Excel.Range xlRango;
 
-        private List<DetalleReporteEstadoCuenta> _DetalleReporteEstadoCuenta;
+        private List<DetalleReporteEstadoCuentaConciliado> _ReporteEstadoCuentaConciliado;
         private string _Ruta;
         private string _Archivo;
         private string _NombreHoja;
@@ -31,12 +31,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public ExportadorInformeEstadoCuenta(List<DetalleReporteEstadoCuenta> DetalleReporteEstadoCuenta,
+        public ExportadorInformeEstadoCuentaConciliado(List<DetalleReporteEstadoCuentaConciliado> ReporteEstadoCuentaConciliado,
                                         string Ruta, string Archivo, string Nombre)
         {
             try
             {
-                _DetalleReporteEstadoCuenta = DetalleReporteEstadoCuenta;
+                _ReporteEstadoCuentaConciliado = ReporteEstadoCuentaConciliado;
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
                 _NombreHoja = Nombre.Trim();
@@ -109,19 +109,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                 xlHoja = xlHojas.Add();
 
-                xlHoja.Name = _DetalleReporteEstadoCuenta[0].CuentaBancoFinanciero;
+                xlHoja.Name = _NombreHoja;
             }
             else
             {
                 xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
 
                 //xlHojas = xlLibro.Sheets;
-                
+
                 //xlHoja = xlHojas.Add();
 
                 xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
 
-                xlHoja.Name = _DetalleReporteEstadoCuenta[0].CuentaBancoFinanciero;
+                xlHoja.Name = _NombreHoja;
             }
         }
 
@@ -133,9 +133,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             //banco = _DetalleReporteEstadoCuenta[0].Banco;
             banco = "BANAMEX ";
-            cuenta = "CTA " + _DetalleReporteEstadoCuenta[0].CuentaBancoFinanciero + " ";
-            empresa = _DetalleReporteEstadoCuenta[0].Corporativo;
-            fecha = _DetalleReporteEstadoCuenta[0].FOperacion;
+            cuenta = "CTA " + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
+            empresa = _ReporteEstadoCuentaConciliado[0].Corporativo;
+            fecha = _ReporteEstadoCuentaConciliado[0].Fecha;
 
             // Cuenta
             xlRango = xlHoja.Range["B1:H1"];
@@ -156,7 +156,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.Font.Size = 13;
             xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             xlRango.Interior.Color = Excel.XlRgbColor.rgbBlue;
-            
+
             // Fecha
             xlRango = xlHoja.Range["I1:K3"];
             xlRango.Merge(true);
@@ -170,22 +170,26 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango[2, 1].IndentLevel = 3;
 
             // Depósito - retiro - saldos
-            xlRango = xlHoja.Range["L1:O4"];
+            xlRango = xlHoja.Range["L1:O6"];
             xlRango.Merge(true);
             xlRango[1, 1].Value2 = "Depósito";
             xlRango[2, 1].Value2 = "Retiro";
             xlRango[3, 1].Value2 = "Saldo final calculado";
             xlRango[4, 1].Value2 = "Saldo final bancario";
+            xlRango[5, 1].Value2 = "Depósito conciliado";
+            xlRango[6, 1].Value2 = "Retiro conciliado";
             xlRango.Font.Bold = true;
 
             // Columnas
-            xlRango = xlHoja.Range["B4:K4"];
+            xlRango = xlHoja.Range["B7:P7"];
             xlRango[1, 1].Value2 = "Fecha";
             xlRango[1, 2].Value2 = "Referencia";
             xlRango[1, 3].Value2 = "Concepto";
             xlRango[1, 8].Value2 = "Retiros";
             xlRango[1, 9].Value2 = "Depósitos";
             xlRango[1, 10].Value2 = "Saldo";
+            xlRango[1, 11].Value2 = "Concepto conciliado";
+            xlRango[1, 15].Value2 = "Documento";
             xlRango.Font.ColorIndex = 23;
             xlRango.Font.Size = 10;
             xlRango.Interior.Color = Excel.XlRgbColor.rgbWhite;
@@ -197,55 +201,64 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.ColumnWidth = 4;
             xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             xlRango.Font.Bold = true;
-            xlRango = xlHoja.Range["D4:H4"];
+            xlRango = xlHoja.Columns["P"];
+            xlRango.ColumnWidth = 13;
+            xlRango = xlHoja.Range["D7:H7"];
             xlRango.Merge();
-            xlRango = xlHoja.Range["I4:K4"];
+            xlRango = xlHoja.Range["I7:K7"];
             xlRango.Font.Bold = true;
             xlRango.ColumnWidth = 13;
+            xlRango = xlHoja.Range["L7:O7"];
+            xlRango.Merge();
+            xlRango = xlHoja.Range["L7:P7"];
+            xlRango.Font.Bold = true;
             xlRango = xlHoja.Range["I:K"];
             xlRango.ColumnWidth = 13;
             xlRango = xlHoja.Range["B:H"];
             xlRango.ColumnWidth = 10;
         }
-        
+
         private void exportarDatos()
         {
-            int i = 5;
+            int i = 8;
             Excel.Range celdaInicio;
             Excel.Range celdaFin;
-            //_DetalleReporteEstadoCuenta = _DetalleReporteEstadoCuenta.OrderBy(detalle => detalle.ConsecutivoFlujo)
-            //                                                         .ToList();
-            xlRango = xlHoja.Range["A5:K5"];
 
-            foreach (DetalleReporteEstadoCuenta detalle in _DetalleReporteEstadoCuenta)
+            foreach (DetalleReporteEstadoCuentaConciliado detalle in _ReporteEstadoCuentaConciliado)
             {
                 celdaInicio = xlHoja.Cells[i, 1];
-                celdaFin = xlHoja.Cells[i, 11];
+                celdaFin = xlHoja.Cells[i, 16];
 
                 xlRango = xlHoja.Range[celdaInicio, celdaFin];
 
                 xlRango[1, 1].Value2 = detalle.ConsecutivoFlujo.ToString();
-                xlRango[1, 2].Value2 = detalle.FOperacion.ToString("dd/MM/yyyy");
+                xlRango[1, 2].Value2 = detalle.Fecha.ToString("dd/MM/yyyy");
                 xlRango[1, 3].Value2 = detalle.Referencia;
                 xlRango[1, 4].Value2 = detalle.Concepto;
                 xlRango[1, 9].Value2 = detalle.Retiros.ToString("C");
                 xlRango[1, 10].Value2 = detalle.Depositos.ToString("C");
                 xlRango[1, 11].Value2 = detalle.SaldoFinal.ToString("C");
+                xlRango[1, 12].Value2 = detalle.ConceptoConciliado;
+                xlRango[1, 16].Value2 = detalle.DocumentoConciliado;
 
                 i++;
             }
-            celdaInicio = xlHoja.Cells[5, 1];
+            celdaInicio = xlHoja.Cells[8, 1];
             celdaFin = xlHoja.Cells[i, 8];
             xlRango = xlHoja.Range[celdaInicio, celdaFin];
             xlRango.Font.Size = 10;
 
-            celdaInicio = xlHoja.Cells[5, 4];   // D5
+            celdaInicio = xlHoja.Cells[8, 4];   // D8
             celdaFin = xlHoja.Cells[i, 8];  // H#
+            xlRango = xlHoja.Range[celdaInicio, celdaFin];
+            xlRango.Merge(true);
 
+            celdaInicio = xlHoja.Cells[8, 12];   // L8
+            celdaFin = xlHoja.Cells[i, 15];  // O#
             xlRango = xlHoja.Range[celdaInicio, celdaFin];
             xlRango.Merge(true);
         }
-        
+
         private void cerrar()
         {
             string rutaCompleta = _Ruta + _Archivo;
@@ -266,11 +279,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             StringBuilder mensajeExcepcion = new StringBuilder();
             bool valido = false;
 
-            if (_DetalleReporteEstadoCuenta == null)
+            if (_ReporteEstadoCuentaConciliado == null)
             {
                 mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
             }
-            else if (_DetalleReporteEstadoCuenta.Count == 0)
+            else if (_ReporteEstadoCuentaConciliado.Count == 0)
             {
                 mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
             }
@@ -301,6 +314,5 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             return valido;
         } // end ValidarMiembros()
-        
     }
 }
