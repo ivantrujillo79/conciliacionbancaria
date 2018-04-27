@@ -14,7 +14,10 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
     {
         try
         {          
-            InicializarCajas();
+            if (!Page.IsPostBack)
+            {
+                InicializarCajas();
+            }
         }
         catch (Exception ex)
         {
