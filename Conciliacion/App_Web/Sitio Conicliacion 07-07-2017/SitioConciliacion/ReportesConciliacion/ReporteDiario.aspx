@@ -3,11 +3,11 @@
 <%@ Register src="../ControlesUsuario/ListadoCajas/wucListadoCajas.ascx" tagname="wucListadoCajas" tagprefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
-    Posici&oacute;n Diaria de Bancos
+    Estado de cuenta por día
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" Runat="Server">
     
-    <!--Libreria jQuery-->
+    <%--<!--Libreria jQuery-->--%>
     <script src="../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
@@ -125,7 +125,7 @@
             else {
                 cero = "";
             }           
-            document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";
+            document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCuenta" + cero + mesini + anoini + ".xlsx";
         }
     </script>
 </asp:Content>

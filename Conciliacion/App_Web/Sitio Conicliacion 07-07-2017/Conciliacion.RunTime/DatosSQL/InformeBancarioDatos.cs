@@ -29,7 +29,7 @@ namespace Conciliacion.RunTime.DatosSQL
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaPorDiaEV";
+                _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaPorDiaEVDummy";
 
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;

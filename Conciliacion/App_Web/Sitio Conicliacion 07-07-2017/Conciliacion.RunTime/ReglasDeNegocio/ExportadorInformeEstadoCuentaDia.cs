@@ -62,13 +62,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     if (i == 0)
                     {
                         inicializar(_DetalleReporteEstadoCuentaDia[i]);
-                        ExportarDatosCuenta(_DetalleReporteEstadoCuentaDia[i]);
+                        crearEncabezado(_DetalleReporteEstadoCuentaDia[i]);
+                        ExportarDatosCuenta(_DetalleReporteEstadoCuentaDia[i], true);
                     }
                     else
                     {
-                        ExportarDatosCuenta(_DetalleReporteEstadoCuentaDia[i]);
+                       
+                        ExportarDatosCuenta(_DetalleReporteEstadoCuentaDia[i], false);
+                        crearEncabezado(_DetalleReporteEstadoCuentaDia[i]);
                     }
-                    //crearEncabezado(_DetalleReporteEstadoCuentaDia[i]);
+                  
+                     
+                    
+                    
                     
                 }
 
@@ -101,6 +107,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private void inicializar(List<DetalleReporteEstadoCuentaDia> ListaInicial)
         {
             string rutaCompleta = _Ruta + _Archivo;
+
+            if (File.Exists(_Ruta + _Archivo))
+            {
+                File.Delete(_Ruta + _Archivo);
+            }
 
             xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
 
@@ -136,7 +147,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
 
                 //xlHojas = xlLibro.Sheets;
-
                 //xlHoja = xlHojas.Add();
 
                 xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
@@ -152,7 +162,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
 
             //banco = _DetalleReporteEstadoCuenta[0].Banco;
-            banco = "BANAMEX ";
+           // banco = "BANAMEX ";
             cuenta = "CTA " + ListaEncabezado[0].CuentaBancoFinanciero + " ";
             empresa = ListaEncabezado[0].Corporativo;
             fecha = DateTime.Parse(ListaEncabezado[0].Fecha);
@@ -163,7 +173,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // Cuenta
             xlRango = xlHoja.Range["B1:H1"];
             xlRango.Merge(true);
-            xlRango.Value2 = banco + cuenta + "MOVIMIENTOS DEL MES DE:";
+            xlRango.Value2 = cuenta + "MOVIMIENTOS DEL MES DE:" + fecha.ToString("MMMM", cultureInfo).ToUpper(); ;
 
             // Empresa
             xlRango = xlHoja.Range["B2:H2"];
@@ -192,14 +202,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango[2, 1].Value2 = "CLABE INTERBANCARIA";
             xlRango[2, 1].IndentLevel = 3;
 
-            // Depósito - retiro - saldos
-            xlRango = xlHoja.Range["L1:O4"];
-            xlRango.Merge(true);
-            xlRango[1, 1].Value2 = "Depósito";
-            xlRango[2, 1].Value2 = "Retiro";
-            xlRango[3, 1].Value2 = "Saldo final calculado";
-            xlRango[4, 1].Value2 = "Saldo final bancario";
-            xlRango.Font.Bold = true;
+            //// Depósito - retiro - saldos
+            //xlRango = xlHoja.Range["L1:O4"];
+            //xlRango.Merge(true);
+            //xlRango[1, 1].Value2 = "Depósito";
+            //xlRango[2, 1].Value2 = "Retiro";
+            //xlRango[3, 1].Value2 = "Saldo final calculado";
+            //xlRango[4, 1].Value2 = "Saldo final bancario";
+            //xlRango.Font.Bold = true;
 
             // Columnas
             xlRango = xlHoja.Range["B4:K4"];
@@ -241,46 +251,57 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
 
-        public void ExportarDatosCuenta(List<DetalleReporteEstadoCuentaDia> _DetalleAExportar)
+        public void ExportarDatosCuenta(List<DetalleReporteEstadoCuentaDia> _DetalleAExportar, Boolean Inicial)
         {
             int i = 5;
             Excel.Range celdaInicio;
             Excel.Range celdaFin;
 
             xlHojas = xlLibro.Sheets;
-          
+
+
+            if (Inicial == false)
+            {
                 xlHoja = (Microsoft.Office.Interop.Excel.Worksheet)xlLibro.Worksheets.Add
-              (System.Reflection.Missing.Value,
-               xlLibro.Worksheets[xlLibro.Worksheets.Count],
-               System.Reflection.Missing.Value,
-               System.Reflection.Missing.Value);
-              xlHoja.Name = _DetalleAExportar[0].CuentaBancoFinanciero;
-                 
-            xlRango = xlHoja.Range["A5:K5"];            
+                               (System.Reflection.Missing.Value,
+                                xlLibro.Worksheets[xlLibro.Worksheets.Count],
+                                System.Reflection.Missing.Value,
+                                System.Reflection.Missing.Value);
+                xlHoja.Name = _DetalleAExportar[0].CuentaBancoFinanciero;
+            }
+            else
+            {
+                //xlHoja = (Excel.Worksheet)xlLibro.Worksheets[0];
+            }
+
+            
+
+
+            xlRango = xlHoja.Range["B5:G5"];            
             
             foreach (DetalleReporteEstadoCuentaDia detalle in _DetalleAExportar)
             {
                 celdaInicio = xlHoja.Cells[i, 1];
                 celdaFin = xlHoja.Cells[i, 11];
                 xlRango = xlHoja.Range[celdaInicio, celdaFin];               
-                xlRango[1, 1].Value2 = detalle.CuentaBancoFinanciero.ToString();
-                xlRango[1, 2].Value2 = detalle.Fecha.ToString();
-                xlRango[1, 3].Value2 = detalle.Depositos.ToString();
-                xlRango[1, 4].Value2 = detalle.Retiro.ToString();
-                xlRango[1, 5].Value2 = detalle.SaldoFinal.ToString();
+                xlRango[1, 2].Value2 = detalle.CuentaBancoFinanciero.ToString();
+                xlRango[1, 3].Value2 = detalle.Fecha.ToString();
+                xlRango[1, 9].Value2 = detalle.Retiro.ToString();
+                xlRango[1, 10].Value2 = detalle.Depositos.ToString();
+                xlRango[1, 11].Value2 = detalle.SaldoFinal.ToString();
 
                 i++;
             }
-            celdaInicio = xlHoja.Cells[5, 1];
-            celdaFin = xlHoja.Cells[i, 8];
-            xlRango = xlHoja.Range[celdaInicio, celdaFin];
+            //celdaInicio = xlHoja.Cells[5, 1];
+            //celdaFin = xlHoja.Cells[i, 8];
+            //xlRango = xlHoja.Range[celdaInicio, celdaFin];
             xlRango.Font.Size = 10;
 
-            celdaInicio = xlHoja.Cells[5, 4];   // D5
-            celdaFin = xlHoja.Cells[i, 8];  // H#
+            //celdaInicio = xlHoja.Cells[5, 4];   // D5
+            //celdaFin = xlHoja.Cells[i, 8];  // H#
 
-            xlRango = xlHoja.Range[celdaInicio, celdaFin];
-            xlRango.Merge(true);
+            //xlRango = xlHoja.Range[celdaInicio, celdaFin];
+            //xlRango.Merge(true);
         }
         
         private void cerrar()

@@ -62,9 +62,8 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
                 cero = "";
             }
 
-
             ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
-             HttpRuntime.AppDomainAppPath+@"InformesExcel\", "EdoCuentaDia29"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+             HttpRuntime.AppDomainAppPath+@"InformesExcel\", "EdoCuenta"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
             obExportador.generarInforme();           
            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
            @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
@@ -90,8 +89,8 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
         try
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            DateTime fechaInicio = Convert.ToDateTime("01/01/2017");
-            DateTime fechaFin = Convert.ToDateTime("07/01/2017");
+            DateTime fechaInicio = Convert.ToDateTime("01/04/2017");
+            DateTime fechaFin = Convert.ToDateTime("17/04/2017");
             conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultaReporteEstadoCuentaPorDia(conexion, fechaInicio, fechaFin, "", "");
 
