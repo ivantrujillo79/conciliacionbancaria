@@ -10,6 +10,8 @@ using Conciliacion.RunTime.DatosSQL;
 using System.Data;
 using System.Data.SqlClient;
 using SeguridadCB.Public;
+using DetalleReporteEstadoCuentaDia = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaDia;
+
 
 public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Page
 {
@@ -20,6 +22,10 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         {
             if (!IsPostBack)
             {
+                Usuario usuario;
+                usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+             
+                hdfIniEmpresa.Value = usuario.InicialCorporativo ;
                 InicializarBancos();
                 if (btnlista.Items.Count > 0)
                 {
@@ -127,51 +133,54 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
 
     protected void btnConsultar_Click(object sender, EventArgs e)
     {
+        DataTable dtEmpresas = new DataTable();
+        Usuario usuario;
+        usuario = (Usuario)HttpContext.Current.Session["Usuario"];
         string Pagina = Request.QueryString["Reporte"];
         if (Pagina != null)
         {
 
             if (Pagina == "2")
-            {
-                try
-                {
-                    List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
-                    lstDetalleCuenta = consultaReporteEstadoCuenta();
-                    DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-                    string cero;
-                    if (fechaInicio.Month < 10)
+            {               
+                      try
                     {
-                        cero = "0";
-                    }
-                    else
-                    {
-                        cero = "";
-                    }
+                        List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
+                        lstDetalleCuenta = consultaReporteEstadoCuenta();
+                        DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+                        string cero;
+                        if (fechaInicio.Month < 10)
+                        {
+                            cero = "0";
+                        }
+                        else
+                        {
+                            cero = "";
+                        }
 
-                    ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
-                 HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
-                    obExportador.generarInforme();
-                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-              @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
-                }
-                catch (Exception ex)
-                {
-                    //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
-                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                        @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
-                        + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
-                }
+                        ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
+                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCta"+usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                        obExportador.generarInforme();
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                  @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+                    }
+                    catch (Exception ex)
+                    {
+                        //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                            @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                            + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+                    }
             }
-            if (Pagina == "3")
+                if (Pagina == "3")
             {
-                DataTable dtEmpresas = new DataTable();
-                Usuario usuario;
-                usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+               
+               
                 dtEmpresas = usuario.CorporativoAcceso;
+
                 try
                 {
-                    List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia> lstDetalleCuentadia = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>();
-                    lstDetalleCuentadia = consultaReporteEstadoCuentaPorDia();
+                    List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
+                    lstDetalle = consultaReporteEstadoCuentaDia();
                     DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
                     string cero;
                     if (fechaInicio.Month < 10)
@@ -182,16 +191,13 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                     {
                         cero = "";
                     }
-                    List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
-                    lstDetalleCuenta = consultaReporteEstadoCuenta();
-                    ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
-                HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+
+                    ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
+                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaDia"+usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
                     obExportador.generarInforme();
-                    //ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
-                    //    HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaDiaGM" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
-                    //         obExportador.generarInforme();
                     ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-              @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+
                 }
                 catch (Exception ex)
                 {
@@ -200,10 +206,8 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                         @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                         + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
                 }
-            
-            
-            }
 
+            }
         }
     }
 
@@ -233,18 +237,23 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         return lstDetalleCuenta;
     }
 
-    private List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentaPorDia()
+    private List<List<DetalleReporteEstadoCuentaDia>> consultaReporteEstadoCuentaDia()
     {
         Conexion conexion = new Conexion();
-        var lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>();
+        var lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>();
+        var ListasDetalle = new List<List<DetalleReporteEstadoCuentaDia>>();
         string Banco = btnlista.SelectedItem.Text;
+
         try
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
             conexion.AbrirConexion(false);
-            lstDetalleCuenta = informeBancario.consultaReporteEstadoCuentadia(conexion, fechaInicio, fechaFin, Banco, "092904I8");
+            lstDetalle = informeBancario.consultaReporteEstadoCuentaPorDia(conexion, fechaInicio, fechaFin,Banco, "");
+
+            ListasDetalle = Separat(lstDetalle);
+
         }
         catch (Exception ex)
         {
@@ -255,12 +264,22 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         {
             conexion.CerrarConexion();
         }
-        return lstDetalleCuenta;
+        //Se regresa una lista de listas... con las cuentas separadas...
+        return ListasDetalle;
     }
 
 
     protected void btnlista_SelectedIndexChanged(object sender, EventArgs e)
     {
         InicializarCuentas(int.Parse(btnlista.SelectedValue.ToString()), btnlista.SelectedItem.ToString());
+    }
+
+    public List<List<DetalleReporteEstadoCuentaDia>> Separat(List<DetalleReporteEstadoCuentaDia> source)
+    {
+        return source
+            .GroupBy(s => s.CuentaBancoFinanciero)
+            .OrderBy(g => g.Key)
+            .Select(g => g.ToList())
+            .ToList();
     }
 }

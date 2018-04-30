@@ -27,21 +27,7 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
 
     private void InicializarCajas()
     {
-        List<Caja> ListaCajas = new List<Caja>();
-        try
-        {
-            for (int i = 1; i <= 6; i++)
-            {
-                Caja Caja = new Caja(i, "Caja " +i);
-                ListaCajas.Add(Caja);
-            }
-
-            wucListadoCajas1.Cajas = ListaCajas;
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+        
     }
     // se inicializa la funcion de exprtar datos
 
