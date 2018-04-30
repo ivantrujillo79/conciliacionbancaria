@@ -122,3 +122,12 @@ C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Siti
 C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csprojResolveAssemblyReference.cache
 C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
 C:\Users\Transforma1\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csprojResolveAssemblyReference.cache
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.dll
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\SeguridadCB.dll
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.pdb
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\SeguridadCB.pdb
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb
