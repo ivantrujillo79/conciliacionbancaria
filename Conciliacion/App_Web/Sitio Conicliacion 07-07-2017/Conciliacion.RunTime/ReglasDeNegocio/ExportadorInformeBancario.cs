@@ -25,7 +25,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private List<DetallePosicionDiariaBancos> _DetallePosicionDiariaBancos;
         private string _Ruta;
         private string _Archivo;
-        private string _NombreLibro;
+        private string _NombreHoja;
 
         private List<DateTime> _Fechas;
         private List<PosicionDiaria> _PosicionesDiarias;
@@ -55,7 +55,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _DetallePosicionDiariaBancos = DetallePosicionDiariaBancos;
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
-                _NombreLibro = Nombre.Trim();
+                _NombreHoja = Nombre.Trim();
                 _PosicionesDiarias = new List<PosicionDiaria>();
 
                 ValidarMiembros();
@@ -171,6 +171,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         
         private void inicializar()
         {
+            string rutaCompleta = _Ruta + _Archivo;
+
             xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
 
             if (xlAplicacion == null)
@@ -180,17 +182,38 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             xlAplicacion.Visible = false;
 
+            xlAplicacion.DisplayAlerts = false;
+
             xlLibros = xlAplicacion.Workbooks;
 
-            xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
+            if (File.Exists(rutaCompleta))
+            {
+                xlLibro = xlAplicacion.Workbooks.Open(rutaCompleta,
+                    0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "",
+                    true, false, 0, true, false, false);
 
-            //xlHojas = xlLibro.Sheets;
+                //xlLibro = xlAplicacion.Workbooks.Open(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
+                //            false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,
+                //            Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
-            xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
+                xlHojas = xlLibro.Sheets;
 
-            //xlHoja = xlHojas.Add();
+                xlHoja = xlHojas.Add();
 
-            xlHoja.Name = _NombreLibro;
+                xlHoja.Name = _NombreHoja;
+            }
+            else
+            {
+                xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
+
+                //xlHojas = xlLibro.Sheets;
+
+                //xlHoja = xlHojas.Add();
+
+                xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
+
+                xlHoja.Name = _NombreHoja;
+            }
         }
 
         private void agruparPorFecha()
@@ -434,7 +457,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             string rutaCompleta = _Ruta + _Archivo;
 
-            if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
+            //if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
 
             xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
                             false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,
@@ -459,7 +482,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
             }
 
-            if (string.IsNullOrEmpty(_NombreLibro))
+            if (string.IsNullOrEmpty(_NombreHoja))
             {
                 mensajeExcepcion.Append("El nombre del libro es incorrecto. <br/>");
             }
