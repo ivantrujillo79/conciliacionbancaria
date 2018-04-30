@@ -108,7 +108,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                 xlHoja = xlHojas.Add();
 
-                xlHoja.Name = _DetalleReporteEstadoCuenta[0].CuentaBancoFinanciero;
+                xlHoja.Name = _NombreHoja;
             }
             else
             {
