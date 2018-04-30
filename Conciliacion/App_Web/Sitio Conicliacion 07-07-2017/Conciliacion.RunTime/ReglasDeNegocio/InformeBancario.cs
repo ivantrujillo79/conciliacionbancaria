@@ -28,9 +28,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public List<DetalleReporteEstadoCuentaDia> consultaReporteEstadoCuentadia(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
         {
-            List<DetalleReporteEstadoCuentaDia> ListaResultado;
+            List<DetalleReporteEstadoCuentaDia> ListaResultado = new List<DetalleReporteEstadoCuentaDia>();
             DetalleReporteEstadoCuentaDia objDatos = new DetalleReporteEstadoCuentaDia();
-            ListaResultado = objDatos.consultaReporteEstadoCuentaPorDia(_conexion, FechaIni, FechaFin, Banco, CuentaBanco);
+            //ListaResultado = objDatos.consultaReporteEstadoCuentaPorDia(_conexion, FechaIni, FechaFin, Banco, CuentaBanco);
             return ListaResultado;
         }
 
