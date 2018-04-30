@@ -100,6 +100,23 @@
             mensaje.hidden = false;
         }
 
+
+
+        function LinkNombreArchivoDescarga() {
+            var finicial = document.getElementById("ctl00_contenidoPrincipal_txtFInicial").value;
+            var ffinal = document.getElementById("ctl00_contenidoPrincipal_txtFFinal").value;
+            var mesini = parseInt(finicial.substr(3, 2));
+            var anoini = parseInt(finicial.substr(6, 4));
+            var cero;
+            if (mesini < 10) {
+                cero = "0";
+            }
+            else {
+                cero = "";
+            }
+            document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaCon" + cero + mesini + anoini + ".xlsx";
+        }
+
       
         
 
@@ -124,12 +141,12 @@
     </div>
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
-                    <td style="padding: 3px 3px 3px 50px; vertical-align: top; width: 1%">                      
+                    <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">                      
                         <table class="etiqueta opcionBarra">
                             <tr>
-                                <td class="iconoOpcion  bg-color-grisClaro01" rowspan="2" style="width: 100%">
-                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="100px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ImgInformes.png"
-                                        ToolTip="CONSULTAR" Width="80px" ValidationGroup="Configuracion"
+                                <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
+                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
+                                        ToolTip="CONSULTAR" Width="100px" ValidationGroup="Configuracion"
                                          />
                                 </td>
                             </tr>
@@ -141,7 +158,7 @@
                         <table class="etiqueta opcionBarra " style="width:25%;">
                             <tr>
                                 
-                                <td class="" style="width: 8.4%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 8.4%;text-align:center;">
                                      Fecha Inicial
                                 </td>
                                 <td class="" style="width: 16%">
@@ -155,7 +172,7 @@
                         <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="" style="width: 8.4%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 8.4%;text-align:center;">
                                      Fecha Final
                                 </td>
                                 <td class="" style="width: 16%">
@@ -169,11 +186,15 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="" style="width: 8%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 8%;text-align:center;">
                                      Estatus
                                 </td>
                                 <td class="" style="width: 16.5%">
-                                    <asp:DropDownList runat="server" ID="ddlEstatus" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="25px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpEstatus" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px">
+                                        <asp:ListItem Value="0">TODOS</asp:ListItem>
+                                        <asp:ListItem>ACTIVO</asp:ListItem>
+                                        <asp:ListItem>INACTIVO</asp:ListItem>
+                                    </asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
                              
@@ -182,11 +203,11 @@
                          <table class="etiqueta opcionBarra" style="width:25%;">
                             <tr>
                                
-                                <td class="" style="width: 7%;text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 7%;text-align:center;">
                                      Estatus Concepto
                                 </td>
                                 <td class="" style="width: 17.5%">
-                                    <asp:DropDownList runat="server" ID="ddlEstatusConcepto" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="25px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpEstatusConcepto" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField1" runat="server" />
                                 </td>                               
                              
@@ -195,11 +216,11 @@
                          <table class="etiqueta opcionBarra" style="width:25%;text-align:center;">
                             <tr>
                                
-                                <td class="" style="width: 5.7%;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 5.7%">
                                      Banco
                                 </td>
                                 <td class="" style="width: 19.3%">
-                                    <asp:DropDownList runat="server" ID="ddlBanco" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="25px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpBancos" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="20px" AutoPostBack="True" OnSelectedIndexChanged="DrpBancos_SelectedIndexChanged"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField4" runat="server" />
                                 </td>                               
                              
@@ -209,7 +230,7 @@
                         <table class="etiqueta opcionBarra" style="width:25%; text-align:center;">
                             <tr>
                                 
-                                <td class="" style="width: 18%; text-underline-position:below;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 18%; text-underline-position:below;">
                                      Cuenta Bancaria
                                 </td>
                                 <td class="" style="width: 7%">
@@ -221,7 +242,8 @@
                             
                         </table>
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
-                                         runat="server"  OnClientClick="return ValidarFechas();" />
+                                         runat="server"  OnClientClick="return ValidarFechas();" OnClick="btnConsultar_Click" />
+                        <a  id="LigaDescarga" onclick="return LinkNombreArchivoDescarga() " ></a> 
                         
 
                     </td>
