@@ -15,7 +15,8 @@
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
     
     <!--MsDropdown CSS-->
-    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
+    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" ty
+    <a href="ReporteConciliacionI.aspx">ReporteConciliacionI.aspx</a>pe="text/css" />
     <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
 
     <!-- Estilo de AJAX Accordion-->
