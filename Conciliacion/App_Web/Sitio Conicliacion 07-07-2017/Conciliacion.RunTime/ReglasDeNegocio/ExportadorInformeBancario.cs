@@ -239,6 +239,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     xlRango.Merge();
                     xlRango.Value2 = dia;
 
+
                     // Kilos
                     celdaKilos = celdaDiaInicial.Offset[1, 0];
                     celdaKilos.Value2 = "KILOS";
