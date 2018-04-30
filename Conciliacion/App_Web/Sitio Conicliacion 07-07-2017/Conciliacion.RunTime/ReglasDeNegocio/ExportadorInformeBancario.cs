@@ -184,11 +184,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
 
-            xlHojas = xlLibro.Sheets;
+            //xlHojas = xlLibro.Sheets;
 
-            //xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
+            xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
 
-            xlHoja = xlHojas.Add();
+            //xlHoja = xlHojas.Add();
+
+            xlHoja.Name = _NombreLibro;
         }
 
         private void agruparPorFecha()
