@@ -1,7 +1,7 @@
 # conciliacionbancaria
 Durante la fase de despliegue se requiere de la instalación de los siguientes componentes:
 
-Microsoft Access Database Engine:
+## Microsoft Access Database Engine:
 
 https://www.microsoft.com/es-mx/download/details.aspx?id=48145
 
@@ -9,33 +9,33 @@ https://www.microsoft.com/en-us/download/details.aspx?id=54920
 
 https://www.microsoft.com/es-es/download/details.aspx?id=23734
 
-Crystal reports para el ambiente productivo
+## Crystal reports para el ambiente productivo
 
 
--Desinstalar todas las versiones de crystal reports para Visual Studio
--Desinstalar todas las versiones del runtime de crystal reports 
--Si usan visual studio 2017 y 2015 (no importa la edición) descargar el archivo de la siguiente URL
+- Desinstalar todas las versiones de crystal reports para Visual Studio
+- Desinstalar todas las versiones del runtime de crystal reports 
+- Si usan visual studio 2017 y 2015 (no importa la edición) descargar el archivo de la siguiente URL
 http://downloads.businessobjects.com/akdlm/cr4vs2010/CRforVS_13_0_21.exe
 
--Si necesitan el de alguna otra versión de Visual studio referirse a la siguiente página web
+- Si necesitan el de alguna otra versión de Visual studio referirse a la siguiente página web
 https://wiki.scn.sap.com/wiki/display/BOBJ/Crystal+Reports%2C+Developer+for+Visual+Studio+Downloads
 
--Reiniciar el equipo
--Abrir el proyecto o solución con Visual Studio en la que se encuentre el reporte que desean editar mismo que deberá mostrarse con el ícono de cristal reports como se muestra a continuación
+- **Reiniciar el equipo**
+- Abrir el proyecto o solución con Visual Studio en la que se encuentre el reporte que desean editar mismo que deberá mostrarse con el ícono de cristal reports como se muestra a continuación
  
--Hacer doble clic y comenzar a editar:
+- Hacer doble clic y comenzar a editar:
  
 
 NOTAS IMPORTANTES
--Es probable que para el proyecto de conciliación bancaria se genere el error siguiente que impide compilar el proyecto:
+- Es probable que para el proyecto de conciliación bancaria se genere el error siguiente que impide compilar el proyecto:
 
  
 
 
--Para corregir el error primero haga clic derecho en el mensaje de error y seleccione la opción de copiar, pegue el texto en un editor y tome la ruta en la que se encuentra el archivo preview.aspx:
+- Para corregir el error primero haga clic derecho en el mensaje de error y seleccione la opción de copiar, pegue el texto en un editor y tome la ruta en la que se encuentra el archivo preview.aspx:
  
 
--Abrir el archivo preview.aspx de la ruta obtenida en el paso anterior con un editor de texto en modo de administrador y modifique las líneas tres a ocho con la versión que el sistema requiere que es la 13.0.2000.0, guardar el archivo , recargar la solución y recompilar:
+- Abrir el archivo preview.aspx de la ruta obtenida en el paso anterior con un editor de texto en modo de administrador y modifique las líneas tres a ocho con la versión que el sistema requiere que es la 13.0.2000.0, guardar el archivo , recargar la solución y recompilar:
  
 
 
