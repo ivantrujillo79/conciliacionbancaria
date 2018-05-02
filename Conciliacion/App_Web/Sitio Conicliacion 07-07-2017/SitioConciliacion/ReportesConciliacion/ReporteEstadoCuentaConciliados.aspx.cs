@@ -164,9 +164,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
             {
                 cero = "";
             }
-            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-              HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte",DrpBancos.SelectedItem.Text);
-            obExportador.gerenerarEdoCtaConciliados();
+            //ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
+            //  HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte",DrpBancos.SelectedItem.Text);
+            //obExportador.gerenerarEdoCtaConciliados();
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
           @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
 

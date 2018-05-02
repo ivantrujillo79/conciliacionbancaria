@@ -326,26 +326,26 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             if (_DetalleReporteEstadoCuentaDia == null)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
+                mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
             }
             else if (_DetalleReporteEstadoCuentaDia.Count == 0)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
+                mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
             }
 
             if (string.IsNullOrEmpty(_NombreHoja))
             {
-                mensajeExcepcion.Append("El nombre del libro es incorrecto. <br/>");
+                mensajeExcepcion.Append("El parámetro de configuración Nombre no puede estar vacío. <br/>");
             }
 
             if (string.IsNullOrEmpty(_Ruta))
             {
-                mensajeExcepcion.Append("La ruta para almacenar el archivo es incorrecta. <br/>");
+                mensajeExcepcion.Append("El parámetro de configuración Ruta no puede estar vacío. <br/>");
             }
 
             if (string.IsNullOrEmpty(_Archivo))
             {
-                mensajeExcepcion.Append("El nombre de archivo es incorrecto.");
+                mensajeExcepcion.Append("El parámetro de configuración Archivo no puede estar vacío.");
             }
 
             if (!string.IsNullOrEmpty(mensajeExcepcion.ToString()))

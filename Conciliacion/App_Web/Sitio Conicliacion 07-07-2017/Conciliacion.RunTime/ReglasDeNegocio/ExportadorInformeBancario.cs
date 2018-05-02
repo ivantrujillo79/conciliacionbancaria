@@ -7,7 +7,6 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Globalization;
 using DetallePosicionDiariaBancos = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetallePosicionDiariaBancos;
-using DetalleReporteEstadoCuentaConciliado = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -24,21 +23,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private Microsoft.Office.Interop.Excel.Range xlRango;
 
         private List<DetallePosicionDiariaBancos> _DetallePosicionDiariaBancos=null;
-        private List<DetalleReporteEstadoCuentaConciliado> _DetalleReporteEstadoCuentaConciliado=null; // MCC 26-04-2018
         private string _Ruta;
         private string _Archivo;
-
-        private string _NombreLibro;
-        private string _Banco;
-
         private string _NombreHoja;
-
-
+        
         private List<DateTime> _Fechas;
         private List<PosicionDiaria> _PosicionesDiarias;
-        private List<DetalleReporteEstadoCuentaConciliado> _ReporteEstadoCuentaConciliado;
-
-
+        
         private DateTime _FechaAOmitir = new DateTime(1900, 1, 1);
 
         private const string CONCEPTO1 = "PORTATIL";
@@ -68,26 +59,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _NombreHoja = Nombre.Trim();
                 _PosicionesDiarias = new List<PosicionDiaria>();
 
-                ValidarMiembros();
-
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
-            }
-        }
-
-        public ExportadorInformeBancario(List<DetalleReporteEstadoCuentaConciliado> DetalleReporteEstadoCuentaConciliado,
-                                        string Ruta, string Archivo, string Nombre,string Banco)
-        {
-            try
-            {
-                _DetalleReporteEstadoCuentaConciliado = DetalleReporteEstadoCuentaConciliado;
-                _Ruta = Ruta.Trim();
-                _Archivo = Archivo.Trim();
-                _NombreLibro = Nombre.Trim();
-                _ReporteEstadoCuentaConciliado = new List<DetalleReporteEstadoCuentaConciliado>();
-                _Banco = Banco;
                 ValidarMiembros();
 
             }
@@ -198,37 +169,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 if (xlAplicacion != null)   Marshal.ReleaseComObject(xlAplicacion);
             }
         }
-
-        public void gerenerarEdoCtaConciliados()
-        {
-            try
-            {
-                inicializar();
-                crearEncabezadoEdoCuentaConcicliado();
-                ExportarEdoCuentaConciliado();
-                cerrar();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
-            }
-            finally
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                if (xlRango != null) Marshal.ReleaseComObject(xlRango);
-                if (xlHoja != null) Marshal.ReleaseComObject(xlHoja);
-                if (xlHojas != null) Marshal.ReleaseComObject(xlHojas);
-                if (xlLibro != null) Marshal.ReleaseComObject(xlLibro);
-                if (xlLibros != null) Marshal.ReleaseComObject(xlLibros);
-                if (xlAplicacion != null) Marshal.ReleaseComObject(xlAplicacion);
-            }
-
-        }
-
-
-
+        
         private void inicializar()
         {
             string rutaCompleta = _Ruta + _Archivo;
@@ -357,52 +298,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 		
-		
-		private void crearEncabezadoEdoCuentaConcicliado()
-        {
-            Excel.Range celdaDiaInicial = null;
-            Excel.Range celdaDiaFinal = null;
-            Excel.Range celdaKilos = null;
-            Excel.Range celdaFecha = null;
-            int celda = 6;
-            //CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
-            //string dia;
-            //string caja = Convert.ToString(_DetallePosicionDiariaBancos
-            //                                .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-            //                                .Caja);
-            //PosicionDiaria posicionDiaria;
-
-            // Nombre del reporte
-            xlRango = xlHoja.Range["A1"];
-            xlRango.Value2 = "Reporte\nEstado De Cuenta Conciliado";
-            xlRango = xlHoja.Range["A1:E2"];
-            xlRango.Merge();
-            xlRango.Font.Bold = true;
-            xlRango.RowHeight = 15;
-            xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-            xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
-
-            try
-            {
-             
-
-                xlRango = xlHoja.Range["A3:E3"];
-                xlRango.Merge();
-                xlRango.Value2 = "GAS METROPOLITANO S.A DE C.V";
-                xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-                xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-
-
-            }
-            finally
-            {
-                if (celdaDiaInicial != null) Marshal.ReleaseComObject(celdaDiaInicial);
-                if (celdaDiaFinal != null) Marshal.ReleaseComObject(celdaDiaFinal);
-                if (celdaKilos != null) Marshal.ReleaseComObject(celdaKilos);
-                if (celdaFecha != null) Marshal.ReleaseComObject(celdaFecha);
-            }
-        }
-
         private void exportarPosicionDiariaBancos()
         {
             string concepto;
@@ -490,43 +385,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
             }
         }
-
-        private  void ExportarEdoCuentaConciliado()
-        {
-            int row = 5;
-            //int columna;
-            //                                                                                                                                                                                                                                                                    Concepto Retiros               Depositos SaldoFinal            ConceptoConciliado DocumentoConciliado
-            xlRango = xlHoja.Range["A4:E19"];
-            xlRango.Merge(true);
-
-
-            xlRango = xlHoja.Range["A16:A19"];
-            xlRango.Font.Bold = true;
-
-            // Seleccionar cuadro de celdas donde se imprimirán los datos
-            xlRango = xlHoja.Range["A4:B4"];
-            foreach (DetalleReporteEstadoCuentaConciliado item in _DetalleReporteEstadoCuentaConciliado)
-            {              
-                       xlRango[row, 1].Value2 = item.Corporativo;
-                       xlRango[row, 2].Value2 = item.Sucursal;
-                       xlRango[row, 3].Value2 = item.Año;
-                       xlRango[row, 4].Value2 = item.CuentaBancoFinanciero;
-                       xlRango[row, 5].Value2 = item.ConsecutivoFlujo;
-                       xlRango[row, 6].Value2 = item.Fecha;
-                       xlRango[row, 7].Value2 = item.Referencia;
-                       xlRango[row, 8].Value2 = item.Retiros;
-                       xlRango[row, 9].Value2 = item.Depositos;
-                       xlRango[row, 10].Value2 = item.SaldoFinal;
-                       xlRango[row, 11].Value2 = item.ConceptoConciliado;
-                       xlRango[row, 12].Value2 = item.DocumentoConciliado;
-                row = row + 1;
-            }
-            
-        }
-
-
-
-
+        
         private void calcularTotalizadores()
         {
             string concepto;
@@ -609,49 +468,35 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlLibros.Close();
             xlAplicacion.Quit();
         }
-
-
-
+        
         private bool ValidarMiembros()
         {
             StringBuilder mensajeExcepcion = new StringBuilder();
             mensajeExcepcion.Append(string.Empty);
             bool valido = false;
 
-            if (_DetallePosicionDiariaBancos == null && _DetalleReporteEstadoCuentaConciliado == null )
+            if (_DetallePosicionDiariaBancos == null)
             {
-                mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
+                mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
             }
-            if(_DetallePosicionDiariaBancos!=null)
+            else if(_DetallePosicionDiariaBancos.Count == 0)
             {
-                    if (_DetallePosicionDiariaBancos.Count == 0)
-                {
-                    mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
-                }
+                mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
             }
-            if (_DetalleReporteEstadoCuentaConciliado != null)
-            {
-               if( _DetalleReporteEstadoCuentaConciliado.Count == 0)
-                {
-                    mensajeExcepcion.Append("La lista del informe bancario está vacía. <br/>");
-                }
-            }
-
-
-
+            
             if (string.IsNullOrEmpty(_NombreHoja))
             {
-                mensajeExcepcion.Append("El nombre del libro es incorrecto. <br/>");
+                mensajeExcepcion.Append("El parámetro de configuración Nombre no puede estar vacío. <br/>");
             }
 
             if (string.IsNullOrEmpty(_Ruta))
             {
-                mensajeExcepcion.Append("La ruta para almacenar el archivo es incorrecta. <br/>");
+                mensajeExcepcion.Append("El parámetro de configuración Ruta no puede estar vacío. <br/>");
             }
 
             if (string.IsNullOrEmpty(_Archivo))
             {
-                mensajeExcepcion.Append("El nombre de archivo es incorrecto.");
+                mensajeExcepcion.Append("El parámetro de configuración Archivo no puede estar vacío.");
             }
 
             if (!string.IsNullOrEmpty(mensajeExcepcion.ToString()))
