@@ -39,9 +39,7 @@ NOTAS IMPORTANTES
  
 
 
-
-
-
+## Procedimiento antiguo (descontinuado)
 
 https://drive.google.com/open?id=19L4uulKQls6-6CXReprs9FTnkUTbgcD_
 
