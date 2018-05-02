@@ -9,6 +9,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using Conciliacion.RunTime.DatosSQL;
 using CatalogoConciliacion.ReglasNegocio;
 using Conciliacion.Migracion.Runtime.ReglasNegocio;
+using System.IO;
 
 public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : System.Web.UI.Page
 {
@@ -150,6 +151,8 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 
     protected void btnConsultar_Click(object sender, EventArgs e)
     {
+       
+
         try
         {
             List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado> lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>();
@@ -164,13 +167,40 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
             {
                 cero = "";
             }
-            ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-              HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte",DrpBancos.SelectedItem.Text);
-            obExportador.gerenerarEdoCtaConciliados();
+
+            if (File.Exists(HttpRuntime.AppDomainAppPath + @"InformesExcel\"+ "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx"))
+            {
+                File.Delete(HttpRuntime.AppDomainAppPath + @"InformesExcel\"+ "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx");
+            }
+
+            ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
+              HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+            obExportador.generarInforme();
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
           @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
 
-        }
+
+            //if (WUCListadoCuentasBancarias1.Cuentas.Count > 0)
+            //{
+            //    if (File.Exists(HttpRuntime.AppDomainAppPath + @"InformesExcel\" + "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx"))
+            //    {
+
+            //        foreach (Cuenta Cta in WUCListadoCuentasBancarias1.Cuentas)
+            //        {
+                       
+            //            lstDetalle = consultaReporteEstadoCuentaConciliado();
+
+            //        }
+
+            //    }
+
+
+
+
+                //}
+
+
+            }
         catch (Exception ex)
         {
             //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);

@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="ReporteEstadoCuentaConciliados.aspx.cs" Inherits="ReportesConciliacion_ReporteEstadoCuentaConciliados" %>
 <%@ Register src="~/ControlesUsuario/wuCuentasBancarias/WUCListadoCuentasBancarias.ascx" tagname="WUCListadoCuentasBancarias" tagprefix="uc1" %>
 
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
     Reporte Estado Cuenta Conciliados 
 </asp:Content>
@@ -132,6 +134,9 @@
      <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
+
+    <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
+           <ContentTemplate>
      <!-- Mensaje de error -->
     <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
          style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px">
@@ -145,7 +150,7 @@
                         <table class="etiqueta opcionBarra">
                             <tr>
                                 <td class="iconoOpcion  bg-color-azulClaro" rowspan="2" style="width: 100%">
-                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
+                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="150px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ImgInformes.png"
                                         ToolTip="CONSULTAR" Width="100px" ValidationGroup="Configuracion"
                                          />
                                 </td>
@@ -190,7 +195,7 @@
                                      Estatus
                                 </td>
                                 <td class="" style="width: 16.5%">
-                                    <asp:DropDownList runat="server" ID="DrpEstatus" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px">
+                                    <asp:DropDownList runat="server" ID="DrpEstatus" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="25px">
                                         <asp:ListItem Value="0">TODOS</asp:ListItem>
                                         <asp:ListItem>ACTIVO</asp:ListItem>
                                         <asp:ListItem>INACTIVO</asp:ListItem>
@@ -207,7 +212,7 @@
                                      Estatus Concepto
                                 </td>
                                 <td class="" style="width: 17.5%">
-                                    <asp:DropDownList runat="server" ID="DrpEstatusConcepto" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="20px"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpEstatusConcepto" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="25px"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField1" runat="server" />
                                 </td>                               
                              
@@ -220,7 +225,7 @@
                                      Banco
                                 </td>
                                 <td class="" style="width: 19.3%">
-                                    <asp:DropDownList runat="server" ID="DrpBancos" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="20px" AutoPostBack="True" OnSelectedIndexChanged="DrpBancos_SelectedIndexChanged"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="DrpBancos" CssClass="cajaTexto" Font-Size="10px" Width="74%" Height="25px" AutoPostBack="True" OnSelectedIndexChanged="DrpBancos_SelectedIndexChanged"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField4" runat="server" />
                                 </td>                               
                              
@@ -252,5 +257,17 @@
 
                 </tr>
             </table>
+ </ContentTemplate>
+         </asp:UpdatePanel>
+
+       <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
+        <ProgressTemplate>
+            <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
+                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+        PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
+    </asp:ModalPopupExtender>
    
 </asp:Content>

@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="PosicionDiariaBancos.aspx.cs" Inherits="ReportesConciliacion_PosicionDiariaBancos" %>
 
 <%@ Register src="../ControlesUsuario/ListadoCajas/wucListadoCajas.ascx" tagname="wucListadoCajas" tagprefix="uc1" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
     Posici&oacute;n Diaria de Bancos
@@ -133,6 +134,9 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
+   <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
+           <ContentTemplate>
+
   <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
                   style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px; width:1185px">
                 <strong>Error: </strong>
@@ -212,5 +216,18 @@
 
                 </tr>
             </table>
+
+               </ContentTemplate>
+         </asp:UpdatePanel>
+
+       <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
+        <ProgressTemplate>
+            <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
+                ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+        PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
+    </asp:ModalPopupExtender>
 </asp:Content>
 
