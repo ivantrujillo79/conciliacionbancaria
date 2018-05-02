@@ -76,23 +76,15 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
             if (wucListadoCajas1.CajasSeleccionadas.Count > 0)
             {
                 if (File.Exists(rutaCompleta+ Archivo)) File.Delete(rutaCompleta+ Archivo);
-                foreach (Caja caja in wucListadoCajas1.CajasSeleccionadas)
-                {
-
-                    List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
-
-                    lstDetalle = ConsultarPosicionDiariaBancos(caja.ID);
-                   
-                    ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-                     rutaCompleta,Archivo, caja.Descripcion);
-                    obExportador.generarPosicionDiariaBancos();
-
-
-                }
-
-
+                foreach (Caja caja in wucListadoCajas1.CajasSeleccionadas)               {
+                 List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
+                 lstDetalle = ConsultarPosicionDiariaBancos(caja.ID);                   
+                 ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
+                 rutaCompleta,Archivo, caja.Descripcion);
+                 obExportador.generarPosicionDiariaBancos();
+                }                
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                               @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+                               @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
             }
 
             else
