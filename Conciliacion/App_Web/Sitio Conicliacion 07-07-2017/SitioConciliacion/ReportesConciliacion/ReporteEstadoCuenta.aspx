@@ -15,8 +15,8 @@
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
     
     <!--MsDropdown CSS-->
-    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" ty
-    <a href="ReporteConciliacionI.aspx">ReporteConciliacionI.aspx</a>pe="text/css" />
+    <link href="../App_Scripts/msdropdown/dd.css" rel="stylesheet" type="text/css" />
+    <%--<a href="ReporteConciliacionI.aspx">ReporteConciliacionI.aspx</a>--%>
     <script src="../App_Scripts/msdropdown/js/jquery.dd.js" type="text/javascript"></script>
 
     <!-- Estilo de AJAX Accordion-->
@@ -130,11 +130,12 @@
             let Pagina = params.get("Reporte");
             console.log(Pagina);
 
-            if (Pagina == '2'){
-                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaGM" + cero + mesini + anoini+".xlsx";
+            if (Pagina == '2') {
+           
+                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCta"+<%= hdfIniEmpresa.Value %>+ cero + mesini + anoini+".xlsx";
             }
             if(Pagina == '3'){
-                document.getElementById("LigaDescarga").href = "../InformesExcel/PruebaEstadoCuentaPordia1.xlsx";
+                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaDia"+<%= hdfIniEmpresa.Value %> + cero + mesini + anoini + ".xlsx";
 
             }
         }
@@ -177,58 +178,59 @@
 
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 59%">
                         
-                        <table class="etiqueta opcionBarra " style="width:25%;">
+                        <table class="etiqueta opcionBarra " style="width:30%;">
                             <tr>
                                 
-                                <td class="" style="width: 8.4%; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 6%; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Fecha Inicial
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
-                                    <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>                                    
+                                    <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="65%"></asp:TextBox>                                    
                                     <asp:HiddenField ID="hdfFFinal" runat="server" />                           
                                </td>                             
                             </tr>
                         </table>
 
-                        <table class="etiqueta opcionBarra" style="width:25%;">
+                        <table class="etiqueta opcionBarra" style="width:30%;">
                             <tr>                               
-                                <td class="" style="width: 8.4%; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
+                                <td class="" style="width: 6.1%; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
                                      Fecha Final
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
-                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="txtFFinal" CssClass="cajaTexto" Font-Size="10px" Width="65%"></asp:TextBox>
                                     <asp:HiddenField ID="HiddenField2" runat="server" />
+                                    <asp:HiddenField ID="hdfIniEmpresa" runat="server" />
                                 </td>                               
                              
                             </tr>
                         </table>
 
-                         <table class="etiqueta opcionBarra" style="width:25%;">
+                         <table class="etiqueta opcionBarra" style="width:29.9%;">
                             <tr>
                                
-                                <td class="" style="width: 8.3%; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px; ">
+                                <td class="" style="width: 5.9%; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px; ">
                                 <p >Banco</p>
                                 </td>
                                 <td class="" style="width: 16%">
-                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="85%" Height="26px" AutoPostBack="True" OnSelectedIndexChanged="btnlista_SelectedIndexChanged"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="btnlista" CssClass="cajaTexto" Font-Size="10px" Width="65%" Height="26px" AutoPostBack="True" OnSelectedIndexChanged="btnlista_SelectedIndexChanged"></asp:DropDownList>
                                     <asp:HiddenField ID="HiddenField3" runat="server" />
                                 </td>                               
                              
                             </tr>
                         </table>
 
-                        <table class="etiqueta opcionBarra" style="width:25%;">
-                            <tr>
-                                
-                                <td class="" style="width: 18%; text-underline-position:below; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">
-                                   Cuenta Bancaria
-                                </td>
-                                <td class="lineaVertical" style="width: 7%">
-                                    <div class="auto-style4">                                        
-                                        <uc1:WUCListadoCuentasBancarias ID="WUCListadoCuentasBancarias1" runat="server" />
-                                    </div>
-                                </td>                             
-                              </tr>                           
+                        <table class="etiqueta opcionBarra" style="width:30%;">
+                            <caption>
+                                25
+                                <tr>
+                                    <td class="" style="width:30%; text-underline-position:below; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">Cuenta Bancaria </td>
+                                    <td class="lineaVertical">
+                                        <div class="auto-style4" style="width: 100%">
+                                            <uc1:WUCListadoCuentasBancarias ID="WUCListadoCuentasBancarias1" runat="server" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </caption>
                           </table>   
                         <asp:Button ID="btnConsultar" Text="CONSULTAR" CssClass="boton fg-color-blanco bg-color-azulClaro"
                              runat="server" OnClick="btnConsultar_Click"   OnClientClick="return ValidarFechas();" />       

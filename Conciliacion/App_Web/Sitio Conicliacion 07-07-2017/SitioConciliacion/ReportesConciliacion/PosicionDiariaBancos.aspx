@@ -125,7 +125,7 @@
             else {
                 cero = "";
             }           
-            document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";
+            document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiaria"+<%= hdfIniEmpresa.Value %> + cero + mesini + anoini + ".xlsx";
         }
     </script>
 </asp:Content>
@@ -169,7 +169,8 @@
                                 </td>
                                 <td class="lineaVertical" style="width: 16%">
                                     <asp:TextBox runat="server" ID="txtFInicial" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>                                    
-                                    <asp:HiddenField ID="hdfFFinal" runat="server" />                           
+                                    <asp:HiddenField ID="hdfFFinal" runat="server" />     
+                                    <asp:HiddenField ID="hdfIniEmpresa" runat="server" />                      
                                </td>                             
                             </tr>
                         </table>
