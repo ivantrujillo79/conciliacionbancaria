@@ -221,7 +221,7 @@
 
                         <table class="etiqueta opcionBarra" style="width:30%;">
                             <caption>
-                                25
+                               
                                 <tr>
                                     <td class="" style="width:30%; text-underline-position:below; text-align:center;font-weight: bold; color:white;text-align:left;padding: 3px 3px 3px 3px;">Cuenta Bancaria </td>
                                     <td class="lineaVertical">

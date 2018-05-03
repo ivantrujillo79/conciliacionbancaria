@@ -69,12 +69,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             {
                 if (item.Banco == Banco || (Banco == 0 && item.Banco == 0))
                 {
-                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco + " " + item.Descripcion, item.Banco, item.NombreBanco);
+                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco.Trim() + " " + item.Descripcion, item.Banco, item.NombreBanco);
                     ListaCuentasControlUsr.Add(cuenta);
                 }
                 else if (Banco == 0)
                 {
-                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco + " " + item.Descripcion, item.Banco, item.NombreBanco);
+                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco.Trim() + " " + item.Descripcion, item.Banco, item.NombreBanco);
                     ListaCuentasControlUsr.Add(cuenta);
                 }
             }
@@ -156,7 +156,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             var   Archivo = "EdoCta" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
                 try
                  {
-                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
+                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas!=null)// mcc 2018 0503
+                    {
+                        if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
                         if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
                         foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas) {                            
@@ -171,7 +173,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
 
                     }
                     }
-                    catch (Exception ex)
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + "Seleccione una cuenta bancaria" + "', function(){ alertify.error('Error en la solicitud'); });", true);
+                    }
+                }
+                catch (Exception ex)
                     {
                         //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",

@@ -305,7 +305,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             dato.Año = Convert.ToInt16(reader["año"]);
                             dato.Mes = Convert.ToInt16(reader["mes"]);
                             dato.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]).Trim();
-                            dato.ConsecutivoFlujo = Convert.ToInt32(reader["consecutivoflujo"]);
+                            dato.ConsecutivoFlujo = Convert.ToInt32(reader["consecutivoflujo"]==DBNull.Value?"0": reader["consecutivoflujo"]); // mcc 20180503
                             dato.FOperacion = Convert.ToDateTime(reader["foperacion"]);
                             dato.Referencia = Convert.ToString(reader["referencia"]);
                             dato.Concepto = Convert.ToString(reader["concepto"]);
@@ -521,7 +521,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                    _conexion.Comando.CommandText = "spCBConsultaBanco";
+                    _conexion.Comando.CommandText = "spCBConsultaBancoReportes"; // mcc 20180503
                     _conexion.Comando.Parameters.Clear();
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.SmallInt)).Value = Corporativo;
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Usuario", System.Data.SqlDbType.Char)).Value = Usuario;
