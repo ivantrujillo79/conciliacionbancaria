@@ -126,7 +126,7 @@
             else {
                 cero = "";
             }           
-            document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiaria"+<%= hdfIniEmpresa.Value %> + cero + mesini + anoini + ".xlsx";
+            document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiaria"+'<%= hdfIniEmpresa.Value %>' + cero + mesini + anoini + ".xlsx";
         }
     </script>
 </asp:Content>

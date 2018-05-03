@@ -132,10 +132,10 @@
 
             if (Pagina == '2') {
            
-                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCta"+<%= hdfIniEmpresa.Value %>+ cero + mesini + anoini+".xlsx";
+                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCta"+'<%= hdfIniEmpresa.Value %>'+ cero + mesini + anoini+".xlsx";
             }
             if(Pagina == '3'){
-                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaDia"+<%= hdfIniEmpresa.Value %> + cero + mesini + anoini + ".xlsx";
+                document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaDia"+'<%= hdfIniEmpresa.Value %>' + cero + mesini + anoini + ".xlsx";
 
             }
         }

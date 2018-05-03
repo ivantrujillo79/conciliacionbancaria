@@ -11,7 +11,7 @@ using System.Data;
 using System.Data.SqlClient;
 using SeguridadCB.Public;
 using DetalleReporteEstadoCuentaDia = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaDia;
-
+using System.IO;
 
 public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Page
 {
@@ -135,33 +135,41 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
     {
         DataTable dtEmpresas = new DataTable();
         Usuario usuario;
-        usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+        usuario = (Usuario)HttpContext.Current.Session["Usuario"];        
+        DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+        var rutaCompleta = HttpRuntime.AppDomainAppPath + @"InformesExcel\";
+        string cero ;
+        if (fechaInicio.Month < 10)
+        {
+            cero = "0";
+        }
+        else
+        {
+            cero = "";
+        }
+      
         string Pagina = Request.QueryString["Reporte"];
         if (Pagina != null)
         {
-
             if (Pagina == "2")
-            {               
-                      try
+            {
+            var   Archivo = "EdoCta" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
+                try
+                 {
+                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
-                        List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
-                        lstDetalleCuenta = consultaReporteEstadoCuenta();
-                        DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-                        string cero;
-                        if (fechaInicio.Month < 10)
-                        {
-                            cero = "0";
+                        if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
+                        foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas) {                            
+                            List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
+                            lstDetalleCuenta = consultaReporteEstadoCuenta(cuenta.ID.ToString());                        
+                            ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
+                            rutaCompleta, Archivo, cuenta.Descripcion);
+                            obExportador.generarInforme();
                         }
-                        else
-                        {
-                            cero = "";
-                        }
-
-                        ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
-                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCta"+usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
-                        obExportador.generarInforme();
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                  @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+                          @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+
+                    }
                     }
                     catch (Exception ex)
                     {
@@ -172,32 +180,25 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                     }
             }
                 if (Pagina == "3")
-            {
-               
-               
-                dtEmpresas = usuario.CorporativoAcceso;
-
+            {             
+               dtEmpresas = usuario.CorporativoAcceso;
                 try
                 {
-                    List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
-                    lstDetalle = consultaReporteEstadoCuentaDia();
-                    DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-                    string cero;
-                    if (fechaInicio.Month < 10)
+                var  Archivo = "EdoCtaDia" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
+                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
-                        cero = "0";
+                        if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
+                        foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas)
+                        {
+                            List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
+                            lstDetalle = consultaReporteEstadoCuentaDia(cuenta.ID.ToString());
+                            ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
+                            rutaCompleta, Archivo, cuenta.Descripcion);
+                            obExportador.generarInforme();                            
+                        }
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                            @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
                     }
-                    else
-                    {
-                        cero = "";
-                    }
-
-                    ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
-                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaDia"+usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
-                    obExportador.generarInforme();
-                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                    @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
-
                 }
                 catch (Exception ex)
                 {
@@ -212,7 +213,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
     }
 
 
-    private List<InformeBancarioDatos.DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta()
+    private List<InformeBancarioDatos.DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta(string cuenta)
     {
         Conexion conexion = new Conexion();
         var lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
@@ -223,7 +224,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
             conexion.AbrirConexion(false);
-            lstDetalleCuenta = informeBancario.consultaReporteEstadoCuenta(conexion, fechaInicio, fechaFin, Banco, "092904I8");
+            lstDetalleCuenta = informeBancario.consultaReporteEstadoCuenta(conexion, fechaInicio, fechaFin, Banco, cuenta);
         }
         catch (Exception ex)
         {
@@ -237,7 +238,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         return lstDetalleCuenta;
     }
 
-    private List<List<DetalleReporteEstadoCuentaDia>> consultaReporteEstadoCuentaDia()
+    private List<List<DetalleReporteEstadoCuentaDia>> consultaReporteEstadoCuentaDia(string cuenta)
     {
         Conexion conexion = new Conexion();
         var lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>();
@@ -250,7 +251,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
              DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
             conexion.AbrirConexion(false);
-            lstDetalle = informeBancario.consultaReporteEstadoCuentaPorDia(conexion, fechaInicio, fechaFin,Banco, "");
+            lstDetalle = informeBancario.consultaReporteEstadoCuentaPorDia(conexion, fechaInicio, fechaFin,Banco, cuenta);
 
             ListasDetalle = Separat(lstDetalle);
 
