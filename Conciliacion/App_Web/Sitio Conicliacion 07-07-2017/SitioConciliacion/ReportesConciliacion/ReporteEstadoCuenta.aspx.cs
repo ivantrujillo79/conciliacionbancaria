@@ -147,20 +147,21 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         {
             cero = "";
         }
-        var Archivo = "EdoCta" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
+      
         string Pagina = Request.QueryString["Reporte"];
         if (Pagina != null)
         {
             if (Pagina == "2")
             {
-                   try
+            var   Archivo = "EdoCta" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
+                try
                  {
                     if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
                         if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
                         foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas) {                            
                             List<InformeBancarioDatos.DetalleReporteEstadoCuenta> lstDetalleCuenta = new List<InformeBancarioDatos.DetalleReporteEstadoCuenta>();
-                            lstDetalleCuenta = consultaReporteEstadoCuenta(cuenta.Descripcion);                        
+                            lstDetalleCuenta = consultaReporteEstadoCuenta(cuenta.ID.ToString());                        
                             ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
                             rutaCompleta, Archivo, cuenta.Descripcion);
                             obExportador.generarInforme();
@@ -183,13 +184,14 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                dtEmpresas = usuario.CorporativoAcceso;
                 try
                 {
+                var  Archivo = "EdoCtaDia" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
                     if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
                         if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
                         foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas)
                         {
                             List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
-                            lstDetalle = consultaReporteEstadoCuentaDia(cuenta.Descripcion);
+                            lstDetalle = consultaReporteEstadoCuentaDia(cuenta.ID.ToString());
                             ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
                             rutaCompleta, Archivo, cuenta.Descripcion);
                             obExportador.generarInforme();                            
