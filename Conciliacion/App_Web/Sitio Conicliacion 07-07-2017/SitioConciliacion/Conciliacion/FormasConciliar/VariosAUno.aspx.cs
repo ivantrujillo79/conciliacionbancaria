@@ -104,6 +104,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
+                HabilitarBusquedaPedidos(objSolicitdConciliacion);
+
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
@@ -205,6 +207,30 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    /// <summary>
+    /// Habilita los controles para buscar pedidos cuando la forma de conciliación
+    /// es la 9: "Varios a uno pedidos"
+    /// </summary>
+    /// <param name="obSolicitud"></param>
+    private void HabilitarBusquedaPedidos(SolicitudConciliacion obSolicitud)
+    {
+        if (obSolicitud.ConsultaPedido())
+        {
+            tdPedidosLinea.Visible =
+                lblBusquedaPedidos.Visible =
+                ddlBusquedaPedidos.Visible =
+                txtBusquedaPedidos.Visible =
+                imbBusquedaPedidos.Visible = true;
+        }
+        else
+        {
+            tdPedidosLinea.Visible =
+                lblBusquedaPedidos.Visible =
+                ddlBusquedaPedidos.Visible =
+                txtBusquedaPedidos.Visible =
+                imbBusquedaPedidos.Visible = false;
+        }
+    }
 
     //Cargar InfoConciliacion Actual
     public void cargarInfoConciliacionActual()

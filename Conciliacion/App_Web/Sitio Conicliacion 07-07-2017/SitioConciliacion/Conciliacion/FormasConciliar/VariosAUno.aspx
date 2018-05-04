@@ -917,6 +917,27 @@
                                             <asp:ListItem Value="TODOS">Todos</asp:ListItem>
                                         </asp:RadioButtonList>
                                     </td>
+                                    <%--    Controles busqueda pedidos  --%>
+                                    <td class="lineaVertical" id="tdPedidosLinea" runat="server"></td>
+                                    <td class="centradoDerecha">
+                                        <asp:Label ID="lblBusquedaPedidos" Text="Busqueda:" CssClass="etiqueta fg-color-blanco" runat="server"
+                                            style="margin-left:3px" Visible="false"/>
+                                    </td>
+                                    <td class="centradoDerecha">
+                                        <asp:DropDownList ID="ddlBusquedaPedidos" CssClass="etiqueta dropDownPequeño" Width="80px" runat="server"
+                                            style="margin-left:3px"  Visible="false"/>
+                                    </td>                                        
+                                    <td class="centradoDerecha">
+                                        <asp:TextBox ID="txtBusquedaPedidos" CssClass="cajaTextoPequeño" Width="80px" runat="server"
+                                            style="margin-left:2px; font-size:11px" Visible="false"/>
+                                    </td>
+                                    <td class="centradoDerecha">
+                                        <asp:ImageButton ID="imbBusquedaPedidos" ToolTip="Buscar pedidos" CssClass="icono bg-color-verdeClaro" runat="server"
+                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png" Height="25px" Width="25px"
+                                            style="margin-left:2px" Visible="false"/>
+                                    </td>
+                                    <%--    Fin controles busqueda pedidos  --%>
+
                                     <td class="centradoDerecha" style="width: 10%;">
                                         <asp:ImageButton runat="server" ID="btnENPROCESOINTERNO" ToolTip="EN PROCESO" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Conciliar.png"
                                             CssClass="icono bg-color-verdeClaro" OnClick="btnENPROCESOINTERNO_Click" />

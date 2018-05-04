@@ -241,6 +241,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 activarVerPendientesCanceladosExternos(true);
                 activarVerPendientesCanceladosInternos(true);
 
+                HabilitarBusquedaPedidos(objSolicitdConciliacion);
+
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
                 Carga_StatusConcepto(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
@@ -723,6 +725,30 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 imgCargar.Visible = true;
             }
+        }
+    }
+
+    /// <summary>
+    /// Habilita los controles para buscar pedidos cuando la forma de conciliación
+    /// es la 8: "Uno a varios pedidos"
+    /// </summary>
+    private void HabilitarBusquedaPedidos(SolicitudConciliacion obSolicitud)
+    {
+        if (obSolicitud.ConsultaPedido())
+        {
+            tdPedidosLinea.Visible =
+                lblBusquedaPedidos.Visible =
+                ddlBusquedaPedidos.Visible =
+                txtBusquedaPedidos.Visible =
+                imbBusquedaPedidos.Visible = true;
+        }
+        else
+        {
+            tdPedidosLinea.Visible =
+                lblBusquedaPedidos.Visible =
+                ddlBusquedaPedidos.Visible =
+                txtBusquedaPedidos.Visible =
+                imbBusquedaPedidos.Visible = false;
         }
     }
 
