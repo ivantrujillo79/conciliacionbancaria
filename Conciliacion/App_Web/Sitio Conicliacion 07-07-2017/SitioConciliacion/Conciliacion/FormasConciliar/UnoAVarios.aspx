@@ -1258,15 +1258,20 @@
                                             <asp:ListItem Value="TODOS">Todos</asp:ListItem>
                                         </asp:RadioButtonList>
                                     </td>
-                                    <%--    Controles busqueda pedidos  --%>
-                                    <td class="lineaVertical" id="tdPedidosLinea" runat="server"></td>
+                                    <%--    Controles busqueda pedidos  --%>    <!-- RM 04_05_2018 -->
+                                    <td class="lineaVertical" id="tdPedidosLinea" runat="server" style="padding-left:7px"></td>
                                     <td class="centradoDerecha">
                                         <asp:Label ID="lblBusquedaPedidos" Text="Busqueda:" CssClass="etiqueta fg-color-blanco" runat="server"
                                             style="margin-left:3px" Visible="false"/>
                                     </td>
                                     <td class="centradoDerecha">
-                                        <asp:DropDownList ID="ddlBusquedaPedidos" CssClass="etiqueta dropDownPequeño" Width="80px" runat="server"
-                                            style="margin-left:3px" Visible="false"/>
+                                        <asp:DropDownList ID="ddlBusquedaPedidos" CssClass="dropDownPequeño" Width="80px" runat="server"
+                                            style="margin-left:3px;" Visible="false">
+                                            <asp:ListItem Value="CUENTA" Selected="True">Cuenta bancaria</asp:ListItem>
+                                            <asp:ListItem Value="CLABE">Clabe bancaria</asp:ListItem>
+                                            <asp:ListItem Value="RFC">RFC</asp:ListItem>
+                                            <asp:ListItem Value="REFERENCIA">Referencia de pago</asp:ListItem>
+                                        </asp:DropDownList>
                                     </td>                                        
                                     <td class="centradoDerecha">
                                         <asp:TextBox ID="txtBusquedaPedidos" CssClass="cajaTextoPequeño" Width="80px" runat="server"
