@@ -34,7 +34,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     private List<ListaCombo> listStatusConcepto = new List<ListaCombo>();
     private List<ListaCombo> listFormasConciliacion = new List<ListaCombo>();
     private List<ListaCombo> listMotivosNoConciliados = new List<ListaCombo>();
-
+    private Dictionary<int, string> dcBusquedaPedidos = new Dictionary<int, string>();
+    
     private DataTable tblTransaccionesConciliadas;
     private DataTable tblReferenciaExternas;
     private DataTable tblReferenciaInternas;
@@ -216,6 +217,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         if (obSolicitud.ConsultaPedido())
         {
+            CargarDDLBusquedaPedidos();
+
             tdPedidosLinea.Visible =
                 lblBusquedaPedidos.Visible =
                 ddlBusquedaPedidos.Visible =
@@ -230,6 +233,24 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 txtBusquedaPedidos.Visible =
                 imbBusquedaPedidos.Visible = false;
         }
+    }
+
+    /// <summary>
+    /// Agrega valores al diccionario dcBusquedaPedidos y asigna éste como 
+    /// fuente de datos del control ddlBusquedaPedidos
+    /// </summary>
+    private void CargarDDLBusquedaPedidos()
+    {
+        dcBusquedaPedidos.Add(1, "Cuenta bancaria");
+        dcBusquedaPedidos.Add(2, "Clabe bancaria");
+        dcBusquedaPedidos.Add(3, "RFC");
+        dcBusquedaPedidos.Add(4, "Referencia de pago");
+
+        ddlBusquedaPedidos.DataSource = dcBusquedaPedidos;
+        ddlBusquedaPedidos.DataValueField = "Key";
+        ddlBusquedaPedidos.DataTextField = "Value";
+        ddlBusquedaPedidos.DataBind();
+        ddlBusquedaPedidos.Dispose();
     }
 
     //Cargar InfoConciliacion Actual

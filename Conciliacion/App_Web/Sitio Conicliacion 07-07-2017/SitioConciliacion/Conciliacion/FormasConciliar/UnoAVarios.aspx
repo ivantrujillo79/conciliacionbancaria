@@ -1266,12 +1266,7 @@
                                     </td>
                                     <td class="centradoDerecha">
                                         <asp:DropDownList ID="ddlBusquedaPedidos" CssClass="dropDownPequeño" Width="80px" runat="server"
-                                            style="margin-left:3px;" Visible="false">
-                                            <asp:ListItem Value="CUENTA" Selected="True">Cuenta bancaria</asp:ListItem>
-                                            <asp:ListItem Value="CLABE">Clabe bancaria</asp:ListItem>
-                                            <asp:ListItem Value="RFC">RFC</asp:ListItem>
-                                            <asp:ListItem Value="REFERENCIA">Referencia de pago</asp:ListItem>
-                                        </asp:DropDownList>
+                                            style="margin-left:3px;" Visible="false" />
                                     </td>                                        
                                     <td class="centradoDerecha">
                                         <asp:TextBox ID="txtBusquedaPedidos" CssClass="cajaTextoPequeño" Width="80px" runat="server"

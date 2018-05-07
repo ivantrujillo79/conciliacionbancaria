@@ -41,6 +41,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private List<ListaCombo> listStatusConcepto = new List<ListaCombo>();
     private List<ListaCombo> listFormasConciliacion = new List<ListaCombo>();
     private List<ListaCombo> listMotivosNoConciliados = new List<ListaCombo>();
+    private Dictionary<int, string> dcBusquedaPedidos = new Dictionary<int, string>();
 
     private DataTable tblTransaccionesConciliadas;
     private DataTable tblReferenciaExternas;
@@ -81,9 +82,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public List<ListaCombo> listaSucursalTransferencia = new List<ListaCombo>();
     public List<ListaCombo> listaNombreBancoTransferencia = new List<ListaCombo>();
     public List<ListaCombo> listaCuentaBancoTransferencia = new List<ListaCombo>();
-    
+
     private List<int> LsIndicePedidosSeleccionados = new List<int>();
-    
+
     //public List<TransferenciaBancarias> ListTransferenciasBancarias = new List<TransferenciaBancarias>();
 
     private int indiceExternoSeleccionado
@@ -165,7 +166,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
-        
+
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (formaConciliacion == 0)
@@ -195,7 +196,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-            
+
             //          Asignar propiedades de los Web User Control
             CargarConfiguracion_wucCargaExcel(objSolicitdConciliacion.ConsultaPedido());
             CargarConfiguracion_wucClientePago();
@@ -221,7 +222,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     this.hdfEsPedido.Value = "1";
                 }
-                
+
                 //          ACTIVAR BOTONES SALDO A FAVOR Y PAGARÉ
                 if (objSolicitdConciliacion.MuestraSaldoAFavor())
                 {
@@ -292,7 +293,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblGridAP.Text = "INTERNOS ";
                     lblArchivosInternos.Visible = true;
                 }
-                
+
                 if (grvExternos.Rows.Count > 0)
                 {
                     if (tipoConciliacion == 2)
@@ -316,7 +317,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     if (objSolicitdConciliacion.ConsultaPedido())
                     {
-                        
+
                         lblGridAP.Text = "PEDIDOS ";
                         lblSucursalCelula.Text = "Celula Interna";
                         ddlCelula.Visible = lblPedidos.Visible = rdbTodosMenoresIn.Visible = true;
@@ -342,7 +343,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                         rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                         rvDiferencia.ValidationGroup = "UnoVariosPedidos";
-                        
+
                     }
                     Carga_SucursalCorporativo(corporativo);
                     if (objSolicitdConciliacion.ConsultaArchivo())
@@ -423,7 +424,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     ConsultarPedidosInternos();
                     ConsultaInicialPedidosInternos();
-                    
+
                     grvInternos.Visible = false;
                     btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
@@ -449,7 +450,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
                 }
                 else
-                { 
+                {
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
                 }
                 txtDias.Enabled = true;
@@ -473,7 +474,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: "+ ex.Message +"', function(){ alertify.error('Error en la solicitud'); });", true);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
 
@@ -530,7 +531,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     cliente = Convert.ToInt32(grvAgregadosPedidos.DataKeys[row.RowIndex].Values["Cliente"].ToString());
                     listaClientes.Add(cliente);
                 }
-                
+
                 wucClientePago.Clientes = listaClientes;
                 hdfClientePagoAnio.Value = refExterna.Año.ToString();
                 hdfClientePagoCorporativo.Value = refExterna.Corporativo.ToString();
@@ -549,7 +550,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             return cliente;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }
@@ -620,7 +621,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tdd.Secuencia       = refExterna.Secuencia;
             tdd.IdSucursal      = refExterna.Sucursal;
             tdd.ActualizarClientePago();
-            
+
             GuardarSaldoAFavor(refExterna, Cliente);
         }
         catch (Exception ex)
@@ -681,7 +682,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 saldoAFavor.Guardar(conexion);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }
@@ -736,6 +737,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         if (obSolicitud.ConsultaPedido())
         {
+            CargarDDLBusquedaPedidos();
+
             tdPedidosLinea.Visible =
                 lblBusquedaPedidos.Visible =
                 ddlBusquedaPedidos.Visible =
@@ -750,6 +753,24 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 txtBusquedaPedidos.Visible =
                 imbBusquedaPedidos.Visible = false;
         }
+    }
+
+    /// <summary>
+    /// Agrega valores al diccionario dcBusquedaPedidos y asigna éste como 
+    /// fuente de datos del control ddlBusquedaPedidos
+    /// </summary>
+    private void CargarDDLBusquedaPedidos()
+    {
+        dcBusquedaPedidos.Add(1, "Cuenta bancaria");
+        dcBusquedaPedidos.Add(2, "Clabe bancaria");
+        dcBusquedaPedidos.Add(3, "RFC");
+        dcBusquedaPedidos.Add(4, "Referencia de pago");
+
+        ddlBusquedaPedidos.DataSource = dcBusquedaPedidos;
+        ddlBusquedaPedidos.DataValueField = "Key";
+        ddlBusquedaPedidos.DataTextField = "Value";
+        ddlBusquedaPedidos.DataBind();
+        ddlBusquedaPedidos.Dispose();
     }
 
     //Cargar InfoConciliacion Actual
