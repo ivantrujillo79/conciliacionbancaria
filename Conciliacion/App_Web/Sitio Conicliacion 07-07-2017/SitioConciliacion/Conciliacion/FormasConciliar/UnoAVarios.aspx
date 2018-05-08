@@ -434,7 +434,7 @@
         }
 
     </script>
-    <!-- Validar: solo numeros -->
+    <!-- Validar: numeros, moneda y alfanuméricos -->
     <script type="text/javascript">
         function ValidNum(e) {
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
@@ -443,6 +443,39 @@
         function ValidNumDecimal(e) {
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
             return ((tecla > 47 && tecla < 58) || tecla == 46);
+        }
+        function ValidAlfanumerico(e) {
+            var key = document.all ? key = e.keyCode : key = e.which;
+
+            if (/[^A-Za-z0-9 ]/.test(String.fromCharCode(key))) {
+                return false;
+            }
+            return true;
+        }
+    </script>
+    <!-- Controles busqueda pedidos -->
+    <script type="text/javascript">
+        /**
+         * Cambiar la validación del TextBox txtBusquedaPedidos
+         * dependiendo de la opción seleccionada en el DropDownList
+         * @param valor
+         */
+        function ReasignarOnKeyPress(valor) {
+            var textBox = document.getElementById('<%= txtBusquedaPedidos.ClientID %>');
+            textBox.value = '';
+            textBox.onkeypress = null;
+            textBox.setAttribute("MaxLength", "20");
+
+            if (valor == 1 || valor == 2) {
+                textBox.onkeypress = ValidNum;
+                if (valor == 2)
+                    textBox.setAttribute("MaxLength", "18");
+            }
+            else if (valor == 3 || valor == 4) {
+                textBox.onkeypress = ValidAlfanumerico;
+                if (valor == 3)
+                    textBox.setAttribute("MaxLength", "13");
+            }
         }
     </script>
 </asp:Content>
@@ -1266,11 +1299,12 @@
                                     </td>
                                     <td class="centradoDerecha">
                                         <asp:DropDownList ID="ddlBusquedaPedidos" CssClass="dropDownPequeño" Width="80px" runat="server"
-                                            style="margin-left:3px;" Visible="false" />
+                                            style="margin-left:3px;" Visible="false" onchange="ReasignarOnKeyPress(this.value)"/>
                                     </td>                                        
                                     <td class="centradoDerecha">
                                         <asp:TextBox ID="txtBusquedaPedidos" CssClass="cajaTextoPequeño" Width="80px" runat="server"
-                                            style="margin-left:2px; font-size:11px" Visible="false"/>
+                                            style="margin-left:2px; font-size:11px" Visible="false" onkeypress="return ValidNum(event)"
+                                            MaxLength="20"/>
                                     </td>
                                     <td class="centradoDerecha">
                                         <asp:ImageButton ID="imbBusquedaPedidos" ToolTip="Buscar pedidos" CssClass="icono bg-color-verdeClaro" runat="server"
