@@ -37,7 +37,8 @@ NOTAS IMPORTANTES
 
 - Abrir el archivo preview.aspx de la ruta obtenida en el paso anterior con un editor de texto en modo de administrador y modifique las líneas tres a ocho con la versión que el sistema requiere que es la 13.0.2000.0, guardar el archivo , recargar la solución y recompilar:
  
-
+## Visual Studio 2010 Tools for Office Runtime
+https://help.salesforce.com/articleView?id=How-to-install-Primary-Interop-Assemblies-PIA-and-Office-Visual-Studio-Runtime-manually&language=en_US&type=1
 
 ## Procedimiento antiguo (descontinuado)
 
@@ -52,6 +53,4 @@ https://www.tektutorialshub.com/download-crystal-reports-for-visual-studio/
 Descarga de esta pagina Crystal Reports Developer Edition for Visual Studio:
 https://www.tektutorialshub.com/download-crystal-reports-for-visual-studio/#Crystal-Reports-For-Visual-Studio-2015
 
-
-INCIDENT LOG
 
