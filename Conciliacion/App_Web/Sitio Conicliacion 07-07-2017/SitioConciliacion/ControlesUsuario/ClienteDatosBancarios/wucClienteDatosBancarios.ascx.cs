@@ -31,10 +31,7 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
     {
         try
         {
-            //if (!Page.IsPostBack)
-            //{
-            //    CargarClientes();
-            //}
+
         }
         catch (Exception ex)
         {
@@ -58,26 +55,9 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
             RadioButton rdb = sender as RadioButton;
             GridViewRow row = (GridViewRow)rdb.Parent.Parent;
 
-            rdb.Checked = true;
+            QuitarSeleccionRadio(rdb);
 
-            quitarSeleccionRadio();
-
-            pintarFila(row.RowIndex);
-
-            //indiceGridSeleccionado = grv.RowIndex;
-
-            //int indexfila = 0;
-            //GridViewRowCollection filas = grvClientes.Rows;
-            //foreach (GridViewRow f in filas)
-            //{
-            //    if (indiceGridSeleccionado == indexfila)
-            //    {//f.RowIndex
-            //        hdfClienteSeleccionado.Value = f.Cells[1].Text;
-            //        break;
-            //    }
-            //    indexfila = indexfila + 1;
-            //}
-
+            SeleccionarRadio(rdb, row.RowIndex);
         }
         catch (Exception ex)
         {
@@ -87,25 +67,33 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
         }
     }
     
-    public void quitarSeleccionRadio()
+    private void QuitarSeleccionRadio(RadioButton rbNuevo)
     {
         foreach (RadioButton rb in
                 from GridViewRow row in grvClientes.Rows
                 select (RadioButton)grvClientes.Rows[row.RowIndex].FindControl("rbSeleccion"))
         {
-            if (rb.Checked)
+            if (rb.Checked && rb != rbNuevo)
             {
                 rb.Checked = false;
-                //despintarFila(((GridViewRow)rb.Parent.Parent).RowIndex);
+                DespintarFila(((GridViewRow)rb.Parent.Parent).RowIndex);
             }
         }
     }
 
-    public void pintarFila(int fila)
+    private void SeleccionarRadio(RadioButton rb, int indiceFila)
+    {
+        rb.Checked = true;
+        PintarFila(indiceFila);
+    }
+
+    private void PintarFila(int fila)
     {
         grvClientes.Rows[fila].CssClass = "bg-color-azulClaro01 fg-color-blanco";
-        //grvClientes.Rows[fila].Cells[0].CssClass = "bg-color-azulClaro01";
-        //grvClientes.Rows[fila].Cells[1].CssClass = "bg-color-azulClaro01";
-        //grvClientes.Rows[fila].Cells[2].CssClass = "bg-color-azulClaro01";
+    }
+
+    public void DespintarFila(int fila)
+    {
+        grvClientes.Rows[fila].CssClass = "bg-color-blanco fg-color-negro";
     }
 }
