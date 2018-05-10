@@ -236,6 +236,7 @@
         function HideModalPopupInterno() {
             $find("ModalBehaviourInterno").hide();
         }
+
     </script>
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%= mpeLoading.ClientID %>';        
@@ -966,7 +967,9 @@
                                     <td class="centradoDerecha">
                                         <asp:ImageButton ID="imbBusquedaPedidos" ToolTip="Buscar pedidos" CssClass="icono bg-color-verdeClaro" runat="server"
                                             ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png" Height="25px" Width="25px"
-                                            style="margin-left:2px" Visible="false"/>
+                                            style="margin-left:2px" Visible="false"
+                                            OnClick="imbBusquedaPedidos_Click" 
+                                            />
                                     </td>
                                     <%--    Fin controles busqueda pedidos  --%>
 
@@ -1679,6 +1682,38 @@
                 </table>
             </asp:Panel>
              <%--No puede ser manejado desde JavaScript--%>
+
+            <asp:HiddenField runat="server" ID="hdfCerrarSeleccionCliente" />
+            <asp:ModalPopupExtender ID="mpeLanzarSeleccionCliente" runat="server" BackgroundCssClass="ModalBackground"
+                DropShadow="False" EnableViewState="false" PopupControlID="pnlSeleccionCliente" TargetControlID="hdfCerrarSeleccionCliente"
+                CancelControlID="btnCerrarSeleccionCliente">
+            </asp:ModalPopupExtender>
+            <asp:Panel ID="pnlSeleccionCliente" runat="server" CssClass="ModalPopup" EnableViewState="false"
+                Width="900px" Style="display: none">
+                <table style="width: 100%">
+                    <tr class="bg-color-grisOscuro">
+                        <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                            <div class="floatDerecha bg-color-grisClaro01">
+                                <asp:ImageButton runat="server" ID="btnCerrarSeleccionCliente" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo" />
+                            </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                BUSQUEDA CLIENTE
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px 5px 5px 5px; width: 100%">
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="bg-color-grisClaro01">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </asp:Panel>
 
         </ContentTemplate>
     </asp:UpdatePanel>

@@ -2865,4 +2865,18 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
+
+    protected void imbBusquedaPedidos_Click(object sender, ImageClickEventArgs e)
+    {
+        BusquedaClienteDatosBancarios objBusqueda;
+        List<int> lstClientes;
+        objBusqueda = App.BusquedaClienteDatosBancarios.CrearObjeto();
+        lstClientes = objBusqueda.ConsultarCliente(ddlBusquedaPedidos.SelectedIndex + 1, txtBusquedaPedidos.Text);
+
+        if (lstClientes.Count > 1)
+        {
+            mpeLanzarSeleccionCliente.Show();
+        }
+
+    }
 }
