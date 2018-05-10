@@ -47,6 +47,7 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
 
     public void CargarClientes()
     {
+        ViewState["clienteSeleccionado"] = "";
         if (clientesEncontrados != null && clientesEncontrados.Count > 0)
         {
             grvClientes.DataSource = clientesEncontrados;

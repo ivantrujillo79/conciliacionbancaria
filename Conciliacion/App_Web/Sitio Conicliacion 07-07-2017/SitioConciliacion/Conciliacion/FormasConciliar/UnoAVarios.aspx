@@ -8,6 +8,7 @@
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
 <%@ Register Src="~/ControlesUsuario/ConciliadorPagare/wucConciliadorPagare.ascx" TagPrefix="uc1" TagName="wucConciliadorPagare" %>
 <%@ Register Src="~/ControlesUsuario/ClientePago/wucClientePago.ascx" TagPrefix="uc1" TagName="wucClientePago" %>
+<%@ Register Src="~/ControlesUsuario/ClienteDatosBancarios/wucClienteDatosBancarios.ascx" TagPrefix="uc1" TagName="wucClienteDatosBancarios" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
@@ -220,6 +221,10 @@
         function OcultarPopUpClientePago() {
             btnClientePagoCancelar_Click();
             $find("ModalBehaviorClientePago").hide();
+        }
+
+        function OcultarPopUpClienteDatosBancarios() {
+            $find("ModalBehavior").hide();
         }
         
         function popUpVisible() {
@@ -1305,11 +1310,14 @@
                                         <asp:TextBox ID="txtBusquedaPedidos" CssClass="cajaTextoPequeño" Width="80px" runat="server"
                                             style="margin-left:2px; font-size:11px" Visible="false" onkeypress="return ValidNum(event)"
                                             MaxLength="20"/>
+                                        <asp:RequiredFieldValidator ID="rfTxtBusquedaPedidos" ControlToValidate="txtBusquedaPedidos" 
+                                            ValidationGroup="vgTxtBusquedaPedidos" runat="server"/>
                                     </td>
                                     <td class="centradoDerecha">
-                                        <asp:ImageButton ID="imbBusquedaPedidos" ToolTip="Buscar pedidos" CssClass="icono bg-color-verdeClaro" runat="server"
+                                        <asp:ImageButton ID="imbBusquedaPedidos" ToolTip="Buscar pedidos" CssClass="icono bg-color-verdeClaro" 
                                             ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png" Height="25px" Width="25px"
-                                            style="margin-left:2px" Visible="false"/>
+                                            style="margin-left:2px" Visible="false" OnClick="imbBusquedaPedidos_Click" 
+                                            ValidationGroup="vgTxtBusquedaPedidos" runat="server"/>
                                     </td>
                                     <%--    Fin controles busqueda pedidos  --%>
 
@@ -2925,6 +2933,51 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CLIENTE PAGO     -->
+
+    <!--        INICIO DE POPUP CLIENTE DATOS BANCARIOS     -->
+    <asp:HiddenField runat="server" ID="hdfClienteDatosBancarios" />
+    <asp:ModalPopupExtender ID="mpeClienteDatosBancarios" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="False" PopupControlID="pnlClienteDatosBancarios" TargetControlID="hdfClienteDatosBancarios"
+        BehaviorID="ModalBehavior" CancelControlID="imbClienteDatosBancarios_Cerrar">
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlClienteDatosBancarios" runat="server" CssClass="ModalPopup" width="700px" style="display:none;">  
+    <asp:UpdatePanel ID="upClienteDatosBancarios" runat="server">
+        <ContentTemplate>
+            <div>
+                <table style="width:100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                            <div class="floatDerecha bg-color-grisClaro01">
+                                <asp:ImageButton runat="server" ID="imbClienteDatosBancarios_Cerrar" CssClass="iconoPequeño bg-color-rojo" 
+                                    ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px" 
+                                    OnClientClick="OcultarPopUpClienteDatosBancarios();"/>
+                            </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                SELECCIONAR CLIENTE
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <uc1:wucClienteDatosBancarios ID="wucClienteDatosBancarios" runat="server" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="centradoMedio">
+                            <asp:Button ID="btnAceptarClienteDatosBancarios" runat="server" Text="ACEPTAR" 
+                                CssClass="boton fg-color-blanco bg-color-azulClaro" 
+                                OnClick="btnAceptarClienteDatosBancarios_Click" />
+                            <asp:Button ID="btnCancelarClienteDatosBancarios" runat="server" Text="CANCELAR"
+                                CssClass="boton fg-color-blanco bg-color-grisClaro"
+                                OnClick="btnCancelarClienteDatosBancarios_Click"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    </asp:Panel>
+    <!--        FIN POPUP CLIENTE DATOS BANCARIOS     -->
 
     <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" /> 
     <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />

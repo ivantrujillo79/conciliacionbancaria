@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucClienteDatosBancarios.ascx.cs" Inherits="ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBancarios" %>
 
-<div style="height:300px;overflow:auto;">
+<div style="max-height:300px;overflow:auto;">
     <table style="width:100%;">
         <tr class="etiqueta centradoJustificado">
             <td style="width:100%;">

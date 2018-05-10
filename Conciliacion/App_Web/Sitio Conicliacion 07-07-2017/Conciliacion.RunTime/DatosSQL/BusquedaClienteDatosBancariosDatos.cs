@@ -32,6 +32,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
+                        objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
                         objCliente.NumCliente = Convert.ToInt32(reader["Cliente"]);
                         objCliente.Nombre = Convert.ToString(reader["Nombre"]);
                         objCliente.RazonSocial = Convert.ToString(reader["razonsocial"]);
