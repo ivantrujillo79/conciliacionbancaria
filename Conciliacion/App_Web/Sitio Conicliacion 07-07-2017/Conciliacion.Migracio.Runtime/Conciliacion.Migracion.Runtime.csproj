@@ -117,8 +117,6 @@
     <Compile Include="SqlDatos\BancoFinancieroDatos.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ReglasNegocio\BusquedaClienteDatosBancarios.cs" />
-    <Compile Include="SqlDatos\BusquedaClienteDatosBancariosDatos.cs" />
     <Compile Include="SqlDatos\ConceptoBancoDatos.cs" />
     <Compile Include="SqlDatos\ConsultasDatos.cs">
       <SubType>Code</SubType>
