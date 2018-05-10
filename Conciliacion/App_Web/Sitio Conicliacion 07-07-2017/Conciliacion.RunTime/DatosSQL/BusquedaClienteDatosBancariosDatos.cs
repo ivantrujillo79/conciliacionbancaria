@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+
 namespace Conciliacion.RunTime.DatosSQL
 {
     class BusquedaClienteDatosBancariosDatos : BusquedaClienteDatosBancarios
