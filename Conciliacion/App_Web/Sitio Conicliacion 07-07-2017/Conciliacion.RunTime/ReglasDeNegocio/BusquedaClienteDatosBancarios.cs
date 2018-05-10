@@ -1,11 +1,9 @@
-﻿using Conciliacion.Migracion.Runtime.SqlDatos;
-using Conciliacion.RunTime.DatosSQL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Conciliacion.Migracion.Runtime.ReglasNegocio
+namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class BusquedaClienteDatosBancarios : EmisorMensajes
     {
@@ -32,7 +30,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         }
 
         public abstract BusquedaClienteDatosBancarios CrearObjeto();
-        public abstract List<int> ConsultarCliente(Int16 BuscarPor, string Dato);
+        public abstract List<int> ConsultarCliente(int BuscarPor, string Dato);
 
     }
 }

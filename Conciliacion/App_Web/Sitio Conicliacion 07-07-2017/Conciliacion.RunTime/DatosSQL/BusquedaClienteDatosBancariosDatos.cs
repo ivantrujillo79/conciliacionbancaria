@@ -1,4 +1,4 @@
-﻿using Conciliacion.Migracion.Runtime.ReglasNegocio;
+﻿using Conciliacion.RunTime.ReglasDeNegocio;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -6,11 +6,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Conciliacion.Migracion.Runtime.SqlDatos
+namespace Conciliacion.RunTime.DatosSQL
 {
     class BusquedaClienteDatosBancariosDatos : BusquedaClienteDatosBancarios
     {
-        public override List<int> ConsultarCliente(short BuscarPor, string Dato)
+        public override List<int> ConsultarCliente(int BuscarPor, string Dato)
         {
             //(1, "Cuenta bancaria");
             //(2, "Clabe bancaria");
@@ -38,7 +38,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                     stackTrace = new StackTrace();
                     this.ImplementadorMensajes.MostrarMensaje("Error al consultar la información.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              //StackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
                     stackTrace = null;
                 }

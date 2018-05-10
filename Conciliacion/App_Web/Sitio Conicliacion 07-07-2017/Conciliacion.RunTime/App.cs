@@ -325,6 +325,17 @@ namespace Conciliacion.RunTime
             }
         }
 
+        private static BusquedaClienteDatosBancarios busquedaclientedatosbancarios;
+        public static BusquedaClienteDatosBancarios BusquedaClienteDatosBancarios
+        {
+            get
+            {
+                if (busquedaclientedatosbancarios == null)
+                    busquedaclientedatosbancarios = new BusquedaClienteDatosBancariosDatos(App.ImplementadorMensajes);
+                return busquedaclientedatosbancarios;
+            }
+        }
+
         private static string cadenaconexion;
        
         
