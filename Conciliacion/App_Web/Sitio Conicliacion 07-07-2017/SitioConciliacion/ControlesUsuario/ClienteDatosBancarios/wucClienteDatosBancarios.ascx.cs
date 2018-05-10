@@ -9,7 +9,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBancarios : System.Web.UI.UserControl
 {
     private List<Cliente> clientesEncontrados;
-    private int clienteSeleccionado;
+    //private int clienteSeleccionado;
 
     #region Propiedades
 
@@ -19,10 +19,16 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
         set { clientesEncontrados = value; }
     }
 
-    public int ClienteElegido
+    public string ClienteSeleccionado
     {
-        get { return clienteSeleccionado; }
-        //set { clienteSeleccionado = value; }
+        get
+        {
+            if (ViewState["clienteSeleccionado"] == null)
+                return "";
+            else
+                return (string)ViewState["clienteSeleccionado"];
+        }
+        //set { ViewState["clienteSeleccionado"] = value; }
     }
 
     #endregion
@@ -55,6 +61,8 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
             RadioButton rdb = sender as RadioButton;
             GridViewRow row = (GridViewRow)rdb.Parent.Parent;
 
+            GuardarCliente(row.RowIndex);
+
             QuitarSeleccionRadio(rdb);
 
             SeleccionarRadio(rdb, row.RowIndex);
@@ -65,6 +73,12 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
+    }
+
+    private void GuardarCliente(int indiceFila)
+    {
+        string cliente = ((Label)grvClientes.Rows[indiceFila].FindControl("lblCliente")).Text;
+        ViewState["clienteSeleccionado"] = cliente;
     }
     
     private void QuitarSeleccionRadio(RadioButton rbNuevo)
@@ -92,7 +106,7 @@ public partial class ControlesUsuario_ClienteDatosBancarios_wucClienteDatosBanca
         grvClientes.Rows[fila].CssClass = "bg-color-azulClaro01 fg-color-blanco";
     }
 
-    public void DespintarFila(int fila)
+    private void DespintarFila(int fila)
     {
         grvClientes.Rows[fila].CssClass = "bg-color-blanco fg-color-negro";
     }
