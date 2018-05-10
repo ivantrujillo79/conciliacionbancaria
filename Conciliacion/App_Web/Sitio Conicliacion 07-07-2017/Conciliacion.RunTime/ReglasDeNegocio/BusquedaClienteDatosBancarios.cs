@@ -31,7 +31,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
         public abstract BusquedaClienteDatosBancarios CrearObjeto();
-        public abstract List<int> ConsultarCliente(int BuscarPor, string Dato);
+        public abstract List<Cliente> ConsultarCliente(int BuscarPor, string Dato);
 
     }
 }

@@ -11,14 +11,15 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     class BusquedaClienteDatosBancariosDatos : BusquedaClienteDatosBancarios
     {
-        public override List<int> ConsultarCliente(int BuscarPor, string Dato)
+        public override List<Cliente> ConsultarCliente(int BuscarPor, string Dato)
         {
             //(1, "Cuenta bancaria");
             //(2, "Clabe bancaria");
             //(3, "RFC");
             //(4, "Referencia de pago");
 
-            List<int> Clientes = new List<int>();
+            List<Cliente> Clientes = new List<Cliente>();
+            Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
@@ -31,7 +32,10 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
-                        Clientes.Add(Convert.ToInt32(reader["Cliente"]));
+                        objCliente.NumCliente = Convert.ToInt32(reader["Cliente"]);
+                        objCliente.Nombre = Convert.ToString(reader["Nombre"]);
+                        objCliente.RazonSocial = Convert.ToString(reader["razonsocial"]);
+                        Clientes.Add(objCliente);
                     }
                 }
                 catch (SqlException ex)

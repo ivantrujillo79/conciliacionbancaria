@@ -2869,7 +2869,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     protected void imbBusquedaPedidos_Click(object sender, ImageClickEventArgs e)
     {
         BusquedaClienteDatosBancarios objBusqueda;
-        List<int> lstClientes;
+        List<Cliente> lstClientes;
         objBusqueda = App.BusquedaClienteDatosBancarios.CrearObjeto();
         lstClientes = objBusqueda.ConsultarCliente(ddlBusquedaPedidos.SelectedIndex + 1, txtBusquedaPedidos.Text);
 
