@@ -4,6 +4,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
+<%@ Register Src="~/ControlesUsuario/ClienteDatosBancarios/wucClienteDatosBancarios.ascx" TagPrefix="uc1" TagName="wucClienteDatosBancarios" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     VARIOS A UNO
@@ -235,6 +236,10 @@
 
         function HideModalPopupInterno() {
             $find("ModalBehaviourInterno").hide();
+        }
+
+        function OcultarPopUpClienteDatosBancarios() {
+            $find("ModalBehavior").hide();
         }
 
     </script>
@@ -1682,39 +1687,6 @@
                 </table>
             </asp:Panel>
              <%--No puede ser manejado desde JavaScript--%>
-
-            <asp:HiddenField runat="server" ID="hdfCerrarSeleccionCliente" />
-            <asp:ModalPopupExtender ID="mpeLanzarSeleccionCliente" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlSeleccionCliente" TargetControlID="hdfCerrarSeleccionCliente"
-                CancelControlID="btnCerrarSeleccionCliente">
-            </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlSeleccionCliente" runat="server" CssClass="ModalPopup" EnableViewState="false"
-                Width="900px" Style="display: none">
-                <table style="width: 100%">
-                    <tr class="bg-color-grisOscuro">
-                        <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
-                            <div class="floatDerecha bg-color-grisClaro01">
-                                <asp:ImageButton runat="server" ID="btnCerrarSeleccionCliente" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                    CssClass="iconoPequeño bg-color-rojo" />
-                            </div>
-                            <div class="fg-color-blanco centradoJustificado">
-                                BUSQUEDA CLIENTE
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 5px 5px 5px 5px; width: 100%">
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" class="bg-color-grisClaro01">
-                            &nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </asp:Panel>
-
         </ContentTemplate>
     </asp:UpdatePanel>
     
@@ -1952,6 +1924,46 @@
     </asp:Panel>
     <%--No puede ser manejado desde JavaScript--%>
     
+    <!--        INICIO DE POPUP CLIENTE DATOS BANCARIOS     -->
+    <asp:HiddenField runat="server" ID="hdfCerrarSeleccionCliente" />
+    <asp:ModalPopupExtender ID="mpeLanzarSeleccionCliente" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="False" PopupControlID="pnlSeleccionCliente" TargetControlID="hdfCerrarSeleccionCliente"
+        BehaviorID="ModalBehavior" CancelControlID="btnCerrarSeleccionCliente">
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlSeleccionCliente" runat="server" CssClass="ModalPopup" Width="700px" style="display:none;">
+    <asp:UpdatePanel ID="upClienteDatosBancarios" runat="server">
+        <ContentTemplate>
+                <table style="width: 100%;">
+                    <tr class="bg-color-grisOscuro">
+                        <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
+                            <div class="floatDerecha bg-color-grisClaro01">
+                                <asp:ImageButton runat="server" ID="btnCerrarSeleccionCliente" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                    CssClass="iconoPequeño bg-color-rojo"
+                                    OnClientClick="OcultarPopUpClienteDatosBancarios();" />
+                            </div>
+                            <div class="fg-color-blanco centradoJustificado">
+                                SELECCIONAR CLIENTE
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="etiqueta centradoMedio" style="width: 100%;">
+                            <div class="etiqueta centradoMedio" style="height:170px;overflow:auto;">
+                                <uc1:wucClienteDatosBancarios runat="server" ID="wucClienteDatosBancarios" />
+                            </div>
+                            <asp:Button ID="btnAceptarClienteDatosBancarios" runat="server" OnClick="btnAceptarClienteDatosBancarios_Click"
+                                CssClass="boton bg-color-azulOscuro fg-color-blanco" 
+                                Text="ACEPTAR" Style="margin: 0 0 0 0;" ToolTip="ACEPTAR" />
+                            <asp:Button ID="btnCancelarClienteDatosBancario" runat="server"
+                                CssClass="boton bg-color-azulOscuro fg-color-blanco" 
+                                Text="CANCELAR" Style="margin: 0 0 0 0;" ToolTip="CANCELAR" OnClick="btnCancelarClienteDatosBancario_Click" />
+                         </td>
+                    </tr>
+                </table>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    </asp:Panel>
+
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"

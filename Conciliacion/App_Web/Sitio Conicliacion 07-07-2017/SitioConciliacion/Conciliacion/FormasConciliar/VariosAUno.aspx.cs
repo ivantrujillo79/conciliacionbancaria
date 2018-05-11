@@ -15,6 +15,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using AjaxControlToolkit;
+using Conciliacion.RunTime.DatosSQL;
 
 public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Page
 {
@@ -192,6 +194,18 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 btnFiltraCliente.Visible = true;
             else
                 btnFiltraCliente.Visible = false;
+
+            //if (wucClienteDatosBancarios.ClienteSeleccionado != "")
+            //{
+            //    Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+            //    Conexion conexion = new Conexion();
+            //    conexion.AbrirConexion(true);
+            //    grvPedidos.DataSource = objCliente.ObtienePedidosCliente(int.Parse(wucClienteDatosBancarios.ClienteSeleccionado), conexion);
+            //    grvPedidos.DataBind();
+            //}
+            //
+            //;
+            
         }
         catch (SqlException ex)
         {
@@ -2369,8 +2383,6 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             {
                 
             }
-            //if (grvPedidos.Rows.Count > 0)//RRV
-            //    agregarPedidoInternoExterno();//RRV
         }
         else
         {
@@ -2866,6 +2878,43 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    private DataTable BuscarPedidosPorCliente(int cliente)
+    {
+        Cliente obCliente = App.Cliente.CrearObjeto();
+        Conexion conexion = new Conexion();
+        DataTable dtPedidos;
+
+        try
+        {
+            conexion.AbrirConexion(false);
+            dtPedidos = obCliente.ObtienePedidosCliente(cliente, conexion);
+
+            HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtPedidos;
+            HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = dtPedidos;
+
+            return dtPedidos;
+        }
+        finally
+        {
+            conexion.CerrarConexion();
+        }
+    }
+
+    private void LlenaGridViewPedidosBuscadosPorUsuario()
+    {
+        try
+        {
+            DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            grvPedidos.PageIndex = 0;
+            grvPedidos.DataSource = tablaReferenciasP;
+            grvPedidos.DataBind();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     protected void imbBusquedaPedidos_Click(object sender, ImageClickEventArgs e)
     {
         BusquedaClienteDatosBancarios objBusqueda;
@@ -2873,10 +2922,48 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         objBusqueda = App.BusquedaClienteDatosBancarios.CrearObjeto();
         lstClientes = objBusqueda.ConsultarCliente(ddlBusquedaPedidos.SelectedIndex + 1, txtBusquedaPedidos.Text);
 
-        if (lstClientes.Count > 1)
+        try
         {
-            mpeLanzarSeleccionCliente.Show();
+            if (lstClientes == null || lstClientes.Count == 0)
+            {
+                throw new Exception("No se encontraron pedidos relacionados con su busqueda.");
+            }
+            else if (lstClientes.Count > 1)
+            {
+                wucClienteDatosBancarios.ClientesEncontrados = lstClientes;
+                wucClienteDatosBancarios.CargarClientes();
+                mpeLanzarSeleccionCliente.Show();
+            }
+            else if (lstClientes.Count == 1)
+            {
+                BuscarPedidosPorCliente(lstClientes[0].NumCliente);
+                LlenaGridViewPedidosBuscadosPorUsuario();
+            }
+            dvExpera.Visible = grvPedidos.Rows.Count == 0;
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg", "alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ console.log('Warning'); });", true);
         }
 
+    }
+
+    protected void btnAceptarClienteDatosBancarios_Click(object sender, EventArgs e)
+    {
+        string cliente = wucClienteDatosBancarios.ClienteSeleccionado;
+        mpeLanzarSeleccionCliente.Hide();
+
+        if (cliente.Length > 0)
+        {
+            BuscarPedidosPorCliente(Convert.ToInt32(cliente));
+            LlenaGridViewPedidosBuscadosPorUsuario();
+        }
+        dvExpera.Visible = grvPedidos.Rows.Count == 0;
+    }
+
+    protected void btnCancelarClienteDatosBancario_Click(object sender, EventArgs e)
+    {
+        mpeLanzarSeleccionCliente.Hide();
     }
 }
