@@ -1485,7 +1485,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBCargaComboStatusConcepto", cnn);
+                    SqlCommand comando = new SqlCommand("spCBCargaComboStatusConceptoReportes", cnn);
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
