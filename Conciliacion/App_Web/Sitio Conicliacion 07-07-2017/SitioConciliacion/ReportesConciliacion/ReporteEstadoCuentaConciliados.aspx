@@ -131,9 +131,14 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
-     <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
-        EnableScriptGlobalization="True">
-    </asp:ScriptManager>
+
+     <asp:ScriptManager runat="server" ID="spManager" EnableScriptGlobalization="True"
+        AsyncPostBackTimeout="14400">    
+     </asp:ScriptManager>
+    <script src="../../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript">
+        var ModalProgress = '<%=mpeLoading.ClientID%>';        
+    </script>
 
     <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
            <ContentTemplate>
@@ -260,7 +265,7 @@
  </ContentTemplate>
          </asp:UpdatePanel>
 
-       <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
+       <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
