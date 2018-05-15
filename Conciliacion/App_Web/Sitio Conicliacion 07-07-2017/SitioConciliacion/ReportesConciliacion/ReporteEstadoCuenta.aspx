@@ -245,6 +245,25 @@
                     </td>           
                 </tr>
             </table>
+
+            <table style="width: 100%">
+	            <tbody>
+		            <tr>
+                    <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                        Estado de Cuenta
+                    </td>
+                </tr>
+                <tr style="width: 100%">
+                    <td colspan="2">
+                        <div style="width:1200px; height:110px; overflow:auto;">
+				<div>
+				</div>
+                        </div>
+                    </td>
+                </tr>
+	            </tbody>
+            </table>
+
         </ContentTemplate>
     </asp:UpdatePanel>
 
