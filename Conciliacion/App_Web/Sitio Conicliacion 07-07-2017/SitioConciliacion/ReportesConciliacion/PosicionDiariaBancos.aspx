@@ -131,18 +131,23 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="600"
-        EnableScriptGlobalization="True">
-    </asp:ScriptManager>
-   <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
-           <ContentTemplate>
 
-  <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
+    <asp:ScriptManager runat="server" ID="spManager" EnableScriptGlobalization="True"
+        AsyncPostBackTimeout="14400">
+    </asp:ScriptManager>
+    <script src="../../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript">
+        var ModalProgress = '<%=mpeLoading.ClientID%>';        
+    </script>
+   
+    <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
+        <ContentTemplate>
+            <div runat="server" ID="dvAlertaError" class="alert alert-danger alert-dismissible fade show" hidden="true"
                   style="margin:5px 5px 0px 7px; box-sizing:border-box; font-size:15px; width:1185px">
                 <strong>Error: </strong>
                 <asp:Label runat="server" ID="lblMensajeError" Text="Debe especificar una fecha inicial y final 
                 y las fechas deben corresponder al mismo mes y año, por favor corrija su entrada." />
-  </div>    
+            </div>    
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 50px; vertical-align: top; width: 1%">                      
@@ -218,10 +223,28 @@
                 </tr>
             </table>
 
+            <table style="width: 100%">
+	            <tbody>
+		            <tr>
+                        <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                            Posici&oacute;n diaria de bancos
+                        </td>
+                    </tr>
+                    <tr style="width: 100%">
+                        <td colspan="2">
+                            <div style="width:1200px; height:110px; overflow:auto;">
+				    <div>
+				    </div>
+                            </div>
+                        </td>
+                    </tr>
+	            </tbody>
+            </table>
+
                </ContentTemplate>
          </asp:UpdatePanel>
 
-       <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
+       <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />

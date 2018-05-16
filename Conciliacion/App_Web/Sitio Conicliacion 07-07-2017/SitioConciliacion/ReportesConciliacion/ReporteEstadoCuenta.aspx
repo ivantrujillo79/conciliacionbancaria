@@ -149,10 +149,17 @@
             width: 150px;
         }
     </style>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
-     <asp:ScriptManager ID="ScriptManager1" runat="server"
-        EnableScriptGlobalization="True">    </asp:ScriptManager>
+
+     <asp:ScriptManager runat="server" ID="spManager" EnableScriptGlobalization="True"
+        AsyncPostBackTimeout="14400">    
+     </asp:ScriptManager>
+    <script src="../../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript">
+        var ModalProgress = '<%=mpeLoading.ClientID%>';        
+    </script>
 
     <asp:UpdatePanel runat="server" ID="upInicio" UpdateMode="Always" >
         <ContentTemplate>
@@ -238,18 +245,37 @@
                     </td>           
                 </tr>
             </table>
+
+            <table style="width: 100%">
+	            <tbody>
+		            <tr>
+                    <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                        Estado de Cuenta
+                    </td>
+                </tr>
+                <tr style="width: 100%">
+                    <td colspan="2">
+                        <div style="width:1200px; height:110px; overflow:auto;">
+				<div>
+				</div>
+                        </div>
+                    </td>
+                </tr>
+	            </tbody>
+            </table>
+
         </ContentTemplate>
     </asp:UpdatePanel>
 
-    <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
+    <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
         </ProgressTemplate>
     </asp:UpdateProgress>
-        <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
-            PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
-        </asp:ModalPopupExtender>
-             
-      </asp:Content>
+    <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+        PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
+    </asp:ModalPopupExtender>         
+
+</asp:Content>
 
