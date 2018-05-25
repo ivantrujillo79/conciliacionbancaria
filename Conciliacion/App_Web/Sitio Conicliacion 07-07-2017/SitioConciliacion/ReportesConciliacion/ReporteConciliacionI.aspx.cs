@@ -2051,14 +2051,14 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             {
                 conexion.AbrirConexion(true);
 
-                if (iStatus == 28) // 28 = Deposito por pago anticipado
-                {
-                    bool clienteValido;
-                    clienteValido = ValidarClientePagoAnticipado(conexion, clienteBuscar);
+                //if (iStatus == 28) // 28 = Deposito por pago anticipado
+                //{
+                //    bool clienteValido;
+                //    clienteValido = ValidarClientePagoAnticipado(conexion, clienteBuscar);
 
-                    if (!clienteValido)
-                        throw new Exception("El cliente indicado no existe en la relación de pagos anticipados.");
-                }
+                //    if (!clienteValido)
+                //        throw new Exception("El cliente indicado no existe en la relación de pagos anticipados.");
+                //}
 
                 Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
                 objCliente.Referencia = clienteBuscar.ToString();
@@ -2129,6 +2129,49 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             Pago.FAlta                          = DateTime.Now;
             Pago.Descripcion                    = Referencia.Descripcion;
             Pago.MotivoNoConciliado             = 0;
+            //Pago.UsuarioStatusConcepto;
+            //Pago.FStatusConcepto;
+            //Pago.StatusConciliacion;
+            return Pago.RegistraConciliacionReferencia(conexion);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private bool RegistraSaldoAFavor(Conexion conexion, ReferenciaConciliadaCompartida Referencia)
+    {
+        try
+        {
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+
+            SaldoAFavor obSaldoAFavor = Conciliacion.RunTime.App.SaldoAFavor.CrearObjeto();
+
+            obSaldoAFavor.FolioMovimiento           = -1;      // Se genera un consecutivo automáticamente
+            //obSaldoAFavor.AñoMovimiento             = ;
+            obSaldoAFavor.TipoMovimientoAConciliar  = 3;        // Pago anticipado
+
+
+            PagoAnticipado Pago = Conciliacion.RunTime.App.PagoAnticipado.CrearObjeto();
+            Pago.CorporativoConciliacion    = Referencia.Corporativo;
+            Pago.SucursalConciliacion       = Referencia.SucursalConciliacion;
+            Pago.AñoConciliacion            = Referencia.AñoConciliacion;
+            Pago.MesConciliacion            = Referencia.MesConciliacion;
+            Pago.FolioConciliacion          = Referencia.FolioConciliacion;
+            Pago.SecuenciaRelacion          = Referencia.SecuenciaRelacion;
+            Pago.CorporativoExteno          = Referencia.Corporativo;
+            Pago.SucursalExterno            = Referencia.Sucursal;
+            Pago.AñoExterno                 = Referencia.Año;
+            Pago.FolioExterno               = Referencia.Folio;
+            Pago.SecuenciaExterno           = Referencia.Secuencia;
+            Pago.MontoExterno               = Referencia.Deposito;
+            Pago.FormaConciliacion          = Referencia.FormaConciliacion;
+            Pago.ComentarioNoConciliado     = "";
+            Pago.Usuario                    = usuario.IdUsuario.Trim();
+            Pago.FAlta                      = DateTime.Now;
+            Pago.Descripcion                = Referencia.Descripcion;
+            Pago.MotivoNoConciliado         = 0;
             //Pago.UsuarioStatusConcepto;
             //Pago.FStatusConcepto;
             //Pago.StatusConciliacion;
