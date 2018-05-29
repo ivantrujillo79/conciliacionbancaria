@@ -156,6 +156,8 @@ namespace Conciliacion.RunTime.DatosSQL
                     = this.AñoCobro > 0 ? this.AñoCobro : (object)System.DBNull.Value;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cobro", SqlDbType.Int)).Value 
                     = this.Cobro > 0 ? this.Cobro : (object)System.DBNull.Value;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", SqlDbType.Int)).Value
+                    = this.Cliente > 0 ? this.Cliente : (object)System.DBNull.Value;
 
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Monto", SqlDbType.Money)).Value = this.Monto;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusMovimiento", SqlDbType.VarChar)).Value = this.StatusMovimiento;

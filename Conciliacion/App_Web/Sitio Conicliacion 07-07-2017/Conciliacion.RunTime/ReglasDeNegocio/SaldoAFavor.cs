@@ -37,6 +37,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int añoexterno;
         private int folioexterno;
         private int secuenciaexterno;
+        private int cliente;            // RM-29/05/2018, se agrega el miembro cliente
 
         public SaldoAFavor(IMensajesImplementacion implementadorMensajes)
         {
@@ -272,6 +273,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return secuenciaexterno; }
             set { secuenciaexterno = value; }
+        }
+        public int Cliente
+        {
+            get { return cliente; }
+            set { cliente = value; }
         }
 
         public abstract SaldoAFavor CrearObjeto();
