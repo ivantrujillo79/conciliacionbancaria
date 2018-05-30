@@ -151,7 +151,8 @@ namespace Conciliacion.RunTime.DatosSQL
                     = this.TipoAplicacionIngreso > 0 ? this.TipoAplicacionIngreso : (object)System.DBNull.Value;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@ConsecutivoTipoAplicacion", SqlDbType.Int)).Value 
                     = this.ConsecutivoTipoAplicacion > 0 ? this.ConsecutivoTipoAplicacion : (object)System.DBNull.Value;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Factura", SqlDbType.Int)).Value = this.Factura;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Factura", SqlDbType.Int)).Value 
+                    = this.Factura > 0 ? this.Factura : (object)System.DBNull.Value;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoCobro", SqlDbType.SmallInt)).Value 
                     = this.AñoCobro > 0 ? this.AñoCobro : (object)System.DBNull.Value;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cobro", SqlDbType.Int)).Value 

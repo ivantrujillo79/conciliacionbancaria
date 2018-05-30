@@ -1282,8 +1282,8 @@
                     <tr>
                         <td class="centradoMedio">
                             <asp:Button ID="btnConciliarFACT" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
-                                OnClientClick="HideModalPopupFacturasPedido();" OnClick="btnConciliarFACT_Click"
-                                Text="CONCILIAR" Width="100px" />
+                                OnClick="btnConciliarFACT_Click"
+                                Text="CONCILIAR" Width="100px" /> <%--OnClientClick="HideModalPopupFacturasPedido();" --%>
                             <asp:Button ID="btnSalir" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
                                 OnClick="btnSalir_Click" 
                                 OnClientClick="HideModalPopupFacturasPedido();"
