@@ -152,9 +152,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             wsSheet1.Cells["A2"].Value = empresa;
             wsSheet1.Cells["C3"].Value = fecha.ToString("MMMM", cultureInfo).ToUpper();
 
-            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#B7DEE8");
+            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#0000FF");
             wsSheet1.Cells["B1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             wsSheet1.Cells["B1"].Style.Fill.BackgroundColor.SetColor(colFromHex);
+            wsSheet1.Cells["B1"].Style.Font.Color.SetColor(Color.White);
             wsSheet1.Cells["B1"].Value = fecha.ToString("MMMM DE yyyy").ToUpper();
 
             wsSheet1.Cells["B2"].Value = "CLABE INTERBANCARIA";
