@@ -101,7 +101,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:H1"])
             {
-                Rng.Value = banco + cuenta + "MOVIMIENTOS DEL MES DE:";
+                Rng.Value = banco.ToUpper() + cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: ";
                 Rng.Merge = true;
             }
 
@@ -109,7 +109,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             using (ExcelRange Rng = wsSheet1.Cells["B2:H2"])
             {
                 Rng.Merge = true;
-                Rng.Value = empresa;
+                Rng.Value = empresa.ToUpper();
             }
 
             // Mes
