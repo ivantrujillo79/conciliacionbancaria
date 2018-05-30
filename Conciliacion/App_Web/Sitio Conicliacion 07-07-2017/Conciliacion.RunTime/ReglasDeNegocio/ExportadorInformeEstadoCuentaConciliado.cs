@@ -61,9 +61,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             try
             {
                 ExcelPackage excelPackage = inicializar();
-                crearEncabezado(excelPackage);
-                /*exportarDatos();
-                cerrar();*/
+                crearEncabezado(excelPackage, "NombreHoja");
+                exportarDatos(excelPackage, "NombreHoja", 8);
+                /*cerrar();*/
                 excelPackage.Save();
             }
             catch (Exception ex)
@@ -74,13 +74,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-
-                if (xlRango != null) Marshal.ReleaseComObject(xlRango);
-                if (xlHoja != null) Marshal.ReleaseComObject(xlHoja);
-                if (xlHojas != null) Marshal.ReleaseComObject(xlHojas);
-                if (xlLibro != null) Marshal.ReleaseComObject(xlLibro);
-                if (xlLibros != null) Marshal.ReleaseComObject(xlLibros);
-                if (xlAplicacion != null) Marshal.ReleaseComObject(xlAplicacion);
             }
         }
 
@@ -90,58 +83,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ExcelPackage excel = new ExcelPackage(new FileInfo(@rutaCompleta));
 
             return excel;
-
-            /*
-            xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
-
-            if (xlAplicacion == null)
-            {
-                throw new Exception("Microsoft Excel no está instalado correctamente en el equipo.");
-            }
-
-            xlAplicacion.Visible = false;
-
-            xlAplicacion.DisplayAlerts = false;
-
-            xlLibros = xlAplicacion.Workbooks;
-
-            if (File.Exists(rutaCompleta))
-            {
-                xlLibro = xlAplicacion.Workbooks.Open(rutaCompleta,
-                    0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "",
-                    true, false, 0, true, false, false);
-
-                //xlLibro = xlAplicacion.Workbooks.Open(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
-                //            false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,
-                //            Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-                xlHojas = xlLibro.Sheets;
-
-                xlHoja = xlHojas.Add();
-
-                xlHoja.Name = _NombreHoja;
-            }
-            else
-            {
-                xlLibro = xlLibros.Add(Excel.XlWBATemplate.xlWBATWorksheet);
-
-                //xlHojas = xlLibro.Sheets;
-
-                //xlHoja = xlHojas.Add();
-
-                xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
-
-                xlHoja.Name = _NombreHoja;
-            }*/
         }
 
-        private ExcelPackage crearEncabezado(ExcelPackage excelPackage)
+        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja)
         {
             string banco, cuenta, empresa;
             DateTime fecha;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
 
-            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add("NombreHoja");
+            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombreHoja);
 
             banco = "BANAMEX ";
             cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
@@ -176,7 +126,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
 
             // Fecha
-            using (ExcelRange Rng = wsSheet1.Cells["I1:K3"])
+            using (ExcelRange Rng = wsSheet1.Cells["I1:J1"])
             {
                 Rng.Merge = true;
                 Rng.Style.Font.Bold = true;
@@ -187,7 +137,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
 
             // Clabe interbancaria
-            wsSheet1.Cells["B2"].Value = "CLABE INTERBANCARIA";
+            wsSheet1.Cells["I2"].Value = "CLABE INTERBANCARIA";
 
             resalteOscuro("Depósito", wsSheet1.Cells["L1"]);            
             resalteOscuro("Retiro", wsSheet1.Cells["L2"]);            
@@ -201,16 +151,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             using (ExcelRange Rng = wsSheet1.Cells["B7:P7"])
             {
-                estilarEncabezado("Fecha",Rng[7, 1]);
-                estilarEncabezado("Referencia", Rng[7, 2]);
-                estilarEncabezado("Concepto",Rng[7, 3]);
-                estilarEncabezado("Retiros", Rng["D7:H7"], true);
-                estilarEncabezado("Depósitos",Rng[7, 9]);
-                estilarEncabezado("Saldo", Rng[7, 10]);
-                estilarEncabezado("Concepto conciliado",Rng[7, 11]);
-                estilarEncabezado("Documento", Rng["L7:O7"], true);
+                estilarEncabezado("Fecha",Rng[7, 2]);
+                estilarEncabezado("Referencia", Rng[7, 3]);
+                estilarEncabezado("Concepto", Rng["D7:H7"], true);//7, 4]);
+                estilarEncabezado("Retiros", Rng["I7"]);
+                estilarEncabezado("Depósitos",Rng["J7"]);
+                estilarEncabezado("Saldo", Rng["K7"]);
+                estilarEncabezado("Concepto conciliado",Rng["L7:O7"],true);
+                estilarEncabezado("Documento", Rng["P7"]);
 
-                enmarcarRegion(Rng[7, 1, 7, 15]);
+                enmarcarRegion(Rng[7, 2, 7, 16]);
             }
 
             return excelPackage;
@@ -253,45 +203,28 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             Rng.Style.Border.Bottom.Color.SetColor(Color.Black);
         }
 
-        private void exportarDatos()
+        private void exportarDatos(ExcelPackage excelPackage, string nombreHoja, int aPartirDeLaFila)
         {
-            int i = 8;
-            Excel.Range celdaInicio;
-            Excel.Range celdaFin;
+            int i = aPartirDeLaFila;
+
+            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja];
 
             foreach (DetalleReporteEstadoCuentaConciliado detalle in _ReporteEstadoCuentaConciliado)
             {
-                celdaInicio = xlHoja.Cells[i, 1];
-                celdaFin = xlHoja.Cells[i, 16];
-
-                xlRango = xlHoja.Range[celdaInicio, celdaFin];
-
-                xlRango[1, 1].Value2 = detalle.ConsecutivoFlujo.ToString();
-                xlRango[1, 2].Value2 = detalle.Fecha.ToString("dd/MM/yyyy");
-                xlRango[1, 3].Value2 = detalle.Referencia;
-                xlRango[1, 4].Value2 = detalle.Concepto;
-                xlRango[1, 9].Value2 = detalle.Retiros.ToString("C");
-                xlRango[1, 10].Value2 = detalle.Depositos.ToString("C");
-                xlRango[1, 11].Value2 = detalle.SaldoFinal.ToString("C");
-                xlRango[1, 12].Value2 = detalle.ConceptoConciliado;
-                xlRango[1, 16].Value2 = detalle.DocumentoConciliado;
-
+                wsSheet1.Cells[i, 4, i, 8].Merge = true;
+                wsSheet1.Cells[i, 12, i, 15].Merge = true;
+                wsSheet1.Cells[i,1].Value = detalle.ConsecutivoFlujo.ToString();
+                wsSheet1.Cells[i, 2].Value = detalle.Fecha.ToString("dd/MM/yyyy");
+                wsSheet1.Cells[i, 3].Value = detalle.Referencia;
+                wsSheet1.Cells[i, 4].Value = detalle.Concepto;
+                wsSheet1.Cells[i, 9].Value = detalle.Retiros.ToString("C");
+                wsSheet1.Cells[i, 10].Value = detalle.Depositos.ToString("C");
+                wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal.ToString("C");
+                wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
+                wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
                 i++;
             }
-            celdaInicio = xlHoja.Cells[8, 1];
-            celdaFin = xlHoja.Cells[i, 8];
-            xlRango = xlHoja.Range[celdaInicio, celdaFin];
-            xlRango.Font.Size = 10;
-
-            celdaInicio = xlHoja.Cells[8, 4];   // D8
-            celdaFin = xlHoja.Cells[i, 8];  // H#
-            xlRango = xlHoja.Range[celdaInicio, celdaFin];
-            xlRango.Merge(true);
-
-            celdaInicio = xlHoja.Cells[8, 12];   // L8
-            celdaFin = xlHoja.Cells[i, 15];  // O#
-            xlRango = xlHoja.Range[celdaInicio, celdaFin];
-            xlRango.Merge(true);
+            
         }
 
         private void cerrar()
