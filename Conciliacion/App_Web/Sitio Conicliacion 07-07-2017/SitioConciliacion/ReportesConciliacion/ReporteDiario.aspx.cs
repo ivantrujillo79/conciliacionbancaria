@@ -36,7 +36,7 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
        try
         {
           List < List <InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
-            lstDetalle = consultaReporteEstadoCuentaDia( );
+            //lstDetalle = consultaReporteEstadoCuentaDia( );
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             string cero;
             if (fechaInicio.Month < 10)

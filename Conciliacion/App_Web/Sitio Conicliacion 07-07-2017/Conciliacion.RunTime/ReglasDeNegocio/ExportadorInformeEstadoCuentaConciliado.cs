@@ -7,6 +7,11 @@ using Excel = Microsoft.Office.Interop.Excel;
 using DetalleReporteEstadoCuentaConciliado = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado;
 using System.IO;
 using System.Globalization;
+using OfficeOpenXml;
+using OfficeOpenXml.Drawing;
+using System.Diagnostics;
+using System.Drawing;
+using OfficeOpenXml.Style;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -41,7 +46,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _Archivo = Archivo.Trim();
                 _NombreHoja = Nombre.Trim();
 
-                ValidarMiembros();
+                //ValidarMiembros();
             }
             catch (Exception ex)
             {
@@ -55,10 +60,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             try
             {
-                inicializar();
-                crearEncabezado();
-                exportarDatos();
-                cerrar();
+                ExcelPackage excelPackage = inicializar();
+                crearEncabezado(excelPackage);
+                /*exportarDatos();
+                cerrar();*/
+                excelPackage.Save();
             }
             catch (Exception ex)
             {
@@ -78,10 +84,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
-        private void inicializar()
+        private ExcelPackage inicializar()
         {
             string rutaCompleta = _Ruta + _Archivo;
+            ExcelPackage excel = new ExcelPackage(new FileInfo(@rutaCompleta));
+            
+            return excel;
 
+            /*
             xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
 
             if (xlAplicacion == null)
@@ -122,15 +132,81 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 xlHoja = (Excel.Worksheet)xlLibro.Sheets[1];
 
                 xlHoja.Name = _NombreHoja;
-            }
+            }*/
         }
 
-        private void crearEncabezado()
+        private ExcelPackage crearEncabezado(ExcelPackage excelPackage)
         {
             string banco, cuenta, empresa;
             DateTime fecha;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
 
+            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add("NombreHoja");
+
+            banco = "BANAMEX ";
+            cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
+            empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
+            fecha = DateTime.Now;//_ReporteEstadoCuentaConciliado[0].Fecha;
+
+            wsSheet1.Cells["A1"].Value = banco + cuenta + "MOVIMIENTOS DEL MES DE:";
+            wsSheet1.Cells["A2"].Value = empresa;
+            wsSheet1.Cells["C3"].Value = fecha.ToString("MMMM", cultureInfo).ToUpper();
+
+            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#B7DEE8");
+            wsSheet1.Cells["B1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            wsSheet1.Cells["B1"].Style.Fill.BackgroundColor.SetColor(colFromHex);
+            wsSheet1.Cells["B1"].Value = fecha.ToString("MMMM DE yyyy").ToUpper();
+
+            wsSheet1.Cells["B2"].Value = "CLABE INTERBANCARIA";
+
+            using (ExcelRange Rng = wsSheet1.Cells["L1"])
+            {
+                Rng.Value = "Depósito";
+                Rng.Style.Font.Size = 11;
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Italic = true;
+            }
+            using (ExcelRange Rng = wsSheet1.Cells["L2"])
+            {
+                Rng.Value = "Retiro";
+                Rng.Style.Font.Size = 11;
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Italic = true;
+            }
+            using (ExcelRange Rng = wsSheet1.Cells["L3"])
+            {
+                Rng.Value = "Saldo final calculado";
+                Rng.Style.Font.Size = 11;
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Italic = true;
+            }
+            using (ExcelRange Rng = wsSheet1.Cells["L4"])
+            {
+                Rng.Value = "Saldo final bancario";
+                Rng.Style.Font.Size = 11;
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Italic = true;
+            }
+            using (ExcelRange Rng = wsSheet1.Cells["L5"])
+            {
+                Rng.Value = "Depósito conciliado";
+                Rng.Style.Font.Size = 11;
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Italic = true;
+            }
+            using (ExcelRange Rng = wsSheet1.Cells["L6"])
+            {
+                Rng.Value = "Retiro conciliado";
+                Rng.Style.Font.Size = 11;
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Italic = true;
+            }
+            wsSheet1.Protection.IsProtected = false;
+            wsSheet1.Protection.AllowSelectLockedCells = false;
+
+            return excelPackage;
+
+            /*
             //banco = _DetalleReporteEstadoCuenta[0].Banco;
             banco = "BANAMEX ";
             cuenta = "CTA " + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
@@ -216,6 +292,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.ColumnWidth = 13;
             xlRango = xlHoja.Range["B:H"];
             xlRango.ColumnWidth = 10;
+            */
         }
 
         private void exportarDatos()

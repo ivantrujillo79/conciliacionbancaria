@@ -156,7 +156,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         try
         {
             List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado> lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>();
-            lstDetalle = consultaReporteEstadoCuentaConciliado();
+            //lstDetalle = consultaReporteEstadoCuentaConciliado();
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             string cero;
             if (fechaInicio.Month < 10)
