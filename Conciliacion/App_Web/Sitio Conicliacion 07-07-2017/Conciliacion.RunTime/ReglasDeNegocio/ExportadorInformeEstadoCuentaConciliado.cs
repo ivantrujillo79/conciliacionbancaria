@@ -148,8 +148,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
             fecha = DateTime.Now;//_ReporteEstadoCuentaConciliado[0].Fecha;
 
-            wsSheet1.Cells["A1"].Value = banco + cuenta + "MOVIMIENTOS DEL MES DE:";
-            wsSheet1.Cells["A2"].Value = empresa;
+            
+
+
+            /*wsSheet1.Cells["A2"].Value = empresa;
             wsSheet1.Cells["C3"].Value = fecha.ToString("MMMM", cultureInfo).ToUpper();
 
             Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#0000FF");
@@ -158,7 +160,118 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             wsSheet1.Cells["B1"].Style.Font.Color.SetColor(Color.White);
             wsSheet1.Cells["B1"].Value = fecha.ToString("MMMM DE yyyy").ToUpper();
 
+            */
+
+            
+
+            
+
+            /*
+            //banco = _DetalleReporteEstadoCuenta[0].Banco;
+            banco = "BANAMEX ";
+            cuenta = "CTA " + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
+            empresa = _ReporteEstadoCuentaConciliado[0].Corporativo;
+            fecha = _ReporteEstadoCuentaConciliado[0].Fecha;*/
+
+            // Cuenta
+            using (ExcelRange Rng = wsSheet1.Cells["B1:H1"])
+            {
+                Rng.Value = banco + cuenta + "MOVIMIENTOS DEL MES DE:";
+                Rng.Merge = true;
+            }
+
+            // Empresa
+            using (ExcelRange Rng = wsSheet1.Cells["B2:H2"])
+            {
+                Rng.Merge= true;
+                Rng.Value = empresa;
+            }
+
+            // Mes
+            using (ExcelRange Rng = wsSheet1.Cells["D3:H3"])
+            {
+                Rng.Merge = true;
+                Rng.Value = fecha.ToString("MMMM", cultureInfo).ToUpper();
+                Rng.Style.Font.Bold = true;
+                Rng.Style.Font.Size = 13;
+                Rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                Rng.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                Rng.Style.Fill.BackgroundColor.SetColor(Color.Blue);
+                Rng.Style.Font.Color.SetColor(Color.White);
+            }
+
+
+
+            // Fecha
+
+            using (ExcelRange Rng = wsSheet1.Cells["I1:K3"])
+            {
+                Rng.Merge = true;
+                Rng.Style.Font.Bold = true;
+                Rng.Value = fecha.ToString("MMMM DE yyyy").ToUpper();
+                Rng.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                Rng.Style.Fill.BackgroundColor.SetColor(Color.Blue);
+                Rng.Style.Font.Color.SetColor(Color.White);
+            }
+            
+            // Clabe interbancaria
             wsSheet1.Cells["B2"].Value = "CLABE INTERBANCARIA";
+
+
+            using (ExcelRange Rng = wsSheet1.Cells["B7:P7"])
+            {
+                Rng[7, 1].Value = "Fecha";
+                Rng[7, 2].Value = "Referencia";
+                Rng[7, 3].Value = "Concepto";
+                Rng[7, 8].Value = "Retiros";
+                Rng[7, 9].Value = "Depósitos";
+                Rng[7, 10].Value = "Saldo";
+                Rng[7, 11].Value = "Concepto conciliado";
+                Rng[7, 15].Value = "Documento";
+                Rng.Style.Font.Size = 10;
+                Rng.Style.Font.Color.SetColor(Color.Blue);
+                Rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            }
+
+            /*            
+                                    // Columnas
+                                    xlRango = xlHoja.Range["B7:P7"];
+                                    xlRango[1, 1].Value2 = "Fecha";
+                                    xlRango[1, 2].Value2 = "Referencia";
+                                    xlRango[1, 3].Value2 = "Concepto";
+                                    xlRango[1, 8].Value2 = "Retiros";
+                                    xlRango[1, 9].Value2 = "Depósitos";
+                                    xlRango[1, 10].Value2 = "Saldo";
+                                    xlRango[1, 11].Value2 = "Concepto conciliado";
+                                    xlRango[1, 15].Value2 = "Documento";
+                                    xlRango.Font.ColorIndex = 23;
+                                    xlRango.Font.Size = 10;
+                                    xlRango.Interior.Color = Excel.XlRgbColor.rgbWhite;
+                                    xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                                    xlRango.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+                                    xlRango.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlMedium);
+
+                                    xlRango = xlHoja.Columns["A"];
+                                    xlRango.ColumnWidth = 4;
+                                    xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                                    xlRango.Font.Bold = true;
+                                    xlRango = xlHoja.Columns["P"];
+                                    xlRango.ColumnWidth = 13;
+                                    xlRango = xlHoja.Range["D7:H7"];
+                                    xlRango.Merge();
+                                    xlRango = xlHoja.Range["I7:K7"];
+                                    xlRango.Font.Bold = true;
+                                    xlRango.ColumnWidth = 13;
+                                    xlRango = xlHoja.Range["L7:O7"];
+                                    xlRango.Merge();
+                                    xlRango = xlHoja.Range["L7:P7"];
+                                    xlRango.Font.Bold = true;
+                                    xlRango = xlHoja.Range["I:K"];
+                                    xlRango.ColumnWidth = 13;
+                                    xlRango = xlHoja.Range["B:H"];
+                                    xlRango.ColumnWidth = 10;
+                                    */
 
             using (ExcelRange Rng = wsSheet1.Cells["L1"])
             {
@@ -204,96 +317,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
             wsSheet1.Protection.IsProtected = false;
             wsSheet1.Protection.AllowSelectLockedCells = false;
-
             return excelPackage;
-
-            /*
-            //banco = _DetalleReporteEstadoCuenta[0].Banco;
-            banco = "BANAMEX ";
-            cuenta = "CTA " + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
-            empresa = _ReporteEstadoCuentaConciliado[0].Corporativo;
-            fecha = _ReporteEstadoCuentaConciliado[0].Fecha;
-
-            // Cuenta
-            xlRango = xlHoja.Range["B1:H1"];
-            xlRango.Merge(true);
-            xlRango.Value2 = banco + cuenta + "MOVIMIENTOS DEL MES DE:";
-
-            // Empresa
-            xlRango = xlHoja.Range["B2:H2"];
-            xlRango.Merge(true);
-            xlRango.Value2 = empresa;
-
-            // Mes
-            xlRango = xlHoja.Range["D3:H3"];
-            xlRango.Merge(true);
-            xlRango.Value2 = fecha.ToString("MMMM", cultureInfo).ToUpper();
-            xlRango.Font.Color = Excel.XlRgbColor.rgbWhite;
-            xlRango.Font.Bold = true;
-            xlRango.Font.Size = 13;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            xlRango.Interior.Color = Excel.XlRgbColor.rgbBlue;
-
-            // Fecha
-            xlRango = xlHoja.Range["I1:K3"];
-            xlRango.Merge(true);
-            xlRango.Font.Bold = true;
-            xlRango[1, 1].Value2 = fecha.ToString("MMMM DE yyyy").ToUpper();
-            xlRango[1, 1].Font.Color = Excel.XlRgbColor.rgbWhite;
-            xlRango[1, 1].Interior.Color = Excel.XlRgbColor.rgbBlue;
-            xlRango[1, 1].IndentLevel = 2;
-            // Clabe interbancaria
-            xlRango[2, 1].Value2 = "CLABE INTERBANCARIA";
-            xlRango[2, 1].IndentLevel = 3;
-
-            // Depósito - retiro - saldos
-            xlRango = xlHoja.Range["L1:O6"];
-            xlRango.Merge(true);
-            xlRango[1, 1].Value2 = "Depósito";
-            xlRango[2, 1].Value2 = "Retiro";
-            xlRango[3, 1].Value2 = "Saldo final calculado";
-            xlRango[4, 1].Value2 = "Saldo final bancario";
-            xlRango[5, 1].Value2 = "Depósito conciliado";
-            xlRango[6, 1].Value2 = "Retiro conciliado";
-            xlRango.Font.Bold = true;
-
-            // Columnas
-            xlRango = xlHoja.Range["B7:P7"];
-            xlRango[1, 1].Value2 = "Fecha";
-            xlRango[1, 2].Value2 = "Referencia";
-            xlRango[1, 3].Value2 = "Concepto";
-            xlRango[1, 8].Value2 = "Retiros";
-            xlRango[1, 9].Value2 = "Depósitos";
-            xlRango[1, 10].Value2 = "Saldo";
-            xlRango[1, 11].Value2 = "Concepto conciliado";
-            xlRango[1, 15].Value2 = "Documento";
-            xlRango.Font.ColorIndex = 23;
-            xlRango.Font.Size = 10;
-            xlRango.Interior.Color = Excel.XlRgbColor.rgbWhite;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            xlRango.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-            xlRango.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlMedium);
-
-            xlRango = xlHoja.Columns["A"];
-            xlRango.ColumnWidth = 4;
-            xlRango.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            xlRango.Font.Bold = true;
-            xlRango = xlHoja.Columns["P"];
-            xlRango.ColumnWidth = 13;
-            xlRango = xlHoja.Range["D7:H7"];
-            xlRango.Merge();
-            xlRango = xlHoja.Range["I7:K7"];
-            xlRango.Font.Bold = true;
-            xlRango.ColumnWidth = 13;
-            xlRango = xlHoja.Range["L7:O7"];
-            xlRango.Merge();
-            xlRango = xlHoja.Range["L7:P7"];
-            xlRango.Font.Bold = true;
-            xlRango = xlHoja.Range["I:K"];
-            xlRango.ColumnWidth = 13;
-            xlRango = xlHoja.Range["B:H"];
-            xlRango.ColumnWidth = 10;
-            */
         }
 
         private void exportarDatos()
