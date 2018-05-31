@@ -112,15 +112,12 @@ public class ClaseReporte
                         if (Existe_Parametro(Parametros, par.Name))
                         {
                             crParameterFieldDefinition = crParameterFieldDefinitions[par.Name];
-                            //crParameterFieldDefinition = crParameterFieldDefinitions[par.Name, par.ReportName];
                             crParametervalues = crParameterFieldDefinition.CurrentValues;
                             crParameterDiscretValue = new CrystalDecisions.Shared.ParameterDiscreteValue();
                             strValor = Leer_Valor_Parametro(Parametros, par.Name);
                             crParameterDiscretValue.Value = strValor;
                             crParametervalues.Add(crParameterDiscretValue);
                             crParameterFieldDefinition.ApplyCurrentValues(crParametervalues);
-
-                            //RepDoc.SetParameterValue(par.Name, strValor);
 
                             System.Data.SqlClient.SqlParameter parNuevo = new System.Data.SqlClient.SqlParameter();
                             parNuevo.ParameterName = par.Name;
@@ -139,17 +136,9 @@ public class ClaseReporte
                 daRep.Fill(dtRep);
                 RepDoc.SetDataSource(dtRep);
                 
-                
-                
-                
-                
-                
                 //Pasa los parametros a los subreportes
-                
                 foreach (CrystalDecisions.CrystalReports.Engine.ReportDocument lRepDoc in RepDoc.Subreports)
-                //foreach (CrystalDecisions.CrystalReports.Engine.ReportObject sRepObj in RepDoc.ReportDefinition.ReportObjects)
                 {
-                    //ReportDocument lRepDoc = OpenSubreport(RepDoc, sRepObj.Name);
                     if (lRepDoc != null)
                     {
                         lRepDoc.SetDatabaseLogon(Usuario, PW, Servidor, Base);
@@ -189,16 +178,12 @@ public class ClaseReporte
                                 if (Existe_Parametro(Parametros, par.Name))
                                 {
                                     crParameterFieldDefinition = crParameterFieldDefinitions[par.Name];
-                                    //crParameterFieldDefinition = crParameterFieldDefinitions[par.Name, par.ReportName];
                                     crParametervalues = crParameterFieldDefinition.CurrentValues;
                                     crParameterDiscretValue = new CrystalDecisions.Shared.ParameterDiscreteValue();
                                     strValor = Leer_Valor_Parametro(Parametros, par.Name);
                                     crParameterDiscretValue.Value = strValor;
                                     crParametervalues.Add(crParameterDiscretValue);
                                     crParameterFieldDefinition.ApplyCurrentValues(crParametervalues);
-
-                                    //lRepDoc.SetParameterValue(par.Name, strValor);
-
                                     System.Data.SqlClient.SqlParameter parNuevo = new System.Data.SqlClient.SqlParameter();
                                     parNuevo.ParameterName = par.Name;
                                     parNuevo.Value = strValor;
@@ -225,7 +210,6 @@ public class ClaseReporte
                             this._strError = exs.ToString();
                         }
                     }
-                    //RepDoc.VerifyDatabase();
                 }
             }
             catch (Exception ex)

@@ -4,10 +4,42 @@
     Reporte Saldo de Anticipos de Cliente
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" Runat="Server">
+    <!--Libreria jQuery-->
+    <script src="../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+    <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
     <script type="text/javascript">
+
         function pageLoad() {
-            
+            activarDatePickers();
         }
+        function activarDatePickers() {
+            //DatePicker FOperacion
+            $("#<%= txtFInicio.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%=txtFFInal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%=txtFFInal.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%=txtFInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        }
+
+        function ValidNum(e) {
+            var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+            return ((tecla > 47 && tecla < 58));
+        }
+
     </script>        
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
@@ -22,95 +54,62 @@
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
     </script>--%>
     <script type="text/javascript" language="javascript">
-        function openWindow() {
-            window.open('http://www.google.com/', '_blank');
-        }
+        
     </script>
-    <input type="button" value="Click Me" onclick="openWindow()" />
-    <asp:UpdatePanel runat="server" ID="upConciliacionCompartida" UpdateMode="Always">
+
+    <asp:UpdatePanel runat="server" ID="upConciliacionCompartida" UpdateMode="Conditional">
         <ContentTemplate>
+            <asp:HiddenField ID="hdfCliente" runat="server" />
+            <asp:HiddenField ID="hdfTodos" runat="server" />
+            <asp:HiddenField ID="hdfFechaIni" runat="server" />
+            <asp:HiddenField ID="hdfFechaFin" runat="server" />
+
             <table id="BarraHerramientas" class="bg-color-grisClaro01" style="width: 100%; vertical-align: top">
                 <tr>
                     <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 70%">
                         <table class="etiqueta opcionBarra">
                             <tr>
                                 <td class="iconoOpcion  bg-color-azulClaro" rowspan="2">
-                                    <asp:ImageButton ID="btnActualizarConfig" runat="server" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
-                                        ToolTip="ACTUALIZAR CONFIGURACION" Width="25px" ValidationGroup="Configuracion" OnClick="btnActualizarConfig_Click" />
-                                </td>
-                                <td class="lineaVertical" style="width: 25%">
-                                    Empresa
-                                </td>
-                                <td class="lineaVertical" style="width: 20%">
-                                    Sucursal
-                                </td>
-                                <td class="lineaVertical" style="width: 20%">
-                                    Banco
+                                    <%--<asp:ImageButton ID="btnActualizarConfig" runat="server" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.png"
+                                        ToolTip="ACTUALIZAR CONFIGURACION" Width="25px" ValidationGroup="Configuracion" OnClick="btnActualizarConfig_Click" />--%>
                                 </td>
                                 <td class="lineaVertical" style="width: 15%">
-                                    Cuenta Bancaria
+                                    Cliente
                                 </td>
                                 <td class="lineaVertical" style="width: 10%">
+                                    Todos Los Clientes
+                                </td>
+                                <td class="lineaVertical" style="width: 15%">
                                     Fecha Inicial
                                 </td>
-                                <td style="width: 10%">
+                                <td style="width: 15%">
                                     Fecha Final
                                 </td>
+                                <td class="lineaVertical" style="width: 45%">
+                                </td>
                             </tr>
                             <tr>
-                                <td class="lineaVertical" style="width: 25%">
-                                    <asp:DropDownList ID="DropDownList1" runat="server" Width="100%" CssClass="dropDown" AutoPostBack="True"></asp:DropDownList>
-                                </td>
-                                <td class="lineaVertical" style="width: 20%">
-                                    <asp:DropDownList ID="DropDownList2" runat="server" Width="100%" CssClass="dropDown" AutoPostBack="True"></asp:DropDownList>
-                                </td>
-                                <td class="lineaVertical" style="width: 20%">
-                                    <asp:DropDownList ID="DropDownList3" runat="server" Width="100%" CssClass="dropDown" AutoPostBack="True"></asp:DropDownList>
-                                </td>
                                 <td class="lineaVertical" style="width: 15%">
-                                    <asp:DropDownList ID="DropDownList4" runat="server" Width="100%" CssClass="dropDown" AutoPostBack="True"></asp:DropDownList>
+                                    <asp:TextBox ID="txtClienteID" runat="server" onkeypress="return ValidNum(event)" CssClass="cajaTexto" Font-Size="10px" Width="90%"></asp:TextBox>
                                 </td>
                                 <td class="lineaVertical" style="width: 10%">
-                                    <asp:TextBox runat="server" ID="txtFInicio" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
-                                </td>
-                                <td style="width: 10%">
-                                    <asp:TextBox ID="TextBox1" runat="server" CssClass="cajaTexto" Font-Size="10px" Width="85%"></asp:TextBox>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="iconoOpcion bg-color-purpura" style="height: 30px" rowspan="2">
-                                    <asp:ImageButton ID="ImageButton1" runat="server" Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
-                                        ToolTip="FILTRAR" Width="25px" Style="height: 30px" />
-                                </td>
-                                <td>
-                                    Filtrar en
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <asp:DropDownList ID="ddlFiltrarEn" runat="server" CssClass="etiqueta dropDownPequeño"
-                                        Style="margin-bottom: 3px; margin-right: 3px" Width="85px">
-                                        <asp:ListItem Value="Externos" Selected="True">Externos</asp:ListItem>
-                                        <asp:ListItem Value="Internos">Internos</asp:ListItem>
+                                    <asp:DropDownList ID="ddlTodos" runat="server" Width="90%" CssClass="etiqueta dropDownPequeño" AutoPostBack="True">
+                                        <asp:ListItem Selected="True" Value="Si">Si</asp:ListItem>
+                                        <asp:ListItem Value="No">No</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="padding: 3px 3px 3px 0px; vertical-align: top; width: 1%">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="iconoOpcion bg-color-naranja" style="height: 30px">
-                                    <asp:ImageButton ID="imgBuscar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                        ToolTip="BUSCAR" Width="25px"/>
+                                <td class="lineaVertical" style="width: 15%">
+                                    <asp:TextBox ID="txtFInicio" runat="server" CssClass="cajaTexto" Font-Size="10px" Width="90%"></asp:TextBox>
+                                </td>
+                                <td style="width: 15%">
+                                    <asp:TextBox ID="txtFFInal" runat="server" CssClass="cajaTexto" Font-Size="10px" Width="90%"></asp:TextBox>
+                                </td>
+                                <td class="lineaVertical" style="width: 45%">
                                 </td>
                             </tr>
                         </table>
                     </td>
+                    
                     <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
                         <table class="etiqueta opcionBarra">
                             <tr>
@@ -121,22 +120,13 @@
                             </tr>
                         </table>
                     </td>
+                    
                     <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
-                        <table class="etiqueta opcionBarra">
-                            <tr>
-                                <td class="iconoOpcion bg-color-azulOscuro" style="height: 30px">
-                                    <asp:ImageButton ID="imgGuardar" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Guardar.png"
-                                        ToolTip="GUARDAR VISTA" Width="25px" />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
-                        <table class="etiqueta opcionBarra">
+                        <table class="bg-color-grisClaro01">
                             <tr>
                                 <td class="iconoOpcion bg-color-grisOscuro" style="height: 30px">
-                                    <asp:ImageButton ID="imgCerrarMesConciliacion" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
-                                        ToolTip="CERRAR MES" Width="25px" />
+                                   <%-- <asp:ImageButton ID="imgCerrarMesConciliacion" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png"
+                                        ToolTip="CERRAR MES" Width="25px" />--%>
                                 </td>
                             </tr>
                         </table>
@@ -144,6 +134,25 @@
 
                 </tr>
             </table>
+
+            <table style="width: 100%">
+	            <tbody>
+		            <tr>
+                        <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
+                            Saldos de Anticipos de Clientes
+                        </td>
+                    </tr>
+                    <tr style="width: 100%">
+                        <td colspan="2">
+                            <div style="width:1200px; height:450px; overflow:auto;">
+				    <div>
+				    </div>
+                            </div>
+                        </td>
+                    </tr>
+	            </tbody>
+            </table>
+
         </ContentTemplate>
     </asp:UpdatePanel>
 
