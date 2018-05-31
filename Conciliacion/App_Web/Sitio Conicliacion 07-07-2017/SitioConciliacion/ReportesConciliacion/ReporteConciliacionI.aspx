@@ -1100,6 +1100,7 @@
 
 
 	<asp:HiddenField runat="server" ID="hdfBusquedaFactura" />
+	<asp:HiddenField runat="server" ID="hdfFacturaSaldoAFavor" value="0"/>
     <asp:ModalPopupExtender ID="mpeBusquedaFactura" runat="server" PopupControlID="pnlBusquedaFactura"
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
@@ -1281,8 +1282,8 @@
                     <tr>
                         <td class="centradoMedio">
                             <asp:Button ID="btnConciliarFACT" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
-                                OnClientClick="HideModalPopupFacturasPedido();" OnClick="btnConciliarFACT_Click"
-                                Text="CONCILIAR" Width="100px" />
+                                OnClick="btnConciliarFACT_Click"
+                                Text="CONCILIAR" Width="100px" /> <%--OnClientClick="HideModalPopupFacturasPedido();" --%>
                             <asp:Button ID="btnSalir" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
                                 OnClick="btnSalir_Click" 
                                 OnClientClick="HideModalPopupFacturasPedido();"
