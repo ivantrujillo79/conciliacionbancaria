@@ -1100,7 +1100,7 @@
 
 
 	<asp:HiddenField runat="server" ID="hdfBusquedaFactura" />
-	<asp:HiddenField runat="server" ID="hdfFacturaSaldoAFavor" value="0"/>
+	<asp:HiddenField runat="server" ID="hdfTotalFacturas" value="0"/>
     <asp:ModalPopupExtender ID="mpeBusquedaFactura" runat="server" PopupControlID="pnlBusquedaFactura"
         TargetControlID="hdfBusquedaFactura" BehaviorID="ModalBehaviourBusquedaFactura" BackgroundCssClass="ModalBackground">
     </asp:ModalPopupExtender>
