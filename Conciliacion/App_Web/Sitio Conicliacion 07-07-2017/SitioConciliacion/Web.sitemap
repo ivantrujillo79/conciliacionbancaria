@@ -93,6 +93,8 @@
         </siteMapNode>
         <siteMapNode title="Estado de cuenta conciliados" description="Reporte estado de cuenta conciliados" resourceKey="30" url="~/ReportesConciliacion/ReporteEstadoCuentaConciliados.aspx">
         </siteMapNode>
+        <siteMapNode title="Saldos de Anticipos de Clientes" description="Saldos de Anticipos de Clientes" resourceKey="30" url="~/ReportesConciliacion/ReporteSaldoAnticiposxCliente.aspx">
+        </siteMapNode>
       </siteMapNode>
       
     </siteMapNode>
