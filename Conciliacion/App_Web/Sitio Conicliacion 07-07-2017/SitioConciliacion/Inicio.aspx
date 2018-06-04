@@ -9,6 +9,11 @@
     <script src="App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="App_Scripts/Common.js" type="text/javascript"></script>
+    
+    <script src="<%= Page.ResolveClientUrl("~/App_Scripts/popper.js-1.12.5/popper.min.js") %>" type="text/javascript"></script>
+    <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/css/bootstrap.min.css") %>" />
+    <script src="<%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/js/bootstrap.min.js") %>" type="text/javascript"></script>
+
     <link href="App_Scripts/MenuContextual/css/Estilo.css" rel="stylesheet" type="text/css" />
     <!--  MenuContextual -->
     <script type="text/javascript">
