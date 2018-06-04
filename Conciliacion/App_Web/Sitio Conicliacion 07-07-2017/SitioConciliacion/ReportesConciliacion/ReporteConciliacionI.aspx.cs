@@ -2164,7 +2164,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         int iCliente = 0;
         
         SaldoAFavor obSaldoAFavor = Conciliacion.RunTime.App.SaldoAFavor.CrearObjeto();
-        //facturas = ObtenerFacturasSeleccionadas();
         
         int.TryParse(hdfClienteBuscar.Value, out iCliente);
         if (iCliente <= 0) return false;
@@ -2173,7 +2172,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         obSaldoAFavor.FolioMovimiento           = -1;      // Se genera un consecutivo automáticamente
         obSaldoAFavor.AñoMovimiento             = DateTime.Now.Year;
         obSaldoAFavor.TipoMovimientoAConciliar  = TIPOMOVIMIENTO;
-        //obSaldoAFavor.Factura                   = iFactura;
         obSaldoAFavor.Factura                   = 0;
         obSaldoAFavor.Monto                     = monto;
         obSaldoAFavor.StatusMovimiento          = "REGISTRADO";
@@ -2286,11 +2284,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     protected void btnConciliarFACT_Click(object sender, EventArgs e)
     {
-        decimal saldoAFavor = 0M;
+        decimal montoFacturas = 0M;
         bool conciliacionFactura = false;
         bool registraConciliacion = false;
         bool registraPagoAnticipado = false;
-        const string ERROR_CONCILIACION = "Ocurrió un error conciliando la factura. Comuníquese con el área de sistemas.";
+        const string ERROR_CONCILIACION = "Ocurrió un error conciliando la(s) factura(s). Comuníquese con el área de sistemas.";
         Conexion conexion = new Conexion();
         try
         {
@@ -2305,7 +2303,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
                 rnc.BorrarReferenciaConciliada();
 
-                saldoAFavor = Convert.ToDecimal(hdfFacturaSaldoAFavor.Value);
+                montoFacturas = Convert.ToDecimal(hdfTotalFacturas.Value);
 
                 conexion.AbrirConexion(true);
                 conciliacionFactura      = ConciliarFactura(conexion, rnc);
@@ -2313,10 +2311,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 {
                     registraConciliacion = RegistraConciliacionReferencia(conexion, rnc);
 
-                    if (saldoAFavor > 0)
-                        registraPagoAnticipado = RegistraPagoAnticipado(conexion, rnc, saldoAFavor);
-                    else
-                        registraPagoAnticipado = true;
+                    registraPagoAnticipado = RegistraPagoAnticipado(conexion, rnc, montoFacturas);
 
                     if (!conciliacionFactura || !registraConciliacion || !registraPagoAnticipado)
                     {
@@ -2682,11 +2677,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 resultado = totalFacturas <= rncExterno.MontoExterno;
                 if (resultado)
                 {
-                    hdfFacturaSaldoAFavor.Value = (rncExterno.MontoExterno - totalFacturas).ToString();
+                    hdfTotalFacturas.Value = totalFacturas.ToString();
                 }
                 else
                 {
-                    hdfFacturaSaldoAFavor.Value = "0";
+                    hdfTotalFacturas.Value = "0";
                 }
             }
         }
