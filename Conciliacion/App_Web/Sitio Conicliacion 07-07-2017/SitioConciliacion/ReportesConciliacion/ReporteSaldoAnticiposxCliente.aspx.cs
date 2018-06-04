@@ -32,6 +32,13 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
         bool resultado = true;
         StringBuilder mensaje = new StringBuilder();
 
+        if (txtClienteID.Text.Trim() == string.Empty)
+            txtClienteID.Text = "0";
+        if (ddlTodos.Text == "No" && int.Parse(txtClienteID.Text.Trim()) == 0)
+        {
+            mensaje.Append("el cliente capturado o seleccione Todos");
+            resultado = false;
+        }
         if (String.IsNullOrEmpty(txtFInicio.Text))
         {
             mensaje.Append("la Fecha Inicial");
@@ -74,8 +81,8 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                 AppSettingsReader settings = new AppSettingsReader();
 
                 //Leer Variables URL 
-                DateTime fInicial = Convert.ToDateTime(txtFInicio.Text); //Convert.ToDateTime("01/01/2000");
-                DateTime fFinal = Convert.ToDateTime(txtFFInal.Text); //Convert.ToDateTime("01/01/2018");
+                DateTime fInicial = Convert.ToDateTime(txtFInicio.Text); 
+                DateTime fFinal = Convert.ToDateTime(txtFFInal.Text); 
                 Boolean Todos = ddlTodos.SelectedIndex == 0; //todos los clientes
                 int ClienteID = Convert.ToInt32(txtClienteID.Text);
 
@@ -96,13 +103,22 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
 
                     Par.Add("@Cliente=" + ClienteID.ToString());
                     Par.Add("@FechaIni=" + fInicial.ToShortDateString());
-                    Par.Add("@FechaFin=" + fInicial.ToShortDateString());
+                    Par.Add("@FechaFin=" + fFinal.ToShortDateString());
                     Par.Add("@Todos=" + Todos.ToString());
 
-                    ClaseReporte reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
+                    StringBuilder strInfoParam = new StringBuilder();
+                    strInfoParam.Append("Periodo: ");
+                    strInfoParam.Append(fInicial.ToShortDateString());
+                    strInfoParam.Append(" a ");
+                    strInfoParam.Append(fFinal.ToShortDateString());
+                    if (Todos)
+                        strInfoParam.Append(" | Clientes: Todos");
+                    else
+                        strInfoParam.Append(" | Cliente: " + ClienteID.ToString());
+
+                    ClaseReporte reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW, strInfoParam.ToString());
                     HttpContext.Current.Session["RepDoc"] = reporte.RepDoc;
                     HttpContext.Current.Session["ParametrosReporte"] = Par;
-                    //Nueva_Ventana("../Reporte/Reporte.aspx", "Carta", 0, 0, 0, 0);
 
                     StringBuilder sbScript = new StringBuilder();
                     sbScript.Append("<script language='javascript'>");
@@ -113,7 +129,6 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                     sbScript.Append("/script>");
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "@@@@MyPopUpScript", sbScript.ToString(), false);
 
-                    //reporte = null;
                 }
                 catch (Exception ex)
                 {
