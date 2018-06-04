@@ -15,13 +15,30 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
+        try
         {
-            InicializarBancos();
-            InicializaEstatusConcepto();
+            if (!IsPostBack)
+            {
+                InicializarCampos();
+            }
+        }
+        catch(Exception ex)
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "ErrorMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
 
+    private void InicializarCampos()
+    {
+        InicializarBancos();
+        InicializaEstatusConcepto();
+
+        if (DrpBancos.SelectedItem != null)
+        {
+            InicializarCuentas(Convert.ToInt32(DrpBancos.SelectedValue),
+                               DrpBancos.SelectedItem.Text);
+        }
+    }
 
     /// <summary>
     /// 
