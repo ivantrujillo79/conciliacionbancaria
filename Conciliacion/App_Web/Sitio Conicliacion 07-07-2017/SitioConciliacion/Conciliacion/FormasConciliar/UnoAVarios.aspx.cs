@@ -785,12 +785,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if (obSolicitud.ConsultaPedido() && comisionesEDENRED == 1)
         {
             chkComision.Visible =
-                txtComision.Visible = true;
+                txtComision.Visible = 
+                tdSeccionComision.Visible = true;
         }
         else
         {
             chkComision.Visible = 
-                txtComision.Visible = false;
+                txtComision.Visible =
+                tdSeccionComision.Visible = false;
         }
     }
 

@@ -152,6 +152,18 @@
             
         }
 
+        function MostrarTxtComision() {
+            if ($('#<%= hfTxtComisionVisible.ClientID %>').val() == "0") {
+                $('#<%= hfTxtComisionVisible.ClientID %>').val('1');
+                $('#<%= txtComision.ClientID %>').show(250);
+
+            }
+            else {
+                $('#<%= hfTxtComisionVisible.ClientID %>').val('0');
+                $('#<%= txtComision.ClientID %>').hide(250);
+            }
+        }
+
         //Funcion para mostrar el calendar
         function datapicker_modal(fDiaMin, fMesMin, fAñoMin, fDiaMax, fMesMax, fAñoMax) {
             var cadenaMin = fDiaMin+'/'+fMesMin+'/'+fAñoMin;
@@ -1492,13 +1504,16 @@
                             </div>
                             <table style="width: 100%">
                                 <tr>
-                                    <td class="centradoIzquierda" style="width:1%; white-space:nowrap;">
+                                    <td id="tdSeccionComision" style="width:1%; white-space:nowrap; height:27px;"
+                                        runat="server" class="centradoIzquierda">
                                         <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
-                                            style="margin-left:3px;" Visible="false"/>
+                                            style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"/>
                                     </td>
                                     <td class="centradoIzquierda" style="width:1%;">
-                                        <asp:TextBox ID="txtComision" runat="server" Width="80px" CssClass="cajaTextoPequeño"
-                                            style="margin-left:3px;" />
+                                        <asp:TextBox ID="txtComision" runat="server" Width="80px" CssClass="cajaTextoPequeño" 
+                                            style="margin-left:3px; display:none;" 
+                                            onkeypress="return ValidNumDecimal(event);" />
+                                        <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
                                     </td>
                                     <!-- Llenar espacio -->
                                     <td></td>
