@@ -243,6 +243,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 activarVerPendientesCanceladosInternos(true);
 
                 HabilitarBusquedaPedidos(objSolicitdConciliacion);
+                HabilitarComisiones(objSolicitdConciliacion);
 
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
                 Carga_StatusConcepto(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
@@ -771,6 +772,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ddlBusquedaPedidos.DataTextField = "Value";
         ddlBusquedaPedidos.DataBind();
         ddlBusquedaPedidos.Dispose();
+    }
+
+    /// <summary>
+    /// Habilita el textbox para ingresar comisiones si el valor del parámetro 
+    /// ComisionesEDENRED es igual a 1 y si se están consultado pedidos.
+    /// </summary>
+    private void HabilitarComisiones(SolicitudConciliacion obSolicitud)
+    {
+        byte comisionesEDENRED = Convert.ToByte(parametros.ValorParametro(30, "ComisionesEDENRED"));
+
+        if (obSolicitud.ConsultaPedido() && comisionesEDENRED == 1)
+        {
+            chkComision.Visible =
+                txtComision.Visible = true;
+        }
+        else
+        {
+            chkComision.Visible = 
+                txtComision.Visible = false;
+        }
     }
 
     //Cargar InfoConciliacion Actual

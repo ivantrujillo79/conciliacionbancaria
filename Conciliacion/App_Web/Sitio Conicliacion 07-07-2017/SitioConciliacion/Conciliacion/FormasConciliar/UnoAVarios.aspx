@@ -1464,35 +1464,48 @@
                                             <td style="width: 25%;">
                                                 <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
                                             </td>
-                                            <td style="width: 10%;">
+                                            <td style="width: 1%;">
                                                 <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
                                                     Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                    ToolTip="FILTRAR cliente" Width="25px"
+                                                    ToolTip="Buscar cliente" Width="25px"
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
-                                            <td style="width: 25%;">
-                                                <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
+                                            <td class="centradoIzquierda" style="width: 10%;">
+                                                <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco"></asp:Label>
                                             </td>
-                                            <td style="width: 25%;">
+                                            <td class="centradoIzquierda" style="width: 10%;">
                                                 <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
                                             </td>
-                                            <td style="width: 10%;">
+                                            <td class="centradoIzquierda" style="width: 10%;">
                                                 <asp:ImageButton ID="btnFiltraPedidoReferencia" runat="server" CssClass="icono bg-color-verdeClaro"
                                                     Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                    ToolTip="FILTRAR cliente" Width="25px"
-                                                    OnClick="btnFiltraPedidoReferencia_Click"
-                                                    />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
+                                                    ToolTip="Buscar pedido referencia" Width="25px"
+                                                    OnClick="btnFiltraPedidoReferencia_Click" />
                                             </td>
                                             <td></td>
-                                       </tr>
+                                        </tr>
                                     </table>		
                                     </ContentTemplate>
                             </asp:UpdatePanel>
+
+                            <div class="lineaHorizontal">
+                            </div>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td class="centradoIzquierda" style="width:1%; white-space:nowrap;">
+                                        <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
+                                            style="margin-left:3px;" Visible="false"/>
+                                    </td>
+                                    <td class="centradoIzquierda" style="width:1%;">
+                                        <asp:TextBox ID="txtComision" runat="server" Width="80px" CssClass="cajaTextoPequeño"
+                                            style="margin-left:3px;" />
+                                    </td>
+                                    <!-- Llenar espacio -->
+                                    <td></td>
+                                </tr>
+                            </table>
                         </div>
+                        
 
                         <div id="seccionFiltrosSaldoAFavor" style="display:none; padding:3px;" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
                             <table style="width: 100%;" >
