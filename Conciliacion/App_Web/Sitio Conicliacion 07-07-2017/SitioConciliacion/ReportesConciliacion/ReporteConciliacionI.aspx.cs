@@ -2294,11 +2294,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             if (grvPedidosFacturados.Rows.Count > 0)
             {
-                if (!VerificarTotalFacturas())
+                if (!VerificarTotalFacturas() && hdfStatusConcepto.Value == "28")
                 {
-                    throw new Exception("El total de la(s) factura(s) debe ser menor o igual al desposito");
+                    throw new Exception("El total de la(s) factura(s) debe ser igual al monto del desposito");
                 }
-                
+
                 //if (!RecuperarReferencias_wucCargaExcel()) return;
                 ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
                 rnc.BorrarReferenciaConciliada();
@@ -2306,11 +2306,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 montoFacturas = Convert.ToDecimal(hdfTotalFacturas.Value);
 
                 conexion.AbrirConexion(true);
-                conciliacionFactura      = ConciliarFactura(conexion, rnc);
+                conciliacionFactura = ConciliarFactura(conexion, rnc);
                 if (hdfStatusConcepto.Value == "28")
                 {
                     registraConciliacion = RegistraConciliacionReferencia(conexion, rnc);
-
                     registraPagoAnticipado = RegistraPagoAnticipado(conexion, rnc, montoFacturas);
 
                     if (!conciliacionFactura || !registraConciliacion || !registraPagoAnticipado)
@@ -2318,15 +2317,16 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                         throw new Exception(ERROR_CONCILIACION);
                     }
                 }
-                //mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
-                //popUpConciliarMovPedido.Hide(); popUpConciliarMovPedido.Dispose();
+
                 if (!conciliacionFactura)
                 {
                     throw new Exception(ERROR_CONCILIACION);
                 }
 
                 conexion.CommitTransaction();
-                App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
+
+                mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
+                popUpConciliarMovPedido.Hide(); popUpConciliarMovPedido.Dispose();
 
                 //      Recargar la Vista con los datos
                 if (FiltroCorrecto())
@@ -2343,6 +2343,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     GenerarTablaConciliacionCompartida();
                     LlenaGridViewConciliacionCompartida();
                 }
+
+                App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
             }
             else
             {
@@ -2647,8 +2649,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     }
 
     /// <summary>
-    /// Verifíca que el monto de las facturas seleccionadas sea menor
-    /// o igual al monto del externo. En caso contrario regresa falso
+    /// Verifíca que el monto de las facturas seleccionadas sea igual 
+    /// al monto del externo. En caso contrario regresa falso
     /// </summary>
     /// <returns></returns>
     private bool VerificarTotalFacturas()
@@ -2674,7 +2676,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             if (rncExterno != null)
             {
-                resultado = totalFacturas <= rncExterno.MontoExterno;
+                resultado = totalFacturas == rncExterno.MontoExterno;
                 if (resultado)
                 {
                     hdfTotalFacturas.Value = totalFacturas.ToString();
