@@ -77,7 +77,7 @@
                                     Cliente
                                 </td>
                                 <td class="lineaVertical" style="width: 10%">
-                                    Todos Los Clientes
+                                    Clientes con Saldo
                                 </td>
                                 <td class="lineaVertical" style="width: 15%">
                                     Fecha Inicial
@@ -93,9 +93,10 @@
                                     <asp:TextBox ID="txtClienteID" runat="server" onkeypress="return ValidNum(event)" CssClass="cajaTexto" Font-Size="10px" Width="90%"></asp:TextBox>
                                 </td>
                                 <td class="lineaVertical" style="width: 10%">
-                                    <asp:DropDownList ID="ddlTodos" runat="server" Width="90%" CssClass="etiqueta dropDownPequeño" AutoPostBack="True">
-                                        <asp:ListItem Selected="True" Value="Si">Si</asp:ListItem>
-                                        <asp:ListItem Value="No">No</asp:ListItem>
+                                    <asp:DropDownList ID="ddlClientesConSaldo" runat="server" Width="90%" CssClass="etiqueta dropDownPequeño" AutoPostBack="True">
+                                        <asp:ListItem Selected="True" Value="SI">SI</asp:ListItem>
+                                        <asp:ListItem Value="NO">NO</asp:ListItem>
+                                        <asp:ListItem Value="TODOS">TODOS</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
                                 <td class="lineaVertical" style="width: 15%">

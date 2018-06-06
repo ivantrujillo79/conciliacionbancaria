@@ -34,11 +34,6 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
 
         if (txtClienteID.Text.Trim() == string.Empty)
             txtClienteID.Text = "0";
-        if (ddlTodos.Text == "No" && int.Parse(txtClienteID.Text.Trim()) == 0)
-        {
-            mensaje.Append("el cliente capturado o seleccione Todos");
-            resultado = false;
-        }
         if (String.IsNullOrEmpty(txtFInicio.Text))
         {
             mensaje.Append("la Fecha Inicial");
@@ -65,14 +60,6 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
         {
             try
             {
-                if (String.IsNullOrEmpty(txtClienteID.Text))
-                {
-                    ddlTodos.SelectedIndex = 0; //Si es todos los clientes
-                }
-                if (ddlTodos.SelectedIndex == 0)
-                {
-                    txtClienteID.Text = "";
-                }
                 if (txtClienteID.Text.Trim() == string.Empty)
                 {
                     txtClienteID.Text = "0";
@@ -83,7 +70,6 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                 //Leer Variables URL 
                 DateTime fInicial = Convert.ToDateTime(txtFInicio.Text); 
                 DateTime fFinal = Convert.ToDateTime(txtFFInal.Text); 
-                Boolean Todos = ddlTodos.SelectedIndex == 0; //todos los clientes
                 int ClienteID = Convert.ToInt32(txtClienteID.Text);
 
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -104,14 +90,14 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                     Par.Add("@Cliente=" + ClienteID.ToString());
                     Par.Add("@FechaIni=" + fInicial.ToShortDateString());
                     Par.Add("@FechaFin=" + fFinal.ToShortDateString());
-                    Par.Add("@Todos=" + Todos.ToString());
+                    Par.Add("@Todos='" + ddlClientesConSaldo.Text +"'");
 
                     StringBuilder strInfoParam = new StringBuilder();
                     strInfoParam.Append("Periodo: ");
                     strInfoParam.Append(fInicial.ToShortDateString());
                     strInfoParam.Append(" a ");
                     strInfoParam.Append(fFinal.ToShortDateString());
-                    if (Todos)
+                    if (ClienteID == 0)
                         strInfoParam.Append(" | Clientes: Todos");
                     else
                         strInfoParam.Append(" | Cliente: " + ClienteID.ToString());
