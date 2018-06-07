@@ -133,7 +133,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             string controlId;
             Control foundControl;
 
-
             foreach (string ctl in page.Request.Form)
             {
                 // Manejo especial de los ImageButton
@@ -190,7 +189,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
 
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
-
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
@@ -217,6 +215,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+                ConsultarImpuestoEDENRED();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -796,6 +796,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    /// <summary>
+    /// Consulta el valor de parámetro ImpuestoEDENRED y lo guarda en una 
+    /// variable de sesión
+    /// </summary>
+    private void ConsultarImpuestoEDENRED()
+    {
+        string impuesto = parametros.ValorParametro(30, "ImpuestoEDENRED");
+        HttpContext.Current.Session["ImpuestoEDENRED"] = string.IsNullOrEmpty(impuesto) ? 0m : Convert.ToDecimal(impuesto);
+    }
+
     //Cargar InfoConciliacion Actual
     public void cargarInfoConciliacionActual()
     {
@@ -836,6 +846,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = null;
         HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = null;
         HttpContext.Current.Session["EXTERNO_SELECCIONADO"] = null;
+        HttpContext.Current.Session["ImpuestoEDENRED"] = null;
 
         HttpContext.Current.Session.Remove("StatusFiltro");
         HttpContext.Current.Session.Remove("TipoFiltro");
@@ -855,6 +866,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario");
         HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario_AX");
         HttpContext.Current.Session.Remove("EXTERNO_SELECCIONADO");
+        HttpContext.Current.Session.Remove("ImpuestoEDENRED");
 
     }
     //Cargar Rango DiasMaximo-Minimio-Default
@@ -1961,6 +1973,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
                         int clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno);
+
+                        AgregarComisionAExterno(rfExterno);
 
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
@@ -6526,4 +6540,54 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         mpeClienteDatosBancarios.Hide();
     }
+
+    /// <summary>
+    /// Asigna las propiedades ImporteComision e IVAComision a cada una de las referencias
+    /// agregadas al externo
+    /// </summary>
+    /// <param name="rncExterno"></param>
+    private void AgregarComisionAExterno(ReferenciaNoConciliada rncExterno)
+    {
+        decimal impuesto, monto, IVA;
+        if (!chkComision.Checked || !ValidarComision())
+        {
+            return;
+        }
+        else
+        {
+            if (rncExterno.ListaReferenciaConciliada.Count > 0)
+            {
+                impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
+                monto       = Convert.ToDecimal(txtComision.Text);
+                IVA         = impuesto * monto;
+
+                rncExterno.ListaReferenciaConciliada.ForEach(x => { x.ImporteComision = monto; x.IVAComision = IVA; });                
+            }
+        }
+    }
+
+    private bool ValidarComision()
+    {
+        bool resultado = false;
+        try
+        {
+            decimal monto       = Convert.ToDecimal(txtComision.Text);
+            decimal impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
+            if (impuesto <= 0)
+            {
+                throw new Exception("No se ha configurado el parámetro ImpuestoEDENRED en la base de datos.");
+            }
+            resultado = true;
+        }
+        catch (FormatException)
+        {
+            throw new Exception("Introduzca una comisión válida.");
+        }
+        catch (OverflowException)
+        {
+            throw new Exception("Introduzca una comisión válida.");
+        }
+        return resultado;
+    }
+
 }
