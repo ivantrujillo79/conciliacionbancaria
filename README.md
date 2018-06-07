@@ -17,11 +17,13 @@ https://www.microsoft.com/es-es/download/details.aspx?id=23734
 - Si usan visual studio 2017 y 2015 (no importa la edición) descargar el archivo de la siguiente URL
 http://downloads.businessobjects.com/akdlm/cr4vs2010/CRforVS_13_0_21.exe
 
+#### Resolución de problemas con Crystal reports
+https://www.tektutorialshub.com/how-to-download-and-install-crystal-report-runtime/
+
 - Si necesitan el de alguna otra versión de Visual studio referirse a la siguiente página web
 https://wiki.scn.sap.com/wiki/display/BOBJ/Crystal+Reports%2C+Developer+for+Visual+Studio+Downloads
 
-#### Resolución de problemas con Crystal reports
-https://www.tektutorialshub.com/how-to-download-and-install-crystal-report-runtime/
+
 
 - **Reiniciar el equipo**
 - Abrir el proyecto o solución con Visual Studio en la que se encuentre el reporte que desean editar mismo que deberá mostrarse con el ícono de cristal reports como se muestra a continuación
