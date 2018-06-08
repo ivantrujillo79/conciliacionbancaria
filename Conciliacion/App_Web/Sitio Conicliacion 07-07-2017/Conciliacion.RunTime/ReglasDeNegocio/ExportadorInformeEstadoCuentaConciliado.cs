@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
-using Excel = Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 using DetalleReporteEstadoCuentaConciliado = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado;
 using System.IO;
 using System.Globalization;
@@ -233,9 +233,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             //if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
 
-            xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
+            /*xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
                             false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,
-                            Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                            Type.Missing, Type.Missing, Type.Missing, Type.Missing);*/
 
             xlLibro.Close(0);
             xlLibros.Close();
