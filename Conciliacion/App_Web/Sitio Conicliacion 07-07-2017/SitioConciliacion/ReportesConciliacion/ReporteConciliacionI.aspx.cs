@@ -2060,7 +2060,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                         bool clienteValido = ValidarClientePagoAnticipado(conexion, clienteBuscar);
 
                         if (!clienteValido)
-                            throw new Exception("El cliente indicado no existe en la relación de pagos anticipados.");
+                            throw new Exception("El cliente indicado no existe en la relación de pagos " +
+                                                "anticipados o se encuentra inactivo.");
                     }
 
                     BuscarPedidosClientes();

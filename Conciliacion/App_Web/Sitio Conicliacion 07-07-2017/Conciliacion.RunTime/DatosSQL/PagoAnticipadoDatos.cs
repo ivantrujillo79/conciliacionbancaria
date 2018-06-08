@@ -76,19 +76,9 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
                 _conexion.Comando.CommandText = "spCBValidaClientePagoAnticipado";
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroCliente", System.Data.SqlDbType.BigInt)).Value = NumeroCliente;
-
-                SqlDataReader reader = _conexion.Comando.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        resultado = Convert.ToInt16(reader["VALIDO"]) == 1;
-                        break;
-                    }
-                    reader.Close();
-                }
-
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.BigInt)).Value = NumeroCliente;
+                
+                resultado = (bool)_conexion.Comando.ExecuteScalar();
             }
             catch (Exception ex)
             {
