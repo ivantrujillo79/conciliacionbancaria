@@ -53,6 +53,7 @@
         function pageLoad() {
             activarDatePickers();
             MuestraSaldoAFavor();
+            MostrarTxtComisionInicio();
         }
 
         function btnAgregarPedidoConciliacion(grid, fila){
@@ -150,6 +151,15 @@
                 $('#btnMuestraSaldoAFavor').html('Mostrar');
             }
             
+        }
+
+        /**
+         * Muestra el TextBox una vez que se oculta después del Postback
+         */
+        function MostrarTxtComisionInicio() {
+            if ($('#<%= hfTxtComisionVisible.ClientID %>').val() == "1") {
+                $('#<%= txtComision.ClientID %>').show();
+            }
         }
 
         function MostrarTxtComision() {
