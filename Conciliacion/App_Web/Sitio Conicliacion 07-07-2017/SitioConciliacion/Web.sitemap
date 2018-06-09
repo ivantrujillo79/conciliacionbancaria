@@ -95,6 +95,8 @@
         </siteMapNode>
         <siteMapNode title="Saldos de Anticipos de Clientes" description="Saldos de Anticipos de Clientes" resourceKey="30" url="~/ReportesConciliacion/ReporteSaldoAnticiposxCliente.aspx">
         </siteMapNode>
+        <siteMapNode title="Internos Conciliar Futuro" description="Internos Conciliar Futuro" resourceKey="30" url="~/ReportesConciliacion/ReporteEstadoCuenta.aspx?Reporte=4">
+        </siteMapNode>
       </siteMapNode>
       
     </siteMapNode>

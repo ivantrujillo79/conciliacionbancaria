@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static Conciliacion.RunTime.DatosSQL.ExportadorInformeInternosAFuturoDatos;
 using static Conciliacion.RunTime.DatosSQL.InformeBancarioDatos;
 using static Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleCuentaBanco;
 
@@ -68,6 +69,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         
         //public abstract List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto);
         public abstract List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, byte Caja);
-        
+
+        public List<DetalleInformeInternosAFuturo> consultaconsultaInformeInternosAFuturo(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+        {
+            List<DetalleInformeInternosAFuturo> ListaResultado;
+            DetalleInformeInternosAFuturo objDatos = new DetalleInformeInternosAFuturo();
+            ListaResultado = objDatos.consultaInformeInternosAFuturo(_conexion, FechaIni, FechaFin, Banco, CuentaBanco);
+            return ListaResultado;
+        }
+
     }
 }

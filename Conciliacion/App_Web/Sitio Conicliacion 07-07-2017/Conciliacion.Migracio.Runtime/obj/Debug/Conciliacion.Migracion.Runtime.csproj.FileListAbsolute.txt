@@ -134,3 +134,16 @@ C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Siti
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csproj.CopyComplete
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\EPPlus.dll
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\EPPlus.xml
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.dll
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\SeguridadCB.dll
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\EPPlus.dll
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.pdb
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\SeguridadCB.pdb
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\EPPlus.xml
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csprojAssemblyReference.cache
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csproj.CoreCompileInputs.cache
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csproj.CopyComplete
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb
