@@ -180,6 +180,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract DetalleClientePedidoExcel ObtieneDetalleClientePedidoExcel(string PedidoReferencia, Conexion _conexion);
 
+        public abstract string CargaURLGateway();
+
+        public abstract string consultaClienteCRM(int cliente);
+
     }//end Cliente
 
 

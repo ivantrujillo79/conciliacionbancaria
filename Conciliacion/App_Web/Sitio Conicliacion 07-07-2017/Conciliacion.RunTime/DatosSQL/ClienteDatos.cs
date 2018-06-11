@@ -7,11 +7,17 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Data.SqlTypes;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
     public class ClienteDatos : Cliente
     {
+        private string _URLGateway = "";
+        private short GLOBAL_Modulo = 4;
+        private short GLOBAL_Empresa;
+        private short GLOBAL_Sucursal;
+
         public ClienteDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
@@ -176,19 +182,76 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override string CargaURLGateway()
+        {
+            string url = "";
+            SigaMetClasses.cConfig oConfig = new SigaMetClasses.cConfig(GLOBAL_Modulo, GLOBAL_Empresa, GLOBAL_Sucursal);
+            try
+            {
+                url = oConfig.Parametros["URLGateway"].ToString();
+                Regex re = new Regex(
+                                "^(https?|ftp|file)://[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|]",
+                                RegexOptions.IgnoreCase);
+                Match m = re.Match(_URLGateway);
+                if (m.Captures.Count == 0)
+                {
+                    throw new Exception("El valor configurado al parámetro URLGateway no es correcto.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _URLGateway = "";
+            }
+            return url;
+        }
+
+        public override string consultaClienteCRM(int cliente)
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+
+            try
+            {
+                if (_URLGateway != string.Empty) 
+                {
+                    Gateway = new RTGMGateway.RTGMGateway();
+                    Gateway.URLServicio = _URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                    Solicitud.IDCliente = cliente;
+                    Solicitud.IDEmpresa = 0;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+            }
+            catch (Exception ex)
+            { 
+                throw ex;
+            }
+            return DireccionEntrega.Nombre.Trim();
+        }
+
         public override DataTable ObtienePedidosCliente(int Cliente, Conexion _conexion)
         {
             DataTable dtRetorno = new DataTable();
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";//"spCBPedidosSeparadosCliente";
+                _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";
 
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value = Cliente;
 
                 SqlDataAdapter Dap = new SqlDataAdapter(_conexion.Comando);
                 Dap.Fill(dtRetorno);
+
+                dtRetorno.Columns.Add("ClienteNombre",typeof(String));
+                if (_URLGateway != string.Empty)
+                    foreach (DataRow fila in dtRetorno.Rows)
+                    {
+                        fila["ClienteNombre"] = consultaClienteCRM( int.Parse( fila[0].ToString() ));
+                    }
+
             }
             catch (Exception Ex)
             {
