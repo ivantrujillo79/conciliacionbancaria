@@ -785,14 +785,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if (obSolicitud.ConsultaPedido() && comisionesEDENRED == 1)
         {
             chkComision.Visible =
-                txtComision.Visible = 
-                tdSeccionComision.Visible = true;
+                txtComision.Visible = true;
         }
         else
         {
-            chkComision.Visible = 
-                txtComision.Visible =
-                tdSeccionComision.Visible = false;
+            chkComision.Visible =
+                txtComision.Visible = false;
         }
     }
 
@@ -6548,7 +6546,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// <param name="rncExterno"></param>
     private void AgregarComisionAExterno(ReferenciaNoConciliada rncExterno)
     {
-        decimal impuesto, monto, IVA;
+        decimal impuesto, comision, IVA, importe;
+
         if (!chkComision.Checked || !ValidarComision())
         {
             return;
@@ -6558,10 +6557,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (rncExterno.ListaReferenciaConciliada.Count > 0)
             {
                 impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
-                monto       = Convert.ToDecimal(txtComision.Text);
-                IVA         = impuesto * monto;
+                comision    = Convert.ToDecimal(txtComision.Text);
 
-                rncExterno.ListaReferenciaConciliada.ForEach(x => { x.ImporteComision = monto; x.IVAComision = IVA; });                
+                importe     = comision / impuesto;
+                IVA         = comision - importe;
+
+                rncExterno.ListaReferenciaConciliada.ForEach(x => { x.ImporteComision = importe; x.IVAComision = IVA; });                
             }
         }
     }

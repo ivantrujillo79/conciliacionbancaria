@@ -1492,43 +1492,36 @@
                                                     ToolTip="Buscar cliente" Width="25px"
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
-                                            <td class="centradoIzquierda" style="width: 10%;">
+                                            <td class="centradoIzquierda" style="width: 1%; padding-left:3px">
                                                 <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco"></asp:Label>
                                             </td>
-                                            <td class="centradoIzquierda" style="width: 10%;">
-                                                <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
+                                            <td class="centradoIzquierda" style="width: 1%;">
+                                                <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="70px" CssClass="cajaTextoPequeño"></asp:TextBox>
                                             </td>
-                                            <td class="centradoIzquierda" style="width: 10%;">
+                                            <td class="centradoIzquierda" style="width: 1%;">
                                                 <asp:ImageButton ID="btnFiltraPedidoReferencia" runat="server" CssClass="icono bg-color-verdeClaro"
                                                     Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                     ToolTip="Buscar pedido referencia" Width="25px"
                                                     OnClick="btnFiltraPedidoReferencia_Click" />
                                             </td>
+                                            <%--    Comisiones  --%>
+                                            <td style="width:1%; white-space:nowrap; height:27px; padding-left:1px"
+                                                runat="server" class="centradoIzquierda">
+                                                <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
+                                                    style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"/>
+                                            </td>
+                                            <td class="centradoIzquierda" style="width:1%;">
+                                                <asp:TextBox ID="txtComision" runat="server" Width="70px" CssClass="cajaTextoPequeño" 
+                                                    style="margin-left:3px; display:none;" 
+                                                    onkeypress="return ValidNumDecimal(event);" />
+                                                <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
+                                            </td>
+                                            <%--    Fin comisiones  --%>
                                             <td></td>
                                         </tr>
                                     </table>		
-                                    </ContentTemplate>
+                                </ContentTemplate>
                             </asp:UpdatePanel>
-
-                            <div class="lineaHorizontal">
-                            </div>
-                            <table style="width: 100%">
-                                <tr>
-                                    <td id="tdSeccionComision" style="width:1%; white-space:nowrap; height:27px;"
-                                        runat="server" class="centradoIzquierda">
-                                        <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
-                                            style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"/>
-                                    </td>
-                                    <td class="centradoIzquierda" style="width:1%;">
-                                        <asp:TextBox ID="txtComision" runat="server" Width="80px" CssClass="cajaTextoPequeño" 
-                                            style="margin-left:3px; display:none;" 
-                                            onkeypress="return ValidNumDecimal(event);" />
-                                        <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
-                                    </td>
-                                    <!-- Llenar espacio -->
-                                    <td></td>
-                                </tr>
-                            </table>
                         </div>
                         
 
