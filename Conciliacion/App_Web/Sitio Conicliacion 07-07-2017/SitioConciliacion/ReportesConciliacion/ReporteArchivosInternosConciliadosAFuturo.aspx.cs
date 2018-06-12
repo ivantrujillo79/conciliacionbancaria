@@ -12,10 +12,8 @@ using System.Data.SqlClient;
 using SeguridadCB.Public;
 using DetalleReporteEstadoCuentaDia = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaDia;
 using System.IO;
-using DetalleInformeInternosAFuturo = Conciliacion.RunTime.DatosSQL.ExportadorInformeInternosAFuturoDatos.DetalleInformeInternosAFuturo;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
-public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Page
+public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFuturo : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -71,12 +69,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             {
                 if (item.Banco == Banco || (Banco == 0 && item.Banco == 0))
                 {
-                    Cuenta cuenta = new Cuenta(item.ID, item.Descripcion, item.Banco, item.NombreBanco);
+                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco.Trim() + " " + item.Descripcion, item.Banco, item.NombreBanco);
                     ListaCuentasControlUsr.Add(cuenta);
                 }
                 else if (Banco == 0)
                 {
-                    Cuenta cuenta = new Cuenta(item.ID, item.Descripcion, item.Banco, item.NombreBanco);
+                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco.Trim() + " " + item.Descripcion, item.Banco, item.NombreBanco);
                     ListaCuentasControlUsr.Add(cuenta);
                 }
             }
@@ -222,26 +220,28 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             if (Pagina == "4")
             {
                 dtEmpresas = usuario.CorporativoAcceso;
-                string fechaIni = txtFInicial.Text;
-                string fechaFin = txtFFinal.Text;
-                string empresa = usuario.NombreCorporativo;
-
                 try
                 {
-                    var Archivo = "InternosConciliarFuturo" + string.Format("{0:ddMMyyyy}", DateTime.Now) + ".xlsx";
+                    var Archivo = "InternosConciliarFuturo" + string.Format("{0:dd/MM/yyyy}", DateTime.Now) + ".xlsx";
+
+                    
 
                     if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
                         if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
-                                                
-                        foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas)
-                        {
-                            List<List<DetalleInformeInternosAFuturo>> lstDetalle = new List<List<DetalleInformeInternosAFuturo>>();
-                            lstDetalle = consultaInformeInternosAFuturo(cuenta.Descripcion.ToString());
-                            ExportadorInformeInternosAFuturo obExportador = new ExportadorInformeInternosAFuturo(lstDetalle, rutaCompleta, Archivo, cuenta.Descripcion, cuenta.NombreBanco, fechaIni, fechaFin, empresa);
-                            obExportador.generarInforme();
-                        }
 
+                        //ExportadorInformeInternosAFuturo obExportador = new ExportadorInformeInternosAFuturo();
+                        //obExportador.generarInforme(rutaCompleta, Archivo);
+
+
+
+                        //foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas)
+                        //{
+                        //    List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
+                        //    lstDetalle = consultaReporteEstadoCuentaDia(cuenta.ID.ToString());
+                        //    ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle, rutaCompleta, Archivo, cuenta.Descripcion);
+                        //    obExportador.generarInforme();
+                        //}
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                             @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
                     }
@@ -253,9 +253,11 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                         @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                         + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
                 }
+
             }
         }
     }
+
 
     private List<InformeBancarioDatos.DetalleReporteEstadoCuenta> consultaReporteEstadoCuenta(string cuenta)
     {
@@ -298,37 +300,6 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
             lstDetalle = informeBancario.consultaReporteEstadoCuentaPorDia(conexion, fechaInicio, fechaFin, Banco, cuenta);
 
             ListasDetalle = Separat(lstDetalle);
-
-        }
-        catch (Exception ex)
-        {
-            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
-        }
-        finally
-        {
-            conexion.CerrarConexion();
-        }
-        //Se regresa una lista de listas... con las cuentas separadas...
-        return ListasDetalle;
-    }
-
-    private List<List<DetalleInformeInternosAFuturo>> consultaInformeInternosAFuturo(string cuenta)
-    {
-        Conexion conexion = new Conexion();
-        var lstDetalle = new List<ExportadorInformeInternosAFuturoDatos.DetalleInformeInternosAFuturo>();
-        var ListasDetalle = new List<List<DetalleInformeInternosAFuturo>>();
-        string Banco = btnlista.SelectedItem.Text;
-
-        try
-        {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-            DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
-            conexion.AbrirConexion(false);
-            lstDetalle = informeBancario.consultaconsultaInformeInternosAFuturo(conexion, fechaInicio, fechaFin, Banco, cuenta);
-
-            //ListasDetalle = Separat(lstDetalle);
 
         }
         catch (Exception ex)

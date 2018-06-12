@@ -175,6 +175,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             string rutaCompleta = _Ruta + _Archivo;
 
             xlAplicacion = new Microsoft.Office.Interop.Excel.Application();
+            //ExcelPakage excel = new ExcelPakage();
 
             if (xlAplicacion == null)
             {

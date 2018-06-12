@@ -1,9 +1,10 @@
-﻿<%@ Page Title="Reportecuenta" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="ReporteEstadoCuenta.aspx.cs" Inherits="ReportesConciliacion_ReporteEstadoCuenta" %>
+﻿<%@ Page Title="Reportearchivointerno" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="ReporteArchivosInternosConciliadosAFuturo.aspx.cs" Inherits="ReportesConciliacion_ReporteArchivosInternosConciliadosAFuturo" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register src="~/ControlesUsuario/wuCuentasBancarias/WUCListadoCuentasBancarias.ascx" tagname="WUCListadoCuentasBancarias" tagprefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
-    Reporte Estado Cuenta
+    Reporte Archivos Internos Conciliados
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" Runat="Server">
     <!--Libreria jQuery-->
@@ -124,7 +125,7 @@
                 cero = "";
             }
             //debe de agregar el nombre del archivo como debe de quedar
-            // document.getElementById("LigaDescarga").href = "../InformesExcel/PosicionDiariaGM" + cero + mesini + anoini + ".xlsx";            
+            document.getElementById("LigaDescarga").href = "../InformesExcel/InternosConciliacionFuturo" + Date.now + ".xlsx";            
             
             let params = (new URL(document.location)).searchParams;
             let Pagina = params.get("Reporte");
@@ -138,11 +139,6 @@
                 document.getElementById("LigaDescarga").href = "../InformesExcel/EdoCtaDia"+'<%= hdfIniEmpresa.Value %>' + cero + mesini + anoini + ".xlsx";
 
             }
-            if (Pagina == '4') {
-                document.getElementById("LigaDescarga").href = "../InformesExcel/InternosConciliarFuturo" + '<%= DateTime.Now.ToString("ddMMyyyy")%>' + ".xlsx";
-
-            }
-
         }
         
     </script>
@@ -255,7 +251,7 @@
 	            <tbody>
 		            <tr>
                     <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
-                        Estado de Cuenta
+                        Internos Conciliar Futuro
                     </td>
                 </tr>
                 <tr style="width: 100%">

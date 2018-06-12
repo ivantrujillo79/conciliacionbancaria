@@ -1,2 +1,0 @@
-Fecha	Hora	Suc.	Descripción	Cargo	Abono	Saldo	Referencia	Concepto	Referencia Interbancaria
-02/09/2013	13:02	981	AB TRANS ELECT	   	"$26,229.96"	"$85,083.85"	9313247	PAGO GAS	8

@@ -66,14 +66,12 @@
       <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Office.Interop.Excel\15.0.0.0__71e9bce111e9429c\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
-    <Reference Include="OFFICE, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Office, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <HintPath>..\packages\Office.12.0.0\lib\net40\Office.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\office\15.0.0.0__71e9bce111e9429c\OFFICE.DLL</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
@@ -98,6 +96,7 @@
     <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
     <Compile Include="DatosSQL\DetallePagareDatos.cs" />
     <Compile Include="DatosSQL\DispersorPagoDatos.cs" />
+    <Compile Include="DatosSQL\ExportadorInformeInternosAFuturoDatos.cs" />
     <Compile Include="DatosSQL\FacturaManualDatos.cs" />
     <Compile Include="DatosSQL\FacturasComplementoDatos.cs" />
     <Compile Include="DatosSQL\InformeBancarioDatos.cs" />
@@ -129,6 +128,7 @@
     <Compile Include="DatosSQL\TransferenciaBancariasDetalleDatos.cs" />
     <Compile Include="DetalleValidacion.cs" />
     <Compile Include="EmisorMensajes.cs" />
+    <Compile Include="ExportadorInformeInternosAFuturo.cs" />
     <Compile Include="IMensajesImplementacion.cs" />
     <Compile Include="MensajeImplemantacionForm.cs" />
     <Compile Include="MensajeImplementacionConsola.cs" />
@@ -190,17 +190,6 @@
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
