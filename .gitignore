@@ -50,3 +50,82 @@ Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/.vs/SolucionConciliacion/v15/
 Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/.vs/SolucionConciliacion/v15/.suo
 /Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/ControlesUsuario/CargaManualExcelCyC/Excel
 /Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/Archivos/ArchivosTemporales
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/SQL Req 5 Pago con tarjeta de crédito.rar
+SPs Cambios de alcance/Req 12 Busqueda CLABE/spCyCInsertaClienteCuentaBancaria.sql
+SPs Cambios de alcance/Req 12 Busqueda CLABE/spCyCInsertaClienteCuentaBancaria (2).sql
+SPs Cambios de alcance/Req 12 Busqueda CLABE/spCBConsultarCliente.sql
+SPs Cambios de alcance/Req 12 Busqueda CLABE/spCBConsultarCliente (1).sql
+SPs Cambios de alcance/Req 12 Busqueda CLABE/Evidencias pruebas unitarias - Buscador pedidos.docx
+SPs Cambios de alcance/Req 12 Busqueda CLABE/Evidencia cuenta bancaria por cliente.docx
+SPs Cambios de alcance/Anticipos/UPDATE_StatusConcepto.sql
+SPs Cambios de alcance/Anticipos/INSERT_GrupoConciliacionStatusConcepto.sql
+SPs Cambios de alcance/Anticipos/ALTER_spCBInsertaMovimientoAConciliar.sql
+Documentos/~$exo de Mejoras CB Ver 2.6.docx
+Documentos/~$exo de Mejoras CB Ver 2.5.docx
+Documentos/~$exo de Mejoras CB Ver 2.4.docx
+Documentos/~$exo de Mejoras CB Ver 1.9.docx
+Documentos/~$exo de Mejoras CB Ver 1.4.docx
+Documentos/Reporte_IncidenciasCB Ver 2.4.86.xlsx
+Documentos/Pyros Instalacci+on de componentes de acceso a datos.docx
+Documentos/Mejoras al módulo de Conciliación Bancaria para facturación 3.3.xlsx
+Documentos/Mejoras CB Ver 3.9.docx
+Documentos/Mejoras CB Ver 3.7.docx
+Documentos/Anexo de Mejoras CB Ver 1.2.docx
+Documentos/Anexo de Mejoras CB Ver 1.0.docx
+Cuenta.cs.txt
+Conciliacion/App_Web_254.rar
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/InformesExcel/InternosConciliarFuturo12062018.xlsx
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/InformesExcel/EdoCtaCon022018.xlsx
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/Conciliacion/FormasConciliar/BusquedaClienteDatosBancariosDatos.cs
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/.vs/slnx.sqlite
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/.vs/VSWorkspaceState.json
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/SitioConciliacion/.vs/ProjectSettings.json
+Conciliacion/App_Web/Sitio Conicliacion 07-07-2017/.vs/SolucionConciliacion/DesignTimeBuild/.dtbcache
+Clases/PosicionDiariaBanco.cs
+Clases/InformeDatos.cs
+Clases/Informe.cs
+Clases/Clases.zip
+Clases/Clases.rar
+Caja.cs.txt
+Base de datos/SQL (Modificaciones recientes).rar
+Base de datos/02 relacion de cobranza.zip
+propuesta liquidación portátil.docx
+SPs Cambios de alcance/SPS Informes/sp_EdoCuenta_pordia.sql
+SPs Cambios de alcance/SPS Informes/05 spCBReporteEstadoDeCuentaConciliado.sql
+SPs Cambios de alcance/SPS Informes/04 spCBCargaComboStatusConcepto.sql
+SPs Cambios de alcance/SPS Informes/02 spCBConsultaBancoReportes.sql
+SPs Cambios de alcance/Req. 8 Pago en exceso Metropolitano/spCBConsultarMovimientoAConciliar.sql
+SPs Cambios de alcance/Req. 8 Pago en exceso Metropolitano/spCBActualizarTipoMovimientoMovimientoAConciliar.sql
+SPs Cambios de alcance/Req. 8 Pago en exceso Metropolitano/spCBActualizarStatusMovimientoAConciliar.sql
+SPs Cambios de alcance/Req. 8 Pago en exceso Metropolitano/INSERT_PrivilegioUsuario.sql
+SPs Cambios de alcance/Req. 8 Pago en exceso Metropolitano/INSERT_ModuloOperacion.sql
+SPs Cambios de alcance/Req. 8 Pago en exceso Metropolitano/Evidencias pruebas unitarias - integración consulta de ingresos saldo a favor.docx
+SPs Cambios de alcance/Req. 6 Formas de pago/spLiqConsultaValeTipo.sql
+SPs Cambios de alcance/Req. 6 Formas de pago/spLiqConsultaValeProveedor.sql
+SPs Cambios de alcance/Req. 6 Formas de pago/01 ValeCatalogos.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spLiqConsultaAfiliacion.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCyCInsertarCargoTarjeta.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCyCConsultarCargoTarjetaCliente.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCyCConsultarCargoTarjeta.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spChequeTarjetaAltaModifica.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCCLiqAltaCobroLiquidacion.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCBConsultarCargoTarjetaCliente.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCBConsultaTipoTarjeta.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCBConsultaAfiliacionTC.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCBCargoMesesTC.sql
+SPs Cambios de alcance/Req 5 Pago con tarjeta de crédito/spCBAltaAltaPagoTarjetaAS.sql
+Documentos/Mejoras CB Ver 3.6.docx
+Documentos/DiccionarioDeDatos.xlsx
+Documentos/Cambios de alcance Inserts por formas pago.xlsx
+Documentos/CICLO DE VIDA DE LIQUIDACIONES.txt
+Documentos/Anexo de Mejoras CB Ver 2.7.docx
+Documentos/Anexo de Mejoras CB Ver 2.6.docx
+Documentos/Anexo de Mejoras CB Ver 2.5.docx
+Documentos/Anexo de Mejoras CB Ver 2.4.docx
+Documentos/Anexo de Mejoras CB Ver 2.2.docx
+Documentos/Anexo de Mejoras CB Ver 2.1.docx
+Documentos/Anexo de Mejoras CB Ver 1.9.docx
+Documentos/Anexo de Mejoras CB Ver 1.8.docx
+Documentos/Anexo de Mejoras CB Ver 1.6.docx
+Documentos/Anexo de Mejoras CB Ver 1.5.docx
+Documentos/Anexo de Mejoras CB Ver 1.4.docx
