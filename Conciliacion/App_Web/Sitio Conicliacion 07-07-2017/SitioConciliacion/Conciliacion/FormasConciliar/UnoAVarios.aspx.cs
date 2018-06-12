@@ -216,7 +216,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
-                ConsultarImpuestoEDENRED();
+                ConsultarParametrosEDENRED();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -795,13 +795,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
     /// <summary>
-    /// Consulta el valor de parámetro ImpuestoEDENRED y lo guarda en una 
-    /// variable de sesión
+    /// Consulta los parámetros para aplicar comisiones de EDENRED y los
+    /// guarda en variables de sesión
     /// </summary>
-    private void ConsultarImpuestoEDENRED()
+    private void ConsultarParametrosEDENRED()
     {
         string impuesto = parametros.ValorParametro(30, "ImpuestoEDENRED");
+        string comision = parametros.ValorParametro(30, "ComisionMaximaEDENRED");
+
         HttpContext.Current.Session["ImpuestoEDENRED"] = string.IsNullOrEmpty(impuesto) ? 0m : Convert.ToDecimal(impuesto);
+        HttpContext.Current.Session["ComisionMaximaEDENRED"] = string.IsNullOrEmpty(comision) ? 0m : Convert.ToDecimal(comision);
     }
 
     //Cargar InfoConciliacion Actual
@@ -845,6 +848,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = null;
         HttpContext.Current.Session["EXTERNO_SELECCIONADO"] = null;
         HttpContext.Current.Session["ImpuestoEDENRED"] = null;
+        HttpContext.Current.Session["ComisionMaximaEDENRED"] = null;
 
         HttpContext.Current.Session.Remove("StatusFiltro");
         HttpContext.Current.Session.Remove("TipoFiltro");
@@ -865,6 +869,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario_AX");
         HttpContext.Current.Session.Remove("EXTERNO_SELECCIONADO");
         HttpContext.Current.Session.Remove("ImpuestoEDENRED");
+        HttpContext.Current.Session.Remove("ComisionMaximaEDENRED");
 
     }
     //Cargar Rango DiasMaximo-Minimio-Default
@@ -6548,7 +6553,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         decimal impuesto, comision, IVA, importe;
 
-        if (!chkComision.Checked || !ValidarComision())
+        if ( !chkComision.Checked || !ValidarComision(rncExterno.Deposito) )
         {
             return;
         }
@@ -6567,26 +6572,42 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
-    private bool ValidarComision()
+    private bool ValidarComision(decimal monto)
     {
+        decimal comision, impuesto, porcentaje, comisionMaxima;
         bool resultado = false;
+
         try
         {
-            decimal monto       = Convert.ToDecimal(txtComision.Text);
-            decimal impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
+            comision    = Convert.ToDecimal(txtComision.Text);
+            impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
+            porcentaje  = (decimal)HttpContext.Current.Session["ComisionMaximaEDENRED"];
+                        
             if (impuesto <= 0)
             {
                 throw new Exception("No se ha configurado el parámetro ImpuestoEDENRED en la base de datos.");
             }
+            if (porcentaje <= 0)
+            {
+                throw new Exception("No se ha configurado el parámetro ComisionMaximaEDENRED en la base de datos.");
+            }
+            
+            comisionMaxima = monto * ( porcentaje / 100 );
+
+            if(comision > comisionMaxima)
+            {
+                throw new Exception("La comisión supera el " + porcentaje + "% del depósito.");
+            }
+
             resultado = true;
         }
         catch (FormatException)
         {
-            throw new Exception("Introduzca una comisión válida.");
+            throw new Exception("Ingresa una comisión válida.");
         }
         catch (OverflowException)
         {
-            throw new Exception("Introduzca una comisión válida.");
+            throw new Exception("Ingresa una comisión válida.");
         }
         return resultado;
     }
