@@ -60,10 +60,19 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
         {
             try
             {
+                int ClientesConSaldo = 2;
                 if (txtClienteID.Text.Trim() == string.Empty)
                 {
                     txtClienteID.Text = "0";
                 }
+                if (ddlClientesConSaldo.Text == "TODOS")
+                    ClientesConSaldo = 2;
+                else
+                if (ddlClientesConSaldo.Text == "SI")
+                    ClientesConSaldo = 1;
+                else
+                if (ddlClientesConSaldo.Text == "NO")
+                    ClientesConSaldo = 0;
 
                 AppSettingsReader settings = new AppSettingsReader();
 
@@ -90,7 +99,8 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                     Par.Add("@Cliente=" + ClienteID.ToString());
                     Par.Add("@FechaIni=" + fInicial.ToShortDateString());
                     Par.Add("@FechaFin=" + fFinal.ToShortDateString());
-                    Par.Add("@Todos='" + ddlClientesConSaldo.Text +"'");
+                    Par.Add("@ClientesConSaldo=" + ClientesConSaldo.ToString());
+                    //Par.Add("@ClientesConSaldo='" + ddlClientesConSaldo.Text + "'");
 
                     StringBuilder strInfoParam = new StringBuilder();
                     strInfoParam.Append("Periodo: ");
@@ -101,6 +111,7 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                         strInfoParam.Append(" | Clientes: Todos");
                     else
                         strInfoParam.Append(" | Cliente: " + ClienteID.ToString());
+                    strInfoParam.Append(" | Con Saldo: " + ddlClientesConSaldo.Text);
 
                     ClaseReporte reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW, strInfoParam.ToString());
                     HttpContext.Current.Session["RepDoc"] = reporte.RepDoc;
