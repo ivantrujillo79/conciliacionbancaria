@@ -75,8 +75,8 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
         try
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            DateTime fechaInicio = Convert.ToDateTime("01/04/2017");
-            DateTime fechaFin = Convert.ToDateTime("17/04/2017");
+            DateTime fechaInicio = Convert.ToDateTime("01/01/2018");
+            DateTime fechaFin = Convert.ToDateTime("17/01/2018");
             conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultaReporteEstadoCuentaPorDia(conexion, fechaInicio, fechaFin, "", "");
 

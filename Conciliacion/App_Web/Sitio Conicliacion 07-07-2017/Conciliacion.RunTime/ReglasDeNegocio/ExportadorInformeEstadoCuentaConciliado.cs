@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
-//using Excel = Microsoft.Office.Interop.Excel;
+
 using DetalleReporteEstadoCuentaConciliado = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado;
 using System.IO;
 using System.Globalization;
@@ -20,23 +20,25 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Miembros privados
 
-        private Microsoft.Office.Interop.Excel.Application xlAplicacion;
-        private Microsoft.Office.Interop.Excel.Workbooks xlLibros;
-        private Microsoft.Office.Interop.Excel.Workbook xlLibro;
-        private Microsoft.Office.Interop.Excel.Sheets xlHojas;
-        private Microsoft.Office.Interop.Excel.Worksheet xlHoja;
-        private Microsoft.Office.Interop.Excel.Range xlRango;
+        //private Microsoft.Office.Interop.Excel.Application xlAplicacion;
+        //private Microsoft.Office.Interop.Excel.Workbooks xlLibros;
+        //private Microsoft.Office.Interop.Excel.Workbook xlLibro;
+        //private Microsoft.Office.Interop.Excel.Sheets xlHojas;
+        //private Microsoft.Office.Interop.Excel.Worksheet xlHoja;
+        //private Microsoft.Office.Interop.Excel.Range xlRango;
 
-        private List<DetalleReporteEstadoCuentaConciliado> _ReporteEstadoCuentaConciliado;
+        private List<List<DetalleReporteEstadoCuentaConciliado>> _ReporteEstadoCuentaConciliado;
         private string _Ruta;
         private string _Archivo;
         private string _NombreHoja;
-
+        private string _rutaCompleta;
+     
+  
         #endregion
 
         #region Constructores
 
-        public ExportadorInformeEstadoCuentaConciliado(List<DetalleReporteEstadoCuentaConciliado> ReporteEstadoCuentaConciliado,
+        public ExportadorInformeEstadoCuentaConciliado(List<List<DetalleReporteEstadoCuentaConciliado>> ReporteEstadoCuentaConciliado,
                                         string Ruta, string Archivo, string Nombre)
         {
             try
@@ -56,15 +58,41 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #endregion
 
+
         public void generarInforme()
         {
             try
             {
-                ExcelPackage excelPackage = inicializar();
-                crearEncabezado(excelPackage, "NombreHoja");
-                exportarDatos(excelPackage, "NombreHoja", 8);
-                /*cerrar();*/
-                excelPackage.Save();
+                try
+                {
+                    ExcelPackage excelPackage = inicializar();
+                   
+
+                    for (int i = 0; i <= _ReporteEstadoCuentaConciliado.Count - 1; i++)
+                    {
+
+                        // inicializar();
+                        crearEncabezado(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString());
+                        exportarDatos(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString(), 8, _ReporteEstadoCuentaConciliado[i]);
+                    }
+
+                    excelPackage.Save();
+
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
+                }
+                finally
+                {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
+
             }
             catch (Exception ex)
             {
@@ -74,10 +102,43 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+
+
             }
         }
 
-        private ExcelPackage inicializar()
+
+
+
+
+        //public void generarInforme(string nombreHoja, int contador, int registrofinal)
+        //{
+        //    try
+        //    {
+        //        string rutaCompleta = _Ruta + _Archivo;
+               
+        //            ExcelPackage excelPackage = inicializar();
+        //            crearEncabezado(excelPackage, nombreHoja);
+        //            exportarDatos(excelPackage, nombreHoja, 8, _ReporteEstadoCuentaConciliado[i]);
+        //            excelPackage.Save(); 
+             
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        GC.Collect();
+        //        GC.WaitForPendingFinalizers();
+        //    }
+        //}
+
+
+       
+            private ExcelPackage inicializar()
         {
             string rutaCompleta = _Ruta + _Archivo;
             ExcelPackage excel = new ExcelPackage(new FileInfo(@rutaCompleta));
@@ -101,7 +162,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:H1"])
             {
-                Rng.Value = banco.ToUpper() + cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: ";
+                Rng.Value = banco.ToUpper() + cuenta.ToUpper() + " MOVIMIENTOS DEL MES: ";
                 Rng.Merge = true;
             }
 
@@ -203,13 +264,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             Rng.Style.Border.Bottom.Color.SetColor(Color.Black);
         }
 
-        private void exportarDatos(ExcelPackage excelPackage, string nombreHoja, int aPartirDeLaFila)
+        private void exportarDatos(ExcelPackage excelPackage, string nombreHoja, int aPartirDeLaFila, List<DetalleReporteEstadoCuentaConciliado> _DetalleAExportar)
         {
             int i = aPartirDeLaFila;
 
             ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja];
 
-            foreach (DetalleReporteEstadoCuentaConciliado detalle in _ReporteEstadoCuentaConciliado)
+            foreach (DetalleReporteEstadoCuentaConciliado detalle in _DetalleAExportar)
             {
                 wsSheet1.Cells[i, 4, i, 8].Merge = true;
                 wsSheet1.Cells[i, 12, i, 15].Merge = true;
@@ -227,20 +288,20 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             
         }
 
-        private void cerrar()
-        {
-            string rutaCompleta = _Ruta + _Archivo;
+        //private void cerrar()
+        //{
+        //    string rutaCompleta = _Ruta + _Archivo;
 
-            //if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
+        //    //if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
 
-            /*xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
-                            false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,
-                            Type.Missing, Type.Missing, Type.Missing, Type.Missing);*/
+        //   // xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,//
+        //                    //false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,//
+        //                    //Type.Missing, Type.Missing, Type.Missing, Type.Missing);//
 
-            xlLibro.Close(0);
-            xlLibros.Close();
-            xlAplicacion.Quit();
-        }
+        //    xlLibro.Close(0);
+        //    xlLibros.Close();
+        //    xlAplicacion.Quit();
+        //}
 
         private bool ValidarMiembros()
         {

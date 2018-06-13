@@ -136,10 +136,11 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
     }
 
 
-    private List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado> consultaReporteEstadoCuentaConciliado()
+    private List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>> consultaReporteEstadoCuentaConciliado()
     {
         Conexion conexion = new Conexion();
         var lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>();
+        var ListasDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>>();
 
         try
         {
@@ -148,6 +149,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
             DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
             conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, DrpBancos.SelectedValue == "0" ? "" : DrpBancos.SelectedItem.Text.Trim(), "", DrpEstatusConcepto.SelectedValue == "0" ? "": DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue=="0"?"": DrpEstatus.SelectedValue);
+            ListasDetalle = Separat(lstDetalle);
         }
         catch (Exception ex)
         {
@@ -158,7 +160,16 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         {
             conexion.CerrarConexion();
         }
-        return lstDetalle;
+        return ListasDetalle;
+    }
+
+    public List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>> Separat(List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado> source)
+    {
+        return source
+            .GroupBy(s => s.CuentaBancoFinanciero)
+            .OrderBy(g => g.Key)
+            .Select(g => g.ToList())
+            .ToList();
     }
 
     protected void DrpBancos_SelectedIndexChanged(object sender, EventArgs e)
@@ -172,10 +183,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 
         try
         {
-            List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado> lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>();
+             List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>>();
             lstDetalle = consultaReporteEstadoCuentaConciliado();
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             string cero;
+            int contador = 0;
+            int registrofinal = 0;
             if (fechaInicio.Month < 10)
             {
                 cero = "0";
@@ -190,31 +203,27 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                 File.Delete(HttpRuntime.AppDomainAppPath + @"InformesExcel\"+ "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx");
             }
 
-            ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
-              HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
-            obExportador.generarInforme();
+            if (WUCListadoCuentasBancarias1.Cuentas.Count > 0)
+            {
+
+                registrofinal = WUCListadoCuentasBancarias1.Cuentas.Count - 1;
+
+                lstDetalle = consultaReporteEstadoCuentaConciliado();
+                ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
+                HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                obExportador.generarInforme();
+                contador = contador + 1;                 
+               
+
+            }
+
+
+
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
           @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
 
 
-            //if (WUCListadoCuentasBancarias1.Cuentas.Count > 0)
-            //{
-            //    if (File.Exists(HttpRuntime.AppDomainAppPath + @"InformesExcel\" + "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx"))
-            //    {
-
-            //        foreach (Cuenta Cta in WUCListadoCuentasBancarias1.Cuentas)
-            //        {
-                       
-            //            lstDetalle = consultaReporteEstadoCuentaConciliado();
-
-            //        }
-
-            //    }
-
-
-
-
-                //}
+          
 
 
             }
