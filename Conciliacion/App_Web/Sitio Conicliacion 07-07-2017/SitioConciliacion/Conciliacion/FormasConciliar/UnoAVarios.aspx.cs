@@ -48,6 +48,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private DataTable tblReferenciaInternas;
     private string objControlPostBack;
 
+    private string _URLGateway;
+
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     public DataTable tblDetalleTransaccionConciliada;
     public DataTable tblReferenciaAgregadasInternas;
@@ -2585,6 +2587,59 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    public string consultaClienteCRM(int cliente)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (_URLGateway != string.Empty)
+            {
+                Gateway = new RTGMGateway.RTGMGateway();
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                Solicitud.IDCliente = cliente;
+                Solicitud.IDEmpresa = 0;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        if (DireccionEntrega != null)
+            return DireccionEntrega.Nombre.Trim();
+        else
+            return "No encontrado";
+    }
+
+    private void RellenaColumnaNombreClienteDeCRM(DataTable tabla)
+    {
+        if (_URLGateway != string.Empty)
+        {
+            List<Cliente> lstClientes = new List<Cliente>();
+            foreach (DataRow fila in tabla.Rows)
+            {
+                Cliente cliente;
+                cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()) );
+                if (cliente == null )
+                {
+                    fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                    cliente = App.Cliente.CrearObjeto();
+                    cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                    cliente.Nombre = fila["Nombre"].ToString();
+                    lstClientes.Add(cliente);
+                }
+                else
+                {                    
+                    fila["Nombre"] = cliente.Nombre;
+                }
+            }
+        }
+    }
+
     public void GenerarTablaAgregadosArchivosInternosExcel(ReferenciaNoConciliada refExternaSelec, int tpConciliacion)
     //Genera la tabla Referencias (Archivos/Pedidos) agregados
     {
@@ -2592,7 +2647,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
         objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
         objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-		
+
+        DataTable dtRetorno = new DataTable();
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+
         try
         {
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
@@ -2623,6 +2684,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         rc.ConceptoPedido
                         );
                 }
+                RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
                 Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
@@ -2654,9 +2716,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
 
                 }
+                RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
                 grvAgregadosInternos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosInternos.DataBind();
-
             }
         }
         catch (Exception ex)
@@ -2664,7 +2726,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             throw ex;
         }
     }
-
 
     public void GenerarTablaAgregadosVacia(int tConciliacion)
     {

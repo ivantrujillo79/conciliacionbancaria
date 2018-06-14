@@ -97,9 +97,9 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
             else
                 return null;
         }
-        catch(Exception)
+        catch(Exception ex)
         {
-            throw new Exception("Ingrese un número de cliente válido.");
+            throw new Exception("Ingrese un número de cliente válido. " + ex.Message);
         }
     }
 
@@ -122,9 +122,9 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
             return dtClientePedidos;
         }
-        catch(Exception)
+        catch(Exception ex)
         {
-            throw new Exception("Ingrese un número de cliente válido.");
+            throw new Exception("Ingrese un número de cliente válido. " + ex.Message);
         }
 
     }

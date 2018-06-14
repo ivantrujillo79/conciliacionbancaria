@@ -166,6 +166,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia);
 
+        public abstract string consultaClienteCRM(int cliente);
+
         public abstract List<ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria);
 
         //public abstract DataTable CBPedidosPorFactura(string SerieFactura);

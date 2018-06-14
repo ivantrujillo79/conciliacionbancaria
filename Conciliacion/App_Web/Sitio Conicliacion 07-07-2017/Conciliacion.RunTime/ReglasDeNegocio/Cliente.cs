@@ -179,6 +179,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract DataTable ObtienePedidosCliente(int Cliente, Conexion _conexion);
 
         public abstract DetalleClientePedidoExcel ObtieneDetalleClientePedidoExcel(string PedidoReferencia, Conexion _conexion);
+        
+        public abstract string consultaClienteCRM(int cliente);
 
     }//end Cliente
 

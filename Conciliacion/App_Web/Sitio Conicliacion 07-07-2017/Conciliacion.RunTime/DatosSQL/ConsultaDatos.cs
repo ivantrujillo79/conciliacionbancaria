@@ -7,11 +7,14 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Data.SqlTypes;
+using System.Configuration;
+using System.Web;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
     public class ConsultaDatos : Consultas
     {
+        string _URLGateway;
 
         public ConsultaDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
@@ -54,9 +57,43 @@ namespace Conciliacion.RunTime.DatosSQL
         //    }
         //}
 
+        public override string consultaClienteCRM(int cliente)
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+            try
+            {
+                if (_URLGateway != string.Empty)
+                {
+                    Gateway = new RTGMGateway.RTGMGateway();
+                    Gateway.URLServicio = _URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                    Solicitud.IDCliente = cliente;
+                    Solicitud.IDEmpresa = 0;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (DireccionEntrega != null)
+                return DireccionEntrega.Nombre.Trim();
+            else
+                return "No encontrado";
+        }
+
         public override DataTable CBPedidosPorFactura(string SerieFactura)
         {
             DataTable dtResultados = null;
+            //_URLGateway = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc";
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
@@ -75,6 +112,27 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         dtResultados = ds.Tables[0];
                     }
+                    if (_URLGateway != string.Empty)
+                    {
+                        List<Cliente> lstClientes = new List<Cliente>();
+                        foreach (DataRow fila in dtResultados.Rows)
+                        {
+                            Cliente cliente;
+                            cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                            if (cliente == null)
+                            {
+                                fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                                cliente = App.Cliente.CrearObjeto();
+                                cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                                cliente.Nombre = fila["Nombre"].ToString();
+                                lstClientes.Add(cliente);
+                            }
+                            else
+                            {
+                                fila["Nombre"] = cliente.Nombre;
+                            }
+                        }
+                    }
                 }
                 catch (SqlException ex)
                 {
@@ -92,6 +150,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia)
         {
             DataTable dtResultados = null;
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
@@ -109,6 +171,28 @@ namespace Conciliacion.RunTime.DatosSQL
                     if (ds.Tables.Count > 0)
                     {
                         dtResultados = ds.Tables[0];
+                    }
+                    
+                    if (_URLGateway != string.Empty)
+                    {
+                        List<Cliente> lstClientes = new List<Cliente>();
+                        foreach (DataRow fila in dtResultados.Rows)
+                        {
+                            Cliente cliente;
+                            cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                            if (cliente == null)
+                            {
+                                fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                                cliente = App.Cliente.CrearObjeto();
+                                cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                                cliente.Nombre = fila["Nombre"].ToString();
+                                lstClientes.Add(cliente);
+                            }
+                            else
+                            {
+                                fila["Nombre"] = cliente.Nombre;
+                            }
+                        }
                     }
                 }
                 catch (SqlException ex)

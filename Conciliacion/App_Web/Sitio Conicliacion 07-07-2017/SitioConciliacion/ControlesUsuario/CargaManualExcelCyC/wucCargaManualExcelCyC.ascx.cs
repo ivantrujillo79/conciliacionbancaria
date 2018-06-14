@@ -279,6 +279,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     private const string REFERENCIA = "Cliente: ";
     private const string SALDO = "Saldo a favor: ";
 
+    private string _URLGateway;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         OcultarMensajes();
@@ -302,6 +304,34 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     public void Cancelar(object sender, EventArgs e)
     {
         btnCancelar_Click(sender, e);
+    }
+
+    public string consultaClienteCRM(int cliente)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (_URLGateway != string.Empty)
+            {
+                Gateway = new RTGMGateway.RTGMGateway();
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                Solicitud.IDCliente = cliente;
+                Solicitud.IDEmpresa = 0;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        if (DireccionEntrega != null)
+            return DireccionEntrega.Nombre.Trim();
+        else
+            return "No encontrado";
     }
 
     protected void btnSubirArchivo_Click(object sender, EventArgs e)
@@ -347,6 +377,14 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                             if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                             {
+                                //_URLGateway = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc";
+                                //if (_URLGateway != string.Empty)
+                                //{
+                                //    foreach (DataRow fila in dtTabla.Rows)
+                                //    {
+                                //        fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                                //    }
+                                //}
                                 grvDetalleConciliacionManual.Visible = true;
                                 grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
                                 grvDetalleConciliacionManual.DataBind();
