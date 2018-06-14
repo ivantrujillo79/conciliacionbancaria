@@ -2838,7 +2838,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 {
                     dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
                     dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
-                    if (dtPedidos.Rows.Count == 0) return;
+                    if (dtPedidos == null || dtPedidos.Rows.Count == 0) return;
 
                     grvPedidos.DataSource = dtPedidos;
                     grvPedidos.DataBind();
