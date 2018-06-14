@@ -253,7 +253,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(" Error al enviar la solicitud al servidor: "+_URLGateway+". Detalles: "+ ex.Message); 
             }
             if (DireccionEntrega != null)
                 return DireccionEntrega.Nombre.Trim();
