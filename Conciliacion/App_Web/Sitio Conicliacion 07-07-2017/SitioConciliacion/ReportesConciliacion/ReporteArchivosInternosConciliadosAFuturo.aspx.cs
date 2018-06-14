@@ -167,7 +167,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
                                 lstDetalleCuenta = consultaReporteEstadoCuenta(cuenta.ID.ToString());
                                 ExportadorInformeEstadoCuenta obExportador = new ExportadorInformeEstadoCuenta(lstDetalleCuenta,
                                 rutaCompleta, Archivo, cuenta.Descripcion);
-                                obExportador.generarInforme();
+                                obExportador.generarInforme(cuenta.Descripcion);
                             }
                             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                               @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
