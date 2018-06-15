@@ -681,6 +681,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 saldoAFavor.AñoExterno                  = refExterna.Año;
                 saldoAFavor.FolioExterno                = refExterna.Folio;
                 saldoAFavor.SecuenciaExterno            = refExterna.Secuencia;
+                saldoAFavor.Cliente                     = Cliente;
 
                 saldoAFavor.Guardar(conexion);
             }
