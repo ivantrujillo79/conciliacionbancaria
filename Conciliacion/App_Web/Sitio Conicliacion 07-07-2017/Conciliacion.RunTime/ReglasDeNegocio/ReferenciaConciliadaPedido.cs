@@ -33,7 +33,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string pedidoreferencia;
         decimal saldo;
 
-
         #region Constructores
 
         public ReferenciaConciliadaPedido(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion, 
@@ -168,7 +167,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Propiedades
 
-               public string PedidoReferencia 
+        public string PedidoReferencia 
         {
             get { return pedidoreferencia; }
             set { pedidoreferencia = value; }

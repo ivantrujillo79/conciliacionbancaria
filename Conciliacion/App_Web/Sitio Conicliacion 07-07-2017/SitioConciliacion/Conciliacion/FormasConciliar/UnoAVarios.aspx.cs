@@ -135,7 +135,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             string controlId;
             Control foundControl;
 
-
             foreach (string ctl in page.Request.Form)
             {
                 // Manejo especial de los ImageButton
@@ -192,7 +191,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
 
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
-
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
@@ -220,6 +218,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
+                ConsultarParametrosEDENRED();
+
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     this.hdfEsPedido.Value = "1";
@@ -245,6 +245,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 activarVerPendientesCanceladosInternos(true);
 
                 HabilitarBusquedaPedidos(objSolicitdConciliacion);
+                HabilitarComisiones(objSolicitdConciliacion);
 
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
                 Carga_StatusConcepto(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
@@ -775,6 +776,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ddlBusquedaPedidos.Dispose();
     }
 
+    /// <summary>
+    /// Habilita el textbox para ingresar comisiones si el valor del parámetro 
+    /// ComisionesEDENRED es igual a 1 y si se están consultado pedidos.
+    /// </summary>
+    private void HabilitarComisiones(SolicitudConciliacion obSolicitud)
+    {
+        byte comisionesEDENRED = Convert.ToByte(parametros.ValorParametro(30, "ComisionesEDENRED"));
+
+        if (obSolicitud.ConsultaPedido() && comisionesEDENRED == 1)
+        {
+            chkComision.Visible =
+                txtComision.Visible = true;
+        }
+        else
+        {
+            chkComision.Visible =
+                txtComision.Visible = false;
+        }
+    }
+
+    /// <summary>
+    /// Consulta los parámetros para aplicar comisiones de EDENRED y los
+    /// guarda en variables de sesión
+    /// </summary>
+    private void ConsultarParametrosEDENRED()
+    {
+        string impuesto = parametros.ValorParametro(30, "ImpuestoEDENRED");
+        string comision = parametros.ValorParametro(30, "ComisionMaximaEDENRED");
+
+        HttpContext.Current.Session["ImpuestoEDENRED"] = string.IsNullOrEmpty(impuesto) ? 0m : Convert.ToDecimal(impuesto);
+        HttpContext.Current.Session["ComisionMaximaEDENRED"] = string.IsNullOrEmpty(comision) ? 0m : Convert.ToDecimal(comision);
+    }
+
     //Cargar InfoConciliacion Actual
     public void cargarInfoConciliacionActual()
     {
@@ -815,6 +849,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = null;
         HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = null;
         HttpContext.Current.Session["EXTERNO_SELECCIONADO"] = null;
+        HttpContext.Current.Session["ImpuestoEDENRED"] = null;
+        HttpContext.Current.Session["ComisionMaximaEDENRED"] = null;
 
         HttpContext.Current.Session.Remove("StatusFiltro");
         HttpContext.Current.Session.Remove("TipoFiltro");
@@ -834,6 +870,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario");
         HttpContext.Current.Session.Remove("PedidosBuscadosPorUsuario_AX");
         HttpContext.Current.Session.Remove("EXTERNO_SELECCIONADO");
+        HttpContext.Current.Session.Remove("ImpuestoEDENRED");
+        HttpContext.Current.Session.Remove("ComisionMaximaEDENRED");
 
     }
     //Cargar Rango DiasMaximo-Minimio-Default
@@ -1940,6 +1978,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
                         int clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno);
+
+                        AgregarComisionAExterno(rfExterno);
 
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
@@ -6564,4 +6604,73 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         mpeClienteDatosBancarios.Hide();
     }
+
+    /// <summary>
+    /// Asigna las propiedades ImporteComision e IVAComision a cada una de las referencias
+    /// agregadas al externo
+    /// </summary>
+    /// <param name="rncExterno"></param>
+    private void AgregarComisionAExterno(ReferenciaNoConciliada rncExterno)
+    {
+        decimal impuesto, comision, IVA, importe;
+
+        if ( !chkComision.Checked || !ValidarComision(rncExterno.Deposito) )
+        {
+            return;
+        }
+        else
+        {
+            if (rncExterno.ListaReferenciaConciliada.Count > 0)
+            {
+                impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
+                comision    = Convert.ToDecimal(txtComision.Text);
+
+                importe     = comision / impuesto;
+                IVA         = comision - importe;
+
+                rncExterno.ListaReferenciaConciliada.ForEach(x => { x.ImporteComision = importe; x.IVAComision = IVA; });                
+            }
+        }
+    }
+
+    private bool ValidarComision(decimal monto)
+    {
+        decimal comision, impuesto, porcentaje, comisionMaxima;
+        bool resultado = false;
+
+        try
+        {
+            comision    = Convert.ToDecimal(txtComision.Text);
+            impuesto    = (decimal)HttpContext.Current.Session["ImpuestoEDENRED"];
+            porcentaje  = (decimal)HttpContext.Current.Session["ComisionMaximaEDENRED"];
+                        
+            if (impuesto <= 0)
+            {
+                throw new Exception("No se ha configurado el parámetro ImpuestoEDENRED en la base de datos.");
+            }
+            if (porcentaje <= 0)
+            {
+                throw new Exception("No se ha configurado el parámetro ComisionMaximaEDENRED en la base de datos.");
+            }
+            
+            comisionMaxima = monto * ( porcentaje / 100 );
+
+            if(comision > comisionMaxima)
+            {
+                throw new Exception("La comisión supera el " + porcentaje + "% del depósito.");
+            }
+
+            resultado = true;
+        }
+        catch (FormatException)
+        {
+            throw new Exception("Ingresa una comisión válida.");
+        }
+        catch (OverflowException)
+        {
+            throw new Exception("Ingresa una comisión válida.");
+        }
+        return resultado;
+    }
+
 }

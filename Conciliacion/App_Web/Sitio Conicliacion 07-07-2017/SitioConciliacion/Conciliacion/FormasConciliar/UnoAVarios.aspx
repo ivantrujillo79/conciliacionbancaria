@@ -53,6 +53,7 @@
         function pageLoad() {
             activarDatePickers();
             MuestraSaldoAFavor();
+            MostrarTxtComisionInicio();
         }
 
         function btnAgregarPedidoConciliacion(grid, fila){
@@ -150,6 +151,27 @@
                 $('#btnMuestraSaldoAFavor').html('Mostrar');
             }
             
+        }
+
+        /**
+         * Muestra el TextBox una vez que se oculta después del Postback
+         */
+        function MostrarTxtComisionInicio() {
+            if ($('#<%= hfTxtComisionVisible.ClientID %>').val() == "1") {
+                $('#<%= txtComision.ClientID %>').show();
+            }
+        }
+
+        function MostrarTxtComision() {
+            if ($('#<%= hfTxtComisionVisible.ClientID %>').val() == "0") {
+                $('#<%= hfTxtComisionVisible.ClientID %>').val('1');
+                $('#<%= txtComision.ClientID %>').show(250);
+
+            }
+            else {
+                $('#<%= hfTxtComisionVisible.ClientID %>').val('0');
+                $('#<%= txtComision.ClientID %>').hide(250);
+            }
         }
 
         //Funcion para mostrar el calendar
@@ -1464,35 +1486,44 @@
                                             <td style="width: 25%;">
                                                 <uc1:wucBuscaClientesFacturas runat="server" ID="wucBuscaClientesFacturas" />
                                             </td>
-                                            <td style="width: 10%;">
+                                            <td style="width: 1%;">
                                                 <asp:ImageButton ID="btnFiltraCliente" runat="server" CssClass="icono bg-color-verdeClaro"
                                                     Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                    ToolTip="FILTRAR cliente" Width="25px"
+                                                    ToolTip="Buscar cliente" Width="25px"
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
-                                            <td style="width: 25%;">
-                                                <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco centradoMedio"></asp:Label>
+                                            <td class="centradoIzquierda" style="width: 1%; padding-left:3px">
+                                                <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco"></asp:Label>
                                             </td>
-                                            <td style="width: 25%;">
-                                                <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="80px" CssClass="cajaTextoPequeño"></asp:TextBox>
+                                            <td class="centradoIzquierda" style="width: 1%;">
+                                                <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="70px" CssClass="cajaTextoPequeño"></asp:TextBox>
                                             </td>
-                                            <td style="width: 10%;">
+                                            <td class="centradoIzquierda" style="width: 1%;">
                                                 <asp:ImageButton ID="btnFiltraPedidoReferencia" runat="server" CssClass="icono bg-color-verdeClaro"
                                                     Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
-                                                    ToolTip="FILTRAR cliente" Width="25px"
-                                                    OnClick="btnFiltraPedidoReferencia_Click"
-                                                    />
+                                                    ToolTip="Buscar pedido referencia" Width="25px"
+                                                    OnClick="btnFiltraPedidoReferencia_Click" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
+                                            <%--    Comisiones  --%>
+                                            <td style="width:1%; white-space:nowrap; height:27px; padding-left:1px"
+                                                runat="server" class="centradoIzquierda">
+                                                <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
+                                                    style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"/>
                                             </td>
+                                            <td class="centradoIzquierda" style="width:1%;">
+                                                <asp:TextBox ID="txtComision" runat="server" Width="70px" CssClass="cajaTextoPequeño" 
+                                                    style="margin-left:3px; display:none;" 
+                                                    onkeypress="return ValidNumDecimal(event);" />
+                                                <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
+                                            </td>
+                                            <%--    Fin comisiones  --%>
                                             <td></td>
-                                       </tr>
+                                        </tr>
                                     </table>		
-                                    </ContentTemplate>
+                                </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
+                        
 
                         <div id="seccionFiltrosSaldoAFavor" style="display:none; padding:3px;" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
                             <table style="width: 100%;" >

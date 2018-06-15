@@ -96,6 +96,15 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
 
+                    if (this.ImporteComision > 0m)
+                    {
+                        comando.Parameters.Add("@ImporteComision", System.Data.SqlDbType.Money).Value = this.ImporteComision;
+                    }
+                    if (this.IVAComision > 0m)
+                    {
+                        comando.Parameters.Add("@IvaComision", System.Data.SqlDbType.Money).Value = this.IVAComision;
+                    }
+
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();                   
                 }

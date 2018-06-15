@@ -31,6 +31,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         decimal retiro;
         private IMensajesImplementacion iMensajesImplementacion;
 
+        decimal importeComision;
+        decimal ivaComision;
+
         #region Constructores
 
         public cReferencia(int corporativo, int sucursal, string sucursaldes, int año, int folio,int secuencia, string concepto, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, 
@@ -221,6 +224,18 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return retiro; }
             set { retiro = value; }
+        }
+
+        public decimal ImporteComision
+        {
+            get { return importeComision; }
+            set { importeComision = value; }
+        }
+
+        public decimal IVAComision
+        {
+            get { return ivaComision; }
+            set { ivaComision = value; }
         }
 
         #endregion
