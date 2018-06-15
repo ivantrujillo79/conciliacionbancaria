@@ -165,6 +165,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     /// </summary>
     public void GenerarTablaReferenciasAPagarPedidos()
     {
+        string _URLGateway = "";
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
         try
         {
             tblReferenciasAPagar = new DataTable("ReferenciasAConciliarPedidos");
@@ -198,44 +203,63 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
 
+            List<Cliente> lstClientes = new List<Cliente>();
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
             {
+                if (_URLGateway != string.Empty)
+                {
+                    Cliente cliente;
+                    cliente = lstClientes.Find(x => x.NumCliente == rc.Cliente);
+                    if (cliente == null)
+                    {
+                        cliente = App.Cliente.CrearObjeto();
+                        rc.Nombre = cliente.consultaClienteCRM(rc.Cliente);
+                        cliente.NumCliente = rc.Cliente;
+                        cliente.Nombre = rc.Nombre;
+                        lstClientes.Add(cliente);
+                    }
+                    else
+                    {
+                        rc.Nombre = cliente.Nombre;
+                    }
+                }
+
                 tblReferenciasAPagar.Rows.Add(
-                   rc.Secuencia,
-                    rc.Folio,
-                    rc.RFCTercero,
-                    rc.Retiro,
-                    rc.Referencia,
-                    rc.NombreTercero,
-                    rc.Deposito,
-                    rc.Cheque,
-                    rc.FMovimiento,
-                    rc.FOperacion,
-                    rc.MontoConciliado,
-                    rc.Concepto,
-                    rc.Descripcion,
-                    rc.Diferencia,
-                    rc.StatusMovimiento,
-                    rc.Pedido,
-                    rc.PedidoReferencia,
-                    rc.SeriePedido,
-                    rc.RemisionPedido,
-                    rc.FolioSat,
-                    rc.SerieSat,
-                    rc.AñoPedido,
-                    rc.CelulaPedido,
-                    rc.Cliente,
-                    rc.Nombre,
-                    rc.Total,
-                    rc.ConceptoPedido
-                    );
+                       rc.Secuencia,
+                        rc.Folio,
+                        rc.RFCTercero,
+                        rc.Retiro,
+                        rc.Referencia,
+                        rc.NombreTercero,
+                        rc.Deposito,
+                        rc.Cheque,
+                        rc.FMovimiento,
+                        rc.FOperacion,
+                        rc.MontoConciliado,
+                        rc.Concepto,
+                        rc.Descripcion,
+                        rc.Diferencia,
+                        rc.StatusMovimiento,
+                        rc.Pedido,
+                        rc.PedidoReferencia,
+                        rc.SeriePedido,
+                        rc.RemisionPedido,
+                        rc.FolioSat,
+                        rc.SerieSat,
+                        rc.AñoPedido,
+                        rc.CelulaPedido,
+                        rc.Cliente,
+                        rc.Nombre,
+                        rc.Total,
+                        rc.ConceptoPedido
+                        );
             }
             HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;
             ViewState["TAB_REF_PAGAR"] = tblReferenciasAPagar;
         }
         catch (Exception e)
         {
-
+            throw e;
         }
     }
     /// <summary>
