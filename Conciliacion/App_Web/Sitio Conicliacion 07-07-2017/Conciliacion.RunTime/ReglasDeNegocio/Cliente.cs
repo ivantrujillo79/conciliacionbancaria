@@ -182,6 +182,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         
         public abstract string consultaClienteCRM(int cliente);
 
+        public abstract string consultaClienteCRM(int cliente, string URLGateway);
+
     }//end Cliente
 
 

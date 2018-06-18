@@ -213,7 +213,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     if (cliente == null)
                     {
                         cliente = App.Cliente.CrearObjeto();
-                        rc.Nombre = cliente.consultaClienteCRM(rc.Cliente);
+                        rc.Nombre = cliente.consultaClienteCRM(rc.Cliente, _URLGateway);
                         cliente.NumCliente = rc.Cliente;
                         cliente.Nombre = rc.Nombre;
                         lstClientes.Add(cliente);
