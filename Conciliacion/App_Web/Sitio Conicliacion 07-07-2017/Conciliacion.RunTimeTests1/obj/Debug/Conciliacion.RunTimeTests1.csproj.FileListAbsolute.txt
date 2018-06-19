@@ -66,3 +66,12 @@ C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Concil
 C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CopyComplete
 C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
 C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\SeguridadCB.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\log4net.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\nunit.framework.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\SeguridadCB.pdb
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.pdb
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.dll.config
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\log4net.xml
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\nunit.framework.xml

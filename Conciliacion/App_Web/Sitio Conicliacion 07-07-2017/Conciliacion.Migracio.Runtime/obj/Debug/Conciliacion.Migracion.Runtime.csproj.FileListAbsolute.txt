@@ -147,3 +147,10 @@ C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Concil
 C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csproj.CopyComplete
 C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
 C:\Users\BinaryCode_dev2\Documents\GitHub\Transforma\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\log4net.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\nunit.framework.dll
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.pdb
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.dll.config
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\log4net.xml
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\nunit.framework.xml
