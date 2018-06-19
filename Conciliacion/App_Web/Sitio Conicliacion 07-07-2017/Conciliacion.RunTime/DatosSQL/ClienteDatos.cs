@@ -224,7 +224,7 @@ namespace Conciliacion.RunTime.DatosSQL
             catch (Exception ex)
             {
                 stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                           this.GetType().Name + "\n\r" + "Metodo :" +
                                                           stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                           "Error :" + ex.Message);
@@ -240,13 +240,16 @@ namespace Conciliacion.RunTime.DatosSQL
             RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
             try
             {
-                Gateway = new RTGMGateway.RTGMGateway();
-                Gateway.URLServicio = _URLGateway;
-                Solicitud = new RTGMGateway.SolicitudGateway();
-                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
-                Solicitud.IDCliente = cliente;
-                Solicitud.IDEmpresa = 1;
-                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                if (_URLGateway != string.Empty)
+                {
+                    Gateway = new RTGMGateway.RTGMGateway();
+                    Gateway.URLServicio = _URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                    Solicitud.IDCliente = cliente;
+                    Solicitud.IDEmpresa = 1;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
             }
             catch (Exception ex)
             {
@@ -258,29 +261,32 @@ namespace Conciliacion.RunTime.DatosSQL
                 return "No encontrado";
         }
 
-        public override string consultaClienteCRM(int cliente, string paramURLGateway)
+        public override string consultaClienteCRM(int cliente, string URLGateway)
         {
             RTGMGateway.RTGMGateway Gateway;
             RTGMGateway.SolicitudGateway Solicitud;
             RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
             try
             {
-                Gateway = new RTGMGateway.RTGMGateway();
-                Gateway.URLServicio = paramURLGateway;
-                Solicitud = new RTGMGateway.SolicitudGateway();
-                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
-                Solicitud.IDCliente = cliente;
-                Solicitud.IDEmpresa = 1;
-                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
-            }
+                if (URLGateway != string.Empty)
+                {
+                    Gateway = new RTGMGateway.RTGMGateway();
+                    Gateway.URLServicio = URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                    Solicitud.IDCliente = cliente;
+                    Solicitud.IDEmpresa = 1;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+}
             catch (Exception ex)
             {
-                throw new Exception(" Error al enviar la solicitud al servidor: " + _URLGateway + ". Detalles: " + ex.Message);
+                throw new Exception(" Error al enviar la solicitud al servidor: "+URLGateway+". Detalles: "+ ex.Message); 
             }
             if (DireccionEntrega != null)
                 return DireccionEntrega.Nombre.Trim();
             else
-                return "No encontrado";
+                return "No encontrado";        
         }
 
         public override DetalleClientePedidoExcel ObtieneDetalleClientePedidoExcel(string PedidoReferencia, Conexion _conexion)

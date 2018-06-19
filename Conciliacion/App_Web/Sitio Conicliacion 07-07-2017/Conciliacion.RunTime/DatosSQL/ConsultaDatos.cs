@@ -71,7 +71,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                     Solicitud.IDCliente = cliente;
-                    Solicitud.IDEmpresa = 0;
+                    Solicitud.IDEmpresa = 1;
                     DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
                 }
             }
@@ -87,8 +87,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override DataTable CBPedidosPorFactura(string SerieFactura)
         {
-            DataTable dtResultados = null;
-            //_URLGateway = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc";
+            DataTable dtResultados = null;            
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             AppSettingsReader settings = new AppSettingsReader();
@@ -6057,6 +6056,11 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override ListaCombo ConsultaDatosCliente(Int64 cliente)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+
             ListaCombo dato = null;
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
@@ -6066,18 +6070,23 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlCommand comando = new SqlCommand("spCCLConsultaVwDatosClienteReferencia", cnn);
                     comando.Parameters.Add("@Cliente", System.Data.SqlDbType.VarChar).Value = cliente.ToString();
 
+                    string NombreCliente;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
+                        if (_URLGateway != string.Empty)
+                            NombreCliente = consultaClienteCRM(Convert.ToInt32(reader["Cliente"]));
+                        else
+                            NombreCliente = Convert.ToString(reader["Nombre"]);
 
-                        dato = new ListaCombo(Convert.ToInt32(reader["Cliente"]), Convert.ToString(reader["Nombre"]));
+                        dato = new ListaCombo(Convert.ToInt32(reader["Cliente"]), NombreCliente);
                     }
                 }
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
@@ -6086,7 +6095,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 catch (Exception ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);

@@ -1867,6 +1867,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void GenerarTablaPedidos() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
         //tblPedidos = new DataTable("ReferenciasInternas");
         //tblPedidos.Columns.Add("Pedido", typeof(int));
         //tblPedidos.Columns.Add("PedidoReferencia", typeof(int));
@@ -1891,7 +1896,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         tblPedidos.Columns.Add("Celula", typeof(int));
         tblPedidos.Columns.Add("AñoPed", typeof(int));
 
-
         foreach (
             ReferenciaNoConciliadaPedido rc in
                 listaReferenciaPedidos)
@@ -1904,7 +1908,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 rc.SerieSat,
                 rc.Total,
                 rc.FMovimiento,
-                rc.Nombre,
+                _URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
                 rc.Concepto,
                 rc.Cliente,
                 rc.CelulaPedido,
@@ -1917,8 +1921,13 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void GenerarTablaFacturas() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
-        tblPedidos = new DataTable("FacturasManual");
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
 
+        tblPedidos = new DataTable("FacturasManual");
         tblPedidos.Columns.Add("Cliente", typeof(string));
         tblPedidos.Columns.Add("Nombre", typeof(string));
         tblPedidos.Columns.Add("Factura", typeof(int));
@@ -1933,7 +1942,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             tblPedidos.Rows.Add(
                 rc.Cliente,
-                rc.Nombre,
+                _URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
                 rc.Factura,
                 rc.Ffactura,
                 rc.Foliofactura,
