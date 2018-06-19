@@ -224,7 +224,7 @@ namespace Conciliacion.RunTime.DatosSQL
             catch (Exception ex)
             {
                 stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                           this.GetType().Name + "\n\r" + "Metodo :" +
                                                           stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                           "Error :" + ex.Message);
@@ -247,7 +247,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                     Solicitud.IDCliente = cliente;
-                    Solicitud.IDEmpresa = 0;
+                    Solicitud.IDEmpresa = 1;
                     DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
                 }
             }
@@ -259,6 +259,34 @@ namespace Conciliacion.RunTime.DatosSQL
                 return DireccionEntrega.Nombre.Trim();
             else
                 return "No encontrado";
+        }
+
+        public override string consultaClienteCRM(int cliente, string URLGateway)
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+            try
+            {
+                if (URLGateway != string.Empty)
+                {
+                    Gateway = new RTGMGateway.RTGMGateway();
+                    Gateway.URLServicio = URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                    Solicitud.IDCliente = cliente;
+                    Solicitud.IDEmpresa = 1;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+}
+            catch (Exception ex)
+            {
+                throw new Exception(" Error al enviar la solicitud al servidor: "+URLGateway+". Detalles: "+ ex.Message); 
+            }
+            if (DireccionEntrega != null)
+                return DireccionEntrega.Nombre.Trim();
+            else
+                return "No encontrado";        
         }
 
         public override DetalleClientePedidoExcel ObtieneDetalleClientePedidoExcel(string PedidoReferencia, Conexion _conexion)
