@@ -54,6 +54,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private ReferenciaConciliadaCompartida movSeleccionado;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();//RRV quita private string StatusConciliacionSel = "";
+    private List<Cliente> lstClientesCRM = new List<Cliente>();
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -1871,7 +1872,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
         AppSettingsReader settings = new AppSettingsReader();
         string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
-        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+        lstClientesCRM.Clear();
         //tblPedidos = new DataTable("ReferenciasInternas");
         //tblPedidos.Columns.Add("Pedido", typeof(int));
         //tblPedidos.Columns.Add("PedidoReferencia", typeof(int));
@@ -1908,7 +1909,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 rc.SerieSat,
                 rc.Total,
                 rc.FMovimiento,
-                _URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
+                _URLGateway != string.Empty ? ConsultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
                 rc.Concepto,
                 rc.Cliente,
                 rc.CelulaPedido,
@@ -1918,6 +1919,25 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         HttpContext.Current.Session["TAB_PEDIDOS"] = tblPedidos;
     }
 
+    public string ConsultaClienteCRM(int NumCliente, string urlGateway)
+    {
+        string Nombre = "";
+        Cliente cliente;
+        cliente = lstClientesCRM.Find(x => x.NumCliente == NumCliente);
+        if (cliente == null)
+        {
+            cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+            Nombre = cliente.consultaClienteCRM(NumCliente, urlGateway);
+            cliente.NumCliente = NumCliente;
+            cliente.Nombre = Nombre;
+            lstClientesCRM.Add(cliente);
+        }
+        else
+            Nombre = cliente.Nombre;
+
+        return Nombre;  
+
+    }
 
     public void GenerarTablaFacturas() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
@@ -1942,7 +1962,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             tblPedidos.Rows.Add(
                 rc.Cliente,
-                _URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
+                //_URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
+                _URLGateway != string.Empty ? ConsultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
                 rc.Factura,
                 rc.Ffactura,
                 rc.Foliofactura,
