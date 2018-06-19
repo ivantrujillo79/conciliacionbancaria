@@ -240,20 +240,42 @@ namespace Conciliacion.RunTime.DatosSQL
             RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
             try
             {
-                if (_URLGateway != string.Empty)
-                {
-                    Gateway = new RTGMGateway.RTGMGateway();
-                    Gateway.URLServicio = _URLGateway;
-                    Solicitud = new RTGMGateway.SolicitudGateway();
-                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
-                    Solicitud.IDCliente = cliente;
-                    Solicitud.IDEmpresa = 0;
-                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
-                }
+                Gateway = new RTGMGateway.RTGMGateway();
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                Solicitud.IDCliente = cliente;
+                Solicitud.IDEmpresa = 1;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
             }
             catch (Exception ex)
             {
                 throw new Exception(" Error al enviar la solicitud al servidor: "+_URLGateway+". Detalles: "+ ex.Message); 
+            }
+            if (DireccionEntrega != null)
+                return DireccionEntrega.Nombre.Trim();
+            else
+                return "No encontrado";
+        }
+
+        public override string consultaClienteCRM(int cliente, string paramURLGateway)
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+            try
+            {
+                Gateway = new RTGMGateway.RTGMGateway();
+                Gateway.URLServicio = paramURLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
+                Solicitud.IDCliente = cliente;
+                Solicitud.IDEmpresa = 1;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(" Error al enviar la solicitud al servidor: " + _URLGateway + ". Detalles: " + ex.Message);
             }
             if (DireccionEntrega != null)
                 return DireccionEntrega.Nombre.Trim();
