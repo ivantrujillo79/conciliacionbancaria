@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
-using Excel = Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 //using DetalleReporteEstadoCuentaConciliado = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado;
 using DetalleInformeInternosAFuturo = Conciliacion.RunTime.DatosSQL.ExportadorInformeInternosAFuturoDatos.DetalleInformeInternosAFuturo;
 using System.IO;
@@ -20,12 +20,12 @@ namespace Conciliacion.RunTime
     {
         #region Miembros privados
 
-        private Microsoft.Office.Interop.Excel.Application xlAplicacion;
+        /*private Microsoft.Office.Interop.Excel.Application xlAplicacion;
         private Microsoft.Office.Interop.Excel.Workbooks xlLibros;
         private Microsoft.Office.Interop.Excel.Workbook xlLibro;
         private Microsoft.Office.Interop.Excel.Sheets xlHojas;
         private Microsoft.Office.Interop.Excel.Worksheet xlHoja;
-        private Microsoft.Office.Interop.Excel.Range xlRango;
+        private Microsoft.Office.Interop.Excel.Range xlRango;*/
 
         private List<List<DetalleInformeInternosAFuturo>> _InformeInternosAFuturo;
         private string _Ruta;
@@ -317,13 +317,13 @@ namespace Conciliacion.RunTime
 
             //if (File.Exists(rutaCompleta)) File.Delete(rutaCompleta);
 
-            xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
+            /*xlLibro.SaveAs(rutaCompleta, Excel.XlFileFormat.xlOpenXMLWorkbook, Type.Missing, Type.Missing,
                             false, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, Type.Missing,
                             Type.Missing, Type.Missing, Type.Missing, Type.Missing);
 
             xlLibro.Close(0);
             xlLibros.Close();
-            xlAplicacion.Quit();
+            xlAplicacion.Quit();*/
         }
 
         private bool ValidarMiembros()
