@@ -266,8 +266,8 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
         try
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-            DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
+            DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             conexion.AbrirConexion(false);
             lstDetalleCuenta = informeBancario.consultaReporteEstadoCuenta(conexion, fechaInicio, fechaFin, Banco, cuenta);
         }
@@ -324,9 +324,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
        try
        {
            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-           DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-           DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
-           conexion.AbrirConexion(false);
+            DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            conexion.AbrirConexion(false);
            lstDetalle = informeBancario.consultaconsultaInformeInternosAFuturo(conexion, fechaInicio, fechaFin, Banco, cuenta);
 
            //ListasDetalle = Separat(lstDetalle);
