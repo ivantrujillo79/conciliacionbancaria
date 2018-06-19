@@ -762,7 +762,14 @@ namespace Conciliacion.RunTime.DatosSQL
                     _conexion.Comando.CommandType = CommandType.StoredProcedure;
                     _conexion.Comando.CommandText = "spCBConsultaCajasCorte";
                     _conexion.Comando.Parameters.Clear();
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = Caja;
+                    if (Caja != 0)
+                    {
+                        _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = Caja;
+                    }
+                    else
+                    {
+                        _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = DBNull.Value;
+                    }
                     SqlDataReader reader = _conexion.Comando.ExecuteReader();
 
                     if (reader.HasRows)
