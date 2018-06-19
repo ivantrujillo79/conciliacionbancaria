@@ -25,17 +25,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         
         private DateTime _FechaAOmitir = new DateTime(1900, 1, 1);
 
-        private const string CONCEPTO1 = "Portátil";
-        private const string CONCEPTO2 = "Estacionario";
-        private const string CONCEPTO3 = "Edificios";
-        private const string CONCEPTO4 = "Servicios Tecnicos";
-        private const string CONCEPTO5 = "Credito Portátil";
-        private const string CONCEPTO6 = "Credito Estacionario";
-        private const string CONCEPTO7 = "Credito Edificios";
-        private const string CONCEPTO8 = "Crédito Servicios Tecnicos";
-        private const string CONCEPTO9 = "Cobranza";
-        private const string CONCEPTO10 = "Cobranza filial";
-        private const string CONCEPTO11 = "Otros Ingresos";
+        private const string CONCEPTO1 = "PORTATIL";
+        private const string CONCEPTO2 = "ESTACIONARIO";
+        private const string CONCEPTO3 = "EDIFICIOS";
+        private const string CONCEPTO4 = "SERVICIOS TECNICOS";
+        private const string CONCEPTO5 = "CREDITO PORTATIL";
+        private const string CONCEPTO6 = "CREDITO ESTACIONARIO";
+        private const string CONCEPTO7 = "CREDITO EDIFICIOS";
+        private const string CONCEPTO8 = "CREDITO SERVICIOS TECNICOS";
+        private const string CONCEPTO9 = "COBRANZA";
+        private const string CONCEPTO10 = "COBRANZA FILIAL";
+        private const string CONCEPTO11 = "OTROS INGRESOS";
 
 
         #endregion
@@ -322,47 +322,47 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                 switch (concepto)
                 {
-                    case "CONCEPTO1":
+                    case CONCEPTO1:
                         celdaIniDatos[4, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[4, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO2":
+                    case CONCEPTO2:
                         celdaIniDatos[5, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[5, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO3":
+                    case CONCEPTO3:
                         celdaIniDatos[6, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[6, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO4":
+                    case CONCEPTO4:
                         celdaIniDatos[7, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[7, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO5":
+                    case CONCEPTO5:
                         celdaIniDatos[8, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[8, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO6":
+                    case CONCEPTO6:
                         celdaIniDatos[9, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[9, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO7":
+                    case CONCEPTO7:
                         celdaIniDatos[10, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[10, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO8":
+                    case CONCEPTO8:
                         celdaIniDatos[11, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[11, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO9":
+                    case CONCEPTO9:
                         celdaIniDatos[12, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[12, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO10":
+                    case CONCEPTO10:
                         celdaIniDatos[13, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[13, columna + 1].Value = item.Importe.ToString("C");
                         break;
-                    case "CONCEPTO11":
+                    case CONCEPTO11:
                         celdaIniDatos[14, columna].Value = item.Kilos.ToString("0,0.##");
                         celdaIniDatos[14, columna + 1].Value = item.Importe.ToString("C");
                         break;
