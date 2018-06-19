@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Globalization;
 
 
 public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.Page
@@ -115,9 +116,10 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         {                     
                
                 var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-                DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-                DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
-                conexion.AbrirConexion(false);
+
+            DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            conexion.AbrirConexion(false);
                 lstDetalle = informeBancario.consultaPosicionDiariaBanco( conexion, fechaInicio, fechaFin,(byte)caja);
             
         }

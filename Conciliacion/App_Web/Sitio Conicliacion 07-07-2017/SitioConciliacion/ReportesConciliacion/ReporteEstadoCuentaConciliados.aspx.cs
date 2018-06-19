@@ -10,6 +10,7 @@ using Conciliacion.RunTime.DatosSQL;
 using CatalogoConciliacion.ReglasNegocio;
 using Conciliacion.Migracion.Runtime.ReglasNegocio;
 using System.IO;
+using System.Globalization;
 
 public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : System.Web.UI.Page
 {
@@ -145,8 +146,8 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         try
         {
             var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
-            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
-            DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
+            DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, DrpBancos.SelectedValue == "0" ? "" : DrpBancos.SelectedItem.Text.Trim(), "", DrpEstatusConcepto.SelectedValue == "0" ? "": DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue=="0"?"": DrpEstatus.SelectedValue);
             ListasDetalle = Separat(lstDetalle);

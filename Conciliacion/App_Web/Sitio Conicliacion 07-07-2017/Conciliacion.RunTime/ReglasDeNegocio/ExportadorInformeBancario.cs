@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Globalization;
 using DetallePosicionDiariaBancos = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetallePosicionDiariaBancos;
@@ -26,17 +25,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         
         private DateTime _FechaAOmitir = new DateTime(1900, 1, 1);
 
-        private const string CONCEPTO1 = "PORTATIL";
-        private const string CONCEPTO2 = "ESTACIONARIO";
-        private const string CONCEPTO3 = "EDIFICIOS";
-        private const string CONCEPTO4 = "SERVICIOS TECNICOS";
-        private const string CONCEPTO5 = "CREDITO PORTATIL";
-        private const string CONCEPTO6 = "CREDITO ESTACIONARIO";
-        private const string CONCEPTO7 = "CREDITO EDIFICIOS";
-        private const string CONCEPTO8 = "CREDITO SERVICIOS TECNICOS";
-        private const string CONCEPTO9 = "COBRANZA";
-        private const string CONCEPTO10 = "COBRANZA FILIAL";
-        private const string CONCEPTO11 = "OTROS INGRESOS";
+        private const string CONCEPTO1 = "Portátil";
+        private const string CONCEPTO2 = "Estacionario";
+        private const string CONCEPTO3 = "Edificios";
+        private const string CONCEPTO4 = "Servicios Tecnicos";
+        private const string CONCEPTO5 = "Credito Portátil";
+        private const string CONCEPTO6 = "Credito Estacionario";
+        private const string CONCEPTO7 = "Credito Edificios";
+        private const string CONCEPTO8 = "Crédito Servicios Tecnicos";
+        private const string CONCEPTO9 = "Cobranza";
+        private const string CONCEPTO10 = "Cobranza filial";
+        private const string CONCEPTO11 = "Otros Ingresos";
 
 
         #endregion
