@@ -62,18 +62,19 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
-        if (_FormaConciliacion == 0)
-        {
-            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
-            {
-                _FormaConciliacion = 7;
-            }
-            else
-            {
-                _FormaConciliacion = 2;
-            }
-        }
+        short _FormaConciliacion = Asigna_FormaConciliacionActual();
+        //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        //if (_FormaConciliacion == 0)
+        //{
+        //    if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+        //    {
+        //        _FormaConciliacion = 7;
+        //    }
+        //    else
+        //    {
+        //        _FormaConciliacion = 2;
+        //    }
+        //}
 
 
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -1799,10 +1800,27 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
                                       mes + "&TipoConciliacion=" + Convert.ToSByte(Request.QueryString["TipoConciliacion"]) + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
+
+    private short Asigna_FormaConciliacionActual()
+    {
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+            {
+                _FormaConciliacion = 7;
+            }
+            else
+            {
+                _FormaConciliacion = 2;
+            }
+        }
+        return _FormaConciliacion;
+    }
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {
         bool resultado = false;
-        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        short _FormaConciliacion = Asigna_FormaConciliacionActual();
         //Leer Variables URL 
         cargarInfoConciliacionActual();
 
