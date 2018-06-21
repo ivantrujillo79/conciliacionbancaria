@@ -783,7 +783,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// </summary>
     private void HabilitarComisiones(SolicitudConciliacion obSolicitud)
     {
-        byte comisionesEDENRED = Convert.ToByte(parametros.ValorParametro(30, "ComisionesEDENRED"));
+        byte comisionesEDENRED = 0;
+        if (parametros.ValorParametro(30, "ComisionesEDENRED") != string.Empty)
+            comisionesEDENRED = Convert.ToByte(parametros.ValorParametro(30, "ComisionesEDENRED"));
 
         if (obSolicitud.ConsultaPedido() && comisionesEDENRED == 1)
         {
