@@ -31,6 +31,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int cliente;
         string nombre;
         string pedidoreferencia;
+        short producto;
         decimal saldo;
 
         #region Constructores
@@ -286,6 +287,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return saldo; }
             set { saldo = value; }
+        }
+
+        public short Producto
+        {
+            get { return producto; }
+            set { producto = value; }
         }
 
         #endregion
