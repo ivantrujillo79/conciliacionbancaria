@@ -4635,7 +4635,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToDecimal(reader["Retiro"]),
                                                                 Convert.ToInt32(reader["AñoExterno"]),
                                                                 this.implementadorMensajes);
-                        dato.Producto = (short)reader["Producto"];
+                        dato.TipoProducto = (byte)reader["TipoProducto"];
 
                         datos.Add(dato);
                     }
