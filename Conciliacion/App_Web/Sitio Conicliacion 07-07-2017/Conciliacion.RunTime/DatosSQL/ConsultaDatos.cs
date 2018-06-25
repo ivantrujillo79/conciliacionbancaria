@@ -4528,7 +4528,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, Conexion _conexion)
+        public override bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, int celula, int añoped, Conexion _conexion)
         {
             bool valido = false;
             try
@@ -4542,6 +4542,10 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = folio;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.Int)).Value = mes;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = pedido;
+
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Celula", System.Data.SqlDbType.Int)).Value = celula;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Añoped", System.Data.SqlDbType.Int)).Value = añoped;
+
                 _conexion.Comando.ExecuteNonQuery();
 
                 valido = true;
