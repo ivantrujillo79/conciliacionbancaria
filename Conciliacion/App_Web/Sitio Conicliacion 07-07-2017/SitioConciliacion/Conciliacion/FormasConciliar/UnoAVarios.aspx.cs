@@ -996,7 +996,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
 
-            ActualizarPopUp_CargaArchivo(Convert.ToInt32(c.CuentaBancaria.Replace(" ", "").Substring(c.CuentaBancaria.Trim().Length-6, 5)));
+            string strCuentaBancaria;
+            if (c.CuentaBancaria.Trim().Length <= 5)
+                strCuentaBancaria = c.CuentaBancaria.Trim();
+            else
+                strCuentaBancaria = c.CuentaBancaria.Replace(" ", "").Substring(c.CuentaBancaria.Trim().Length - 6, 5);
+            ActualizarPopUp_CargaArchivo(Convert.ToInt32(strCuentaBancaria));
 
         }
         catch (SqlException ex)
