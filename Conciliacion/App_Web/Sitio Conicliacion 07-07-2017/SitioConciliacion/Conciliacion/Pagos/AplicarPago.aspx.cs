@@ -27,6 +27,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     public int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno, sucursalConciliacion;
     public short mesConciliacion, tipoConciliacion;
     public MovimientoCajaDatos movimientoCajaAlta = null;
+    //private RTGMGateway.SolicitudActualizarPedido solicitudActualizaPedido = new RTGMGateway.SolicitudActualizarPedido();
+    //private RTGMGateway.RTGMActualizarPedido ActualizaPedido = new RTGMGateway.RTGMActualizarPedido();
     #endregion
 
     #region Eventos de la Forma
@@ -609,9 +611,26 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
         return resultado;
     }
+
+    //private void PreparaPedidoRTGM(ReferenciaConciliadaPedido objPedido)
+    //{
+    //    solicitudActualizaPedido.TipoActualizacion = RTGMCore.TipoActualizacion.Liquidacion;
+    //    solicitudActualizaPedido.Fuente = RTGMCore.Fuente.Sigamet;
+    //    solicitudActualizaPedido.IDEmpresa = 1;
+    //    //solicitudActualizaPedido.Portatil = ? booleano;
+    //    //solicitudActualizaPedido.Usuario = ? "ROPIMA";
+
+    //    RTGMCore.Pedido pedido = new RTGMCore.Pedido();
+    //    pedido.IDPedido = objPedido.Pedido;
+    //    pedido.IDZona = objPedido.CelulaPedido;
+    //    pedido.AnioPed = objPedido.AñoPedido;
+
+    //    solicitudActualizaPedido.Pedidos.Add(pedido);
+    //}
+
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
-        Conexion conexion  = new Conexion(); ;
+        Conexion conexion  = new Conexion();
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -665,7 +684,19 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
                     {
-                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(corporativoConciliacion, sucursalConciliacion, añoConciliacion,  folioConciliacion, mesConciliacion,objPedido.Pedido, conexion);
+                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
+                            corporativoConciliacion, 
+                            sucursalConciliacion, 
+                            añoConciliacion,  
+                            folioConciliacion, 
+                            mesConciliacion,
+                            objPedido.Pedido, 
+                            objPedido.CelulaPedido,
+                            objPedido.AñoPedido,
+                            conexion);
+
+                        //PreparaPedidoRTGM(objPedido);
+
                     }
 
                     if (aplicacobranza == "1")
@@ -760,12 +791,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             objFacturasComplemento.FolioConciliacion = folioConciliacion;
             objFacturasComplemento.Guardar(conexion);
 
+            //if ( ! EjecutaActualizaPedidoRTGM() )
+            //    throw new Exception("Ocurrió un error en GMGateway.");
+
             conexion.Comando.Transaction.Commit();
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
-        {
-            
+        {            
             App.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar .Detalles: "+ex.Message);//RRV
             try
             {
@@ -778,6 +811,25 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             
         }
     }
+
+    //private bool EjecutaActualizaPedidoRTGM()
+    //{
+    //    bool exito = true; 
+    //    //SeguridadCB.Public.Parametros parametros;
+    //    //parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+    //    AppSettingsReader settings = new AppSettingsReader();
+    //    string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+    //    if (_URLGateway != string.Empty)
+    //    {
+    //        List<RTGMCore.Pedido> lstPedidosRepuesta = new List<RTGMCore.Pedido>();
+    //        ActualizaPedido.URLServicio = _URLGateway;
+    //        lstPedidosRepuesta = ActualizaPedido.ActualizarPedido(solicitudActualizaPedido);
+    //        if (lstPedidosRepuesta.Count > 0)
+    //            if (lstPedidosRepuesta[0].Message != "NO HAY ERROR")
+    //                exito = false;
+    //    }
+    //    return exito;
+    //}
 
     protected void grvPagos_RowCreated(object sender, GridViewRowEventArgs e)
     {
