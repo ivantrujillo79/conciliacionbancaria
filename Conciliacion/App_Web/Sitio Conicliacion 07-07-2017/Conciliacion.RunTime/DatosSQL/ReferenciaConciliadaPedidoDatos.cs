@@ -95,6 +95,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@StatusMovimiento", System.Data.SqlDbType.VarChar).Value = this.StatusMovimiento;
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
+                    if (this.ClientePago == 0)
+                        this.ClientePago = this.Cliente;
+                    comando.Parameters.Add("@ClientePago", System.Data.SqlDbType.VarChar).Value = this.ClientePago;
 
                     if (this.ImporteComision > 0m)
                     {

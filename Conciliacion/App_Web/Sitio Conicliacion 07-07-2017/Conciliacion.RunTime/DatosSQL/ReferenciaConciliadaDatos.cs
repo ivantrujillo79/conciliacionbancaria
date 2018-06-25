@@ -91,6 +91,10 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
 
+                    //if (this.ClientePago == 0)
+                    //    this.ClientePago = this.;
+                    comando.Parameters.Add("@ClientePago", System.Data.SqlDbType.Int).Value = this.ClientePago;
+
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();                   
                 }

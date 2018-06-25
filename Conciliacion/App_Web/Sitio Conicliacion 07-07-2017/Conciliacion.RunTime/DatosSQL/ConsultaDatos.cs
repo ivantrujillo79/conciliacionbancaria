@@ -198,8 +198,8 @@ namespace Conciliacion.RunTime.DatosSQL
                 {
                     stackTrace = new StackTrace();
                     this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              this.GetType().Name + "\n\r" + 
+                                                              //"Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
                     stackTrace = null;
                 }

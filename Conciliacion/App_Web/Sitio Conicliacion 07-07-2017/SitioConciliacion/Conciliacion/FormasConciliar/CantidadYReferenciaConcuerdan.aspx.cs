@@ -1830,46 +1830,49 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
-            if (objSolicitdConciliacion.ConsultaArchivo())  
+            if (objSolicitdConciliacion.ConsultaArchivo())
             {
                 if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)
-                { 
+                {
                     listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
                     if (listaReferenciaConciliada != null)
                         listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
-            }
-
-            if (objSolicitdConciliacion.ConsultaPedido())
+        }
+        if (objSolicitdConciliacion.ConsultaPedido())
             {
                 if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
                 {
                     listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
                     if (listaReferenciaConciliadaPedido != null)
                         listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
                 }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
-            }
+        }
         //}RRV
         //elseRRV
         //{RRV
         //    if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0) RRV
         //    {RRV
-                //ReferenciaConciliada rc;
+        //ReferenciaConciliada rc;
 
-                //foreach (GridViewRow un in grvCantidadReferenciaConcuerdanArchivos.Rows)
-                //{
-                //    int folioExt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioExt"]);
-                //    int folioInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioInt"]);
-                //    int secuenciaEx = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaExt"]);
-                //    int secuenciaInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaInt"]);
-                //    rc = listaReferenciaConciliada.Single(x => x.Secuencia == secuenciaEx && x.Folio == folioExt && x.SecuenciaInterno == secuenciaInt && x.FolioInterno == folioInt);
-                //    resultado = rc.Guardar();
-                //}
-                
+        //foreach (GridViewRow un in grvCantidadReferenciaConcuerdanArchivos.Rows)
+        //{
+        //    int folioExt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioExt"]);
+        //    int folioInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioInt"]);
+        //    int secuenciaEx = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaExt"]);
+        //    int secuenciaInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaInt"]);
+        //    rc = listaReferenciaConciliada.Single(x => x.Secuencia == secuenciaEx && x.Folio == folioExt && x.SecuenciaInterno == secuenciaInt && x.FolioInterno == folioInt);
+        //    resultado = rc.Guardar();
+        //}
+
         //        listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;RRV
         //        if (listaReferenciaConciliada != null) listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());RRV
         //    }RRV

@@ -86,6 +86,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int? foliotraspaso;
 
         public int cliente = 1;
+        public int clientepago;
 
         public DetalleSaldoAFavor DetalleSaldo;
         
@@ -724,6 +725,18 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     cliente = referen.Cliente;
                 }
                 return true;
+            }
+        }
+
+        public int ClientePago
+        {
+            set
+            {
+                clientepago = value;
+                foreach (ReferenciaConciliadaPedido referen in this.listareferenciaconciliada)
+                {
+                    referen.ClientePago = clientepago;
+                }
             }
         }
 

@@ -1981,6 +1981,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
                         int clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno);
+                        rfExterno.ClientePago = clienteSaldoAFavor;
 
                         AgregarComisionAExterno(rfExterno);
 
@@ -2650,7 +2651,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            throw ex;
+            //throw ex;
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
         if (DireccionEntrega != null)
             return DireccionEntrega.Nombre.Trim();
