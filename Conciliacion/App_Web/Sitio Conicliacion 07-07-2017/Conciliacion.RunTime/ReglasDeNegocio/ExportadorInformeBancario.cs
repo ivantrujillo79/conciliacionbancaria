@@ -6,6 +6,7 @@ using System.IO;
 using System.Globalization;
 using DetallePosicionDiariaBancos = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetallePosicionDiariaBancos;
 using OfficeOpenXml;
+using System.Drawing;
 
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
@@ -37,7 +38,30 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private const string CONCEPTO10 = "COBRANZA FILIAL";
         private const string CONCEPTO11 = "OTROS INGRESOS";
 
+        private const string CONCEPTO12 = "EFECTIVO";
+        private const string CONCEPTO13 = "CHEQUES";
+        private const string CONCEPTO14 = "TRANSFERENCIA";
+        private const string CONCEPTO15 = "TARJETA DE CREDITO";
+        private const string CONCEPTO16 = "VALES DE DESPENSA";
+        private const string CONCEPTO17 = "TARJETA DE DEBITO";
+        private const string CONCEPTO18 = "APLICACION DE ANTICIPOS";
+        private const string CONCEPTO19 = "NOMINA";
+        private const string CONCEPTO20 = "OTROS GASTOS";
+        private const string CONCEPTO21 = "TOTAL DEPOSITADO";
+        private const string CONCEPTO22 = "VALES Y APLICACION DE ANTICIPO";
+        private const string CONCEPTO23 = "TOTAL NETO DEPOSITADO";
 
+        private const string CONCEPTO24 = "CHEQUES BANAMEX 0671084374";
+        private const string CONCEPTO25 = "CHEQUES BANCOMER 0671084374";
+        private const string CONCEPTO26 = "CHEQUES BANORTE 0671084374";
+        private const string CONCEPTO27 = "CHEQUES HSBC 0671084374";
+        private const string CONCEPTO28 = "CHEQUES OTROS 0671084374";
+        private const string CONCEPTO29 = "EFECTIVO 0671084374";
+        private const string CONCEPTO30 = "EFECTIVO COBRANZA 0671084374";
+        private const string CONCEPTO31 = "EFECTIVO LIQUIDACION 0671084374";
+        private const string CONCEPTO32 = "TARJETA BANORTE 0671084374";
+
+  
         #endregion
 
         #region Constructores
@@ -184,7 +208,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return excel;
         }
 
-      
+
+        private static void CreateSection(ExcelRange basePosition)
+        {
+            var rangeToMerge = basePosition.Offset(0, 0, 2, 1);
+            rangeToMerge.Merge = true;
+        }
 
 
         public ExcelPackage CrearEncabezado(ExcelPackage excelPackage, string nombrehoja)
@@ -203,7 +232,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             //Excel.Range celdaKilos = null;
             //Excel.Range celdaFecha = null;
 
-            int celda = 6;
+            int celda = 1;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
             string dia;
 
@@ -217,18 +246,34 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             ExcelRange xlRango = xlHoja.Cells["A1:H1"];
             
-                xlHoja.Cells["A1"].Value = "REPORTE ";
-                xlHoja.Cells["B1"].Value = "POSICION DIARIA DE BANCOS ";
+                //xlHoja.Cells["A1"].Value = "REPORTE ";
+                //xlHoja.Cells["B1"].Value = "POSICION DIARIA DE BANCOS ";
                 xlRango = xlHoja.Cells["A1"];
                 xlRango.Value = "Reporte\nPOSICION DIARIA DE BANCOS";
-                xlRango = xlHoja.Cells["A1:E2"];
+                xlRango = xlHoja.Cells["A1"];
                 xlRango.Merge = true;
                 xlRango.Style.Font.Bold = true;
-                //xlRango.RowHeight = 15;
-                //xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
-                //xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
 
-                try
+            xlRango.Style.Font.Bold = true;
+            xlRango.Style.Font.Size = 12;
+            xlRango.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            xlRango.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            xlRango.Style.Fill.BackgroundColor.SetColor(Color.DeepSkyBlue);
+            xlRango.Style.Font.Color.SetColor(Color.Black);
+
+            xlRango = xlHoja.Cells["A2"];
+            xlRango.Value = "CAJA " + nombrehoja;
+            xlRango.Merge = true;
+            xlRango.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            xlRango.Style.Font.Bold = true;
+
+
+
+            //xlRango.RowHeight = 15;
+            //xlRango.Borders.LineStyle = Excel.XlLineStyle.xlDouble;
+            //xlRango.Interior.Color = Excel.XlRgbColor.rgbSkyBlue;
+
+            try
             {
                 foreach (DateTime fecha in _Fechas)
                 {
@@ -240,17 +285,44 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     // Día
                     celdaDiaInicial = xlHoja.Cells[1, celda];
                     celdaDiaFinal = xlHoja.Cells[1, celda + 1];
-                    xlRango = xlHoja.Cells[1,celda + 1];
-                    xlRango.Merge = true;
-                    xlRango.Value = dia;
+
+                    var range = xlHoja.Cells[1, celda+1, 1, celda+2];//Address "b1:c1                    
+                    range.Merge = true;
+                    range.Value = dia;
+                    range.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.White);
+                    enmarcarRegion(range);          
+
 
                     // Kilos
                     celdaKilos = xlHoja.Cells[2, celda + 1];
-                        celdaKilos.Value = "KILOS";
+                    celdaKilos.Value = "KILOS";
+                    celdaKilos.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    celdaKilos.Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaKilos.Style.Border.Top.Color.SetColor(Color.Black);
+                    celdaKilos.Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaKilos.Style.Border.Left.Color.SetColor(Color.Black);
+                    celdaKilos.Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaKilos.Style.Border.Right.Color.SetColor(Color.Black);
+                    celdaKilos.Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaKilos.Style.Border.Bottom.Color.SetColor(Color.Black);
+
+                    // celdaKilos.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
 
                     // Fecha
                     celdaFecha = xlHoja.Cells[2, celda + 2];
                     celdaFecha.Value = fecha.ToString("d-MMM-yyyy", cultureInfo);
+                    celdaFecha.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    celdaFecha.Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaFecha.Style.Border.Top.Color.SetColor(Color.Black);
+                    celdaFecha.Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaFecha.Style.Border.Left.Color.SetColor(Color.Black);
+                    celdaFecha.Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaFecha.Style.Border.Right.Color.SetColor(Color.Black);
+                    celdaFecha.Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+                    celdaFecha.Style.Border.Bottom.Color.SetColor(Color.Black);
+                    //celdaFecha.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
 
                     //// Formato
                     //xlRango = xlHoja.Cells[1, celda+3];
@@ -276,13 +348,30 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 //if (celdaFecha != null) Marshal.ReleaseComObject(celdaFecha);
             }
 
+            xlHoja.Cells[xlHoja.Dimension.Address].AutoFitColumns();
+
             return excelPackage;
         }
+
+        private void enmarcarRegion(ExcelRange Rng)
+        {
+            Rng.Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+           // Rng.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            Rng.Style.Border.Top.Color.SetColor(Color.Black);
+            Rng.Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+            Rng.Style.Border.Left.Color.SetColor(Color.Black);
+            Rng.Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+            Rng.Style.Border.Right.Color.SetColor(Color.Black);
+            Rng.Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+            Rng.Style.Border.Bottom.Color.SetColor(Color.Black);
+        }
+
+      
 
         private void exportarPosicionDiariaBancos(ExcelPackage excelPackage)
         {
             string concepto;
-            int columna;
+            int columna = 1;
 
             
             var xlHoja = excelPackage.Workbook.Worksheets[excelPackage.Workbook.Worksheets.Count()];
@@ -309,65 +398,175 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             //celdaDiaIni.Font.Bold = true;
 
             // Seleccionar cuadro de celdas donde se imprimirán los datos
-            ExcelRange celdaIniDatos = xlHoja.Cells["A4:B4"];
+            ExcelRange celdaIniDatos = xlHoja.Cells["A4:A4"];
 
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
-                if (item.Fecha == DateTime.MinValue || item.Fecha == _FechaAOmitir)
-                    break;
-
+                if (item.Fecha != _FechaAOmitir)
+                {
                 concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
                 columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
-                                      .Columna;
+                                    .Columna;
 
-                switch (concepto)
-                {
-                    case CONCEPTO1:
-                        celdaIniDatos[4, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[4, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO2:
-                        celdaIniDatos[5, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[5, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO3:
-                        celdaIniDatos[6, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[6, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO4:
-                        celdaIniDatos[7, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[7, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO5:
-                        celdaIniDatos[8, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[8, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO6:
-                        celdaIniDatos[9, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[9, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO7:
-                        celdaIniDatos[10, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[10, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO8:
-                        celdaIniDatos[11, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[11, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO9:
-                        celdaIniDatos[12, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[12, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO10:
-                        celdaIniDatos[13, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[13, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    case CONCEPTO11:
-                        celdaIniDatos[14, columna].Value = item.Kilos.ToString("0,0.##");
-                        celdaIniDatos[14, columna + 1].Value = item.Importe.ToString("C");
-                        break;
-                    default:
-                        break;
+                    columna = columna + 1;
+
+                    switch (concepto)
+                    {
+                        case CONCEPTO1:
+                            celdaIniDatos[4, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[4, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO2:
+                            celdaIniDatos[5, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[5, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO3:
+                            celdaIniDatos[6, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[6, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO4:
+                            celdaIniDatos[7, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[7, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO5:
+                            celdaIniDatos[8, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[8, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO6:
+                            celdaIniDatos[9, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[9, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO7:
+                            celdaIniDatos[10, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[10, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO8:
+                            celdaIniDatos[11, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[11, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO9:
+                            celdaIniDatos[12, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[12, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO10:
+                            celdaIniDatos[13, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[13, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO11:
+                            celdaIniDatos[14, columna].Value = item.Kilos.ToString("0,0.##");
+                            celdaIniDatos[14, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+
+                        case CONCEPTO12:
+                            celdaIniDatos[21, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO13:
+                            celdaIniDatos[22, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+                        case CONCEPTO14:
+                            celdaIniDatos[23, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO15:
+                            celdaIniDatos[24, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO16:
+                            celdaIniDatos[25, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO17:
+                            celdaIniDatos[26, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO18:
+                            celdaIniDatos[27, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO19:
+                            celdaIniDatos[28, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO20:
+                            celdaIniDatos[29, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO21:
+                            celdaIniDatos[30, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO22:
+                            celdaIniDatos[31, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO23:
+                            celdaIniDatos[32, columna + 1].Value = item.Importe.ToString("C");
+                            break;
+
+                        case CONCEPTO24:
+                            celdaIniDatos[35, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
+                            break;
+
+                        case CONCEPTO25:
+                            celdaIniDatos[36, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Lime);
+                            break;
+
+                        case CONCEPTO26:
+                            celdaIniDatos[37, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Thistle);
+                            break;
+
+
+                        case CONCEPTO27:
+                            celdaIniDatos[38, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.BlanchedAlmond);
+                            break;
+
+
+                        case CONCEPTO28:
+                            celdaIniDatos[39, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DodgerBlue);
+                            break;
+
+
+                        case CONCEPTO29:
+                            celdaIniDatos[40, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DarkOrchid);
+                            break;
+
+
+                        case CONCEPTO30:
+                            celdaIniDatos[41, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Salmon);
+                            break;
+
+                        case CONCEPTO31:
+                            celdaIniDatos[42, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleVioletRed);
+                            break;
+
+                        case CONCEPTO32:
+                            celdaIniDatos[43, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                            break;
+
+                        default:
+                            break;
+
+                    }
+
                 }
             }
 
@@ -389,12 +588,23 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             celdaDiaIniInf[31, 1].Value = "Vales y aplicación de ant.";
             celdaDiaIniInf[32, 1].Value = "Total neto depositado";
 
+            celdaDiaIniInf[34, 1].Value = "Diferencia";
 
-            //var sheet = excelPackage.Workbook.Worksheets.Add("Formula");
+            celdaDiaIniInf[35, 1].Value = "CHEQUES BANAMEX 0671084374";
+            celdaDiaIniInf[36, 1].Value = "CHEQUES BANCOMER 0671084374";
+            celdaDiaIniInf[37, 1].Value = "CHEQUES BANORTE 0671084374";
+            celdaDiaIniInf[38, 1].Value = "CHEQUES HSBC 0671084374";
+            celdaDiaIniInf[39, 1].Value = "CHEQUES OTROS 0671084374";
+            celdaDiaIniInf[40, 1].Value = "EFECTIVO 0671084374";
+            celdaDiaIniInf[41, 1].Value = "EFECTIVO COBRANZA 0671084374";
+            celdaDiaIniInf[42, 1].Value = "EFECTIVO LIQUIDACIÓN 0671084374";
+            celdaDiaIniInf[43, 1].Value = "TARJETA BANORTE 0671084374";
 
-            xlHoja.Cells["F21"].Formula = "SUM(F3:F17)";
-            xlHoja.Cells["F22"].Formula = "SUM(G3:G17)";
-            xlHoja.Calculate();
+           //var sheet = excelPackage.Workbook.Worksheets.Add("Formula");
+
+            //xlHoja.Cells["F21"].Formula = "SUM(F3:F17)";
+            //xlHoja.Cells["F22"].Formula = "SUM(G3:G17)";
+            //xlHoja.Calculate();
 
 
             //celdaDiaIni[34, 1].Value = "Total neto depositado";
