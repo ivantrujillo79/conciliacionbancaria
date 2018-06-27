@@ -4729,6 +4729,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["PedidoReferencia"]),
                                                                 Convert.ToInt32(reader["AñoExterno"]),
                                                                 this.implementadorMensajes);
+                        dato.TipoProducto = (byte)reader["TipoProducto"];
+
                         datos.Add(dato);
                     }
                 }
