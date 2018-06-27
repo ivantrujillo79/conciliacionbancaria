@@ -34,6 +34,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         byte tipoproducto;
         decimal saldo;
 
+        bool portatil;
+
         #region Constructores
 
         public ReferenciaConciliadaPedido(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion, 
@@ -162,6 +164,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.nombre = "";
             this.pedidoreferencia = "";
 
+            this.tipoproducto = 0;
+            this.portatil = false;
         }
 
         #endregion
@@ -295,6 +299,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { tipoproducto = value; }
         }
 
+        public bool Portatil
+        {
+            get { return portatil; }
+            set { portatil = value; }
+        }
+
         #endregion
 
 
@@ -304,7 +314,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract bool ActualizaPagosPorAplicar(Conexion _conexion);
 
-
+        public abstract bool PedidoActualizaSaldoCRM(string URLGateway);
 
         public abstract ReferenciaConciliadaPedido CrearObjeto();
 
