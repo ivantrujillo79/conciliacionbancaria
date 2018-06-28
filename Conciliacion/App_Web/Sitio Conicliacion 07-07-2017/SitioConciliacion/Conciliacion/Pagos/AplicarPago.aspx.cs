@@ -659,7 +659,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             short mesConciliacion = 0;
             short tipoConciliacion = 0;
 
-            conexion.AbrirConexion(true);
+            conexion.AbrirConexion(true,true);
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {

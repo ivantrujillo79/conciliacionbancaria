@@ -52,3 +52,4 @@ C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sit
 C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.dll
 C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.pdb
 C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csprojResolveAssemblyReference.cache
+C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Debug\SeguridadWeb.csprojAssemblyReference.cache
