@@ -154,3 +154,23 @@ C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Siti
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.dll.config
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\log4net.xml
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\nunit.framework.xml
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.Migracion.Runtime.pdb
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\SeguridadCB.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\EPPlus.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\log4net.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\nunit.framework.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\Conciliacion.RunTime.pdb
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\SeguridadCB.pdb
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\EPPlus.xml
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.pdb
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\RTGMGateway.dll.config
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\log4net.xml
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\bin\Debug\nunit.framework.xml
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csprojResolveAssemblyReference.cache
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csproj.CoreCompileInputs.cache
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.csproj.CopyComplete
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.Migracio.Runtime\obj\Debug\Conciliacion.Migracion.Runtime.pdb

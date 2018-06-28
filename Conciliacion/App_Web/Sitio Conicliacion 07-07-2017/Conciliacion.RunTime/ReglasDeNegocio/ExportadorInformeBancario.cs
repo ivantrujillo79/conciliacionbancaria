@@ -61,7 +61,73 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private const string CONCEPTO31 = "EFECTIVO LIQUIDACION 0671084374";
         private const string CONCEPTO32 = "TARJETA BANORTE 0671084374";
 
-  
+        private decimal SumaConcepto1 = 0;
+        private decimal SumaConcepto2 = 0;
+        private decimal SumaConcepto3 = 0;
+        private decimal SumaConcepto4 = 0;
+        private decimal SumaConcepto5 = 0;
+        private decimal SumaConcepto6 = 0;
+        private decimal SumaConcepto7 = 0;
+        private decimal SumaConcepto8 = 0;
+        private decimal SumaConcepto9 = 0;
+        private decimal SumaConcepto10 = 0;
+        private decimal SumaConcepto11 = 0;
+        private decimal SumaConcepto12 = 0;
+        private decimal SumaConcepto13 = 0;
+        private decimal SumaConcepto14 = 0;
+        private decimal SumaConcepto15 = 0;
+        private decimal SumaConcepto16 = 0;
+        private decimal SumaConcepto17 = 0;
+        private decimal SumaConcepto18 = 0;
+        private decimal SumaConcepto19 = 0;
+        private decimal SumaConcepto20 = 0;
+        private decimal SumaConcepto21 = 0;
+        private decimal SumaConcepto22 = 0;
+        private decimal SumaConcepto23 = 0;
+        private decimal SumaConcepto24 = 0;
+        private decimal SumaConcepto25 = 0;
+        private decimal SumaConcepto26 = 0;
+        private decimal SumaConcepto27 = 0;
+        private decimal SumaConcepto28 = 0;
+        private decimal SumaConcepto29 = 0;
+        private decimal SumaConcepto30 = 0;
+        private decimal SumaConcepto31 = 0;
+        private decimal SumaConcepto32 = 0;
+
+        private decimal SumaConceptoImporte1 = 0;
+        private decimal SumaConceptoImporte2 = 0;
+        private decimal SumaConceptoImporte3 = 0;
+        private decimal SumaConceptoImporte4 = 0;
+        private decimal SumaConceptoImporte5 = 0;
+        private decimal SumaConceptoImporte6 = 0;
+        private decimal SumaConceptoImporte7 = 0;
+        private decimal SumaConceptoImporte8 = 0;
+        private decimal SumaConceptoImporte9 = 0;
+        private decimal SumaConceptoImporte10 = 0;
+        private decimal SumaConceptoImporte11 = 0;
+        private decimal SumaConceptoImporte12 = 0;
+        private decimal SumaConceptoImporte13 = 0;
+        private decimal SumaConceptoImporte14 = 0;
+        private decimal SumaConceptoImporte15 = 0;
+        private decimal SumaConceptoImporte16 = 0;
+        private decimal SumaConceptoImporte17 = 0;
+        private decimal SumaConceptoImporte18 = 0;
+        private decimal SumaConceptoImporte19 = 0;
+        private decimal SumaConceptoImporte20 = 0;
+        private decimal SumaConceptoImporte21 = 0;
+        private decimal SumaConceptoImporte22 = 0;
+        private decimal SumaConceptoImporte23 = 0;
+        private decimal SumaConceptoImporte24 = 0;
+        private decimal SumaConceptoImporte25 = 0;
+        private decimal SumaConceptoImporte26 = 0;
+        private decimal SumaConceptoImporte27 = 0;
+
+        private decimal SumaConceptoImporte28 = 0;
+        private decimal SumaConceptoImporte29 = 0;
+        private decimal SumaConceptoImporte30 = 0;
+        private decimal SumaConceptoImporte31 = 0;
+        private decimal SumaConceptoImporte32 = 0;
+
         #endregion
 
         #region Constructores
@@ -159,7 +225,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #endregion
 
-        public void generarPosicionDiariaBancos()
+        public void generarTotales()
+        {
+          
+
+        }
+
+        public void generarPosicionDiariaBancos(int Esfinal )
         {
             try
             {
@@ -174,9 +246,18 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 
                 agruparPorFecha();
-                CrearEncabezado(excelPackage, caja );
-                exportarPosicionDiariaBancos(excelPackage);
-
+                if (Esfinal ==0 )
+                {
+                    CrearEncabezado(excelPackage, _NombreHoja);
+                    exportarPosicionDiariaBancos(excelPackage, _NombreHoja);
+                    //Hasta aquí, se genera lo qe viene en el query, falta la hoja de totales
+                }
+                else
+                {
+                    CrearEncabezado(excelPackage, "TOTAL");
+                    exportarPosicionDiariaBancos(excelPackage, "TOTAL");
+                }
+               
                 excelPackage.Save();
 
             }
@@ -368,7 +449,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
       
 
-        private void exportarPosicionDiariaBancos(ExcelPackage excelPackage)
+        private void exportarPosicionDiariaBancos(ExcelPackage excelPackage, String descripcioncaja )
         {
             string concepto;
             int columna = 1;
@@ -405,167 +486,350 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 if (item.Fecha != _FechaAOmitir)
                 {
                 concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
-                columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
-                                    .Columna;
+                    if (descripcioncaja != "TOTAL")
+                    {
+                        columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
+                                     .Columna;
+                    }
+
+                    else
+                    {
+                        columna = 1;
+                        item.Kilos = 0;
+                        item.Importe = 0;
+                    }
+
+               
 
                     columna = columna + 1;
+
+
 
                     switch (concepto)
                     {
                         case CONCEPTO1:
-                            celdaIniDatos[4, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[4, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[4, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[4, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto1 = SumaConcepto1 + item.Kilos;
+                            SumaConceptoImporte1 = SumaConceptoImporte1 + item.Importe;
+
+                            if (descripcioncaja =="TOTAL")
+                            {
+                                celdaIniDatos[4, columna].Value = SumaConcepto1;
+                                celdaIniDatos[4, columna + 1].Value = SumaConceptoImporte1;
+                            }
+                            
+
                             break;
                         case CONCEPTO2:
-                            celdaIniDatos[5, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[5, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[5, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[5, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto2 = SumaConcepto2 + item.Kilos;
+                            SumaConceptoImporte2 = SumaConceptoImporte2 + item.Importe;
+
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[5, columna].Value = SumaConcepto2;
+                                celdaIniDatos[5, columna + 1].Value = SumaConceptoImporte2;
+                            }
+
+
                             break;
                         case CONCEPTO3:
-                            celdaIniDatos[6, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[6, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[6, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[6, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto3 = SumaConcepto3 + item.Kilos;
+                            SumaConceptoImporte3 = SumaConceptoImporte3 + item.Importe;
+
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[6, columna].Value = SumaConcepto3;
+                                celdaIniDatos[6, columna + 1].Value = SumaConceptoImporte3;
+                            }
                             break;
                         case CONCEPTO4:
-                            celdaIniDatos[7, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[7, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[7, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[7, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto4 = SumaConcepto4 + item.Kilos;
+                            SumaConceptoImporte4 = SumaConceptoImporte4 + item.Importe;
+
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[7, columna].Value = SumaConcepto4;
+                                celdaIniDatos[7, columna + 1].Value = SumaConceptoImporte4;
+                            }
+
                             break;
                         case CONCEPTO5:
-                            celdaIniDatos[8, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[8, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[8, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[8, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto5 = SumaConcepto5 + item.Kilos;
+                            SumaConceptoImporte5= SumaConceptoImporte5 + item.Importe;
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[8, columna].Value = SumaConcepto5;
+                                celdaIniDatos[8, columna + 1].Value = SumaConceptoImporte5;
+                            }
+
                             break;
                         case CONCEPTO6:
-                            celdaIniDatos[9, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[9, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[9, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[9, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto6 = SumaConcepto6 + item.Kilos;
+                            SumaConceptoImporte6 = SumaConceptoImporte6 + item.Importe;
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[9, columna].Value = SumaConcepto6;
+                                celdaIniDatos[9, columna + 1].Value = SumaConceptoImporte6;
+                            }
                             break;
                         case CONCEPTO7:
-                            celdaIniDatos[10, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[10, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[10, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[10, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto7 = SumaConcepto7 + item.Kilos;
+                            SumaConceptoImporte7 = SumaConceptoImporte7 + item.Importe;
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[10, columna].Value = SumaConcepto7;
+                                celdaIniDatos[10, columna + 1].Value = SumaConceptoImporte7;
+                            }
                             break;
                         case CONCEPTO8:
-                            celdaIniDatos[11, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[11, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[11, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[11, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto8 = SumaConcepto8 + item.Kilos;
+                            SumaConceptoImporte8 = SumaConceptoImporte8 + item.Importe;
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[11, columna].Value = SumaConcepto8;
+                                celdaIniDatos[11, columna + 1].Value = SumaConceptoImporte8;
+                            }
                             break;
                         case CONCEPTO9:
-                            celdaIniDatos[12, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[12, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[12, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[12, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto9 = SumaConcepto9 + item.Kilos;
+                            SumaConceptoImporte9 = SumaConceptoImporte9 + item.Importe;
+
+                            if (descripcioncaja == "TOTAL")
+                            {
+                                celdaIniDatos[12, columna].Value = SumaConcepto9;
+                                celdaIniDatos[12, columna + 1].Value = SumaConceptoImporte9;
+                            }
+
                             break;
                         case CONCEPTO10:
-                            celdaIniDatos[13, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[13, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[13, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[13, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto10 = SumaConcepto10 + item.Kilos;
+                            SumaConceptoImporte10 = SumaConceptoImporte10 + item.Importe;
                             break;
                         case CONCEPTO11:
-                            celdaIniDatos[14, columna].Value = item.Kilos.ToString("0,0.##");
-                            celdaIniDatos[14, columna + 1].Value = item.Importe.ToString("C");
-                            break;
+                            celdaIniDatos[14, columna].Value = item.Kilos;
+                            celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
+                            celdaIniDatos[14, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto11 = SumaConcepto11 + item.Kilos;
+                            SumaConceptoImporte11 = SumaConceptoImporte11 + item.Importe;
+                            break;                 
+
+                        
 
 
                         case CONCEPTO12:
-                            celdaIniDatos[21, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[21, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto12 = SumaConcepto11 + item.Kilos;
+                            SumaConceptoImporte12 = SumaConceptoImporte12 + item.Importe;
                             break;
                         case CONCEPTO13:
-                            celdaIniDatos[22, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[22, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto13 = SumaConcepto13 + item.Kilos;
+                            SumaConceptoImporte13 = SumaConceptoImporte13 + item.Importe;
                             break;
                         case CONCEPTO14:
-                            celdaIniDatos[23, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[23, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto14= SumaConcepto14 + item.Kilos;
+                            SumaConceptoImporte14 = SumaConceptoImporte14 + item.Importe;
                             break;
 
                         case CONCEPTO15:
-                            celdaIniDatos[24, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[24, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto15 = SumaConcepto15 + item.Kilos;
+                            SumaConceptoImporte15 = SumaConceptoImporte15 + item.Importe;
                             break;
 
                         case CONCEPTO16:
-                            celdaIniDatos[25, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[25, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto16 = SumaConcepto16 + item.Kilos;
+                            SumaConceptoImporte16 = SumaConceptoImporte16 + item.Importe;
                             break;
 
                         case CONCEPTO17:
-                            celdaIniDatos[26, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[26, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto17 = SumaConcepto17 + item.Kilos;
+                            SumaConceptoImporte17= SumaConceptoImporte17 + item.Importe;
                             break;
 
                         case CONCEPTO18:
-                            celdaIniDatos[27, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[27, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto18 = SumaConcepto18 + item.Kilos;
+                            SumaConceptoImporte18 = SumaConceptoImporte18 + item.Importe;
                             break;
 
                         case CONCEPTO19:
-                            celdaIniDatos[28, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[28, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto19 = SumaConcepto19 + item.Kilos;
+                            SumaConceptoImporte19 = SumaConceptoImporte19 + item.Importe;
                             break;
 
                         case CONCEPTO20:
-                            celdaIniDatos[29, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[29, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto20 = SumaConcepto20 + item.Kilos;
+                            SumaConceptoImporte20 = SumaConceptoImporte20 + item.Importe;
                             break;
 
                         case CONCEPTO21:
-                            celdaIniDatos[30, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[30, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto21 = SumaConcepto21 + item.Kilos;
+                            SumaConceptoImporte21 = SumaConceptoImporte21 + item.Importe;
                             break;
 
                         case CONCEPTO22:
-                            celdaIniDatos[31, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[31, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto22 = SumaConcepto22 + item.Kilos;
+                            SumaConceptoImporte22 = SumaConceptoImporte22 + item.Importe;
                             break;
 
                         case CONCEPTO23:
-                            celdaIniDatos[32, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[32, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                            SumaConcepto23 = SumaConcepto23 + item.Kilos;
+                            SumaConceptoImporte23 = SumaConceptoImporte23 + item.Importe;
                             break;
 
                         case CONCEPTO24:
-                            celdaIniDatos[35, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[35, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
+                            SumaConcepto24 = SumaConcepto24 + item.Kilos;
+                            SumaConceptoImporte24 = SumaConceptoImporte24 + item.Importe;
                             break;
 
                         case CONCEPTO25:
-                            celdaIniDatos[36, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[36, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Lime);
+                            SumaConcepto25 = SumaConcepto25 + item.Kilos;
+                            SumaConceptoImporte25 = SumaConceptoImporte25 + item.Importe;
                             break;
 
                         case CONCEPTO26:
-                            celdaIniDatos[37, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[37, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Thistle);
+                            SumaConcepto26 = SumaConcepto26 + item.Kilos;
+                            SumaConceptoImporte26 = SumaConceptoImporte26 + item.Importe;
                             break;
 
 
                         case CONCEPTO27:
-                            celdaIniDatos[38, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[38, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.BlanchedAlmond);
+                            SumaConcepto27 = SumaConcepto27 + item.Kilos;
+                            SumaConceptoImporte27 = SumaConceptoImporte27 + item.Importe;
                             break;
 
 
                         case CONCEPTO28:
-                            celdaIniDatos[39, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[39, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DodgerBlue);
+                            SumaConcepto28 = SumaConcepto28 + item.Kilos;
+                            SumaConceptoImporte28 = SumaConceptoImporte28 + item.Importe;
                             break;
 
 
                         case CONCEPTO29:
-                            celdaIniDatos[40, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[40, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DarkOrchid);
+                            SumaConcepto29 = SumaConcepto29 + item.Kilos;
+                            SumaConceptoImporte29 = SumaConceptoImporte29 + item.Importe;
                             break;
 
 
                         case CONCEPTO30:
-                            celdaIniDatos[41, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[41, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Salmon);
+                            SumaConcepto30 = SumaConcepto30 + item.Kilos;
+                            SumaConceptoImporte30 = SumaConceptoImporte30 + item.Importe;
                             break;
 
                         case CONCEPTO31:
-                            celdaIniDatos[42, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[42, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleVioletRed);
+                            SumaConcepto31 = SumaConcepto31 + item.Kilos;
+                            SumaConceptoImporte31 = SumaConceptoImporte31 + item.Importe;
                             break;
 
                         case CONCEPTO32:
-                            celdaIniDatos[43, columna + 1].Value = item.Importe.ToString("C");
+                            celdaIniDatos[43, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
+                            SumaConcepto32 = SumaConcepto32 + item.Kilos;
+                            SumaConceptoImporte32 = SumaConceptoImporte32 + item.Importe;
                             break;
 
-                        default:
+                            default:
+                           
                             break;
 
                     }
+
+                    CalculaSumatoria(columna + 1, excelPackage);
 
                 }
             }
@@ -602,20 +866,64 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
            //var sheet = excelPackage.Workbook.Worksheets.Add("Formula");
 
-            //xlHoja.Cells["F21"].Formula = "SUM(F3:F17)";
-            //xlHoja.Cells["F22"].Formula = "SUM(G3:G17)";
-            //xlHoja.Calculate();
+            
+            xlHoja.Calculate();
+
+            xlHoja.Workbook.FullCalcOnLoad  = true;
+            //xlHoja.Workbook.CalcMode = 
+            //xlHoja.WorkbookPart.Workbook.CalculationProperties.FullCalculationOnLoad = true;
 
 
-            //celdaDiaIni[34, 1].Value = "Total neto depositado";
-            //celdaDiaIni[35, 1].Value = "Total crédito";
-            //celdaDiaIni[36, 1].Value = "Total ingresos del día neto";
-            //celdaDiaIni = xlHoja.Range["A16:A19"];
-            //celdaDiaIni.Font.Bold = true;
-
-
+            for (int i = 2; i <= columna + 4; i++)
+            {
+                xlHoja.Column(i).Width = 18;
+            }
+           
+           
 
         }
+
+        private void CalculaSumatoria(int columna, ExcelPackage excelPackage)
+        {
+            var xlHoja = excelPackage.Workbook.Worksheets[excelPackage.Workbook.Worksheets.Count()];
+            var range = xlHoja.Cells[columna, 4 , columna, 14];//Address "b1:c1       
+            xlHoja.Cells[16,columna].Formula = "=SUM(" + xlHoja.Cells[4, columna].Address + ":" + xlHoja.Cells[14, columna].Address + ")";
+            xlHoja.Cells[16,columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Column(1).Width = 35;
+
+            //xlHoja.Cells["F22"].Formula = "SUM(G3:G17)";
+
+
+            xlHoja.Cells[17, columna].Formula = "=SUM(" + xlHoja.Cells[8,columna].Address + ":" + xlHoja.Cells[11, columna].Address + ")";
+            xlHoja.Cells[17, columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Cells[17, columna].Calculate();
+
+
+            xlHoja.Cells[19,columna].Formula = "SUM(columna,16: columna ,16)-SUM(columna,17:columna,17)";
+            xlHoja.Cells[19, columna].Formula = "=SUM(" + xlHoja.Cells[16, columna].Address + ":" + xlHoja.Cells[16,columna].Address + ")-SUM(" + xlHoja.Cells[17,columna].Address + ":" + xlHoja.Cells[17,columna].Address + ")";
+            xlHoja.Cells[19, columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Cells[19, columna].Calculate();
+
+            xlHoja.Cells[30, columna].Formula = "=SUM(" + xlHoja.Cells[21, columna].Address + ":" + xlHoja.Cells[29, columna].Address + ")";
+            xlHoja.Cells[30, columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Cells[30, columna].Calculate();
+
+
+            xlHoja.Cells[31, columna].Formula = "=SUM(" + xlHoja.Cells[25, columna].Address + ":" + xlHoja.Cells[27, columna].Address + ")";
+            xlHoja.Cells[31, columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Cells[31, columna].Calculate();
+
+
+            xlHoja.Cells[32, columna].Formula = "=SUM(" + xlHoja.Cells[30, columna].Address + ":" + xlHoja.Cells[30, columna].Address + ")-SUM(" + xlHoja.Cells[31, columna].Address + ":" + xlHoja.Cells[31, columna].Address + ")";
+            xlHoja.Cells[32, columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Cells[32, columna].Calculate();
+
+            xlHoja.Cells[34, columna].Formula = "=SUM(" + xlHoja.Cells[19, columna].Address + ":" + xlHoja.Cells[19, columna].Address + ")-SUM(" + xlHoja.Cells[32, columna].Address + ":" + xlHoja.Cells[32, columna].Address + ")";
+            xlHoja.Cells[34, columna].Style.Numberformat.Format = "$###,###,##0.00";
+            xlHoja.Cells[34, columna].Calculate();
+
+        }
+
 
         //private void calcularTotalizadores()
         //{

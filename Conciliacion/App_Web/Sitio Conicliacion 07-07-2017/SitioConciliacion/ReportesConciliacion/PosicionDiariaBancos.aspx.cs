@@ -72,18 +72,39 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         usuario = (Usuario)HttpContext.Current.Session["Usuario"];
         var rutaCompleta = HttpRuntime.AppDomainAppPath + @"InformesExcel\";
         var Archivo = "PosicionDiaria" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
+        int contador = 0;
         try
         {
             if (wucListadoCajas1.CajasSeleccionadas.Count > 0)
             {
+               
                 if (File.Exists(rutaCompleta+ Archivo)) File.Delete(rutaCompleta+ Archivo);
-                foreach (Caja caja in wucListadoCajas1.CajasSeleccionadas)               {
+                foreach (Caja caja in wucListadoCajas1.CajasSeleccionadas)
+                {
+                    contador = contador + 1;
                  List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
                  lstDetalle = ConsultarPosicionDiariaBancos(caja.ID);                   
                  ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
                  rutaCompleta,Archivo, caja.Descripcion);
-                 obExportador.generarPosicionDiariaBancos();
-                }                
+                 obExportador.generarPosicionDiariaBancos(0);
+
+                    if (wucListadoCajas1.CajasSeleccionadas.Count() == contador)
+                           {
+                        obExportador.generarPosicionDiariaBancos(1);
+                          }
+                    
+                                  
+
+                }
+
+                
+
+                //List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetallet = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
+                //lstDetallet = ConsultarPosicionDiariaBancos(caja.ID);
+                //ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
+                //rutaCompleta, Archivo, "TOTAL");
+                //obExportador.generarPosicionDiariaBancos();
+
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                                @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
             }
