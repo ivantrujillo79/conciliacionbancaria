@@ -246,6 +246,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         Pedido.ActualizaPagosPorAplicar(_conexion);
                         Pedido.PedidoActualizaSaldoCRM(URLGateway);
                     }
+                    resultado = true;
                 }
             }
             catch (Exception ex)
@@ -283,8 +284,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }*/
-
-
+        
         public override bool ValidaMovimientoCaja(Conexion _conexion)
         {
             bool resultado = false;
@@ -316,8 +316,6 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
         
-        
-
         /*public override bool Guardar()
         {
             bool resultado = false;

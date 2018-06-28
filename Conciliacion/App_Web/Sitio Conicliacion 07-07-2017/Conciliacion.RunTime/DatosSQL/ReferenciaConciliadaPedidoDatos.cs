@@ -121,11 +121,6 @@ namespace Conciliacion.RunTime.DatosSQL
             
             return resultado;            
         }
-
-
-
-
-        
         
         /*public override bool CobroPedidoAlta(short añocobro, int cobro)
         {
@@ -287,13 +282,12 @@ namespace Conciliacion.RunTime.DatosSQL
             catch (SqlException ex)
             {
                 stackTrace = new StackTrace();
-                string strError = "Erros al actualizar el pedido.\n\rClase: " + this.GetType().Name + "\n\r" 
+                string strError = "Error al actualizar el pedido en CRM.\n\rClase: " + this.GetType().Name + "\n\r" 
                                     + "Metodo: " + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" 
                                     + "Error: " + ex.Message;
                 stackTrace = null;
                 throw new Exception(strError);
             }
-
             return resultado;
         }
 
