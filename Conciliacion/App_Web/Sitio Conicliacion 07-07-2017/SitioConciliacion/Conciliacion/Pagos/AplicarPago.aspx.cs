@@ -659,7 +659,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             short mesConciliacion = 0;
             short tipoConciliacion = 0;
 
-            conexion.AbrirConexion(true,true);
+            conexion.AbrirConexion(false,false);
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
@@ -794,7 +794,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             //if ( ! EjecutaActualizaPedidoRTGM() )
             //    throw new Exception("Ocurrió un error en GMGateway.");
 
-            conexion.Comando.Transaction.Commit();
+            if (conexion.Comando.Transaction != null)
+            {
+                conexion.Comando.Transaction.Commit();
+            }
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
