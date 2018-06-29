@@ -6,6 +6,7 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using Conciliacion.RunTime.ReglasDeNegocio;
+using RTGMGateway;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -123,11 +124,6 @@ namespace Conciliacion.RunTime.DatosSQL
             
             return resultado;            
         }
-
-
-
-
-        
         
         /*public override bool CobroPedidoAlta(short añocobro, int cobro)
         {
@@ -222,8 +218,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }*/
-
-
+        
         public override bool PedidoActualizaSaldo(Conexion _conexion)
         {
             bool resultado = false;
@@ -252,6 +247,50 @@ namespace Conciliacion.RunTime.DatosSQL
                 throw ex;
             }
 
+            return resultado;
+        }
+
+        public override bool PedidoActualizaSaldoCRM(string URLGateway)
+        {
+            List<RTGMCore.Pedido> Pedidos = new List<RTGMCore.Pedido>();
+            RTGMActualizarPedido obActualizar = new RTGMActualizarPedido();
+            bool resultado = false;
+
+            try
+            {
+                obActualizar.URLServicio = URLGateway;
+
+                Pedidos.Add(new RTGMCore.PedidoCRMSaldo
+                {
+                    IDPedido            = Convert.ToInt32(this.PedidoReferencia),
+                    IDZona              = this.CelulaPedido,
+                    AnioPed             = this.AñoPedido,
+                    Abono               = this.Total,
+                    PedidoReferencia    = this.PedidoReferencia
+                });
+
+                SolicitudActualizarPedido obSolicitud = new SolicitudActualizarPedido
+                {
+                    Fuente              = RTGMCore.Fuente.CRM,
+                    IDEmpresa           = this.Corporativo,
+                    Pedidos             = Pedidos,
+                    Portatil            = false,
+                    TipoActualizacion   = RTGMCore.TipoActualizacion.Saldo,
+                    Usuario             = this.Usuario
+                };
+
+                List<RTGMCore.Pedido> PedidosRespuesta = obActualizar.ActualizarPedido(obSolicitud);
+                resultado = PedidosRespuesta.Count > 0;
+            }
+            catch (SqlException ex)
+            {
+                stackTrace = new StackTrace();
+                string strError = "Error al actualizar el pedido en CRM.\n\rClase: " + this.GetType().Name + "\n\r" 
+                                    + "Metodo: " + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" 
+                                    + "Error: " + ex.Message;
+                stackTrace = null;
+                throw new Exception(strError);
+            }
             return resultado;
         }
 
@@ -287,8 +326,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }*/
-
-
+        
         public override bool ActualizaPagosPorAplicar(Conexion _conexion)
         {
             bool resultado = false;
@@ -322,9 +360,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }
-
-
-
+        
         public override bool Modificar()
         {
             throw new NotImplementedException();

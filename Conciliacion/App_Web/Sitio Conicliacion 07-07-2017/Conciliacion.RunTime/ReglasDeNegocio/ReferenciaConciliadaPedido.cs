@@ -31,8 +31,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int cliente;
         string nombre;
         string pedidoreferencia;
+        byte tipoproducto;
         decimal saldo;
         int clientePago;
+
+        bool portatil;
 
         #region Constructores
 
@@ -162,6 +165,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.nombre = "";
             this.pedidoreferencia = "";
 
+            this.tipoproducto = 0;
+            this.portatil = false;
         }
 
         #endregion
@@ -294,6 +299,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return clientePago; }
             set { clientePago = value; }
         }
+
+        public byte TipoProducto
+        {
+            get { return tipoproducto; }
+            set { tipoproducto = value; }
+        }
+
+        public bool Portatil
+        {
+            get { return portatil; }
+            set { portatil = value; }
+        }
+
         #endregion
 
 
@@ -303,7 +321,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract bool ActualizaPagosPorAplicar(Conexion _conexion);
 
-
+        public abstract bool PedidoActualizaSaldoCRM(string URLGateway);
 
         public abstract ReferenciaConciliadaPedido CrearObjeto();
 

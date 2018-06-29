@@ -172,16 +172,13 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             return resultado;
         }*/
-
-
+        
         public override bool AplicarCobros(Conexion _conexion)
         {
             bool resultado = false;
-
-
+            
             try
             {
-
                 List<Cobro> Cobros = this.ListaCobros;
 
                 foreach (Cobro Cobro in Cobros)
@@ -201,14 +198,56 @@ namespace Conciliacion.RunTime.DatosSQL
                         Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
                         Pedido.PedidoActualizaSaldo(_conexion);
                         Pedido.ActualizaPagosPorAplicar(_conexion);
-
                     }
-
                 }
                 //if (resultado)
                 //{
                 //    this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
                 //}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return resultado;
+        }
+
+        /// <summary>
+        /// Realiza el mismo proceso de AplicarCobros y adicionalmente ejecuta el método
+        /// PedidoActualizaSaldoCRM() por cada uno de los pedidos
+        /// </summary>
+        /// <param name="_conexion"></param>
+        /// <param name="URLGateway"></param>
+        /// <returns></returns>
+        public override bool AplicarCobrosCRM(Conexion _conexion, string URLGateway)
+        {
+            bool resultado = false;
+
+            try
+            {
+                List<Cobro> Cobros = this.ListaCobros;
+
+                foreach (Cobro Cobro in Cobros)
+                {
+                    resultado = Cobro.ChequeTarjetaAltaModifica(_conexion);
+                    Cobro.MovimientoCajaCobroAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
+                    Cobro.MovimientoCajaEntradaAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
+                    Cobro.ActualizaPagoReferenciado(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
+
+                    List<ReferenciaConciliadaPedido> Pedidos =
+                        Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
+
+                    foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                    {
+                        Pedido.MontoConciliado =
+                            Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+                        Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
+                        Pedido.PedidoActualizaSaldo(_conexion);
+                        Pedido.ActualizaPagosPorAplicar(_conexion);
+                        Pedido.PedidoActualizaSaldoCRM(URLGateway);
+                    }
+                    resultado = true;
+                }
             }
             catch (Exception ex)
             {
@@ -245,8 +284,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }*/
-
-
+        
         public override bool ValidaMovimientoCaja(Conexion _conexion)
         {
             bool resultado = false;
@@ -278,8 +316,6 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
         
-        
-
         /*public override bool Guardar()
         {
             bool resultado = false;
@@ -313,7 +349,36 @@ namespace Conciliacion.RunTime.DatosSQL
                 resultado = true;
             }
             catch (Exception ex)
-            {               
+            {
+                throw ex;
+            }
+            finally
+            {
+                //conexion.CerrarConexion();
+            }
+            return resultado;
+        }
+
+        /// <summary>
+        /// Adicionalmente actualiza el saldo de los pedidos en CRM
+        /// </summary>
+        /// <param name="conexion"></param>
+        /// <param name="URLGateway"></param>
+        /// <returns></returns>
+        public override bool Guardar(Conexion conexion, string URLGateway)
+        {
+            bool resultado = false;
+            try
+            {
+                conexion.AbrirConexion(true);
+                MovimientoCajaAlta(conexion);
+                AplicarCobrosCRM(conexion, URLGateway);
+                ValidaMovimientoCaja(conexion);
+                // conexion.Comando.Transaction.Commit();
+                resultado = true;
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
             finally

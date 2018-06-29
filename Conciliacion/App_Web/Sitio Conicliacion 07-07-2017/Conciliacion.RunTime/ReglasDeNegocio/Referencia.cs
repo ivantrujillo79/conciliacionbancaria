@@ -34,6 +34,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         decimal importeComision;
         decimal ivaComision;
 
+        string usuario;
+
         #region Constructores
 
         public cReferencia(int corporativo, int sucursal, string sucursaldes, int año, int folio,int secuencia, string concepto, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, 
@@ -87,6 +89,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.rfctercero = "";
             this.deposito = 0;
             this.retiro = 0;
+
+            this.usuario = "";
         }
 
      
@@ -236,6 +240,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return ivaComision; }
             set { ivaComision = value; }
+        }
+
+        public string Usuario
+        {
+            get { return usuario; }
+            set { usuario = value; }
         }
 
         #endregion
