@@ -10,8 +10,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Globalization;
-
-
 public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)

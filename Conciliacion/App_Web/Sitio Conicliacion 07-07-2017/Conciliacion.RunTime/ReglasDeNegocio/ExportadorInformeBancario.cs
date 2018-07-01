@@ -8,7 +8,6 @@ using DetallePosicionDiariaBancos = Conciliacion.RunTime.DatosSQL.InformeBancari
 using OfficeOpenXml;
 using System.Drawing;
 
-
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public class ExportadorInformeBancario
