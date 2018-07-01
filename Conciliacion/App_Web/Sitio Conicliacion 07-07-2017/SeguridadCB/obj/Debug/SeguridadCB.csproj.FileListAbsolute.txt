@@ -63,4 +63,8 @@ C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sit
 C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.dll
 C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.pdb
 C:\Users\Diego\Documents\Proyectos\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.csprojResolveAssemblyReference.cache
-C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.csprojAssemblyReference.cache
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\bin\Debug\SeguridadCB.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\bin\Debug\SeguridadCB.pdb
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.csproj.CoreCompileInputs.cache
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.dll
+C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Debug\SeguridadCB.pdb
