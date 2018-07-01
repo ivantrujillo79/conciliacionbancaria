@@ -706,14 +706,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
                     {
-                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
+                        /*Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
                                 corporativoConciliacion, 
                                 sucursalConciliacion, 
                                 añoConciliacion,  
                                 folioConciliacion, 
                                 mesConciliacion,
                                 objPedido.Pedido, 
-                                conexion);
+                                conexion);*/
 
                         //PreparaPedidoRTGM(objPedido);
                     }
