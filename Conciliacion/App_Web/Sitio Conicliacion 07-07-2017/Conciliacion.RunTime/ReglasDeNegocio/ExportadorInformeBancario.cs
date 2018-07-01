@@ -94,39 +94,55 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private decimal SumaConcepto31 = 0;
         private decimal SumaConcepto32 = 0;
 
-        private decimal SumaConceptoImporte1 = 0;
-        private decimal SumaConceptoImporte2 = 0;
-        private decimal SumaConceptoImporte3 = 0;
-        private decimal SumaConceptoImporte4 = 0;
-        private decimal SumaConceptoImporte5 = 0;
-        private decimal SumaConceptoImporte6 = 0;
-        private decimal SumaConceptoImporte7 = 0;
-        private decimal SumaConceptoImporte8 = 0;
-        private decimal SumaConceptoImporte9 = 0;
-        private decimal SumaConceptoImporte10 = 0;
-        private decimal SumaConceptoImporte11 = 0;
-        private decimal SumaConceptoImporte12 = 0;
-        private decimal SumaConceptoImporte13 = 0;
-        private decimal SumaConceptoImporte14 = 0;
-        private decimal SumaConceptoImporte15 = 0;
-        private decimal SumaConceptoImporte16 = 0;
-        private decimal SumaConceptoImporte17 = 0;
-        private decimal SumaConceptoImporte18 = 0;
-        private decimal SumaConceptoImporte19 = 0;
-        private decimal SumaConceptoImporte20 = 0;
-        private decimal SumaConceptoImporte21 = 0;
-        private decimal SumaConceptoImporte22 = 0;
-        private decimal SumaConceptoImporte23 = 0;
-        private decimal SumaConceptoImporte24 = 0;
-        private decimal SumaConceptoImporte25 = 0;
-        private decimal SumaConceptoImporte26 = 0;
-        private decimal SumaConceptoImporte27 = 0;
+        private decimal SumaConcepto35 = 0;
+        private decimal SumaConcepto36 = 0;
+        private decimal SumaConcepto37 = 0;
+        private decimal SumaConcepto38 = 0;
+        private decimal SumaConcepto39 = 0;
+        private decimal SumaConcepto40 = 0;
+        private decimal SumaConcepto41 = 0;
+        private decimal SumaConcepto42 = 0;
+        private decimal SumaConcepto43 = 0;
 
-        private decimal SumaConceptoImporte28 = 0;
-        private decimal SumaConceptoImporte29 = 0;
-        private decimal SumaConceptoImporte30 = 0;
-        private decimal SumaConceptoImporte31 = 0;
-        private decimal SumaConceptoImporte32 = 0;
+        private decimal SumaKilos4 = 0;
+        private decimal SumaKilos5 = 0;
+        private decimal SumaKilos6 = 0;
+        private decimal SumaKilos7 = 0;
+        private decimal SumaKilos8 = 0;
+        private decimal SumaKilos9 = 0;
+        private decimal SumaKilos10 = 0;
+        private decimal SumaKilos11 = 0;
+        private decimal SumaKilos12 = 0;
+        private decimal SumaKilos13 = 0;
+        private decimal SumaKilos14 = 0;
+
+        private decimal SumaKilos16 = 0;
+        private decimal SumaKilos17 = 0;
+        private decimal SumaKilos19 = 0;
+        private decimal SumaKilos21 = 0;
+        private decimal SumaKilos22 = 0;
+        private decimal SumaKilos23 = 0;
+        private decimal SumaKilos24 = 0;
+        private decimal SumaKilos25 = 0;
+        private decimal SumaKilos26 = 0;
+        private decimal SumaKilos27 = 0;
+        private decimal SumaKilos28 = 0;
+        private decimal SumaKilos29 = 0;
+        private decimal SumaKilos30 = 0;
+        private decimal SumaKilos31 = 0;
+        private decimal SumaKilos32 = 0;
+
+        private decimal SumaKilos35 = 0;
+        private decimal SumaKilos36 = 0;
+        private decimal SumaKilos37 = 0;
+        private decimal SumaKilos38 = 0;
+        private decimal SumaKilos39 = 0;
+        private decimal SumaKilos40 = 0;
+        private decimal SumaKilos41 = 0;
+        private decimal SumaKilos42 = 0;
+        private decimal SumaKilos43 = 0;
+
+
 
         #endregion
 
@@ -343,7 +359,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             xlRango.Style.Font.Color.SetColor(Color.Black);
 
             xlRango = xlHoja.Cells["A2"];
-            xlRango.Value = "CAJA " + nombrehoja;
+            xlRango.Value = nombrehoja;
             xlRango.Merge = true;
             xlRango.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
             xlRango.Style.Font.Bold = true;
@@ -361,7 +377,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     posicionDiaria = new PosicionDiaria(fecha, celda);
                     _PosicionesDiarias.Add(posicionDiaria);
 
-                    dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+                    if (nombrehoja != "TOTAL")
+                    {
+                        dia = fecha.ToString("dddd", cultureInfo).ToUpper();
+                    }
+                    else
+                    {
+                        dia = "TOTAL MES";
+                    }
+                       
 
                     // Día
                     celdaDiaInicial = xlHoja.Cells[1, celda];
@@ -393,7 +417,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                     // Fecha
                     celdaFecha = xlHoja.Cells[2, celda + 2];
-                    celdaFecha.Value = fecha.ToString("d-MMM-yyyy", cultureInfo);
+                    if (nombrehoja != "TOTAL")
+                    {
+                        celdaFecha.Value = fecha.ToString("d-MMM-yyyy", cultureInfo);
+                    }
+                    else
+                    {
+                        celdaFecha.Value = fecha.ToString("MMMM", cultureInfo);
+                    }
+                   
+
                     celdaFecha.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
                     celdaFecha.Style.Border.Top.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                     celdaFecha.Style.Border.Top.Color.SetColor(Color.Black);
@@ -412,6 +445,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     //xlRango.ColumnWidth = 16;
 
                     celda += 2;
+
+                    if (nombrehoja == "TOTAL")
+                        break;
                 }
 
                 //// Caja
@@ -485,7 +521,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 if (item.Fecha != _FechaAOmitir)
                 {
-                concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
+
+                    concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
                     if (descripcioncaja != "TOTAL")
                     {
                         columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
@@ -512,14 +549,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[4, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto1 = SumaConcepto1 + item.Kilos;
-                            SumaConceptoImporte1 = SumaConceptoImporte1 + item.Importe;
-
-                            if (descripcioncaja =="TOTAL")
-                            {
-                                celdaIniDatos[4, columna].Value = SumaConcepto1;
-                                celdaIniDatos[4, columna + 1].Value = SumaConceptoImporte1;
-                            }
+                          
                             
 
                             break;
@@ -528,14 +558,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[5, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto2 = SumaConcepto2 + item.Kilos;
-                            SumaConceptoImporte2 = SumaConceptoImporte2 + item.Importe;
-
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[5, columna].Value = SumaConcepto2;
-                                celdaIniDatos[5, columna + 1].Value = SumaConceptoImporte2;
-                            }
+                         
 
 
                             break;
@@ -544,28 +567,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[6, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto3 = SumaConcepto3 + item.Kilos;
-                            SumaConceptoImporte3 = SumaConceptoImporte3 + item.Importe;
-
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[6, columna].Value = SumaConcepto3;
-                                celdaIniDatos[6, columna + 1].Value = SumaConceptoImporte3;
-                            }
+                   
                             break;
                         case CONCEPTO4:
                             celdaIniDatos[7, columna].Value = item.Kilos;
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[7, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto4 = SumaConcepto4 + item.Kilos;
-                            SumaConceptoImporte4 = SumaConceptoImporte4 + item.Importe;
-
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[7, columna].Value = SumaConcepto4;
-                                celdaIniDatos[7, columna + 1].Value = SumaConceptoImporte4;
-                            }
+                          
 
                             break;
                         case CONCEPTO5:
@@ -573,13 +582,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[8, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto5 = SumaConcepto5 + item.Kilos;
-                            SumaConceptoImporte5= SumaConceptoImporte5 + item.Importe;
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[8, columna].Value = SumaConcepto5;
-                                celdaIniDatos[8, columna + 1].Value = SumaConceptoImporte5;
-                            }
+                          
 
                             break;
                         case CONCEPTO6:
@@ -587,53 +590,28 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[9, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto6 = SumaConcepto6 + item.Kilos;
-                            SumaConceptoImporte6 = SumaConceptoImporte6 + item.Importe;
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[9, columna].Value = SumaConcepto6;
-                                celdaIniDatos[9, columna + 1].Value = SumaConceptoImporte6;
-                            }
+                           
                             break;
                         case CONCEPTO7:
                             celdaIniDatos[10, columna].Value = item.Kilos;
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[10, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto7 = SumaConcepto7 + item.Kilos;
-                            SumaConceptoImporte7 = SumaConceptoImporte7 + item.Importe;
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[10, columna].Value = SumaConcepto7;
-                                celdaIniDatos[10, columna + 1].Value = SumaConceptoImporte7;
-                            }
+                         
                             break;
                         case CONCEPTO8:
                             celdaIniDatos[11, columna].Value = item.Kilos;
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[11, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto8 = SumaConcepto8 + item.Kilos;
-                            SumaConceptoImporte8 = SumaConceptoImporte8 + item.Importe;
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[11, columna].Value = SumaConcepto8;
-                                celdaIniDatos[11, columna + 1].Value = SumaConceptoImporte8;
-                            }
+                          
                             break;
                         case CONCEPTO9:
                             celdaIniDatos[12, columna].Value = item.Kilos;
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[12, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto9 = SumaConcepto9 + item.Kilos;
-                            SumaConceptoImporte9 = SumaConceptoImporte9 + item.Importe;
-
-                            if (descripcioncaja == "TOTAL")
-                            {
-                                celdaIniDatos[12, columna].Value = SumaConcepto9;
-                                celdaIniDatos[12, columna + 1].Value = SumaConceptoImporte9;
-                            }
+                         
 
                             break;
                         case CONCEPTO10:
@@ -642,100 +620,85 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos[13, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             SumaConcepto10 = SumaConcepto10 + item.Kilos;
-                            SumaConceptoImporte10 = SumaConceptoImporte10 + item.Importe;
+                    
+
                             break;
                         case CONCEPTO11:
                             celdaIniDatos[14, columna].Value = item.Kilos;
                             celdaIniDatos.Style.Numberformat.Format = "###,###,##0.00";
                             celdaIniDatos[14, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto11 = SumaConcepto11 + item.Kilos;
-                            SumaConceptoImporte11 = SumaConceptoImporte11 + item.Importe;
-                            break;                 
-
-                        
-
+                      
+                            break;
 
                         case CONCEPTO12:
                             celdaIniDatos[21, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto12 = SumaConcepto11 + item.Kilos;
-                            SumaConceptoImporte12 = SumaConceptoImporte12 + item.Importe;
+           
                             break;
                         case CONCEPTO13:
                             celdaIniDatos[22, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto13 = SumaConcepto13 + item.Kilos;
-                            SumaConceptoImporte13 = SumaConceptoImporte13 + item.Importe;
+                    
                             break;
                         case CONCEPTO14:
                             celdaIniDatos[23, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto14= SumaConcepto14 + item.Kilos;
-                            SumaConceptoImporte14 = SumaConceptoImporte14 + item.Importe;
+                   
                             break;
 
                         case CONCEPTO15:
                             celdaIniDatos[24, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto15 = SumaConcepto15 + item.Kilos;
-                            SumaConceptoImporte15 = SumaConceptoImporte15 + item.Importe;
+                          
                             break;
 
                         case CONCEPTO16:
                             celdaIniDatos[25, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto16 = SumaConcepto16 + item.Kilos;
-                            SumaConceptoImporte16 = SumaConceptoImporte16 + item.Importe;
+                      
                             break;
 
                         case CONCEPTO17:
                             celdaIniDatos[26, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto17 = SumaConcepto17 + item.Kilos;
-                            SumaConceptoImporte17= SumaConceptoImporte17 + item.Importe;
+                    
                             break;
 
                         case CONCEPTO18:
                             celdaIniDatos[27, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto18 = SumaConcepto18 + item.Kilos;
-                            SumaConceptoImporte18 = SumaConceptoImporte18 + item.Importe;
+                   
                             break;
 
                         case CONCEPTO19:
                             celdaIniDatos[28, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto19 = SumaConcepto19 + item.Kilos;
-                            SumaConceptoImporte19 = SumaConceptoImporte19 + item.Importe;
+                  
                             break;
 
                         case CONCEPTO20:
                             celdaIniDatos[29, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto20 = SumaConcepto20 + item.Kilos;
-                            SumaConceptoImporte20 = SumaConceptoImporte20 + item.Importe;
+                   
                             break;
 
                         case CONCEPTO21:
                             celdaIniDatos[30, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto21 = SumaConcepto21 + item.Kilos;
-                            SumaConceptoImporte21 = SumaConceptoImporte21 + item.Importe;
+                 
                             break;
 
                         case CONCEPTO22:
                             celdaIniDatos[31, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto22 = SumaConcepto22 + item.Kilos;
-                            SumaConceptoImporte22 = SumaConceptoImporte22 + item.Importe;
+                        
                             break;
 
                         case CONCEPTO23:
                             celdaIniDatos[32, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            SumaConcepto23 = SumaConcepto23 + item.Kilos;
-                            SumaConceptoImporte23 = SumaConceptoImporte23 + item.Importe;
+                 
                             break;
 
                         case CONCEPTO24:
@@ -743,8 +706,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
-                            SumaConcepto24 = SumaConcepto24 + item.Kilos;
-                            SumaConceptoImporte24 = SumaConceptoImporte24 + item.Importe;
+                     
                             break;
 
                         case CONCEPTO25:
@@ -752,8 +714,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Lime);
-                            SumaConcepto25 = SumaConcepto25 + item.Kilos;
-                            SumaConceptoImporte25 = SumaConceptoImporte25 + item.Importe;
+                  
                             break;
 
                         case CONCEPTO26:
@@ -761,8 +722,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Thistle);
-                            SumaConcepto26 = SumaConcepto26 + item.Kilos;
-                            SumaConceptoImporte26 = SumaConceptoImporte26 + item.Importe;
+                    
                             break;
 
 
@@ -771,8 +731,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.BlanchedAlmond);
-                            SumaConcepto27 = SumaConcepto27 + item.Kilos;
-                            SumaConceptoImporte27 = SumaConceptoImporte27 + item.Importe;
+                     
                             break;
 
 
@@ -781,8 +740,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DodgerBlue);
-                            SumaConcepto28 = SumaConcepto28 + item.Kilos;
-                            SumaConceptoImporte28 = SumaConceptoImporte28 + item.Importe;
+                          
                             break;
 
 
@@ -791,8 +749,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DarkOrchid);
-                            SumaConcepto29 = SumaConcepto29 + item.Kilos;
-                            SumaConceptoImporte29 = SumaConceptoImporte29 + item.Importe;
+                           
                             break;
 
 
@@ -801,8 +758,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Salmon);
-                            SumaConcepto30 = SumaConcepto30 + item.Kilos;
-                            SumaConceptoImporte30 = SumaConceptoImporte30 + item.Importe;
+                       
                             break;
 
                         case CONCEPTO31:
@@ -810,8 +766,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleVioletRed);
-                            SumaConcepto31 = SumaConcepto31 + item.Kilos;
-                            SumaConceptoImporte31 = SumaConceptoImporte31 + item.Importe;
+                       
                             break;
 
                         case CONCEPTO32:
@@ -819,8 +774,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
-                            SumaConcepto32 = SumaConcepto32 + item.Kilos;
-                            SumaConceptoImporte32 = SumaConceptoImporte32 + item.Importe;
+                       
                             break;
 
                             default:
@@ -830,9 +784,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     }
 
                     CalculaSumatoria(columna + 1, excelPackage);
+                    
+
 
                 }
             }
+
+
 
             //Area de abajo...
 
@@ -864,63 +822,232 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             celdaDiaIniInf[42, 1].Value = "EFECTIVO LIQUIDACIÓN 0671084374";
             celdaDiaIniInf[43, 1].Value = "TARJETA BANORTE 0671084374";
 
-           //var sheet = excelPackage.Workbook.Worksheets.Add("Formula");
-
-            
-            xlHoja.Calculate();
-
-            xlHoja.Workbook.FullCalcOnLoad  = true;
-            //xlHoja.Workbook.CalcMode = 
-            //xlHoja.WorkbookPart.Workbook.CalculationProperties.FullCalculationOnLoad = true;
-
-
-            for (int i = 2; i <= columna + 4; i++)
+            if (descripcioncaja == "TOTAL")
             {
-                xlHoja.Column(i).Width = 18;
-            }
-           
-           
+                columna = 3;
+                var xlHojaaSumar = excelPackage.Workbook.Worksheets[1];
+                for (int j = 1; j < excelPackage.Workbook.Worksheets.Count(); j++)
+                {
+                    xlHojaaSumar = excelPackage.Workbook.Worksheets[j];
+                    for (int k = 3; k <= 70; k += 2)
+                    {
+                        SumaConcepto4 = SumaConcepto4 + ((xlHojaaSumar.Cells[4, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[4, k].Value.ToString()) : 0);
+                        SumaConcepto5 = SumaConcepto5 + ((xlHojaaSumar.Cells[5, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[5, k].Value.ToString()) : 0);
+                        SumaConcepto6 = SumaConcepto6 + ((xlHojaaSumar.Cells[6, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[6, k].Value.ToString()) : 0);
+                        SumaConcepto7 = SumaConcepto7 + ((xlHojaaSumar.Cells[7, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[7, k].Value.ToString()) : 0);
+                        SumaConcepto8 = SumaConcepto8 + ((xlHojaaSumar.Cells[8, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[8, k].Value.ToString()) : 0);
+                        SumaConcepto9 = SumaConcepto9 + ((xlHojaaSumar.Cells[9, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[9, k].Value.ToString()) : 0);
+                        SumaConcepto10 = SumaConcepto10 + ((xlHojaaSumar.Cells[10, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[10, k].Value.ToString()) : 0);
+                        SumaConcepto11 = SumaConcepto11 + ((xlHojaaSumar.Cells[11, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[11, k].Value.ToString()) : 0);
+                        SumaConcepto12 = SumaConcepto12 + ((xlHojaaSumar.Cells[12, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[12, k].Value.ToString()) : 0);
+                        SumaConcepto13 = SumaConcepto13 + ((xlHojaaSumar.Cells[13, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[13, k].Value.ToString()) : 0);
+                        SumaConcepto14 = SumaConcepto14 + ((xlHojaaSumar.Cells[14, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[14, k].Value.ToString()) : 0);
+
+                        SumaConcepto16 = SumaConcepto16 + ((xlHojaaSumar.Cells[16, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[16, k].Value.ToString()) : 0);
+                        SumaConcepto17 = SumaConcepto17 + ((xlHojaaSumar.Cells[17, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[17, k].Value.ToString()) : 0);
+                        SumaConcepto19 = SumaConcepto19 + ((xlHojaaSumar.Cells[19, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[19, k].Value.ToString()) : 0);
+                        SumaConcepto21 = SumaConcepto21 + ((xlHojaaSumar.Cells[21, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[21, k].Value.ToString()) : 0);
+                        SumaConcepto22 = SumaConcepto22 + ((xlHojaaSumar.Cells[22, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[22, k].Value.ToString()) : 0);
+                        SumaConcepto23 = SumaConcepto23 + ((xlHojaaSumar.Cells[23, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[23, k].Value.ToString()) : 0);
+                        SumaConcepto24 = SumaConcepto24 + ((xlHojaaSumar.Cells[24, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[24, k].Value.ToString()) : 0);
+                        SumaConcepto25 = SumaConcepto25 + ((xlHojaaSumar.Cells[25, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[25, k].Value.ToString()) : 0);
+                        SumaConcepto26 = SumaConcepto26 + ((xlHojaaSumar.Cells[26, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[26, k].Value.ToString()) : 0);
+                        SumaConcepto27 = SumaConcepto27 + ((xlHojaaSumar.Cells[27, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[27, k].Value.ToString()) : 0);
+                        SumaConcepto28 = SumaConcepto28 + ((xlHojaaSumar.Cells[28, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[28, k].Value.ToString()) : 0);
+                        SumaConcepto29 = SumaConcepto29 + ((xlHojaaSumar.Cells[29, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[29, k].Value.ToString()) : 0);
+                        SumaConcepto30 = SumaConcepto30 + ((xlHojaaSumar.Cells[30, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[30, k].Value.ToString()) : 0);
+                        SumaConcepto31 = SumaConcepto31 + ((xlHojaaSumar.Cells[31, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[31, k].Value.ToString()) : 0);
+                        SumaConcepto32 = SumaConcepto32 + ((xlHojaaSumar.Cells[32, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[32, k].Value.ToString()) : 0);
+
+                        SumaConcepto35 = SumaConcepto35 + ((xlHojaaSumar.Cells[35, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[35, k].Value.ToString()) : 0);
+                        SumaConcepto36 = SumaConcepto36 + ((xlHojaaSumar.Cells[36, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[36, k].Value.ToString()) : 0);
+                        SumaConcepto37 = SumaConcepto37 + ((xlHojaaSumar.Cells[37, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[37, k].Value.ToString()) : 0);
+                        SumaConcepto38 = SumaConcepto38 + ((xlHojaaSumar.Cells[38, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[38, k].Value.ToString()) : 0);
+                        SumaConcepto39 = SumaConcepto39 + ((xlHojaaSumar.Cells[39, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[39, k].Value.ToString()) : 0);
+                        SumaConcepto40 = SumaConcepto40 + ((xlHojaaSumar.Cells[40, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[40, k].Value.ToString()) : 0);
+                        SumaConcepto41 = SumaConcepto41 + ((xlHojaaSumar.Cells[41, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[41, k].Value.ToString()) : 0);
+                        SumaConcepto42 = SumaConcepto42 + ((xlHojaaSumar.Cells[42, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[42, k].Value.ToString()) : 0);
+                        SumaConcepto43 = SumaConcepto43 + ((xlHojaaSumar.Cells[43, k].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[43, k].Value.ToString()) : 0);
+
+                        SumaKilos4 = SumaKilos4 + ((xlHojaaSumar.Cells[4, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[4, k - 1].Value.ToString()) : 0);
+                        SumaKilos5 = SumaKilos5 + ((xlHojaaSumar.Cells[5, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[5, k - 1].Value.ToString()) : 0);
+                        SumaKilos6 = SumaKilos6 + ((xlHojaaSumar.Cells[6, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[6, k - 1].Value.ToString()) : 0);
+                        SumaKilos7 = SumaKilos7 + ((xlHojaaSumar.Cells[7, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[7, k - 1].Value.ToString()) : 0);
+                        SumaKilos8 = SumaKilos8 + ((xlHojaaSumar.Cells[8, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[8, k - 1].Value.ToString()) : 0);
+                        SumaKilos9 = SumaKilos9 + ((xlHojaaSumar.Cells[9, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[9, k - 1].Value.ToString()) : 0);
+                        SumaKilos10 = SumaKilos10 + ((xlHojaaSumar.Cells[10, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[10, k - 1].Value.ToString()) : 0);
+                        SumaKilos11 = SumaKilos11 + ((xlHojaaSumar.Cells[11, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[11, k - 1].Value.ToString()) : 0);
+                        SumaKilos12 = SumaKilos12 + ((xlHojaaSumar.Cells[12, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[12, k - 1].Value.ToString()) : 0);
+                        SumaKilos13 = SumaKilos13 + ((xlHojaaSumar.Cells[13, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[13, k - 1].Value.ToString()) : 0);
+                        SumaKilos14 = SumaKilos14 + ((xlHojaaSumar.Cells[14, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[14, k - 1].Value.ToString()) : 0);
+
+                        SumaKilos16 = SumaKilos16 + ((xlHojaaSumar.Cells[16, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[16, k - 1].Value.ToString()) : 0);
+                        SumaKilos17 = SumaKilos17 + ((xlHojaaSumar.Cells[17, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[17, k - 1].Value.ToString()) : 0);
+                        SumaKilos19 = SumaKilos19 + ((xlHojaaSumar.Cells[19, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[19, k - 1].Value.ToString()) : 0);
+                        SumaKilos21 = SumaKilos21 + ((xlHojaaSumar.Cells[21, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[21, k - 1].Value.ToString()) : 0);
+                        SumaKilos22 = SumaKilos22 + ((xlHojaaSumar.Cells[22, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[22, k - 1].Value.ToString()) : 0);
+                        SumaKilos23 = SumaKilos23 + ((xlHojaaSumar.Cells[23, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[23, k - 1].Value.ToString()) : 0);
+                        SumaKilos24 = SumaKilos24 + ((xlHojaaSumar.Cells[24, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[24, k - 1].Value.ToString()) : 0);
+                        SumaKilos25 = SumaKilos25 + ((xlHojaaSumar.Cells[25, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[25, k - 1].Value.ToString()) : 0);
+                        SumaKilos26 = SumaKilos26 + ((xlHojaaSumar.Cells[26, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[26, k - 1].Value.ToString()) : 0);
+                        SumaKilos27 = SumaKilos27 + ((xlHojaaSumar.Cells[27, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[27, k - 1].Value.ToString()) : 0);
+                        SumaKilos28 = SumaKilos28 + ((xlHojaaSumar.Cells[28, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[28, k - 1].Value.ToString()) : 0);
+                        SumaKilos29 = SumaKilos29 + ((xlHojaaSumar.Cells[29, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[29, k - 1].Value.ToString()) : 0);
+                        SumaKilos30 = SumaKilos30 + ((xlHojaaSumar.Cells[30, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[30, k - 1].Value.ToString()) : 0);
+                        SumaKilos31 = SumaKilos31 + ((xlHojaaSumar.Cells[31, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[31, k - 1].Value.ToString()) : 0);
+                        SumaKilos32 = SumaKilos32 + ((xlHojaaSumar.Cells[32, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[32, k - 1].Value.ToString()) : 0);
+
+                        SumaKilos35 = SumaKilos35 + ((xlHojaaSumar.Cells[35, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[35, k - 1].Value.ToString()) : 0);
+                        SumaKilos36 = SumaKilos36 + ((xlHojaaSumar.Cells[36, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[36, k - 1].Value.ToString()) : 0);
+                        SumaKilos37 = SumaKilos37 + ((xlHojaaSumar.Cells[37, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[37, k - 1].Value.ToString()) : 0);
+                        SumaKilos38 = SumaKilos38 + ((xlHojaaSumar.Cells[38, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[38, k - 1].Value.ToString()) : 0);
+                        SumaKilos39 = SumaKilos39 + ((xlHojaaSumar.Cells[39, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[39, k - 1].Value.ToString()) : 0);
+                        SumaKilos40 = SumaKilos40 + ((xlHojaaSumar.Cells[40, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[40, k - 1].Value.ToString()) : 0);
+                        SumaKilos41 = SumaKilos41 + ((xlHojaaSumar.Cells[41, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[41, k - 1].Value.ToString()) : 0);
+                        SumaKilos42 = SumaKilos42 + ((xlHojaaSumar.Cells[42, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[42, k - 1].Value.ToString()) : 0);
+                        SumaKilos43 = SumaKilos43 + ((xlHojaaSumar.Cells[43, k - 1].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[43, k - 1].Value.ToString()) : 0);
+
+
+
+                    }
+                }   
+                celdaIniDatos[4, columna].Value = SumaConcepto4;
+                celdaIniDatos[5, columna].Value = SumaConcepto5;
+                celdaIniDatos[6, columna].Value = SumaConcepto6;
+                celdaIniDatos[7, columna].Value = SumaConcepto7;
+                celdaIniDatos[8, columna].Value = SumaConcepto8;
+                celdaIniDatos[9, columna].Value = SumaConcepto9;
+                celdaIniDatos[10, columna].Value = SumaConcepto10;
+                celdaIniDatos[11, columna].Value = SumaConcepto11;
+                celdaIniDatos[12, columna].Value = SumaConcepto12;
+                celdaIniDatos[13, columna].Value = SumaConcepto13;
+                celdaIniDatos[14, columna].Value = SumaConcepto14;
+
+                celdaIniDatos[16, columna].Value = SumaConcepto16;
+                celdaIniDatos[17, columna].Value = SumaConcepto17;
+                celdaIniDatos[19, columna].Value = SumaConcepto19;
+
+                celdaIniDatos[21, columna].Value = SumaConcepto21;
+                celdaIniDatos[22, columna].Value = SumaConcepto22;
+                celdaIniDatos[23, columna].Value = SumaConcepto23;
+                celdaIniDatos[24, columna].Value = SumaConcepto24;
+                celdaIniDatos[25, columna].Value = SumaConcepto25;
+                celdaIniDatos[26, columna].Value = SumaConcepto26;
+                celdaIniDatos[27, columna].Value = SumaConcepto27;
+                celdaIniDatos[28, columna].Value = SumaConcepto28;
+                celdaIniDatos[29, columna].Value = SumaConcepto29;
+                celdaIniDatos[30, columna].Value = SumaConcepto30;
+                celdaIniDatos[31, columna].Value = SumaConcepto31;
+                celdaIniDatos[32, columna].Value = SumaConcepto32;
+
+                celdaIniDatos[35, columna].Value = SumaConcepto35;
+                celdaIniDatos[36, columna].Value = SumaConcepto36;
+                celdaIniDatos[37, columna].Value = SumaConcepto37;
+                celdaIniDatos[38, columna].Value = SumaConcepto38;
+                celdaIniDatos[39, columna].Value = SumaConcepto39;
+                celdaIniDatos[40, columna].Value = SumaConcepto40;
+                celdaIniDatos[41, columna].Value = SumaConcepto41;
+                celdaIniDatos[42, columna].Value = SumaConcepto42;
+                celdaIniDatos[43, columna].Value = SumaConcepto43;
+
+                celdaIniDatos[4, columna - 1].Value = SumaKilos4;
+                celdaIniDatos[5, columna - 1].Value = SumaKilos5;
+                celdaIniDatos[6, columna - 1].Value = SumaKilos6;
+                celdaIniDatos[7, columna - 1].Value = SumaKilos7;
+                celdaIniDatos[8, columna - 1].Value = SumaKilos8;
+                celdaIniDatos[9, columna - 1].Value = SumaKilos9;
+                celdaIniDatos[10, columna - 1].Value = SumaKilos10;
+                celdaIniDatos[11, columna - 1].Value = SumaKilos11;
+                celdaIniDatos[12, columna - 1].Value = SumaKilos12;
+                celdaIniDatos[13, columna - 1].Value = SumaKilos13;
+                celdaIniDatos[14, columna - 1].Value = SumaKilos14;
+
+                celdaIniDatos[16, columna - 1].Value = SumaKilos16;
+                celdaIniDatos[17, columna - 1].Value = SumaKilos17;
+                celdaIniDatos[19, columna - 1].Value = SumaKilos19;
+
+                celdaIniDatos[21, columna - 1].Value = SumaKilos21;
+                celdaIniDatos[22, columna - 1].Value = SumaKilos22;
+                celdaIniDatos[23, columna - 1].Value = SumaKilos23;
+                celdaIniDatos[24, columna - 1].Value = SumaKilos24;
+                celdaIniDatos[25, columna - 1].Value = SumaKilos25;
+                celdaIniDatos[26, columna - 1].Value = SumaKilos26;
+                celdaIniDatos[27, columna - 1].Value = SumaKilos27;
+                celdaIniDatos[28, columna - 1].Value = SumaKilos28;
+                celdaIniDatos[29, columna - 1].Value = SumaKilos29;
+                celdaIniDatos[30, columna - 1].Value = SumaKilos30;
+                celdaIniDatos[31, columna - 1].Value = SumaKilos31;
+                celdaIniDatos[32, columna - 1].Value = SumaKilos32;
+
+                celdaIniDatos[35, columna - 1].Value = SumaKilos35;
+                celdaIniDatos[36, columna - 1].Value = SumaKilos36;
+                celdaIniDatos[37, columna - 1].Value = SumaKilos37;
+                celdaIniDatos[38, columna - 1].Value = SumaKilos38;
+                celdaIniDatos[39, columna - 1].Value = SumaKilos39;
+                celdaIniDatos[40, columna - 1].Value = SumaKilos40;
+                celdaIniDatos[41, columna - 1].Value = SumaKilos41;
+                celdaIniDatos[42, columna - 1].Value = SumaKilos42;
+                celdaIniDatos[43, columna - 1].Value = SumaKilos43;
+
+                ExcelRange celdastotales = xlHoja.Cells["C4:C43"];
+                celdastotales.Style.Numberformat.Format = "$###,###,##0.00";
+            }    
+
+            xlHoja.Calculate();
+            xlHoja.Workbook.FullCalcOnLoad  = true;
+
+            excelPackage.Save();
+
+            //excelPackage.Workbook.FullCalcOnLoad 
+            //excelPackage.Workbook.CalculationProperties.ForceFullCalculation = true;
+            //spreadSheet.WorkbookPart.Workbook.CalculationProperties.FullCalculationOnLoad = true;
+
+            //excelPackage.Worksheet[1].
+
+
 
         }
 
         private void CalculaSumatoria(int columna, ExcelPackage excelPackage)
         {
             var xlHoja = excelPackage.Workbook.Worksheets[excelPackage.Workbook.Worksheets.Count()];
-            var range = xlHoja.Cells[columna, 4 , columna, 14];//Address "b1:c1       
-            xlHoja.Cells[16,columna].Formula = "=SUM(" + xlHoja.Cells[4, columna].Address + ":" + xlHoja.Cells[14, columna].Address + ")";
-            xlHoja.Cells[16,columna].Style.Numberformat.Format = "$###,###,##0.00";
+            var range = xlHoja.Cells[columna, 4 , columna, 14];//Address "b1:c1   
+            xlHoja.Cells[16,columna].Formula ="SUM(" + xlHoja.Cells[4, columna] + ":" + xlHoja.Cells[14, columna] + ")";           
+            xlHoja.Cells[16, columna].Calculate();
             xlHoja.Column(1).Width = 35;
+            xlHoja.Cells[16, columna].Style.Numberformat.Format = "$###,###,##0.00";
 
-            //xlHoja.Cells["F22"].Formula = "SUM(G3:G17)";
 
-
-            xlHoja.Cells[17, columna].Formula = "=SUM(" + xlHoja.Cells[8,columna].Address + ":" + xlHoja.Cells[11, columna].Address + ")";
+            xlHoja.Cells[17, columna].Formula = "SUM(" + xlHoja.Cells[8,columna] + ":" + xlHoja.Cells[11, columna] + ")";
             xlHoja.Cells[17, columna].Style.Numberformat.Format = "$###,###,##0.00";
             xlHoja.Cells[17, columna].Calculate();
 
 
             xlHoja.Cells[19,columna].Formula = "SUM(columna,16: columna ,16)-SUM(columna,17:columna,17)";
-            xlHoja.Cells[19, columna].Formula = "=SUM(" + xlHoja.Cells[16, columna].Address + ":" + xlHoja.Cells[16,columna].Address + ")-SUM(" + xlHoja.Cells[17,columna].Address + ":" + xlHoja.Cells[17,columna].Address + ")";
+            xlHoja.Cells[19, columna].Formula = "SUM(" + xlHoja.Cells[16, columna] + ":" + xlHoja.Cells[16,columna] + ")-SUM(" + xlHoja.Cells[17,columna] + ":" + xlHoja.Cells[17,columna] + ")";
             xlHoja.Cells[19, columna].Style.Numberformat.Format = "$###,###,##0.00";
             xlHoja.Cells[19, columna].Calculate();
 
-            xlHoja.Cells[30, columna].Formula = "=SUM(" + xlHoja.Cells[21, columna].Address + ":" + xlHoja.Cells[29, columna].Address + ")";
+            xlHoja.Cells[30, columna].Formula = "SUM(" + xlHoja.Cells[21, columna] + ":" + xlHoja.Cells[29, columna] + ")";
             xlHoja.Cells[30, columna].Style.Numberformat.Format = "$###,###,##0.00";
             xlHoja.Cells[30, columna].Calculate();
 
 
-            xlHoja.Cells[31, columna].Formula = "=SUM(" + xlHoja.Cells[25, columna].Address + ":" + xlHoja.Cells[27, columna].Address + ")";
+            xlHoja.Cells[31, columna].Formula = "SUM(" + xlHoja.Cells[25, columna] + ":" + xlHoja.Cells[27, columna] + ")";
             xlHoja.Cells[31, columna].Style.Numberformat.Format = "$###,###,##0.00";
             xlHoja.Cells[31, columna].Calculate();
 
 
-            xlHoja.Cells[32, columna].Formula = "=SUM(" + xlHoja.Cells[30, columna].Address + ":" + xlHoja.Cells[30, columna].Address + ")-SUM(" + xlHoja.Cells[31, columna].Address + ":" + xlHoja.Cells[31, columna].Address + ")";
+            xlHoja.Cells[32, columna].Formula = "SUM(" + xlHoja.Cells[30, columna] + ":" + xlHoja.Cells[30, columna] + ")-SUM(" + xlHoja.Cells[31, columna] + ":" + xlHoja.Cells[31, columna] + ")";
             xlHoja.Cells[32, columna].Style.Numberformat.Format = "$###,###,##0.00";
             xlHoja.Cells[32, columna].Calculate();
 
-            xlHoja.Cells[34, columna].Formula = "=SUM(" + xlHoja.Cells[19, columna].Address + ":" + xlHoja.Cells[19, columna].Address + ")-SUM(" + xlHoja.Cells[32, columna].Address + ":" + xlHoja.Cells[32, columna].Address + ")";
+            xlHoja.Cells[34, columna].Formula = "SUM(" + xlHoja.Cells[19, columna] + ":" + xlHoja.Cells[19, columna] + ")-SUM(" + xlHoja.Cells[32, columna] + ":" + xlHoja.Cells[32, columna] + ")";
             xlHoja.Cells[34, columna].Style.Numberformat.Format = "$###,###,##0.00";
             xlHoja.Cells[34, columna].Calculate();
+
+            xlHoja.Calculate();
+          
 
         }
 
