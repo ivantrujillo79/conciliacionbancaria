@@ -194,10 +194,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             //{
                 if (ObjMovimientoCajaDatos.ListaPedidos.Count() > MaxDocumentos)
                 {
+                    MovimientoCajaDatos _objmovimientocajadatos = new MovimientoCajaDatos();
                     //Se supera el máximo configurado
                     foreach (var Cliente in ListaDistintosClientes)
                     {
-                        MovimientoCajaDatos _objmovimientocajadatos = new MovimientoCajaDatos();
+                    //MovimientoCajaDatos _objmovimientocajadatos = new MovimientoCajaDatos();
+                        _objmovimientocajadatos = new MovimientoCajaDatos();
                         _objmovimientocajadatos.CadenaConexion = ObjMovimientoCajaDatos.CadenaConexion;
                         _objmovimientocajadatos.Caja = ObjMovimientoCajaDatos.Caja;
                         _objmovimientocajadatos.FMovimiento = ObjMovimientoCajaDatos.FMovimiento;
@@ -226,11 +228,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             _objmovimientocajadatos.ListaCobros.Add(Cobro);
                         }
 
-                        lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
-                        _objmovimientocajadatos = null;
+                        /*lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
+                        _objmovimientocajadatos = null;*/
                     }
-                }
-                else
+                lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
+                _objmovimientocajadatos = null;
+            }
+            else
                 {
                     //No se supera el máximo configurado
                     lstMovimientoCajaDatos.Add(ObjMovimientoCajaDatos);
