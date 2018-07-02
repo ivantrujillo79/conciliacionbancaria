@@ -706,16 +706,16 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                     foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
                     {
-                        /*Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
-                                corporativoConciliacion, 
-                                sucursalConciliacion, 
-                                añoConciliacion,  
-                                folioConciliacion, 
-                                mesConciliacion,
-                                objPedido.Pedido, 
-                                conexion);*/
-
-                        //PreparaPedidoRTGM(objPedido);
+                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
+                                                    corporativoConciliacion,
+                                                    sucursalConciliacion,
+                                                    añoConciliacion,
+                                                    folioConciliacion,
+                                                    mesConciliacion,
+                                                    objPedido.Pedido,
+                                                    objPedido.CelulaPedido,
+                                                    objPedido.AñoPedido,
+                                                    conexion);
                     }
 
                     if (aplicacobranza == "1")
