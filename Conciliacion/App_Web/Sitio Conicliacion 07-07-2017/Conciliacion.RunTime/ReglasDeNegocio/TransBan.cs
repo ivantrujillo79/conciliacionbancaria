@@ -231,6 +231,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         /*lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
                         _objmovimientocajadatos = null;*/
                     }
+                _objmovimientocajadatos.ListaCobros.AddRange(BufferCobro);
                 lstMovimientoCajaDatos.Add(_objmovimientocajadatos);
                 _objmovimientocajadatos = null;
             }

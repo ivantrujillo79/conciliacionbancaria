@@ -661,7 +661,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
 
             _URLGateway = p.ValorParametro(modulo, "URLGateway");
-            urlValida = ValidarURL(_URLGateway);
+            urlValida = false;//ValidarURL(_URLGateway);
 
             int corporativoConciliacion = 0;
             Int16 sucursalConciliacion = 0;
