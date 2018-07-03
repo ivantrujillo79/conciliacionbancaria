@@ -834,6 +834,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
     }
 
+
     //private bool EjecutaActualizaPedidoRTGM()
     //{
     //    bool exito = true; 
