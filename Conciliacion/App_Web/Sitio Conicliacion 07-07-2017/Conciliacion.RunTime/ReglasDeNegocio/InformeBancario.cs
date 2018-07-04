@@ -70,11 +70,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //public abstract List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string Status, string StatusConcepto);
         public abstract List<DetallePosicionDiariaBancos> consultaPosicionDiariaBanco(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, byte Caja);
 
-        public List<DetalleInformeInternosAFuturo> consultaconsultaInformeInternosAFuturo(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+        public List<DetalleInformeInternosAFuturo> consultaconsultaInformeInternosAFuturo(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string NumeroCuenta)
         {
             List<DetalleInformeInternosAFuturo> ListaResultado;
             DetalleInformeInternosAFuturo objDatos = new DetalleInformeInternosAFuturo();
-            ListaResultado = objDatos.consultaInformeInternosAFuturo(_conexion, FechaIni, FechaFin, Banco, CuentaBanco);
+            ListaResultado = objDatos.consultaInformeInternosAFuturo(_conexion, FechaIni, FechaFin, Banco, CuentaBanco, NumeroCuenta);
             return ListaResultado;
         }
 

@@ -118,12 +118,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
             {
                 if (item.Banco == Banco || (Banco == 0 && item.Banco == 0))
                 {
-                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco + " " + item.Descripcion, item.Banco, item.NombreBanco);
+                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco + " " + item.Descripcion, item.Banco, item.NombreBanco, item.CuentaBanco);
                     ListaCuentasControlUsr.Add(cuenta);
                 }
                 else if (Banco == 0)
                 {
-                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco + " " + item.Descripcion, item.Banco, item.NombreBanco);
+                    Cuenta cuenta = new Cuenta(item.ID, item.NombreBanco + " " + item.Descripcion, item.Banco, item.NombreBanco, item.CuentaBanco);
                     ListaCuentasControlUsr.Add(cuenta);
                 }
             }

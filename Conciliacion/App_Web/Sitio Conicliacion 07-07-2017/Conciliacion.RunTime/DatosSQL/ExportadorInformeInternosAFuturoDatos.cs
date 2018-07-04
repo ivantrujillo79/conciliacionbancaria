@@ -113,7 +113,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 this.depositos = depositos;
             }
 
-            public List<DetalleInformeInternosAFuturo> consultaInformeInternosAFuturo(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco)
+            public List<DetalleInformeInternosAFuturo> consultaInformeInternosAFuturo(Conexion _conexion, DateTime FechaIni, DateTime FechaFin, string Banco, string CuentaBanco, string NumeroCuenta)
             {
                 List<DetalleInformeInternosAFuturo> ListaResultado = new List<DetalleInformeInternosAFuturo>();
                 try
@@ -124,7 +124,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     _conexion.Comando.Parameters.Add(new SqlParameter("@FechaIni", System.Data.SqlDbType.DateTime)).Value = FechaIni;
                     _conexion.Comando.Parameters.Add(new SqlParameter("@FechaFin", System.Data.SqlDbType.DateTime)).Value = FechaFin;
                     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.VarChar)).Value = Banco;
-                    _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBancaria", System.Data.SqlDbType.VarChar)).Value = CuentaBanco;
+                    _conexion.Comando.Parameters.Add(new SqlParameter("@CuentaBancaria", System.Data.SqlDbType.VarChar)).Value = NumeroCuenta;
                     SqlDataReader reader = _conexion.Comando.ExecuteReader();
                     if (reader.HasRows)
                     {
@@ -140,8 +140,8 @@ namespace Conciliacion.RunTime.DatosSQL
                             dato.FMovimiento = Convert.ToDateTime(reader["fmovimiento"]);
                             dato.Referencia = Convert.ToString(reader["referencia"]);
                             dato.Concepto = Convert.ToString(reader["concepto"]);
-                            dato.Retiros = Convert.ToDecimal(reader["retiros"]);
-                            dato.Depositos = Convert.ToDecimal(reader["depositos"]);
+                            dato.Retiros = Convert.ToDecimal(reader["retiro"]);
+                            dato.Depositos = Convert.ToDecimal(reader["deposito"]);
                             ListaResultado.Add(dato);
                         }
                         reader.Close();

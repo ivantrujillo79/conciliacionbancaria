@@ -6410,8 +6410,12 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         Cuenta dato =
-                            new Cuenta(Convert.ToInt16(reader["IdUsuarioCuenta"]), Convert.ToString(reader["CUENTABANCO"]),
-                            Convert.ToInt16(reader["BANCO"]), Convert.ToString(reader["DSCBANCO"]));
+                            new Cuenta(Convert.ToInt16(reader["IdUsuarioCuenta"]), 
+                                        Convert.ToString(reader["CUENTABANCO"]),
+                                        Convert.ToInt16(reader["BANCO"]), 
+                                        Convert.ToString(reader["DSCBANCO"]), 
+                                        Convert.ToString(reader["CUENTABANCO"])
+                                       );
                         lista.Add(dato);
 
                     }
@@ -6419,7 +6423,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 catch (Exception ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
