@@ -54,6 +54,11 @@
             activarDatePickers();
             MuestraSaldoAFavor();
             MostrarTxtComisionInicio();
+            document.getElementById("divExternos").scrollTop = document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value;
+        }
+
+        function rdbSecuencia_scrollpos() {
+            document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value = document.getElementById("divExternos").scrollTop;
         }
 
         function btnAgregarPedidoConciliacion(grid, fila){
@@ -1172,7 +1177,8 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:600px; height:350px; overflow:auto;">
+                        
+                        <div id="divExternos" style="width:600px; height:350px; overflow:auto;" onscroll="rdbSecuencia_scrollpos();" >
                             <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             AllowPaging="True" PageSize="100" AllowSorting="True" CssClass="grvResultadoConsultaCss"
@@ -1197,8 +1203,11 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Secuencia" SortExpression="Secuencia">
                                     <ItemTemplate>
+                                        
+                                        <%--123--%>
                                         <asp:RadioButton ID="rdbSecuencia" runat="server" GroupName="GrupoExternos" AutoPostBack="True"
                                             Text='<%# resaltarBusqueda(Eval("Secuencia").ToString()) %>' OnCheckedChanged="rdbSecuencia_CheckedChanged" />
+
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" BackColor="#ebecec" Width="80px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="80px"></HeaderStyle>
@@ -1297,8 +1306,11 @@
                             <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                         </asp:GridView>
                         </div>
+
+
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
+                        <asp:HiddenField ID="hfDivExternosScrollPos" runat="server" />
                     </td>
                     <td style="vertical-align: top" colspan="2">
                         <div id="configuracionInternosPedidos" class="bg-color-grisClaro">
