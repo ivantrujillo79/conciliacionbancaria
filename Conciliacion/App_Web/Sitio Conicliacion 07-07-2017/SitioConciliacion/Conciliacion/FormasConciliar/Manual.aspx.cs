@@ -881,12 +881,18 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     List<ReferenciaNoConciliada> intSeleccionados = filasSeleccionadasInternos("EN PROCESO DE CONCILIACION");
                     if (intSeleccionados.Count > 0)
                     {
-                        foreach (ReferenciaNoConciliada ex in extSeleccionados)
+                        //se comenta por que esta duplicando la insercion en ConciliacionReferencia
+                        //solo se asocian al primer externo los internos
+                        //foreach (ReferenciaNoConciliada ex in extSeleccionados)
+                        //{
+                        if (extSeleccionados.Count > 0)
                         {
+                            ReferenciaNoConciliada ex = extSeleccionados[0];
                             foreach (ReferenciaNoConciliada ai in intSeleccionados)
                                 ex.AgregarReferenciaConciliadaSinVerificacion(ai);
                             ex.GuardarReferenciaConciliada();
                         }
+                        //}
 
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
                         GenerarTablaExternos();

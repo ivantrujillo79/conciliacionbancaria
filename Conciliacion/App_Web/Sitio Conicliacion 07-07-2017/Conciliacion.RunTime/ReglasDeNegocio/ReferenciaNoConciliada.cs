@@ -1150,11 +1150,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 if (this.coninterno)
                 {
-                    //if (this.MontoConciliado < this.monto - this.Diferencia)
-                    //{
-                    //    this.ImplementadorMensajes.MostrarMensaje("No se puede guardar el registro. El monto conciliados es: " + this.MontoConciliado + ", debe estar entre: " + (this.monto - this.Diferencia) + " y " + (this.monto + this.Diferencia));
-                    //    return false;
-                    //}
+                    //Internos <= Externos
+                    if (this.MontoConciliado <= this.monto - this.Diferencia)
+                    {
+                        this.ImplementadorMensajes.MostrarMensaje(
+                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser menor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
+                        return false;
+                    }
 
                     foreach (ReferenciaConciliada referen in this.ListaReferenciaConciliada)
                     {
@@ -1168,11 +1170,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
                 else
                 {
-                    //if ((this.MontoConciliado < this.monto - this.Diferencia) & (this.MismoCliente == false))
-                    //{
-                    //    this.ImplementadorMensajes.MostrarMensaje("No se puede guardar el registro. El monto conciliados es: " + this.MontoConciliado + ", debe estar entre: " + (this.monto - this.Diferencia) + " y " + (this.monto + this.Diferencia));
-                    //    return false;
-                    //}
+                    if ((this.MontoConciliado <= this.monto - this.Diferencia) & (this.MismoCliente == false))
+                    {
+                        this.ImplementadorMensajes.MostrarMensaje(
+                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser menor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
+                        return false;
+                    }
 
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {
