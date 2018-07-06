@@ -1151,10 +1151,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 if (this.coninterno)
                 {
                     //Internos <= Externos
-                    if (this.MontoConciliado <= this.monto - this.Diferencia)
+                    if (this.MontoConciliado < this.monto - this.Diferencia)
                     {
                         this.ImplementadorMensajes.MostrarMensaje(
-                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser menor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
+                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
                         return false;
                     }
 
@@ -1170,10 +1170,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
                 else
                 {
-                    if ((this.MontoConciliado <= this.monto - this.Diferencia) & (this.MismoCliente == false))
+                    if ((this.MontoConciliado < this.monto - this.Diferencia) & (this.MismoCliente == false))
                     {
                         this.ImplementadorMensajes.MostrarMensaje(
-                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser menor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
+                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
                         return false;
                     }
 
