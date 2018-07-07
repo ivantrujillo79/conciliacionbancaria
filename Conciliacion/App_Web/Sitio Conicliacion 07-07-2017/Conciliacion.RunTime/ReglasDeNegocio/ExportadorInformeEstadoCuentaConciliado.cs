@@ -72,7 +72,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     {
 
                         // inicializar();
-                        crearEncabezado(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString());
+                        crearEncabezado(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString(), _ReporteEstadoCuentaConciliado[i][0].Fecha.ToString());
                         exportarDatos(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString(), 8, _ReporteEstadoCuentaConciliado[i]);
                     }
 
@@ -146,7 +146,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return excel;
         }
 
-        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja)
+        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja, string fechainicial)
         {
             string banco, cuenta, empresa;
             DateTime fecha;
@@ -155,9 +155,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombreHoja);
 
             banco = "BANAMEX ";
-            cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
+            cuenta = "CTA " + nombreHoja;
             empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
-            fecha = DateTime.Now;//_ReporteEstadoCuentaConciliado[0].Fecha;
+
+            string format = "yyyy-MM-dd HH:mm:ss: tt";
+            fecha = DateTime.Parse(fechainicial);
+
 
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:H1"])
@@ -278,14 +281,62 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 wsSheet1.Cells[i, 2].Value = detalle.Fecha.ToString("dd/MM/yyyy");
                 wsSheet1.Cells[i, 3].Value = detalle.Referencia;
                 wsSheet1.Cells[i, 4].Value = detalle.Concepto;
-                wsSheet1.Cells[i, 9].Value = detalle.Retiros.ToString("C");
-                wsSheet1.Cells[i, 10].Value = detalle.Depositos.ToString("C");
-                wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal.ToString("C");
+                wsSheet1.Cells[i, 9].Value = detalle.Retiros;
+                wsSheet1.Cells[i, 10].Value = detalle.Depositos;
+                wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal;
                 wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
                 wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
                 i++;
             }
+
+            //Get the final row for the column in the worksheet
+            int finalrows = wsSheet1.Dimension.End.Row;
+
+            //Para los depósitos
+            string ColumnString = "J8:J" + finalrows.ToString();
+            wsSheet1.Cells["M1"].Formula = "SUM(" + ColumnString + ")";
+            wsSheet1.Cells["M1"].Calculate();
+
+            //Para los Retiros
+            string ColumnStringRet = "I8:I" + finalrows.ToString();
+            wsSheet1.Cells["M2"].Formula = "SUM(" + ColumnStringRet + ")";
+            wsSheet1.Cells["M2"].Calculate();
+
+            //Se suman i y j del primer item, y se restan con K
+            //Para el Saldo Final calculado 
+            wsSheet1.Cells["M3"].Formula = "SUM(K8)-SUM(I8,J8)";
+            wsSheet1.Cells["M3"].Calculate();
+
+            //Para el Saldo final bancario
+            string ColumnStringSaldofinalbancario= "K" + finalrows.ToString();
+            wsSheet1.Cells["M4"].Value = wsSheet1.Cells[ColumnStringSaldofinalbancario].Value.ToString();
+            wsSheet1.Cells["M4"].Formula = "SUM(" + ColumnStringSaldofinalbancario + ")";
+            wsSheet1.Cells["M4"].Calculate();
+
+           // ---Retiros
+
             
+            //---Depositos
+            string ColumnStringDep = "J8:J" + finalrows.ToString();
+           // --- Saldos
+            string ColumnStringSal = "K8:K" + finalrows.ToString();
+
+
+            ExcelRange celdastotales = wsSheet1.Cells[ColumnStringRet];
+            celdastotales.Style.Numberformat.Format = "$###,###,##0.00";
+
+            ExcelRange celdastotalesdep = wsSheet1.Cells[ColumnStringDep];
+            celdastotalesdep.Style.Numberformat.Format = "$###,###,##0.00";
+
+            ExcelRange celdastotalessal = wsSheet1.Cells[ColumnStringSal];
+            celdastotalessal.Style.Numberformat.Format = "$###,###,##0.00";
+
+            ExcelRange celdastot= wsSheet1.Cells["M1:M6"];
+            celdastot.Style.Numberformat.Format = "$###,###,##0.00";
+
+
+            wsSheet1.Calculate();
+
         }
 
         //private void cerrar()
