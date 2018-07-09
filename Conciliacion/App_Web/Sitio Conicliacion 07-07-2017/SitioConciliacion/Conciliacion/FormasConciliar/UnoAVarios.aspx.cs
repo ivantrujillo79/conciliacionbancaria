@@ -1140,10 +1140,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         Decimal MontoConciliado;
         //DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
-        decimal dComision = 0M;
+        //decimal dComision = 0M;
         DataTable dt = (DataTable)Grid.DataSource;
-        bool comisionSeleccionada = chkComision.Checked;
-        bool comisionValida = false;
+        //bool comisionSeleccionada = chkComision.Checked;
+        //bool comisionValida = false;
 
         if (dt != null && dt.Rows.Count > 0)
         {
@@ -1154,12 +1154,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow[7]);
             }
 
-            if (comisionSeleccionada)
-            {
-                comisionValida = decimal.TryParse(txtComision.Text, out dComision);
+            //if (comisionSeleccionada)
+            //{
+            //    comisionValida = decimal.TryParse(txtComision.Text, out dComision);
 
-                MontoConciliado += dComision;
-            }
+            //    MontoConciliado += dComision;
+            //}
 
             decimal dAbono      = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
             decimal dAcumulado  = Decimal.Round(MontoConciliado, 2);
@@ -1680,8 +1680,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     public void ActualizarTotalesAgregados()
     {
-        decimal dComision = 0M;
-        bool comisionSeleccionada = chkComision.Checked;
+        //decimal dComision = 0M;
+        //bool comisionSeleccionada = chkComision.Checked;
 
         try
         {
@@ -1716,11 +1716,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
 
-                    if (comisionSeleccionada)
-                    {
-                        decimal.TryParse(txtComision.Text, out dComision);
-                        dAcumulado += dComision;
-                    }
+                    //if (comisionSeleccionada)
+                    //{
+                    //    decimal.TryParse(txtComision.Text, out dComision);
+                    //    dAcumulado += dComision;
+                    //}
                     decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
                     dResto = (dResto <= 0 ? 0 : dResto);
 

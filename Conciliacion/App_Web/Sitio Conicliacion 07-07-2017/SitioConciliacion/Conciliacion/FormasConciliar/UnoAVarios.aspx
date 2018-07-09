@@ -66,8 +66,9 @@
             
             dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML);
             var total = parseFloat(0).toFixed(2);
+            var dRespaldoAbono = parseFloat(0.0);
 
-            var ComisionSeleccionada = document.getElementById('<%= chkComision.ClientID %>').checked;
+            var comisionSeleccionada = document.getElementById('<%= chkComision.ClientID %>').checked;
             var dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
             dComision = (isNaN(dComision) ? 0 : dComision);
             //alert(dComision);
@@ -79,7 +80,7 @@
                         dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$','').trim());
             }
 
-            if (ComisionSeleccionada) {
+            if (comisionSeleccionada) {
                 dChequeados += dComision;
             }
 
@@ -95,11 +96,13 @@
                 if (dChequeados < sumapreconciliadas)
                     sumapreconciliadas = dChequeados;
                 var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
-                var dAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML;
+                var dAcumulado = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
                 var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$', '').trim());
 
-                if (ComisionSeleccionada) {
-                    dAcumulado += dComision;
+                if (comisionSeleccionada) {
+                    //dAcumulado += dComision;
+
+                    dRespaldoAbono = dAbono;
                     dAbono += dComision;
                 }
 
@@ -113,8 +116,8 @@
                     if (dResto <= 0)
                         dResto      = 0;
                     document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = dResto.toFixed(2);
-                    document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = sumapreconciliadas;
-                    return true;
+                    document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = sumapreconciliadas.toFixed(2);
+                    return true; 
                 }
                 else
                 {
