@@ -186,6 +186,10 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         {
              List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>>();
             lstDetalle = consultaReporteEstadoCuentaConciliado();
+            if(lstDetalle.Count==0)
+            {
+                throw new Exception("No se ha recuperado información con los parámetros elegidos, el archivo no será generado.");
+            }
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             string cero;
             int contador = 0;
