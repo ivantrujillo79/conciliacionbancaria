@@ -31,8 +31,12 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 
     private void InicializarCampos()
     {
-        InicializarBancos();
-        InicializaEstatusConcepto();
+        if (Page.IsPostBack == false)
+        {
+            InicializarBancos();
+            InicializaEstatusConcepto();
+        }
+  
 
         if (DrpBancos.SelectedItem != null)
         {
@@ -149,7 +153,14 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
             DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             conexion.AbrirConexion(false);
-            lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, DrpBancos.SelectedValue == "0" ? "" : DrpBancos.SelectedItem.Text.Trim(), "", DrpEstatusConcepto.SelectedValue == "0" ? "": DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue=="0"?"": DrpEstatus.SelectedValue);
+            for( int i=0; i<= WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count()-1; i++)
+            {
+                string banco = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(0, 20).TrimEnd();
+                string numerocuenta = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Length - 20).TrimStart();
+                lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, banco, numerocuenta,  DrpEstatusConcepto.SelectedValue == "0" ? "" : DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue == "0" ? "" : DrpEstatus.SelectedValue);
+            }
+
+           
             ListasDetalle = Separat(lstDetalle);
         }
         catch (Exception ex)
@@ -184,13 +195,15 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 
         try
         {
-             List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>>();
-            lstDetalle = consultaReporteEstadoCuentaConciliado();
-            if(lstDetalle.Count==0)
-            {
-                throw new Exception("No se ha recuperado información con los parámetros elegidos, el archivo no será generado.");
-            }
-            DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+             List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>> lstDetalleTotal = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>>();
+         
+
+            DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            Conexion conexion = new Conexion();
+            var lstDetalle = new List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>();
+            var ListasDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaConciliado>>();
+
             string cero;
             int contador = 0;
             int registrofinal = 0;
@@ -208,15 +221,29 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                 File.Delete(HttpRuntime.AppDomainAppPath + @"InformesExcel\"+ "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx");
             }
 
-            if (WUCListadoCuentasBancarias1.Cuentas.Count > 0)
+
+
+            if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
             {
+                Boolean esfinal = false;
+                registrofinal = WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count - 1;
 
-                registrofinal = WUCListadoCuentasBancarias1.Cuentas.Count - 1;
+                for (int i = 0; i <= WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count() - 1; i++)
+                {
+                    var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+                    if (registrofinal == i)
+                        esfinal = true;
 
-                lstDetalle = consultaReporteEstadoCuentaConciliado();
-                ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
-                HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
-                obExportador.generarInforme();
+
+                    conexion.AbrirConexion(false);
+                    string banco = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(0, 20).TrimEnd();
+                    string numerocuenta = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Length - 20).TrimStart();
+                    lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, banco, numerocuenta, DrpEstatusConcepto.SelectedValue == "0" ? "" : DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue == "0" ? "" : DrpEstatus.SelectedValue);
+                    ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
+                    HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", numerocuenta, banco, esfinal);
+                    obExportador.generarInforme();
+                }        
+               
                 contador = contador + 1;                 
                
 

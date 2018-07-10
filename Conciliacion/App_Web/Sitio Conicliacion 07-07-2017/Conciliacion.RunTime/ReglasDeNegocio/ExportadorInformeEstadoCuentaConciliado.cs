@@ -27,19 +27,21 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //private Microsoft.Office.Interop.Excel.Worksheet xlHoja;
         //private Microsoft.Office.Interop.Excel.Range xlRango;
 
-        private List<List<DetalleReporteEstadoCuentaConciliado>> _ReporteEstadoCuentaConciliado;
+        private List<DetalleReporteEstadoCuentaConciliado> _ReporteEstadoCuentaConciliado;
         private string _Ruta;
         private string _Archivo;
         private string _NombreHoja;
+        private string _NombreBanco;
         private string _rutaCompleta;
+        private bool _Esfinal;
      
   
         #endregion
 
         #region Constructores
 
-        public ExportadorInformeEstadoCuentaConciliado(List<List<DetalleReporteEstadoCuentaConciliado>> ReporteEstadoCuentaConciliado,
-                                        string Ruta, string Archivo, string Nombre)
+        public ExportadorInformeEstadoCuentaConciliado(List<DetalleReporteEstadoCuentaConciliado> ReporteEstadoCuentaConciliado,
+                                        string Ruta, string Archivo, string Nombre, string NombreBanco, bool esfinal )
         {
             try
             {
@@ -47,8 +49,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
                 _NombreHoja = Nombre.Trim();
+                _NombreBanco = NombreBanco.Trim();
+                _Esfinal = esfinal;
 
-                //ValidarMiembros();
+
             }
             catch (Exception ex)
             {
@@ -66,17 +70,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 try
                 {
                     ExcelPackage excelPackage = inicializar();
-                   
-
-                    for (int i = 0; i <= _ReporteEstadoCuentaConciliado.Count - 1; i++)
-                    {
+                                  
 
                         // inicializar();
-                        crearEncabezado(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString(), _ReporteEstadoCuentaConciliado[i][0].Fecha.ToString());
-                        exportarDatos(excelPackage, _ReporteEstadoCuentaConciliado[i][0].CuentaBancoFinanciero.ToString(), 8, _ReporteEstadoCuentaConciliado[i]);
-                    }
+                        crearEncabezado(excelPackage, _NombreHoja , _NombreBanco, _ReporteEstadoCuentaConciliado[0].Fecha.ToString());
+                        exportarDatos(excelPackage, _NombreHoja, _NombreBanco, 8, _ReporteEstadoCuentaConciliado);
 
-                    excelPackage.Save();
+                    if(_Esfinal)
+                        {
+                        excelPackage.Save();
+                    }
+                  
 
 
 
@@ -146,7 +150,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return excel;
         }
 
-        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja, string fechainicial)
+        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja, string NombreBanco,  string fechainicial)
         {
             string banco, cuenta, empresa;
             DateTime fecha;
@@ -154,7 +158,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombreHoja);
 
-            banco = "BANAMEX ";
+            banco = NombreBanco;
             cuenta = "CTA " + nombreHoja;
             empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
 
@@ -165,7 +169,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:H1"])
             {
-                Rng.Value = banco.ToUpper() + cuenta.ToUpper() + " MOVIMIENTOS DEL MES: ";
+                Rng.Value = banco.ToUpper() +"  "+  cuenta.ToUpper() + " MOVIMIENTOS DEL MES: ";
                 Rng.Merge = true;
             }
 
@@ -267,7 +271,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             Rng.Style.Border.Bottom.Color.SetColor(Color.Black);
         }
 
-        private void exportarDatos(ExcelPackage excelPackage, string nombreHoja, int aPartirDeLaFila, List<DetalleReporteEstadoCuentaConciliado> _DetalleAExportar)
+        private void exportarDatos(ExcelPackage excelPackage, string nombreHoja, string NombreBanco, int aPartirDeLaFila, List<DetalleReporteEstadoCuentaConciliado> _DetalleAExportar)
         {
             int i = aPartirDeLaFila;
 

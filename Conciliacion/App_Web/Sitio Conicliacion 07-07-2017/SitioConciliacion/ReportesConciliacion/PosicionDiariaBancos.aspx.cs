@@ -56,7 +56,8 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
 
     protected void btnConsultar_Click(object sender, EventArgs e)
     {
-        DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
+        
+        var fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
         string cero;
         if (fechaInicio.Month < 10)
         {
