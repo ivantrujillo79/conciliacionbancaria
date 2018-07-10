@@ -155,6 +155,45 @@
             return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
         }
 
+        function chkExterno_clic(o, monto){
+            montoAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoExterno').innerHTML.trim();
+            if (montoAcumulado == "")
+                montoAcumulado = 0;
+            extAgregados = document.getElementById('ctl00_contenidoPrincipal_lblAgregadosExternos').innerHTML.trim();
+            if (extAgregados == "")
+                extAgregados = 0;
+            if (o.checked == true)
+            {
+                montoAcumulado = parseFloat(montoAcumulado) + parseFloat(monto);
+                extAgregados = parseFloat(extAgregados) + parseFloat(1);
+            }
+            else
+            {
+                montoAcumulado = parseFloat(montoAcumulado) - parseFloat(monto);
+                extAgregados = parseFloat(extAgregados) - parseFloat(1);
+            }
+            document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoExterno').innerHTML = montoAcumulado.toFixed(2); 
+            document.getElementById('ctl00_contenidoPrincipal_lblAgregadosExternos').innerHTML = extAgregados;
+
+            //Grid = document.getElementById('ctl00_contenidoPrincipal_grvExternos');
+            //for (i = 0; i < Grid.cells.length; i++)
+            //    Grid.rows[i].cells['3'].className = "bg-color-azulClaro01";
+
+        }
+        function chkInterno_clic(o, monto){
+            montoAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoInterno').innerHTML.trim();
+            if (montoAcumulado == "")
+                montoAcumulado = 0;
+            if (o.checked == true)
+            {
+                montoAcumulado = parseFloat(montoAcumulado) + parseFloat(monto);
+            }
+            else
+            {
+                montoAcumulado = parseFloat(montoAcumulado) - parseFloat(monto);
+            }
+            document.getElementById('ctl00_contenidoPrincipal_lblMontoInterno').innerHTML = montoAcumulado.toFixed(2);             
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
@@ -760,8 +799,10 @@
                             <Columns>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:CheckBox runat="server" ID="chkExterno" OnCheckedChanged="chkExterno_CheckedChanged"
-                                            AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
+                                        <asp:CheckBox runat="server" ID="chkExterno" 
+                                            OnClick='<%# String.Concat("chkExterno_clic(this,", Eval("Deposito"), ");") %>'
+                                            OnCheckedChanged="chkExterno_CheckedChanged"
+                                            AutoPostBack="False" Checked='<%# Bind("Selecciona") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
@@ -1007,8 +1048,10 @@
                             <Columns>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:CheckBox runat="server" ID="chkInterno" AutoPostBack="True" OnCheckedChanged="chkInterno_CheckedChanged"
-                                            Checked='<%# Bind("Selecciona") %>' />
+                                        <asp:CheckBox runat="server" ID="chkInterno"
+                                            OnClick='<%# String.Concat("chkInterno_clic(this,", Eval("Deposito"), ");") %>'
+                                            OnCheckedChanged="chkInterno_CheckedChanged"
+                                            AutoPostBack="False" Checked='<%# Bind("Selecciona") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
