@@ -340,8 +340,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         {
                             Carga_CelulaCorporativo(corporativo);
                         }
-                        ConsultarPedidosInternos();
-                        ConsultaInicialPedidosInternos();
+                        //!PostBack
+                        ConsultarPedidosInternos(objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
+                        ConsultaInicialPedidosInternos(objControlPostBack == "rdbSecuencia");
+
                         btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                         rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
                         rvDiferencia.ValidationGroup = "UnoVariosPedidos";
@@ -385,7 +387,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
 
             }
-            else
+            else //!Postback
             {
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -424,8 +426,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Carga_CelulaCorporativo(corporativo);
                     }
-                    ConsultarPedidosInternos();
-                    ConsultaInicialPedidosInternos();
+                    ConsultarPedidosInternos(false);
+                    ConsultaInicialPedidosInternos(false);
 
                     grvInternos.Visible = false;
                     btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
@@ -2053,7 +2055,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                 ActualizarTotalesAgregados();
 
                                 if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                                    ConsultarPedidosInternos();
+                                    ConsultarPedidosInternos(true);
                                 else
                                 {
                                     activarVerPendientesCanceladosInternos(true);
@@ -3041,7 +3043,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
             if (objSolicitdConciliacion.ConsultaPedido())
-                ConsultarPedidosInternos();
+                ConsultarPedidosInternos(true);
             if (objSolicitdConciliacion.ConsultaArchivo())
                 ConsultarArchivosInternos();
 
@@ -3117,11 +3119,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     }
 
-    public void ConsultaInicialPedidosInternos()
+    public void ConsultaInicialPedidosInternos(bool validarcliente)
     {
         try
         {
-
             if (grvExternos.Rows.Count > 0)
             {
                 //Obtener el la referencia externa seleccionada
@@ -3133,49 +3134,50 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 if(rfEx.Referencia.Trim()=="")
                     return;
+                if (validarcliente)
+                { 
+                    bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
+                    string cliente = "-1";
+                    if (clientevalido)
+                    {
+                        try
+                        {
+                            cliente = rfEx.Referencia.Trim().Length > 2
+                                ? rfEx.Referencia.Trim().Substring(0, rfEx.Referencia.Trim().Length - 1)
+                                : rfEx.Referencia.Trim();
+                        }
+                        catch (FormatException e)
+                        {
+                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamente.");
+                        }
+                        catch (Exception e)
+                        {
+                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
+                        }
 
-                bool clientevalido = true;//App.Consultas.ClienteValido(rfEx.Referencia.Trim());
-                string cliente = "-1";
-                if (clientevalido)
-                {
-                    try
-                    {
-                        cliente = rfEx.Referencia.Trim().Length > 2
-                            ? rfEx.Referencia.Trim().Substring(0, rfEx.Referencia.Trim().Length - 1)
-                            : rfEx.Referencia.Trim();
                     }
-                    catch (FormatException e)
+                    else
+                        if (!(objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido" || objControlPostBack == "btnQuitarInterno"))
+                        {
+                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
+                        }
+                    if (ddlCelula.SelectedItem != null)
                     {
-                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamente.");
-                    }
-                    catch (Exception e)
-                    {
-                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
-                    }
-
-                }
-                else
-                    if (!(objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido" || objControlPostBack == "btnQuitarInterno"))
-                    {
-                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
-                    }
-
-                if (ddlCelula.SelectedItem != null)
-                {
-                    int Celula = 0;
-                    SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-                    tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                    objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-                    objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+                        int Celula = 0;
+                        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
                     
-                    if (Convert.ToInt32(ddlCelula.SelectedItem.Value) == 0)
-                    {
-                        Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();    
+                        if (Convert.ToInt32(ddlCelula.SelectedItem.Value) == 0)
+                        {
+                            Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();    
+                        }
+                        Celula = 0;
+                        Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
+                            Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                            cliente, true);
                     }
-                    Celula = 0;
-                    Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                        Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                        cliente, true);
                 }
                 // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
                 GenerarTablaPedidos();
@@ -3266,7 +3268,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
 
-    public void ConsultarPedidosInternos()
+    public void ConsultarPedidosInternos(bool validarcliente)
     {
         try
         {
@@ -3282,62 +3284,65 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if(rfEx.Referencia.Trim() == "")
                     return;
 
-                bool clientevalido = true; //App.Consultas.ClienteValido(rfEx.Referencia.Trim());
-                string cliente = "-1";
-                if (clientevalido)
+                if (validarcliente)
                 {
-                    try
+                    bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
+                    string cliente = "-1";
+                    if (clientevalido)
                     {
-                        cliente = rfEx.Referencia.Trim().Length > 2
-                            ? rfEx.Referencia.Trim().Substring(0, rfEx.Referencia.Trim().Length - 1)
-                            : rfEx.Referencia.Trim();
-                    }
-                    catch (FormatException e)
-                    {
-                        /**Modifico: CNSM 
-                         Fecha: 08/06/2017
-                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
-                         **/
-                    }
-                    catch (Exception e)
-                    {
-                        /**Modifico: CNSM 
-                        Fecha: 08/06/2017
-                        App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
-                         **/
-                    }
+                        try
+                        {
+                            cliente = rfEx.Referencia.Trim().Length > 2
+                                ? rfEx.Referencia.Trim().Substring(0, rfEx.Referencia.Trim().Length - 1)
+                                : rfEx.Referencia.Trim();
+                        }
+                        catch (FormatException e)
+                        {
+                            /**Modifico: CNSM 
+                             Fecha: 08/06/2017
+                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
+                             **/
+                        }
+                        catch (Exception e)
+                        {
+                            /**Modifico: CNSM 
+                            Fecha: 08/06/2017
+                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
+                             **/
+                        }
 
-                }
-                /**Modifico: CNSM 
-                   Fecha: 08/06/2017
-               else
-               App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");**/
-                int Celula;
-                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-                objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-                Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();
-                if (Celula==0)
-                    if (int.TryParse(ddlCelula.SelectedValue, out Celula))
-                    {
-                        Celula = Convert.ToInt32(ddlCelula.SelectedValue);
                     }
-                Celula = 0;
-                Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
-                        Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
-                        cliente, true); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
-                GenerarTablaPedidos();
-                LlenaGridViewPedidos();
-                statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);
-                if (statusFiltro)
-                {
-                    //Leer el tipoConciliacion URL
+                    /**Modifico: CNSM 
+                       Fecha: 08/06/2017
+                    else
+                    App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");**/
+                    int Celula;
+                    SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                     tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                    objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                    objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+                    Celula = objSolicitdConciliacion.ConsultaCelulaPordefecto();
+                    if (Celula==0)
+                        if (int.TryParse(ddlCelula.SelectedValue, out Celula))
+                        {
+                            Celula = Convert.ToInt32(ddlCelula.SelectedValue);
+                        }
+                    Celula = 0;
+                    Consulta_Pedidos(corporativo, sucursal, año, mes, folio, rfEx, Convert.ToDecimal(txtDiferencia.Text),
+                            Celula, //Convert.ToInt32(ddlCelula.SelectedItem.Value),
+                            cliente, true); // Se agrega -1 que funje como cliente NON //ClientePadre=false para solo mandar los pedidos de ese cliente
+                    GenerarTablaPedidos();
+                    LlenaGridViewPedidos();
+                    statusFiltro = Convert.ToBoolean(Session["StatusFiltro"]);
+                    if (statusFiltro)
+                    {
+                        //Leer el tipoConciliacion URL
+                        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-                    cargar_ComboCampoFiltroDestino(tipoConciliacion, ddlFiltrarEn.SelectedItem.Value);
-                    tipoFiltro = Session["TipoFiltro"] as string;
-                    FiltrarInternos(tipoFiltro);
+                        cargar_ComboCampoFiltroDestino(tipoConciliacion, ddlFiltrarEn.SelectedItem.Value);
+                        tipoFiltro = Session["TipoFiltro"] as string;
+                        FiltrarInternos(tipoFiltro);
+                    }
                 }
             }
             else
@@ -3467,7 +3472,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ActualizarTotalesAgregados();
             //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
             if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                ConsultarPedidosInternos();
+                ConsultarPedidosInternos(true);
             else
                 ConsultarArchivosInternos();
         }
@@ -3567,7 +3572,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 GenerarTablaExternos();
                 LlenaGridViewExternos();
                 if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                    ConsultarPedidosInternos();
+                    ConsultarPedidosInternos(true);
                 else
                     ConsultarArchivosInternos();
             }
@@ -3602,7 +3607,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS) TANTO PENDIENTES COMO CANCELADOS
         if (tipoConciliacion == 2 || tipoConciliacion == 6)
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         else
             ConsultarArchivosInternos();
     }
@@ -3621,7 +3626,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS) TANTO PENDIENTES COMO CANCELADOS
         if(	objSolicitdConciliacion.ConsultaPedido())
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         if (objSolicitdConciliacion.ConsultaArchivo())
             ConsultarArchivosInternos();
     }
@@ -3657,7 +3662,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         else
         {
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         }
     }
 
@@ -3892,7 +3897,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 ActualizarTotalesAgregados();
                 //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
                 if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                    ConsultarPedidosInternos();
+                    ConsultarPedidosInternos(true);
                 else
                     ConsultarArchivosInternos();
             }
@@ -4142,7 +4147,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         ActualizarTotalesAgregados();
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
         if (tipoConciliacion == 2 || tipoConciliacion == 6)
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         else
             ConsultarArchivosInternos();
 
@@ -4371,7 +4376,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             LimpiarExternosTodos();
             ActualizarTotalesAgregados();
             if (tipoConciliacion == 2 || tipoConciliacion == 6)
-                ConsultarPedidosInternos();
+                ConsultarPedidosInternos(true);
             else
                 ConsultarArchivosInternos();
         }
@@ -4537,7 +4542,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
         if (tipoConciliacion == 2 || tipoConciliacion == 6)
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         else
             ConsultarArchivosInternos();
 
@@ -4585,7 +4590,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
         if (tipoConciliacion == 2 || tipoConciliacion == 6)
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         else
             ConsultarArchivosInternos();
 
@@ -4675,7 +4680,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         //CONSULTAR INTERNO(ARCHIVOS O PEDIDOS)
         if (tipoConciliacion == 2 || tipoConciliacion == 6)
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         else
         {
             activarVerPendientesCanceladosInternos(true);
@@ -5006,7 +5011,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         if (!rce.ExisteReferenciaConciliadaPedido(rncP.Pedido, rncP.CelulaPedido, rncP.AñoPedido))
                         {
                             agregarPedidoReferenciaExterna(rce, rncP);
-                            ConsultarPedidosInternos();
+                            ConsultarPedidosInternos(true);
                         }
                         else
                             App.ImplementadorMensajes.MostrarMensaje("El pedido ya fue agregado al Movimiento Externo");
@@ -5365,7 +5370,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
             GenerarTablaAgregadosArchivosInternos(rfExterna, tipoConciliacion);
             ActualizarTotalesAgregados();
-            ConsultarPedidosInternos();
+            ConsultarPedidosInternos(true);
         }
         else
         {
@@ -5377,7 +5382,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 ActualizarTotalesAgregados();
                 if (objControlPostBack != "btnAgregarPedido")
                 {
-                    ConsultarPedidosInternos();
+                    ConsultarPedidosInternos(true);
                 }
             }
             else
@@ -5401,7 +5406,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //Limpiar Listas de Referencia de demas Externos
             LimpiarExternosReferencia(rfEx);
             if (tipoConciliacion == 2)
-                ConsultarPedidosInternos();
+                ConsultarPedidosInternos(true);
             else
                 ConsultarArchivosInternos();
             //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
