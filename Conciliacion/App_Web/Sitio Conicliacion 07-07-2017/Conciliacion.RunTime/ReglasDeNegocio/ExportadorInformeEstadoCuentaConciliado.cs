@@ -34,6 +34,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string _NombreBanco;
         private string _rutaCompleta;
         private bool _Esfinal;
+        private string _ClabeInterbancaria;
      
   
         #endregion
@@ -41,7 +42,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         #region Constructores
 
         public ExportadorInformeEstadoCuentaConciliado(List<DetalleReporteEstadoCuentaConciliado> ReporteEstadoCuentaConciliado,
-                                        string Ruta, string Archivo, string Nombre, string NombreBanco, bool esfinal )
+                                        string Ruta, string Archivo, string Nombre, string NombreBanco, bool esfinal, string ClabeInterbancaria )
         {
             try
             {
@@ -51,6 +52,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _NombreHoja = Nombre.Trim();
                 _NombreBanco = NombreBanco.Trim();
                 _Esfinal = esfinal;
+                _ClabeInterbancaria = ClabeInterbancaria.Trim();
 
 
             }
@@ -73,7 +75,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                   
 
                         // inicializar();
-                        crearEncabezado(excelPackage, _NombreHoja , _NombreBanco, _ReporteEstadoCuentaConciliado[0].Fecha.ToString());
+                        crearEncabezado(excelPackage, _NombreHoja , _NombreBanco, _ReporteEstadoCuentaConciliado[0].Fecha.ToString(), _ReporteEstadoCuentaConciliado[0].Clabe.ToString());
                         exportarDatos(excelPackage, _NombreHoja, _NombreBanco, 8, _ReporteEstadoCuentaConciliado);
 
                     if(_Esfinal)
@@ -150,7 +152,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return excel;
         }
 
-        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja, string NombreBanco,  string fechainicial)
+        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombreHoja, string NombreBanco,  string fechainicial, string ClabeInterbancaria)
         {
             string banco, cuenta, empresa;
             DateTime fecha;
@@ -205,7 +207,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
 
             // Clabe interbancaria
-            wsSheet1.Cells["I2"].Value = "CLABE INTERBANCARIA";
+            wsSheet1.Cells["I2"].Value = "CLABE INTERBANCARIA  " + ClabeInterbancaria;
 
             resalteOscuro("Depósito", wsSheet1.Cells["L1"]);            
             resalteOscuro("Retiro", wsSheet1.Cells["L2"]);            

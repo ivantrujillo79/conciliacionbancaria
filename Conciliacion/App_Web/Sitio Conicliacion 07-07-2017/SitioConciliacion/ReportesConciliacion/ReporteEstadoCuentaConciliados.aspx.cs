@@ -240,7 +240,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                     string numerocuenta = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Length - 20).TrimStart();
                     lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, banco, numerocuenta, DrpEstatusConcepto.SelectedValue == "0" ? "" : DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue == "0" ? "" : DrpEstatus.SelectedValue);
                     ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
-                    HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", numerocuenta, banco, esfinal);
+                    HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", numerocuenta, banco, esfinal, "");
                     obExportador.generarInforme();
                 }        
                

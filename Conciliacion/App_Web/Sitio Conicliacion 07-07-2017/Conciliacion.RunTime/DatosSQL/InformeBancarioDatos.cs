@@ -564,6 +564,7 @@ namespace Conciliacion.RunTime.DatosSQL
             private decimal saldoFinal;
             private string conceptoConciliado;
             private string documentoConciliado;
+            private string clabe;
 
             public string Corporativo
             {
@@ -649,6 +650,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 set { documentoConciliado = value; }
             }
 
+            public string Clabe
+            {
+                get { return clabe; }
+                set { clabe = value; }
+            }
+
             public DetalleReporteEstadoCuentaConciliado()
             {
             }
@@ -667,7 +674,9 @@ namespace Conciliacion.RunTime.DatosSQL
                 decimal Depositos,
                 decimal SaldoFinal,
                 string ConceptoConciliado,
-                string DocumentoConciliado
+                string DocumentoConciliado,
+                string Clabe
+
             )
             {
                 this.corporativo = Corporativo;
@@ -684,6 +693,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 this.saldoFinal = SaldoFinal;
                 this.conceptoConciliado = ConceptoConciliado;
                 this.documentoConciliado = DocumentoConciliado;
+                this.clabe = Clabe;
             }
 
             #region Metodo
@@ -724,6 +734,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                     Convert.ToString(reader["ConceptoConciliado"]);
                             dtReporteEstadosCuentaConciliado.DocumentoConciliado = reader["DocumentoConciliado"] == DBNull.Value ? "" :
                                                                                     Convert.ToString(reader["DocumentoConciliado"]);
+                            dtReporteEstadosCuentaConciliado.Clabe = reader["Clabe"] == DBNull.Value ? "" :
+                                                                                Convert.ToString(reader["Clabe"]);
 
                             ListaResultado.Add(dtReporteEstadosCuentaConciliado);
 
@@ -768,7 +780,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     }
                     else
                     {
-                        _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = DBNull.Value;
+                        _conexion.Comando.Parameters.Add(new SqlParameter("@Caja", System.Data.SqlDbType.TinyInt)).Value = 0;
                     }
                     SqlDataReader reader = _conexion.Comando.ExecuteReader();
 

@@ -50,15 +50,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private const string CONCEPTO22 = "VALES Y APLICACION DE ANTICIPO";
         private const string CONCEPTO23 = "TOTAL NETO DEPOSITADO";
 
-        private const string CONCEPTO24 = "CHEQUES BANAMEX 0671084374";
-        private const string CONCEPTO25 = "CHEQUES BANCOMER 0671084374";
-        private const string CONCEPTO26 = "CHEQUES BANORTE 0671084374";
-        private const string CONCEPTO27 = "CHEQUES HSBC 0671084374";
-        private const string CONCEPTO28 = "CHEQUES OTROS 0671084374";
-        private const string CONCEPTO29 = "EFECTIVO 0671084374";
-        private const string CONCEPTO30 = "EFECTIVO COBRANZA 0671084374";
-        private const string CONCEPTO31 = "EFECTIVO LIQUIDACION 0671084374";
-        private const string CONCEPTO32 = "TARJETA BANORTE 0671084374";
+        private const string CONCEPTO24 = "0671084374";
 
         private decimal SumaConcepto1 = 0;
         private decimal SumaConcepto2 = 0;
@@ -516,12 +508,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // Seleccionar cuadro de celdas donde se imprimirán los datos
             ExcelRange celdaIniDatos = xlHoja.Cells["A4:A4"];
 
+            int renglontodos = 0;
+
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
+               
+
                 if (item.Fecha != _FechaAOmitir)
                 {
 
                     concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
+   
                     if (descripcioncaja != "TOTAL")
                     {
                         columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
@@ -538,10 +535,23 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                
 
                     columna = columna + 1;
+                    string conceptoOriginal = "";
 
 
 
-                    switch (concepto)
+                    if (concepto.Contains("0671084374"))
+                    {
+                        conceptoOriginal = concepto;
+                        // Se debe pintar desde aquí  , todo lo que trae el query .... 
+                        if (renglontodos == 0)
+                            {
+                            renglontodos = 36;
+                            }              
+
+                        concepto = CONCEPTO24;
+                    }
+
+                        switch (concepto)
                     {
                         case CONCEPTO1:
                             celdaIniDatos[4, columna].Value = item.Kilos;
@@ -700,81 +710,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                  
                             break;
 
+
                         case CONCEPTO24:
-                            celdaIniDatos[35, columna + 1].Value = item.Importe;
+                            celdaIniDatos[renglontodos, 1].Value = conceptoOriginal;
+                            celdaIniDatos[renglontodos, 3].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                             celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                             celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
-                     
-                            break;
-
-                        case CONCEPTO25:
-                            celdaIniDatos[36, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Lime);
-                  
-                            break;
-
-                        case CONCEPTO26:
-                            celdaIniDatos[37, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Thistle);
-                    
-                            break;
-
-
-                        case CONCEPTO27:
-                            celdaIniDatos[38, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.BlanchedAlmond);
-                     
-                            break;
-
-
-                        case CONCEPTO28:
-                            celdaIniDatos[39, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DodgerBlue);
-                          
-                            break;
-
-
-                        case CONCEPTO29:
-                            celdaIniDatos[40, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.DarkOrchid);
-                           
-                            break;
-
-
-                        case CONCEPTO30:
-                            celdaIniDatos[41, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Salmon);
-                       
-                            break;
-
-                        case CONCEPTO31:
-                            celdaIniDatos[42, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleVioletRed);
-                       
-                            break;
-
-                        case CONCEPTO32:
-                            celdaIniDatos[43, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.PaleGreen);
-                       
-                            break;
+                            renglontodos = renglontodos + 1;
+                            break;                     
 
                             default:
                            
@@ -787,6 +731,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 
                 }
+
+
+               
             }
 
 
@@ -811,15 +758,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             celdaDiaIniInf[34, 1].Value = "Diferencia";
 
-            celdaDiaIniInf[35, 1].Value = "CHEQUES BANAMEX 0671084374";
-            celdaDiaIniInf[36, 1].Value = "CHEQUES BANCOMER 0671084374";
-            celdaDiaIniInf[37, 1].Value = "CHEQUES BANORTE 0671084374";
-            celdaDiaIniInf[38, 1].Value = "CHEQUES HSBC 0671084374";
-            celdaDiaIniInf[39, 1].Value = "CHEQUES OTROS 0671084374";
-            celdaDiaIniInf[40, 1].Value = "EFECTIVO 0671084374";
-            celdaDiaIniInf[41, 1].Value = "EFECTIVO COBRANZA 0671084374";
-            celdaDiaIniInf[42, 1].Value = "EFECTIVO LIQUIDACIÓN 0671084374";
-            celdaDiaIniInf[43, 1].Value = "TARJETA BANORTE 0671084374";
+            //celdaDiaIniInf[35, 1].Value = "CHEQUES BANAMEX 0671084374";
+            //celdaDiaIniInf[36, 1].Value = "CHEQUES BANCOMER 0671084374";
+            //celdaDiaIniInf[37, 1].Value = "CHEQUES BANORTE 0671084374";
+            //celdaDiaIniInf[38, 1].Value = "CHEQUES HSBC 0671084374";
+            //celdaDiaIniInf[39, 1].Value = "CHEQUES OTROS 0671084374";
+            //celdaDiaIniInf[40, 1].Value = "EFECTIVO 0671084374";
+            //celdaDiaIniInf[41, 1].Value = "EFECTIVO COBRANZA 0671084374";
+            //celdaDiaIniInf[42, 1].Value = "EFECTIVO LIQUIDACIÓN 0671084374";
+            //celdaDiaIniInf[43, 1].Value = "TARJETA BANORTE 0671084374";
 
             if (descripcioncaja == "TOTAL")
             {
