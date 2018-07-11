@@ -154,7 +154,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 break;
             }
         }
-
         return control == null ? String.Empty : control.ID;
     }
 
@@ -3135,7 +3134,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if(rfEx.Referencia.Trim()=="")
                     return;
 
-                bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
+                bool clientevalido = true;//App.Consultas.ClienteValido(rfEx.Referencia.Trim());
                 string cliente = "-1";
                 if (clientevalido)
                 {
@@ -3283,7 +3282,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if(rfEx.Referencia.Trim() == "")
                     return;
 
-                bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
+                bool clientevalido = true; //App.Consultas.ClienteValido(rfEx.Referencia.Trim());
                 string cliente = "-1";
                 if (clientevalido)
                 {
