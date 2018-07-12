@@ -341,8 +341,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             Carga_CelulaCorporativo(corporativo);
                         }
                         //!PostBack
-                        ConsultarPedidosInternos(objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
-                        ConsultaInicialPedidosInternos(objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
+                        ConsultarPedidosInternos(objControlPostBack == ""); //objControlPostBack == "rdbSecuencia" || 
+                        ConsultaInicialPedidosInternos(false);
 
                         btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                         rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
@@ -426,7 +426,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Carga_CelulaCorporativo(corporativo);
                     }
-                    ConsultarPedidosInternos(objControlPostBack == "btnAgregarPedido" || objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
+                    ConsultarPedidosInternos(objControlPostBack != "rdbSecuencia" || objControlPostBack == "btnAgregarPedido" || objControlPostBack == "");
                     ConsultaInicialPedidosInternos(false);
 
                     grvInternos.Visible = false;
