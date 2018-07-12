@@ -342,7 +342,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         }
                         //!PostBack
                         ConsultarPedidosInternos(objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
-                        ConsultaInicialPedidosInternos(objControlPostBack == "rdbSecuencia");
+                        ConsultaInicialPedidosInternos(objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
 
                         btnActualizarConfig.ValidationGroup = "UnoVariosPedidos";
                         rfvDiferenciaVacio.ValidationGroup = "UnoVariosPedidos";
@@ -426,7 +426,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         Carga_CelulaCorporativo(corporativo);
                     }
-                    ConsultarPedidosInternos(false);
+                    ConsultarPedidosInternos(objControlPostBack == "btnAgregarPedido" || objControlPostBack == "rdbSecuencia" || objControlPostBack == "");
                     ConsultaInicialPedidosInternos(false);
 
                     grvInternos.Visible = false;
