@@ -328,6 +328,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             string caja = Convert.ToString(_DetallePosicionDiariaBancos
                                             .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
                                             .Caja);
+
+ 
+
+
+            //DetallePosicionDiariaBancos FilteredUsers = _DetallePosicionDiariaBancos.Where(i => i.Concepto.ToLower().Contains("0671084374"));
+
+            //List<DetallePosicionDiariaBancos> Detallecontinuo = _DetallePosicionDiariaBancos.Contains("0671084374");
+            //List<string> resultList = files.Where(x => x.EndsWith("_Test.txt")).ToList();
+            //var filteredFileList = _DetallePosicionDiariaBancos.Where(concepto => _DetallePosicionDiariaBancos.Contains("0671084374"));
+
             PosicionDiaria posicionDiaria;
 
             // Nombre del reporte
@@ -481,6 +491,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             string concepto;
             int columna = 1;
+
+            if (descripcioncaja == "TOTAL")
+            {
+                _DetallePosicionDiariaBancos.Clear(); 
+            }
 
 
             var xlHoja = excelPackage.Workbook.Worksheets[excelPackage.Workbook.Worksheets.Count()];
@@ -713,12 +728,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 
                         case CONCEPTO24:
-                            celdaIniDatos[renglontodos, 1].Value = conceptoOriginal;
-                            celdaIniDatos[renglontodos, columna + 1].Value = item.Importe;
-                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                            celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
-                            renglontodos = renglontodos + 1;
+                            if (descripcioncaja != "TOTAL")
+                            {
+                                int finalrows = xlHoja.Dimension.End.Row;
+                                celdaIniDatos[renglontodos, 1].Value = conceptoOriginal;
+                                celdaIniDatos[renglontodos, columna + 1].Value = item.Importe;
+                                celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                                celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
+                                renglontodos = renglontodos + 1;
+                            }
+
                             break;
 
                         default:
@@ -731,8 +751,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 
                 }
-
-
             }
 
 
@@ -772,11 +790,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 {
                     xlHojaaSumar = excelPackage.Workbook.Worksheets[j];
 
-
                     for (int m = 3; m <= totalcolumnas; m += 2)
                     {
-
-
                         xlHojaTotales.Cells[4, m].Value = ((xlHojaTotales.Cells[4, m].Value != null) ? System.Convert.ToDecimal(xlHojaTotales.Cells[4, m].Value.ToString()) : 0) + ((xlHojaaSumar.Cells[4, m].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[4, m].Value.ToString()) : 0);
                         xlHojaTotales.Cells[5, m].Value = ((xlHojaTotales.Cells[5, m].Value != null) ? System.Convert.ToDecimal(xlHojaTotales.Cells[5, m].Value.ToString()) : 0) + ((xlHojaaSumar.Cells[5, m].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[5, m].Value.ToString()) : 0);
                         xlHojaTotales.Cells[6, m].Value = ((xlHojaTotales.Cells[6, m].Value != null) ? System.Convert.ToDecimal(xlHojaTotales.Cells[6, m].Value.ToString()) : 0) + ((xlHojaaSumar.Cells[6, m].Value != null) ? System.Convert.ToDecimal(xlHojaaSumar.Cells[6, m].Value.ToString()) : 0);
@@ -819,6 +834,38 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 
                 }
+
+                // Detalle del final
+                 totalhojas = excelPackage.Workbook.Worksheets.Count();
+                 totalcolumnas = xlHojaaSumar.Dimension.End.Column;
+                 xlHojaTotales = excelPackage.Workbook.Worksheets[totalhojas];
+
+                for (int j = 1; j < totalhojas; j++)
+                {
+                    xlHojaaSumar = excelPackage.Workbook.Worksheets[j];
+                    int maxRenglones = xlHojaaSumar.Dimension.End.Row;
+                    int maxColumnas = xlHojaaSumar.Dimension.End.Column;
+                    int maxRenglonestotal = xlHojaTotales.Dimension.End.Row;
+                    int maxColumnasTotal = xlHojaTotales.Dimension.End.Column;
+                    int rowinicial = 35;
+
+                    if (j==1)
+                    {
+                        xlHojaaSumar.Cells[rowinicial, 1, maxRenglones , maxColumnas].Copy(xlHojaTotales.Cells[rowinicial, 1, maxRenglones , maxColumnas]);
+                    }
+
+                    else
+                    {
+                        xlHojaaSumar.Cells[rowinicial, 1,  maxRenglones, maxColumnas].Copy(xlHojaTotales.Cells[maxRenglonestotal+1, 1, maxRenglonestotal+maxRenglones, maxColumnas]);
+
+                    }
+                    
+                                      
+
+                }
+
+                  //  workSheet.Cells[1, 5, 100, 5].Copy(workSheet.Cells[1, 2, 100, 2]);
+
                 //nombrecelda = nombrecelda.Remove(nombrecelda.Length - 1);
                 //nombrecelda =  nombrecelda.Replace("|", ";");
                 //xlHojaTotales.Cells[4, 2].Formula = "SUM(" + nombrecelda + ")";
