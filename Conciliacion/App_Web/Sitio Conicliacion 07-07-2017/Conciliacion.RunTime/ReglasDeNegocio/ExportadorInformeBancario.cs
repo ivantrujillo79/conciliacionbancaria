@@ -856,6 +856,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                     else
                     {
+                        if (xlHojaaSumar.Cells[36,1].Value != null && maxRenglones >34 )
+
                         xlHojaaSumar.Cells[rowinicial, 1,  maxRenglones, maxColumnas].Copy(xlHojaTotales.Cells[maxRenglonestotal+1, 1, maxRenglonestotal+maxRenglones, maxColumnas]);
 
                     }
