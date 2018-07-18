@@ -355,7 +355,7 @@ namespace Conciliacion.RunTime
                 else
                     seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
                 if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
-                    ConnectionString = "Application Name = Conciliación Bancaría" + " v.1.0.0.0" + "; Data Source = " + servidor + "; Initial Catalog = " +
+                    ConnectionString = "Application Name = Conciliación Bancaría" + " v.2.5.0.0" + "; Data Source = " + servidor + "; Initial Catalog = " +
                                         baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Integrated Security = Yes";
                 else
                     ConnectionString = "Application Name = " + "; Data Source = " + servidor + "; Initial Catalog = " +
