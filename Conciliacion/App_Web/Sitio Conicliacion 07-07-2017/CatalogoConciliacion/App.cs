@@ -175,7 +175,23 @@ namespace CatalogoConciliacion
         {
             get
             {
-                return cadenaconexion;
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                AppSettingsReader settings = new AppSettingsReader();
+                string servidor = settings.GetValue("Servidor", typeof(string)).ToString();
+                string baseDatos = settings.GetValue("Base", typeof(string)).ToString();
+                SeguridadCB.Seguridad.TipoSeguridad seguridad;
+                string ConnectionString = "";
+                if (settings.GetValue("Seguridad", typeof(string)).ToString() == "NT")
+                    seguridad = SeguridadCB.Seguridad.TipoSeguridad.NT;
+                else
+                    seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
+                if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
+                    ConnectionString = "Application Name = Conciliación Bancaría" + " v.1.0.0.0" + "; Data Source = " + servidor + "; Initial Catalog = " +
+                                        baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Integrated Security = Yes";
+                else
+                    ConnectionString = "Application Name = " + "; Data Source = " + servidor + "; Initial Catalog = " +
+                                        baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Password = " + usuario.Clave;
+                return ConnectionString;
             }
             set
             {
