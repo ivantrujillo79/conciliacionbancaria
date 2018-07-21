@@ -714,16 +714,16 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
                     if (resultado) break;
 
-                  resultado = listaReferenciaConciliadaPedido.Exists(
-                        c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
+                    resultado = listaReferenciaConciliadaPedido.Exists(
+                          c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
                     if (resultado) break;
                 }
 
                 if (resultado) continue;
-                if (listResultado.Count <= 2 && listResultado.Count > 0)
+
+                //if (listResultado.Count <= 2 && listResultado.Count > 0) // Se comenta para corregir incidencia 109
                     listaReferenciaConciliadaPedido.AddRange(listResultado);
             }
-            //listaReferenciaConciliadaPedido = Conciliacion.RunTime.App.Consultas.ConsultaConciliarPedidoCantidadReferencia(corporativo, sucursal, año, mes, folio, centavos, statusConcepto, campoExterno, campoInterno);
             HttpContext.Current.Session["POR_CONCILIAR"] = listaReferenciaConciliadaPedido;
         }
         catch (SqlException ex)
