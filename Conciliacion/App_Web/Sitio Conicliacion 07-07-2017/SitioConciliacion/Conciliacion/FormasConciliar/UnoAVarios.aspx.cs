@@ -4438,8 +4438,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnHistorialPendientesExterno_Click(object sender, ImageClickEventArgs e)
     {
         tranExternaAnteriorSeleccionada = leerReferenciaExternaSeleccionada();
-        verExternosCanceladosPendientes();
         Session["TRANEXTERNAAANTERIORSELECCIONADA"] = tranExternaAnteriorSeleccionada;
+        verExternosCanceladosPendientes();
     }
 
     protected void btnENPROCESOEXTERNO_Click(object sender, ImageClickEventArgs e)
