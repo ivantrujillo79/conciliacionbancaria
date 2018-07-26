@@ -851,7 +851,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                     if (j==1)
                     {
-                        xlHojaaSumar.Cells[rowinicial, 1, maxRenglones , maxColumnas].Copy(xlHojaTotales.Cells[rowinicial, 1, maxRenglones , maxColumnas]);
+                        try
+                        {
+                            xlHojaaSumar.Cells[rowinicial, 1, maxRenglones, maxColumnas].Copy(xlHojaTotales.Cells[rowinicial, 1, maxRenglones, maxColumnas]);
+                        }
+                        catch(System.ArgumentOutOfRangeException ex)
+                        {
+                            ex = null;
+                        }
                     }
 
                     else

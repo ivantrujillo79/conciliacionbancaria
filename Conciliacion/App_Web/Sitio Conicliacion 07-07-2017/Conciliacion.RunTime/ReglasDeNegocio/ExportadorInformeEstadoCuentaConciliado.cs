@@ -35,9 +35,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string _rutaCompleta;
         private bool _Esfinal;
         private string _ClabeInterbancaria;
-     
-  
+
+
         #endregion
+
+        public string FechaMesEncabezado { get; set; }
 
         #region Constructores
 
@@ -72,22 +74,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 try
                 {
                     ExcelPackage excelPackage = inicializar();
-                                  
-
-                        // inicializar();
-                        crearEncabezado(excelPackage, _NombreHoja , _NombreBanco, _ReporteEstadoCuentaConciliado[0].Fecha.ToString(), _ReporteEstadoCuentaConciliado[0].Clabe.ToString());
+                    // inicializar();
+                    if (_ReporteEstadoCuentaConciliado.Count > 0)
+                    {
+                        crearEncabezado(excelPackage, _NombreHoja, _NombreBanco, _ReporteEstadoCuentaConciliado[0].Fecha.ToString(), _ReporteEstadoCuentaConciliado[0].Clabe.ToString());
                         exportarDatos(excelPackage, _NombreHoja, _NombreBanco, 8, _ReporteEstadoCuentaConciliado);
-
-                    if(_Esfinal)
-                        {
+                    }
+                    if(true || _Esfinal)
+                    {
                         excelPackage.Save();
                     }
-                  
-
-
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -98,7 +94,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                 }
-
             }
             catch (Exception ex)
             {
@@ -108,14 +103,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-
-
             }
         }
-
-
-
-
 
         //public void generarInforme(string nombreHoja, int contador, int registrofinal)
         //{
@@ -165,7 +154,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
 
             string format = "yyyy-MM-dd HH:mm:ss: tt";
-            fecha = DateTime.Parse(fechainicial);
+            fecha = DateTime.Parse(FechaMesEncabezado);
 
 
             // Cuenta

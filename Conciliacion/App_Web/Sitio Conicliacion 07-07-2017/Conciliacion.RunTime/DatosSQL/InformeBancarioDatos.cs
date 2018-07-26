@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Collections;
 using Conciliacion.RunTime.DatosSQL;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using System.Globalization;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -703,6 +704,8 @@ namespace Conciliacion.RunTime.DatosSQL
                 List<DetalleReporteEstadoCuentaConciliado> ListaResultado = new List<DetalleReporteEstadoCuentaConciliado>();
                 try
                 {
+                    CultureInfo MyCultureInfo = new CultureInfo("es-MX");
+
                     _conexion.Comando.CommandType = CommandType.StoredProcedure;
                     _conexion.Comando.CommandText = "spCBReporteEstadoDeCuentaConciliado";
                     _conexion.Comando.Parameters.Clear();
@@ -724,7 +727,14 @@ namespace Conciliacion.RunTime.DatosSQL
                             dtReporteEstadosCuentaConciliado.Mes = Convert.ToInt16(reader["mes"]);
                             dtReporteEstadosCuentaConciliado.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]);
                             dtReporteEstadosCuentaConciliado.ConsecutivoFlujo = Convert.ToString(reader["consecutivoflujo"]);
-                            dtReporteEstadosCuentaConciliado.Fecha = Convert.ToDateTime(reader["fecha"]);
+                            string[] formats = { "M/d/yyyy", "d/M/yyyy", "M-d-yyyy", "d-M-yyyy", "d-MMM-yy", "d-MMMM-yyyy", };
+                            DateTime date;
+                            string Fecha = reader["fecha"].ToString();
+                            if (DateTime.TryParseExact(Fecha, "mm-dd-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                            {
+                                dtReporteEstadosCuentaConciliado.Fecha = date;
+                            }
+                                //DateTime.Parse(reader["fecha"].ToString(), MyCultureInfo);
                             dtReporteEstadosCuentaConciliado.Referencia = Convert.ToString(reader["referencia"]);
                             dtReporteEstadosCuentaConciliado.Concepto = Convert.ToString(reader["concepto"]);
                             dtReporteEstadosCuentaConciliado.Retiros = Convert.ToDecimal(reader["retiros"]);

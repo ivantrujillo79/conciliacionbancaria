@@ -241,6 +241,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                     lstDetalle = informeBancario.consultaReporteEstadoCuentaConciliado(conexion, fechaInicio, fechaFin, banco, numerocuenta, DrpEstatusConcepto.SelectedValue == "0" ? "" : DrpEstatusConcepto.SelectedValue, DrpEstatus.SelectedValue == "0" ? "" : DrpEstatus.SelectedValue);
                     ExportadorInformeEstadoCuentaConciliado obExportador = new ExportadorInformeEstadoCuentaConciliado(lstDetalle,
                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", numerocuenta, banco, esfinal, "");
+                    obExportador.FechaMesEncabezado = fechaInicio.ToString();
                     obExportador.generarInforme();
                 }        
                
