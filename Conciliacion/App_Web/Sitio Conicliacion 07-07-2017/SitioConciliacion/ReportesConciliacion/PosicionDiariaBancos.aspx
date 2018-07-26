@@ -48,7 +48,7 @@
         function activarDatePickers() {
             //DatePicker FOperacion
             $("#<%= txtFInicial.ClientID%>").datepicker({
-                defaultDate: "+1w",
+                defaultDate: "+1w", dateFormat: "dd/mm/yy",
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
@@ -60,7 +60,7 @@
                 }
             });
             $("#<%=txtFFinal.ClientID%>").datepicker({
-                defaultDate: "+1w",
+                defaultDate: "+1w", dateFormat: "dd/mm/yy",
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
