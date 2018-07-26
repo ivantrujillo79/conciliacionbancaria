@@ -59,18 +59,19 @@
             //DatePicker FOperacion
             $("#<%= txtFInicial.ClientID%>").datepicker({
                 defaultDate: "+1w",
+                dateFormat: "dd/mm/yy",
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
                 buttonImage: "../App_Themes/GasMetropolitanoSkin/Iconos/AñoMes.png",
                 buttonImageOnly:true,
                 onClose: function (selectedDate) {
-                    $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate);                   
-                    $(".ui-datepicker-trigger").css("width", "24px");                  
+                    $("#<%=txtFFinal.ClientID%>").datepicker("option", "minDate", selectedDate); 
+                    $(".ui-datepicker-trigger").css("width", "24px");     
                 }
             });
             $("#<%=txtFFinal.ClientID%>").datepicker({
-                defaultDate: "+1w",
+                defaultDate: "+1w", dateFormat: "dd/mm/yy",
                 changeMonth: true,
                 changeYear: true,
                 showOn: "button",
