@@ -13,16 +13,13 @@
     <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
     <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
-    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
+<%--    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
+    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>--%>
     <script src="../App_Scripts/Common.js" type="text/javascript"></script>
     <script type="text/javascript">
 
         function pageLoad() {
-            var gridviewID = "<%=grvCuentaBancoSaldoFinalDia.ClientID%>";
-            gridviewScroll();
             activarDatePickers();
-            gridview = $('#' + gridviewID);
         }
 
         function activarDatePickers() {
@@ -32,24 +29,6 @@
                 changeYear: true
             });
         }
-        function gridviewScroll() {
-            $('#<%=grvCuentaBancoSaldoFinalDia.ClientID%>').gridviewScroll({
-                width: 1200,
-                height: 500,
-                freezesize: 5,
-                arrowsize: 30,
-                varrowtopimg: '../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                varrowbottomimg: '../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                harrowleftimg: '../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                harrowrightimg: '../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                headerrowcount: 1,
-                startVertical: $("#<%=hfCompartidaSV.ClientID%>").val(),
-                startHorizontal: $("#<%=hfCompartidaSH.ClientID%>").val(),
-                onScrollVertical: function (delta) { $("#<%=hfCompartidaSV.ClientID%>").val(delta); },
-                onScrollHorizontal: function (delta) { $("#<%=hfCompartidaSH.ClientID%>").val(delta); }
-            });
-
-        }
 
     </script>
     <script src="../App_Scripts/jsHoverGridView.js" type="text/javascript"></script>
@@ -58,19 +37,20 @@
     <asp:ScriptManager runat="server" ID="smDetalleConciliacion" AsyncPostBackTimeout="600"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>
-    <script src="../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
-    <script type="text/javascript" language="javascript">
 
+    <!--      Script animación de carga      -->
+    <script src="../App_Scripts/jsUpdateProgress.js" type="text/javascript"></script>
+
+    <script type="text/javascript" language="javascript">
         function ShowModalPopup() {
             $find("ModalBehaviour").show();
         }
-
         function HideModalPopup() {
             $find("ModalBehaviour").hide();
         }
     </script>
     <script type="text/javascript" language="javascript">
-        var ModalProgress = '<%=mpeLoading.ClientID%>';        
+        var ModalProgress = '<%=mpeLoading.ClientID%>';       
     </script>
     <asp:UpdatePanel runat="server" ID="upCuentaBancoSaldo" UpdateMode="Always">
          <Triggers>
@@ -165,7 +145,8 @@
                     </td>
                 </tr>
             </table>
-            <table style="width: 100%">
+            <%--<div style="width:588px; height:250px; overflow:auto;">--%>
+                <table style="width: 100%">
                 <tr>
                     <td style="vertical-align: middle; padding: 5px 5px 5px 5px" class="etiqueta centradoJustificado fg-color-blanco bg-color-azulClaro">
                         SALDO FINAL POR DIA
@@ -230,15 +211,19 @@
                     </td>
                 </tr>
             </table>
+            <%--</div>--%>
         </ContentTemplate>
     </asp:UpdatePanel>
+    
     <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upCuentaBancoSaldo">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"
                 ImageUrl="~/App_Themes/GasMetropolitanoSkin/Imagenes/LoadPage.gif" Width="40px" />
         </ProgressTemplate>
     </asp:UpdateProgress>
+    
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
     </asp:ModalPopupExtender>
+
 </asp:Content>
