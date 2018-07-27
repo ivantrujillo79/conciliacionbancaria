@@ -3119,6 +3119,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     }
 
+    public ReferenciaNoConciliada leerExternaAnteriorSeleccionada()
+    {
+        tranExternaAnteriorSeleccionada = Session["TRANEXTERNAAANTERIORSELECCIONADA"] as ReferenciaNoConciliada;
+        return tranExternaAnteriorSeleccionada;
+    }
+
     public void ConsultaInicialPedidosInternos(bool validarcliente)
     {
         try
@@ -3128,11 +3134,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Obtener el la referencia externa seleccionada
                 ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
                     ? leerReferenciaExternaSeleccionada()
-                    : tranExternaAnteriorSeleccionada;
+                    : leerExternaAnteriorSeleccionada();
                 //Leer Variables URL 
                 cargarInfoConciliacionActual();
 
-                if(rfEx.Referencia.Trim()=="")
+                if(rfEx != null && rfEx.Referencia.Trim()=="")
                     return;
                 if (validarcliente)
                 { 
@@ -3218,11 +3224,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Obtener el la referencia externa seleccionada
                 ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
                                                   ? leerReferenciaExternaSeleccionada()
-                                                  : tranExternaAnteriorSeleccionada;
+                                                  : leerExternaAnteriorSeleccionada();
                 //Leer Variables URL 
                 cargarInfoConciliacionActual();
 
-                if (rfEx.Referencia.Trim() == "")
+                if (rfEx != null && rfEx.Referencia.Trim() == "") //if (rfEx.Referencia.Trim() == "")
                     return;
                 
                 if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] != null)
@@ -3277,11 +3283,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Obtener el la referencia externa seleccionada
                 ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
                                                   ? leerReferenciaExternaSeleccionada()
-                                                  : tranExternaAnteriorSeleccionada;
+                                                  : leerExternaAnteriorSeleccionada();
                 //Leer Variables URL 
                 cargarInfoConciliacionActual();
 
-                if(rfEx.Referencia.Trim() == "")
+                if (rfEx != null && rfEx.Referencia.Trim() == "")//if(rfEx.Referencia.Trim() == "")
                     return;
 
                 if (validarcliente)
@@ -3374,7 +3380,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //aqui Colocar si se toma la referncia Externa Guardada cuando se veen los Cancealdos o la nommal
             ReferenciaNoConciliada rfEx = hdfExternosControl.Value.Equals("PENDIENTES")
                                               ? leerReferenciaExternaSeleccionada()
-                                              : tranExternaAnteriorSeleccionada;
+                                              : leerExternaAnteriorSeleccionada();
 
             rfEx = leerReferenciaExternaSeleccionada();
             //Leer Variables URL 
@@ -4432,6 +4438,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnHistorialPendientesExterno_Click(object sender, ImageClickEventArgs e)
     {
         tranExternaAnteriorSeleccionada = leerReferenciaExternaSeleccionada();
+        Session["TRANEXTERNAAANTERIORSELECCIONADA"] = tranExternaAnteriorSeleccionada;
         verExternosCanceladosPendientes();
     }
 
