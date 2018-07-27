@@ -28,7 +28,7 @@ using Conciliacion.Migracion.Runtime;
 using System.Web.UI;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
 using Image = System.Web.UI.WebControls.Image;
-
+using System.Data.SqlClient;
 
 public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.Page
 {
@@ -68,6 +68,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
+            mpeLoading.Hide();
             /*      Registrar PostBackControl en la página para 
              *      arreglar bug de FileUpload Control dentro de Update Panel    */
             ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
@@ -1099,10 +1100,15 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         string cuentaBancaria, DateTime finicial, DateTime ffinal)
     {
         string statusconciliacion = "";
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
-        if (connection.State == ConnectionState.Closed)
+        SqlConnection connectionPri = new SqlConnection(App.CadenaConexion);
+        SqlConnection connectionAni = new SqlConnection(App.CadenaConexion);
+        if (connectionPri.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            connectionPri.Open();
+        }
+        if (connectionAni.State == ConnectionState.Closed)
+        {
+            connectionAni.Open();
         }
         try
         {
@@ -1111,7 +1117,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             else//RRV
                 statusconciliacion = hdfStatusConciliacionSel.Value;//RRV
             listMovimientos =
-                Conciliacion.RunTime.App.Consultas.ConsultaMovimientosConciliacionCompartida(accesoTotal, corporativo,
+                Conciliacion.RunTime.App.Consultas.ConsultaMovimientosConciliacionCompartida(
+                    connectionPri, connectionAni,
+                    accesoTotal, corporativo,
                     sucursal, cuentaBancaria, finicial, ffinal, statusconciliacion);
 
             //Session["MOVIMIENTOS"] = listMovimientos;
@@ -1481,34 +1489,49 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
-
-
-
-            if (FiltroCorrecto())
+            try
             {
-                usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                hdfCorporativo.Value = ddlEmpresa.SelectedItem.Value;
-                hdfSucursal.Value = ddlSucursal.SelectedItem.Value;
-                hdfCuentaBancaria.Value = ddlCuentaBancaria.SelectedItem.Text.Trim();
-                hdfFInicial.Value = txtFInicial.Text;
-                hdfFFinal.Value = txtFFinal.Text;
-                hdfCuentaBancaria.Value = ddlCuentaBancaria.Text.Trim();
-                GrupoConciliacionUsuario gcu = LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim());
-                ConsultaMovimientosConciliacionCompartida(gcu.AccesoTotal,
-                    Convert.ToInt16(ddlEmpresa.SelectedItem.Value),
-                    Convert.ToInt16(ddlSucursal.SelectedItem.Value),
-                    ddlCuentaBancaria.SelectedItem.Text.Trim(),
-                     Convert.ToDateTime(txtFInicial.Text),
-                     Convert.ToDateTime(txtFFinal.Text)
-                    );
-                GenerarTablaConciliacionCompartida();
-                LlenaGridViewConciliacionCompartida();
-                ActualizarPopUp_CargaArchivo();
-                mpeLoading.Hide();
-            }
+                if (FiltroCorrecto())
+                {
+                    if (FiltroCorrecto())
+                    {
+                        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                        hdfCorporativo.Value = ddlEmpresa.SelectedItem.Value;
+                        hdfSucursal.Value = ddlSucursal.SelectedItem.Value;
+                        hdfCuentaBancaria.Value = ddlCuentaBancaria.SelectedItem.Text.Trim();
+                        hdfFInicial.Value = txtFInicial.Text;
+                        hdfFFinal.Value = txtFFinal.Text;
+                        hdfCuentaBancaria.Value = ddlCuentaBancaria.Text.Trim();
+                        GrupoConciliacionUsuario gcu = LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim());
+                        ConsultaMovimientosConciliacionCompartida(gcu.AccesoTotal,
+                            Convert.ToInt16(ddlEmpresa.SelectedItem.Value),
+                            Convert.ToInt16(ddlSucursal.SelectedItem.Value),
+                            ddlCuentaBancaria.SelectedItem.Text.Trim(),
+                             Convert.ToDateTime(txtFInicial.Text),
+                             Convert.ToDateTime(txtFFinal.Text)
+                            );
+                        GenerarTablaConciliacionCompartida();
+                        LlenaGridViewConciliacionCompartida();
+                        ActualizarPopUp_CargaArchivo();
 
-            else
-                App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
+                    }
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
+                }
+            }
+            finally
+            {
+                //mpeLoading.Hide();
+                StringBuilder sbScript = new StringBuilder();
+
+                sbScript.Append("<script language='JavaScript' type='text/javascript'>\n");
+                sbScript.Append("<!--\n");
+                sbScript.Append(ClientScript.GetPostBackEventReference(this, "PBArg") + ";\n");
+                sbScript.Append("// -->\n");
+                sbScript.Append("</script>\n");
+
+                this.RegisterStartupScript("AutoPostBackScript", sbScript.ToString());
+            }
         }
         catch (Exception ex)
         {

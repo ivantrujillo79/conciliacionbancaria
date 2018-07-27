@@ -299,10 +299,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //string cuentaBancaria, DateTime finicial, DateTime ffinal);
         public abstract Boolean ObtieneExternosTransferencia(short corporativoTD, short sucursalTD,
                                                                                      int añoTD, int folioTD, int secuenciaTD);
-        public abstract List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo, int sucursal,
-        string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion);
 
-        public abstract List<ReferenciaConciliadaCompartida> ConsultaMovimientosConciliadosMovExterno(int corporativoconciliacion, int sucursalconciliacion,
+        public abstract List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(
+            System.Data.SqlClient.SqlConnection connPrincipal,
+            System.Data.SqlClient.SqlConnection connAnidada,
+            bool accesoTotal, int corporativo, int sucursal,
+            string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion);
+
+        public abstract List<ReferenciaConciliadaCompartida> ConsultaMovimientosConciliadosMovExterno(
+            System.Data.SqlClient.SqlConnection conexionBD,
+            int corporativoconciliacion, int sucursalconciliacion,
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativo, int sucursal, int año, int folio, int secuencia);
         public abstract List<FlujoProyectado> ConsultaFlujoEfectivo(int corporativo, int sucursal, TipoTransferencia tipotransferencia, DateTime fInicial,
             DateTime fFinal);

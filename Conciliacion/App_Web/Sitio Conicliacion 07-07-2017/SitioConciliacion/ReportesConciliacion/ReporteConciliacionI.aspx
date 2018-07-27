@@ -259,10 +259,14 @@
         function HideModalPopupMesAño() {
             $find("ModalBehaviourMesAño").hide();
         }
+
+        var ModalProgress = '<%=mpeLoading.ClientID%>';
+
     </script>
-    <script type="text/javascript" language="javascript">
-        var ModalProgress = '<%=mpeLoading.ClientID%>';        
-    </script>
+
+   
+
+
     <asp:UpdatePanel runat="server" ID="upConciliacionCompartida" UpdateMode="Always">
         <ContentTemplate>
             <asp:HiddenField ID="hdfStatusConcepto" runat="server" />
@@ -421,7 +425,8 @@
                         <asp:HiddenField ID="hfStatusConciliacionFD" runat="server" />
                         <asp:HiddenField ID="hfStatusConceptoFiltro" runat="server" />
                         <div style="width:1200px; height:500px; overflow:auto;">
-                            <asp:GridView ID="grvConciliacionCompartida" runat="server" AutoGenerateColumns="False"
+                            <asp:GridView ID="grvConciliacionCompartida" runat="server" EnableViewState="false"
+                            AutoGenerateColumns="False"
                             Width="100%" AllowPaging="False" ShowHeaderWhenEmpty="True" CssClass="grvResultadoConsultaCss"
                             DataKeyNames="FolioConciliacion,CorporativoConciliacion,SucursalConciliacion,AñoConciliacion,MesConciliacion,
                             Folio,Corporativo,Sucursal,Año,Secuencia,ConsecutivoFlujo" PageSize="25" OnPageIndexChanging="grvConciliacionCompartida_PageIndexChanging"
@@ -572,7 +577,8 @@
                                     
 
                                     <ItemTemplate>
-                                        <asp:GridView ID="grvMovimientosConciliadosMovExterno" runat="server" AutoGenerateColumns="False"
+                                        <asp:GridView ID="grvMovimientosConciliadosMovExterno" runat="server" EnableViewState="false"
+                                            AutoGenerateColumns="False"
                                             Width="950px" AllowPaging="False" ShowHeaderWhenEmpty="False" ShowHeader="False"
                                             OnRowDataBound="grvMovimientosConciliadosMovExterno_RowDataBound" CssClass="grvAnidadoCss"
                                             DataKeyNames="FolioConciliacion,CorporativoConciliacion,SucursalConciliacion,AñoConciliacion,MesConciliacion,SecuenciaRelacion,
@@ -924,7 +930,8 @@
                                             <Header>PEDIDOS</Header>
                                             <Content>                                                
                                                 <div style="width:100%; height:280px; overflow: scroll;">
-                                                    <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="False"
+                                                    <asp:GridView ID="grvPedidos" runat="server" EnableViewState="false"
+                                                        AutoGenerateColumns="False" ShowHeader="False"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                                         ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente,Total" AllowPaging="False">
                                   
@@ -1208,7 +1215,8 @@
                     <tr>
                         <td>
                             <div style="width:100%; height:300px; overflow: scroll;">
-                                <asp:GridView ID="grvPedidosFacturados" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                                <asp:GridView ID="grvPedidosFacturados" runat="server" EnableViewState="false"
+                                    AutoGenerateColumns="False" ShowHeader="True"
                                     CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                     ShowHeaderWhenEmpty="True" DataKeyNames="FechaFactura, Factura, Foliofactura, Cliente, Nombre, Concepto, Total" 
                                     AllowPaging="True" PageSize="10" OnPageIndexChanging="grvFacturasManuales_PageIndexChanging"

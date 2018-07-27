@@ -5652,213 +5652,212 @@ namespace Conciliacion.RunTime.DatosSQL
         //    }
         //}
 
-        public override List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo,
-           int sucursal,
-           string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion)
+        public override List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(
+            System.Data.SqlClient.SqlConnection connPrincipal,
+            System.Data.SqlClient.SqlConnection connAnidada,
+            bool accesoTotal, int corporativo, int sucursal,
+            string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            try
             {
-                try
+                SqlCommand comando = new SqlCommand("spCBConsultaMovimientosConciliacionCompartida", connPrincipal);
+                comando.Parameters.Add("@AccesoTotal", System.Data.SqlDbType.Bit).Value = accesoTotal;
+                comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.SmallInt).Value = corporativo;
+                comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
+                comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = cuentaBancaria;
+                comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = finicial;
+                comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = ffinal;
+                comando.Parameters.Add("@StatusConciliacion", SqlDbType.VarChar).Value = statusconciliacion; //RRV
+
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
                 {
-                    cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaMovimientosConciliacionCompartida", cnn);
-                    comando.Parameters.Add("@AccesoTotal", System.Data.SqlDbType.Bit).Value = accesoTotal;
-                    comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.SmallInt).Value = corporativo;
-                    comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
-                    comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = cuentaBancaria;
-                    comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = finicial;
-                    comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = ffinal;
-                    comando.Parameters.Add("@StatusConciliacion", SqlDbType.VarChar).Value = statusconciliacion; //RRV
 
-                    comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlDataReader reader = comando.ExecuteReader();
-                    while (reader.Read())
-                    {
+                    ReferenciaNoConciliada dato = new ReferenciaNoConciliadaDatos(
 
-                        ReferenciaNoConciliada dato = new ReferenciaNoConciliadaDatos(
+                        Convert.ToInt16(reader["Corporativo"]),
+                        Convert.ToInt16(reader["SucursalConciliacion"]), Convert.ToInt16(reader["AñoConciliacion"]),
+                        Convert.ToSByte(reader["MesConciliacion"]), Convert.ToInt16(reader["FolioConciliacion"]),
+                        // Convert.ToInt32(reader["SecuenciaRelacion"]),
+                        Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]),
+                        Convert.ToInt16(reader["Año"]), Convert.ToInt16(reader["Folio"]),
+                        Convert.ToInt16(reader["Secuencia"]), Convert.ToInt16(reader["ConsecutivoFlujo"]),
+                        Convert.ToBoolean(reader["ConInterno"]),
+                        Convert.ToSByte(reader["StatusConcepto"]),
+                        Convert.ToString(reader["StatusConciliacionMovimiento"]),
+                        Convert.ToString(reader["UbicacionIcono"]),
+                        Convert.ToDateTime(reader["FOperacion"]), Convert.ToDateTime(reader["FMovimiento"]),
+                        Convert.ToString(reader["Referencia"]), Convert.ToString(reader["Descripcion"]),
+                        Convert.ToDecimal(reader["Deposito"]), Convert.ToDecimal(reader["Retiro"]),
+                        Convert.ToDecimal(reader["Saldo"]),
+                        Convert.ToInt32(reader["Caja"]),
+                        Convert.ToString(reader["SucursalBancaria"]),
 
-                            Convert.ToInt16(reader["Corporativo"]),
-                            Convert.ToInt16(reader["SucursalConciliacion"]), Convert.ToInt16(reader["AñoConciliacion"]),
-                            Convert.ToSByte(reader["MesConciliacion"]), Convert.ToInt16(reader["FolioConciliacion"]),
-                            // Convert.ToInt32(reader["SecuenciaRelacion"]),
-                            Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]),
-                            Convert.ToInt16(reader["Año"]), Convert.ToInt16(reader["Folio"]),
-                            Convert.ToInt16(reader["Secuencia"]), Convert.ToInt16(reader["ConsecutivoFlujo"]),
-                            Convert.ToBoolean(reader["ConInterno"]),
-                            Convert.ToSByte(reader["StatusConcepto"]),
-                            Convert.ToString(reader["StatusConciliacionMovimiento"]),
-                            Convert.ToString(reader["UbicacionIcono"]),
-                            Convert.ToDateTime(reader["FOperacion"]), Convert.ToDateTime(reader["FMovimiento"]),
-                            Convert.ToString(reader["Referencia"]), Convert.ToString(reader["Descripcion"]),
-                            Convert.ToDecimal(reader["Deposito"]), Convert.ToDecimal(reader["Retiro"]),
-                            Convert.ToDecimal(reader["Saldo"]),
-                            Convert.ToInt32(reader["Caja"]),
-                            Convert.ToString(reader["SucursalBancaria"]),
+                        (reader["TipoTraspaso"] != DBNull.Value)
+                            ? Convert.ToString(reader["TipoTraspaso"])
+                            : String.Empty,
+                        (reader["MontoTraspaso"] != DBNull.Value)
+                            ? (decimal?)decimal.Parse(reader["MontoTraspaso"].ToString())
+                            : null,
+                        (reader["CorporativoTraspaso"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["CorporativoTraspaso"].ToString())
+                            : null,
+                        (reader["SucursalTraspaso"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["SucursalTraspaso"].ToString())
+                            : null,
+                        (reader["AñoTraspaso"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["AñoTraspaso"].ToString())
+                            : null,
+                        (reader["FolioTraspaso"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["FolioTraspaso"].ToString())
+                            : null,
 
-                            (reader["TipoTraspaso"] != DBNull.Value)
-                                ? Convert.ToString(reader["TipoTraspaso"])
-                                : String.Empty,
-                            (reader["MontoTraspaso"] != DBNull.Value)
-                                ? (decimal?)decimal.Parse(reader["MontoTraspaso"].ToString())
-                                : null,
-                            (reader["CorporativoTraspaso"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["CorporativoTraspaso"].ToString())
-                                : null,
-                            (reader["SucursalTraspaso"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["SucursalTraspaso"].ToString())
-                                : null,
-                            (reader["AñoTraspaso"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["AñoTraspaso"].ToString())
-                                : null,
-                            (reader["FolioTraspaso"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["FolioTraspaso"].ToString())
-                                : null,
-
-                                ConsultaMovimientosConciliadosMovExterno(
-                            Convert.ToInt16(reader["Corporativo"]),
-                            Convert.ToInt16(reader["SucursalConciliacion"]),
-                            Convert.ToInt16(reader["AñoConciliacion"]),
-                            Convert.ToSByte(reader["MesConciliacion"]),
-                            Convert.ToInt16(reader["FolioConciliacion"]),
-                            Convert.ToInt16(reader["Corporativo"]),
-                            Convert.ToInt16(reader["Sucursal"]),
-                            Convert.ToInt16(reader["Año"]),
-                            Convert.ToInt16(reader["Folio"]),
-                            Convert.ToInt16(reader["Secuencia"])),
+                            ConsultaMovimientosConciliadosMovExterno(
+                                connAnidada,
+                                Convert.ToInt16(reader["Corporativo"]),
+                                Convert.ToInt16(reader["SucursalConciliacion"]),
+                                Convert.ToInt16(reader["AñoConciliacion"]),
+                                Convert.ToSByte(reader["MesConciliacion"]),
+                                Convert.ToInt16(reader["FolioConciliacion"]),
+                                Convert.ToInt16(reader["Corporativo"]),
+                                Convert.ToInt16(reader["Sucursal"]),
+                                Convert.ToInt16(reader["Año"]),
+                                Convert.ToInt16(reader["Folio"]),
+                                Convert.ToInt16(reader["Secuencia"])),
                                 this.ImplementadorMensajes
-                                
-                            );
-                        datos.Add(dato);
-                    }
+
+                        );
+                    datos.Add(dato);
                 }
-                catch (SqlException ex)
-                {
-                    stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
-                                                              "Error :" + ex.Message);
-                    stackTrace = null;
-                }
-                catch (Exception ex)
-                {
-                    stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
-                                                              "Error :" + ex.Message);
-                    stackTrace = null;
-                }
-                return datos;
             }
+            catch (SqlException ex)
+            {
+                stackTrace = new StackTrace();
+                this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                            this.GetType().Name + "\n\r" + "Metodo :" +
+                                                            stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                            "Error :" + ex.Message);
+                stackTrace = null;
+            }
+            catch (Exception ex)
+            {
+                stackTrace = new StackTrace();
+                this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                            this.GetType().Name + "\n\r" + "Metodo :" +
+                                                            stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                            "Error :" + ex.Message);
+                stackTrace = null;
+            }
+            return datos;
         }
-        public override List<ReferenciaConciliadaCompartida> ConsultaMovimientosConciliadosMovExterno(int corporativoconciliacion, int sucursalconciliacion,
+        public override List<ReferenciaConciliadaCompartida> ConsultaMovimientosConciliadosMovExterno(
+            System.Data.SqlClient.SqlConnection conexionBD,
+            int corporativoconciliacion, int sucursalconciliacion,
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativo, int sucursal, int año, int folio, int secuencia)
         {
             List<ReferenciaConciliadaCompartida> datos = new List<ReferenciaConciliadaCompartida>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            try
             {
-                try
+                if (conexionBD.State == ConnectionState.Closed)
+                    conexionBD.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaMovimientosConciliadosMovExterno", conexionBD);
+                comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.Int).Value = corporativoconciliacion;
+                comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursalconciliacion;
+                comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = mesconciliacion;
+                comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = añoconciliacion;
+                comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folioconciliacion;
+
+                comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = corporativo;
+                comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
+                comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = año;
+                comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = folio;
+                comando.Parameters.Add("@Secuencia", System.Data.SqlDbType.Int).Value = secuencia;
+
+
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
                 {
-                    cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaMovimientosConciliadosMovExterno", cnn);
-                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.Int).Value = corporativoconciliacion;
-                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursalconciliacion;
-                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = mesconciliacion;
-                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = añoconciliacion;
-                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folioconciliacion;
+                    ReferenciaConciliadaCompartida dato = new ReferenciaConciliadaCompartidaDatos(
+                        Convert.ToInt16(reader["CorporativoConciliacion"]),
+                        Convert.ToInt16(reader["SucursalConciliacion"]), Convert.ToInt16(reader["AñoConciliacion"]),
+                        Convert.ToSByte(reader["MesConciliacion"]), Convert.ToInt16(reader["FolioConciliacion"]), Convert.ToInt32(reader["SecuenciaRelacion"]),
+                        Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]), "",
+                        Convert.ToInt16(reader["Año"]), Convert.ToInt16(reader["Folio"]),
+                        Convert.ToInt16(reader["Secuencia"]),
+                        "", 0, 0, 0,
+                        Convert.ToSByte(reader["StatusConcepto"]), Convert.ToString(reader["StatusConciliacionMovimiento"]),
+                        DateTime.Now, DateTime.Now,
+                        "", "", "", "",
+                        "", 0, 0,
+                        (reader["CorporativoInterno"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["CorporativoInterno"].ToString())
+                            : null,
+                        (reader["SucursalInterno"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["SucursalInterno"].ToString())
+                            : null,
+                            (reader["AñoInterno"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["AñoInterno"].ToString())
+                            : null,
+                            (reader["FolioInterno"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["FolioInterno"].ToString())
+                            : null,
+                            (reader["SecuenciaInterno"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["SecuenciaInterno"].ToString())
+                            : null,
+                            (reader["Celula"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["Celula"].ToString())
+                            : null,
+                            (reader["AñoPed"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["AñoPed"].ToString())
+                            : null,
+                            (reader["Pedido"] != DBNull.Value)
+                            ? (int?)int.Parse(reader["Pedido"].ToString())
+                            : null,
+                            (reader["TotalPedido"] != DBNull.Value)
+                            ? (decimal?)decimal.Parse(reader["TotalPedido"].ToString())
+                            : null,
+                                (reader["Cliente"] != DBNull.Value)
+                            ? (int)int.Parse(reader["Cliente"].ToString())
+                            : -1,
+                            (reader["ConceptoInterno"] != DBNull.Value)
+                            ? Convert.ToString(reader["ConceptoInterno"])
+                            : String.Empty,
+                                (reader["DescripcionInterna"] != DBNull.Value)
+                            ? Convert.ToString(reader["DescripcionInterna"])
+                            : String.Empty,
+                            Convert.ToString(reader["MotivoNoConciliadoDes"]),
+                            Convert.ToString(reader["ComentarioNoConciliado"]),
+                            Convert.ToString(reader["UbicacionIcono"]),
+                                Convert.ToDecimal(reader["MontoExterno"]),
+                            this.ImplementadorMensajes
 
-                    comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = corporativo;
-                    comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
-                    comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = año;
-                    comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = folio;
-                    comando.Parameters.Add("@Secuencia", System.Data.SqlDbType.Int).Value = secuencia;
-
-
-                    comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlDataReader reader = comando.ExecuteReader();
-                    while (reader.Read())
-                    {
-
-                        ReferenciaConciliadaCompartida dato = new ReferenciaConciliadaCompartidaDatos(
-                            Convert.ToInt16(reader["CorporativoConciliacion"]),
-                            Convert.ToInt16(reader["SucursalConciliacion"]), Convert.ToInt16(reader["AñoConciliacion"]),
-                            Convert.ToSByte(reader["MesConciliacion"]), Convert.ToInt16(reader["FolioConciliacion"]), Convert.ToInt32(reader["SecuenciaRelacion"]),
-                            Convert.ToInt16(reader["Corporativo"]), Convert.ToInt16(reader["Sucursal"]), "",
-                            Convert.ToInt16(reader["Año"]), Convert.ToInt16(reader["Folio"]),
-                            Convert.ToInt16(reader["Secuencia"]),
-                            "", 0, 0, 0,
-                            Convert.ToSByte(reader["StatusConcepto"]), Convert.ToString(reader["StatusConciliacionMovimiento"]),
-                            DateTime.Now, DateTime.Now,
-                            "", "", "", "",
-                            "", 0, 0,
-                           (reader["CorporativoInterno"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["CorporativoInterno"].ToString())
-                                : null,
-                            (reader["SucursalInterno"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["SucursalInterno"].ToString())
-                                : null,
-                                (reader["AñoInterno"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["AñoInterno"].ToString())
-                                : null,
-                                (reader["FolioInterno"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["FolioInterno"].ToString())
-                                : null,
-                                (reader["SecuenciaInterno"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["SecuenciaInterno"].ToString())
-                                : null,
-                                (reader["Celula"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["Celula"].ToString())
-                                : null,
-                                (reader["AñoPed"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["AñoPed"].ToString())
-                                : null,
-                                (reader["Pedido"] != DBNull.Value)
-                                ? (int?)int.Parse(reader["Pedido"].ToString())
-                                : null,
-                                (reader["TotalPedido"] != DBNull.Value)
-                                ? (decimal?)decimal.Parse(reader["TotalPedido"].ToString())
-                                : null,
-                                 (reader["Cliente"] != DBNull.Value)
-                                ? (int)int.Parse(reader["Cliente"].ToString())
-                                : -1,
-                                (reader["ConceptoInterno"] != DBNull.Value)
-                                ? Convert.ToString(reader["ConceptoInterno"])
-                                : String.Empty,
-                                 (reader["DescripcionInterna"] != DBNull.Value)
-                                ? Convert.ToString(reader["DescripcionInterna"])
-                                : String.Empty,
-                                Convert.ToString(reader["MotivoNoConciliadoDes"]),
-                                Convert.ToString(reader["ComentarioNoConciliado"]),
-                                Convert.ToString(reader["UbicacionIcono"]),
-                                 Convert.ToDecimal(reader["MontoExterno"]),
-                                this.ImplementadorMensajes
-
-                            );
-                        datos.Add(dato);
-                    }
+                        );
+                    datos.Add(dato);
                 }
-                catch (SqlException ex)
-                {
-                    stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
-                                                              "Error :" + ex.Message);
-                    stackTrace = null;
-                }
-                catch (Exception ex)
-                {
-                    stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
-                                                              "Error :" + ex.Message);
-                    stackTrace = null;
-                }
-                return datos;
+                conexionBD.Close();
             }
+            catch (SqlException ex)
+            {
+                stackTrace = new StackTrace();
+                this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                            this.GetType().Name + "\n\r" + "Metodo :" +
+                                                            stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                            "Error :" + ex.Message);
+                stackTrace = null;
+            }
+            catch (Exception ex)
+            {
+                stackTrace = new StackTrace();
+                this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                            this.GetType().Name + "\n\r" + "Metodo :" +
+                                                            stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                            "Error :" + ex.Message);
+                stackTrace = null;
+            }
+            return datos;
         }
 
         //public override bool AccesoTotalFlujoEfectivo(string usuario)
