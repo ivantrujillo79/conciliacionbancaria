@@ -56,7 +56,6 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
 
     protected void btnConsultar_Click(object sender, EventArgs e)
     {
-        
         var fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
         string cero;
         if (fechaInicio.Month < 10)
@@ -81,23 +80,20 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
                 foreach (Caja caja in wucListadoCajas1.CajasSeleccionadas)
                 {
                     contador = contador + 1;
-                 List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
-                 lstDetalle = ConsultarPosicionDiariaBancos(caja.ID);                   
-                 ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,
-                 rutaCompleta,Archivo, caja.Descripcion);
-                 obExportador.generarPosicionDiariaBancos(0);
+                    List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetalle = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
+                    lstDetalle = ConsultarPosicionDiariaBancos(caja.ID);
+
+                    ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle, rutaCompleta, Archivo, caja.Descripcion);
+                    if (lstDetalle != null && lstDetalle.Count > 0)
+                    {
+                        obExportador.generarPosicionDiariaBancos(0);
+                    }
 
                     if (wucListadoCajas1.CajasSeleccionadas.Count() == contador)
-                           {
+                    {
                         obExportador.generarPosicionDiariaBancos(1);
-                          }
-                    
-                                  
-
+                    }
                 }
-
-                
-
                 //List<InformeBancarioDatos.DetallePosicionDiariaBancos> lstDetallet = new List<InformeBancarioDatos.DetallePosicionDiariaBancos>();
                 //lstDetallet = ConsultarPosicionDiariaBancos(caja.ID);
                 //ExportadorInformeBancario obExportador = new ExportadorInformeBancario(lstDetalle,

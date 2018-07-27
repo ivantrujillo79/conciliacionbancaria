@@ -247,6 +247,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 //exportarDatos(excelPackage, "NombreHoja", 8);
                 /*cerrar();*/
 
+                StringBuilder mensajeExcepcion = new StringBuilder();
+                mensajeExcepcion.Append(string.Empty);
+
+
+                if (_DetallePosicionDiariaBancos == null)
+                {
+                    mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
+                }
+                else if (_DetallePosicionDiariaBancos.Count == 0)
+                {
+                    mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
+                }
+
                 string caja = Convert.ToString(_DetallePosicionDiariaBancos
                                                 .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
                                                 .Caja);
@@ -1018,15 +1031,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             StringBuilder mensajeExcepcion = new StringBuilder();
             mensajeExcepcion.Append(string.Empty);
             bool valido = false;
-
-            if (_DetallePosicionDiariaBancos == null)
-            {
-                mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
-            }
-            else if (_DetallePosicionDiariaBancos.Count == 0)
-            {
-                mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
-            }
 
             if (string.IsNullOrEmpty(_NombreHoja))
             {
