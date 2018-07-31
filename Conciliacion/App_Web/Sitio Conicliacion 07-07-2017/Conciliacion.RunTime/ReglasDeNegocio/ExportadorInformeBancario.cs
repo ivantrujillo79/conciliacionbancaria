@@ -259,11 +259,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 {
                     mensajeExcepcion.Append("No se encontraron datos con los parámetros seleccionados. <br/>");
                 }
-
-                string caja = Convert.ToString(_DetallePosicionDiariaBancos
-                                                .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-                                                .Caja);
-
+                
+                if (_DetallePosicionDiariaBancos.Count > 0)
+                {
+                    string caja = Convert.ToString(_DetallePosicionDiariaBancos
+                                .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+                                .Caja);
+                }
 
                 agruparPorFecha();
                 if (Esfinal == 0)
@@ -337,10 +339,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
             string dia;
 
-
-            string caja = Convert.ToString(_DetallePosicionDiariaBancos
-                                            .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
-                                            .Caja);
+            if (_DetallePosicionDiariaBancos.Count > 0)
+            {
+                string caja = Convert.ToString(_DetallePosicionDiariaBancos
+                                                .First(x => !x.Concepto.ToUpper().Contains("TOTAL"))
+                                                .Caja);
+            }
 
  
 
