@@ -146,7 +146,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                 (reader["Fecha"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(reader["Fecha"])),
                                 Convert.ToByte(reader["Caja"]),
                                 Convert.ToDecimal(reader["Kilos"]),
-                                Convert.ToDecimal(reader["Importe"])
+                                Convert.ToDecimal(reader["Importe"]),
+                                Convert.ToInt32(reader["Detalle"])
                                 );
                         lstInformeBancario.Add(dato);
                     }
@@ -334,6 +335,7 @@ namespace Conciliacion.RunTime.DatosSQL
             private byte _Caja;
             private decimal _Kilos;
             private decimal _Importe;
+            private int _Detalle;
 
             #region Propiedades
 
@@ -367,6 +369,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 set { _Importe = value; }
             }
 
+            public int Detalle
+            {
+                get { return _Detalle; }
+                set { _Detalle = value; }
+            }
+
             #endregion
 
             #region Constructores
@@ -381,13 +389,14 @@ namespace Conciliacion.RunTime.DatosSQL
                                                 DateTime fecha,
                                                 byte caja,
                                                 decimal kilos,
-                                                decimal importe)
+                                                decimal importe, int detalle)
             {
                 this._Concepto = concepto;
                 this._Fecha = fecha;
                 this._Caja = caja;
                 this._Kilos = kilos;
                 this._Importe = importe;
+                this._Detalle = detalle;
             }
 
             #endregion

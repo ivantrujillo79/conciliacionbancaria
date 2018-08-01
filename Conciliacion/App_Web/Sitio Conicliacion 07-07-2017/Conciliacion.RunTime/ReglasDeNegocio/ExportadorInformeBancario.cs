@@ -173,6 +173,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             private decimal _TotalCreditoImporte;
             private decimal _TotalNetoKilos;
             private decimal _TotalNetoImporte;
+            private int _Detalle;
 
             public DateTime Fecha
             {
@@ -217,6 +218,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 set { _TotalNetoImporte = value; }
             }
 
+            public int Detalle
+            {
+                get { return _Detalle; }
+                set { _Detalle = value; }
+            }
+
             public PosicionDiaria(DateTime fecha, int columna)
             {
                 _Fecha = fecha;
@@ -227,6 +234,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _TotalCreditoImporte = 0m;
                 _TotalNetoKilos = 0m;
                 _TotalNetoImporte = 0m;
+                _Detalle = 0;
+              
             }
         }
 
@@ -507,6 +516,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private void exportarPosicionDiariaBancos(ExcelPackage excelPackage, String descripcioncaja)
         {
             string concepto;
+            int esDetalle; 
             int columna = 1;
 
             if (descripcioncaja == "TOTAL")
@@ -551,6 +561,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 {
 
                     concepto = RemoverAcentos(item.Concepto.ToUpper().Trim());
+                    esDetalle = item.Detalle;
 
                     if (descripcioncaja != "TOTAL")
                     {
@@ -572,7 +583,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
 
 
-                    if (concepto.Contains("0671084374"))
+                    if (esDetalle == 1)
                     {
                         conceptoOriginal = concepto;
                         // Se debe pintar desde aquí  , todo lo que trae el query .... 
