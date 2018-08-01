@@ -2007,9 +2007,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     if (rfExterno.ListaReferenciaConciliada.Count > 0)
                     {
                         rfExterno.ListaReferenciaConciliada.ForEach(x => x.Sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]));
-                        int clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno);
-                        rfExterno.ClientePago = clienteSaldoAFavor;
 
+                        int clienteSaldoAFavor = 0;
+                        if (objSolicitdConciliacion.ConsultaPedido())
+                        { 
+                            clienteSaldoAFavor = ActualizarDatos_ClientePago(rfExterno);
+                            rfExterno.ClientePago = clienteSaldoAFavor;
+                        }
                         AgregarComisionAExterno(rfExterno);
 
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos

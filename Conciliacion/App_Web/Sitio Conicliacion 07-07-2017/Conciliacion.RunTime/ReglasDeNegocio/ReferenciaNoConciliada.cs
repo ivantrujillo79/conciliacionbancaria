@@ -1170,12 +1170,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
                 else
                 {
-                    if ((this.MontoConciliado < this.monto - this.Diferencia) & (this.MismoCliente == false))
-                    {
-                        this.ImplementadorMensajes.MostrarMensaje(
-                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
-                        return false;
-                    }
+                    //SE QUITA VALIDACION DEBIDO A QUE NO USA EN PEDIDOS
+                    //if ((this.MontoConciliado < this.monto - this.Diferencia) & (this.MismoCliente == false))
+                    //{
+                    //    this.ImplementadorMensajes.MostrarMensaje(
+                    //        "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
+                    //    return false;
+                    //}
 
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {

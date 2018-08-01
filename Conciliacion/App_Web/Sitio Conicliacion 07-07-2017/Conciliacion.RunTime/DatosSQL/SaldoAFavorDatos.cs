@@ -5,6 +5,7 @@ using System.Text;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlTypes;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -165,11 +166,11 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FMovimiento", SqlDbType.DateTime)).Value = this.FMovimiento;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", SqlDbType.VarChar)).Value = this.StatusConciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FConciliacion", SqlDbType.DateTime)).Value = this.FConciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", SqlDbType.Int)).Value = this.CorporativoConciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", SqlDbType.Int)).Value = this.SucursalConciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", SqlDbType.Int)).Value = this.AñoConciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", SqlDbType.SmallInt)).Value = this.MesConciliacion;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", SqlDbType.Int)).Value = this.FolioConciliacion;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", SqlDbType.Int)).Value = this.CorporativoConciliacion != 0 ? this.CorporativoConciliacion : SqlInt32.Null;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalConciliacion", SqlDbType.Int)).Value = this.SucursalConciliacion != 0 ? this.SucursalConciliacion : SqlInt32.Null;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", SqlDbType.Int)).Value = this.AñoConciliacion != 0 ? this.AñoConciliacion : SqlInt32.Null;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", SqlDbType.SmallInt)).Value = this.MesConciliacion != 0 ? this.MesConciliacion : SqlInt16.Null;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", SqlDbType.Int)).Value = this.FolioConciliacion != 0 ? this.FolioConciliacion : SqlInt32.Null;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoExterno", SqlDbType.Int)).Value = this.CorporativoExterno;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@SucursalExterno", SqlDbType.Int)).Value = this.SucursalExterno;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoExterno", SqlDbType.Int)).Value = this.AñoExterno;
