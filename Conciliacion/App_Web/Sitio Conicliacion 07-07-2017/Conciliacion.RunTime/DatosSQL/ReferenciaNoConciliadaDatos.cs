@@ -144,52 +144,88 @@ DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconci
         public override bool EliminarReferenciaConciliada()
         {
             bool resultado = false;
-            try
+            using (SqlConnection cnnInt = new SqlConnection(App.CadenaConexion))
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                cnnInt.Open();
+                SqlTransaction transactionInt = cnnInt.BeginTransaction();
+                try
                 {
-                    cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);
-                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 1;
-                    comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
-                    comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = this.Sucursal;
-                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.AñoConciliacion;
-                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = this.MesConciliacion;
-                    comando.Parameters.Add("@FolioConciliacion ", System.Data.SqlDbType.Int).Value = this.FolioConciliacion;
-                    comando.Parameters.Add("@SecuenciaRelacion", System.Data.SqlDbType.Int).Value = 0;
+                    SqlCommand comandoInt = new SqlCommand("spCBDesconciliaReferenciaInternos", cnnInt);
+                    foreach (cReferencia rC in this.ListaReferenciaConciliada)
+                    {
+                        comandoInt.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
+                        comandoInt.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = this.Sucursal;
+                        comandoInt.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.AñoConciliacion;
+                        comandoInt.Parameters.Add("@FolioInterno", System.Data.SqlDbType.Int).Value = rC.Folio;
+                        comandoInt.Parameters.Add("@SecuenciaInterno", System.Data.SqlDbType.Int).Value = rC.Secuencia;
+                        comandoInt.CommandType = System.Data.CommandType.StoredProcedure;
+                        comandoInt.Transaction = transactionInt;
+                        comandoInt.ExecuteNonQuery();
+                    }
+                    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                    {
+                        try
+                        {
+                            cnn.Open();
+                            SqlTransaction transaction = cnn.BeginTransaction();
+                            SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);
+                            comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 1;
+                            comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
+                            comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = this.Sucursal;
+                            comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.AñoConciliacion;
+                            comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = this.MesConciliacion;
+                            comando.Parameters.Add("@FolioConciliacion ", System.Data.SqlDbType.Int).Value = this.FolioConciliacion;
+                            comando.Parameters.Add("@SecuenciaRelacion", System.Data.SqlDbType.Int).Value = 0;
 
-                    comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = 0;
-                    comando.Parameters.Add("@AñoInterno", System.Data.SqlDbType.Int).Value = 0;
-                    comando.Parameters.Add("@FolioInterno", System.Data.SqlDbType.Int).Value = 0;
-                    comando.Parameters.Add("@SecuenciaInterno", System.Data.SqlDbType.Int).Value = 0;
+                            comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = 0;
+                            comando.Parameters.Add("@AñoInterno", System.Data.SqlDbType.Int).Value = 0;
+                            comando.Parameters.Add("@FolioInterno", System.Data.SqlDbType.Int).Value = 0;
+                            comando.Parameters.Add("@SecuenciaInterno", System.Data.SqlDbType.Int).Value = 0;
 
-                    comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = this.Año;
-                    comando.Parameters.Add("@FolioExterno", System.Data.SqlDbType.Int).Value = this.Folio;
-                    comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = this.Secuencia;
+                            comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = this.Año;
+                            comando.Parameters.Add("@FolioExterno", System.Data.SqlDbType.Int).Value = this.Folio;
+                            comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = this.Secuencia;
 
-                    comando.Parameters.Add("@Concepto", System.Data.SqlDbType.VarChar).Value = "";
-                    comando.Parameters.Add("@MontoConciliado", System.Data.SqlDbType.Money).Value = 0;
-                    comando.Parameters.Add("@Diferencia ", System.Data.SqlDbType.Money).Value = 0;
-                    comando.Parameters.Add("@MontoExterno ", System.Data.SqlDbType.Money).Value = 0;
-                    comando.Parameters.Add("@MontoInterno", System.Data.SqlDbType.Money).Value = 0;
-                    comando.Parameters.Add("@FormaConciliacion", System.Data.SqlDbType.SmallInt).Value = 0;
-                    comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.SmallInt).Value = 0;
-                    comando.Parameters.Add("@StatusConciliacion", System.Data.SqlDbType.VarChar).Value = "";
-                    comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
-                    comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
-                    comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+                            comando.Parameters.Add("@Concepto", System.Data.SqlDbType.VarChar).Value = "";
+                            comando.Parameters.Add("@MontoConciliado", System.Data.SqlDbType.Money).Value = 0;
+                            comando.Parameters.Add("@Diferencia ", System.Data.SqlDbType.Money).Value = 0;
+                            comando.Parameters.Add("@MontoExterno ", System.Data.SqlDbType.Money).Value = 0;
+                            comando.Parameters.Add("@MontoInterno", System.Data.SqlDbType.Money).Value = 0;
+                            comando.Parameters.Add("@FormaConciliacion", System.Data.SqlDbType.SmallInt).Value = 0;
+                            comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.SmallInt).Value = 0;
+                            comando.Parameters.Add("@StatusConciliacion", System.Data.SqlDbType.VarChar).Value = "";
+                            comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
+                            comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
+                            comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
 
-                    comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlDataReader reader = comando.ExecuteReader();
-                    resultado = true;
+                            comando.CommandType = System.Data.CommandType.StoredProcedure;
+                            comando.Transaction = transaction;
+                            comando.ExecuteNonQuery();
+
+                            resultado = true;
+                            transactionInt.Commit();
+                            cnnInt.Close();
+                            transaction.Commit();
+                            cnn.Close();
+                        }
+                        catch (SqlException ex)
+                        {
+                            transactionInt.Rollback();
+                            stackTrace = new StackTrace();
+                            this.ImplementadorMensajes.MostrarMensaje("No se pudo borrar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                            stackTrace = null;
+                            resultado = false;
+                        }
+                    }
                 }
-            }
-            catch (SqlException ex) 
-            {
-                stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("No se pudo borrar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
-                stackTrace = null;
-                resultado = false;
+                catch (SqlException ex)
+                {
+                    transactionInt.Rollback();
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("No se pudo borrar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    stackTrace = null;
+                    resultado = false;
+                }
             }
             return resultado;
         }
