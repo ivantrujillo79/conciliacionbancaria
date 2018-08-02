@@ -214,7 +214,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
              * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
              * estatica el valor del tipo conciliacion*/
 
-        tipoConciliacion = 2; //Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]); //antes estaba asi: tipoConciliacion = 2; 
     }
     //Limpian variables de Session
     public void limpiarVariablesSession()
