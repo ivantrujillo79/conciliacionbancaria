@@ -736,13 +736,13 @@ namespace Conciliacion.RunTime.DatosSQL
                             dtReporteEstadosCuentaConciliado.Mes = Convert.ToInt16(reader["mes"]);
                             dtReporteEstadosCuentaConciliado.CuentaBancoFinanciero = Convert.ToString(reader["cuentabancofinanciero"]);
                             dtReporteEstadosCuentaConciliado.ConsecutivoFlujo = Convert.ToString(reader["consecutivoflujo"]);
-                            string[] formats = { "M/d/yyyy", "d/M/yyyy", "M-d-yyyy", "d-M-yyyy", "d-MMM-yy", "d-MMMM-yyyy", };
+                            string[] formats = { "M/d/yyyy", "dd-mm-yyyy", "M-d-yyyy", "d-M-yyyy", "d-MMM-yy", "d-MMMM-yyyy", };
                             DateTime date;
                             string Fecha = reader["fecha"].ToString();
-                            if (DateTime.TryParseExact(Fecha, "mm-dd-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-                            {
-                                dtReporteEstadosCuentaConciliado.Fecha = date;
-                            }
+                            date = Convert.ToDateTime(Fecha, CultureInfo.InvariantCulture);
+                           
+                            dtReporteEstadosCuentaConciliado.Fecha = date;
+                            
                                 //DateTime.Parse(reader["fecha"].ToString(), MyCultureInfo);
                             dtReporteEstadosCuentaConciliado.Referencia = Convert.ToString(reader["referencia"]);
                             dtReporteEstadosCuentaConciliado.Concepto = Convert.ToString(reader["concepto"]);
