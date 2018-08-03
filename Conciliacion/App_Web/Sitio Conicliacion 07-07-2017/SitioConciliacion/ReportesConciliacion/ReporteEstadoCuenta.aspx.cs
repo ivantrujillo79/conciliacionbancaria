@@ -326,8 +326,10 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
             DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            //BANORTE 0671084374
+            cuenta = cuenta.Substring(cuenta.IndexOf(" ") + 1, cuenta.Length - cuenta.IndexOf(" ") - 1).Trim();
             conexion.AbrirConexion(false);
-           lstDetalle = informeBancario.consultaconsultaInformeInternosAFuturo(conexion, fechaInicio, fechaFin, Banco, cuenta);
+            lstDetalle = informeBancario.consultaconsultaInformeInternosAFuturo(conexion, fechaInicio, fechaFin, Banco, cuenta);
 
            //ListasDetalle = Separat(lstDetalle);
 
