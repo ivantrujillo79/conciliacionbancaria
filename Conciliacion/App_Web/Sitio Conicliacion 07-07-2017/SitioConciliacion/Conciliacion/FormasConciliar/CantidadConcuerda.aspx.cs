@@ -837,9 +837,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         CheckBox chk = (sender as CheckBox);
         if (chk.ID == "chkAllFolios")
         {
-            foreach (
-                GridViewRow fila in
-                    grvCantidadConcuerdanArchivos.Rows.Cast<GridViewRow>()
+            foreach (GridViewRow fila in grvCantidadConcuerdanArchivos.Rows.Cast<GridViewRow>()
                                                  .Where(fila => fila.RowType == DataControlRowType.DataRow))
                 fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = chk.Checked;
         }
@@ -1373,8 +1371,18 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             //Leer la lista de Referencias por Conciliar : Tipo Conciliacion = 2
             listaReferenciaConciliadaPedidos = Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
 
-            if (listaReferenciaConciliadaPedidos != null && listaReferenciaConciliadaPedidos.Count > 0)
-                listaReferenciaConciliadaPedidos.ForEach(x => resultado = x.Guardar());
+            //if (listaReferenciaConciliadaPedidos != null && listaReferenciaConciliadaPedidos.Count > 0)
+            //    listaReferenciaConciliadaPedidos.ForEach(x => resultado = x.Guardar());
+            //else
+            int filaindex = 0;
+            foreach (GridViewRow fila in grvCantidadConcuerdanPedidos.Rows)
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                    if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        listaReferenciaConciliadaPedidos[filaindex].Guardar();
+                    filaindex++;
+                }
             else
                 App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
         }
@@ -1382,10 +1390,18 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         {
             //Leer la lista de Referencias por Conciliar : Tipo Conciliacion = 2
             listaReferenciaConciliada = Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
-
             if (listaReferenciaConciliada != null && listaReferenciaConciliada.Count > 0)
-                listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
-
+            { 
+                int filaindex = 0;
+                foreach (GridViewRow fila in grvCantidadConcuerdanArchivos.Rows)
+                    if (fila.RowType == DataControlRowType.DataRow)
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                            listaReferenciaConciliada[filaindex].Guardar();
+                        filaindex++;
+                    }
+            }
             else
                 App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
 
