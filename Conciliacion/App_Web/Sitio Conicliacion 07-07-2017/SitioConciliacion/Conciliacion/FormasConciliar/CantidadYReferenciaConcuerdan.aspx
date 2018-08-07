@@ -11,6 +11,7 @@
     <script src="../../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
+
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
@@ -19,7 +20,7 @@
     <script type="text/javascript">
         //        $(document).ready(function () {
         function pageLoad() {
-            gridviewScroll();
+            //gridviewScroll();
         }
         //        );
         

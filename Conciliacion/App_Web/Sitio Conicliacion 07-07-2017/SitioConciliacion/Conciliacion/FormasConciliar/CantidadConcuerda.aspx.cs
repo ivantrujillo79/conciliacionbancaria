@@ -1364,6 +1364,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {
         bool resultado = false;
+        bool AlgunChequeado = false;
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
         if (tipoConciliacion == 2)
@@ -1380,7 +1381,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 {
                     listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
                     if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
-                        listaReferenciaConciliadaPedidos[filaindex].Guardar();
+                    {
+                        AlgunChequeado = true;
+                        resultado = listaReferenciaConciliadaPedidos[filaindex].Guardar();
+                        if (!resultado)
+                            break;
+                    }
                     filaindex++;
                 }
             else
@@ -1398,7 +1404,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     {
                         listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
                         if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
-                            listaReferenciaConciliada[filaindex].Guardar();
+                        {
+                            AlgunChequeado = true;
+                            resultado = listaReferenciaConciliada[filaindex].Guardar();
+                            if (!resultado)
+                                break;
+                        }
                         filaindex++;
                     }
             }
@@ -1406,6 +1417,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
 
         }
+        if (! AlgunChequeado)
+            App.ImplementadorMensajes.MostrarMensaje("Seleccione al menos uno para continuar.");
+
+        if (AlgunChequeado && ! resultado)
+            App.ImplementadorMensajes.MostrarMensaje("Ocurrieron errores al guardar. Verifique");
+
         if (resultado)
         {
             //Leer Variables URL 
@@ -1417,17 +1434,15 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             LlenaGridViewConciliadas();
             Consulta_ConciliarPorCantidad(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, tipoConciliacion, Convert.ToSByte(txtDias.Text),
                                                                 Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-
             if (tipoConciliacion == 2)
                 GenerarTablaReferenciasAConciliarPedidos();
             else
                 GenerarTablaReferenciasAConciliarInternos();
             LlenaGridViewReferenciasConciliadas(tipoConciliacion);
         }
-        else
-            App.ImplementadorMensajes.MostrarMensaje("Ocurrieron errores al guardar. Verifique");
 
     }
+
     protected void Nueva_Ventana(string Pagina, string Titulo, int Ancho, int Alto, int X, int Y)
     {
         ScriptManager.RegisterClientScriptBlock(this.upBarraHerramientas,
