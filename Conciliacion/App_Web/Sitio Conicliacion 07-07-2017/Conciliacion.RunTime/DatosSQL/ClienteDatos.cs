@@ -243,13 +243,14 @@ namespace Conciliacion.RunTime.DatosSQL
                 if (_URLGateway != string.Empty)
                 {
                     AppSettingsReader settings = new AppSettingsReader();
+                    SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
                     Gateway = new RTGMGateway.RTGMGateway(modulo,App.CadenaConexion); 
                     Gateway.URLServicio = _URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                     Solicitud.IDCliente = cliente;
-                    Solicitud.IDEmpresa = 1;
+                    Solicitud.IDEmpresa = usuario.Corporativo;
                     DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
                 }
             }
@@ -273,13 +274,14 @@ namespace Conciliacion.RunTime.DatosSQL
                 if (URLGateway != string.Empty)
                 {
                     AppSettingsReader settings = new AppSettingsReader();
+                    SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
                     Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                     Gateway.URLServicio = URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                     Solicitud.IDCliente = cliente;
-                    Solicitud.IDEmpresa = 1;
+                    Solicitud.IDEmpresa = usuario.Corporativo;
                     DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
                 }
 }

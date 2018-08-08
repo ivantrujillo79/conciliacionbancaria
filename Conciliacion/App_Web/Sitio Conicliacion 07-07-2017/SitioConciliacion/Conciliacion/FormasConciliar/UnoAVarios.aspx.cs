@@ -2679,7 +2679,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                 Solicitud.IDCliente = cliente;
-                Solicitud.IDEmpresa = 0;
+                Solicitud.IDEmpresa = usuario.Corporativo;
                 DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
             }
         }
