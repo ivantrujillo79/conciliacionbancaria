@@ -66,7 +66,9 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 if (_URLGateway != string.Empty)
                 {
-                    Gateway = new RTGMGateway.RTGMGateway();
+                    AppSettingsReader settings = new AppSettingsReader();
+                    byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                     Gateway.URLServicio = _URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
