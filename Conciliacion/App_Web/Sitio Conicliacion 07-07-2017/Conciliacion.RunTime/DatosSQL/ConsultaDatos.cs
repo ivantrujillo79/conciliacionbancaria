@@ -72,9 +72,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                     Gateway.URLServicio = _URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
-                    Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                     Solicitud.IDCliente = cliente;
-                    Solicitud.IDEmpresa = usuario.Corporativo;
                     DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
                 }
             }
