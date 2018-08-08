@@ -13,6 +13,7 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using Conciliacion.RunTime.DatosSQL;
 using System.ComponentModel;
+using System.Configuration;
 
 public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
@@ -315,12 +316,13 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             if (_URLGateway != string.Empty)
             {
-                Gateway = new RTGMGateway.RTGMGateway();
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
-                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                 Solicitud.IDCliente = cliente;
-                Solicitud.IDEmpresa = 0;
                 DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
             }
         }

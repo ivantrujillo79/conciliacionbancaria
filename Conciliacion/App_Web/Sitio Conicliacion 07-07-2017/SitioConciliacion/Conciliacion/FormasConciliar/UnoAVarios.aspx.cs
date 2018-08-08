@@ -2671,12 +2671,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (_URLGateway != string.Empty)
             {
-                Gateway = new RTGMGateway.RTGMGateway();
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString() );
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
-                Solicitud.Fuente = RTGMCore.Fuente.Sigamet;
                 Solicitud.IDCliente = cliente;
-                Solicitud.IDEmpresa = 0;
                 DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
             }
         }
