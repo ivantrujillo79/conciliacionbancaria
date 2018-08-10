@@ -7,6 +7,8 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using RTGMGateway;
+using System.Configuration;
+using System.Web;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -253,7 +255,12 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool PedidoActualizaSaldoCRM(string URLGateway)
         {
             List<RTGMCore.Pedido> Pedidos = new List<RTGMCore.Pedido>();
-            RTGMActualizarPedido obActualizar = new RTGMActualizarPedido();
+
+            AppSettingsReader settings = new AppSettingsReader();
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+
+            RTGMActualizarPedido obActualizar = new RTGMActualizarPedido(modulo, App.CadenaConexion);
             bool resultado = false;
 
             try
@@ -271,8 +278,8 @@ namespace Conciliacion.RunTime.DatosSQL
 
                 SolicitudActualizarPedido obSolicitud = new SolicitudActualizarPedido
                 {
-                    Fuente              = RTGMCore.Fuente.CRM,
-                    IDEmpresa           = this.Corporativo,
+                    //Fuente              = RTGMCore.Fuente.CRM, //RRV: revisar eso 
+                    //IDEmpresa           = this.Corporativo,
                     Pedidos             = Pedidos,
                     Portatil            = false,
                     TipoActualizacion   = RTGMCore.TipoActualizacion.Saldo,
