@@ -256,7 +256,7 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             List<RTGMCore.Pedido> Pedidos = new List<RTGMCore.Pedido>();
 
-            AppSettingsReader settings = new AppSettingsReader();
+            AppSettingsReader settings = new AppSettingsReader();//RRV: revisar esto
             SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
 
