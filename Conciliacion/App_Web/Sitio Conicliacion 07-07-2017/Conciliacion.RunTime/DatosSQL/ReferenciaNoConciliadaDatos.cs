@@ -153,6 +153,7 @@ DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconci
                     SqlCommand comandoInt = new SqlCommand("spCBDesconciliaReferenciaInternos", cnnInt);
                     foreach (cReferencia rC in this.ListaReferenciaConciliada)
                     {
+                        comandoInt.Parameters.Clear();
                         comandoInt.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
                         comandoInt.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = this.Sucursal;
                         comandoInt.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.AñoConciliacion;
