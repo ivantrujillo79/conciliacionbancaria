@@ -89,6 +89,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     //public List<TransferenciaBancarias> ListTransferenciasBancarias = new List<TransferenciaBancarias>();
 
+    public decimal dAbonoSeleccionado;
+
     private int indiceExternoSeleccionado
     {
         get { return Convert.ToInt32(hdfIndiceExterno.Value); }
@@ -1696,7 +1698,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    //decimal dAbono      = Decimal.Round(rE.Resto, 2);
+                    dAbonoSeleccionado = Decimal.Round(rE.Monto, 2);
                     decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
                     decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
@@ -1708,12 +1710,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
                     lblResto.Text                   = dResto.ToString("C2");
                     lblAgregadosInternos.Text       = rE.ListaReferenciaConciliada.Count.ToString();
-                    lblAbono.Text                   = dAbono.ToString("C2");
+                    if (txtComision.Text == "")
+                        txtComision.Text = "0";
+                    if (chkComision.Checked)
+                        lblAbono.Text = Convert.ToString(dAbono + decimal.Parse(txtComision.Text));
+                    else
+                        lblAbono.Text = dAbono.ToString("C2");
                 }
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
 
                     ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
+                    dAbonoSeleccionado = Decimal.Round(rE.Monto, 2);
                     decimal dAbono      = Decimal.Round(rE.Monto, 2);
                     decimal dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
 
@@ -1731,7 +1739,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
                     lblResto.Text                   = dResto.ToString("C2");
                     lblAgregadosInternos.Text       = rE.ListaReferenciaConciliada.Count.ToString();
-                    lblAbono.Text                   = dAbono.ToString("C2");
+                    if (txtComision.Text == "")
+                        txtComision.Text = "0";
+                    if (chkComision.Checked)
+                        lblAbono.Text = Convert.ToString(dAbono + decimal.Parse(txtComision.Text));
+                    else
+                        lblAbono.Text = dAbono.ToString("C2");
                 }
             }
             else
