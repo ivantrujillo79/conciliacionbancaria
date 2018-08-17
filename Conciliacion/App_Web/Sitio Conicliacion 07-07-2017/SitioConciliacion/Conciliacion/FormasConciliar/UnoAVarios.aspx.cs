@@ -1695,57 +1695,31 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             if (grvExternos.Rows.Count > 0)
             {
+                ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
+                dAbonoSeleccionado = Decimal.Round(rE.Monto, 2);
+                hdfAbonoSeleccionado.Value = rE.Monto.ToString();
+
+                decimal dAbono = 0;
+                decimal dAcumulado = 0;
+                decimal dResto = 0;
+                if (txtComision.Text.Trim() == "") txtComision.Text = "0.00";
+                if (chkComision.Checked)
+                    dAbono = Decimal.Round(rE.Monto + Decimal.Parse(txtComision.Text), 2);
+                else
+                    dAbono = Decimal.Round(rE.Monto, 2);
+
                 if (objSolicitdConciliacion.ConsultaArchivo())
-                {
-                    ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    dAbonoSeleccionado = Decimal.Round(rE.Monto, 2);
-                    decimal dAbono      = Decimal.Round(rE.Monto, 2);
-                    decimal dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
-                    decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
-                    dResto = (dResto <= 0 ? 0 : dResto);
-
-                    //lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoConciliado, 2).ToString("C2");
-                    //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
-                    //lblAbono.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
-                    lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
-                    lblResto.Text                   = dResto.ToString("C2");
-                    lblAgregadosInternos.Text       = rE.ListaReferenciaConciliada.Count.ToString();
-                    if (txtComision.Text == "")
-                        txtComision.Text = "0";
-                    if (chkComision.Checked)
-                        lblAbono.Text = Convert.ToString(dAbono + decimal.Parse(txtComision.Text));
-                    else
-                        lblAbono.Text = dAbono.ToString("C2");
-                }
+                    dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
                 if (objSolicitdConciliacion.ConsultaPedido())
-                {
+                    dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
 
-                    ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
-                    dAbonoSeleccionado = Decimal.Round(rE.Monto, 2);
-                    decimal dAbono      = Decimal.Round(rE.Monto, 2);
-                    decimal dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
+                dResto = (dAbono > 0 ? dAbono - dAcumulado : 0);
+                dResto = (dResto <= 0 ? 0 : dResto);
 
-                    //if (comisionSeleccionada)
-                    //{
-                    //    decimal.TryParse(txtComision.Text, out dComision);
-                    //    dAcumulado += dComision;
-                    //}
-                    decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
-                    dResto = (dResto <= 0 ? 0 : dResto);
-
-                    //lblMontoAcumuladoInterno.Text = Decimal.Round(rE.MontoPedido, 2).ToString("C2");
-                    //lblResto.Text = (Convert.ToDecimal(lblAbono.Text.Replace("$", "").Trim() == "" ? "0" : lblAbono.Text.Replace("$", "").Trim()) - Convert.ToDecimal(lblMontoAcumuladoInterno.Text.Replace("$", ""))).ToString("C2");
-                    //lblAbono.Text = Decimal.Round(rE.Monto - rE.MontoPedido, 2).ToString("C2");
-                    lblMontoAcumuladoInterno.Text   = dAcumulado.ToString("C2");
-                    lblResto.Text                   = dResto.ToString("C2");
-                    lblAgregadosInternos.Text       = rE.ListaReferenciaConciliada.Count.ToString();
-                    if (txtComision.Text == "")
-                        txtComision.Text = "0";
-                    if (chkComision.Checked)
-                        lblAbono.Text = Convert.ToString(dAbono + decimal.Parse(txtComision.Text));
-                    else
-                        lblAbono.Text = dAbono.ToString("C2");
-                }
+                lblMontoAcumuladoInterno.Text = dAcumulado.ToString("C2");
+                lblResto.Text = dResto.ToString("C2");
+                lblAgregadosInternos.Text = rE.ListaReferenciaConciliada.Count.ToString();
+                lblAbono.Text = dAbono.ToString("C2");
             }
             else
             {

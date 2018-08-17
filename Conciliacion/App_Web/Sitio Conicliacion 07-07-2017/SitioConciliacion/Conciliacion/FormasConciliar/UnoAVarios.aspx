@@ -69,7 +69,6 @@
             var comisionSeleccionada = document.getElementById('<%= chkComision.ClientID %>').checked;
             var dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
             dComision = (isNaN(dComision) ? 0 : dComision);
-            //alert(dComision);
 
             var dChequeados = 0.0;
             grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
@@ -79,18 +78,13 @@
             }
 
             if (comisionSeleccionada) {
-                dChequeados += dComision;
+                //dChequeados += dComision;
             }
 
             var dResto = 0;
             if (parseFloat(dChequeados) > 0.01)
             {
-                //if (dChequeados < sumapreconciliadas)
-                //    sumapreconciliadas = dChequeados;
-                //var dAbono      = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$','').trim());
-                //var dAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML;
-                //var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$','').trim());
-
+                
                 if (dChequeados < sumapreconciliadas)
                     sumapreconciliadas = dChequeados;
                 var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
@@ -98,10 +92,8 @@
                 var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$', '').trim());
 
                 if (comisionSeleccionada) {
-                    //dAcumulado += dComision;
-
-                    dRespaldoAbono = dAbono;
-                    dAbono += dComision;
+                    //dRespaldoAbono = dAbono;
+                    //dAbono += dComision;
                 }
 
                 //        0                           595.40                     34.87
@@ -131,6 +123,33 @@
                 document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = "0.00";
                 sumapreconciliadas = 0;
             }
+
+        }
+
+        var dAbonoSel;
+        function ActualizaMonto(){
+            //debugger;
+            var dComision = 0;
+            if (document.getElementById('<%= txtComision.ClientID %>').value == "")
+                dComision = 0;
+            else
+                dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
+            //var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
+            //var dAbono = '<%= this.dAbonoSeleccionado %>';
+            var dAbono = 0;
+            dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
+            //dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbonoSeleccionado').innerHTML);
+            
+            dAbono = parseFloat(dAbono) + parseFloat(dComision);
+            var sumapreconciliadas = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML;
+            var dResto = 0;
+            
+            document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML = dAbono.toFixed(2);
+            if (dAbono > 0)
+                dResto      = parseFloat(dAbono - sumapreconciliadas);
+            if (dResto <= 0)
+                dResto      = 0;
+            document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = dResto.toFixed(2);            
 
         }
 
@@ -1546,12 +1565,14 @@
                                             <td style="width:1%; white-space:nowrap; height:27px; padding-left:1px"
                                                 runat="server" class="centradoIzquierda">
                                                 <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
-                                                    style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"/>
+                                                    style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"
+                                                    onchange="ActualizaMonto();"/>
                                             </td>
                                             <td class="centradoIzquierda" style="width:1%;">
                                                 <asp:TextBox ID="txtComision" runat="server" Width="70px" CssClass="cajaTextoPequeño" 
                                                     style="margin-left:3px; display:none;" 
-                                                    onkeypress="return ValidNumDecimal(event);" />
+                                                    onkeypress="return ValidNumDecimal(event);" 
+                                                    onchange="ActualizaMonto();" />
                                                 <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
                                             </td>
                                             <%--    Fin comisiones  --%>
@@ -1655,10 +1676,10 @@
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Abono:
                                 </td>
+                                <asp:HiddenField ID="hdfAbonoSeleccionado" runat="server" />
                                 <td class="etiqueta lineaVertical centradoMedio bg-color-azul fg-color-blanco" style="width: 15%; padding: 5px 5px 5px 5px">
                                     <asp:Label runat="server" ID="lblAbono" Text="$ 0.00"></asp:Label>
                                 </td>
-
                                 <td class="etiqueta lineaVertical centradoMedio" style="width: 10%; padding: 5px 5px 5px 5px">Resto:
                                 </td>
                                 <td class="etiqueta lineaVertical centradoMedio bg-color-purpura fg-color-blanco" style="width: 15%; padding: 5px 5px 5px 5px">
