@@ -155,7 +155,9 @@
             return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
         }
 
-        function chkExterno_clic(o, monto){
+        function chkExterno_clic(o, deposito, retiro){
+            //debugger;
+            var monto = deposito + retiro;
             montoAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoExterno').innerHTML.trim();
             if (montoAcumulado == "")
                 montoAcumulado = 0;
@@ -800,7 +802,7 @@
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkExterno" 
-                                            OnClick='<%# String.Concat("chkExterno_clic(this,", Eval("Deposito"), ");") %>'
+                                            OnClick='<%# String.Concat("chkExterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"), ");") %>'
                                             OnCheckedChanged="chkExterno_CheckedChanged"
                                             AutoPostBack="False" Checked='<%# Bind("Selecciona") %>' />
                                     </ItemTemplate>
