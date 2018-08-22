@@ -887,10 +887,38 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                         //{
                         if (extSeleccionados.Count > 0)
                         {
-                            ReferenciaNoConciliada ex = extSeleccionados[0];
-                            foreach (ReferenciaNoConciliada ai in intSeleccionados)
-                                ex.AgregarReferenciaConciliadaSinVerificacion(ai);
-                            ex.GuardarReferenciaConciliada();
+                            //if (extSeleccionados.Count == 1 && intSeleccionados.Count > 1) //UN EXT CON VARIOS INTERNOS
+                            //{
+                            //    ReferenciaNoConciliada exPrimero = extSeleccionados[0];
+                            //    foreach (ReferenciaNoConciliada ai in intSeleccionados)
+                            //        exPrimero.AgregarReferenciaConciliadaSinVerificacion(ai);
+                            //    exPrimero.GuardarReferenciaConciliada();
+                            //}
+                            
+                            //UN EXT CON VARIOS INTERNOS o //VARIOS EXT CON UN INTERNO
+                            if ((extSeleccionados.Count == 1 && intSeleccionados.Count > 1) || (extSeleccionados.Count > 1 && intSeleccionados.Count == 1)) 
+                            {
+                                decimal sumaExt = 0;
+                                decimal sumaInt = 0;
+                                foreach (ReferenciaNoConciliada externo in extSeleccionados)
+                                    sumaExt = sumaExt + externo.Monto;
+                                foreach (ReferenciaNoConciliada interno in intSeleccionados)
+                                    sumaInt = sumaInt + interno.Monto;
+
+                                if (sumaExt < sumaInt - decimal.Parse(txtDiferencia.Text))
+                                    App.ImplementadorMensajes.MostrarMensaje(
+                                        "No se puede guardar el registro. " + sumaExt + ", debe ser mayor a: " + (sumaInt) + " con diferencia de +- " + ( decimal.Parse(txtDiferencia.Text) ));
+                                else
+                                { 
+                                    foreach (ReferenciaNoConciliada externo in extSeleccionados)
+                                        foreach (ReferenciaNoConciliada interno in intSeleccionados)
+                                            externo.AgregarReferenciaConciliadaSinVerificacion(interno);
+                                    foreach (ReferenciaNoConciliada externo in extSeleccionados)
+                                        externo.GuardarReferenciaConciliada();
+                                }
+                            }
+                            else
+                                App.ImplementadorMensajes.MostrarMensaje("Verifique su selección.\nPuede seleccionar un externo con uno o varios internos \no uno o varios externos con un interno");
                         }
                         //}
 

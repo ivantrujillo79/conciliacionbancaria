@@ -1150,20 +1150,21 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 if (this.coninterno)
                 {
+                    //Conc Manual: this = externos, this.ListaReferenciaConciliada = Internos
                     //Internos <= Externos
-                    if (this.MontoConciliado < this.monto - this.Diferencia)
-                    {
-                        this.ImplementadorMensajes.MostrarMensaje(
-                            "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
-                        return false;
-                    }
+                    //if (this.MontoConciliado < this.Monto - this.Diferencia)
+                    //{
+                    //    this.ImplementadorMensajes.MostrarMensaje(
+                    //        "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
+                    //    return false;
+                    //}
 
                     foreach (ReferenciaConciliada referen in this.ListaReferenciaConciliada)
                     {
                         if (referen.SucursalInterno == null || referen.SucursalInterno == 0)
                         {
                             referen.SucursalInterno = this.sucursal;
-                        }
+                        }                        
                         referen.Guardar();
                         this.Completo = true;
                     }
@@ -1184,6 +1185,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         this.Completo = true;
                     }
                 }
+
             }
             catch (Exception ex)
             {
