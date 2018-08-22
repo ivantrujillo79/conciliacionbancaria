@@ -69,27 +69,27 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = this.MesConciliacion;
                     comando.Parameters.Add("@FolioConciliacion ", System.Data.SqlDbType.Int).Value = this.FolioConciliacion;
                     comando.Parameters.Add("@SecuenciaRelacion", System.Data.SqlDbType.Int).Value = 0;
-                   
-                    comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = this.SucursalInterno;
-                    comando.Parameters.Add("@AñoInterno", System.Data.SqlDbType.Int).Value = this.AñoInterno;
-                    comando.Parameters.Add("@FolioInterno", System.Data.SqlDbType.Int).Value = this.FolioInterno;
-                    comando.Parameters.Add("@SecuenciaInterno", System.Data.SqlDbType.Int).Value = this.SecuenciaInterno;
-
-                    comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = this.Año;
-                    comando.Parameters.Add("@FolioExterno", System.Data.SqlDbType.Int).Value = this.Folio;
-                    comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = this.Secuencia;
 
                     comando.Parameters.Add("@Concepto", System.Data.SqlDbType.VarChar).Value = this.Concepto;
                     comando.Parameters.Add("@MontoConciliado", System.Data.SqlDbType.Money).Value = this.MontoConciliado;
                     comando.Parameters.Add("@Diferencia ", System.Data.SqlDbType.Money).Value = this.Diferencia;
-                    comando.Parameters.Add("@MontoExterno ", System.Data.SqlDbType.Money).Value = this.MontoConciliado;
-                    comando.Parameters.Add("@MontoInterno", System.Data.SqlDbType.Money).Value = this.MontoInterno;
                     comando.Parameters.Add("@FormaConciliacion", System.Data.SqlDbType.SmallInt).Value = this.FormaConciliacion;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.SmallInt).Value = 0;//this.StatusConcepto; -->StatusConcepto: NINGUNO X DEFAULT
                     comando.Parameters.Add("@StatusConciliacion", System.Data.SqlDbType.VarChar).Value = "CONCILIADA";
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+
+                    comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = this.SucursalInterno;
+                    comando.Parameters.Add("@AñoInterno", System.Data.SqlDbType.Int).Value = this.AñoInterno;
+                    comando.Parameters.Add("@FolioInterno", System.Data.SqlDbType.Int).Value = this.FolioInterno;
+                    comando.Parameters.Add("@SecuenciaInterno", System.Data.SqlDbType.Int).Value = this.SecuenciaInterno;
+                    comando.Parameters.Add("@MontoInterno", System.Data.SqlDbType.Money).Value = this.MontoInterno;
+
+                    comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = this.Año;
+                    comando.Parameters.Add("@FolioExterno", System.Data.SqlDbType.Int).Value = this.Folio;
+                    comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = this.Secuencia;
+                    comando.Parameters.Add("@MontoExterno ", System.Data.SqlDbType.Money).Value = this.MontoConciliado;
 
                     //if (this.ClientePago == 0)
                     //    this.ClientePago = this.;
