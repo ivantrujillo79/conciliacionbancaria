@@ -252,42 +252,40 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
 
-        public override bool PedidoActualizaSaldoCRM(string URLGateway)
+        public override List<RTGMCore.Pedido> PedidoActualizaSaldoCRM(string URLGateway)
         {
             List<RTGMCore.Pedido> Pedidos = new List<RTGMCore.Pedido>();
 
             AppSettingsReader settings = new AppSettingsReader();//RRV: revisar esto
             SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+            byte corporativo = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).Corporativo;
 
             RTGMActualizarPedido obActualizar = new RTGMActualizarPedido(modulo, App.CadenaConexion);
-            bool resultado = false;
-
+            //bool resultado = false;
+            List<RTGMCore.Pedido> PedidosRespuesta = new List<RTGMCore.Pedido>();
             try
             {
                 obActualizar.URLServicio = URLGateway;
 
                 Pedidos.Add(new RTGMCore.PedidoCRMSaldo
                 {
-                    IDPedido            = Convert.ToInt32(this.PedidoReferencia),
-                    IDZona              = this.CelulaPedido,
-                    AnioPed             = this.AñoPedido,
-                    Abono               = this.Total,
-                    PedidoReferencia    = this.PedidoReferencia
+                    IDEmpresa        = corporativo,
+                    IDPedido         = Convert.ToInt32(this.PedidoReferencia),
+                    PedidoReferencia = this.PedidoReferencia,
+                    IDZona           = this.CelulaPedido,
+                    Abono            = this.Total
                 });
 
                 SolicitudActualizarPedido obSolicitud = new SolicitudActualizarPedido
                 {
-                    //Fuente              = RTGMCore.Fuente.CRM, //RRV: revisar eso 
-                    //IDEmpresa           = this.Corporativo,
                     Pedidos             = Pedidos,
                     Portatil            = false,
                     TipoActualizacion   = RTGMCore.TipoActualizacion.Saldo,
-                    Usuario             = this.Usuario
                 };
 
-                List<RTGMCore.Pedido> PedidosRespuesta = obActualizar.ActualizarPedido(obSolicitud);
-                resultado = PedidosRespuesta.Count > 0;
+                PedidosRespuesta = obActualizar.ActualizarPedido(obSolicitud);
+
             }
             catch (SqlException ex)
             {
@@ -296,9 +294,12 @@ namespace Conciliacion.RunTime.DatosSQL
                                     + "Metodo: " + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" 
                                     + "Error: " + ex.Message;
                 stackTrace = null;
-                throw new Exception(strError);
+                //throw new Exception(strError); SE SILENCIA PARA EVITAR DETERNER INTENTAR CON EL RESTO DE PEDIDOS
+                RTGMCore.Pedido pedidoError = new RTGMCore.Pedido();
+                pedidoError.Message = "Error: " + strError;
+                PedidosRespuesta.Add(pedidoError);
             }
-            return resultado;
+            return PedidosRespuesta;
         }
 
         /*public override bool ActualizaPagosPorAplicar()

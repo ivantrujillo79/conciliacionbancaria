@@ -321,7 +321,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract bool ActualizaPagosPorAplicar(Conexion _conexion);
 
-        public abstract bool PedidoActualizaSaldoCRM(string URLGateway);
+        public abstract List<RTGMCore.Pedido> PedidoActualizaSaldoCRM(string URLGateway);
 
         public abstract ReferenciaConciliadaPedido CrearObjeto();
 

@@ -212,6 +212,43 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
 
+        private bool ExitoAlAplicarPedidos(List<RTGMCore.Pedido> rspPedidoActualiza)
+        {
+            bool resultado = false;
+            foreach (RTGMCore.Pedido rsp in rspPedidoActualiza)
+            {
+                resultado = rsp.Message.Contains("EXITO");
+                if (!resultado)
+                    break;
+            }
+            return resultado;
+        }
+        private bool ExitoAlAplicarPedido(List<RTGMCore.Pedido> rspPedidoActualiza, string IDPedido)
+        {
+            bool resultado = false;
+            foreach (RTGMCore.Pedido rsp in rspPedidoActualiza)
+            {
+                if (rsp.IDPedido.ToString() == IDPedido)
+                { 
+                    resultado = rsp.Message.Contains("NO HAY ERROR");
+                    break;
+                }
+            }
+            return resultado;
+        }
+
+        private void SiHayErroresMostrar(List<RTGMCore.Pedido> rspPedidoActualiza)
+        {
+            StringBuilder mensajeErrores = new StringBuilder();
+            foreach (RTGMCore.Pedido rsp in rspPedidoActualiza)
+            {
+                if (!rsp.Message.Contains("NO HAY ERROR"))
+                    mensajeErrores.Append(rsp.Message);
+            }
+            if (mensajeErrores.Length > 0)
+                this.ImplementadorMensajes.MostrarMensaje(mensajeErrores.ToString());
+        }
+
         /// <summary>
         /// Realiza el mismo proceso de AplicarCobros y adicionalmente ejecuta el método
         /// PedidoActualizaSaldoCRM() por cada uno de los pedidos
@@ -222,11 +259,9 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool AplicarCobrosCRM(Conexion _conexion, string URLGateway)
         {
             bool resultado = false;
-
             try
             {
                 List<Cobro> Cobros = this.ListaCobros;
-
                 foreach (Cobro Cobro in Cobros)
                 {
                     resultado = Cobro.ChequeTarjetaAltaModifica(_conexion);
@@ -237,14 +272,20 @@ namespace Conciliacion.RunTime.DatosSQL
                     List<ReferenciaConciliadaPedido> Pedidos =
                         Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
 
-                    foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                    if (Pedidos.Count > 0)
                     {
-                        Pedido.MontoConciliado =
-                            Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
-                        Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
-                        Pedido.PedidoActualizaSaldo(_conexion);
-                        Pedido.ActualizaPagosPorAplicar(_conexion);
-                        Pedido.PedidoActualizaSaldoCRM(URLGateway);
+                        List<RTGMCore.Pedido> rspPedidoActualiza = Pedidos[0].PedidoActualizaSaldoCRM(URLGateway); //intenta aplicar la lista de pedidos
+                        foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                        {
+                            if (ExitoAlAplicarPedido(rspPedidoActualiza, Pedido.PedidoReferencia))
+                            {
+                                Pedido.MontoConciliado = Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+                                Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
+                                Pedido.PedidoActualizaSaldo(_conexion);
+                                Pedido.ActualizaPagosPorAplicar(_conexion);
+                            }
+                        }
+                        SiHayErroresMostrar(rspPedidoActualiza);
                     }
                     resultado = true;
                 }

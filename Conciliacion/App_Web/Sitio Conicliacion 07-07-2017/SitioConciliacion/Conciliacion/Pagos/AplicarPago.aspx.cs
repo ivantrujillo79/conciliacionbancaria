@@ -13,6 +13,7 @@ using Conciliacion.RunTime;
 using System.Configuration;
 using SeguridadCB.Public;
 using Conciliacion.RunTime.DatosSQL;
+using RTGMGateway;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 {
@@ -644,7 +645,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         {
             Parametros p = Session["Parametros"] as Parametros;
             AppSettingsReader settings = new AppSettingsReader();
-            short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
+            byte modulo = Convert.ToByte(settings.GetValue("Modulo", typeof(string)));
             string valor = p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN");
 
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
@@ -668,7 +669,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             int añoConciliacion = 0;
             int folioConciliacion = 0;
             short mesConciliacion = 0;
-            short tipoConciliacion = 0;
+            short tipoConciliacion = 0;            
 
             conexion.AbrirConexion(false,false);
 
@@ -686,7 +687,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 //if (objMovimientoCaja.Guardar(conexion))
                 //{
                 if (guardoMovimientoCaja)
-                { 
+                {
                     corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
                     sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
                     añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
@@ -813,10 +814,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             //if ( ! EjecutaActualizaPedidoRTGM() )
             //    throw new Exception("Ocurrió un error en GMGateway.");
 
+            //if (_URLGateway != string.Empty)
+            //    if (_listaReferenciaConciliadaPagos != null)
+            //        foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
+            //            if ( !objPedido.PedidoActualizaSaldoCRM(_URLGateway) )
+            //                throw new Exception("Ocurrio un error al actualizar saldo en CRM");
+
             if (conexion.Comando.Transaction != null)
             {
                 conexion.Comando.Transaction.Commit();
             }
+
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
