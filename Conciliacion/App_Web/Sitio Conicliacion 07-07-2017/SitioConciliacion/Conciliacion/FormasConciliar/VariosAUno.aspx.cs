@@ -967,17 +967,30 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
             //int numRegInter = tipoConciliacion == 2 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
             int numRegInter = tipoConciliacion == 4 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
-            if (tipoConciliacion == 4 || tipoConciliacion == 2 || tipoConciliacion == 1)//RRV
-                numRegInter = grvPedidos.Rows.Count;//RRV
-            else//RRV
-                numRegInter = grvInternos.Rows.Count;//RRV
-
-            (extSeleccionados[0] as ReferenciaNoConciliada).ConInterno = false;//RRV
+            //if (tipoConciliacion == 4 || tipoConciliacion == 2 || tipoConciliacion == 1) //pedidos
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
+                numRegInter = grvPedidos.Rows.Count;
+                (extSeleccionados[0] as ReferenciaNoConciliada).ConInterno = false;
+            }
+            if (objSolicitdConciliacion.ConsultaArchivo())
+            { 
+                numRegInter = grvInternos.Rows.Count;
+                (extSeleccionados[0] as ReferenciaNoConciliada).ConInterno = true;
+            }
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
-            {//quitar throw new...
+            {
                 foreach (ReferenciaNoConciliada ex in extSeleccionados)
                 {
-                    ex.ConInterno = false;//RRV
+                    //ex.ConInterno = false;//RRV
+                    //if (tipoConciliacion == 4 || tipoConciliacion == 2 || tipoConciliacion == 1)
+                    if (objSolicitdConciliacion.ConsultaPedido())
+                        ex.ConInterno = false;
+                    if (objSolicitdConciliacion.ConsultaArchivo())
+                        ex.ConInterno = true;
                     if (ex.GuardarReferenciaConciliada())
                     {
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
@@ -2394,6 +2407,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         //dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = true;//RRV
         dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
+        grvExternos.Enabled = btnVerInternos.Visible = true;
         btnRegresarExternos.Visible = false;
 
         //Leer el tipoConciliacion URL
