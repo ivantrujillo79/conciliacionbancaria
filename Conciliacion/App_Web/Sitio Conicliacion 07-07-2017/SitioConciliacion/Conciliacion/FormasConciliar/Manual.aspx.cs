@@ -881,22 +881,12 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     List<ReferenciaNoConciliada> intSeleccionados = filasSeleccionadasInternos("EN PROCESO DE CONCILIACION");
                     if (intSeleccionados.Count > 0)
                     {
-                        //se comenta por que esta duplicando la insercion en ConciliacionReferencia
-                        //solo se asocian al primer externo los internos
-                        //foreach (ReferenciaNoConciliada ex in extSeleccionados)
-                        //{
                         if (extSeleccionados.Count > 0)
-                        {
-                            //if (extSeleccionados.Count == 1 && intSeleccionados.Count > 1) //UN EXT CON VARIOS INTERNOS
-                            //{
-                            //    ReferenciaNoConciliada exPrimero = extSeleccionados[0];
-                            //    foreach (ReferenciaNoConciliada ai in intSeleccionados)
-                            //        exPrimero.AgregarReferenciaConciliadaSinVerificacion(ai);
-                            //    exPrimero.GuardarReferenciaConciliada();
-                            //}
-                            
+                        {                            
                             //UN EXT CON VARIOS INTERNOS o //VARIOS EXT CON UN INTERNO
-                            if ((extSeleccionados.Count == 1 && intSeleccionados.Count > 1) || (extSeleccionados.Count > 1 && intSeleccionados.Count == 1)) 
+                            if ((extSeleccionados.Count == 1 && intSeleccionados.Count > 1) || 
+                                (extSeleccionados.Count > 1 && intSeleccionados.Count == 1) ||
+                                (extSeleccionados.Count == intSeleccionados.Count ) ) 
                             {
                                 decimal sumaExt = 0;
                                 decimal sumaInt = 0;
@@ -918,10 +908,12 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                                 }
                             }
                             else
-                                App.ImplementadorMensajes.MostrarMensaje("Verifique su selección.\nPuede seleccionar un externo con uno o varios internos \no uno o varios externos con un interno");
+                                App.ImplementadorMensajes.MostrarMensaje("Verifique su selección.\n"+
+                                                                         "Puede seleccionar \n" +
+                                                                         "un externo con uno o varios internos\n" +
+                                                                         "o uno o varios externos con un interno"
+                                                                         );
                         }
-                        //}
-
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
                         GenerarTablaExternos();
                         LlenaGridViewExternos();
