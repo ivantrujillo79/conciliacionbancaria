@@ -256,7 +256,7 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 throw new Exception(" Error al enviar la solicitud al servidor: "+_URLGateway+". Detalles: "+ ex.Message); 
             }
-            if (DireccionEntrega != null)
+            if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
                 return DireccionEntrega.Nombre.Trim();
             else
                 return "No encontrado";
@@ -285,7 +285,7 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 throw new Exception(" Error al enviar la solicitud al servidor: "+URLGateway+". Detalles: "+ ex.Message); 
             }
-            if (DireccionEntrega != null)
+            if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
                 return DireccionEntrega.Nombre.Trim();
             else
                 return "No encontrado";        

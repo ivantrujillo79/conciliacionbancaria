@@ -2673,7 +2673,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //throw ex;
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
-        if (DireccionEntrega != null)
+        if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
             return DireccionEntrega.Nombre.Trim();
         else
             return "No encontrado";

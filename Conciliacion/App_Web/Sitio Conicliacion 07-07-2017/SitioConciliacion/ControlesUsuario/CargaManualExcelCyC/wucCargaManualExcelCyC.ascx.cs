@@ -330,7 +330,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         {
             throw ex;
         }
-        if (DireccionEntrega != null)
+        if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
             return DireccionEntrega.Nombre.Trim();
         else
             return "No encontrado";

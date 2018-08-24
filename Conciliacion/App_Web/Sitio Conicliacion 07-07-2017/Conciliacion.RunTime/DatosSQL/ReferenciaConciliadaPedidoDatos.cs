@@ -268,20 +268,24 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 obActualizar.URLServicio = URLGateway;
 
+                this.PedidoReferencia = "1";
+                this.CelulaPedido = 205;
+                this.Total = -1000;
+
                 Pedidos.Add(new RTGMCore.PedidoCRMSaldo
                 {
                     IDEmpresa        = corporativo,
                     IDPedido         = Convert.ToInt32(this.PedidoReferencia),
                     PedidoReferencia = this.PedidoReferencia,
                     IDZona           = this.CelulaPedido,
-                    Abono            = this.Total
+                    Abono            = 10 //this.Total
                 });
 
                 SolicitudActualizarPedido obSolicitud = new SolicitudActualizarPedido
                 {
                     Pedidos             = Pedidos,
                     Portatil            = false,
-                    TipoActualizacion   = RTGMCore.TipoActualizacion.Saldo,
+                    TipoActualizacion   = RTGMCore.TipoActualizacion.Saldo
                 };
 
                 PedidosRespuesta = obActualizar.ActualizarPedido(obSolicitud);
