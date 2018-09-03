@@ -200,8 +200,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
                         {
                             List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
                             lstDetalle = consultaReporteEstadoCuentaDia(cuenta.ID.ToString());
-                            ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
-                            rutaCompleta, Archivo, cuenta.Descripcion);
+                            ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle, rutaCompleta, Archivo, cuenta.Descripcion, "", DateTime.Parse(txtFInicial.Text), DateTime.Parse(txtFInicial.Text), "");
                             obExportador.generarInforme();
                         }
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",

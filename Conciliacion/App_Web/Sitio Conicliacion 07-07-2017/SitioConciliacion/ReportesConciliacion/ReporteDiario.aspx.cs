@@ -35,7 +35,7 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
     {        
        try
         {
-          List < List <InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
+            List < List <InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
             //lstDetalle = consultaReporteEstadoCuentaDia( );
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             string cero;
@@ -49,10 +49,10 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
             }
 
             ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(lstDetalle,
-             HttpRuntime.AppDomainAppPath+@"InformesExcel\", "EdoCuenta"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte");
+                HttpRuntime.AppDomainAppPath+@"InformesExcel\", "EdoCuenta"+cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", "Reporte", "", DateTime.Parse(txtFInicial.Text), DateTime.Parse(txtFInicial.Text), "");
             obExportador.generarInforme();           
-           ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-           @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
            
         }
         catch (Exception ex)
