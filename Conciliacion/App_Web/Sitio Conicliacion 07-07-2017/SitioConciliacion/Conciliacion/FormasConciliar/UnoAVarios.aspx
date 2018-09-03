@@ -128,20 +128,19 @@
 
         var dAbonoSel;
         function ActualizaMonto(){
-            //debugger;
+            debugger;
             var dComision = 0;
             if (document.getElementById('<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
                 dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
-            //var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
-            //var dAbono = '<%= this.dAbonoSeleccionado %>';
             var dAbono = 0;
-            dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
-            //dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbonoSeleccionado').innerHTML);
+            if (document.getElementById('<%= chkComision.ClientID %>').checked)
+                dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
-            var sumapreconciliadas = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML;
+
+            var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
             var dResto = 0;
             
             document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML = dAbono.toFixed(2);
