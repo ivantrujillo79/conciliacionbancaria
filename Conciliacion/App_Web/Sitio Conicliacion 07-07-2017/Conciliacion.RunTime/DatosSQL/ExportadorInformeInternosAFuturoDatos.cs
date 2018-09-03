@@ -140,8 +140,8 @@ namespace Conciliacion.RunTime.DatosSQL
                             dato.FMovimiento = Convert.ToDateTime(reader["fmovimiento"]);
                             dato.Referencia = Convert.ToString(reader["referencia"]);
                             dato.Concepto = Convert.ToString(reader["concepto"]);
-                            dato.Retiros = Convert.ToDecimal(reader["retiros"]);
-                            dato.Depositos = Convert.ToDecimal(reader["depositos"]);
+                            dato.Retiros = Convert.ToDecimal(reader["retiro"]);
+                            dato.Depositos = Convert.ToDecimal(reader["deposito"]);
                             ListaResultado.Add(dato);
                         }
                         reader.Close();

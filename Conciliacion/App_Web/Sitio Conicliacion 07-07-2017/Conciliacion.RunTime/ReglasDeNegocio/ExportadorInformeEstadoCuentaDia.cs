@@ -18,29 +18,33 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
     {
 
         #region Miembros privados
-
-  
-
         private List<List<DetalleReporteEstadoCuentaDia>> _ReporteEstadoCuentaDia;
         private string _Ruta;
         private string _Archivo;
         private string _NombreHoja;
-
+        private string _MesDelPeriodo;
+        private string _Banco;
+        private string _Empresa;
+        private string _Cuenta;
         #endregion
 
         #region Constructores
 
-        public ExportadorInformeEstadoCuentaDia(List<List<DetalleReporteEstadoCuentaDia>> ReporteEstadoCuentaDia,
-                                        string Ruta, string Archivo, string Nombre)
+        public ExportadorInformeEstadoCuentaDia(
+            List<List<DetalleReporteEstadoCuentaDia>> ReporteEstadoCuentaDia,
+            string Ruta, string Archivo, string Cuenta, string Banco, DateTime FechaIni, DateTime FechaFin, string Empresa)
         {
+            CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
             try
             {
                 _ReporteEstadoCuentaDia = ReporteEstadoCuentaDia;
                 _Ruta = Ruta.Trim();
                 _Archivo = Archivo.Trim();
-                _NombreHoja = Nombre.Trim();
-
-              //  ValidarMiembros();
+                _NombreHoja = Cuenta.Trim();
+                _MesDelPeriodo = FechaIni.ToString("MMMM", cultureInfo).ToUpper();
+                _Banco = Banco;
+                _Empresa = Empresa;
+                _Cuenta = Cuenta;
             }
             catch (Exception ex)
             {
@@ -57,30 +61,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 try
                 {
                     ExcelPackage excelPackage = inicializar();
-                   // crearEncabezado(excelPackage, "NombreHoja");
-                    //exportarDatos(excelPackage, "NombreHoja", 8);
-                    /*cerrar();*/
-                    
-
                     for (int i = 0; i <= _ReporteEstadoCuentaDia.Count-1; i++)
                     {
-           
-                           // inicializar();
                             crearEncabezado(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString()) ;
                             exportarDatos(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString(), 5, _ReporteEstadoCuentaDia[i]);
-                            
-
-
-
-
                     }
-
                     excelPackage.Save();
-
-
-
-
-
                 }
                 catch (Exception ex)
                 {
@@ -91,16 +77,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                 }
-
-
                 
-
-
-
-
-
-
-               
             }
             catch (Exception ex)
             {
@@ -115,8 +92,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
-        
-
         private ExcelPackage inicializar()
         {
             string rutaCompleta = _Ruta + _Archivo;
@@ -125,20 +100,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return excel;
         }
 
-
-
-
-
         private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombrehoja)
         {
-            string banco, cuenta, empresa, saldofinal, depositos, retiro;
-            DateTime fecha;
+            //string banco, cuenta, empresa, saldofinal, depositos, retiro;
+            
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
 
-            banco = "BANAMEX ";
-            cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
-            empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
-            fecha = DateTime.Now;//_ReporteEstadoCuentaConciliado[0].Fecha;
+            //banco = "BANAMEX ";
+            //cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
+            //empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
+            //fecha = DateTime.Now;//_ReporteEstadoCuentaConciliado[0].Fecha;
 
             //// banco = _DetalleReporteEstadoCuenta[0].
             //  banco = "BANAMEX ";
@@ -155,14 +126,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             //}
             
             ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombrehoja);
-                  
-
             
-
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:G1"])
             {
-                Rng.Value = banco.ToUpper() + cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: " + fecha.ToString("MMMM", cultureInfo).ToUpper(); ;
+                Rng.Value = _Banco.ToUpper() + _Cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: " + _MesDelPeriodo;
                 Rng.Merge = true;
             }
 
@@ -170,14 +138,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             using (ExcelRange Rng = wsSheet1.Cells["B2:G2"])
             {
                 Rng.Merge = true;
-                Rng.Value = empresa.ToUpper();
+                Rng.Value = _Empresa.ToUpper();
             }
 
             // Mes
             using (ExcelRange Rng = wsSheet1.Cells["D3:H3"])
             {
                 Rng.Merge = true;
-                Rng.Value = fecha.ToString("MMMM", cultureInfo).ToUpper();
+                Rng.Value = _MesDelPeriodo.ToUpper();
                 Rng.Style.Font.Bold = true;
                 Rng.Style.Font.Size = 13;
                 Rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -191,7 +159,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 Rng.Merge = true;
                 Rng.Style.Font.Bold = true;
-                Rng.Value = fecha.ToString("MMMM DE yyyy").ToUpper();
+                Rng.Value = DateTime.Now.ToString("MMMM DE yyyy").ToUpper();
                 Rng.Style.Fill.PatternType = ExcelFillStyle.Solid;
                 Rng.Style.Fill.BackgroundColor.SetColor(Color.Blue);
                 Rng.Style.Font.Color.SetColor(Color.White);
@@ -199,9 +167,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             // Clabe interbancaria
             wsSheet1.Cells["I2"].Value = "CLABE INTERBANCARIA";
-
-
-
+            
             wsSheet1.Protection.IsProtected = false;
             wsSheet1.Protection.AllowSelectLockedCells = false;
 
@@ -267,23 +233,36 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         private void exportarDatos(ExcelPackage excelPackage, string nombreHoja, int aPartirDeLaFila, List<DetalleReporteEstadoCuentaDia> _DetalleAExportar)
         {
-            int i = aPartirDeLaFila;
-
-            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja];          
+            int i = aPartirDeLaFila + 2;
+            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja];
+            wsSheet1.Cells["G"+aPartirDeLaFila.ToString()].Value = "SALDO DEL MES ANTERIOR";
+            decimal saldoFila = 0;
+            decimal sumaDepositos = 0;
+            decimal sumaRetiros = 0;
 
             foreach (DetalleReporteEstadoCuentaDia detalle in _DetalleAExportar)
             {
                 wsSheet1.Cells[i, 3, i, 7].Merge = true;
                 wsSheet1.Cells[i, 8, i, 9].Merge = true;
                 wsSheet1.Cells[i, 10, i, 11].Merge = true;
+                wsSheet1.Cells[i, 12, i, 13].Merge = true;
                 wsSheet1.Cells[i, 2].Value = detalle.Fecha.ToString();
                 //wsSheet1.Cells[i, 4].Value = detalle.concepto.ToString();
-                wsSheet1.Cells[i, 8].Value = detalle.Retiro.ToString();
-                wsSheet1.Cells[i, 10].Value = detalle.Depositos.ToString();
-                wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal.ToString();
+                wsSheet1.Cells[i, 8].Value = decimal.Parse(detalle.Retiro);
+                wsSheet1.Cells[i, 10].Value = decimal.Parse(detalle.Depositos);
+
+                saldoFila = saldoFila + (decimal.Parse(detalle.Depositos) - decimal.Parse(detalle.Retiro));
+                wsSheet1.Cells[i, 12].Value = saldoFila;
+                sumaRetiros = sumaRetiros + decimal.Parse(detalle.Retiro);
+                sumaDepositos = sumaDepositos + decimal.Parse(detalle.Depositos);
+
                 i++;
             }
 
+            i++;
+            wsSheet1.Cells[i, 8].Value = sumaRetiros;
+            wsSheet1.Cells[i, 10].Value = sumaDepositos;
+            wsSheet1.Cells[i, 12].Value = saldoFila;
         }
         
 
