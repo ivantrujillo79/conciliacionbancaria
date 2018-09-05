@@ -255,7 +255,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<RTGMCore.Pedido> PedidoActualizaSaldoCRM(string URLGateway)
         {
             List<RTGMCore.Pedido> Pedidos = new List<RTGMCore.Pedido>();
-
+            
             AppSettingsReader settings = new AppSettingsReader();//RRV: revisar esto
             SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
@@ -268,9 +268,9 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 obActualizar.URLServicio = URLGateway;
 
-                this.PedidoReferencia = "1";
-                this.CelulaPedido = 205;
-                this.Total = -1000;
+                //this.PedidoReferencia = "1";
+                //this.CelulaPedido = 205;
+                //this.Total = -1000;
 
                 Pedidos.Add(new RTGMCore.PedidoCRMSaldo
                 {
@@ -278,7 +278,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     IDPedido         = Convert.ToInt32(this.PedidoReferencia),
                     PedidoReferencia = this.PedidoReferencia,
                     IDZona           = this.CelulaPedido,
-                    Abono            = 10 //this.Total
+                    Abono            = this.Total
                 });
 
                 SolicitudActualizarPedido obSolicitud = new SolicitudActualizarPedido
