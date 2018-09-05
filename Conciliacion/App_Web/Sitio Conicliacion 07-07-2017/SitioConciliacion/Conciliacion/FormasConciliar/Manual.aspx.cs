@@ -810,14 +810,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             }
         }
     }
-    protected void grvInternos_RowCreated(object sender, GridViewRowEventArgs e)
-    {
-        //if (e.Row.RowType == DataControlRowType.DataRow)
-        //{
-        //    e.Row.Attributes.Add("onmouseover", "this.className='bg-color-grisClaro02'");
-        //    e.Row.Attributes.Add("onmouseout", "this.className='bg-color-blanco'");
-        //}
-    }
+
     protected void grvPedidos_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         try

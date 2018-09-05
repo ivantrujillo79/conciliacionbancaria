@@ -20,8 +20,7 @@
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         function pageLoad() {
-            //gridviewScroll();
-            // Script se utiliza para llamar a  la funcion de jQuery desplegable
+            //debugger;
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
             });
@@ -92,57 +91,7 @@
                 });
             }
         }
-        function gridviewScroll() {
-            $('#<%=grvExternos.ClientID%>').gridviewScroll({
-                width: 595,
-                height: 375,
-                freezesize: 3,
-                arrowsize: 30,
-                varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                headerrowcount: 1,
-                startVertical: $("#<%=hfExternosSV.ClientID%>").val(), 
-                startHorizontal: $("#<%=hfExternosSH.ClientID%>").val(), 
-                onScrollVertical: function (delta) { $("#<%=hfExternosSV.ClientID%>").val(delta); }, 
-                onScrollHorizontal: function (delta) { $("#<%=hfExternosSH.ClientID%>").val(delta);}
-            });
-            if (<%= tipoConciliacion %> == 2) {
-                $('#<%=grvPedidos.ClientID%>').gridviewScroll({
-                    width: 595,
-                    height: 372,
-                    freezesize: 2,
-                    arrowsize: 30,
-                    varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                    varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                    harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                    harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                    headerrowcount: 1,
-                    startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
-                    startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
-                    onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
-                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
-                });
-            } else {
-                $('#<%=grvInternos.ClientID%>').gridviewScroll({
-                    width: 595,
-                    height: 370,
-                    freezesize: 4,
-                    arrowsize: 30,
-                    varrowtopimg: '../../App_Scripts/ScrollGridView/Images/arrowvt.png',
-                    varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
-                    harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
-                    harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                    headerrowcount: 1,
-                    startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
-                    startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
-                    onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
-                    onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
-
-                });
-            }
-        }
+        
     </script>
     <!-- Validar: solo numeros -->
     <script type="text/javascript">
@@ -182,7 +131,8 @@
             //    Grid.rows[i].cells['3'].className = "bg-color-azulClaro01";
 
         }
-        function chkInterno_clic(o, monto){
+        function chkInterno_clic(o, deposito, retiro){
+            var monto = parseFloat(deposito) + parseFloat(retiro);
             montoAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoInterno').innerHTML.trim();
             if (montoAcumulado == "")
                 montoAcumulado = 0;
@@ -1043,17 +993,22 @@
                         <div style="height:500px; width:590px; overflow:auto;">
                         <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True"
-                            OnRowDataBound="grvInternos_RowDataBound" ShowHeaderWhenEmpty="True" ShowFooter="False"
-                            Width="100%" DataKeyNames="Secuencia, Folio, Sucursal" OnRowCreated="grvInternos_RowCreated"
-                            OnSorting="grvInternos_Sorting" OnPageIndexChanging="grvInternos_PageIndexChanging">
+                            OnRowDataBound="grvInternos_RowDataBound" 
+                            Width="100%" DataKeyNames="Secuencia, Folio, Sucursal" 
+
+                            ShowHeaderWhenEmpty="True" ShowFooter="False"
+                            OnSorting="grvInternos_Sorting" 
+                            OnPageIndexChanging="grvInternos_PageIndexChanging">
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkInterno"
-                                            OnClick='<%# String.Concat("chkInterno_clic(this,", Eval("Deposito"), ");") %>'
+                                            Checked='<%# Bind("Selecciona") %>' 
+                                            OnClick='<%# String.Concat("chkInterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"),");") %>'
+                                            AutoPostBack="True" 
                                             OnCheckedChanged="chkInterno_CheckedChanged"
-                                            AutoPostBack="False" Checked='<%# Bind("Selecciona") %>' />
+                                            />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
