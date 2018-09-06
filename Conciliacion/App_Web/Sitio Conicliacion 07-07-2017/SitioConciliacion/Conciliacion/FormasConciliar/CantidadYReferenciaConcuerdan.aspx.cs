@@ -128,11 +128,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 }
 
                 LlenarBarraEstado();
-
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
                 Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
                 GenerarTablaConciliados();
                 LlenaGridViewConciliadas();
+
+            //if (!Page.IsPostBack)
+            //{
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -435,6 +437,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("Selecciona", typeof(bool));
             tblReferenciasAConciliar.Columns.Add("FolioExt", typeof(int));
             tblReferenciasAConciliar.Columns.Add("SecuenciaExt", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("Secuencia", typeof(int));
             tblReferenciasAConciliar.Columns.Add("RFCTerceroExt", typeof(string));
             tblReferenciasAConciliar.Columns.Add("RetiroExt", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ReferenciaExt", typeof(string));
@@ -460,6 +463,22 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("FOperacionInt", typeof(DateTime));
             tblReferenciasAConciliar.Columns.Add("MontoInt", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoInt", typeof(string));
+
+            //tblReferenciasAConciliar.Columns.Add("Pedido", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("Celula", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("AñoPed", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("FMovimiento", typeof(DateTime));
+            //tblReferenciasAConciliar.Columns.Add("FOperacion", typeof(DateTime));
+            //tblReferenciasAConciliar.Columns.Add("MontoConciliado", typeof(decimal));
+            //tblReferenciasAConciliar.Columns.Add("Concepto", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Descripcion", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("PedidoReferencia", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
+            //tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Cliente", typeof(string));
+
             foreach (ReferenciaConciliada rc in listaReferenciaConciliada)
             {
                 tblReferenciasAConciliar.Rows.Add(
@@ -1328,7 +1347,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             LlenaGridViewConciliadas();
             LlenarBarraEstado();
             //Cargo y refresco nuevamente los archivos externos
-            if (tipoConciliacion != 2)
+
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            //if (tipoConciliacion != 2)
+            if (objSolicitdConciliacion.ConsultaArchivo())
             {
                 Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
                                                              Convert.ToSByte(txtDias.Text),
@@ -1338,7 +1363,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                              Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                 GenerarTablaReferenciasAConciliarArchivos();
             }
-            else
+            if (objSolicitdConciliacion.ConsultaPedido())
             {
                 //cargarInfoConciliacionActual();
                 Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
