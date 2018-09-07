@@ -299,7 +299,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             //Se suman i y j del primer item, y se restan con K
             //Para el Saldo Final calculado 
-            wsSheet1.Cells["M3"].Formula = "SUM(K8)-SUM(I8,J8)";
+            wsSheet1.Cells["M3"].Formula = ("K8 + I8 - J8) + M1 - M2"); //"SUM(K8)-SUM(I8,J8)";
             wsSheet1.Cells["M3"].Calculate();
 
             //Para el Saldo final bancario
