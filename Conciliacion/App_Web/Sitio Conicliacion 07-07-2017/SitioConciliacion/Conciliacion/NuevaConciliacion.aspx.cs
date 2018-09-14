@@ -38,10 +38,10 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     private DataTable tblDestinoDetalleExterno = new DataTable("VistaFoliosExterno");
     private DataTable tblDestinoDetalleInterno = new DataTable("VistaFoliosInterno");
     public string NumMesesAnterior;
-
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
     #endregion
 
-    
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -339,11 +339,11 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     /// </summary>
     public void Consulta_TablaDestinoDetalleExterno(Conciliacion.RunTime.ReglasDeNegocio.Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioExterno)//Lee el metodo que llena la lista con las conciliaciones
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -430,11 +430,11 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     /// </summary>
     public void Consulta_TablaDestinoDetalleInterno(Conciliacion.RunTime.ReglasDeNegocio.Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioInterno)//Lee el metodo que llena la lista con las conciliaciones
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -539,11 +539,11 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     }
     public bool BorrarTransaccionesNoCorrespondidas(cConciliacion conciliacion)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {

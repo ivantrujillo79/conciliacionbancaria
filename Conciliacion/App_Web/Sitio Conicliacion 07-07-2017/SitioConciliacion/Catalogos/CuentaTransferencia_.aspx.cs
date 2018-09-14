@@ -79,11 +79,12 @@ public partial class Catalogos_CuentaTransferencia_ : System.Web.UI.Page
     //Consulta tabla principal CuentaTransferencias
     public void Consulta_TablaCuentasTranferencia(short corporativoOrigen, int sucursalOrigen, string cuentaBancoOrigen)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -100,11 +101,12 @@ public partial class Catalogos_CuentaTransferencia_ : System.Web.UI.Page
     //Consulta tabla principal CuentaTransferencias
     public void Consulta_TablaCuentasTranferenciaTodas(short corporativoOrigen, int sucursalOrigen, int cuentaBancoOrigen)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {

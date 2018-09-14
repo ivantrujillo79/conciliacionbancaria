@@ -54,6 +54,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private ReferenciaConciliadaCompartida movSeleccionado;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();//RRV quita private string StatusConciliacionSel = "";
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -1099,10 +1100,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         string cuentaBancaria, DateTime finicial, DateTime ffinal)
     {
         string statusconciliacion = "";
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -1781,10 +1782,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     public void Consulta_Pedidos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
                                      short mesconciliacion, int folioconciliacion, int folio, int secuencia, string cliente, bool clientepadre)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -1806,10 +1807,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     public void Consulta_PedidosFactura(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
                              short mesconciliacion, int folioconciliacion, int folio, int secuencia, string cliente, bool clientepadre, SqlString factura, DateTime fechafactura)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -1830,10 +1831,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void Consulta_FacturasManual(int cliente, bool clientepadre, SqlString factura, DateTime fechaIni, DateTime fechaFin)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {

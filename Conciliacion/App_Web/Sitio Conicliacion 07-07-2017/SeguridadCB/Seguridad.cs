@@ -9,7 +9,7 @@ namespace SeguridadCB
     public class Seguridad
     {
         private string _InicialCorporativo = "";
-        private Seguridad()
+        public Seguridad()
         {
 
         }

@@ -101,7 +101,8 @@ public class ClaseReporte
                 }
 
                 //Pasa los valores a los parametros
-                System.Data.SqlClient.SqlCommand cmdRep = SeguridadCB.Seguridad.Conexion.CreateCommand();
+                SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+                System.Data.SqlClient.SqlCommand cmdRep = seguridad.Conexion.CreateCommand();
                 cmdRep.CommandType = CommandType.StoredProcedure;
                 cmdRep.CommandText = TablaNombre;
                 crParameterFieldDefinitions = RepDoc.DataDefinition.ParameterFields;
@@ -167,7 +168,7 @@ public class ClaseReporte
                         }
 
                         //Pasa los valores a los parametros
-                        System.Data.SqlClient.SqlCommand cmdsRep = SeguridadCB.Seguridad.Conexion.CreateCommand();
+                        System.Data.SqlClient.SqlCommand cmdsRep = seguridad.Conexion.CreateCommand();
                         cmdsRep.CommandType = CommandType.StoredProcedure;
                         cmdsRep.CommandText = TablaNombre;
                         crParameterFieldDefinitions = lRepDoc.DataDefinition.ParameterFields;
@@ -281,7 +282,8 @@ public class ClaseReporte
                 }
 
                 //Pasa los valores a los parametros
-                System.Data.SqlClient.SqlCommand cmdRep = SeguridadCB.Seguridad.Conexion.CreateCommand();
+                SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+                System.Data.SqlClient.SqlCommand cmdRep = seguridad.Conexion.CreateCommand();
                 cmdRep.CommandType = CommandType.StoredProcedure;
                 cmdRep.CommandText = TablaNombre;
                 crParameterFieldDefinitions = RepDoc.DataDefinition.ParameterFields;
@@ -350,7 +352,7 @@ public class ClaseReporte
                         }
 
                         //Pasa los valores a los parametros
-                        System.Data.SqlClient.SqlCommand cmdsRep = SeguridadCB.Seguridad.Conexion.CreateCommand();
+                        System.Data.SqlClient.SqlCommand cmdsRep = seguridad.Conexion.CreateCommand();
                         cmdsRep.CommandType = CommandType.StoredProcedure;
                         cmdsRep.CommandText = TablaNombre;
                         crParameterFieldDefinitions = lRepDoc.DataDefinition.ParameterFields;

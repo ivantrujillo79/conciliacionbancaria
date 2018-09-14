@@ -59,6 +59,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
     public short tipoConciliacion;
     private string NombreArchivo = "";
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -257,11 +258,11 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     public void Consulta_Externos(int corporativo, int sucursal, int año, short mes, int folio, int statusConcepto)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         //try
         //{
@@ -397,11 +398,11 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     //Consulta transacciones conciliadas
     public void Consulta_TransaccionesConciliadas(int corporativoC, int sucursalC, int añoC, short mesC, int folioC, short formaC, int tipoC)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -743,11 +744,11 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     public void Consulta_ArchivosInternos(int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia, int statusConcepto, int sucursalInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -763,11 +764,11 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
 
     public void Consulta_Pedidos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int celula)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -2226,11 +2227,11 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     /// </summary>
     public void Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
