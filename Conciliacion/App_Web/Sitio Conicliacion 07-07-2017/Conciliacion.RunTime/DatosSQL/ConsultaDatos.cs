@@ -3717,7 +3717,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         
                         dato.SerieFactura = reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
                         dato.ClienteReferencia = reader["CliReferencia"].ToString().Trim();
-                        dato.Pedido = Convert.ToInt32(reader["Pedido"]);
+                        dato.Pedido = Convert.ToInt32( reader["Pedido"].ToString().Trim() == string.Empty ? "0" : reader["Pedido"].ToString().Trim() );
                         dato.StatusMovimiento= reader["StatusMovimiento"].ToString().Trim();
 //>>>>>>> dev_cinco
                         datos.Add(dato);
