@@ -91,6 +91,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     public decimal dAbonoSeleccionado;
 
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+
     private int indiceExternoSeleccionado
     {
         get { return Convert.ToInt32(hdfIndiceExterno.Value); }
@@ -1385,10 +1387,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                   int añoconciliacion, short mesconciliacion, int folioconciliacion,
                                                   int formaconciliacion)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -2299,11 +2301,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                           short mesconciliacion, int folioconciliacion, ReferenciaNoConciliada rfExterna,
                                           int sucursalinterno, short dias, decimal diferencia, int statusConcepto)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -2349,47 +2351,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             throw ex;
         }
     }
-
-    //public void Consulta_Pedidos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
-    //                             short mesconciliacion, int folioconciliacion, ReferenciaNoConciliada rfExterna,
-    //                             decimal diferencia, int celula, string cliente)
-    //{
-    //    System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
-    //    if (connection.State == ConnectionState.Closed)
-    //    {
-    //        SeguridadCB.Seguridad.Conexion.Open();
-    //    }
-    //    try
-    //    {
-    //        //listaReferenciaPedidos =
-    //        //    Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(obtenerConfiguracionPedido(),
-    //        //                                                                  corporativoconciliacion,
-    //        //                                                                  sucursalconciliacion, añoconciliacion,
-    //        //                                                                  mesconciliacion, folioconciliacion,
-    //        //                                                                  rfExterna.Folio, rfExterna.Secuencia,
-    //        //                                                                  diferencia, celula, cliente);
-    //        listaReferenciaPedidos =
-    //           Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(obtenerConfiguracionPedido(),
-    //                                                                         corporativoconciliacion,
-    //                                                                         sucursalconciliacion, añoconciliacion,
-    //                                                                         mesconciliacion, folioconciliacion,
-    //                                                                         rfExterna.Folio, rfExterna.Secuencia,
-    //                                                                         diferencia, celula, cliente, clientepadre);
-    //        Session["POR_CONCILIAR_INTERNO"] = listaReferenciaPedidos;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
-    //    }
-    //}
+    
     public void Consulta_Pedidos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
                                  short mesconciliacion, int folioconciliacion, ReferenciaNoConciliada rfExterna,
                                  decimal diferencia, int celula, string cliente, bool clientepadre)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -2538,10 +2508,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                       int sucursalInterno, int folioInterno, int secuenciaInterno,
                                                       decimal diferencia, int statusConcepto)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -2970,12 +2940,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public void Consulta_Externos(int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia,
                                   int tipoConciliacion, int statusConcepto, bool esDeposito)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
             /*
-                        connection = SeguridadCB.Seguridad.Conexion;
+                        connection = seguridad.Conexion;
             */
         }
 
@@ -5699,11 +5669,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// </summary>
     public void Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {

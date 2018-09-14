@@ -551,7 +551,9 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 DateTime fa = DateTime.Now;
                 int folio = App.Consultas.ObtieneTablaDestinoNumeroMaximo(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue), Convert.ToInt32(this.cboAnio.SelectedValue)) + 1;
                 string usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario.Trim();
-                string pass = SeguridadCB.Seguridad.DesencriptaClave(lcs.Pass);
+
+                SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+                string pass = seguridad.DesencriptaClave(lcs.Pass);
                 Conciliacion.Migracion.Runtime.ReglasNegocio.ImportacionAplicacion ia = null;
 
                 /*ia = Conciliacion.Migracion.Runtime.App.ImportacionAplicacion(Convert.ToInt32(this.cboCorporativo.SelectedValue),

@@ -239,10 +239,11 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
     //}
     private void ConsultaFlujoEfectivo(int corporativo, int sucursal, Consultas.TipoTransferencia tipotransferencia, DateTime fInicial, DateTime fFinal)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {

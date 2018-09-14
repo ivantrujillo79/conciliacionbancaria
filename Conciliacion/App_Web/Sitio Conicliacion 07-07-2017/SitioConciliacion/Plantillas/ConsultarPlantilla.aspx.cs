@@ -21,6 +21,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
     private List<ListaCombo> listCuentaBancaria = new List<ListaCombo>();
     private List<cFuenteInformacion> listFuenteInformacion = new List<cFuenteInformacion>();
     private DataTable tblFuenteInformacion = new DataTable("FuenteInformacion");
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
     #endregion
 
     protected void Page_Load(object sender, EventArgs e)
@@ -182,11 +183,11 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
     }
     public void Consulta_FuenteInformacion()
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {

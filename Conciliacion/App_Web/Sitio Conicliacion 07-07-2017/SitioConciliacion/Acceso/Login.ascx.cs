@@ -49,22 +49,23 @@ public partial class Acceso_Login : System.Web.UI.UserControl
         {
             System.Threading.Thread.Sleep(2000);
             ConfiguraConexion();
-            SeguridadCB.Seguridad.Conexion = cn;
+            SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+            seguridad.Conexion = cn;
             try
             {
-                if (SeguridadCB.Seguridad.ExisteUsuarioActivo(txtUsuario.Text.Trim()))
+                if (seguridad.ExisteUsuarioActivo(txtUsuario.Text.Trim()))
                 {
-                    this.usuario = SeguridadCB.Seguridad.DatosUsuario(txtUsuario.Text.Trim());
-                    if (SeguridadCB.Seguridad.ComparaClaves(txtClave.Text.Trim().ToUpper(), usuario))
+                    this.usuario = seguridad.DatosUsuario(txtUsuario.Text.Trim());
+                    if (seguridad.ComparaClaves(txtClave.Text.Trim().ToUpper(), usuario))
                     {
                         AppSettingsReader settings = new AppSettingsReader();
                         this.modulo = settings.GetValue("Modulo", typeof(string)).ToString();
 
-                        this.modulos = SeguridadCB.Seguridad.Modulos(this.usuario.IdUsuario);
-                        this.operaciones = SeguridadCB.Seguridad.Operaciones(modulo, this.usuario.IdUsuario);
+                        this.modulos = seguridad.Modulos(this.usuario.IdUsuario);
+                        this.operaciones = seguridad.Operaciones(modulo, this.usuario.IdUsuario);
                         if (this.operaciones.TieneAcceso)
                         {
-                            this.parametros = SeguridadCB.Seguridad.Parametros(modulo, this.usuario.Corporativo, this.usuario.Sucursal);
+                            this.parametros = seguridad.Parametros(modulo, this.usuario.Corporativo, this.usuario.Sucursal);
                             Session.Add("Operaciones", this.operaciones);
                             Session.Add("Usuario", this.usuario);
                             Session.Add("Conexion", this.cn);
@@ -80,7 +81,6 @@ public partial class Acceso_Login : System.Web.UI.UserControl
                     }
                     else
                     {
-
                         Mensaje("La clave es incorrecta, verifique.");
                         txtClave.Focus();
                     }

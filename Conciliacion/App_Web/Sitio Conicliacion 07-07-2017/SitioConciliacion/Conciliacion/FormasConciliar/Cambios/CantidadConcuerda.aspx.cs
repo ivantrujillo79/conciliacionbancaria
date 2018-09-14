@@ -415,11 +415,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     public
     void Consulta_TransaccionesConciliadas(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int formaconciliacion)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -791,11 +792,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+            SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+            System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
             if (Connection.State == ConnectionState.Closed)
             {
-                SeguridadCB.Seguridad.Conexion.Open();
-                Connection = SeguridadCB.Seguridad.Conexion;
+                seguridad.Conexion.Open();
+                Connection = seguridad.Conexion;
             }
             if (tipoConciliacion == 2)
             {
@@ -1780,11 +1782,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     /// </summary>
     public void Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
