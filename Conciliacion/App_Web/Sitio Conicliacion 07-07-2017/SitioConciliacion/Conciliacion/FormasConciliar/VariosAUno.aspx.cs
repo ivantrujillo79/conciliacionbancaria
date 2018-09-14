@@ -932,6 +932,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     protected void btnGuardarVariosAUno_Click(object sender, EventArgs e)
     {
+        bool resultado = false;
         try
         {
             //Leer info actual de la conciliación.
@@ -943,7 +944,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             //extSeleccionados.Select(s => { s.FormaConciliacion = formaConciliacion; return s; }).ToList();
 
             if (formaConciliacion == 6)
-            { 
+            {
                 foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
                 {
                     rfNC.FormaConciliacion = formaConciliacion;
@@ -974,11 +975,15 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             if (objSolicitdConciliacion.ConsultaPedido())
             {
                 numRegInter = grvPedidos.Rows.Count;
+                //foreach (ReferenciaNoConciliada referen in extSeleccionados)
+                //    (referen as ReferenciaNoConciliada).ConInterno = false;
                 (extSeleccionados[0] as ReferenciaNoConciliada).ConInterno = false;
             }
             if (objSolicitdConciliacion.ConsultaArchivo())
             { 
                 numRegInter = grvInternos.Rows.Count;
+                //foreach (ReferenciaNoConciliada referen in extSeleccionados)
+                //    (referen as ReferenciaNoConciliada).ConInterno = true;
                 (extSeleccionados[0] as ReferenciaNoConciliada).ConInterno = true;
             }
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
@@ -1025,7 +1030,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         encenderOpciones("EXTERNO");
                         grvPedidos.DataSource = null;//RRV
                         grvPedidos.DataBind();//RRV
-                        App.ImplementadorMensajes.MostrarMensaje("Transacciones guardadas correctamente.");
+                        resultado = true;
                     }
                     else
                         App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al guardar. Recargue e intente de nuevo.");
@@ -1034,7 +1039,12 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             else
                 App.ImplementadorMensajes.MostrarMensaje("No se ha seleccionado una referencia interna de forma correcta.");
         }
-        catch (Exception Ex) { App.ImplementadorMensajes.MostrarMensaje("Error\nVerifique su selección. DEtalles:"+Ex.Message); }
+        catch (Exception Ex)
+        {
+            resultado = false;  App.ImplementadorMensajes.MostrarMensaje("Error\nVerifique su selección. DEtalles:"+Ex.Message);
+        }
+        if (resultado)
+            App.ImplementadorMensajes.MostrarMensaje("Transacciones guardadas correctamente.");
     }
 
     public void GenerarTablaArchivosInternos()//Genera la tabla Referencias a Conciliar de Archivos Internos
@@ -1334,17 +1344,37 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
         try
         {
-            listaReferenciaExternas = tipoConciliacion == 2
-                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
-                                                (chkReferenciaEx.Checked
-                                                     ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
-                                                     : Consultas.ConsultaExterno.DepositosPedido,
-                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito)
-                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
-                                                (chkReferenciaEx.Checked
-                                                     ? Consultas.ConsultaExterno.ConReferenciaInterno
-                                                     : Consultas.ConsultaExterno.TodoInterno,
-                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+            //listaReferenciaExternas = tipoConciliacion == 2
+            //                              ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+            //                                    (chkReferenciaEx.Checked
+            //                                         ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
+            //                                         : Consultas.ConsultaExterno.DepositosPedido,
+            //                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito)
+            //                              : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+            //                                    (chkReferenciaEx.Checked
+            //                                         ? Consultas.ConsultaExterno.ConReferenciaInterno
+            //                                         : Consultas.ConsultaExterno.TodoInterno,
+            //                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]);
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = Convert.ToSByte(tipoConciliacion);
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+                listaReferenciaExternas =
+                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito(chkReferenciaEx.Checked
+                                                         ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
+                                                         : Consultas.ConsultaExterno.DepositosPedido,
+                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+            if (objSolicitdConciliacion.ConsultaArchivo())
+                listaReferenciaExternas =
+                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+                                                    (chkReferenciaEx.Checked
+                                                         ? Consultas.ConsultaExterno.ConReferenciaInterno
+                                                         : Consultas.ConsultaExterno.TodoInterno,
+                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
 
             Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
         }
@@ -1415,6 +1445,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         //Leer info actual de la conciliación.
         cargarInfoConciliacionActual();
 
+        //dvExpera.Visible = grvExternos.Enabled = grvInternos.Enabled = btnVerInternos.Visible = false;
         dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = false;
         btnRegresarExternos.Visible = grvPedidos.Visible = true;
         tdVerINEX.Attributes.Add("class", "etiqueta lineaVertical centradoMedio bg-color-grisOscuro");
@@ -1431,6 +1462,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         //Leer info actual de la conciliación.
         cargarInfoConciliacionActual();
 
+        //dvExpera.Visible = grvExternos.Enabled = grvInternos.Enabled = btnVerInternos.Visible = false;
         dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = false;
         btnRegresarExternos.Visible = grvInternos.Visible = true;
         tdVerINEX.Attributes.Add("class", "etiqueta lineaVertical centradoMedio bg-color-grisOscuro");
@@ -1813,6 +1845,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
         return listaReferenciaExternas.Where(fila => fila.Selecciona == false && fila.StatusConciliacion.Equals(status)).ToList();
     }
+
     public List<GridViewRow> filasSeleccionadasInternos(string status)
     {
         return grvInternos.Rows.Cast<GridViewRow>().Where(fila => fila.RowType == DataControlRowType.DataRow && (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked) && (fila.FindControl("imgStatusConciliacion") as System.Web.UI.WebControls.Image).AlternateText.Equals(status)).ToList();
@@ -2447,14 +2480,17 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     }
     protected void rdbPedido_CheckedChanged(object sender, EventArgs e)
     {
-        quitarSeleccionRadio("PEDIDO");
-        RadioButton rdb = sender as RadioButton;
-        rdb.Checked = true;
-        GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
-        pintarFilaSeleccionadaPedido(grv.RowIndex);
-        indiceInternoSeleccionado = grv.RowIndex;
-        LimpiarExternosTodos();
-        agregarPedidoInternoExterno();
+        //if (grvInternos.Enabled)
+        //{
+            quitarSeleccionRadio("PEDIDO");
+            RadioButton rdb = sender as RadioButton;
+            rdb.Checked = true;
+            GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
+            pintarFilaSeleccionadaPedido(grv.RowIndex);
+            indiceInternoSeleccionado = grv.RowIndex;
+            LimpiarExternosTodos();
+            agregarPedidoInternoExterno();
+        //}
     }
     protected void grvPedidos_RowDataBound(object sender, GridViewRowEventArgs e)
     {
