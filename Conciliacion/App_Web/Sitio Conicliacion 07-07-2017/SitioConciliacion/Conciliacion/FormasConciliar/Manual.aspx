@@ -1006,7 +1006,7 @@
                                         <asp:CheckBox runat="server" ID="chkInterno"
                                             Checked='<%# Bind("Selecciona") %>' 
                                             OnClick='<%# String.Concat("chkInterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"),");") %>'
-                                            AutoPostBack="True" 
+                                            AutoPostBack="False" 
                                             OnCheckedChanged="chkInterno_CheckedChanged"
                                             />
                                     </ItemTemplate>
