@@ -215,7 +215,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <asp:GridView ID="grvVistaRapidaExterno" runat="server" AutoGenerateColumns="False"
+                                                <div style="width:900px; height:250px; overflow:auto;">
+                                                    <asp:GridView ID="grvVistaRapidaExterno" runat="server" AutoGenerateColumns="False"
                                                     BorderStyle="Dotted" Font-Size="12px" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                                                     Width="100%" GridLines="Horizontal">
                                                     <EmptyDataTemplate>
@@ -298,6 +299,7 @@
                                                         </asp:TemplateField>
                                                     </Columns>
                                                 </asp:GridView>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
