@@ -89,7 +89,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public int clientepago;
 
         public DetalleSaldoAFavor DetalleSaldo;
-        
+
+        private int tipocobro;
+
         private List<cReferencia> listareferenciaconciliada = new List<cReferencia>();
         private List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida = new List<ReferenciaConciliadaCompartida>();
         private string statusMovimiento;
@@ -819,6 +821,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { foliotraspaso = value; }
         }
 
+        public int TipoCobro
+        {
+            get => tipocobro;
+            set => tipocobro = value;
+        }
+
         public Color ColorTraspaso
         {
             get
@@ -1181,6 +1189,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {
+                        referen.TipoCobro = this.TipoCobro;
                         referen.Guardar();
                         this.Completo = true;
                     }

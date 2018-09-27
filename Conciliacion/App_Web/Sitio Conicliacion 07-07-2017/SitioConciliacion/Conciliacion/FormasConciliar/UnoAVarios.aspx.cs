@@ -1473,6 +1473,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
             
             tblTransaccionesConciliadas.Columns.Add("StatusMovimiento", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(int));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -1498,8 +1499,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.Descripcion,
                     rc.SerieFactura,
                     rc.ClienteReferencia,
-                    
-                    rc.StatusMovimiento);
+                    rc.StatusMovimiento,
+                    rc.TipoCobro
+                    );
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -2034,7 +2036,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             rfExterno.ClientePago = clienteSaldoAFavor;
                         }
                         AgregarComisionAExterno(rfExterno);
-
+                        rfExterno.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue);
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
                         rfExterno.ConInterno = objSolicitdConciliacion.ConsultaArchivo();
