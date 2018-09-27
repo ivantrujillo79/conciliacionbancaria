@@ -20,7 +20,7 @@
     <script type="text/javascript">
         //        $(document).ready(function () {
         function pageLoad() {
-            //gridviewScroll();
+            document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
         //        );
         
@@ -622,6 +622,11 @@
                                                 <td style="width: 70%">
                                                     <asp:DropDownList runat="server" ID="ddlCampoExterno" CssClass="dropDownPequeño"
                                                         Width="125px" OnDataBound="ddlCampoExterno_DataBound" OnSelectedIndexChanged="ddlCampoExterno_SelectedIndexChanged"
+                                                        AutoPostBack="True" />
+                                                </td>
+                                                <td style="width: 70%">
+                                                    <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño"
+                                                        Width="125px" 
                                                         AutoPostBack="True" />
                                                 </td>
                                             </tr>
@@ -1589,6 +1594,7 @@
     </asp:Panel>
 
     <asp:HiddenField ID="hdfDetalleInternoOculto" runat="server" />
+    <asp:HiddenField ID="hfTipoCobroSeleccionado" runat="server" />
     <asp:ModalPopupExtender ID="grvVistaRapidaInterno_ModalPopupExtender" runat="server"
         PopupControlID="pnlVistaRapidaInterno" TargetControlID="hdfDetalleInternoOculto"
         BackgroundCssClass="ModalBackground" BehaviorID="ModalBehaviourInterno">

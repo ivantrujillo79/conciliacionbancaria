@@ -118,6 +118,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Carga_SucursalCorporativo(corporativo);
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
+                Carga_ComboTiposDeCobro();
                 try
                 {
                     Carga_CamposExternos(tipoConciliacion);
@@ -413,6 +414,30 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             listCamposDestino = tConciliacion != 2 ? Conciliacion.RunTime.App.Consultas.ConsultaDestino() : Conciliacion.RunTime.App.Consultas.ConsultaDestinoPedido();
 
     }
+
+    public void Carga_ComboTiposDeCobro()
+    {
+        try
+        {
+            IDictionary<int, string> dictTiposDeCobro = new Dictionary<int, string>
+            {
+                { 10, "Transferencia" },
+                { 5, "Efectivo" },
+                { 3, "Cheques" },
+                { 6, "Tarjeta de Cr&eacute;dito" },
+                { 19, "Tarjeta de D&eacute;bito" }
+            };
+            this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
+            this.ddlTiposDeCobro.DataTextField = "Value";
+            this.ddlTiposDeCobro.DataValueField = "Key";
+            this.ddlTiposDeCobro.DataBind();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     //Enlazar Campo a Filtrar/Busqueda
     public void enlazarCampoFiltrar()
     {
@@ -1851,6 +1876,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         bool resultado = false;
         short _FormaConciliacion = Asigna_FormaConciliacionActual();
         //Leer Variables URL 
+        hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
         cargarInfoConciliacionActual();
 
         //if (tipoConciliacion == 2) RRV
@@ -1885,33 +1911,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
         }
-        //}RRV
-        //elseRRV
-        //{RRV
-        //    if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0) RRV
-        //    {RRV
-        //ReferenciaConciliada rc;
-
-        //foreach (GridViewRow un in grvCantidadReferenciaConcuerdanArchivos.Rows)
-        //{
-        //    int folioExt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioExt"]);
-        //    int folioInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioInt"]);
-        //    int secuenciaEx = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaExt"]);
-        //    int secuenciaInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaInt"]);
-        //    rc = listaReferenciaConciliada.Single(x => x.Secuencia == secuenciaEx && x.Folio == folioExt && x.SecuenciaInterno == secuenciaInt && x.FolioInterno == folioInt);
-        //    resultado = rc.Guardar();
-        //}
-
-        //        listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;RRV
-        //        if (listaReferenciaConciliada != null) listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());RRV
-        //    }RRV
-        //    elseRRV
-        //    {RRV
-        //        App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");RRV
-        //    }RRV
-        //}RRV
-
-        //throw new Exception("DETIENE QUITAR ANTES DE SUBIR");
 
         //ACTUALIZAR BARRAS Y DE MAS 
         LlenarBarraEstado();

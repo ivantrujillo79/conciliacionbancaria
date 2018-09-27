@@ -254,6 +254,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 Carga_StatusConcepto(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboMotivosNoConciliado();
+                Carga_ComboTiposDeCobro();
+                hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
                 LlenarBarraEstado();
                 HabilitarCargaArchivo();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
@@ -975,8 +977,29 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             throw ex;
         }
+    }
 
-        
+    public void Carga_ComboTiposDeCobro()
+    {
+        try
+        {
+            IDictionary<int, string> dictTiposDeCobro = new Dictionary<int, string>
+            {
+                { 10, "Transferencia" },
+                { 5, "Efectivo" },
+                { 3, "Cheques" },
+                { 6, "Tarjeta de Cr&eacute;dito" },
+                { 19, "Tarjeta de D&eacute;bito" }
+            };
+            this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
+            this.ddlTiposDeCobro.DataTextField = "Value";
+            this.ddlTiposDeCobro.DataValueField = "Key";
+            this.ddlTiposDeCobro.DataBind();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     /// <summary>
@@ -1940,6 +1963,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;

@@ -114,6 +114,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboMotivosNoConciliado();
                 Carga_SucursalCorporativo(corporativo);
+                Carga_ComboTiposDeCobro();
                 LlenarBarraEstado();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
                 //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
@@ -535,6 +536,29 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     }
 
+    public void Carga_ComboTiposDeCobro()
+    {
+        try
+        {
+            IDictionary<int, string> dictTiposDeCobro = new Dictionary<int, string>
+            {
+                { 10, "Transferencia" },
+                { 5, "Efectivo" },
+                { 3, "Cheques" },
+                { 6, "Tarjeta de Cr&eacute;dito" },
+                { 19, "Tarjeta de D&eacute;bito" }
+            };
+            this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
+            this.ddlTiposDeCobro.DataTextField = "Value";
+            this.ddlTiposDeCobro.DataValueField = "Key";
+            this.ddlTiposDeCobro.DataBind();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     //Colocar el DropDown de Criterios de Evaluacion en la Actual
     public void ActualizarCriterioEvaluacion()
     {
@@ -936,6 +960,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         bool resultado = false;
         try
         {
+            hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
             //Leer info actual de la conciliación.
             cargarInfoConciliacionActual();
 
