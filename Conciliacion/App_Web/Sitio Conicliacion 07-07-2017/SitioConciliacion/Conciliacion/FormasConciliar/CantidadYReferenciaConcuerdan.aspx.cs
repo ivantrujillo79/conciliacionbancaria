@@ -118,7 +118,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Carga_SucursalCorporativo(corporativo);
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
-                Carga_ComboTiposDeCobro();
+                if (objSolicitdConciliacion.ConsultaPedido())
+                    Carga_ComboTiposDeCobro();
+                else
+                {
+                    //lblTiposdeCobro.Visible = false;
+                    ddlTiposDeCobro.Visible = false;
+                }
                 try
                 {
                     Carga_CamposExternos(tipoConciliacion);

@@ -254,7 +254,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 Carga_StatusConcepto(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboMotivosNoConciliado();
-                Carga_ComboTiposDeCobro();
+                if (objSolicitdConciliacion.ConsultaPedido())
+                    Carga_ComboTiposDeCobro();
+                else
+                {
+                    lblTiposdeCobro.Visible = false;
+                    ddlTiposDeCobro.Visible = false;
+                }
                 hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
                 LlenarBarraEstado();
                 HabilitarCargaArchivo();

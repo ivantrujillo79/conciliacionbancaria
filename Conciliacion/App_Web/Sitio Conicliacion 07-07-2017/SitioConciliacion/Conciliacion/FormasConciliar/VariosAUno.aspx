@@ -24,7 +24,6 @@
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         function pageLoad() {
-            
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
