@@ -551,8 +551,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 { 10, "Transferencia" },
                 { 5, "Efectivo" },
                 { 3, "Cheques" },
-                { 6, "Tarjeta de Cr&eacute;dito" },
-                { 19, "Tarjeta de D&eacute;bito" }
+                { 6, "Tarjeta de Crédito" },
+                { 19, "Tarjeta de Débito" }
             };
             this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
             this.ddlTiposDeCobro.DataTextField = "Value";
@@ -708,6 +708,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("Cheque", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Descripcion", typeof(string));
+            tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(int));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -729,7 +730,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     rc.Deposito,
                     rc.Cheque,
                     rc.Concepto,
-                    rc.Descripcion);
+                    rc.Descripcion,
+                    rc.TipoCobro);
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1028,6 +1030,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         ex.ConInterno = false;
                     if (objSolicitdConciliacion.ConsultaArchivo())
                         ex.ConInterno = true;
+                    ex.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
                     if (ex.GuardarReferenciaConciliada())
                     {
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());

@@ -663,6 +663,13 @@
                                             <ItemStyle HorizontalAlign="Justify" Width="200px"></ItemStyle>
                                             <HeaderStyle HorizontalAlign="Center" Width="200px"></HeaderStyle>
                                         </asp:TemplateField>
+                                       <asp:TemplateField HeaderText="TipoCobro" SortExpression="TipoCobro">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblTipoCobro" Text='<%# resaltarBusqueda(Eval("TipoCobro").ToString()) %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                           
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
