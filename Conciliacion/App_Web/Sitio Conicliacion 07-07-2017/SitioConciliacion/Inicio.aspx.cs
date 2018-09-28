@@ -459,9 +459,20 @@ public partial class Inicio : System.Web.UI.Page
     {
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
+
+        int _tipoMovimientoCaja;
+
+        if (conciliacion.TipoConciliacion==2) 
+        {
+            _tipoMovimientoCaja = 3;
+        }
+        else
+        {
+            _tipoMovimientoCaja = 1;
+        }
         Response.Redirect("~/Conciliacion/Pagos/AplicarPago.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes);
+                                     conciliacion.Mes+ "&tipoMovimientoCaja=" + _tipoMovimientoCaja);
     }
 
     //Nueva funcionalidad
