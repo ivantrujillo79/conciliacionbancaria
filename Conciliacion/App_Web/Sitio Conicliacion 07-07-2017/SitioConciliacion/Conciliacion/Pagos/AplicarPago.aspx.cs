@@ -83,6 +83,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 {
                     totalTemp = totalTemp + objReferencia.MontoConciliado;
                 }
+                HttpContext.Current.Session["TipoMovimientoCaja"]= Convert.ToInt32(Request.QueryString["tipoMovimientoCaja"]);
 
                 movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
                 movimientoCajaAlta.Total = totalTemp;
@@ -675,8 +676,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {
+                objMovimientoCaja.TipoMovimientoCaja = Convert.ToInt16(HttpContext.Current.Session["TipoMovimientoCaja"]);
                 if (urlValida)
                 {
+                   
                     guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway);
                 }
                 else

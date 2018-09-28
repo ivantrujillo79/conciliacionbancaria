@@ -97,6 +97,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Empleado", System.Data.SqlDbType.Int)).Value = this.Empleado;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Observaciones", System.Data.SqlDbType.Char)).Value = this.Observaciones;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@SaldoAFavor", System.Data.SqlDbType.Decimal)).Value = this.SaldoAFavor;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@TipoMovimientoCaja", System.Data.SqlDbType.SmallInt)).Value = this.TipoMovimientoCaja;
 
                 drConsulta = _conexion.Comando.ExecuteReader();
 
