@@ -1060,6 +1060,15 @@
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>                           
+
+                                       <asp:TemplateField Visible="false" HeaderText="TipoCobroImg" SortExpression="TipoCobroImg">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Image ID="imgTipoCobro" runat="server" ImageUrl="" />
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                           
+
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"

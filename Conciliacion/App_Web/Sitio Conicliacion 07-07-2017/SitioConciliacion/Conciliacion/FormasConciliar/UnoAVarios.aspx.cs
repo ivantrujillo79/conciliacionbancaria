@@ -1370,6 +1370,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             list.SelectedValue = (grvConciliadas.PageIndex + 1).ToString();
         }
+
+        //if (e.Row.RowType == DataControlRowType.DataRow)
+        //{
+        //    string tipoCobro = e.Row.Cells[11].Text.ToString();
+        //    var icono = e.Row.FindControl("imgTipoCobro") as Image;
+        //    if (icono != null)
+        //    {
+        //        if (tipoCobro == "10") icono.ImageUrl = "~/App_Themes/GasMetropolitanoSkin/Iconos/ActualizarConfig.gif";
+        //        if (tipoCobro == "5") icono.ImageUrl = "~/App_Themes/GasMetropolitanoSkin/Iconos/Advertencia.gif";
+        //        if (tipoCobro == "3") icono.ImageUrl = "~/App_Themes/GasMetropolitanoSkin/Iconos/Agregar.gif";
+        //        if (tipoCobro == "6") icono.ImageUrl = "~/App_Themes/GasMetropolitanoSkin/Iconos/Automatica.gif";
+        //        if (tipoCobro == "19") icono.ImageUrl = "~/App_Themes/GasMetropolitanoSkin/Iconos/Banco.gif";
+        //    }
+        //}
+
     }
 
     //Asignar Valores Css de cada Row
@@ -1443,6 +1458,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     }
 
+    private string TipoCobroDescripcion(int tipoCobro)
+    {
+        if (tipoCobro == 10) //Transferencia
+            return "Transferencia";
+        else
+        if (tipoCobro == 5) //Efectivo, ID: 
+            return "Efectivo";
+        else
+        if (tipoCobro == 3) //c) Cheques, ID: 3
+            return "Cheques";
+        else
+        if (tipoCobro == 6) //d) Tarjeta de crédito, ID: 
+            return "Tarjeta de crédito";
+        else
+        if (tipoCobro == 19) //e) Tarjeta de débito, ID: 
+            return "Tarjeta de débito";
+        else
+            return "";
+    }
+
     //Genera la tabla de transacciones Conciliadas
     public void GenerarTablaConciliados()
     {
@@ -1473,7 +1508,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
             
             tblTransaccionesConciliadas.Columns.Add("StatusMovimiento", typeof(string));
-            tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(int));
+            tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(string));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -1500,7 +1535,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     rc.SerieFactura,
                     rc.ClienteReferencia,
                     rc.StatusMovimiento,
-                    rc.TipoCobro
+                    TipoCobroDescripcion(rc.TipoCobro)
                     );
             }
 

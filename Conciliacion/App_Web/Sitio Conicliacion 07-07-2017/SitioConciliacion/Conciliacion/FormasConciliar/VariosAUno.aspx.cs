@@ -683,6 +683,27 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             throw ex;
         }
     }
+
+    private string TipoCobroDescripcion(int tipoCobro)
+    {
+        if (tipoCobro == 10) //Transferencia
+            return "Transferencia";
+        else
+        if (tipoCobro == 5) //Efectivo, ID: 
+            return "Efectivo";
+        else
+        if (tipoCobro == 3) //c) Cheques, ID: 3
+            return "Cheques";
+        else
+        if (tipoCobro == 6) //d) Tarjeta de crédito, ID: 
+            return "Tarjeta de crédito";
+        else
+        if (tipoCobro == 19) //e) Tarjeta de débito, ID: 
+            return "Tarjeta de débito";
+        else
+            return "";
+    }
+
     //Genera la tabla de transacciones Conciliadas
     public void GenerarTablaConciliados()
     {
@@ -708,7 +729,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             tblTransaccionesConciliadas.Columns.Add("Cheque", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
             tblTransaccionesConciliadas.Columns.Add("Descripcion", typeof(string));
-            tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(int));
+            tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(string));
 
             foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
             {
@@ -731,7 +752,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     rc.Cheque,
                     rc.Concepto,
                     rc.Descripcion,
-                    rc.TipoCobro);
+                    TipoCobroDescripcion(rc.TipoCobro) );
             }
 
             HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;

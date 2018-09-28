@@ -1046,8 +1046,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
         tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
         tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
+        tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(int));
 
-        foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
+            foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
         {
             tblTransaccionesConciliadas.Rows.Add(
                 rc.Folio,
@@ -1069,7 +1070,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 rc.MontoConciliado,
                 rc.Concepto,
                 rc.SerieFactura,
-                rc.ClienteReferencia);
+                rc.ClienteReferencia,
+                rc.TipoCobro);
         }
 
         HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1885,37 +1887,35 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
         cargarInfoConciliacionActual();
 
-        //if (tipoConciliacion == 2) RRV
-        //{                          RRV
-            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
-            if (objSolicitdConciliacion.ConsultaArchivo())
+        if (objSolicitdConciliacion.ConsultaArchivo())
+        {
+            if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)
             {
-                if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)
-                {
-                    listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
-                    if (listaReferenciaConciliada != null)
-                        listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
-                    else
-                        App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
-                }
+                listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
+                if (listaReferenciaConciliada != null)
+                    listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
+            }
+            else
+                App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
         }
         if (objSolicitdConciliacion.ConsultaPedido())
+        {
+            if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
             {
-                if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
-                {
-                    listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
-                    if (listaReferenciaConciliadaPedido != null)
-                        listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
-                    else
-                        App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
-                }
+                listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+                if (listaReferenciaConciliadaPedido != null)
+                    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
+            }
+            else
+                App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
         }
 
         //ACTUALIZAR BARRAS Y DE MAS 
