@@ -37,6 +37,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         bool portatil;
 
+        int tipocobro;
+
         #region Constructores
 
         public ReferenciaConciliadaPedido(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion, 
@@ -310,6 +312,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return portatil; }
             set { portatil = value; }
+        }
+
+        public int TipoCobro
+        {
+            get => tipocobro;
+            set => tipocobro = value;
         }
 
         #endregion

@@ -24,12 +24,12 @@
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
         function pageLoad() {
-            //gridviewScroll();
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
             });
             activarDatePickers();
+            document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
 
         function activarDatePickers() {
@@ -805,6 +805,19 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblTiposdeCobro" Text="Tipos de Cobro" runat="server" CssClass="etiqueta fg-color-blanco"></asp:Label>
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlTiposDeCobro" runat="server" AutoPostBack="False"
+                                                CssClass="etiqueta dropDownPequeño" Style="margin-bottom: 3px; margin-right: 3px"
+                                                Width="150px">
+                                                </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td colspan="6" class="centradoMedio bg-color-grisOscuro fg-color-blanco etiqueta"
                                         style="padding: 5px 5px 5px 5px">¡Las referencias externas CANCELADAS no pueden ser elegidas para CONCILIAR!
                                     </td>
@@ -935,6 +948,7 @@
                         </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
+                        <asp:HiddenField ID="hfTipoCobroSeleccionado" runat="server" />
                     </td>
                     <td style="vertical-align: top" colspan="2">
                         <div id="configuracionInternosPedidos" class="bg-color-grisClaro">

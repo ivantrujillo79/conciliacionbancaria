@@ -3709,17 +3709,12 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
                                                             Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
-/*<<<<<<< HEAD
-
-                        dato.SerieFactura = "";//reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
-                        dato.ClienteReferencia = "";//reader["CliReferencia"].ToString().Trim();
-=======*/
                         
                         dato.SerieFactura = reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
                         dato.ClienteReferencia = reader["CliReferencia"].ToString().Trim();
                         dato.Pedido = Convert.ToInt32( reader["Pedido"].ToString().Trim() == string.Empty ? "0" : reader["Pedido"].ToString().Trim() );
                         dato.StatusMovimiento= reader["StatusMovimiento"].ToString().Trim();
-//>>>>>>> dev_cinco
+                        dato.TipoCobro = Convert.ToInt32(reader["TipoCobro"].ToString().Trim() == string.Empty ? "0" : reader["TipoCobro"].ToString().Trim()); 
                         datos.Add(dato);
                     }
                 }

@@ -50,11 +50,14 @@
 
     <script type="text/javascript">
         var sumapreconciliadas = 0;
+        var TipoCobroSeleccionado = 0;
         function pageLoad() {
+            
             activarDatePickers();
             MuestraSaldoAFavor();
             MostrarTxtComisionInicio();
             document.getElementById("divExternos").scrollTop = document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value;
+            document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
 
         function rdbSecuencia_scrollpos() {
@@ -1050,6 +1053,13 @@
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>                           
+                                       <asp:TemplateField HeaderText="TipoCobro" SortExpression="TipoCobro">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblTipoCobro" Text='<%# resaltarBusqueda(Eval("TipoCobro").ToString()) %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                           
                                         <asp:TemplateField>
                                             <ItemTemplate>
                                                 <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
@@ -1221,7 +1231,21 @@
                                 </tr>
                             </table>
                         </div>
-                        
+
+                        <div id="tipoCobros" class="bg-color-grisClaro">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <asp:Label ID="lblTiposdeCobro" Text="Tipos de Cobro" runat="server" CssClass="etiqueta fg-color-blanco"></asp:Label>
+                                        <asp:DropDownList ID="ddlTiposDeCobro" runat="server" AutoPostBack="False"
+                                            CssClass="etiqueta dropDownPequeño" Style="margin-bottom: 3px; margin-right: 3px"
+                                            Width="150px">
+                                            </asp:DropDownList>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
                         <div id="divExternos" style="width:600px; height:350px; overflow:auto;" onscroll="rdbSecuencia_scrollpos();" >
                             <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
@@ -1355,6 +1379,7 @@
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
                         <asp:HiddenField ID="hfDivExternosScrollPos" runat="server" />
+                        <asp:HiddenField ID="hfTipoCobroSeleccionado" runat="server" />
                     </td>
                     <td style="vertical-align: top" colspan="2">
                         <div id="configuracionInternosPedidos" class="bg-color-grisClaro">
