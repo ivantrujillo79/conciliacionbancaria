@@ -18,6 +18,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int empleado;
         string observaciones;
         decimal saldoafavor;
+        private Int16 tipoMovimientoCaja;
         
         private List<Cobro> listacobros = new List<Cobro>();
         private List<ReferenciaConciliadaPedido> listapedidos = new List<ReferenciaConciliadaPedido>();
@@ -79,6 +80,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return caja; }
             set { caja = value; }
+        }
+
+        public short TipoMovimientoCaja
+        {
+            get { return tipoMovimientoCaja; }
+            set { tipoMovimientoCaja = value; }
         }
 
         public DateTime FOperacion

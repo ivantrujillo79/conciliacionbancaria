@@ -205,8 +205,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     _total = listaPedidosCliente.Sum(x => x.Total);
                     _saldoAFavor = listaCobrosCliente.Sum(x => x.Saldo);
 
-
-
                     restante = MaxDocumentos - ObjMovimientoCajaActual.ListaPedidos.Count;
 
                     if(listaPedidosCliente.Count>restante)
