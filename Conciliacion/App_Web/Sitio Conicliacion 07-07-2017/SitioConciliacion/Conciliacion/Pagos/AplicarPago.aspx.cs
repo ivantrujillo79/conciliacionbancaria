@@ -168,6 +168,27 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
+
+    private string TipoCobroDescripcion(int tipoCobro)
+    {
+        if (tipoCobro == 10) //Transferencia
+            return "Transferencia";
+        else
+        if (tipoCobro == 5) //Efectivo, ID: 
+            return "Efectivo";
+        else
+        if (tipoCobro == 3) //c) Cheques, ID: 3
+            return "Cheques";
+        else
+        if (tipoCobro == 6) //d) Tarjeta de crédito, ID: 
+            return "Tarjeta de crédito";
+        else
+        if (tipoCobro == 19) //e) Tarjeta de débito, ID: 
+            return "Tarjeta de débito";
+        else
+            return "";
+    }
+
     /// <summary>
     /// Genera la tabla Referencias a Pagar Pedidos
     /// </summary>
@@ -210,6 +231,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("Nombre", typeof(string));
             tblReferenciasAPagar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
+            tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
 
             List<Cliente> lstClientes = new List<Cliente>();
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
@@ -259,7 +281,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rc.Cliente,
                         rc.Nombre,
                         rc.Total,
-                        rc.ConceptoPedido
+                        rc.ConceptoPedido,
+                        TipoCobroDescripcion(rc.TipoCobro)
                         );
             }
             HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;

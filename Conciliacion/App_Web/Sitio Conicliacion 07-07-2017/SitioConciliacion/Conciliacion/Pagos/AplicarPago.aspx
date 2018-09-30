@@ -324,7 +324,23 @@
                         <table class="grvResultadoConsultaCss" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
 	                        <tbody>
 		                        <tr align="center">
-			                        <th align="center" scope="col" style="width:25px;">&nbsp;</th><th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Secuencia')">Sec. Ext.</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Referencia')">Referencia</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FMovimiento')">F. Mov. Ext.</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FOperacion')">F. Op. Ext.</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Diferencia')">Diferencia</a></th><th scope="col" style="width:200px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Concepto')">Concepto</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$PedidoReferencia')">Documento</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$RemisionPedido')">Remision Ped.</a></th><th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SeriePedido')">Serie Ped.</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FolioSat')">Folio Sat</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SerieSat')">Serie Sat</a></th><th align="center" scope="col" style="width:120px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$ConceptoPedido')">Concepto</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Total')">Total Pedido</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Cliente')">Cliente</a></th><th align="center" scope="col" style="width:150px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Nombre')">Nom. Cliente</a></th>
+			                        <th align="center" scope="col" style="width:25px;">&nbsp;</th>
+                                    <th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Secuencia')">Sec. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Referencia')">Referencia</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FMovimiento')">F. Mov. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FOperacion')">F. Op. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Diferencia')">Diferencia</a></th>
+                                    <th scope="col" style="width:200px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Concepto')">Concepto</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$PedidoReferencia')">Documento</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$RemisionPedido')">Remision Ped.</a></th>
+                                    <th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SeriePedido')">Serie Ped.</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FolioSat')">Folio Sat</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SerieSat')">Serie Sat</a></th>
+                                    <th align="center" scope="col" style="width:120px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$ConceptoPedido')">Concepto</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Total')">Total Pedido</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Cliente')">Cliente</a></th>
+                                    <th align="center" scope="col" style="width:150px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Nombre')">Nom. Cliente</a></th>
+                                    <th align="center" scope="col" style="width:150px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$TipoCobro')">T. Cobro</a></th>
 		                        </tr>
 	                        </tbody>
                         </table>
@@ -471,6 +487,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
                                     <ItemTemplate>
                                         <b>
@@ -480,6 +497,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
                                     <ItemTemplate>
                                         <div class="parrafoTexto" style="width: 150px">
@@ -497,6 +515,17 @@
                                     <ItemStyle HorizontalAlign="Justify" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="TipoCobro" SortExpression="TipoCobro">
+                                    <ItemTemplate>
+                                        <b>
+                                            <asp:Label ID="lblTipoCobro" runat="server" Text='<%# resaltarBusqueda(Eval("TipoCobro").ToString()) %>'></asp:Label>
+                                        </b>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                </asp:TemplateField>
+
                             </Columns>
                         </asp:GridView>
                         </div>
