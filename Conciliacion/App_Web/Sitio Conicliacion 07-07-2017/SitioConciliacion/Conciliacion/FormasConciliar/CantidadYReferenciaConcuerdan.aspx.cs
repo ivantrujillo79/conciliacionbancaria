@@ -29,7 +29,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     public List<ReferenciaConciliadaPedido> listaReferenciaConciliadaPedido = new List<ReferenciaConciliadaPedido>();
     public List<ReferenciaNoConciliada> listaTransaccionesConciliadas = new List<ReferenciaNoConciliada>();
     public List<ReferenciaNoConciliada> listaReferenciaExternas = new List<ReferenciaNoConciliada>();
-
+    public int indiceExternoSeleccionado = 0;
 
     private List<ListaCombo> listSucursales = new List<ListaCombo>();
     private List<ListaCombo> listStatusConcepto = new List<ListaCombo>();
@@ -878,13 +878,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 if (e.Row.Cells.Count >= 16)
                     e.Row.Cells[16].Visible = false;
             }
-            else
-            {
-                if (e.Row.Cells.Count >= 15)
-                    e.Row.Cells[15].Visible = true;
-                if (e.Row.Cells.Count >= 16)
-                    e.Row.Cells[16].Visible = true;
-            }
+            //else
+            //{
+            //    if (e.Row.Cells.Count >= 15)
+            //        e.Row.Cells[15].Visible = true;
+            //    if (e.Row.Cells.Count >= 16)
+            //        e.Row.Cells[16].Visible = true;
+            //}
         }
     }
     protected void grvCantidadReferenciaConcuerdanPedido_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -1879,6 +1879,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         return _FormaConciliacion;
     }
+
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {
         bool resultado = false;
@@ -1906,11 +1907,27 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         if (objSolicitdConciliacion.ConsultaPedido())
         {
+            bool guardado = false;
             if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
             {
                 listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
-                if (listaReferenciaConciliadaPedido != null)
-                    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
+                //listaReferenciaConciliadaPedido.Where(fila => fila.Selecciona == true).ToList();
+                IList listRefCon = listaReferenciaConciliadaPedido;
+                if (listRefCon != null)
+                    for (int i = 0; i < listRefCon.Count; i++)
+                    {
+                        ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
+                        refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+                        if (refcon.Selecciona)
+                        {
+                            refcon.Guardar();
+                            guardado = true;
+                        }
+                    }
+                    //if (listaReferenciaConciliadaPedido != null)
+                    //    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
+                    if (!guardado)
+                        App.ImplementadorMensajes.MostrarMensaje("No se selecciono ninguna referencia a conciliar. Verifique");
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
             }
@@ -2438,4 +2455,40 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         grvVistaRapidaInterno_ModalPopupExtender.Show();
 
     }
+
+    public List<ReferenciaConciliadaPedido> filasSeleccionadasPedidos()
+    {
+        listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+        return listaReferenciaConciliadaPedido.Where(fila => fila.Selecciona == false).ToList();
+    }
+
+    public ReferenciaConciliadaPedido leerReferenciaExternaSeleccionada()
+    {
+        listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+        int secuenciaExterno = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
+        int folioExterno = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["FolioExt"]);
+        int Pedido = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["Pedido"]);
+        int Celula = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["Celula"]);
+        int AñoPed = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["AñoPed"]);
+
+        return listaReferenciaConciliadaPedido.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno && x.Pedido == Pedido && x.CelulaPedido == Celula && x.AñoPedido == AñoPed);
+
+    }
+
+    protected void chkSeleccionado_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox chk = sender as CheckBox;
+        GridViewRow grv = (GridViewRow)chk.Parent.Parent;
+
+        indiceExternoSeleccionado = grv.RowIndex;
+        ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+
+        if (chk.Checked)
+            rfEx.Selecciona = true;
+        else
+            rfEx.Selecciona = false;
+        GenerarTablaReferenciasAConciliarPedidos();
+
+    }
+
 }

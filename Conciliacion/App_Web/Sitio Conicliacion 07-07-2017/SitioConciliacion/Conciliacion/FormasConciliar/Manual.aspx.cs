@@ -830,10 +830,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         try
         {
             List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
-
             //Leer INFO Actual de la Conciliacion
             cargarInfoConciliacionActual();
-
             if (extSeleccionados.Count > 0)
             {
                 if (tipoConciliacion == 2)
@@ -841,10 +839,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     List<ReferenciaNoConciliadaPedido> pedSeleccionados = filasSeleccionadasPedidos();
                     if (pedSeleccionados.Count > 0)
                     {
-
                         foreach (ReferenciaNoConciliada ex in extSeleccionados)
                         {
-
                             foreach (ReferenciaNoConciliadaPedido ap in pedSeleccionados)
                                 //if (!ex.AgregarReferenciaConciliada(ap))
                                 if (!ex.AgregarReferenciaConciliadaSinVerificacion(ap))

@@ -859,6 +859,17 @@
                             <HeaderStyle HorizontalAlign="Center" />
                             <AlternatingRowStyle BackColor="#CCCCCC" />
                             <Columns>
+
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox runat="server" ID="chkSeleccionado" 
+                                            OnCheckedChanged="chkSeleccionado_CheckedChanged"
+                                            AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="30px" />
+                                </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="F. Ext" SortExpression="FolioExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFolioExt" runat="server" Text='<%# resaltarBusqueda(Eval("FolioExt").ToString()) %>'></asp:Label>
@@ -929,7 +940,6 @@
                                     </ItemTemplate>
                                     <ItemStyle Width="120px"></ItemStyle>
                                 </asp:TemplateField>
-
                                 <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
