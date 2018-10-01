@@ -2488,7 +2488,20 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         else
             rfEx.Selecciona = false;
         GenerarTablaReferenciasAConciliarPedidos();
-
     }
 
+    protected void chkSeleccionarTodos_CheckedChanged1(object sender, EventArgs e)
+    {
+        int index = 0;
+        foreach (GridViewRow fila in grvCantidadReferenciaConcuerdanPedido.Rows)
+        {
+            CheckBox chk = fila.Cells[0].Controls[1] as CheckBox;
+            indiceExternoSeleccionado = index;
+            ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+            chk.Checked = chkSeleccionarTodos.Checked;
+            rfEx.Selecciona = chkSeleccionarTodos.Checked;
+            index++;
+        }
+        GenerarTablaReferenciasAConciliarPedidos();
+    }
 }

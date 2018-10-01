@@ -3,6 +3,7 @@
     Debug="true" EnableEventValidation="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     CANTIDAD Y REFERENCIA CONCUERDAN
 </asp:Content>
@@ -624,16 +625,11 @@
                                     <td style="width: 50%; vertical-align: top">
                                         <table style="width: 300px">
                                             <tr>
-                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Campo Externo
+                                                <td class="etiqueta fg-color-blanco" style="width: 40%">Campo Externo
                                                 </td>
                                                 <td style="width: 70%">
                                                     <asp:DropDownList runat="server" ID="ddlCampoExterno" CssClass="dropDownPequeño"
                                                         Width="125px" OnDataBound="ddlCampoExterno_DataBound" OnSelectedIndexChanged="ddlCampoExterno_SelectedIndexChanged"
-                                                        AutoPostBack="True" />
-                                                </td>
-                                                <td style="width: 70%">
-                                                    <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño"
-                                                        Width="125px" 
                                                         AutoPostBack="True" />
                                                 </td>
                                             </tr>
@@ -646,6 +642,34 @@
                                             </tr>
                                         </table>
                                     </td>
+                                    <td style="width: 1%"></td>
+                                    <td style="width: 50%; vertical-align: top" class="centradoJustificado">
+                                        <table style="width: 300px">
+                                            <tr>
+                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Tipo Cobro
+                                                </td>
+                                                <td style="width: 70%">
+                                                    <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño"
+                                                        Width="125px" AutoPostBack="True" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <td style="width: 1%"></td>
+                                    <td style="width: 50%; vertical-align: top" class="centradoJustificado">
+                                        <table style="width: 300px">
+                                            <tr>
+                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Seleccionar Todos
+                                                </td>
+                                                <td style="width: 70%">
+                                                    <asp:CheckBox ID="chkSeleccionarTodos" runat="server" AutoPostBack="true" Checked="true" OnCheckedChanged="chkSeleccionarTodos_CheckedChanged1"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+
                                     <td style="width: 1%"></td>
                                     <td style="width: 50%; vertical-align: top" class="centradoJustificado">
                                         <table style="width: 300px">
