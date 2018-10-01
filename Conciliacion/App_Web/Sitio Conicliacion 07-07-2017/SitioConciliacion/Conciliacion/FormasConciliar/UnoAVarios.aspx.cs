@@ -994,8 +994,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 { 10, "Transferencia" },
                 { 5, "Efectivo" },
                 { 3, "Cheques" },
-                { 6, "Tarjeta de Cr&eacute;dito" },
-                { 19, "Tarjeta de D&eacute;bito" }
+                { 6, "Tarjeta de Crédito" },
+                { 19, "Tarjeta de Débito" }
             };
             this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
             this.ddlTiposDeCobro.DataTextField = "Value";
