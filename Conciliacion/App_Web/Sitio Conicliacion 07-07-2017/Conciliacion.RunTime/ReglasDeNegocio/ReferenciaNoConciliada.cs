@@ -101,6 +101,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int añoex;
         private int folioex;
         private int secuenciaex;
+        private int tipoCobro;
         #region Constructores
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -823,8 +824,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public int TipoCobro
         {
-            get => tipocobro;
-            set => tipocobro = value;
+            get { return tipoCobro; }
+            set { tipoCobro = value; }
         }
 
         public Color ColorTraspaso

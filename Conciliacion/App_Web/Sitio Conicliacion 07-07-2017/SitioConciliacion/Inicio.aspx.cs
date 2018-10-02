@@ -447,12 +447,17 @@ public partial class Inicio : System.Web.UI.Page
     }
     protected void lnkDetalle_Click(object sender, EventArgs e)
     {
-
+        short esEdificios = 0;
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
+
+        if (ddlTipoConciliacion.SelectedItem.Value=="2")
+        {
+            esEdificios = 1;
+        }
         Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes + "&TipoConciliacion=" + conciliacion.TipoConciliacion);
+                                     conciliacion.Mes + "&EsEdificios=" + esEdificios);
 
     }
     protected void lnkPagos_Click(object sender, EventArgs e)

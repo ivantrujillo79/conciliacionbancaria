@@ -27,6 +27,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     public int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno, sucursalConciliacion;
     public short mesConciliacion, tipoConciliacion;
+    public short esEdificios;
     public MovimientoCajaDatos movimientoCajaAlta = null;
     //private RTGMGateway.SolicitudActualizarPedido solicitudActualizaPedido = new RTGMGateway.SolicitudActualizarPedido();
     //private RTGMGateway.RTGMActualizarPedido ActualizaPedido = new RTGMGateway.RTGMActualizarPedido();
@@ -60,12 +61,35 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
 
+                string statusInicial;
+                StatusMovimientoCaja status;
+
+               
+                statusInicial= parametros.ValorParametro(30, "StatusInicialMovCaja");
+                
+                if (statusInicial == "EMITIDO")
+                {
+                    status = StatusMovimientoCaja.Emitido;
+                }
+                else
+                {
+                    status = StatusMovimientoCaja.Validado;
+                }
+                
+                if (esEdificios == 1) 
+                {
+                    status = StatusMovimientoCaja.Validado;
+                }
+                  
+                
                 corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
                 añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
                 folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                 mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+                esEdificios= Convert.ToSByte(Request.QueryString["EsEdificios"]);
+
                 LlenarBarraEstado();
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboCampoFiltroDestino(tipoConciliacion, rdbFiltrarEn.SelectedItem.Value);
@@ -86,9 +110,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 HttpContext.Current.Session["TipoMovimientoCaja"]= Convert.ToInt32(Request.QueryString["tipoMovimientoCaja"]);
 
                 movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
+                movimientoCajaAlta.StatusAltaMC = status;
                 movimientoCajaAlta.Total = totalTemp;
+                movimientoCajaAlta.TipoMovimientoCaja = 3;
                 HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
-
+                
                 tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
                 imgExportar.Enabled = false;
             }
@@ -683,6 +709,16 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             TransBan objTransBan = new TransBan();
             cargarInfoConciliacionActual();
 
+
+            if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Emitido)
+            {
+                movimientoCajaAlta.Status = "EMITIDO";
+            }
+            else
+            {
+                movimientoCajaAlta.Status = "VALIDADO";
+            }
+
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
 
             _URLGateway = p.ValorParametro(modulo, "URLGateway");
@@ -695,11 +731,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             short mesConciliacion = 0;
             short tipoConciliacion = 0;            
 
-            conexion.AbrirConexion(false,false);
+            conexion.AbrirConexion(false,false);           
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
-            {
-                objMovimientoCaja.TipoMovimientoCaja = Convert.ToInt16(HttpContext.Current.Session["TipoMovimientoCaja"]);
+            {             
+                
                 if (urlValida)
                 {
                    
@@ -829,13 +865,18 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             }
 
             conexion.AbrirConexion(true);
-            FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
-            objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
-            objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
-            objFacturasComplemento.AnioConciliacion = añoConciliacion;
-            objFacturasComplemento.MesConciliacion = mesConciliacion;
-            objFacturasComplemento.FolioConciliacion = folioConciliacion;
-            objFacturasComplemento.Guardar(conexion);
+         
+            if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Validado)
+            {
+                FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
+                objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
+                objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
+                objFacturasComplemento.AnioConciliacion = añoConciliacion;
+                objFacturasComplemento.MesConciliacion = mesConciliacion;
+                objFacturasComplemento.FolioConciliacion = folioConciliacion;
+                objFacturasComplemento.Guardar(conexion);
+            }
+            
 
             //if ( ! EjecutaActualizaPedidoRTGM() )
             //    throw new Exception("Ocurrió un error en GMGateway.");
