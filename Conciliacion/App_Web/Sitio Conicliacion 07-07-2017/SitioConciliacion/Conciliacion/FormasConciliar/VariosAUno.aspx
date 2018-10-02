@@ -29,7 +29,8 @@
                 $("#dvAgregados").slideToggle();
             });
             activarDatePickers();
-            document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
+            if (document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro') != null)
+                document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
 
         function activarDatePickers() {
