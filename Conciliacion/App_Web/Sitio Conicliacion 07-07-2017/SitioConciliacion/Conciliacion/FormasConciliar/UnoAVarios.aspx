@@ -52,12 +52,13 @@
         var sumapreconciliadas = 0;
         var TipoCobroSeleccionado = 0;
         function pageLoad() {
-            
+            //debugger;
             activarDatePickers();
             MuestraSaldoAFavor();
             MostrarTxtComisionInicio();
             document.getElementById("divExternos").scrollTop = document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value;
-            document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
+            if (document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro') != null)
+                document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
 
         function rdbSecuencia_scrollpos() {
