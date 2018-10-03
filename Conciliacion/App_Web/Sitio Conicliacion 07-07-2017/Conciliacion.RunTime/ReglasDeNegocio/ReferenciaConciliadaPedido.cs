@@ -38,6 +38,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         bool portatil;
 
         int tipocobro;
+        private int tipoCobro;
 
         #region Constructores
 
@@ -316,8 +317,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public int TipoCobro
         {
-            get => tipocobro;
-            set => tipocobro = value;
+            get { return tipoCobro; }
+            set { tipoCobro = value; }
         }
 
         #endregion

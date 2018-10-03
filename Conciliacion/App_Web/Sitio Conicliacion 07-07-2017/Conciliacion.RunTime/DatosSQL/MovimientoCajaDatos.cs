@@ -11,9 +11,17 @@ using System.Configuration;
 using System.Web;
 
 namespace Conciliacion.RunTime.DatosSQL
-{
+{    
     public class MovimientoCajaDatos : MovimientoCaja
     {
+        private string status;
+
+        public string Status
+        {
+            get {return status;}
+            set{status = value;}
+        }
+
         public MovimientoCajaDatos()
         {
             
@@ -98,6 +106,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Observaciones", System.Data.SqlDbType.Char)).Value = this.Observaciones;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@SaldoAFavor", System.Data.SqlDbType.Decimal)).Value = this.SaldoAFavor;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@TipoMovimientoCaja", System.Data.SqlDbType.SmallInt)).Value = this.TipoMovimientoCaja;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Status", System.Data.SqlDbType.Char,10)).Value = this.Status;
 
                 drConsulta = _conexion.Comando.ExecuteReader();
 
@@ -110,11 +119,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         this.Consecutivo = Convert.ToInt16(drConsulta["Consecutivo"]);
                         this.Folio = Convert.ToInt32(drConsulta["Folio"]);
                     }
-
                 }
-
-
-
                 resultado = true;
             }
             catch (SqlException ex)
@@ -198,7 +203,10 @@ namespace Conciliacion.RunTime.DatosSQL
                         Pedido.MontoConciliado =
                             Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
                         Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
-                        Pedido.PedidoActualizaSaldo(_conexion);
+                        if (StatusAltaMC == StatusMovimientoCaja.Validado)
+                        {
+                            Pedido.PedidoActualizaSaldo(_conexion);
+                        }
                         Pedido.ActualizaPagosPorAplicar(_conexion);
                     }
                 }

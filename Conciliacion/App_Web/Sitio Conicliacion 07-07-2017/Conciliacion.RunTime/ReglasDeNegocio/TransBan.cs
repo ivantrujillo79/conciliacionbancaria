@@ -242,11 +242,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             _objmovimientocajadatos.Folio = ObjMovimientoCajaDatos.Folio;
             _objmovimientocajadatos.ImplementadorMensajes = ObjMovimientoCajaDatos.ImplementadorMensajes;
             _objmovimientocajadatos.Observaciones = ObjMovimientoCajaDatos.Observaciones;
+            _objmovimientocajadatos.StatusAltaMC = ObjMovimientoCajaDatos.StatusAltaMC;
+            _objmovimientocajadatos.Status = ObjMovimientoCajaDatos.Status;
+
+            _objmovimientocajadatos.TipoMovimientoCaja= ObjMovimientoCajaDatos.TipoMovimientoCaja;
             _objmovimientocajadatos.SaldoAFavor = 0;
             _objmovimientocajadatos.Total = 0;
             _objmovimientocajadatos.Usuario = ObjMovimientoCajaDatos.Usuario;
             _objmovimientocajadatos.ListaPedidos = new List<ReferenciaConciliadaPedido>();
             _objmovimientocajadatos.ListaCobros = new List<Cobro>();
+
 
             return _objmovimientocajadatos;
         }

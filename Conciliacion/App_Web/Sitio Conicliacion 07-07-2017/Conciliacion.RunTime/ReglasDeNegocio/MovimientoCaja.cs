@@ -6,6 +6,11 @@ using Conciliacion.RunTime.DatosSQL;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
+    public enum StatusMovimientoCaja
+    {
+        Emitido = 0,
+        Validado = 1
+    }
     public abstract class MovimientoCaja : EmisorMensajes
     {
         short caja;
@@ -19,7 +24,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string observaciones;
         decimal saldoafavor;
         private Int16 tipoMovimientoCaja;
-        
+        private StatusMovimientoCaja statusAltaMC;
+
         private List<Cobro> listacobros = new List<Cobro>();
         private List<ReferenciaConciliadaPedido> listapedidos = new List<ReferenciaConciliadaPedido>();
 
@@ -136,6 +142,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return saldoafavor; }
             set { saldoafavor = value; }
+        }
+        public StatusMovimientoCaja StatusAltaMC
+        {
+            get{ return statusAltaMC;}
+            set{ statusAltaMC = value;}
         }
 
         #endregion
