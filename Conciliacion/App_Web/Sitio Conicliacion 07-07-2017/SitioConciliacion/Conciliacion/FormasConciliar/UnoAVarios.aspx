@@ -65,14 +65,18 @@
             document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value = document.getElementById("divExternos").scrollTop;
         }
 
-        function btnAgregarPedidoConciliacion(grid, fila){
+        function btnAgregarPedidoConciliacion(grid, fila) {
+            //debugger;
             dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML);
             var total = parseFloat(0).toFixed(2);
             var dRespaldoAbono = parseFloat(0.0);
-
-            var comisionSeleccionada = document.getElementById('<%= chkComision.ClientID %>').checked;
-            var dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
-            dComision = (isNaN(dComision) ? 0 : dComision);
+            var comisionSeleccionada = 0;
+            var dComision = 0;
+            if (document.getElementById('<%= chkComision.ClientID %>') != null) {
+                comisionSeleccionada = document.getElementById('<%= chkComision.ClientID %>').checked;
+                dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
+                dComision = (isNaN(dComision) ? 0 : dComision);
+            }
 
             var dChequeados = 0.0;
             grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
