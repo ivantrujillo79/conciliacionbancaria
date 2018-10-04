@@ -447,37 +447,30 @@ public partial class Inicio : System.Web.UI.Page
     }
     protected void lnkDetalle_Click(object sender, EventArgs e)
     {
-        short esEdificios = 0;
+       
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
 
-        if (conciliacion.TipoConciliacion==2)
-        {
-            esEdificios = 1;
-        }
+        
         Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes + "&EsEdificios=" + esEdificios);
+                                     conciliacion.Mes );
 
     }
     protected void lnkPagos_Click(object sender, EventArgs e)
     {
+        short esEdificios = 0;
+
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
 
-        int _tipoMovimientoCaja;
-
-        if (conciliacion.TipoConciliacion==2) 
+        if (conciliacion.TipoConciliacion == 2)
         {
-            _tipoMovimientoCaja = 3;
-        }
-        else
-        {
-            _tipoMovimientoCaja = 1;
+            esEdificios = 1;
         }
         Response.Redirect("~/Conciliacion/Pagos/AplicarPago.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes+ "&tipoMovimientoCaja=" + _tipoMovimientoCaja);
+                                     conciliacion.Mes + "&EsEdificios=" + esEdificios);
     }
 
     //Nueva funcionalidad
