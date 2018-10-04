@@ -202,7 +202,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 {
                     listaPedidosCliente = ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Cliente == clienteTemp).ToList();
                     listaCobrosCliente = ObjMovimientoCajaDatos.ListaCobros.Where(x => x.Cliente == clienteTemp).ToList();
-                    _total = listaPedidosCliente.Sum(x => x.Total);
+                    _total = listaPedidosCliente.Sum(x => x.MontoConciliado);
                     _saldoAFavor = listaCobrosCliente.Sum(x => x.Saldo);
 
                     restante = MaxDocumentos - ObjMovimientoCajaActual.ListaPedidos.Count;
