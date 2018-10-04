@@ -66,7 +66,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
                
                 statusInicial= parametros.ValorParametro(30, "StatusInicialMovCaja");
-                
+
+                esEdificios = Convert.ToSByte(Request.QueryString["EsEdificios"]);
+
                 if (statusInicial == "EMITIDO")
                 {
                     status = StatusMovimientoCaja.Emitido;
@@ -88,7 +90,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                 mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                esEdificios= Convert.ToSByte(Request.QueryString["EsEdificios"]);
+                
 
                 LlenarBarraEstado();
                 Carga_FormasConciliacion(tipoConciliacion);

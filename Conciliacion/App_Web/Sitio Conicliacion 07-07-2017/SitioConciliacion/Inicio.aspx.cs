@@ -451,7 +451,7 @@ public partial class Inicio : System.Web.UI.Page
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
 
-        if (ddlTipoConciliacion.SelectedItem.Value=="2")
+        if (conciliacion.TipoConciliacion==2)
         {
             esEdificios = 1;
         }
