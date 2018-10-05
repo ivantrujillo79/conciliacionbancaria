@@ -767,7 +767,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
                     string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
 
-                    List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
+                    List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = objMovimientoCaja.ListaPedidos;
 
                     foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
                     {
