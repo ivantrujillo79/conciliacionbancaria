@@ -560,10 +560,6 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     public void ConsultaDetalleTransaccionConciliada(ReferenciaNoConciliada trConciliada)
     {
-        SeguridadCB.Public.Parametros parametros;
-        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
-        AppSettingsReader settings = new AppSettingsReader();
-        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
         try
         {
             if (trConciliada.ConInterno)
@@ -581,6 +577,10 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
             }
             else
             {
+                SeguridadCB.Public.Parametros parametros;
+                parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                AppSettingsReader settings = new AppSettingsReader();
+                _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
                 string NombreCliente = "";
                 List<Cliente> lstClientes = new List<Cliente>();
                 foreach (ReferenciaConciliadaPedido r in trConciliada.ListaReferenciaConciliada)

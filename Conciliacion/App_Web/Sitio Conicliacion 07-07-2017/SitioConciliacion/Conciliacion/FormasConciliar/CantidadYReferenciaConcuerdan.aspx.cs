@@ -1218,15 +1218,22 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             else
             {
+                SeguridadCB.Public.Parametros parametros;
+                parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                AppSettingsReader settings = new AppSettingsReader();
+                _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+                string NombreCliente = "";
+                List<Cliente> lstClientes = new List<Cliente>();
                 foreach (ReferenciaConciliadaPedido r in trConciliada.ListaReferenciaConciliada)
                 {
+                    NombreCliente = ObtieneNombreCliente(lstClientes, r.Cliente, r.Nombre);
                     tblDetalleTransaccionConciliada.Rows.Add(
                         r.Pedido,
                         r.PedidoReferencia,
                         r.AñoPedido,
                         r.CelulaPedido,
                         r.Cliente,
-                        r.Nombre,
+                        NombreCliente, //r.Nombre,
                         r.Total,
                         r.ConceptoPedido
                         );
