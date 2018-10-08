@@ -62,6 +62,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
+    private string _URLGateway;
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -803,6 +805,58 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             tblDetalleTransaccionConciliada.Columns.Add("ConceptoPedido", typeof(string));
         }
     }
+    public string consultaClienteCRM(int cliente)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (_URLGateway != string.Empty)
+            {
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.IDCliente = cliente;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            //throw ex;
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+        if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
+            return DireccionEntrega.Nombre.Trim();
+        else
+            return "No encontrado";
+    }
+    private string ObtieneNombreCliente(List<Cliente> lstClientes, int numCliente, string NombreClienteBD)
+    {
+        string NombreCliente = "";
+        if (_URLGateway != "")
+        {
+            Cliente cliente = lstClientes.Find(x => x.NumCliente == numCliente);
+            if (cliente == null)
+            {
+                NombreCliente = consultaClienteCRM(numCliente);
+                cliente = App.Cliente.CrearObjeto();
+                cliente.NumCliente = numCliente;
+                cliente.Nombre = NombreCliente;
+                lstClientes.Add(cliente);
+            }
+            else
+            {
+                NombreCliente = cliente.Nombre;
+            }
+        }
+        else
+            NombreCliente = NombreClienteBD;
+        return NombreCliente;
+    }
     public void ConsultaDetalleTransaccionConciliada(ReferenciaNoConciliada trConciliada)
     {
         try
@@ -822,15 +876,22 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             }
             else
             {
+                SeguridadCB.Public.Parametros parametros;
+                parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                AppSettingsReader settings = new AppSettingsReader();
+                _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+                string NombreCliente = "";
+                List<Cliente> lstClientes = new List<Cliente>();
                 foreach (ReferenciaConciliadaPedido r in trConciliada.ListaReferenciaConciliada)
                 {
+                    NombreCliente = ObtieneNombreCliente(lstClientes, r.Cliente, r.Nombre);
                     tblDetalleTransaccionConciliada.Rows.Add(
                         r.Pedido,
                         r.PedidoReferencia,
                         r.AñoPedido,
                         r.CelulaPedido,
                         r.Cliente,
-                        r.Nombre,
+                        NombreCliente, //r.Nombre,
                         r.Total,
                         r.ConceptoPedido
                         );
