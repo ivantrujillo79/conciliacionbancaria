@@ -136,16 +136,19 @@
 
         var dAbonoSel;
         function ActualizaMonto(){
-            debugger;
+            //debugger;
+            var dAbono = 0;
             var dComision = 0;
+            var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
             if (document.getElementById('<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
+            if (chkComisionActivado)
                 dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
-            var dAbono = 0;
-            if (document.getElementById('<%= chkComision.ClientID %>').checked)
-                dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
-            
+            else
+                dComision = 0;
+
+            dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
 
             var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
