@@ -51,6 +51,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
+    private string _URLGateway;
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -549,8 +550,64 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             throw ex;
         }
     }
+    public string consultaClienteCRM(int cliente)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (_URLGateway != string.Empty)
+            {
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.IDCliente = cliente;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            //throw ex;
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+        if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
+            return DireccionEntrega.Nombre.Trim();
+        else
+            return "No encontrado";
+    }
+    private string ObtieneNombreCliente(List<Cliente> lstClientes, int numCliente, string NombreClienteBD)
+    {
+        string NombreCliente = "";
+        if (_URLGateway != "")
+        {
+            Cliente cliente = lstClientes.Find(x => x.NumCliente == numCliente);
+            if (cliente == null)
+            {
+                NombreCliente = consultaClienteCRM(numCliente);
+                cliente = App.Cliente.CrearObjeto();
+                cliente.NumCliente = numCliente;
+                cliente.Nombre = NombreCliente;
+                lstClientes.Add(cliente);
+            }
+            else
+            {
+                NombreCliente = cliente.Nombre;
+            }
+        }
+        else
+            NombreCliente = NombreClienteBD;
+        return NombreCliente;
+    }
     public void GenerarTablaReferenciasAConciliarPedidos()//Genera la tabla Referencias a Conciliar
     {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
         try
         {
             tblReferenciasAConciliar = new DataTable("ReferenciasConciliadas");
@@ -578,10 +635,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
             tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
-            tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));            
+            tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));
 
+            string NombreCliente = "";
+            List<Cliente> lstClientes = new List<Cliente>();
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPedido)
             {
+                NombreCliente = ObtieneNombreCliente(lstClientes, rc.Cliente, rc.Nombre);
                 tblReferenciasAConciliar.Rows.Add(
                     //EXTERNO
                     rc.Selecciona,
@@ -604,7 +664,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rc.AñoPedido,
                     rc.CelulaPedido,
                     rc.Cliente,
-                    rc.Nombre,
+                    NombreCliente, //rc.Nombre,
                     rc.Total,
                     rc.ConceptoPedido,
                     rc.FolioSat + rc.SerieSat
