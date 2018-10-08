@@ -580,34 +580,34 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             // Si la pantalla ClientePago se Mostro y se dió click en Aceptar
-            if (hdfClientePagoAceptar.Value == "1")
-            {
-                Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle tdd = Conciliacion.Migracion.Runtime.App.TablaDestinoDetalle;
-                tdd.ClientePago     = int.Parse(wucClientePago.ClienteSeleccionado);
-                tdd.Anio            = int.Parse(hdfClientePagoAnio.Value);
-                tdd.IdCorporativo   = int.Parse(hdfClientePagoCorporativo.Value);
-                tdd.Folio           = int.Parse(hdfClientePagoFolio.Value);
-                tdd.Secuencia       = int.Parse(hdfClientePagoSecuencia.Value);
-                tdd.IdSucursal      = int.Parse(hdfClientePagoSucursal.Value);
-                tdd.ActualizarClientePago();
-
-                // Guardar saldo a favor
-                if (HttpContext.Current.Session["EXTERNO_SELECCIONADO"] != null)
+            if (hdfClientePagoAceptar.Value == "1" && hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
                 {
-                    ReferenciaNoConciliada refExterna = HttpContext.Current.Session["EXTERNO_SELECCIONADO"] as ReferenciaNoConciliada;
-                    GuardarSaldoAFavor(refExterna, tdd.ClientePago);
-                }
+                    Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle tdd = Conciliacion.Migracion.Runtime.App.TablaDestinoDetalle;
+                    tdd.ClientePago     = int.Parse(wucClientePago.ClienteSeleccionado);
+                    tdd.Anio            = int.Parse(hdfClientePagoAnio.Value);
+                    tdd.IdCorporativo   = int.Parse(hdfClientePagoCorporativo.Value);
+                    tdd.Folio           = int.Parse(hdfClientePagoFolio.Value);
+                    tdd.Secuencia       = int.Parse(hdfClientePagoSecuencia.Value);
+                    tdd.IdSucursal      = int.Parse(hdfClientePagoSucursal.Value);
+                    tdd.ActualizarClientePago();
 
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                    "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
-                    + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
-            }
-            else if (hdfClientePagoCancelar.Value == "1")
-            {
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                    "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
-                    + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
-            }
+                    // Guardar saldo a favor
+                    if (HttpContext.Current.Session["EXTERNO_SELECCIONADO"] != null)
+                    {
+                        ReferenciaNoConciliada refExterna = HttpContext.Current.Session["EXTERNO_SELECCIONADO"] as ReferenciaNoConciliada;
+                        GuardarSaldoAFavor(refExterna, tdd.ClientePago);
+                    }
+
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                        "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
+                        + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
+                }
+                else if (hdfClientePagoCancelar.Value == "1")
+                {
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                        "alertify.alert('Conciliaci&oacute;n bancaria','TRANSACCION CONCILIADA EXITOSAMENTE', "
+                        + "function(){ alertify.success('La conciliaci&oacuten; se ha realizado exitosamente'); });", true);
+                }
         }
         catch (Exception ex)
         {
@@ -5218,6 +5218,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     //HttpContext.Current.Session["TAB_INTERNOS"] = null;
                 }
                 grvPedidos.DataBind();
+                ActualizarTotalesAgregados();
             }
             else
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
