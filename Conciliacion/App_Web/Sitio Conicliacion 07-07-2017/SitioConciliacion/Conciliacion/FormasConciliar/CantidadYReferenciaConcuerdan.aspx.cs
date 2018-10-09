@@ -1981,6 +1981,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 //listaReferenciaConciliadaPedido.Where(fila => fila.Selecciona == true).ToList();
                 IList listRefCon = listaReferenciaConciliadaPedido;
                 if (listRefCon != null)
+                { 
                     for (int i = 0; i < listRefCon.Count; i++)
                     {
                         ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
@@ -1995,6 +1996,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     //    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
                     if (!guardado)
                         App.ImplementadorMensajes.MostrarMensaje("No se selecciono ninguna referencia a conciliar. Verifique");
+                }
                 else
                     App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
             }
