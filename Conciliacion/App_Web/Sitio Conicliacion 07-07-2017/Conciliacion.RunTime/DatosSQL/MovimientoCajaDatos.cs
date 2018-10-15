@@ -257,7 +257,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     mensajeErrores.Append(rsp.Message);
             }
             if (mensajeErrores.Length > 0)
-                this.ImplementadorMensajes.MostrarMensaje(mensajeErrores.ToString());
+                this.ImplementadorMensajes.MostrarMensaje("(CRM) " + mensajeErrores.ToString());
         }
 
         private bool Exitoso(List<RTGMCore.Pedido> listaRsp)
@@ -354,13 +354,13 @@ namespace Conciliacion.RunTime.DatosSQL
                             if (dtPedido.Rows.Count > 0)
                             {
                                 producto = int.Parse(dtPedido.Rows[0]["producto"].ToString());
-                                ruta = int.Parse(dtPedido.Rows[0]["ruta"].ToString());
-                                descuento = decimal.Parse(dtPedido.Rows[0]["descuento"].ToString());
-                                importe = decimal.Parse(dtPedido.Rows[0]["importe"].ToString());
-                                impuesto = decimal.Parse(dtPedido.Rows[0]["impuesto"].ToString());
-                                precio = decimal.Parse(dtPedido.Rows[0]["precio"].ToString());
-                                litros = decimal.Parse(dtPedido.Rows[0]["litros"].ToString());
-                                total = decimal.Parse(dtPedido.Rows[0]["total"].ToString());
+                                int.TryParse(dtPedido.Rows[0]["ruta"].ToString(), out ruta);
+                                decimal.TryParse(dtPedido.Rows[0]["descuento"].ToString(), out descuento);
+                                decimal.TryParse(dtPedido.Rows[0]["importe"].ToString(), out importe);
+                                decimal.TryParse(dtPedido.Rows[0]["impuesto"].ToString(), out impuesto);
+                                decimal.TryParse(dtPedido.Rows[0]["precio"].ToString(), out precio);
+                                decimal.TryParse(dtPedido.Rows[0]["litros"].ToString(), out litros);
+                                decimal.TryParse(dtPedido.Rows[0]["total"].ToString(), out total);
 
                                 RTGMCore.Producto obProducto = new RTGMCore.Producto { IDProducto = producto }; //TipoCobro de pedido
                                 RTGMCore.RutaCRMDatos obRuta = new RTGMCore.RutaCRMDatos { IDRuta = ruta }; //campo ruta de pedido
@@ -386,14 +386,14 @@ namespace Conciliacion.RunTime.DatosSQL
                                     RedondeoAnterior = 0,
                                     TotalAplicable = 0
                                 });
-                                añoatt = int.Parse(dtPedido.Rows[0]["añoatt"].ToString());
-                                fsuministro = DateTime.Parse(dtPedido.Rows[0]["fsuministro"].ToString());
-                                remision = int.Parse(dtPedido.Rows[0]["remision"].ToString());
-                                folio = int.Parse(dtPedido.Rows[0]["folio"].ToString());
-                                autotanque = int.Parse(dtPedido.Rows[0]["autotanque"].ToString());
-                                tipocobro = int.Parse(dtPedido.Rows[0]["tipocobro"].ToString());
-                                tipocargo = int.Parse(dtPedido.Rows[0]["tipocargo"].ToString());
-                                tipopedido = int.Parse(dtPedido.Rows[0]["tipopedido"].ToString());
+                                int.TryParse(dtPedido.Rows[0]["añoatt"].ToString(), out añoatt);
+                                DateTime.TryParse(dtPedido.Rows[0]["fsuministro"].ToString(), out fsuministro);
+                                int.TryParse(dtPedido.Rows[0]["remision"].ToString(), out remision);
+                                int.TryParse(dtPedido.Rows[0]["folio"].ToString(), out folio);
+                                int.TryParse(dtPedido.Rows[0]["autotanque"].ToString(), out autotanque);
+                                int.TryParse(dtPedido.Rows[0]["tipocobro"].ToString(), out tipocobro);
+                                int.TryParse(dtPedido.Rows[0]["tipocargo"].ToString(), out tipocargo);
+                                int.TryParse(dtPedido.Rows[0]["tipopedido"].ToString(), out tipopedido);
                                 serieremision = dtPedido.Rows[0]["serieremision"].ToString();
                                 lstPedido.Add(new RTGMCore.PedidoCRMDatos
                                 {
