@@ -473,7 +473,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
 
             ActualizarDatos_wucCargaExcel();
-            if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
+            if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null && int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
             else
                 btnFiltraCliente.Visible = false;

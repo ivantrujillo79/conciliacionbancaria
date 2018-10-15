@@ -49,8 +49,10 @@
     </style>
 
     <script type="text/javascript">
+
         var sumapreconciliadas = 0;
         var TipoCobroSeleccionado = 0;
+
         function pageLoad() {
             //debugger;
             activarDatePickers();
@@ -65,12 +67,31 @@
             document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value = document.getElementById("divExternos").scrollTop;
         }
 
+        function ValidaSumaPreconciliados(sumapreconciliadas, dSeleccion, dAbono, dDiferencia) {
+            debugger;
+            //var dSumasel = parseFloat(sumapreconciliadas) + parseFloat(dSeleccion);
+            //var dSumaAbono = (parseFloat(dAbono) + parseFloat(dDiferencia));
+            //if (dSumasel <= dSumaAbono)
+            //    return true //parseFloat(dSeleccion); 
+            //else {
+            //    if (parseFloat(dAbono) - parseFloat(sumapreconciliadas) > 0)
+            //        return true;
+            //    else
+            //        return false;
+            //}
+            dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML.replace(',', '').replace('$', '').trim());
+            if (dResto > 0)
+                return true;
+            else
+                return false;
+        }
+
         function btnAgregarPedidoConciliacion(grid, fila) {
             //debugger;
             dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML);
-            var total = parseFloat(0).toFixed(2);
-            var dRespaldoAbono = parseFloat(0.0);
-            var comisionSeleccionada = 0;
+            //var total = parseFloat(0).toFixed(2);
+            //var dRespaldoAbono = parseFloat(0.0);
+            //var comisionSeleccionada = 0;
             var dComision = 0;
             if (document.getElementById('<%= chkComision.ClientID %>') != null) {
                 comisionSeleccionada = document.getElementById('<%= chkComision.ClientID %>').checked;
@@ -78,37 +99,44 @@
                 dComision = (isNaN(dComision) ? 0 : dComision);
             }
 
+            //debugger;
+            //var dAcumulado = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
+            var dAgregados = 0.0;
+            if (document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos') != null) {
+                grvPreCon = document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos');
+                for (i = 0; i < grvPreCon.rows.length; i++) {
+                    dAgregados = parseFloat(dAgregados) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
+                }
+            }
+
             var dChequeados = 0.0;
             grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
             for (i = 1; i < grv.rows.length; i++) {
                 if (grv.rows[i].cells[1].children[0].checked == true)
-                        dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$','').trim());
+                    dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$','').trim());
             }
 
-            if (comisionSeleccionada) {
-                //dChequeados += dComision;
-            }
-
-            var dResto = 0;
+            var dResto = 0.0;
+            sumapreconciliadas = dAgregados; //+ dChequeados;
             if (parseFloat(dChequeados) > 0.01)
-            {
+            {    
                 
-                if (dChequeados < sumapreconciliadas)
-                    sumapreconciliadas = dChequeados;
-                var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
-                var dAcumulado = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
-                var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$', '').trim());
+                //if (dChequeados < sumapreconciliadas) {                    
+                //    sumapreconciliadas = dChequeados;
+                //}
 
-                if (comisionSeleccionada) {
-                    //dRespaldoAbono = dAbono;
-                    //dAbono += dComision;
-                }
+                var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
+                var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$', '').trim());
 
                 //        0                           595.40                     34.87
                 //    34.87                           861.04                     34.87
-                if ( (parseFloat(sumapreconciliadas) + parseFloat(dSeleccion) <= (parseFloat(dAbono) + parseFloat(0.99)) ? parseFloat(dSeleccion) : (parseFloat(dAbono) - parseFloat(sumapreconciliadas)) ) > 0 )
+                if (document.getElementById('ctl00_contenidoPrincipal_txtDiferencia').innerText.trim() == "")
+                    dDiferencia = 0;
+                else
+                    dDiferencia = parseFloat(document.getElementById('ctl00_contenidoPrincipal_txtDiferencia').innerText.trim());
+                if (ValidaSumaPreconciliados(sumapreconciliadas, dSeleccion, dAbono, dDiferencia) == true || grv.rows[fila].cells[1].children[0].checked == false)
                 {
-                    sumapreconciliadas = parseFloat(dChequeados);    
+                    sumapreconciliadas = parseFloat(sumapreconciliadas) + parseFloat(dChequeados);    
                     if (dAbono > 0)
                         dResto      = parseFloat(dAbono - sumapreconciliadas);
                     if (dResto <= 0)
@@ -128,8 +156,8 @@
             {
                 //No se seleccionó nada
                 document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML;
-                document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = "0.00";
-                sumapreconciliadas = 0;
+                document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = dAgregados.toFixed(2);
+                sumapreconciliadas = 0.0;
             }
 
         }
@@ -151,6 +179,7 @@
             dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
 
+            //PENDIENTE ACTUALIZAR VARIABLE SUMAPRE CONCILIADAS
             var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
             var dResto = 0;
             
