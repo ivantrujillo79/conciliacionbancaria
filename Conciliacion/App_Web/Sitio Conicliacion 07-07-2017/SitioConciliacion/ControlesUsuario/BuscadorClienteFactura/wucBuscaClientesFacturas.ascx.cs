@@ -117,7 +117,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
                 Conexion conexion = new Conexion();
                 conexion.AbrirConexion(true);
 
-                dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt32(NumeroClienteFiltrar), conexion);
+                dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt64(NumeroClienteFiltrar), conexion);
             }
 
             return dtClientePedidos;

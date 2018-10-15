@@ -68,17 +68,6 @@
         }
 
         function ValidaSumaPreconciliados(sumapreconciliadas, dSeleccion, dAbono, dDiferencia) {
-            debugger;
-            //var dSumasel = parseFloat(sumapreconciliadas) + parseFloat(dSeleccion);
-            //var dSumaAbono = (parseFloat(dAbono) + parseFloat(dDiferencia));
-            //if (dSumasel <= dSumaAbono)
-            //    return true //parseFloat(dSeleccion); 
-            //else {
-            //    if (parseFloat(dAbono) - parseFloat(sumapreconciliadas) > 0)
-            //        return true;
-            //    else
-            //        return false;
-            //}
             dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML.replace(',', '').replace('$', '').trim());
             if (dResto > 0)
                 return true;
