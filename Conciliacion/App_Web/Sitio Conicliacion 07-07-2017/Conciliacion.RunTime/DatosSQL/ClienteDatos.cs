@@ -180,7 +180,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override DataTable ObtienePedidosCliente(int Cliente, Conexion _conexion)
+        public override DataTable ObtienePedidosCliente(Int64 Cliente, Conexion _conexion)
         {
             DataTable dtRetorno = new DataTable();
             SeguridadCB.Public.Parametros parametros;
@@ -194,7 +194,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";//"spCBPedidosSeparadosCliente";
 
                 _conexion.Comando.Parameters.Clear();
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.Int)).Value = Cliente;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.BigInt)).Value = Cliente;
 
                 SqlDataAdapter Dap = new SqlDataAdapter(_conexion.Comando);
                 Dap.Fill(dtRetorno);
