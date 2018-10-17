@@ -55,7 +55,7 @@
         }
 
         function activarDatePickers() {
-            debugger;
+            //debugger;
             //DatePicker FOperacion
             $("#<%= txtFInicial.ClientID%>").datepicker({
                 defaultDate: "+1w",

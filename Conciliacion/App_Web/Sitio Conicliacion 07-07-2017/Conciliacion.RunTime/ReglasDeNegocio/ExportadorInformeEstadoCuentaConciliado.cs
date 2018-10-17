@@ -79,10 +79,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     {
                         crearEncabezado(excelPackage, _NombreHoja, _NombreBanco, _ReporteEstadoCuentaConciliado[0].Fecha.ToString(), _ReporteEstadoCuentaConciliado[0].Clabe.ToString());
                         exportarDatos(excelPackage, _NombreHoja, _NombreBanco, 8, _ReporteEstadoCuentaConciliado);
-                    }
-                    if(true || _Esfinal)
-                    {
-                        excelPackage.Save();
+                        if (true || _Esfinal)
+                        {
+                            excelPackage.Save();
+                        }
                     }
                 }
                 catch (Exception ex)
