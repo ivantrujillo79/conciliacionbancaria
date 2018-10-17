@@ -158,20 +158,16 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
                 GridView grvAgregados = (GridView)Session["TABLADEAGREGADOS"];
                 DataTable tableAgregados = (DataTable)grvAgregados.DataSource;
                 var tableOrigen = tbPedidosPorFactura;
-                var tableResult = tbPedidosPorFactura.Clone();
+                //var tableResult = tbPedidosPorFactura.Clone();
                 foreach (DataRow row in tableAgregados.Rows)
-                    try
-                    {
-                        var rows = tableOrigen.AsEnumerable().Where(x => x.Field<int>("Pedido") != int.Parse(row["Pedido"].ToString()));
-                        var dt = rows.Any() ? rows.CopyToDataTable() : tableOrigen.Clone();
-                        tableOrigen.Clear();
-                        foreach (DataRow r in dt.Rows)
-                            tableOrigen.ImportRow(r);
-                    }
-                    catch (Exception ex)
-                    {
-                    }
-                tbPedidosPorFactura = tableResult;
+                { 
+                    var rows = tableOrigen.AsEnumerable().Where(x => x.Field<int>("Pedido") != int.Parse(row["Pedido"].ToString()));
+                    var dt = rows.Any() ? rows.CopyToDataTable() : tableOrigen.Clone();
+                    tableOrigen.Clear();
+                    foreach (DataRow r in dt.Rows)
+                        tableOrigen.ImportRow(r);
+                }
+                tbPedidosPorFactura = tableOrigen; // tableResult;
             }
         }
         Session["CBPedidosPorFactura"] = tbPedidosPorFactura;
