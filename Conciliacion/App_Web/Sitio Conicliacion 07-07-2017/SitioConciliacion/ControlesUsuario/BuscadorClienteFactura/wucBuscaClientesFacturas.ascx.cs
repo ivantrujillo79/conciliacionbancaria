@@ -43,6 +43,13 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         set { grvpedidos = value; }
     }
 
+    private GridView grvagregados;
+    public GridView grvAgregados
+    {
+        get { return grvagregados; }
+        set { grvagregados = value; }
+    }
+
     private DataTable _TablaFacturas;
     public DataTable TablaFacturas {
         get
@@ -134,7 +141,6 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         
     }
 
-
     protected void btnBuscaFactura_Click(object sender, ImageClickEventArgs e)
     {
         BuscarFactura(txtFactura.Text);
@@ -145,7 +151,29 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         _Factura = NumeroFactura;
         DataTable tbPedidosPorFactura = null;
         if (NumeroFactura != string.Empty)
+        { 
             tbPedidosPorFactura = App.Consultas.CBPedidosPorFactura(NumeroFactura);
+            if (Session["TABLADEAGREGADOS"] != null && tbPedidosPorFactura.Rows.Count > 0)
+            {   //quita pedidos que ya estan en el grid de preconciliados
+                GridView grvAgregados = (GridView)Session["TABLADEAGREGADOS"];
+                DataTable tableAgregados = (DataTable)grvAgregados.DataSource;
+                var tableOrigen = tbPedidosPorFactura;
+                var tableResult = tbPedidosPorFactura.Clone();
+                foreach (DataRow row in tableAgregados.Rows)
+                    try
+                    {
+                        var rows = tableOrigen.AsEnumerable().Where(x => x.Field<int>("Pedido") != int.Parse(row["Pedido"].ToString()));
+                        var dt = rows.Any() ? rows.CopyToDataTable() : tableOrigen.Clone();
+                        tableOrigen.Clear();
+                        foreach (DataRow r in dt.Rows)
+                            tableOrigen.ImportRow(r);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                tbPedidosPorFactura = tableResult;
+            }
+        }
         Session["CBPedidosPorFactura"] = tbPedidosPorFactura;
         _TablaFacturas = tbPedidosPorFactura;
 

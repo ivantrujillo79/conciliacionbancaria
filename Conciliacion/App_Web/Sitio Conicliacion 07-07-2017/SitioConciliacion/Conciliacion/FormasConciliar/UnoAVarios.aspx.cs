@@ -195,6 +195,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
+            wucBuscaClientesFacturas.grvAgregados = grvAgregadosPedidos;
+            wucBuscaClientesFacturas.grvAgregados = grvAgregadosPedidos;
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -6425,6 +6427,28 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    private DataTable EliminarPedidosAgregados(DataTable tableOrigen)
+    {
+        if ((GridView)Session["TABLADEAGREGADOS"] != null)
+        {
+            GridView grvAgregados = (GridView)Session["TABLADEAGREGADOS"];
+            DataTable tableAgregados = (DataTable)grvAgregados.DataSource;
+            var tableResult = tableOrigen.Clone();
+            foreach (DataRow row in tableAgregados.Rows)
+            {
+                var rows = tableOrigen.AsEnumerable().Where(x => x.Field<int>("Pedido") != int.Parse(row["Pedido"].ToString()));
+                var dt = rows.Any() ? rows.CopyToDataTable() : tableOrigen.Clone();
+                tableOrigen.Clear();
+                foreach (DataRow r in dt.Rows)
+                    tableOrigen.ImportRow(r);
+            }
+            tableResult = tableOrigen;
+            return tableResult;
+        }
+        else
+            return tableOrigen;
+    }
+
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
         GridView grvPrima = null;
@@ -6453,7 +6477,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
-                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                    //HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                    DataTable tableBuscaCliente = wucBuscaClientesFacturas.BuscaCliente();
+                    if (tableBuscaCliente.Rows.Count > 0)
+                        tableBuscaCliente = EliminarPedidosAgregados(tableBuscaCliente);
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tableBuscaCliente;
+
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = wucBuscaClientesFacturas.BuscaCliente();
                     grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                     grvPedidos.DataBind();
@@ -6596,7 +6625,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if(txtPedidoReferencia.Text.Trim() != "")
         {
             wucBuscaClientesFacturas.TablaFacturas = null;
-            grvPedidos.DataSource = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+            //grvPedidos.DataSource = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+            DataTable tablePedidoRefer = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+            tablePedidoRefer = EliminarPedidosAgregados(tablePedidoRefer);
+            grvPedidos.DataSource = tablePedidoRefer;
             grvPedidos.DataBind();
         }
     }

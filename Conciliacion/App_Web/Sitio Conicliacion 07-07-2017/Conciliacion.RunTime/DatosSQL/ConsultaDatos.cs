@@ -80,7 +80,10 @@ namespace Conciliacion.RunTime.DatosSQL
             {
                 throw ex;
             }
-            if (DireccionEntrega == null || DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
+            if (DireccionEntrega == null || 
+                DireccionEntrega.Nombre == null || 
+                DireccionEntrega.Message == null || 
+                DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
                 return "No encontrado";
             else
                 return DireccionEntrega.Nombre.Trim();
