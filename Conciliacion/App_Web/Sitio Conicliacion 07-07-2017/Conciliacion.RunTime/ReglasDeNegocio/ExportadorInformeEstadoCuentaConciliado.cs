@@ -268,6 +268,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja];
 
+            decimal retiros = 0;
+            decimal depositos = 0;
             foreach (DetalleReporteEstadoCuentaConciliado detalle in _DetalleAExportar)
             {
                 wsSheet1.Cells[i, 4, i, 8].Merge = true;
@@ -281,6 +283,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal;
                 wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
                 wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
+
+                if (detalle.StatusConciliacion == "CONCILIADA")
+                {
+                    retiros += detalle.Retiros;
+                    depositos += detalle.Depositos;
+                }
+
                 i++;
             }
 
@@ -308,10 +317,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             wsSheet1.Cells["M4"].Formula = "SUM(" + ColumnStringSaldofinalbancario + ")";
             wsSheet1.Cells["M4"].Calculate();
 
-           // ---Retiros
-
-            
             //---Depositos
+            wsSheet1.Cells["M6"].Value = depositos;
+            // ---Retiros
+            wsSheet1.Cells["M5"].Value = retiros;
+
             string ColumnStringDep = "J8:J" + finalrows.ToString();
            // --- Saldos
             string ColumnStringSal = "K8:K" + finalrows.ToString();

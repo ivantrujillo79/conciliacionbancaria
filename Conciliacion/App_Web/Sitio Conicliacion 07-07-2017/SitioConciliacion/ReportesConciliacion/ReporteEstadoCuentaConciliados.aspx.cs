@@ -221,20 +221,15 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                 File.Delete(HttpRuntime.AppDomainAppPath + @"InformesExcel\"+ "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx");
             }
 
-
-
-            if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
+            if (WUCListadoCuentasBancarias1.CuentasSeleccionadas != null && WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
             {
                 Boolean esfinal = false;
                 registrofinal = WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count - 1;
-
                 for (int i = 0; i <= WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count() - 1; i++)
                 {
                     var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
                     if (registrofinal == i)
                         esfinal = true;
-
-
                     conexion.AbrirConexion(false);
                     string banco = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(0, 20).TrimEnd();
                     string numerocuenta = WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Substring(WUCListadoCuentasBancarias1.CuentasSeleccionadas[i].Descripcion.ToString().Length - 20).TrimStart();
@@ -243,23 +238,15 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                     HttpRuntime.AppDomainAppPath + @"InformesExcel\", "EdoCtaCon" + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx", numerocuenta, banco, esfinal, "");
                     obExportador.FechaMesEncabezado = fechaInicio.ToString();
                     obExportador.generarInforme();
-                }        
-               
-                contador = contador + 1;                 
-               
 
+                    if (lstDetalle.Count > 0)
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                            @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
+
+                }
+                contador = contador + 1;
             }
-
-
-
-            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-          @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
-
-
-          
-
-
-            }
+        }
         catch (Exception ex)
         {
             //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);

@@ -575,6 +575,7 @@ namespace Conciliacion.RunTime.DatosSQL
             private string conceptoConciliado;
             private string documentoConciliado;
             private string clabe;
+            private string statusconciliacion;
 
             public string Corporativo
             {
@@ -666,6 +667,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 set { clabe = value; }
             }
 
+            public string StatusConciliacion
+            {
+                get { return statusconciliacion; }
+                set { statusconciliacion = value; }
+            }
+
             public DetalleReporteEstadoCuentaConciliado()
             {
             }
@@ -755,6 +762,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                     Convert.ToString(reader["DocumentoConciliado"]);
                             dtReporteEstadosCuentaConciliado.Clabe = reader["Clabe"] == DBNull.Value ? "" :
                                                                                 Convert.ToString(reader["Clabe"]);
+
+                            dtReporteEstadosCuentaConciliado.StatusConciliacion = Convert.ToString(reader["StatusConciliacion"]);
 
                             ListaResultado.Add(dtReporteEstadosCuentaConciliado);
 
