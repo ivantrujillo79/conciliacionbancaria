@@ -179,6 +179,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
+        if (objControlPostBack == "btnBuscaFactura" || objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnFiltraPedidoReferencia")
+            hdfUltimoBotonPresionado.Value = objControlPostBack;
         GuardarSeleccionadosPedidos();
         try
         {
@@ -5100,27 +5102,31 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             if (objSolicitdConciliacion.ConsultaPedido())
             {
-                if (txtPedidoReferencia.Text.Trim() != "")
+                DataTable tablaReferenciasP = null;
+                if (hdfUltimoBotonPresionado.Value == "btnFiltraCliente")
+                {
+                    if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
+                    {
+                        tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    }
+                    else
+                    {
+                        tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                    }
+                }
+                else
+                if (hdfUltimoBotonPresionado.Value == "btnFiltraPedidoReferencia") //if (txtPedidoReferencia.Text.Trim() != "")
                 {
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+                    tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 }
                 else
-                if (wucBuscaClientesFacturas.TablaFacturas != null)
+                if (hdfUltimoBotonPresionado.Value == "btnBuscaFactura") //if (wucBuscaClientesFacturas.TablaFacturas != null)
                 {
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.TablaFacturas;
-                    Console.WriteLine("Problemas");
+                    tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    //Console.WriteLine("Problemas");
                 }
-
-                DataTable tablaReferenciasP;
-                if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
-                {
-                    tablaReferenciasP = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                }
-                else
-                {
-                    tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];    
-                }
-                
                 grvPedidos.PageIndex = 0;
                 grvPedidos.DataSource = tablaReferenciasP;
                 grvPedidos.DataBind();

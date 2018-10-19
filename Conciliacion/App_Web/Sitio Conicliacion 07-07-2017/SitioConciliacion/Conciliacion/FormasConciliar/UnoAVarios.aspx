@@ -75,6 +75,22 @@
                 return false;
         }
 
+        function chkSeleccionaTodosPedido() {
+            //debugger;
+            if (document.getElementById('ctl00_contenidoPrincipal_grvPedidos') != null) {
+                grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
+                chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarInternosTodos').checked;
+                for (indice = 1; indice < grv.rows.length; indice++) {
+                    grv.rows[indice].cells[1].children[0].checked = chkVal;
+                    res = btnAgregarPedidoConciliacion(grv, indice);
+                    if (res == false) {
+                        document.getElementById('ctl00_contenidoPrincipal_grvPedidos').rows[indice].cells[1].children[0].checked = false;
+                        break;
+                    }
+                }
+            }
+        }
+
         function btnAgregarPedidoConciliacion(grid, fila) {
             //debugger;
             dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML);
@@ -136,7 +152,8 @@
                 }
                 else
                 {
-                    (grid.parentNode.parentNode.children[fila].children[0]).checked = false;
+                    if (grid.parentNode.parentNode.children[fila] != null)
+                        (grid.parentNode.parentNode.children[fila].children[0]).checked = false;
                     alert('El total acumulado es mayor a monto del pedido.');
                     return false;
                 }
@@ -643,6 +660,8 @@
 
             <asp:HiddenField ID="hdfEsPedido" runat="server" />
             <asp:HiddenField ID="hdfCambiarEstatusPedido" runat="server" />
+
+            <asp:HiddenField ID="hdfUltimoBotonPresionado" runat="server" />
 
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
                 <tr>
@@ -1271,10 +1290,11 @@
                             <table width="100%">
                                 <tr>
                                     <td>
-                                        <asp:Label ID="lblTiposdeCobro" Text="Tipos de Cobro" runat="server" CssClass="etiqueta fg-color-blanco"></asp:Label>
+                                        <asp:Label ID="lblTiposdeCobro" Text="Tipos de Cobro" runat="server" CssClass="etiqueta fg-color-blanco" ToolTip="Seleccione el tipo de cobro para asignarlo al guardar"></asp:Label>
                                         <asp:DropDownList ID="ddlTiposDeCobro" runat="server" AutoPostBack="False"
                                             CssClass="etiqueta dropDownPequeño" Style="margin-bottom: 3px; margin-right: 3px"
-                                            Width="150px">
+                                            Width="150px"
+                                            ToolTip="Seleccione el tipo de cobro para asignarlo al guardar">
                                             </asp:DropDownList>
                                     </td>
                                 </tr>
@@ -1306,11 +1326,8 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Secuencia" SortExpression="Secuencia">
                                     <ItemTemplate>
-                                        
-                                        <%--123--%>
                                         <asp:RadioButton ID="rdbSecuencia" runat="server" GroupName="GrupoExternos" AutoPostBack="True"
                                             Text='<%# resaltarBusqueda(Eval("Secuencia").ToString()) %>' OnCheckedChanged="rdbSecuencia_CheckedChanged" />
-
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" BackColor="#ebecec" Width="80px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="80px"></HeaderStyle>
@@ -1636,6 +1653,14 @@
                                             </td>
                                             <%--    Fin comisiones  --%>
                                             <td></td>
+                                        </tr>
+                                        <tr>
+                                            <%--123--%>
+                                            <td style="width: 15%" class="centradoJustificado">
+                                                <asp:CheckBox ID="chkSeleccionarInternosTodos" runat="server" Text="Selecciona Todos" CssClass="etiqueta fg-color-blanco"
+                                                    ToolTip="SELECCIONA TODOS LOS INTERNOS"
+                                                    OnClick="chkSeleccionaTodosPedido();" />
+                                            </td>
                                         </tr>
                                     </table>		
                                 </ContentTemplate>
@@ -2106,7 +2131,6 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <%--<asp:CheckBox runat="server" ID="chkPedido" OnClick="return btnAgregarPedidoConciliacion(this.RowIndex);"/>--%>
                                             <asp:CheckBox runat="server" ID="chkPedido" OnClick="return btnAgregarPedidoConciliacion(this,this.parentNode.parentNode.rowIndex);" />
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
