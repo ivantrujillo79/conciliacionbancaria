@@ -813,12 +813,17 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td></td>
+                                    <td class="etiqueta lineaVertical centradoMedio" style="width: 20%; padding: 5px 5px 5px 5px">Selecciona Todo:
+                                        <asp:CheckBox ID="chkSeleccionaExternosTodos" runat="server" AutoPostBack="true"
+                                            OnCheckedChanged="chkSeleccionaExternosTodos_CheckedChanged" 
+                                            CssClass="etiqueta fg-color-blanco centradoMedio" />
                                     </td>
-                                    <td>
-                                        <asp:Label ID="lblTiposdeCobro" Text="Tipos de Cobro" runat="server" CssClass="etiqueta fg-color-blanco"></asp:Label>
+                                    <td class="etiqueta lineaVertical centradoMedio" style="width: 20%; padding: 5px 5px 5px 5px">Tipos de Cobro:
+                                        <asp:Label ID="lblTiposdeCobro" runat="server" 
+                                            CssClass="etiqueta fg-color-blanco" ></asp:Label>
                                     </td>
-                                    <td>
+                                    <td class="etiqueta lineaVertical centradoMedio" style="width: 20%; padding: 5px 5px 5px 5px">
                                         <asp:DropDownList ID="ddlTiposDeCobro" runat="server" AutoPostBack="False"
                                                 CssClass="etiqueta dropDownPequeño" Style="margin-bottom: 3px; margin-right: 3px"
                                                 Width="150px">

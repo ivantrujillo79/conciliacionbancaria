@@ -89,6 +89,13 @@
                     }
                 }
             }
+            if (document.getElementById('ctl00_contenidoPrincipal_grvInternos') != null) {
+                grv = document.getElementById('ctl00_contenidoPrincipal_grvInternos');
+                chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarInternosTodos').checked;
+                for (indice = 1; indice < grv.rows.length; indice++) {
+                    grv.rows[indice].cells[1].children[0].checked = chkVal;
+                }
+            }
         }
 
         function btnAgregarPedidoConciliacion(grid, fila) {

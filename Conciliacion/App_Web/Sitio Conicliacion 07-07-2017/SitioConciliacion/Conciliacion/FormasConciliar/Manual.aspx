@@ -104,9 +104,35 @@
             return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
         }
 
+        function chkSeleccionarTodosInternos_clic(){
+            if (document.getElementById('ctl00_contenidoPrincipal_grvInternos') != null) {
+                grv = document.getElementById('ctl00_contenidoPrincipal_grvInternos');
+                chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarTodosInternos').checked;
+                for (indice = 1; indice < grv.rows.length; indice++) {
+                    o = grv.rows[indice].cells[0].children[0];
+                    o.checked = chkVal;
+                    deposito = parseFloat(grv.rows[indice].cells[8].innerText.replace(',', '').replace('$', '').trim());
+                    retiro = parseFloat(grv.rows[indice].cells[7].innerText.replace(',', '').replace('$', '').trim());
+                    chkInterno_clic(o, deposito, retiro);
+                }
+            }
+        }
+        function chkSeleccionarTodosExternos_clic() {
+            if (document.getElementById('ctl00_contenidoPrincipal_grvExternos') != null) {
+                grv = document.getElementById('ctl00_contenidoPrincipal_grvExternos');
+                chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarTodosExternos').checked;
+                for (indice = 1; indice < grv.rows.length; indice++) {
+                    o = grv.rows[indice].cells[0].children[0];
+                    o.checked = chkVal;
+                    deposito = parseFloat(grv.rows[indice].cells[8].innerText.replace(',', '').replace('$', '').trim());
+                    retiro = parseFloat(grv.rows[indice].cells[7].innerText.replace(',', '').replace('$', '').trim());
+                    chkExterno_clic(o, deposito, retiro);
+                }
+            }
+        }
         function chkExterno_clic(o, deposito, retiro){
             //debugger;
-            var monto = deposito + retiro;
+            var monto = parseFloat(deposito) + parseFloat(retiro);
             montoAcumulado = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoExterno').innerHTML.trim();
             if (montoAcumulado == "")
                 montoAcumulado = 0;
@@ -737,6 +763,17 @@
                                 </tr>
                             </table>
                         </div>
+                        <div id="configuracionExternosB" class="bg-color-grisClaro">
+	                        <table width="100%">
+        	                        <tr>
+                	                    <td class="centradoJustificado" style="width: 30%;">
+                                            <asp:CheckBox ID="chkSeleccionarTodosExternos" runat="server" Text="Seleccionar Todos" AutoPostBack="false" Checked="false" 
+                                                CssClass="etiqueta fg-color-blanco centradoMedio"
+                                                OnClick="chkSeleccionarTodosExternos_clic()" />
+                	                    </td>
+        	                        </tr>
+	                        </table>
+                        </div>
                         <div style="height:500px; width:590px; overflow:auto;">                            
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
@@ -989,6 +1026,17 @@
                                     </td>
                                 </tr>
                             </table>
+                        </div>
+                        <div id="configuracionInternosB" class="bg-color-grisClaro01">
+	                        <table width="100%">
+        	                        <tr>
+                	                    <td class="centradoJustificado" style="width: 30%;">
+                                            <asp:CheckBox ID="chkSeleccionarTodosInternos" runat="server" Text="Seleccionar Todos" AutoPostBack="false" Checked="false" 
+                                                CssClass="etiqueta fg-color-blanco centradoMedio"
+                                                OnClick="chkSeleccionarTodosInternos_clic()"/>
+                	                    </td>
+        	                        </tr>
+	                        </table>
                         </div>
                         <div style="height:500px; width:590px; overflow:auto;">
                         <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"

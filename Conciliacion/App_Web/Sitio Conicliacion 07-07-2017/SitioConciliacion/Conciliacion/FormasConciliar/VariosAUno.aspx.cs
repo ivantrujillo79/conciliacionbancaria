@@ -3137,4 +3137,23 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         mpeLanzarSeleccionCliente.Hide();
     }
+
+    protected void chkSeleccionaExternosTodos_CheckedChanged(object sender, EventArgs e)
+    {
+        //foreach (
+        //    RadioButton rb in
+        //        from GridViewRow gv in grvExternos.Rows
+        //        select (RadioButton)grvExternos.Rows[gv.RowIndex].FindControl("rdbSecuencia"))
+        //{
+        //    rb.Checked = false;
+        //    despintarFilaSeleccionadaExterno(((GridViewRow)rb.Parent.Parent).RowIndex);
+        //}
+        CheckBox chk = (sender as CheckBox);
+        foreach (GridViewRow fila in grvExternos.Rows.Cast<GridViewRow>().Where(fila => fila.RowType == DataControlRowType.DataRow))
+        {
+            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = chk.Checked;
+            chkExterno_CheckedChanged(fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault(),null);
+        }
+    }
+
 }
