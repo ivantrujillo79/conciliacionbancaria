@@ -1062,6 +1062,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
 
+            if (extSeleccionados.Count == 0)
+            {
+                throw new Exception(" Seleccione transacciones válidas para continuar.");
+            }
+
             if (objSolicitdConciliacion.ConsultaArchivo()) //if (formaConciliacion == 6)
             {
                 foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
@@ -1069,6 +1074,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     rfNC.FormaConciliacion = formaConciliacion;
                     foreach (ReferenciaConciliada rfC in rfNC.ListaReferenciaConciliada)
                     {
+                        if (rfC.StatusConciliacion == "CONCILIACION CANCELADA")
+                        {
+                            throw new Exception(rfC.StatusConciliacion + ".Seleccione otra para continuar.");
+                        }
                         rfC.FormaConciliacion = formaConciliacion;
                     }
                 }
@@ -1080,6 +1089,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     rfNC.FormaConciliacion = formaConciliacion;
                     foreach (ReferenciaConciliadaPedido rfC in rfNC.ListaReferenciaConciliada)
                     {
+                        if (rfC.StatusConciliacion == "CONCILIACION CANCELADA")
+                        {
+                            throw new Exception(rfC.StatusConciliacion + ".Seleccione otra para continuar.");
+                        }
                         rfC.FormaConciliacion = formaConciliacion;
                     }
                 }
@@ -2486,6 +2499,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
         if (chk.Checked)
         {
+            //if (rfEx.StatusConciliacion == "CONCILIACION CANCELADA")
+            //{
+            //    chk.Checked = false;
+            //    App.ImplementadorMensajes.MostrarMensaje(rfEx.StatusConciliacion + ". Seleccione otra para continuar.");
+            //}
             rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
             GenerarTablaExternos();
             if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
