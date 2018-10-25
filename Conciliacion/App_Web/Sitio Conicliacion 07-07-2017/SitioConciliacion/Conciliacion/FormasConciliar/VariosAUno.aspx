@@ -35,7 +35,7 @@
 
         function activarDatePickers() {
             //DataPicker Rango-Fechas 
-            if (<%= tipoConciliacion %> != 2) {
+            //if (<%= tipoConciliacion %> != 2) {
                 //DatePicker FOperacion
                 $( "#<%= txtFOInicio.ClientID%>" ).datepicker({
                     defaultDate: "+1w",
@@ -74,8 +74,8 @@
                         $( "#<%=txtFMInicio.ClientID%>" ).datepicker( "option", "maxDate", selectedDate );
                     }
                 });
-            }
-            else{
+            //}
+            //else{
                 //DatePicker FSuministro
                 $( "#<%= txtFSInicio.ClientID%>" ).datepicker({
                     defaultDate: "+1w",
@@ -95,7 +95,7 @@
                         $( "#<%=txtFSInicio.ClientID%>" ).datepicker( "option", "maxDate", selectedDate );
                     }
                 });
-            }
+            //}
         }
         function gridviewScroll() {
             $('#<%=grvExternos.ClientID%>').gridviewScroll({

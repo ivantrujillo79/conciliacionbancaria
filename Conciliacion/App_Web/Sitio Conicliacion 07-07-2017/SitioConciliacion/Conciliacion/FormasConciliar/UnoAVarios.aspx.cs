@@ -4853,29 +4853,33 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     }
 
 
-    public void ocultarFiltroFechas(int tpConciliacion)
+    public void ocultarFiltroFechas(short tpConciliacion)
     {
-        bool blVisble = tpConciliacion != 2;
+        short _formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]);
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tpConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = _formaConciliacion;
+
         lblFOperacion.Visible =
             txtFOInicio.Visible =
             txtFOTermino.Visible =
             btnRangoFechasFO.Visible =
             rvFOInicio.Visible =
-            rvFMTermino.Visible = blVisble;
+            rvFMTermino.Visible = objSolicitdConciliacion.ConsultaArchivo();
 
         lblFMovimiento.Visible =
             txtFMInicio.Visible =
             txtFMTermino.Visible =
             btnRangoFechasFM.Visible =
             rvFMInicio.Visible =
-            rvFMTermino.Visible = blVisble;
+            rvFMTermino.Visible = objSolicitdConciliacion.ConsultaArchivo();
 
         lblFSuminstro.Visible =
             txtFSInicio.Visible =
             txtFSTermino.Visible =
             btnRangoFechasFS.Visible =
             rvFSInicio.Visible =
-            rvFSTermino.Visible = !blVisble;
+            rvFSTermino.Visible = objSolicitdConciliacion.ConsultaPedido();
 
     }
 
@@ -4973,18 +4977,23 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    protected void btnRangoFechasFS_Click(object sender, ImageClickEventArgs e)
+    {
+        FiltrarRangoFechasFS();
+    }
+
     public void FiltrarRangoFechasFS()
     {
         try
         {
-            DataTable dt = (DataTable) HttpContext.Current.Session["TAB_INTERNOS"];
+            DataTable dt = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
             DataView dv = new DataView(dt);
 
             string SearchExpression = String.Empty;
             if (!(String.IsNullOrEmpty(txtFSInicio.Text) || String.IsNullOrEmpty(txtFSTermino.Text)))
             {
                 SearchExpression = string.Format("FSuministro >= '{0}' AND FSuministro <= '{1}'", txtFSInicio.Text,
-                    txtFSTermino.Text);
+                    txtFSTermino.Text + " 23:59:59");
             }
             if (dv.Count <= 0)
             {
@@ -5002,6 +5011,26 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             Session["StatusFiltro"] = statusFiltro;
             tipoFiltro = "FS";
             Session["TipoFiltro"] = tipoFiltro;
+
+            //DataTable dtReferenciaPedidos = (DataTable)Session["PedidosBuscadosPorUsuario"]);
+            //DataView dv = new DataView(dt);
+            //DataTable dtFiltrada;
+            //if (!(String.IsNullOrEmpty(txtFSInicio.Text) || String.IsNullOrEmpty(txtFSTermino.Text)))
+            //{
+            //    listaFiltrada = listaReferenciaPedidos.
+            //                        Where(x => {
+            //                            bool v =
+            //                               x.FSuministro >= DateTime.Parse(txtFSInicio.Text) & x.FSuministro <= DateTime.Parse(txtFSTermino.Text + " 23:59:59");
+            //                            return v;
+            //                        })
+            //                        .ToList();
+            //    grvPedidos.DataSource = listaFiltrada;
+            //    grvPedidos.DataBind();
+            //}
+            //else
+            //{
+            //    btnFiltraCliente_Click(btnFiltraCliente, null);
+            //}
 
         }
         catch (Exception ex)
@@ -5024,11 +5053,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnRangoFechasFM_Click(object sender, ImageClickEventArgs e)
     {
         FiltrarRangoFechasFM();
-    }
-
-    protected void btnRangoFechasFS_Click(object sender, ImageClickEventArgs e)
-    {
-        FiltrarRangoFechasFS();
     }
 
     protected void btnAgregarPedidoDirecto_Click(object sender, ImageClickEventArgs e)

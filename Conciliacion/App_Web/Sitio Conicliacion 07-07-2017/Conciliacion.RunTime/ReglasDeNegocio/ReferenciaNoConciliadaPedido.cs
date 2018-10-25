@@ -51,6 +51,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string serie;
         string foliofactura;
         int factura;
+        DateTime fsuministro;
 
         DetalleSaldoAFavor DetalleSaldo;
 
@@ -424,9 +425,26 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { foliofactura = value; }
         }
 
+        public DateTime FSuministro
+        {
+            get { return fsuministro; }
+            set { fsuministro = value; }
+        }
+        
+        public int Celula
+        {
+            get { return celulapedido; }
+            set { celulapedido = value; }
+        }
+        public int AñoPed
+        {
+            get { return añopedido; }
+            set { añopedido = value; }
+        }
+
         #endregion
 
-         public virtual string CadenaConexion
+        public virtual string CadenaConexion
         {
             get
             {
