@@ -7,6 +7,7 @@ using System.Globalization;
 using DetallePosicionDiariaBancos = Conciliacion.RunTime.DatosSQL.InformeBancarioDatos.DetallePosicionDiariaBancos;
 using OfficeOpenXml;
 using System.Drawing;
+using System.Data;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -524,7 +525,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 _DetallePosicionDiariaBancos.Clear(); 
             }
 
-
             var xlHoja = excelPackage.Workbook.Worksheets[excelPackage.Workbook.Worksheets.Count()];
 
             ExcelRange celdaDiaIni = xlHoja.Cells["A4:E19"];
@@ -552,6 +552,26 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             ExcelRange celdaIniDatos = xlHoja.Cells["A4:A4"];
 
             int renglontodos = 0;
+            //List<string> ListFila = new List<string>();
+            //int indice = 0;
+            //int anteriorColumna = -1;
+            DataTable dtConceptoDetalle = new DataTable();
+            dtConceptoDetalle.Columns.Add("Concepto",typeof(string));
+            
+            //int dias = (from x in _PosicionesDiarias
+            //           select x.Fecha).Distinct().Count();
+            //for (int i = 1; i < dias; i++)
+            //    dtConceptoDetalle.Columns.Add("Dia"+i, typeof(float));
+
+            foreach (DateTime item in (from x in _PosicionesDiarias select x.Fecha).Distinct() )
+            {
+                dtConceptoDetalle.Columns.Add(item.ToShortDateString(), typeof(string)); 
+            }
+
+            Dictionary<string, DataTable> dic = new Dictionary<string, DataTable>();
+            DataTable dtEstructura = new DataTable();
+            dtEstructura.Columns.Add("Concepto", typeof(string));
+            dtEstructura.Columns.Add("Importe", typeof(float));
 
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
@@ -568,7 +588,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         columna = _PosicionesDiarias.Single(x => x.Fecha == item.Fecha)
                                      .Columna;
                     }
-
                     else
                     {
                         columna = 1;
@@ -576,12 +595,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         item.Importe = 0;
                     }
 
-
-
                     columna = columna + 1;
                     string conceptoOriginal = "";
-
-
 
                     if (esDetalle == 1)
                     {
@@ -591,8 +606,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         {
                             renglontodos = 36;
                         }
+                        //if (anteriorColumna != columna)
+                        //{ 
+                        //    anteriorColumna = columna;
+                        //}
+                        //indice = ListFila.IndexOf(conceptoOriginal);
+                        //if (indice > -1)
+                        //    renglontodos = indice + 36;
 
                         concepto = CONCEPTO24;
+
                     }
 
                     switch (concepto)
@@ -754,34 +777,89 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                             break;
 
-
                         case CONCEPTO24:
                             if (descripcioncaja != "TOTAL")
                             {
                                 int finalrows = xlHoja.Dimension.End.Row;
-                                celdaIniDatos[renglontodos, 1].Value = conceptoOriginal;
-                                celdaIniDatos[renglontodos, columna + 1].Value = item.Importe;
-                                celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
-                                celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                                celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
-                                renglontodos = renglontodos + 1;
-                            }
+                                //celdaIniDatos[renglontodos, 1].Value = conceptoOriginal;
+                                //celdaIniDatos[renglontodos, columna + 1].Value = item.Importe;
+                                //celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                                //celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                                //celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
+                                //renglontodos = renglontodos + 1;
 
+                                //indice = ListFila.IndexOf(conceptoOriginal);
+                                //if (indice <= -1)
+                                //{
+                                //    ListFila.Add(conceptoOriginal);
+                                //}
+                                //renglontodos = renglontodos + 1;
+
+                                //DataRow[] row = dtConceptoDetalle.Select("Concepto = '" + conceptoOriginal + "'");
+                                //if (row.Count() == 0 || (row.Count() > 0 && row[0][item.Fecha.ToShortDateString()].ToString() != "")) 
+                                //{
+                                //    DataRow NewRow = dtConceptoDetalle.NewRow();
+                                //    NewRow["Concepto"] = conceptoOriginal;
+                                //    NewRow[item.Fecha.ToShortDateString()] = item.Importe;
+                                //    dtConceptoDetalle.Rows.Add(NewRow);
+                                //}
+                                //else
+                                //{
+                                //    row[0][item.Fecha.ToShortDateString()] = item.Importe;
+                                //}
+                                //if (row.Count() > 0 && row[0][item.Fecha.ToShortDateString()] == null)
+                                //    row[0][item.Fecha.ToShortDateString()] = item.Importe;
+                                //else
+
+                                DataTable dt;
+                                //string dtNombre = conceptoOriginal.Replace(" ", "_") + "_" + item.Fecha.ToShortDateString();
+                                string dtNombre = item.Fecha.ToShortDateString();
+                                if (! dic.TryGetValue(dtNombre, out dt))
+                                { 
+                                    dic.Add(dtNombre, new DataTable());
+                                    dic.TryGetValue(dtNombre, out dt);
+                                    dt = dtEstructura.Clone();
+                                }
+                                
+                                DataRow NewRow = dt.NewRow();
+                                NewRow["Concepto"] = conceptoOriginal;
+                                NewRow["Importe"] = item.Importe;
+                                dt.Rows.Add(NewRow);
+
+                                dic[dtNombre] = dt;
+
+                            }
                             break;
 
                         default:
-
                             break;
 
                     }
-
                     CalculaSumatoria(columna + 1, excelPackage);
-
-
                 }
             }
-
-
+            columna = 1;
+            foreach (KeyValuePair<string, DataTable> pair in dic)
+            {
+                renglontodos = 36;
+                columna = columna + 2;
+                DataTable dt = pair.Value;
+                foreach (DataRow itemDia in dt.Rows)
+                {
+                    if (celdaIniDatos[renglontodos, 1].Value != null && ! celdaIniDatos[renglontodos, 1].Value.Equals(""))
+                    {
+                        while ( celdaIniDatos[renglontodos, 1].Value != null && !celdaIniDatos[renglontodos, 1].Value.Equals(itemDia["Concepto"].ToString()) )
+                            renglontodos++;
+                    }
+                    celdaIniDatos[renglontodos, 1].Value = itemDia["Concepto"].ToString();
+                    celdaIniDatos[renglontodos, columna].Value = itemDia["Importe"]; 
+                    celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+                    celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
+                    renglontodos = renglontodos + 1;
+                    
+                }
+            }
 
             //Area de abajo...
 
