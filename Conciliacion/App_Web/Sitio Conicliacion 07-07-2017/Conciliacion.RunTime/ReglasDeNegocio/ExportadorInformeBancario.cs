@@ -556,6 +556,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             DataTable dtEstructura = new DataTable();
             dtEstructura.Columns.Add("Concepto", typeof(string));
             dtEstructura.Columns.Add("Importe", typeof(float));
+            dtEstructura.Columns.Add("Fecha", typeof(DateTime));
+            dtEstructura.Columns.Add("Columna", typeof(int));
+
+            DataTable dtDetTemp = new DataTable();
+            dtDetTemp.Columns.Add("Concepto", typeof(string));
+            dtDetTemp.Columns.Add("Importe", typeof(float));
+            dtDetTemp.Columns.Add("Fecha", typeof(DateTime));
+            dtDetTemp.Columns.Add("Columna", typeof(int));
 
             foreach (DetallePosicionDiariaBancos item in _DetallePosicionDiariaBancos)
             {
@@ -753,19 +761,27 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             if (descripcioncaja != "TOTAL")
                             {
                                 int finalrows = xlHoja.Dimension.End.Row;
-                                DataTable dt;
-                                string dtNombre = item.Fecha.ToShortDateString();
-                                if (! dic.TryGetValue(dtNombre, out dt))
-                                { 
-                                    dic.Add(dtNombre, new DataTable());
-                                    dic.TryGetValue(dtNombre, out dt);
-                                    dt = dtEstructura.Clone();
-                                }
-                                DataRow NewRow = dt.NewRow();
+                                //DataTable dt;
+                                //string dtNombre = item.Fecha.ToShortDateString();
+                                //if (!dic.TryGetValue(dtNombre, out dt))
+                                //{
+                                //    dic.Add(dtNombre, new DataTable());
+                                //    dic.TryGetValue(dtNombre, out dt);
+                                //    dt = dtEstructura.Clone();
+                                //}
+                                //DataRow NewRow = dt.NewRow();
+                                //NewRow["Concepto"] = conceptoOriginal;
+                                //NewRow["Importe"] = item.Importe;
+                                //dt.Rows.Add(NewRow);
+                                //dic[dtNombre] = dt;
+
+                                DataRow NewRow = dtDetTemp.NewRow();
                                 NewRow["Concepto"] = conceptoOriginal;
                                 NewRow["Importe"] = item.Importe;
-                                dt.Rows.Add(NewRow);
-                                dic[dtNombre] = dt;
+                                NewRow["Fecha"] = item.Fecha;
+                                NewRow["Columna"] = columna;
+                                dtDetTemp.Rows.Add(NewRow);
+
                             }
                             break;
 
@@ -776,26 +792,57 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     CalculaSumatoria(columna + 1, excelPackage);
                 }
             }
-            columna = 1;
+
+            DataView view = dtDetTemp.DefaultView;
+            view.Sort = "Concepto ASC";
+            DataTable dtDetTempSorted = view.ToTable();
+
+            foreach (DataRow item in dtDetTempSorted.Rows)
+            {
+                DataTable dt;
+                string dicKey = item["Concepto"].ToString();
+                if (!dic.TryGetValue(dicKey, out dt))
+                {
+                    dic.Add(dicKey, new DataTable());
+                    dic.TryGetValue(dicKey, out dt);
+                    dt = dtEstructura.Clone();
+                }
+                DataRow NewRow = dt.NewRow();
+                NewRow["Concepto"] = item["Concepto"].ToString();
+                NewRow["Importe"] = item["Importe"].ToString();
+                NewRow["Columna"] = item["Columna"].ToString();
+                NewRow["Fecha"] = item["Fecha"].ToString();
+                dt.Rows.Add(NewRow);
+                dic[dicKey] = dt;
+            }
+
+            int colAntes = -1;
             foreach (KeyValuePair<string, DataTable> pair in dic)
             {
                 renglontodos = 36;
-                columna = columna + 2;
                 DataTable dt = pair.Value;
                 foreach (DataRow itemDia in dt.Rows)
                 {
+                    columna = int.Parse(itemDia["columna"].ToString()) + 1;
+                    if (columna != colAntes)
+                    { 
+                        colAntes = columna;
+                        renglontodos = 36;
+                    }
                     if (celdaIniDatos[renglontodos, 1].Value != null && ! celdaIniDatos[renglontodos, 1].Value.Equals(""))
                     {
-                        while ( celdaIniDatos[renglontodos, 1].Value != null && !celdaIniDatos[renglontodos, 1].Value.Equals(itemDia["Concepto"].ToString()) )
-                            renglontodos++;
+                        while (celdaIniDatos[renglontodos, 1].Value != null && !celdaIniDatos[renglontodos, 1].Value.Equals(itemDia["Concepto"].ToString()))
+                            if (celdaIniDatos[renglontodos, 1].Value.Equals(itemDia["Concepto"].ToString()))
+                                break;
+                            else
+                                renglontodos++;
                     }
                     celdaIniDatos[renglontodos, 1].Value = itemDia["Concepto"].ToString();
                     celdaIniDatos[renglontodos, columna].Value = itemDia["Importe"]; 
                     celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
                     celdaIniDatos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     celdaIniDatos.Style.Fill.BackgroundColor.SetColor(Color.Turquoise);
-                    renglontodos = renglontodos + 1;
-                    
+                    renglontodos = renglontodos + 1;                    
                 }
             }
 
