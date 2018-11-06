@@ -75,7 +75,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         {
             if (wucListadoCajas1.CajasSeleccionadas.Count > 0)
             {
-               
+                List<DateTime> lstFechasPeriodo = new List<DateTime>();
                 if (File.Exists(rutaCompleta+ Archivo)) File.Delete(rutaCompleta+ Archivo);
                 foreach (Caja caja in wucListadoCajas1.CajasSeleccionadas)
                 {
@@ -87,10 +87,15 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
                     if (lstDetalle != null && lstDetalle.Count > 0)
                     {
                         obExportador.generarPosicionDiariaBancos(0);
+                        lstFechasPeriodo.AddRange(
+                            lstDetalle.Select(detalle => detalle.Fecha)
+                                                      .Distinct()
+                                                      .ToList()
+                                                      );
                     }
-
                     if (wucListadoCajas1.CajasSeleccionadas.Count() == contador)
                     {
+                        obExportador.FechasPeriodo = lstFechasPeriodo;
                         obExportador.generarPosicionDiariaBancos(1);
                     }
                 }

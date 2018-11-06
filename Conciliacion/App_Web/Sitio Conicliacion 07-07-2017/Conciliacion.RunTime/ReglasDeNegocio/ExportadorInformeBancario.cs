@@ -134,7 +134,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private decimal SumaKilos42 = 0;
         private decimal SumaKilos43 = 0;
 
-
+        private List<DateTime> fechasperiodo;
+        public List<DateTime> FechasPeriodo
+        {
+            get { return fechasperiodo; }
+            set { fechasperiodo = value; }
+        }
 
         #endregion
 
@@ -277,15 +282,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                 .Caja);
                 }
 
-                agruparPorFecha();
                 if (Esfinal == 0)
                 {
+                    agruparPorFecha();
                     CrearEncabezado(excelPackage, _NombreHoja);
                     exportarPosicionDiariaBancos(excelPackage, _NombreHoja);
                     //Hasta aquí, se genera lo qe viene en el query, falta la hoja de totales
                 }
                 else
                 {
+                    _Fechas = fechasperiodo.Distinct().OrderBy(d => d).ToList();
                     CrearEncabezado(excelPackage, "TOTAL");
                     exportarPosicionDiariaBancos(excelPackage, "TOTAL");
                 }
