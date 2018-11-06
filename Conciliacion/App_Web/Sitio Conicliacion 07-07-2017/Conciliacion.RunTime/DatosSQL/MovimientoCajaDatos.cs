@@ -577,8 +577,9 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                conexion.AbrirConexion(true);
+                //conexion.AbrirConexion(true);
                 MovimientoCajaAlta(conexion);
+                
                 AplicarCobros(conexion);
                 ValidaMovimientoCaja(conexion);
                // conexion.Comando.Transaction.Commit();
@@ -606,7 +607,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                conexion.AbrirConexion(true);
+              //  conexion.AbrirConexion(true);
                 if (AplicarCobrosCRM(conexion, URLGateway)) 
                 { 
                     MovimientoCajaAlta(conexion);
