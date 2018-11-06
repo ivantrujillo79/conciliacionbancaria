@@ -3684,7 +3684,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         //Leer Referncia (Pedido) que se va quitar
         int pedido = Convert.ToInt32(grvAgregadosPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
-        short celulaPedido = Convert.ToSByte(grvAgregadosPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
+        int celulaPedido = Convert.ToInt32(grvAgregadosPedidos.DataKeys[gRowIn.RowIndex].Values["Celula"]);
         int añoPedido = Convert.ToInt32(grvAgregadosPedidos.DataKeys[gRowIn.RowIndex].Values["AñoPed"]);
 
         rcExterna.QuitarReferenciaConciliada(pedido, celulaPedido, añoPedido);
