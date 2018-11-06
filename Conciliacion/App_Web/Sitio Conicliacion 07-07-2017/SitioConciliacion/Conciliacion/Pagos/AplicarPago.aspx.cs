@@ -733,7 +733,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             short mesConciliacion = 0;
             short tipoConciliacion = 0;            
 
-            conexion.AbrirConexion(false,false);           
+            conexion.AbrirConexion(true,true);           
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {             
@@ -866,7 +866,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
-            conexion.AbrirConexion(true);
+          //  conexion.AbrirConexion(true);
          
             if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Validado)
             {
@@ -878,7 +878,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 objFacturasComplemento.FolioConciliacion = folioConciliacion;
                 objFacturasComplemento.Guardar(conexion);
             }
-            
+
 
             //if ( ! EjecutaActualizaPedidoRTGM() )
             //    throw new Exception("Ocurrió un error en GMGateway.");
@@ -889,6 +889,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             //            if ( !objPedido.PedidoActualizaSaldoCRM(_URLGateway) )
             //                throw new Exception("Ocurrio un error al actualizar saldo en CRM");
 
+           
             if (conexion.Comando.Transaction != null)
             {
                 conexion.Comando.Transaction.Commit();
