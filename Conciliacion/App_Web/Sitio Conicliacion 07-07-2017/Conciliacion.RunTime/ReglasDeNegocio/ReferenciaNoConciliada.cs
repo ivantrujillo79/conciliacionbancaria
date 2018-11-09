@@ -1129,7 +1129,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return resultado;
         }
 
-        public bool QuitarReferenciaConciliada(int pedido, short celulapedido, int añopedido)
+        public bool QuitarReferenciaConciliada(int pedido, int celulapedido, int añopedido)
         {
             bool resultado = true;
             try
