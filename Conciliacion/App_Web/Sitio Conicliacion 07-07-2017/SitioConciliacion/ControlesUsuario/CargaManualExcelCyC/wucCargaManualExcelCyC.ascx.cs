@@ -345,7 +345,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         string sRutaArchivo;
         string sExt;
         StringBuilder sbMensaje;
-        string[] extensiones = { ".xls", ".xlsx" };
+        string[] extensiones = { ".xlsx" };
         string[] MIME = {"application/vnd.ms-excel" ,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
@@ -437,7 +437,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 }
                 else
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
+                    App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLSX");
+                    //App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
                     //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                     //    @"alertify.alert('Conciliaci&oacute;n bancaria','El archivo debe ser de formato Excel', function(){ alertify.error('Error cargando archivo'); });", true);
                 }
