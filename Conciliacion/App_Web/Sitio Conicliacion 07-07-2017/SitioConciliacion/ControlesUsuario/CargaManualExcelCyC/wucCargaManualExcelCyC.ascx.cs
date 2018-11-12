@@ -373,7 +373,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
                         if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
                         {
-                            dtTabla = iValidador.CargaArchivo(sRutaArchivo, Path.GetFileName(sArchivo));
+                            dtTabla = iValidador.CargaArchivo(sArchivo);
                             DatosAConciliar = dtTabla;
                             DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
 
@@ -432,8 +432,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                                     DispersarPagos(dtTabla);
                                 }
                             }
-                        } // if ArchivoValido
-                    } // if File.Exists
+                        }
+                    }
                 }
                 else
                 {

@@ -154,7 +154,8 @@ namespace ValidacionArchivosConciliacion
         int DocumentoReferencia { get; set; }
 
         bool ArchivoValido(string RutaArchivo, string NombreArchivo);
-        DataTable CargaArchivo(string RutaArchivo, string NombreArchivo);
+        //DataTable CargaArchivo(string RutaArchivo, string NombreArchivo);
+        DataTable CargaArchivo(string RutaArchivo, bool TieneEncabezado = true);
         List<DetalleValidacion> ValidacionCompleta();
     }
     #endregion
@@ -547,8 +548,6 @@ namespace ValidacionArchivosConciliacion
 
             return detallevalidacion;
         }
-
-
         
         public bool ArchivoValido(string RutaArchivo, string NombreArchivo)
         {
@@ -566,47 +565,77 @@ namespace ValidacionArchivosConciliacion
                 return false;
         }
 
-        public DataTable CargaArchivo(string RutaArchivo, string NombreArchivo)
+        //public DataTable CargaArchivo(string RutaArchivo, string NombreArchivo)
+        public DataTable CargaArchivo(string RutaArchivo, bool TieneEncabezado = true)
         {
-            OleDbConnection oledbConn = new OleDbConnection();
-            OleDbCommand cmd;
-            OleDbDataAdapter oleda;
-            DataSet ds;            
-            ds = new DataSet();
-            string sArchivo = "";
-
-            try
+            using (var pck = new OfficeOpenXml.ExcelPackage())
             {
-                sArchivo = RutaArchivo + NombreArchivo;
-
-
-                oledbConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" +"Data Source=" + sArchivo +";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
-
-                if (oledbConn != null)
+                using (var stream = File.OpenRead(RutaArchivo))
                 {
-                    oledbConn.Open();
-                    try
+                    pck.Load(stream);
+                }
+                var ws = pck.Workbook.Worksheets.First();
+                dtArchivo = new DataTable("Hoja1");
+
+                foreach (var firstRowCell in ws.Cells[1, 1, 1, ws.Dimension.End.Column])
+                {
+                    dtArchivo.Columns.Add(TieneEncabezado ? firstRowCell.Text : string.Format("Column {0}", firstRowCell.Start.Column));
+                }
+
+                var startRow = TieneEncabezado ? 2 : 1;
+                for (int rowNum = startRow; rowNum <= ws.Dimension.End.Row; rowNum++)
+                {
+                    var wsRow = ws.Cells[rowNum, 1, rowNum, ws.Dimension.End.Column];
+                    DataRow row = dtArchivo.Rows.Add();
+                    foreach (var cell in wsRow)
                     {
-                        cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
-                        oleda = new OleDbDataAdapter();
-                        oleda.SelectCommand = cmd;
-                        oleda.Fill(ds, "Registros");
-                        dtArchivo = ds.Tables[0];
-                    }
-                    finally
-                    {
-                        oledbConn.Close();
+                        row[cell.Start.Column - 1] = cell.Text;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                App.ImplementadorMensajes.MostrarMensaje(ex.Message);
-            }
-            if (ds.Tables.Count > 0)
-                return ds.Tables[0];
-            else
-                return null;
+            return dtArchivo;
+
+            #region Carga de archivo utilizando la paquetería de Microsoft Office
+            //OleDbConnection oledbConn = new OleDbConnection();
+            //OleDbCommand cmd;
+            //OleDbDataAdapter oleda;
+            //DataSet ds;
+            //ds = new DataSet();
+            //string sArchivo = "";
+
+            //try
+            //{
+            //    sArchivo = RutaArchivo + NombreArchivo;
+
+
+            //    oledbConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + sArchivo + ";Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'; ");
+
+            //    if (oledbConn != null)
+            //    {
+            //        oledbConn.Open();
+            //        try
+            //        {
+            //            cmd = new OleDbCommand("SELECT * FROM [Hoja1$]", oledbConn);
+            //            oleda = new OleDbDataAdapter();
+            //            oleda.SelectCommand = cmd;
+            //            oleda.Fill(ds, "Registros");
+            //            dtArchivo = ds.Tables[0];
+            //        }
+            //        finally
+            //        {
+            //            oledbConn.Close();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //}
+            //if (ds.Tables.Count > 0)
+            //    return ds.Tables[0];
+            //else
+            //    return null;
+            #endregion
         }
 
         static List<T> CrearListaGenerica<T>(T value)
