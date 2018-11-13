@@ -44,10 +44,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-
+            
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
+            
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
                 if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
@@ -62,10 +63,24 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
 
                 string statusInicial;
+
+                int visibleAreasComunes;
                 StatusMovimientoCaja status;
 
                
                 statusInicial= parametros.ValorParametro(30, "StatusInicialMovCaja");
+
+
+                try
+                {
+                    visibleAreasComunes = int.Parse(parametros.ValorParametro(30, "PAGOAREASCOMUNES"));
+                }
+                catch 
+                {
+                    visibleAreasComunes = 0;
+                }
+
+                td1.Visible= visibleAreasComunes == 1;
 
                 esEdificios = Convert.ToSByte(Request.QueryString["EsEdificios"]);
 
@@ -82,6 +97,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 {
                     status = StatusMovimientoCaja.Validado;
                 }
+
+                
                   
                 
                 corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
@@ -686,6 +703,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
     //    solicitudActualizaPedido.Pedidos.Add(pedido);
     //}
+
+    protected void btnAreasComunes_Click(object sender, ImageClickEventArgs e)
+    {
+        
+        Response.Redirect("~/paginaAreasComunes.aspx");
+    }
 
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {

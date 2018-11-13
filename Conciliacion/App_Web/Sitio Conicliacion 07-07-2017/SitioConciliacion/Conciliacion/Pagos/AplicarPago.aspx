@@ -1,7 +1,11 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" %>
+
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     APLICAR PAGOS
 </asp:Content>
@@ -176,7 +180,7 @@
                                     <asp:DropDownList runat="server" ID="ddlCriteriosConciliacion" CssClass="etiqueta dropDownPequeño"
                                         Width="150px" Style="margin-bottom: 3px; margin-right: 3px" AutoPostBack="False"
                                         Enabled="False" />
-                                </td>
+                                    </td>
                             </tr>
                         </table>
                     </td>
@@ -287,6 +291,17 @@
                         </table>
                     </td>
                     <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
+                        <table class="etiqueta opcionBarra">
+                            <tr>
+                                <td class="iconoOpcion bg-color-grisClaro01" style="height: 30px" id="td1"
+                                    runat="server">
+                                    <asp:ImageButton ID="btnAreasComunes" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Detalle.png"
+                                        ToolTip="PAGO DE AREAS COMUNES" Width="25px" OnClick="btnAreasComunes_Click" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top;" >
                         <table class="etiqueta opcionBarra">
                             <tr>
                                 <td class="iconoOpcion bg-color-azulOscuro" style="height: 30px" id="tdAplicarPagos"
@@ -576,6 +591,11 @@
                     </td>
                 </tr>
             </table>
+            <%--            Panel popup inicia --%>
+           
+            <%--            Panel popup termina --%>
+
+
         </ContentTemplate>
     </asp:UpdatePanel>
     <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upAplicarPagos">
@@ -585,6 +605,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
     </asp:ModalPopupExtender>
 </asp:Content>
