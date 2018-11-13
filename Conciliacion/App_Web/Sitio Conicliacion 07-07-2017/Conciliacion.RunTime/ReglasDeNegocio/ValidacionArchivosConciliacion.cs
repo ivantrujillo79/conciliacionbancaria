@@ -150,6 +150,10 @@ namespace ValidacionArchivosConciliacion
         string NombreArchivo { get; set; }
         string TipoMIME { get; set; }
 
+        byte Modulo { get; set; }
+        string CadenaConexion { get; set; }
+        string URLGateway { get; set; }
+
         int CuentaBancaria { get; set; }
         int DocumentoReferencia { get; set; }
 
@@ -191,6 +195,10 @@ namespace ValidacionArchivosConciliacion
         public string RutaArchivo { get; set; }
         public string NombreArchivo { get; set; }
         public string TipoMIME { get; set; }
+
+        public byte Modulo { get; set; }
+        public string CadenaConexion { get; set; }
+        public string URLGateway { get; set; }
 
         public int CuentaBancaria { get; set; }
         public int DocumentoReferencia { get; set; }
@@ -257,7 +265,14 @@ namespace ValidacionArchivosConciliacion
                 listDetalleValidacion.Add(ValidaCuentaBancaria());
                 listDetalleValidacion.Add(ValidaDocumentoReferencia());
                 listDetalleValidacion.Add(ValidaMonto());
-                listDetalleValidacion.Add(ValidaParentezco());
+                if (!String.IsNullOrEmpty(URLGateway))
+                {
+                    listDetalleValidacion.Add(ValidaParentezcoCRM());
+                }
+                else
+                {
+                    listDetalleValidacion.Add(ValidaParentezco());
+                }
             }
 
             return listDetalleValidacion;
@@ -548,7 +563,77 @@ namespace ValidacionArchivosConciliacion
 
             return detallevalidacion;
         }
-        
+
+        public DetalleValidacion ValidaParentezcoCRM()
+        {
+            string Pedidoreferencia = "";
+            string DetalleError = "";
+            bool ResultadoValidacion = true;
+            DetalleValidacion detalleValidacion = new DetalleValidacion();
+            var ListaPedidoCliente = CrearListaGenerica(new { PedidoReferencia = "", Cliente = "" });
+            ListaPedidoCliente.Clear();
+
+            if (dtArchivo.Rows.Count == 0) { return detalleValidacion; }
+
+            foreach (DataRow row in dtArchivo.Rows)
+            {
+                Pedidoreferencia = row[colDoc].ToString();
+                DataTable dtDetallePedido = Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                if (dtDetallePedido.Rows.Count > 0)
+                {
+                    ListaPedidoCliente.Add(new
+                    {
+                        PedidoReferencia = dtDetallePedido.Rows[0]["PedidoReferencia"].ToString().Trim(),
+                        Cliente = dtDetallePedido.Rows[0]["Cliente"].ToString().Trim()
+                    });
+                }
+            }
+
+            RTGMGateway.RTGMGateway obGateway = new RTGMGateway.RTGMGateway(this.Modulo, this.CadenaConexion);
+            obGateway.URLServicio = this.URLGateway;
+            RTGMGateway.SolicitudGateway obSolicitud = new RTGMGateway.SolicitudGateway
+            {
+                IDCliente = Convert.ToInt32(ListaPedidoCliente[0].Cliente)
+            };
+
+            RTGMCore.DireccionEntrega obDireccionEntrega = obGateway.buscarDireccionEntrega(obSolicitud);
+
+            if (!obDireccionEntrega.Success && !String.IsNullOrEmpty(obDireccionEntrega.Message))
+            {
+                throw new Exception(obDireccionEntrega.Message);
+            }
+
+            if (obDireccionEntrega.IDClientesRelacionados.Count > 0)
+            {
+                foreach (var obPedido in ListaPedidoCliente)
+                {
+                    int cliente = Convert.ToInt32(obPedido.Cliente);
+                    string pedido = obPedido.PedidoReferencia;
+
+                    if (!obDireccionEntrega.IDClientesRelacionados.Contains(cliente))
+                    {
+                        DetalleError += " \n " + pedido + " del cliente: " + cliente.ToString() + ",";
+                        ResultadoValidacion = false;
+                    }
+                }
+            }
+            
+            if (ResultadoValidacion)
+            {
+                detalleValidacion.CodigoError = 0;
+                detalleValidacion.Mensaje = "Todos los pedidos cargados corresponden a clientes emparentados.";
+                detalleValidacion.VerificacionValida = true;
+            }
+            else
+            {
+                detalleValidacion.CodigoError = 500;
+                detalleValidacion.Mensaje = "Los pedidos " + DetalleError + "\n no están emparentados y no serán cargados.";
+                detalleValidacion.VerificacionValida = false;
+            }
+
+            return detalleValidacion;
+        }
+
         public bool ArchivoValido(string RutaArchivo, string NombreArchivo)
         {
             bool existe;
