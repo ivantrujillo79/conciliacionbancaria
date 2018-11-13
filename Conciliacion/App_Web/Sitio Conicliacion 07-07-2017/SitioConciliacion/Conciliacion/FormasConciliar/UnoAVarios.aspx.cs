@@ -527,11 +527,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// </summary>
     private void CargarConfiguracion_wucCargaExcel(bool ConsultaPedido)
     {
-        wucCargaExcelCyC.PopupContenedor = mpeCargaArchivoConciliacionManual;
-        wucCargaExcelCyC.MostrarBotonCancelar = true;
-        wucCargaExcelCyC.ClienteReferencia = -1;
-        wucCargaExcelCyC.FormaConciliacion = formaConciliacion;
-        wucCargaExcelCyC.ConsultaPedido = ConsultaPedido;
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+
+        wucCargaExcelCyC.PopupContenedor        = mpeCargaArchivoConciliacionManual;
+        wucCargaExcelCyC.MostrarBotonCancelar   = true;
+        wucCargaExcelCyC.ClienteReferencia      = -1;
+        wucCargaExcelCyC.FormaConciliacion      = formaConciliacion;
+        wucCargaExcelCyC.ConsultaPedido         = ConsultaPedido;
+        wucCargaExcelCyC.URLGateway             = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+        wucCargaExcelCyC.Modulo                 = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+        wucCargaExcelCyC.CadenaConexion         = App.CadenaConexion;
     }
 
     /// <summary>

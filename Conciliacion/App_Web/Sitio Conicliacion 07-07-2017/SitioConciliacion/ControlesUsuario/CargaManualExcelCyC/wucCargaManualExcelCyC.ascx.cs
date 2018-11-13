@@ -272,6 +272,42 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
     public ModalPopupExtender PopupContenedor { get; set; }
 
+    public string URLGateway
+    {
+        get
+        {
+            if (ViewState["urlgateway"] == null)
+                return "";
+            else
+                return (string)ViewState["urlgateway"];
+        }
+        set { ViewState["urlgateway"] = value; }
+    }
+
+    public byte Modulo
+    {
+        get
+        {
+            if (ViewState["modulo"] == null)
+                return 0;
+            else
+                return (byte)ViewState["modulo"];
+        }
+        set { ViewState["modulo"] = value; }
+    }
+
+    public string CadenaConexion
+    {
+        get
+        {
+            if (ViewState["cadenaconexion"] == null)
+                return "";
+            else
+                return (string)ViewState["cadenaconexion"];
+        }
+        set { ViewState["cadenaconexion"] = value; }
+    }
+
     #endregion
 
     private const string ARCHIVO = "Archivo: ";
@@ -370,6 +406,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         iValidador.RutaArchivo = sRutaArchivo;
                         iValidador.NombreArchivo = Path.GetFileName(sArchivo);
                         iValidador.TipoMIME = (sExt == ".xls" ? MIME[0] : MIME[1]);
+                        iValidador.URLGateway = this.URLGateway;
+                        iValidador.Modulo = this.Modulo;
+                        iValidador.CadenaConexion = this.CadenaConexion;
 
                         if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
                         {
