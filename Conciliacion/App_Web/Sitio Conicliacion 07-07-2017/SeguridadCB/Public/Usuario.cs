@@ -9,7 +9,7 @@ namespace SeguridadCB.Public
         #region "Constructores"
         internal Usuario(string usuario, string nombre, int empleado, string clave, string clavedesencriptada,
                          byte corporativo, string nombreCorporativo, int sucursal, string nombreSucursal,
-                         DataTable tablaCorporativoAcceso)//short area,string nombreArea, DataTable tablaAreaAcceso
+                         DataTable tablaCorporativoAcceso, short area) //,string nombreArea, DataTable tablaAreaAcceso
         {
             this.usuario = usuario;
             this.nombre = nombre;
@@ -23,7 +23,7 @@ namespace SeguridadCB.Public
             this.sucursal = sucursal;
             this.nombreSucursal = nombreSucursal;
 
-            //this.area = area;
+            this.area = area;
             //this.nombreArea = nombreArea;
 
             this.tablaCorporativoAcceso = tablaCorporativoAcceso;
@@ -32,7 +32,7 @@ namespace SeguridadCB.Public
 
         internal Usuario(string usuario, string nombre, int empleado, string clave, string clavedesencriptada,
                          byte corporativo, string nombreCorporativo, int sucursal, string nombreSucursal,
-                         DataTable tablaCorporativoAcceso,string inicial)//short area,string nombreArea, DataTable tablaAreaAcceso
+                         DataTable tablaCorporativoAcceso, string inicial, short area) //,string nombreArea, DataTable tablaAreaAcceso
         {
             this.usuario = usuario;
             this.nombre = nombre;
@@ -46,7 +46,7 @@ namespace SeguridadCB.Public
             this.sucursal = sucursal;
             this.nombreSucursal = nombreSucursal;
 
-            //this.area = area;
+            this.area = area;
             //this.nombreArea = nombreArea;
 
             this.tablaCorporativoAcceso = tablaCorporativoAcceso;
@@ -59,7 +59,7 @@ namespace SeguridadCB.Public
         string usuario, nombre, clave, clavedesencriptada, nombreCorporativo, nombreSucursal, nombreArea;
         byte corporativo;
         int sucursal;
-        //short area;
+        short area;
         int empleado;
         DataTable tablaCorporativoAcceso;//, tablaAreaAcceso;
         private string _inicialCorporativo;
@@ -101,10 +101,10 @@ namespace SeguridadCB.Public
         {
             get { return this.nombreSucursal; }
         }
-        //public short Area
-        //{
-        //    get { return this.area; }
-        //}
+        public short Area
+        {
+            get { return this.area; }
+        }
         //public string NombreArea
         //{
         //    get { return this.nombreArea; }

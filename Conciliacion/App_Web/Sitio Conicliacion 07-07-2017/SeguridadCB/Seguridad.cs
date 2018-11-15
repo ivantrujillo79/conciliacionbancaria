@@ -38,8 +38,19 @@ namespace SeguridadCB
                 rdr = SeguridadDataLayer.DatosUsuario(usuario);
                 rdr.Read();
                 Encripter objEncrypter = new Encripter();
-                return  new Usuario(rdr["Usuario"].ToString(), rdr["Nombre"].ToString(), Convert.ToInt32(rdr["Empleado"]), objEncrypter.ImplicitUnencript(rdr["Clave"].ToString()), objEncrypter.ImplicitUnencript(rdr["Clave"].ToString()), Convert.ToByte(rdr["Corporativo"]), rdr["NombreCorporativo"].ToString(), Convert.ToInt16(rdr["Sucursal"]), rdr["SucursalDescripcion"].ToString(), dtCorporativos, _InicialCorporativo);//Convert.ToInt16(rdr["Area"]), rdr["NombreArea"].ToString(), dtAreas
-                
+                return  new Usuario(rdr["Usuario"].ToString(),
+                                    rdr["Nombre"].ToString(), 
+                                    Convert.ToInt32(rdr["Empleado"]), 
+                                    objEncrypter.ImplicitUnencript(rdr["Clave"].ToString()), 
+                                    objEncrypter.ImplicitUnencript(rdr["Clave"].ToString()), 
+                                    Convert.ToByte(rdr["Corporativo"]), 
+                                    rdr["NombreCorporativo"].ToString(), 
+                                    Convert.ToInt16(rdr["Sucursal"]), 
+                                    rdr["SucursalDescripcion"].ToString(), 
+                                    dtCorporativos,
+                                    _InicialCorporativo
+                                    ,Convert.ToInt16(rdr["Area"].ToString())
+                                    );//Convert.ToInt16(rdr["Area"]), rdr["NombreArea"].ToString(), dtAreas
             }
             catch (SqlException ex)
             {
