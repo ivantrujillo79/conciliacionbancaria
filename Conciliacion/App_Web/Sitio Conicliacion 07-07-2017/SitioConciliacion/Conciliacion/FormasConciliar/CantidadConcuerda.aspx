@@ -632,14 +632,11 @@
                         <div style="width:1200px; height:300px; overflow:auto;">
                             <asp:GridView ID="grvCantidadConcuerdanArchivos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging='<%# ActivePaging %>' ShowHeader="True" ShowFooter="False" Width="100%" CssClass="grvResultadoConsultaCss"
-                                PageSize="7" OnPageIndexChanging="grvCantidadConcuerdanArchivos_PageIndexChanging"
+                                PageSize="10" OnPageIndexChanging="grvCantidadConcuerdanArchivos_PageIndexChanging"
                                 ShowHeaderWhenEmpty="True" OnRowCreated="grvCantidadConcuerdanArchivos_RowCreated"
                                 DataKeyNames="FolioExt,SecuenciaExt,FolioInt,SecuenciaInt" AllowSorting="True"
                                 OnSorting="grvCantidadConcuerdanArchivos_Sorting" 
                                 OnRowDataBound="grvCantidadConcuerdanArchivos_RowDataBound">
-                                <%--<EmptyDataTemplate>
-                            <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen referencias con cantidades concordantes."></asp:Label>
-                        </EmptyDataTemplate>--%>
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
                                     <asp:TemplateField>
@@ -815,34 +812,13 @@
                                     </asp:TemplateField>
 
                                 </Columns>
-                                <%--      <PagerTemplate>
-                                    Página
-                                    <asp:DropDownList ID="paginasDropDownList" Font-Size="12px" AutoPostBack="true" runat="server"
-                                        OnSelectedIndexChanged="paginasDropDownList_SelectedIndexChanged" CssClass="dropDown"
-                                        Width="60px">
-                                    </asp:DropDownList>
-                                    de
-                                    <asp:Label ID="lblTotalNumPaginas" runat="server" CssClass="etiqueta" />
-                                    &nbsp;&nbsp;
-                                    <asp:Button ID="btnInicial" runat="server" CommandName="Page" ToolTip="Prim. Pag"
-                                        CommandArgument="First" CssClass="boton pagInicial" />
-                                    <asp:Button ID="btnAnterior" runat="server" CommandName="Page" ToolTip="Pág. anterior"
-                                        CommandArgument="Prev" CssClass="boton pagAnterior" />
-                                    <asp:Button ID="btnSiguiente" runat="server" CommandName="Page" ToolTip="Sig. página"
-                                        CommandArgument="Next" CssClass="boton pagSiguiente" />
-                                    <asp:Button ID="btnUltima" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last"
-                                        CssClass="boton pagUltima" />
-                                </PagerTemplate>--%>
                                 <PagerStyle CssClass="grvPaginacionScroll" />
                             </asp:GridView>
                             <asp:GridView ID="grvCantidadConcuerdanPedidos" runat="server" AutoGenerateColumns="False"
                                 AllowPaging='<%# ActivePaging %>' AllowSorting="True" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
-                                PageSize="25" OnPageIndexChanging="grvCantidadConcuerdanPedidos_PageIndexChanging"
+                                PageSize="10" OnPageIndexChanging="grvCantidadConcuerdanPedidos_PageIndexChanging"
                                 ShowHeaderWhenEmpty="True" DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed"
                                 OnRowCreated="grvCantidadConcuerdanPedidos_RowCreated" OnSorting="grvCantidadConcuerdanPedidos_Sorting">
-                                <%--<EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen pedidos con cantidades concordantes."></asp:Label>
-                                </EmptyDataTemplate>--%>
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
                                     <asp:TemplateField>
@@ -1002,24 +978,6 @@
                                         <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                     </asp:TemplateField>
                                 </Columns>
-                                <%--  <PagerTemplate>
-                                    Página
-                                    <asp:DropDownList ID="paginasDropDownList" Font-Size="12px" AutoPostBack="true" runat="server"
-                                        OnSelectedIndexChanged="paginasDropDownListPedidos_SelectedIndexChanged" CssClass="dropDown"
-                                        Width="60px">
-                                    </asp:DropDownList>
-                                    de
-                                    <asp:Label ID="lblTotalNumPaginas" runat="server" CssClass="etiqueta" />
-                                    &nbsp;&nbsp;
-                                    <asp:Button ID="btnInicial" runat="server" CommandName="Page" ToolTip="Prim. Pag"
-                                        CommandArgument="First" CssClass="boton pagInicial" />
-                                    <asp:Button ID="btnAnterior" runat="server" CommandName="Page" ToolTip="Pág. anterior"
-                                        CommandArgument="Prev" CssClass="boton pagAnterior" />
-                                    <asp:Button ID="btnSiguiente" runat="server" CommandName="Page" ToolTip="Sig. página"
-                                        CommandArgument="Next" CssClass="boton pagSiguiente" />
-                                    <asp:Button ID="btnUltima" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last"
-                                        CssClass="boton pagUltima" />
-                                </PagerTemplate>--%>
                                 <PagerStyle CssClass="grvPaginacionScroll" />
                             </asp:GridView>
                         </div>
@@ -1695,9 +1653,11 @@
                             <div class="etiqueta">
                                 Folios Agregados
                             </div>
-                            <asp:GridView ID="grvAgregados" runat="server" AllowPaging='<%# ActivePaging %>' AutoGenerateColumns="False"
+                            <asp:GridView ID="grvAgregados" runat="server" 
+                                AllowPaging='<%# ActivePaging %>' PageSize="6" 
+                                AutoGenerateColumns="False"
                                 BorderStyle="Dotted" CssClass="grvResultadoConsultaCss" Font-Size="12px" ShowHeaderWhenEmpty="True"
-                                Width="90%" ShowHeader="False" BorderColor="White" DataKeyNames="Folio" PageSize="6"
+                                Width="90%" ShowHeader="False" BorderColor="White" DataKeyNames="Folio" 
                                 OnRowDeleting="grvAgregados_RowDeleting" OnPageIndexChanging="grvAgregados_PageIndexChanging">
                                 <Columns>
                                     <asp:TemplateField>
@@ -1765,9 +1725,9 @@
                     </tr>
                     <tr>
                         <td style="padding: 5px 5px 5px 5px">
-                            <div style="width:1000px; height:340px; overflow:auto;">
+                            <div style="width:1000px; height:260px; overflow:auto;">
                                 <asp:GridView ID="grvVistaRapidaInterno" runat="server" 
-                                    AllowPaging='<%# ActivePaging %>' PageSize="5" AutoGenerateColumns="False"
+                                    AllowPaging='<%# ActivePaging %>' PageSize="8" AutoGenerateColumns="False"
                                     BorderStyle="Dotted" Font-Size="12px" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                                     Width="100%" GridLines="Horizontal"
                                     OnPageIndexChanging="grvVistaRapidaInterno_PageIndexChanging">
