@@ -63,6 +63,26 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
 
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+    }
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        //if (usuario.Area == 8) //el usuario es de metropoli
+        //    activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
+    }
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -90,6 +110,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+            LlenaGridViewDestinoDetalleInterno();
             if (!Page.IsPostBack)
             {
                 //Leer variables de URL
@@ -2730,4 +2751,20 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     }
     //------------------------------FIN MODULO "AGREGAR NUEVO INTERNO" -----------------------------------
+
+    protected void grvDetalleArchivoInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grvDetalleArchivoInterno.DataSource = tblDetalleTransaccionConciliada;
+        grvDetalleArchivoInterno.PageIndex = e.NewPageIndex;
+        grvDetalleArchivoInterno.DataBind();
+        mpeLanzarDetalle.Show();
+    }
+
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        DataTable tablaDestinoDetalleInterno = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
+        this.grvVistaRapidaInterno.DataSource = tablaDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
+    }
 }

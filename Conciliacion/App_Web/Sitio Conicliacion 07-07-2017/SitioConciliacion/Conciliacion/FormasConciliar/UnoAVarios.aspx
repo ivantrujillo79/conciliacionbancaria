@@ -1314,15 +1314,12 @@
 
                         <div id="divExternos" style="width:600px; height:350px; overflow:auto;" onscroll="rdbSecuencia_scrollpos();" >
                             <asp:GridView ID="grvExternos" runat="server" 
-                            AllowPaging='<%# ActivePaging %>' AutoGenerateColumns="False" ViewStateMode="Enabled"
-                            OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
-                            PageSize="10" AllowSorting="True" CssClass="grvResultadoConsultaCss"
-                            DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion,Referencia,Deposito"
-                            OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
-                            <%--<EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
-                                        Text="No se encontraron referencias externas."></asp:Label>
-                                </EmptyDataTemplate>--%>
+                                AllowPaging='<%# ActivePaging %>' PageSize="10" 
+                                AutoGenerateColumns="False" ViewStateMode="Enabled"
+                                OnRowDataBound ="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
+                                AllowSorting="True" CssClass="grvResultadoConsultaCss"
+                                DataKeyNames="Corporativo,Sucursal,Año,Secuencia,Folio,StatusConciliacion,Referencia,Deposito"
+                                OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
                             <HeaderStyle HorizontalAlign="Center" />
                             <RowStyle CssClass="bg-color-blanco fg-color-negro" />
                             <Columns>
@@ -2118,17 +2115,13 @@
                                 <PagerStyle CssClass="grvPaginacionScroll" />
                             </asp:GridView>
                             <%-- <br />--%>
-
                             <div id="seccionGridPedidos">
                                 <asp:GridView ID="grvPedidos" runat="server" 
                                 AllowPaging='<%# ActivePaging %>' PageSize="3" AutoGenerateColumns="False" ShowHeader="True"
                                 CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                 ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
                                 OnRowCommand="grvPedidos_RowCommand" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                                DataKeyNames="Celula,Pedido,AñoPed,Cliente" > <%--PageSize="5" EnableViewState="True"--%>
-                                <%-- <EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
-                                </EmptyDataTemplate>--%>
+                                DataKeyNames="Celula,Pedido,AñoPed,Cliente" > 
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
                                     <asp:TemplateField>
@@ -2300,7 +2293,7 @@
                     <tr>
                         <td style="padding: 5px 5px 5px 5px; width: 100%">
                             <div style="width:100%; height:auto; max-height:480px; overflow: auto;">
-                                <asp:GridView ID="grvDetalleArchivoInterno" runat="server" 
+                                <asp:GridView ID="grvDetalleArchivoInterno" PageSize="5" runat="server" 
                                     AllowPaging='<%# ActivePaging %>' AutoGenerateColumns="False"
                                     ShowHeader="True" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                                     ShowFooter="False" DataKeyNames="SecuenciaInterno, FolioInterno">
@@ -2371,7 +2364,7 @@
                                     </Columns>
                                 </asp:GridView>
                                 <asp:GridView ID="grvDetallePedidoInterno" runat="server" 
-                                    AllowPaging='<%# ActivePaging %>' AutoGenerateColumns="False"
+                                    AllowPaging='<%# ActivePaging %>' PageSize="5" AutoGenerateColumns="False"
                                     ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                                     DataKeyNames="Celula,Pedido,AñoPed">
                                     <HeaderStyle HorizontalAlign="Center" />
