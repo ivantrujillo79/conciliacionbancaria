@@ -517,8 +517,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         bool activar;
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
-        if (usuario.Area == 8) //el usuario es de metropoli
-            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+        //if (usuario.Area == 8) //el usuario es de metropoli
+        //W    activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
 
         return activar;
     }
