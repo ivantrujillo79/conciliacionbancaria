@@ -77,8 +77,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         bool activar;
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
-        //if (usuario.Area == 8) //el usuario es de metropoli
-        //    activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
 
         return activar;
     }
@@ -699,6 +699,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                         );
                 }
             }
+            HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"] = tblDetalleTransaccionConciliada;
         }
         catch (Exception ex)
         {
@@ -2754,7 +2755,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     protected void grvDetalleArchivoInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        grvDetalleArchivoInterno.DataSource = tblDetalleTransaccionConciliada;
+        grvDetalleArchivoInterno.DataSource = HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"];
         grvDetalleArchivoInterno.PageIndex = e.NewPageIndex;
         grvDetalleArchivoInterno.DataBind();
         mpeLanzarDetalle.Show();
@@ -2767,4 +2768,5 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
         this.grvVistaRapidaInterno.DataBind();
     }
+
 }

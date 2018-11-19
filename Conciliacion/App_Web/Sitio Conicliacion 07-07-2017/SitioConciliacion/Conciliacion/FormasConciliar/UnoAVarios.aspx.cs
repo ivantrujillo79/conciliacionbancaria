@@ -233,9 +233,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
-                //usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                //activepaging = activaPaginacion();
-
                 ConsultarParametrosEDENRED();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
@@ -517,8 +514,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         bool activar;
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
-        //if (usuario.Area == 8) //el usuario es de metropoli
-        //W    activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
 
         return activar;
     }
@@ -1662,6 +1659,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
                 }
             }
+            HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"] = tblDetalleTransaccionConciliada;
         }
         catch (Exception ex)
         {
@@ -6856,4 +6854,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
         this.grvVistaRapidaInterno.DataBind();
     }
+
+    protected void grvDetalleArchivoInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grvDetalleArchivoInterno.DataSource = HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"];
+        grvDetalleArchivoInterno.PageIndex = e.NewPageIndex;
+        grvDetalleArchivoInterno.DataBind();
+        mpeLanzarDetalle.Show();
+    }
+
+    protected void grvDetallePedidoInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grvDetallePedidoInterno.DataSource = HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"];
+        grvDetallePedidoInterno.PageIndex = e.NewPageIndex;
+        grvDetallePedidoInterno.DataBind();
+        mpeLanzarDetalle.Show();
+    }
+
 }
