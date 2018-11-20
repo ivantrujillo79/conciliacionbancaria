@@ -17,6 +17,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string _nombreClientePadre;
         private Boolean _tienePagos;
         DataTable _pagos;
+        private decimal _monto;
 
         #region Constructores
 
@@ -30,6 +31,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this._nombreClientePadre = "";
             this._tienePagos = false;
             this._pagos = null;
+            this._monto = 0;
+
         } 
 
         public PagoAreasComunes(int clientePadre, IMensajesImplementacion implementadorMensajes)
@@ -42,6 +45,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this._nombreClientePadre = "";
             this._tienePagos = false;
             this._pagos = null;
+            this._monto = 0;
         }
 
         #endregion
@@ -142,6 +146,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set
             {
                 _pagos = value;
+            }
+        }
+
+        public decimal Monto
+        {
+            get
+            {
+                return _monto;
+            }
+
+            set
+            {
+                _monto = value;
             }
         }
         #endregion

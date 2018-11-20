@@ -17,8 +17,10 @@ public partial class paginaAreasComunes : System.Web.UI.Page
     {
 
         Conexion conexion = new Conexion();
-        pnlAreascomunes.ClientePadre= int.Parse(txtClientePadre.Text);
 
-        pnlAreascomunes.cargaDatos();
+        wuAreascomunes.inicializa(int.Parse(txtClientePadre.Text), Convert.ToDecimal(txtmonto.Text));
+        wuAreascomunes.cargaDatos();
+        mpeAreasComunes.Show();
+        
     }
 }

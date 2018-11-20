@@ -59,7 +59,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     _conexion.Comando.Parameters.Add(new SqlParameter("@PedidoReferencia", System.Data.SqlDbType.VarChar, 20)).Value = PedidoReferencia;
                 }
 
-                _conexion.Comando.ExecuteNonQuery();
+                //_conexion.Comando.ExecuteNonQuery();
 
                 System.Data.SqlClient.SqlDataAdapter adaptador = new System.Data.SqlClient.SqlDataAdapter();
                 adaptador.SelectCommand = _conexion.Comando;
