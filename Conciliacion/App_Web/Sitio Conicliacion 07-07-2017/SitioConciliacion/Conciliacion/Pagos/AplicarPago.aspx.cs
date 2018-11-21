@@ -44,10 +44,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-
+            
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
+            
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
                 if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
@@ -62,10 +63,24 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
 
                 string statusInicial;
+
+                int visibleAreasComunes;
                 StatusMovimientoCaja status;
 
                
                 statusInicial= parametros.ValorParametro(30, "StatusInicialMovCaja");
+
+
+                try
+                {
+                    visibleAreasComunes = int.Parse(parametros.ValorParametro(30, "PAGOAREASCOMUNES"));
+                }
+                catch 
+                {
+                    visibleAreasComunes = 0;
+                }
+
+                td1.Visible= visibleAreasComunes == 1;
 
                 esEdificios = Convert.ToSByte(Request.QueryString["EsEdificios"]);
 
@@ -82,6 +97,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 {
                     status = StatusMovimientoCaja.Validado;
                 }
+
+                
                   
                 
                 corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
@@ -245,6 +262,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("MontoConciliado", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("Concepto", typeof(string));
             tblReferenciasAPagar.Columns.Add("Descripcion", typeof(string));
+            tblReferenciasAPagar.Columns.Add("ClientePadre", typeof(int));
             tblReferenciasAPagar.Columns.Add("Diferencia", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("StatusMovimiento", typeof(string));
             //Campos Pedidos
@@ -297,6 +315,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rc.MontoConciliado,
                         rc.Concepto,
                         rc.Descripcion,
+                        rc.ClientePadre,
                         rc.Diferencia,
                         rc.StatusMovimiento,
                         rc.Pedido,
@@ -687,6 +706,73 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     //    solicitudActualizaPedido.Pedidos.Add(pedido);
     //}
 
+    protected void btnAreasComunes_Click(object sender, ImageClickEventArgs e)
+    {
+        decimal monto=0;
+        decimal montoSeleccionado;
+        string montoPedido;
+        Boolean seleccionado = false;
+        int clientePadre = -1;
+        int clientePadreTemp;
+
+
+
+        foreach (GridViewRow fila in grvPagos.Rows)
+        {
+            if (((CheckBox)fila.FindControl("chkSeleccionado")).Checked)
+            {
+                montoPedido= ((Label)fila.FindControl("lblDiferencia")).Text;
+                decimal.TryParse(montoPedido, System.Globalization.NumberStyles.Currency, null, out montoSeleccionado);
+                monto = monto + (montoSeleccionado*-1);
+                seleccionado = true;
+            }
+
+            clientePadreTemp = int.Parse(((Label)fila.FindControl("lblClientePadre")).Text);
+
+            if (clientePadre ==-1)
+            {
+                clientePadre = clientePadreTemp;
+            }
+            else
+            {
+                if (clientePadre != clientePadreTemp)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No puede seleccionar pedidos de clientes padre diferentes');", true);
+                    return;
+                }
+
+            }
+
+        }
+        
+
+        if (monto==0)
+        {
+            if (seleccionado)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('La suma de los montos debe ser mayor a 0');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No ha seleccionado pagos');", true);
+            }
+            
+        }
+        else
+        {
+            Conexion conexion = new Conexion();
+
+            wuAreascomunes.inicializa(clientePadre, monto);
+            wuAreascomunes.cargaDatos();
+            mpeAreasComunes.Show();
+
+        }
+
+
+
+        //Response.Redirect("~/paginaAreasComunes.aspx");
+    }
+
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
         Conexion conexion  = new Conexion();
@@ -985,4 +1071,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         return Uri.TryCreate(url, UriKind.Absolute, out uriValidada);
     }
 
+
+  
 }

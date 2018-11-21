@@ -1,7 +1,12 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" %>
+<%@ Register Src="~/ControlesUsuario/AreasComunes/areascomunes.ascx" TagPrefix="ControlUsuario" TagName="AreasComunesControl" %>
+
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     APLICAR PAGOS
 </asp:Content>
@@ -50,6 +55,12 @@
             return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
         }
     </script>
+    <script type="text/javascript">
+        function OcultarPopUpAreasComunes() {
+            $find("mpeAreasComunes").hide();
+        }
+
+    </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
     <asp:ScriptManager runat="server" ID="smCantidadConcuerda" AsyncPostBackTimeout="600"
@@ -59,6 +70,41 @@
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%= mpeLoading.ClientID %>';        
     </script>
+     <!--        INICIO DE POPUP CONCILIAR PAGARES     -->
+        <asp:HiddenField runat="server" ID="hdfAreasComunes" />
+        <asp:ModalPopupExtender ID="mpeAreasComunes" runat="server" BackgroundCssClass="ModalBackground"
+            DropShadow="False" PopupControlID="pnlAreasComunes" TargetControlID="hdfAreasComunes"
+            BehaviorID="mpeAreasComunes" CancelControlID="imgCerrar_AreasComunes">
+            <%-- BehaviorID="ModalBehaviour" EnableViewState="false"--%>
+        </asp:ModalPopupExtender>
+        <asp:Panel ID="pnlAreasComunes" runat="server" CssClass="ModalPopup" Width="680px" Style="display: none;">
+            <asp:UpdatePanel ID="upAreasComunes" runat="server">
+                <ContentTemplate>
+                    <div>
+                        <table style="width: 100%;">
+                            <tr class="bg-color-grisOscuro">
+                                <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                                    <div class="floatDerecha bg-color-grisClaro01">
+                                        <asp:ImageButton runat="server" ID="imgCerrar_AreasComunes" CssClass="iconoPequeño bg-color-rojo"
+                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px"
+                                            OnClientClick="OcultarPopUpAreasComunes();" />
+                                    </div>
+                                    <div class="fg-color-blanco centradoJustificado">
+                                 Listado de documentos por cliente padre
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ControlUsuario:AreasComunesControl runat="server" ID="wuAreascomunes" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </asp:Panel>
+        <!--        FIN POPUP CONCILIAR PAGARES     -->
     <asp:UpdatePanel runat="server" ID="upAplicarPagos" UpdateMode="Always">
         <ContentTemplate>
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
@@ -176,7 +222,7 @@
                                     <asp:DropDownList runat="server" ID="ddlCriteriosConciliacion" CssClass="etiqueta dropDownPequeño"
                                         Width="150px" Style="margin-bottom: 3px; margin-right: 3px" AutoPostBack="False"
                                         Enabled="False" />
-                                </td>
+                                    </td>
                             </tr>
                         </table>
                     </td>
@@ -289,6 +335,17 @@
                     <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
                         <table class="etiqueta opcionBarra">
                             <tr>
+                                <td class="iconoOpcion bg-color-grisClaro01" style="height: 30px" id="td1"
+                                    runat="server">
+                                    <asp:ImageButton ID="btnAreasComunes" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Detalle.png"
+                                        ToolTip="PAGO DE AREAS COMUNES" Width="25px" OnClick="btnAreasComunes_Click" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top;" >
+                        <table class="etiqueta opcionBarra">
+                            <tr>
                                 <td class="iconoOpcion bg-color-azulOscuro" style="height: 30px" id="tdAplicarPagos"
                                     runat="server">
                                     <asp:ImageButton ID="btnAplicarPagos" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagos.png"
@@ -329,6 +386,7 @@
                                     <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Referencia')">Referencia</a></th>
                                     <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FMovimiento')">F. Mov. Ext.</a></th>
                                     <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FOperacion')">F. Op. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$ClientePadre')">Cliente Padre</a></th>
                                     <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Diferencia')">Diferencia</a></th>
                                     <th scope="col" style="width:200px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Concepto')">Concepto</a></th>
                                     <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$PedidoReferencia')">Documento</a></th>
@@ -348,12 +406,22 @@
                             <asp:GridView ID="grvPagos" runat="server" AutoGenerateColumns="False" AllowPaging="False"
                             AllowSorting="True" ShowHeader="False" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed" OnRowCreated="grvPagos_RowCreated"
-                            OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound">
+                            OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound" >
                             <%--<EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen pedidos con cantidades concordantes."></asp:Label>
                             </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
+                                <asp:TemplateField ItemStyle-Width="2px" ControlStyle-Width="22px"  HeaderText="Sel" ShowHeader="False">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkSeleccionado" Text=""  runat="server"></asp:CheckBox>
+                        </ItemTemplate>
+                        <ControlStyle Width="22px" />
+                        <FooterStyle Width="22px" />
+                        <HeaderStyle Width="22px" />
+                        <ItemStyle Width="22
+                            px" />
+                    </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Image ID="imgStatusMovimiento" runat="server" CssClass="icono" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -392,6 +460,17 @@
                                     <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                 </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="ClientePadre" SortExpression="ClientePadre">
+                                    <ItemTemplate>
+                                        <b>
+                                            <asp:Label ID="lblClientePadre" runat="server" Text='<%# resaltarBusqueda(Eval("ClientePadre").ToString()) %>'></asp:Label>
+                                        </b>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Diferencia" SortExpression="Diferencia">
                                     <ItemTemplate>
                                         <b>
@@ -576,6 +655,11 @@
                     </td>
                 </tr>
             </table>
+            <%--            Panel popup inicia --%>
+           
+            <%--            Panel popup termina --%>
+
+
         </ContentTemplate>
     </asp:UpdatePanel>
     <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upAplicarPagos">
@@ -585,6 +669,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
     </asp:ModalPopupExtender>
 </asp:Content>
