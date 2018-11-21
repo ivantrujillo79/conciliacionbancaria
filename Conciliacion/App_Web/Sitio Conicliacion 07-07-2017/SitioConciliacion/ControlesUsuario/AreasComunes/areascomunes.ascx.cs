@@ -110,7 +110,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
     {
         decimal montoSeleccionado;
         decimal resto;
-        foreach (GridViewRow oldrow in gwPagos.Rows)
+        foreach (GridViewRow oldrow in grvPedidosEmparentados.Rows)
         {
             ((RadioButton)oldrow.FindControl("RadioButton1")).Checked = false;
         }

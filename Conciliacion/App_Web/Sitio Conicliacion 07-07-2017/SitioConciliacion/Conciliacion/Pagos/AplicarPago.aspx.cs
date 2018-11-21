@@ -262,6 +262,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("MontoConciliado", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("Concepto", typeof(string));
             tblReferenciasAPagar.Columns.Add("Descripcion", typeof(string));
+            tblReferenciasAPagar.Columns.Add("ClientePadre", typeof(int));
             tblReferenciasAPagar.Columns.Add("Diferencia", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("StatusMovimiento", typeof(string));
             //Campos Pedidos
@@ -314,6 +315,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rc.MontoConciliado,
                         rc.Concepto,
                         rc.Descripcion,
+                        rc.ClientePadre,
                         rc.Diferencia,
                         rc.StatusMovimiento,
                         rc.Pedido,
@@ -706,8 +708,69 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
     protected void btnAreasComunes_Click(object sender, ImageClickEventArgs e)
     {
+        decimal monto=0;
+        decimal montoSeleccionado;
+        string montoPedido;
+        Boolean seleccionado = false;
+        int clientePadre = -1;
+        int clientePadreTemp;
+
+
+
+        foreach (GridViewRow fila in grvPagos.Rows)
+        {
+            if (((CheckBox)fila.FindControl("chkSeleccionado")).Checked)
+            {
+                montoPedido= ((Label)fila.FindControl("lblDiferencia")).Text;
+                decimal.TryParse(montoPedido, System.Globalization.NumberStyles.Currency, null, out montoSeleccionado);
+                monto = monto + (montoSeleccionado*-1);
+                seleccionado = true;
+            }
+
+            clientePadreTemp = int.Parse(((Label)fila.FindControl("lblClientePadre")).Text);
+
+            if (clientePadre ==-1)
+            {
+                clientePadre = clientePadreTemp;
+            }
+            else
+            {
+                if (clientePadre != clientePadreTemp)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No puede seleccionar pedidos de clientes padre diferentes');", true);
+                    return;
+                }
+
+            }
+
+        }
         
-        Response.Redirect("~/paginaAreasComunes.aspx");
+
+        if (monto==0)
+        {
+            if (seleccionado)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('La suma de los montos debe ser mayor a 0');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No ha seleccionado pagos');", true);
+            }
+            
+        }
+        else
+        {
+            Conexion conexion = new Conexion();
+
+            wuAreascomunes.inicializa(clientePadre, monto);
+            wuAreascomunes.cargaDatos();
+            mpeAreasComunes.Show();
+
+        }
+
+
+
+        //Response.Redirect("~/paginaAreasComunes.aspx");
     }
 
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
@@ -1008,4 +1071,6 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         return Uri.TryCreate(url, UriKind.Absolute, out uriValidada);
     }
 
+
+  
 }

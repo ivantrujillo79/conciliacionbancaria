@@ -4640,6 +4640,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 this.implementadorMensajes);
                         dato.TipoProducto = (byte)reader["TipoProducto"];
                         dato.TipoCobro = (int)reader["TipoCobro"];
+                        dato.ClientePadre = Convert.ToInt32(reader["ClientePadre"]);
 
                         datos.Add(dato);
                     }

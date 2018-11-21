@@ -39,6 +39,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         int tipocobro;
         private int tipoCobro;
+        int clientePadre;
 
         #region Constructores
 
@@ -342,5 +343,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
+        public int ClientePadre
+        {
+            get
+            {
+                return clientePadre;
+            }
+
+            set
+            {
+                clientePadre = value;
+            }
+        }
     }
 }
