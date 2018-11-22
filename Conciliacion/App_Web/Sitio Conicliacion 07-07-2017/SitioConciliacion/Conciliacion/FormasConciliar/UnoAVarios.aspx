@@ -136,8 +136,11 @@
                 //if (dChequeados < sumapreconciliadas) {                    
                 //    sumapreconciliadas = dChequeados;
                 //}
-
-                var dAbono = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace(',', '').replace('$', '').trim());
+                var strAbono = document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML.replace('$', '').trim();
+                do
+                    strAbono = strAbono.replace(',', '');
+                while (strAbono.search(',') > -1);
+                var dAbono = parseFloat(strAbono);
                 var dSeleccion = parseFloat(grv.rows[fila].cells[3].innerText.replace(',', '').replace('$', '').trim());
 
                 //        0                           595.40                     34.87
