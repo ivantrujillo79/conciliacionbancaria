@@ -258,7 +258,7 @@ namespace ValidacionArchivosConciliacion
             List<DetalleValidacion> listDetalleValidacion = new List<DetalleValidacion>();
             if (dtArchivo != null)
             {
-                listDetalleValidacion.Add(ValidaFormatoExcel());
+                //listDetalleValidacion.Add(ValidaFormatoExcel());
                 listDetalleValidacion.Add(ValidaLayout());
                 listDetalleValidacion.Add(ValidaLineaVacia());
                 listDetalleValidacion.Add(ValidaEncabezado());

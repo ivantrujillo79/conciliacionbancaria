@@ -774,7 +774,7 @@
         	                        </tr>
 	                        </table>
                         </div>
-                        <div style="height:500px; width:590px; overflow:auto;">                            
+                        <div style="height:500px; width:600px; overflow:auto;">                            
                         <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
@@ -860,20 +860,19 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
                                     <ItemTemplate>
-                                        <div class="parrafoTexto">
+                                        <div class="parrafoTexto" style="width:15cm">
                                             <asp:Label ID="lblConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'></asp:Label>
                                         </div>
                                         <asp:HoverMenuExtender ID="hmeConcepto" runat="server" TargetControlID="lblConcepto"
                                             PopupControlID="pnlPopUpConcepto" PopDelay="20" OffsetX="-70" OffsetY="-10">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConcepto" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="250px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
+                                            Width="15cm" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
                                             <asp:Label ID="lblToolTipConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
                                                 CssClass="etiqueta " Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Justify" Width="150px"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Descripcion" SortExpression="Descripcion">
                                     <ItemTemplate>
