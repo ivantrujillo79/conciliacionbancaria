@@ -409,6 +409,8 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         iValidador.URLGateway = this.URLGateway;
                         iValidador.Modulo = this.Modulo;
                         iValidador.CadenaConexion = this.CadenaConexion;
+                        iValidador.Corporativo = this.Corporativo;
+                        iValidador.Sucursal = this.Sucursal;
 
                         //if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
                         //{

@@ -530,6 +530,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
         AppSettingsReader settings = new AppSettingsReader();
 
+        corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+        sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+
         wucCargaExcelCyC.PopupContenedor        = mpeCargaArchivoConciliacionManual;
         wucCargaExcelCyC.MostrarBotonCancelar   = true;
         wucCargaExcelCyC.ClienteReferencia      = -1;
@@ -538,6 +541,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.URLGateway             = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
         wucCargaExcelCyC.Modulo                 = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
         wucCargaExcelCyC.CadenaConexion         = App.CadenaConexion;
+        wucCargaExcelCyC.Corporativo = corporativo;
+        wucCargaExcelCyC.Sucursal = Convert.ToInt16(sucursal);
     }
 
     /// <summary>

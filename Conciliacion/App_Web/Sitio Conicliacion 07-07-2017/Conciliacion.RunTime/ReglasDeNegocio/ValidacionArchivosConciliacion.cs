@@ -158,6 +158,9 @@ namespace ValidacionArchivosConciliacion
         int CuentaBancaria { get; set; }
         int DocumentoReferencia { get; set; }
 
+        int Corporativo { get;  set; }
+        int Sucursal { get; set; }
+
         bool ArchivoValido(string RutaArchivo, string NombreArchivo);
         //DataTable CargaArchivo(string RutaArchivo, string NombreArchivo);
         DataTable CargaArchivo(string RutaArchivo, bool TieneEncabezado = true);
@@ -204,6 +207,17 @@ namespace ValidacionArchivosConciliacion
         public int CuentaBancaria { get; set; }
         public int DocumentoReferencia { get; set; }
 
+        public int Corporativo
+        {
+            get { return corporativo; }
+            set { corporativo = value; }
+        }
+        public int Sucursal
+        {
+            get { return sucursal; }
+            set { sucursal = value; }
+        }
+
         private const int colDoc = 0;
         private const int colCta = 1;
         private const int colMon = 2;
@@ -220,6 +234,8 @@ namespace ValidacionArchivosConciliacion
         private const int erDocRef_EncontroDocRefDistinto = 7;
 
         private DataTable dtArchivo = null;
+        private int corporativo;
+        private int sucursal;
 
         private string GeneraMD5(string str)
         {
@@ -369,7 +385,7 @@ namespace ValidacionArchivosConciliacion
                 rowNo = rowNo + 1;
 
                 //if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
-                ReferenciaNoConciliadaPedido ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(1, 1, 1, 1, 1, 1, row[colDoc].ToString());
+                ReferenciaNoConciliadaPedido ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, row[colDoc].ToString());
                 if (ReferenciaNoConciliada.Pedido == 0 || ReferenciaNoConciliada.CelulaPedido == 0 || ReferenciaNoConciliada.AñoPedido == 0)
                 {
                     Exito = false;
