@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Conciliacion.RunTime;
+using Conciliacion.RunTime.ReglasDeNegocio;
 
 namespace ValidacionArchivosConciliacion
 {
@@ -367,7 +368,9 @@ namespace ValidacionArchivosConciliacion
             {
                 rowNo = rowNo + 1;
 
-                if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
+                //if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
+                ReferenciaNoConciliadaPedido ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(1, 1, 1, 1, 1, 1, row[colDoc].ToString());
+                if (ReferenciaNoConciliada.Pedido == 0 || ReferenciaNoConciliada.CelulaPedido == 0 || ReferenciaNoConciliada.AñoPedido == 0)
                 {
                     Exito = false;
                     ValoresInvalidos = ValoresInvalidos + rowNo.ToString() + ", ";
