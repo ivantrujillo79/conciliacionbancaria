@@ -1137,7 +1137,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     ClienteDatos objCliente = new ClienteDatos(App.ImplementadorMensajes);
                     Conexion _conexion = new Conexion();
                     _conexion.AbrirConexion(false);
-
+                    RNC.BorrarReferenciaConciliada(); //listareferenciaconciliada
                     foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
                     {
                         DetalleClientePedidoExcel objDetalleCliente = objCliente.ObtieneDetalleClientePedidoExcel(ReferenciaPedido.PedidoReferencia, _conexion);

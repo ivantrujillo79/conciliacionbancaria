@@ -212,6 +212,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set
         {
             ViewState["saldoAFavor"] = value;
+            lblSaldo.Visible = true;
             lblSaldo.Text = SALDO + String.Format("{0:C}", value);
         }
     }
