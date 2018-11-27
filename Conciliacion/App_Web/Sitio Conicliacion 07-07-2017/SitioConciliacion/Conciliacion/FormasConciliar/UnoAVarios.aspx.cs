@@ -5138,6 +5138,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (objSolicitdConciliacion.ConsultaPedido())
             {
                 DataTable tablaReferenciasP = null;
+                tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
                 if (hdfUltimoBotonPresionado.Value == "btnFiltraCliente")
                 {
                     if ((DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"] != null)
@@ -5146,7 +5147,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     else
                     {
-                        tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                        //tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
                     }
                 }
                 else
