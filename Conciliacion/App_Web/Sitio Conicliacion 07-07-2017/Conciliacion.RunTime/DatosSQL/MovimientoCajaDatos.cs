@@ -203,10 +203,10 @@ namespace Conciliacion.RunTime.DatosSQL
                         Pedido.MontoConciliado =
                             Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
                         Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
-                        if (StatusAltaMC == StatusMovimientoCaja.Validado)
-                        {
+                        //if (StatusAltaMC == StatusMovimientoCaja.Validado)
+                        //{
                             Pedido.PedidoActualizaSaldo(_conexion);
-                        }
+                        //}
                         Pedido.ActualizaPagosPorAplicar(_conexion);
                     }
                 }
