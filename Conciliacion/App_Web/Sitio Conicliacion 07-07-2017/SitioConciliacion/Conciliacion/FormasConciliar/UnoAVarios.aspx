@@ -1633,7 +1633,7 @@
                                                     OnClick="btnFiltraCliente_Click"/>
                                             </td>
                                             <td class="centradoIzquierda" style="width: 1%; padding-left:3px">
-                                                <asp:Label ID="Label2" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco"></asp:Label>
+                                                <asp:Label ID="LabelPedidoReferencia" runat="server" Text="PedidoReferencia" CssClass="etiqueta fg-color-blanco"></asp:Label>
                                             </td>
                                             <td class="centradoIzquierda" style="width: 1%;">
                                                 <asp:TextBox ID="txtPedidoReferencia" runat="server" Width="70px" CssClass="cajaTextoPequeño"></asp:TextBox>

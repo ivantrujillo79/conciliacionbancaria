@@ -285,11 +285,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 1;
                         btnFiltraCliente.Visible = true;
+                        txtPedidoReferencia.Visible = true;
+                        LabelPedidoReferencia.Visible = true;
+                        btnFiltraPedidoReferencia.Visible = true;
                     }
                     else
                     {
                         HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 0;
                         btnFiltraCliente.Visible = false;
+                        txtPedidoReferencia.Visible = false;
+                        LabelPedidoReferencia.Visible = false;
+                        btnFiltraPedidoReferencia.Visible = false;
                     }
                 }
                 else
