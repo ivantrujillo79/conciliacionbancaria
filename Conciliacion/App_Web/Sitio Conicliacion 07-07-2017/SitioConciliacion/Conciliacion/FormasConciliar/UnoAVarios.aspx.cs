@@ -1052,10 +1052,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
 
             string strCuentaBancaria;
-            if (c.CuentaBancaria.Trim().Length <= 5)
-                strCuentaBancaria = c.CuentaBancaria.Trim();
+            strCuentaBancaria = c.CuentaBancaria.Replace(" ", "").Trim();
+            if (c.CuentaBancaria.Trim().Length <= 4)
+                strCuentaBancaria = c.CuentaBancaria;
             else
-                strCuentaBancaria = c.CuentaBancaria.Replace(" ", "").Substring(c.CuentaBancaria.Trim().Length - 6, 5);
+                strCuentaBancaria = strCuentaBancaria.Substring(strCuentaBancaria.Length - 4, 4);
+
             ActualizarPopUp_CargaArchivo(Convert.ToInt32(strCuentaBancaria));
 
         }
