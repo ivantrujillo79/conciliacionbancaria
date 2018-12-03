@@ -1793,16 +1793,22 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 decimal dAbono = 0;
                 decimal dAcumulado = 0;
                 decimal dResto = 0;
+                decimal dComision = 0;
                 if (txtComision.Text.Trim() == "") txtComision.Text = "0.00";
                 if (chkComision.Checked)
-                    dAbono = Decimal.Round(rE.Monto + Decimal.Parse(txtComision.Text), 2);
+                {
+                    dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
+                    dAbono = rE.Monto + dComision;
+                }
                 else
+                {
+                    dComision = 0;
                     dAbono = Decimal.Round(rE.Monto, 2);
-
+                }
                 if (objSolicitdConciliacion.ConsultaArchivo())
                     dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
                 if (objSolicitdConciliacion.ConsultaPedido())
-                    dAcumulado  = Decimal.Round(rE.MontoPedido, 2);
+                    dAcumulado  = Decimal.Round(rE.MontoPedido + dComision, 2);
 
                 dResto = (dAbono > 0 ? dAbono - dAcumulado : 0);
                 dResto = (dResto <= 0 ? 0 : dResto);
