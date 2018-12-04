@@ -157,17 +157,21 @@ namespace Conciliacion.RunTime.DatosSQL
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             AppSettingsReader settings = new AppSettingsReader();
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBPedidosPorPedidoReferencia", cnn);
+                    SqlCommand comando;
+                    if (PedidoMultiple == "1")
+                        comando = new SqlCommand("spCBPedidosPorPedidoReferenciaPM", cnn);
+                    else
+                        comando = new SqlCommand("spCBPedidosPorPedidoReferencia", cnn);
                     comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
 
                     DataSet ds = new DataSet();
-
                     SqlDataAdapter dap = new SqlDataAdapter(comando);
                     dap.Fill(ds);
 
@@ -3054,13 +3058,21 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                       string cliente,
                                                                                       bool clientepadre)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConciliacionBusquedaPedido", cnn);
+                    SqlCommand comando;
+                    if (PedidoMultiple == "1")
+                        comando = new SqlCommand("spCBConciliacionBusquedaPedidoPM", cnn);
+                    else
+                        comando = new SqlCommand("spCBConciliacionBusquedaPedido", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativoconciliacion;
@@ -3326,13 +3338,22 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      decimal diferencia,
                                                                                      string pedidoReferencia)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
+
             ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaUnPedidoEspecificoCliente", cnn);
+                    SqlCommand comando;
+                    if (PedidoMultiple == "1")
+                        comando = new SqlCommand("spCBConsultaUnPedidoEspecificoClientePM", cnn);
+                    else
+                        comando = new SqlCommand("spCBConsultaUnPedidoEspecificoCliente", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 1;
                     comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value =
                         corporativoconciliacion;

@@ -123,11 +123,17 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ReferenciaNoConciliadaPedido> ObtienePedidosNoConciliadosCliente(cConciliacion Conciliacion, Conexion _conexion)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCBConciliacionBusquedaPedido";
-
+                if (PedidoMultiple == "1")
+                    _conexion.Comando.CommandText = "spCBConciliacionBusquedaPedidoPM";
+                else
+                    _conexion.Comando.CommandText = "spCBConciliacionBusquedaPedido";
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Configuracion", System.Data.SqlDbType.SmallInt)).Value = 0;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt)).Value = Conciliacion.Corporativo;
@@ -187,12 +193,11 @@ namespace Conciliacion.RunTime.DatosSQL
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             AppSettingsReader settings = new AppSettingsReader();
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
-
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             try
             {
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
-                _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";//"spCBPedidosSeparadosCliente";
-
+                _conexion.Comando.CommandText = PedidoMultiple == "1" ? _conexion.Comando.CommandText = "spCBPedidosClienteOPadrePM" : _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.BigInt)).Value = Cliente;
 
