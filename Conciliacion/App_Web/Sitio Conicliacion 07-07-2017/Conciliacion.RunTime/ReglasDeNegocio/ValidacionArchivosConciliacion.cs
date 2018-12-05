@@ -586,6 +586,7 @@ namespace ValidacionArchivosConciliacion
         public DetalleValidacion ValidaParentezcoCRM()
         {
             string Pedidoreferencia = "";
+            string PedidoNoEncontradoError = "";
             string DetalleError = "";
             bool ResultadoValidacion = true;
             DetalleValidacion detalleValidacion = new DetalleValidacion();
@@ -606,37 +607,42 @@ namespace ValidacionArchivosConciliacion
                         Cliente = dtDetallePedido.Rows[0]["Cliente"].ToString().Trim()
                     });
                 }
-            }
-
-            RTGMGateway.RTGMGateway obGateway = new RTGMGateway.RTGMGateway(this.Modulo, this.CadenaConexion);
-            obGateway.URLServicio = this.URLGateway;
-            RTGMGateway.SolicitudGateway obSolicitud = new RTGMGateway.SolicitudGateway
-            {
-                IDCliente = Convert.ToInt32(ListaPedidoCliente[0].Cliente)
-            };
-
-            RTGMCore.DireccionEntrega obDireccionEntrega = obGateway.buscarDireccionEntrega(obSolicitud);
-
-            if (!obDireccionEntrega.Success && !String.IsNullOrEmpty(obDireccionEntrega.Message))
-            {
-                throw new Exception(obDireccionEntrega.Message);
-            }
-
-            if (obDireccionEntrega.IDClientesRelacionados.Count > 0)
-            {
-                foreach (var obPedido in ListaPedidoCliente)
+                else
                 {
-                    int cliente = Convert.ToInt32(obPedido.Cliente);
-                    string pedido = obPedido.PedidoReferencia;
+                    PedidoNoEncontradoError += Pedidoreferencia + " No se encuentra";
+                    ResultadoValidacion = false;
+                }
+            }
+            if (ResultadoValidacion)
+            {
+                RTGMGateway.RTGMGateway obGateway = new RTGMGateway.RTGMGateway(this.Modulo, this.CadenaConexion);
+                obGateway.URLServicio = this.URLGateway;
+                RTGMGateway.SolicitudGateway obSolicitud = new RTGMGateway.SolicitudGateway
+                {
+                    IDCliente = Convert.ToInt32(ListaPedidoCliente[0].Cliente)
+                };
 
-                    if (!obDireccionEntrega.IDClientesRelacionados.Contains(cliente))
+                RTGMCore.DireccionEntrega obDireccionEntrega = obGateway.buscarDireccionEntrega(obSolicitud);
+
+                if (!obDireccionEntrega.Success && !String.IsNullOrEmpty(obDireccionEntrega.Message))
+                {
+                    throw new Exception(obDireccionEntrega.Message);
+                }
+
+                if (obDireccionEntrega.IDClientesRelacionados.Count > 0)
+                {
+                    foreach (var obPedido in ListaPedidoCliente)
                     {
-                        DetalleError += " \n " + pedido + " del cliente: " + cliente.ToString() + ",";
-                        ResultadoValidacion = false;
+                        int cliente = Convert.ToInt32(obPedido.Cliente);
+                        string pedido = obPedido.PedidoReferencia;
+                        if (!obDireccionEntrega.IDClientesRelacionados.Contains(cliente))
+                        {
+                            DetalleError += " \n " + pedido + " del cliente: " + cliente.ToString() + ",";
+                            ResultadoValidacion = false;
+                        }
                     }
                 }
             }
-            
             if (ResultadoValidacion)
             {
                 detalleValidacion.CodigoError = 0;
@@ -645,8 +651,11 @@ namespace ValidacionArchivosConciliacion
             }
             else
             {
+                if (PedidoNoEncontradoError != string.Empty)
+                    detalleValidacion.Mensaje = PedidoNoEncontradoError+ ".\n No serán cargados.";
+                else
+                    detalleValidacion.Mensaje = "Los pedidos " + DetalleError + "\n no están emparentados y no serán cargados.";
                 detalleValidacion.CodigoError = 500;
-                detalleValidacion.Mensaje = "Los pedidos " + DetalleError + "\n no están emparentados y no serán cargados.";
                 detalleValidacion.VerificacionValida = false;
             }
 
