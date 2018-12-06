@@ -181,7 +181,9 @@
             <td style="padding-left: 3px;align-content:inherit; left: auto;text-align:left" class="auto-style3" colspan="12"  >
 
 
-                <asp:CheckBox ID="ChkSelTodos" runat="server" Font-Bold="True" Text="Seleccionar todos los bloqueos" OnCheckedChanged="ChkSelTodos_CheckedChanged" AutoPostBack="True" />
+                <asp:CheckBox ID="ChkSelTodos" runat="server" Font-Bold="True" Text="Seleccionar todos los bloqueos" OnCheckedChanged="ChkSelTodos_CheckedChanged" AutoPostBack="True"
+                  OnPageIndexChanging="grvTablaDestino_PageIndexChanging"  
+                    />
 
 
             </td>
@@ -194,7 +196,7 @@
             <td style="padding-left: 3px" class="auto-style3" colspan="12">
                 <asp:GridView runat="server" ID="grdBloqueos" AutoGenerateColumns="False"  AllowPaging="True" 
                 ShowHeaderWhenEmpty="True" CssClass="grvResultadoConsultaCss" Width="100%" OnPageIndexChanged="grdBloqueos_PageIndexChanged" OnSelectedIendexChanged="grdBloqueos_SelectedIndexChanged"
-                  pagesize="30" 
+                  pagesize="30" OnPageIndexChanging="grdBloqueos_PageIndexChanging" 
                     >
                 <HeaderStyle HorizontalAlign="Center" />
                 <Columns>                    
@@ -205,7 +207,7 @@
                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
                         <HeaderStyle HorizontalAlign="Center" Width="30px" />
                     </asp:TemplateField>
-                    <asp:BoundField DataField="SessionId" HeaderText="SessionId" SortExpression="SessionId" Visible="False" />
+                    <asp:BoundField DataField="SessionId" HeaderText="SessionId" SortExpression="SessionId" />
 
 
                     <asp:BoundField DataField="Corporativo" HeaderText="Corporativo" SortExpression="Corporativo" />
