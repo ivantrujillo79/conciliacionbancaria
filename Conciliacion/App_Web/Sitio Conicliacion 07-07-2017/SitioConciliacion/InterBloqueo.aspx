@@ -1,18 +1,14 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="InterBloqueo.aspx.cs" Inherits="InterBloqueo" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sitio.master" AutoEventWireup="true" CodeFile="InterBloqueo.aspx.cs" Inherits="InterBloqueo" %>
 
-<!DOCTYPE html>
+<%@ Register Src="~/ControlesUsuario/GestorBloqueos/wucInterbloqueosEstadoCuenta.ascx" TagPrefix="uc1" TagName="wucInterbloqueosEstadoCuenta" %>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div>
-            <br />
-            <br />
-        </div>
-    </form>
-</body>
-</html>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="titulo" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" Runat="Server">
+    <uc1:wucInterbloqueosEstadoCuenta runat="server" ID="wucInterbloqueosEstadoCuenta" />
+
+</asp:Content>
+

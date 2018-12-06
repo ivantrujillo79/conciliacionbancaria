@@ -20,11 +20,11 @@ public partial class poc : System.Web.UI.Page
         if (LockerExterno.ExternoBloqueado == null)
         {
             LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
-            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado { SessionID = Session.SessionID, Año = 2018, Folio = 5050, Consecutivo = c++ });
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado { SessionID = Session.SessionID, Año = 2018, Folio = 5050, Consecutivo = c++,Usuario="ROPIMA",Corporativo=1,Sucursal=1,Monto=100,InicioBloqueo=DateTime.Today.Date,Descripcion="PRUEBAS" });
         }
         else
         {
-            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado { SessionID = Session.SessionID, Año = 2018, Folio = 5050, Consecutivo = c++ });
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado { SessionID = Session.SessionID, Año = 2018, Folio = 5050, Consecutivo = c++,Usuario="ROPIMA",Corporativo=1,Sucursal=1,Monto=100, InicioBloqueo = DateTime.Today.Date, Descripcion = "PRUEBAS" });
         }
 
 
