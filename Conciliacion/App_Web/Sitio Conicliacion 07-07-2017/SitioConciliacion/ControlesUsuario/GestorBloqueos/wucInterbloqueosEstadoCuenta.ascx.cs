@@ -295,6 +295,8 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
 
     protected void grdBloqueos_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-
+        grdBloqueos.PageIndex = e.NewPageIndex;
+        grdBloqueos.DataSource = CargaBloqueos();
+        grdBloqueos.DataBind();
     }
 }

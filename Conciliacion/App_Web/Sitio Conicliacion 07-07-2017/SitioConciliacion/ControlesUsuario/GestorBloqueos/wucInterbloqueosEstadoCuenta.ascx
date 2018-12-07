@@ -222,6 +222,7 @@
 
                      
                 </Columns>
+                    <PagerSettings FirstPageText="Primero" LastPageText="Ultimo" Mode="NumericFirstLast" />
             </asp:GridView>
 
             </td>
