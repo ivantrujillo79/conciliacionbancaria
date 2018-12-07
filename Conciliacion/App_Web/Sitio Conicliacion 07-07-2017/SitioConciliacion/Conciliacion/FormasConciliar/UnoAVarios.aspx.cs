@@ -20,6 +20,7 @@ using CatalogoConciliacion.ReglasNegocio;
 using Conciliacion.RunTime.DatosSQL;
 using SeguridadCB.Public;
 using Consultas = Conciliacion.RunTime.ReglasDeNegocio.Consultas;
+using Locker;
 
 public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Page
 {
@@ -3080,13 +3081,27 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
+            indiceExternoSeleccionado = ((GridViewRow)(sender as RadioButton).Parent.Parent).RowIndex;
+            
+            if (ValidarExternoBloqueado())
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','Ya se est&aacute usando la partida seleccionada', function(){ });", true);
+
+                indiceExternoSeleccionado = respaldoIndiceSeleccionado;
+                RadioButton radioButton = sender as RadioButton;
+                radioButton.Checked = false;
+                return;
+            }
+
             quitarSeleccionRadio("EXTERNO");
             RadioButton rdb = sender as RadioButton;
             rdb.Checked = true;
             GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
             pintarFilaSeleccionadaExterno(grv.RowIndex);
 
-            indiceExternoSeleccionado = grv.RowIndex;
+            //indiceExternoSeleccionado = grv.RowIndex;
             ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
             //Limpiar Listas de Referencia de demas Externos
             LimpiarExternosReferencia(rfEx);
@@ -3094,6 +3109,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             Session["StatusFiltro"] = statusFiltro;
             tipoFiltro = String.Empty;
             Session["TipoFiltro"] = tipoFiltro;
+            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia);
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             //Leer el tipoConciliacion URL
@@ -3117,6 +3133,41 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
+    }
+
+    /// <summary>
+    /// Regresa verdadero si el registro se encuentra bloqueado
+    /// </summary>
+    /// <returns></returns>
+    private bool ValidarExternoBloqueado()
+    {
+        if (LockerExterno.ExternoBloqueado == null)
+            return false;
+
+        ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+
+        return LockerExterno.ExternoBloqueado.Exists(x =>   x.Corporativo == rfEx.Corporativo &&
+                                                            x.Sucursal == rfEx.Sucursal &&
+                                                            x.Año == rfEx.Año &&
+                                                            x.Folio == rfEx.Folio &&
+                                                            x.Secuencia == rfEx.Secuencia );
+    }
+
+    private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia)
+    {
+        if (LockerExterno.ExternoBloqueado == null)
+            return;
+
+        LockerExterno.ExternoBloqueado.RemoveAll(x => x.SessionID == IDSesion);
+
+        LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado {
+            SessionID       = IDSesion,
+            Corporativo     = corporativo,
+            Sucursal        = sucursal,
+            Año             = año,
+            Folio           = folio,
+            Secuencia       = secuencia
+        });
     }
 
     ////Seleccion del RadioButton de Referencias Pedidos
