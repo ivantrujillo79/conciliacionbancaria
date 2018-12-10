@@ -32,9 +32,53 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     //private RTGMGateway.SolicitudActualizarPedido solicitudActualizaPedido = new RTGMGateway.SolicitudActualizarPedido();
     //private RTGMGateway.RTGMActualizarPedido ActualizaPedido = new RTGMGateway.RTGMActualizarPedido();
     private string _URLGateway;
+ 
+
+    private int PagosSeleccionados
+    {
+        get
+        {
+            return Convert.ToInt32(Session["PagosSeleccionados"]);
+        }
+
+        set
+        {
+            Session["PagosSeleccionados"] = value;
+        }
+    }
+
+    private int ClientePadre
+    {
+        get
+        {
+            return Convert.ToInt32(Session["ClientePadre"]);
+        }
+
+        set
+        {
+            Session["ClientePadre"] = value;
+        }
+    }
+
+
+    private decimal MontoSeleccionado
+    {
+        get
+        {
+            return Convert.ToDecimal(Session["MontoSeleccionado"]);
+        }
+
+        set
+        {
+            Session["MontoSeleccionado"] = value;
+        }
+    }
     #endregion
 
     #region Eventos de la Forma
+
+
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -67,8 +111,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 int visibleAreasComunes;
                 StatusMovimientoCaja status;
 
-               
-                statusInicial= parametros.ValorParametro(30, "StatusInicialMovCaja");
+                ClientePadre = -1;
+                PagosSeleccionados = 0;
+                MontoSeleccionado = 0;
+
+
+                statusInicial = parametros.ValorParametro(30, "StatusInicialMovCaja");
 
 
                 try
@@ -215,7 +263,68 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
     }
 
-    private string TipoCobroDescripcion(int tipoCobro)
+    protected void chkSeleccionado_CheckedChanged(object sender, System.EventArgs e)
+    {
+        decimal diferenciaDecimal;
+        string diferencia;
+        int clientePadreTemp;
+
+
+
+        CheckBox rb = (CheckBox)sender;
+        GridViewRow row = (GridViewRow)rb.NamingContainer;
+       
+
+
+
+        diferencia = ((Label)row.FindControl("lblDiferencia")).Text;
+        clientePadreTemp = int.Parse(((Label)row.FindControl("lblClientePadre")).Text);
+
+        decimal.TryParse(diferencia, System.Globalization.NumberStyles.Currency, null, out diferenciaDecimal);
+
+
+        //if (diferenciaDecimal <= 0)
+        //{
+        //    rb.Checked = false;
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor');", true);
+        //    return;
+        //}
+
+        if (rb.Checked)
+        {
+            if (PagosSeleccionados==0)
+            {
+                PagosSeleccionados = PagosSeleccionados + 1;
+                ClientePadre = clientePadreTemp;
+                MontoSeleccionado = MontoSeleccionado + diferenciaDecimal;
+            }
+            else
+            {
+                if (clientePadreTemp==ClientePadre)
+                {
+                    PagosSeleccionados = PagosSeleccionados + 1;
+                    MontoSeleccionado = MontoSeleccionado + diferenciaDecimal;
+                }
+                else
+                {
+                    rb.Checked = false;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor o con Cliente Padre diferentes');", true);
+                    return;
+                }
+            }            
+        }
+        else
+        {
+            PagosSeleccionados = PagosSeleccionados - 1;
+            if (PagosSeleccionados ==0)
+            {
+                ClientePadre = -1;
+                MontoSeleccionado = MontoSeleccionado - diferenciaDecimal;
+            }
+        }
+    }
+
+private string TipoCobroDescripcion(int tipoCobro)
     {
         if (tipoCobro == 10) //Transferencia
             return "Transferencia";
@@ -279,6 +388,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
             tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
+            tblReferenciasAPagar.Columns.Add("IdTipoCobro", typeof(int));
+            tblReferenciasAPagar.Columns.Add("FormaConciliacion", typeof(int));
+            tblReferenciasAPagar.Columns.Add("SucursalPedido", typeof(int));
 
             List<Cliente> lstClientes = new List<Cliente>();
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
@@ -300,7 +412,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rc.Nombre = cliente.Nombre;
                     }
                 }
-
+                
+                
                 tblReferenciasAPagar.Rows.Add(
                        rc.Secuencia,
                         rc.Folio,
@@ -330,7 +443,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rc.Nombre,
                         rc.Total,
                         rc.ConceptoPedido,
-                        TipoCobroDescripcion(rc.TipoCobro)
+                        TipoCobroDescripcion(rc.TipoCobro),
+                        rc.TipoCobro,
+                        rc.FormaConciliacion,
+                        rc.SucursalPedido
                         );
             }
             HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;
@@ -708,69 +824,54 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
     protected void btnAreasComunes_Click(object sender, ImageClickEventArgs e)
     {
-        decimal monto=0;
-        decimal montoSeleccionado;
-        string montoPedido;
-        Boolean seleccionado = false;
-        int clientePadre = -1;
-        int clientePadreTemp;
+        CheckBox sel;
+        string referencia;
+        string pedidoReferencia;
+
+        DataTable tablaReferencias = (DataTable)HttpContext.Current.Session["TAB_REF_PAGAR"];
+        DataTable tablaReferenciasSeleccionadas = new DataTable();
+        DataRow[] filas;
 
 
 
-        foreach (GridViewRow fila in grvPagos.Rows)
-        {
-            if (((CheckBox)fila.FindControl("chkSeleccionado")).Checked)
-            {
-                montoPedido= ((Label)fila.FindControl("lblDiferencia")).Text;
-                decimal.TryParse(montoPedido, System.Globalization.NumberStyles.Currency, null, out montoSeleccionado);
-                monto = monto + (montoSeleccionado*-1);
-                seleccionado = true;
-            }
 
-            clientePadreTemp = int.Parse(((Label)fila.FindControl("lblClientePadre")).Text);
 
-            if (clientePadre ==-1)
-            {
-                clientePadre = clientePadreTemp;
-            }
-            else
-            {
-                if (clientePadre != clientePadreTemp)
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No puede seleccionar pedidos de clientes padre diferentes');", true);
-                    return;
-                }
 
-            }
+        //if (PagosSeleccionados==0)
+        //{
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
+        //    return;
+        //}
 
-        }
-        
-
-        if (monto==0)
-        {
-            if (seleccionado)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('La suma de los montos debe ser mayor a 0');", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No ha seleccionado pagos');", true);
-            }
+        foreach(GridViewRow fila in grvPagos.Rows)
+        {            
+            sel = ((CheckBox)fila.FindControl("chkSeleccionado"));              
             
+            if (sel.Checked)
+            {
+                referencia= ((Label)fila.FindControl("lblReferencia")).Text;
+                pedidoReferencia = ((Label)fila.FindControl("lblPedidoReferencia")).Text;
+
+                filas = tablaReferencias.Select("referencia = '"+referencia+"' and pedidoReferencia = '"+pedidoReferencia+"'");
+
+                foreach (DataRow filaTabla in filas)
+                {
+                    tablaReferenciasSeleccionadas.ImportRow(filaTabla);
+                }
+                
+            }         
         }
-        else
-        {
-            Conexion conexion = new Conexion();
 
-            wuAreascomunes.inicializa(clientePadre, monto);
-            wuAreascomunes.cargaDatos();
-            mpeAreasComunes.Show();
-
-        }
-
-
-
-        //Response.Redirect("~/paginaAreasComunes.aspx");
+        Conexion conexion = new Conexion();
+        wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
+        wuAreascomunes.TablaPagos = tablaReferenciasSeleccionadas;
+        wuAreascomunes.CorporativoConciliacion = corporativoConciliacion;
+        wuAreascomunes.SucursalConciliacion = sucursalConciliacion;
+        wuAreascomunes.AnioConciliacion = añoConciliacion;
+        wuAreascomunes.MesConciliacion = mesConciliacion;
+        wuAreascomunes.FolioConciliacion = folioConciliacion;
+        wuAreascomunes.cargaDatos();
+        mpeAreasComunes.Show();
     }
 
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
@@ -1072,5 +1173,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
 
 
-  
+
+
+    protected void grvPagos_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
