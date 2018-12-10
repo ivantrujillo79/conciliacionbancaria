@@ -5,7 +5,9 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using Conciliacion.RunTime.ReglasDeNegocio;
-
+using System.Configuration;
+using System.Web;
+using System.Web.UI;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -139,6 +141,36 @@ DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconci
         public override bool Eliminar()
         {
             throw new NotImplementedException();
+        }
+
+        public override string ValidaPedido(string PedidoReferencia)
+        {
+            string encontrados = "";
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
+            if (PedidoMultiple == "1")
+            {
+                PedidoReferencia = PedidoReferencia.Trim();
+                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBExisteConciliacionPedido", cnn);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Clear();
+                    comando.Parameters.Add(new SqlParameter("@PedidoReferencia", System.Data.SqlDbType.VarChar)).Value = PedidoReferencia;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        encontrados = encontrados +
+                            @" Folio " + reader["FolioConciliacion"].ToString() +
+                            @" Mes " + reader["MesConciliacion"].ToString() +
+                            @" Año " + reader["AñoConciliacion"].ToString() + @"\n";
+                    }
+                }
+            }
+            return encontrados;
         }
 
         public override bool EliminarReferenciaConciliada()

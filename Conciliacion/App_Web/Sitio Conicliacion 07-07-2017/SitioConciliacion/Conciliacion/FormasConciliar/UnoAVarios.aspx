@@ -495,6 +495,26 @@
 
         }
 
+        function PedidoMultipleSI() {
+            alertify.success('Seleccionó: Pre-conciliar.');
+        }
+
+        function PedidoMultipleNO() {
+            if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
+                if (document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos') != null && $('#<%= hdfPedidoMultipleSeleccionado.ClientID %>').val() != "") {
+                    grvPreCon = document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos');
+                    for (i = 0; i < grvPreCon.rows.length; i++) {
+                        if (grvPreCon.rows[i].cells[1].innerText.trim() == $('#<%= hdfPedidoMultipleSeleccionado.ClientID %>').val()) {
+                            grvPreCon.rows[i].cells[0].childNodes['1'].click();
+                            break;
+                        }
+                    }
+                }
+                $('#<%= hdfPedidoMultipleSeleccionado.ClientID %>').val("");
+                alertify.error('Seleccionó: No pre-conciliar.');
+            }
+        }
+
         function gridviewScroll() {
             $('#<%=grvExternos.ClientID%>').gridviewScroll({
                 width: 595,
@@ -654,11 +674,6 @@
         var ModalProgress = '<%=mpeLoading.ClientID%>';        
     </script>
 
-    
-
-    
-
-
     <asp:UpdatePanel runat="server" ID="upBarraEstado" UpdateMode="Always">
         <ContentTemplate>
 
@@ -670,6 +685,8 @@
             <asp:HiddenField ID="hdfCambiarEstatusPedido" runat="server" />
 
             <asp:HiddenField ID="hdfUltimoBotonPresionado" runat="server" />
+            
+            <asp:HiddenField ID="hdfPedidoMultipleSeleccionado" runat="server" />
 
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
                 <tr>
@@ -2128,7 +2145,8 @@
                                 <Columns>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btnAgregarPedido" runat="server" CssClass="Agregar" Height="20px" OnClick="btnAgregarPedido_Click"
+                                            <asp:Button ID="btnAgregarPedido" runat="server" CssClass="Agregar" Height="20px" 
+                                                OnClick="btnAgregarPedido_Click"
                                                 ToolTip="AGREGAR" Width="20px"
                                                 CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"
                                                 CommandName="AgregarPedidoAConciliacion" />

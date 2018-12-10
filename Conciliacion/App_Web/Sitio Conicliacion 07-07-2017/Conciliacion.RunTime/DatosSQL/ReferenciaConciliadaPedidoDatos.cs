@@ -64,8 +64,8 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool Guardar()
         {
             bool resultado = false;
-            try
-            {
+                try
+                {
                 using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
                 {
                     cnn.Open();
