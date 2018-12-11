@@ -2555,17 +2555,16 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-        const short _FormaConciliacion = 6;
+        formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]); //const short _FormaConciliacion = 6;
 
-        dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
+        dvExpera.Visible = grvPedidos.Rows.Count == 0;
 
         SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
         objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-        objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
         if (Convert.ToInt32(lblAgregadosExternos.Text) > 0)
         {
-            //if (tipoConciliacion == 2)
             if (objSolicitdConciliacion.ConsultaPedido())
             {
                 ConsultarPedidosInternos();
@@ -2574,17 +2573,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             {
                 ConsultarArchivosInternos();
             }
-            if (objSolicitdConciliacion.ConsultaPedido() && objSolicitdConciliacion.ConsultaArchivo())
-            {
-                
-            }
         }
         else
         {
             App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna referencia externa correcta.");
         }
-
     }
+
     protected void btnRegresarExternos_Click(object sender, ImageClickEventArgs e)
     {
         //dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = true;//RRV
