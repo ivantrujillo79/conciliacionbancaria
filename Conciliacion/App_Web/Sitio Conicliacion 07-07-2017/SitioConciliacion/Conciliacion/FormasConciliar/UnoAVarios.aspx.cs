@@ -3157,8 +3157,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         if (LockerExterno.ExternoBloqueado == null)
             return;
-
-        LockerExterno.ExternoBloqueado.RemoveAll(x => x.SessionID == IDSesion);
+        
+        LockerExterno.EliminarBloqueos(IDSesion);
 
         LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado {
             SessionID       = IDSesion,
