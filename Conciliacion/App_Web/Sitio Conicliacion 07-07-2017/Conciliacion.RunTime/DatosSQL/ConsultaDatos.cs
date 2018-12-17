@@ -4536,7 +4536,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandText = "spCBActualizaStatusConciliacionPedido";
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.SmallInt)).Value = corporativo;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Sucursal", System.Data.SqlDbType.SmallInt)).Value = corporativo;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Sucursal", System.Data.SqlDbType.SmallInt)).Value = sucursal;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoConciliacion", System.Data.SqlDbType.Int)).Value =año;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = folio;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.Int)).Value = mes;
