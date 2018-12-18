@@ -154,6 +154,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rfvDiferenciaVacio.ValidationGroup = "CantidadReferenciaPedidos";
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
+                    
                     GenerarTablaReferenciasAConciliarPedidos();
                     _tblReferenciasAConciliarPedido = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
@@ -798,7 +799,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         try
         {
-
             listaReferenciaConciliadaPedido = new List<ReferenciaConciliadaPedido>();
             List<ReferenciaConciliadaPedido> listResultado;
             listaReferenciaExternas =
@@ -810,7 +810,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             {
                 bool resultado = false;
                 listResultado = new List<ReferenciaConciliadaPedido>();
-                listResultado = rnc.ConciliarPedidoCantidadYReferenciaMovExterno(centavos,
+                listResultado = rnc.ConciliarPedidoCantidadYReferenciaMovExternoParallel(centavos,
                     statusConcepto, campoExterno, campoInterno);
                 listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
                 foreach (ReferenciaConciliadaPedido rc in listResultado)
