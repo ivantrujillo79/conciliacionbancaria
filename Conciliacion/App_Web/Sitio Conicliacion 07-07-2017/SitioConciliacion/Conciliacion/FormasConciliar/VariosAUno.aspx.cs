@@ -1045,6 +1045,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    private bool EsEdificios()
+    {
+        return tipoConciliacion == 2;
+    }
+
     protected void btnGuardarVariosAUno_Click(object sender, EventArgs e)
     {
         bool resultado = false;
@@ -1067,7 +1072,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 throw new Exception(" Seleccione transacciones válidas para continuar.");
             }
 
-            if (tipoConciliacion != 2 || objSolicitdConciliacion.ConsultaArchivo()) 
+            if (! EsEdificios() && objSolicitdConciliacion.ConsultaArchivo()) 
             {
                 foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
                 {
@@ -1082,7 +1087,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     }
                 }
             }
-            if (tipoConciliacion == 2 || objSolicitdConciliacion.ConsultaPedido())   
+            else
+            if ( EsEdificios() || objSolicitdConciliacion.ConsultaPedido())   
             {
                 foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
                 {
