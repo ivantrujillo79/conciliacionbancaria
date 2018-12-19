@@ -1990,6 +1990,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                         {
                             refcon.Guardar();
                             guardado = true;
+                            resultado = true;
                         }
                     }
                     //if (listaReferenciaConciliadaPedido != null)
