@@ -424,7 +424,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             Pedidos = lstPedido,
                             Portatil = false,
-                            TipoActualizacion = RTGMCore.TipoActualizacion.Liquidacion,
+                            TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
                             Usuario = "ROPIMA"
                         };
                         List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
