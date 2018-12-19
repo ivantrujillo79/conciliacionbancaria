@@ -134,7 +134,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 LlenaGridViewExternos();
                 ocultarOpciones("INTERNO");
 
-                if (objSolicitdConciliacion.ConsultaPedido())
+                if (tipoConciliacion == 2 || objSolicitdConciliacion.ConsultaPedido())
                 { 
                     HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] = 1;
                     btnFiltraCliente.Visible = true;
@@ -1067,7 +1067,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 throw new Exception(" Seleccione transacciones válidas para continuar.");
             }
 
-            if (objSolicitdConciliacion.ConsultaArchivo()) //if (formaConciliacion == 6)
+            if (tipoConciliacion != 2 || objSolicitdConciliacion.ConsultaArchivo()) 
             {
                 foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
                 {
@@ -1082,7 +1082,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     }
                 }
             }
-            if (objSolicitdConciliacion.ConsultaPedido())  //if (formaConciliacion == 9)
+            if (tipoConciliacion == 2 || objSolicitdConciliacion.ConsultaPedido())   
             {
                 foreach (ReferenciaNoConciliada rfNC in extSeleccionados)
                 {
