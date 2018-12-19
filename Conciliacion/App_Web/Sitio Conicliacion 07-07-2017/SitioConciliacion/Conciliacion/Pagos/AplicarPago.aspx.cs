@@ -778,7 +778,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         Conexion conexion  = new Conexion();
         bool urlValida = false;
         bool guardoMovimientoCaja = false;
-
+        string fuente="";
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -812,6 +812,15 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             _URLGateway = p.ValorParametro(modulo, "URLGateway");
             urlValida = ValidarURL(_URLGateway);
 
+            try
+            {
+                fuente = p.ValorParametro(modulo, "FuenteCRM").Trim();
+            }
+            catch
+            {
+
+            }
+
             int corporativoConciliacion = 0;
             Int16 sucursalConciliacion = 0;
             int añoConciliacion = 0;
@@ -824,7 +833,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {             
                 
-                if (urlValida)
+                if (urlValida & fuente.Equals("CRM"))
                 {
                    
                     guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway);
