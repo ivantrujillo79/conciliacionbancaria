@@ -283,12 +283,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         decimal.TryParse(diferencia, System.Globalization.NumberStyles.Currency, null, out diferenciaDecimal);
 
 
-        //if (diferenciaDecimal <= 0)
-        //{
-        //    rb.Checked = false;
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor');", true);
-        //    return;
-        //}
+        if (diferenciaDecimal <= 0)
+        {
+            rb.Checked = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor');", true);
+            return;
+        }
 
         if (rb.Checked)
         {
