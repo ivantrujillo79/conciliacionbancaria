@@ -3,3 +3,9 @@ C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Siti
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.csproj.CoreCompileInputs.cache
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.dll
 C:\Users\Iván Trujillo\Documents\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.pdb
+C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\bin\Debug\Locker.dll
+C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\bin\Debug\Locker.pdb
+C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.csprojAssemblyReference.cache
+C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.csproj.CoreCompileInputs.cache
+C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.dll
+C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\obj\Debug\Locker.pdb
