@@ -395,7 +395,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 int.TryParse(dtPedido.Rows[0]["tipocargo"].ToString(), out tipocargo);
                                 int.TryParse(dtPedido.Rows[0]["tipopedido"].ToString(), out tipopedido);
                                 serieremision = dtPedido.Rows[0]["serieremision"].ToString();
-                                lstPedido.Add(new RTGMCore.PedidoCRMDatos
+                                lstPedido.Add(new RTGMCore.PedidoCRMSaldo
                                 {
                                     IDPedido = Pedido.Pedido,
                                     IDZona = Pedido.CelulaPedido, //checar si corresponde con campo Celula
@@ -415,7 +415,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                     Importe = importe, //campo importe
                                     Impuesto = impuesto,//campo impuesto
                                     SerieRemision = serieremision,//campo SerieRemision
-                                    Total = total//campo total    
+                                    Total = total,//campo total  
+                                    PedidoReferencia = Pedido.IDPedidoCRM
                                 });
                             }
                         }
@@ -438,50 +439,50 @@ namespace Conciliacion.RunTime.DatosSQL
                         break;
                 }
 
-                //Actualiza Saldo 
-                if (resultado)
-                {
-                    foreach (Cobro Cobro in Cobros)
-                    {
-                        List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
-                        if (Pedidos.Count > 0)
-                        {
-                            RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, App.CadenaConexion);
-                            objGateway.URLServicio = URLGateway;
-                            List<RTGMCore.Pedido> lstPedido = new List<RTGMCore.Pedido>();
-                            foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
-                            {
-                                dtPedido = DatosDePedido(_conexion, Pedido.AñoPedido, Pedido.CelulaPedido, Pedido.Pedido);
-                                if (dtPedido.Rows.Count > 0)
-                                {
-                                    lstPedido.Add(new RTGMCore.PedidoCRMSaldo
-                                    {
-                                        IDEmpresa = corporativo,
-                                        IDPedido = Pedido.Pedido,
-                                        PedidoReferencia = Pedido.Pedido.ToString(),
-                                        IDZona = Pedido.CelulaPedido, 
-                                        Abono = Pedido.MontoConciliado //checar si el importe del abono
-                                    });
-                                }
-                            } //construye lista de pedidos
+                ////Actualiza Saldo 
+                //if (resultado)
+                //{
+                //    foreach (Cobro Cobro in Cobros)
+                //    {
+                //        List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
+                //        if (Pedidos.Count > 0)
+                //        {
+                //            RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, App.CadenaConexion);
+                //            objGateway.URLServicio = URLGateway;
+                //            List<RTGMCore.Pedido> lstPedido = new List<RTGMCore.Pedido>();
+                //            foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                //            {
+                //                dtPedido = DatosDePedido(_conexion, Pedido.AñoPedido, Pedido.CelulaPedido, Pedido.Pedido);
+                //                if (dtPedido.Rows.Count > 0)
+                //                {
+                //                    lstPedido.Add(new RTGMCore.PedidoCRMSaldo
+                //                    {
+                //                        IDEmpresa = corporativo,
+                //                        IDPedido = Pedido.Pedido,
+                //                        PedidoReferencia = Pedido.Pedido.ToString(),
+                //                        IDZona = Pedido.CelulaPedido, 
+                //                        Abono = Pedido.MontoConciliado //checar si el importe del abono
+                //                    });
+                //                }
+                //            } //construye lista de pedidos
 
-                            SolicitudActualizarPedido Solicitud = new SolicitudActualizarPedido
-                            {
-                                Pedidos = lstPedido,
-                                Portatil = false,
-                                TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
-                            };
-                            List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
-                            resultado = Exitoso(ListaRespuesta);
-                            SiHayErroresMostrar(ListaRespuesta);
+                //            SolicitudActualizarPedido Solicitud = new SolicitudActualizarPedido
+                //            {
+                //                Pedidos = lstPedido,
+                //                Portatil = false,
+                //                TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
+                //            };
+                //            List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
+                //            resultado = Exitoso(ListaRespuesta);
+                //            SiHayErroresMostrar(ListaRespuesta);
 
-                            if (!resultado)
-                                break;
+                //            if (!resultado)
+                //                break;
 
-                        }
-                    }
+                //        }
+                //    }
                     
-                }
+                //}
 
             }
             catch (Exception ex)
