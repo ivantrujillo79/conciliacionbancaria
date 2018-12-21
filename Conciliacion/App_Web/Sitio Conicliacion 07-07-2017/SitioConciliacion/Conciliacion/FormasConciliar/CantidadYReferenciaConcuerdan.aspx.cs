@@ -157,7 +157,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rvDiferencia.ValidationGroup = "CantidadReferenciaPedidos";
                     rfvDiferenciaVacio.ValidationGroup = "CantidadReferenciaPedidos";
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
+
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
+
                     GenerarTablaReferenciasAConciliarPedidos();
                     _tblReferenciasAConciliarPedido = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }

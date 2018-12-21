@@ -1280,9 +1280,12 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
         try
         {
-            listaReferenciaPedidos = App.Consultas.ConciliacionBusquedaPedidoVariosUno(Consultas.BusquedaPedido.Todos, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, 0, 0, diferencia, celula);
-            //Session["POR_CONCILIAR_INTERNO"] = listaReferenciaPedidos;
-            Session["POR_CONCILIAR_PEDIDO"] = listaReferenciaPedidos;
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+            listaReferenciaPedidos = App.Consultas.ConciliacionBusquedaPedidoVariosUno(Consultas.BusquedaPedido.Todos, 
+                corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, 
+                rfEx.Folio, rfEx.Secuencia, 
+                diferencia, celula);
+              Session["POR_CONCILIAR_PEDIDO"] = listaReferenciaPedidos;
         }
         catch (Exception ex)
         {
