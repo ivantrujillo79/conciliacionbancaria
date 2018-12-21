@@ -554,7 +554,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             throw ex;
         }
     }
-    public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario usuariot, byte  modulot, string cadena)
+    public void consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario usuariot, byte  modulot, string cadena)
     {
         RTGMGateway.RTGMGateway Gateway;
         RTGMGateway.SolicitudGateway Solicitud;
@@ -571,9 +571,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Gateway.URLServicio = _URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.IDCliente = cliente;
-                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
                 try
                 {
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+               
                     if (DireccionEntrega != null)
                     {
                         if (DireccionEntrega.Message != null)
@@ -611,12 +612,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         catch (Exception ex)
         {
             //throw ex;
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            //App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
-        if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
-            return DireccionEntrega.Nombre.Trim();
-        else
-            return "No encontrado";
+        //if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
+        //    return DireccionEntrega.Nombre.Trim();
+        //else
+        //    return "No encontrado";
     }
 
     private void ObtieneNombreCliente(List<ReferenciaConciliadaPedido> listadistintos)
@@ -659,7 +660,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             Cliente cliente = lstClientes.Find(x => x.NumCliente == numCliente);
             if (cliente == null)
             {
-                NombreCliente = consultaClienteCRM(numCliente, (SeguridadCB.Public.Usuario)Session["Usuario"], byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);
+                consultaClienteCRM(numCliente, (SeguridadCB.Public.Usuario)Session["Usuario"], byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);
+                NombreCliente = lstClientes.FirstOrDefault(x => x.NumCliente == numCliente).Nombre;
                 cliente = App.Cliente.CrearObjeto();
                 cliente.NumCliente = numCliente;
                 cliente.Nombre = NombreCliente;
@@ -721,7 +723,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             try
             {
-                ObtieneNombreCliente(listadistintos);
+                int limite = 5;
+                while(lstClientes.Count < limite)
+                {
+                    ObtieneNombreCliente(listadistintos);
+                }
 
                 foreach (var item in listaReferenciaConciliadaPedido)
                 {
@@ -768,7 +774,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rc.FolioSat + rc.SerieSat
                     );
             }
-            HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+            //HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+            Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
             ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
         }
         catch (Exception ex)
@@ -992,7 +999,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             Nhilos--;
         }
-        catch(Exception ex)
+        catch(Exception)
         {
             Nhilos--;
         }
