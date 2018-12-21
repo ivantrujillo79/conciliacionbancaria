@@ -4642,6 +4642,8 @@ namespace Conciliacion.RunTime.DatosSQL
                         dato.TipoCobro = (int)reader["TipoCobro"];
                         dato.ClientePadre = Convert.ToInt32(reader["ClientePadre"]);
 
+                        dato.IDPedidoCRM = Convert.ToString(reader["IDCRM"]);
+
                         datos.Add(dato);
                     }
                 }
@@ -4735,6 +4737,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToInt32(reader["AñoExterno"]),
                                                                 this.implementadorMensajes);
                         dato.TipoProducto = (byte)reader["TipoProducto"];
+                        dato.IDPedidoCRM = Convert.ToString(reader["IDCRM"]);
 
                         datos.Add(dato);
                     }
@@ -4905,6 +4908,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             movimiento.SaldoAFavor = 0;
                         }
+                        
                         movimiento.ListaCobros = ConsultaChequeTarjetaAltaModifica(corporativo, sucursal, año, mes,
                                                                                    folio);
                         movimiento.ListaPedidos = ConsultaPagosPorAplicar(corporativo, sucursal, año, mes, folio);

@@ -40,6 +40,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int tipocobro;
         private int tipoCobro;
         int clientePadre;
+        String _iDPedidoCRM;
 
         #region Constructores
 
@@ -353,6 +354,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set
             {
                 clientePadre = value;
+            }
+        }
+
+        public String IDPedidoCRM
+        {
+            get
+            {
+                return _iDPedidoCRM;
+            }
+
+            set
+            {
+                _iDPedidoCRM = value;
             }
         }
     }
