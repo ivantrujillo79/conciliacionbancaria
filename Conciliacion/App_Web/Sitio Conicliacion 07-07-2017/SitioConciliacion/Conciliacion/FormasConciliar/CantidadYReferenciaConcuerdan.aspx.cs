@@ -637,7 +637,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 10;
-            Parallel.ForEach(clienteconsultar, options, x => x.consultaClienteCRM(x.NumCliente));
+            //Parallel.ForEach(clienteconsultar, options, x => x.consultaClienteCRM(x.NumCliente));
+            Parallel.ForEach(clienteconsultar, options, (client) => { consultaClienteCRM(client.NumCliente); });
 
         }
         catch (Exception ex)
@@ -706,7 +707,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
             //string NombreCliente = "";
             //List<Cliente> lstClientes = new List<Cliente>();
-            List<ReferenciaConciliadaPedido> listadistintos = listaReferenciaConciliadaPedido.Distinct().ToList();
+            List<ReferenciaConciliadaPedido> listadistintos = new List<ReferenciaConciliadaPedido>();//listaReferenciaConciliadaPedido.GroupBy(item => item.Cliente).Select(x=> x.f).ToList();//.GroupBy(x => x.Cliente).Select(c => c.First()).ToList();
+            foreach (var item in listaReferenciaConciliadaPedido)
+            {
+                if(!listadistintos.Exists(x=>x.Cliente== item.Cliente))
+                {
+                    listadistintos.Add(item);
+                }
+            }
             try
             {
                 ObtieneNombreCliente(listadistintos);
@@ -898,7 +906,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 listResultado = new List<ReferenciaConciliadaPedido>();
                 listResultado = rnc.ConciliarPedidoCantidadYReferenciaMovExterno(centavos,
                     statusConcepto, campoExterno, campoInterno);
-                if(Nhilos <5)
+                if(Nhilos < 5)
                 {
                     new Thread(() => ValidacionConsulta(listResultado)).Start();
                     Nhilos++;
