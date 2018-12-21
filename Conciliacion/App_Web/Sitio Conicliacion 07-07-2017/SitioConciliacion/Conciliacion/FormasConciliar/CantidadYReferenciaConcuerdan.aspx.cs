@@ -564,8 +564,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         {
             if (_URLGateway != string.Empty)
             {
-                AppSettingsReader settings = new AppSettingsReader();
-                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                AppSettingsReader settings = new AppSettingsReader();                
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)Session["Usuario"]; //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
                 Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
