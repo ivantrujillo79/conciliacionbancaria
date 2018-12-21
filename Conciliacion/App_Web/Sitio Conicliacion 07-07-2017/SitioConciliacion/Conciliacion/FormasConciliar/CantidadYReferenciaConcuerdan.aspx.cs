@@ -554,7 +554,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             throw ex;
         }
     }
-    public string consultaClienteCRM(int cliente)
+    public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario usuariot, byte  modulot, string cadena)
     {
         RTGMGateway.RTGMGateway Gateway;
         RTGMGateway.SolicitudGateway Solicitud;
@@ -564,10 +564,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         {
             if (_URLGateway != string.Empty)
             {
-                AppSettingsReader settings = new AppSettingsReader();                
-                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)Session["Usuario"]; //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = usuariot;//(SeguridadCB.Public.Usuario)Session["Usuario"]; //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = modulot;//byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, cadena);//App.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.IDCliente = cliente;
@@ -634,11 +634,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     clienteconsultar.Add(cliente);
                 }
             }
-
+            AppSettingsReader settings = new AppSettingsReader();
+            string cadena = App.CadenaConexion;
+            byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 10;
             //Parallel.ForEach(clienteconsultar, options, x => x.consultaClienteCRM(x.NumCliente));
-            Parallel.ForEach(clienteconsultar, options, (client) => { consultaClienteCRM(client.NumCliente); });
+            Parallel.ForEach(clienteconsultar, options, (client) => { consultaClienteCRM(client.NumCliente, user, modulo, cadena); });
 
         }
         catch (Exception ex)
@@ -652,10 +655,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         string NombreCliente = "";
         if (_URLGateway != "")
         {
+            AppSettingsReader settings = new AppSettingsReader();
             Cliente cliente = lstClientes.Find(x => x.NumCliente == numCliente);
             if (cliente == null)
             {
-                NombreCliente = consultaClienteCRM(numCliente);
+                NombreCliente = consultaClienteCRM(numCliente, (SeguridadCB.Public.Usuario)Session["Usuario"], byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);
                 cliente = App.Cliente.CrearObjeto();
                 cliente.NumCliente = numCliente;
                 cliente.Nombre = NombreCliente;
@@ -902,43 +906,43 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                         x.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"));
             foreach (ReferenciaNoConciliada rnc in listaReferenciaExternas)
             {
-                //bool resultado = false;
+                bool resultado = false;
                 listResultado = new List<ReferenciaConciliadaPedido>();
                 listResultado = rnc.ConciliarPedidoCantidadYReferenciaMovExterno(centavos,
                     statusConcepto, campoExterno, campoInterno);
-                if(Nhilos < 5)
-                {
-                    new Thread(() => ValidacionConsulta(listResultado)).Start();
-                    Nhilos++;
-                }
-                while(Nhilos == 4)
-                {
-
-                }
-                //listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
-                //foreach (ReferenciaConciliadaPedido rc in listResultado)
+                //if(Nhilos < 5)
                 //{
-                //    if (listaTransaccionesConciliadas != null)
-                //        resultado =
-                //            listaTransaccionesConciliadas.SelectMany(
-                //                rcc => rcc.ListaReferenciaConciliada.Cast<ReferenciaConciliadaPedido>())
-                //                .ToList()
-                //                .Exists(
-                //                    p =>
-                //                        p.AñoPedido == rc.AñoPedido && p.Pedido == rc.Pedido &&
-                //                        p.CelulaPedido == rc.CelulaPedido);
-
-                //    if (resultado) break;
-
-                //    resultado = listaReferenciaConciliadaPedido.Exists(
-                //          c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
-                //    if (resultado) break;
+                //    new Thread(() => ValidacionConsulta(listResultado)).Start();
+                //    Nhilos++;
                 //}
+                //while(Nhilos == 4)
+                //{
 
-                //if (resultado) continue;
+                //}
+                listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
+                foreach (ReferenciaConciliadaPedido rc in listResultado)
+                {
+                    if (listaTransaccionesConciliadas != null)
+                        resultado =
+                            listaTransaccionesConciliadas.SelectMany(
+                                rcc => rcc.ListaReferenciaConciliada.Cast<ReferenciaConciliadaPedido>())
+                                .ToList()
+                                .Exists(
+                                    p =>
+                                        p.AñoPedido == rc.AñoPedido && p.Pedido == rc.Pedido &&
+                                        p.CelulaPedido == rc.CelulaPedido);
 
-                ////if (listResultado.Count <= 2 && listResultado.Count > 0) // Se comenta para corregir incidencia 109
-                //    listaReferenciaConciliadaPedido.AddRange(listResultado);
+                    if (resultado) break;
+
+                    resultado = listaReferenciaConciliadaPedido.Exists(
+                          c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
+                    if (resultado) break;
+                }
+
+                if (resultado) continue;
+
+                //if (listResultado.Count <= 2 && listResultado.Count > 0) // Se comenta para corregir incidencia 109
+                listaReferenciaConciliadaPedido.AddRange(listResultado);
             }
             HttpContext.Current.Session["POR_CONCILIAR"] = listaReferenciaConciliadaPedido;
             Nhilos = 0;
