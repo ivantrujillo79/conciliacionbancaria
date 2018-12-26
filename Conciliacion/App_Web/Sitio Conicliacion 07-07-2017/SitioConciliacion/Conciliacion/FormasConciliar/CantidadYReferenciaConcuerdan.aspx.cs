@@ -724,9 +724,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             try
             {
                 int limite = 5;
-                while(lstClientes.Count < limite)
+                while (limite < 5)//while(lstClientes.Count < limite)
                 {
                     ObtieneNombreCliente(listadistintos);
+                    limite++;
                 }
 
                 foreach (var item in listaReferenciaConciliadaPedido)
