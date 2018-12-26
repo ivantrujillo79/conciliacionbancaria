@@ -723,7 +723,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             try
             {
-                int limite = 5;
+                int limite = 0;
                 while (limite < 5)//while(lstClientes.Count < limite)
                 {
                     ObtieneNombreCliente(listadistintos);
