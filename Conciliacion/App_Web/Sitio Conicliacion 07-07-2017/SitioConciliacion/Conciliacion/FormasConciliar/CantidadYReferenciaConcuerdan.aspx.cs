@@ -640,7 +640,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
             SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
             ParallelOptions options = new ParallelOptions();
-            options.MaxDegreeOfParallelism = 10;
+            options.MaxDegreeOfParallelism = 3; //numero de hilos
             //Parallel.ForEach(clienteconsultar, options, x => x.consultaClienteCRM(x.NumCliente));
             Parallel.ForEach(clienteconsultar, options, (client) => { consultaClienteCRM(client.NumCliente, user, modulo, cadena); });
 
@@ -2159,6 +2159,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             else
                 App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
+            resultado = guardado;
         }
 
         //ACTUALIZAR BARRAS Y DE MAS 
