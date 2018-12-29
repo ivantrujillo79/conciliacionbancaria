@@ -2135,7 +2135,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
             {
                 listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
-                //listaReferenciaConciliadaPedido.Where(fila => fila.Selecciona == true).ToList();
                 IList listRefCon = listaReferenciaConciliadaPedido;
                 if (listRefCon != null)
                 { 
@@ -2149,8 +2148,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                             guardado = true;
                         }
                     }
-                    //if (listaReferenciaConciliadaPedido != null)
-                    //    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
                     if (!guardado)
                         App.ImplementadorMensajes.MostrarMensaje("No se selecciono ninguna referencia a conciliar. Verifique");
                 }

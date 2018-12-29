@@ -59,7 +59,7 @@
         </div>
         <div id="piePagina">
             <asp:Label ID="lblInformacion" runat="server" Width="100%" CssClass="etiqueta fg-color-blanco"></asp:Label>
-            <asp:Label runat="server" ID="lblVersion" Text="    Ver. 2.5.89" CssClass="etiqueta fg-color-blanco"></asp:Label>
+            <asp:Label runat="server" ID="lblVersion" Text="    Ver. 2.5.90" CssClass="etiqueta fg-color-blanco"></asp:Label>
         </div>
     </div>
     </form>
@@ -68,7 +68,7 @@
     <%--<link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />--%>
     <%--<script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
 
-       <script src="<%= Page.ResolveClientUrl("~/App_Scripts/popper/Popper.min.js") %>" type="text/javascript"></script>
+    <script src="<%= Page.ResolveClientUrl("~/App_Scripts/popper/Popper.min.js") %>" type="text/javascript"></script>
     <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/css/bootstrap.min.css") %>" />
     <script src="<%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/js/bootstrap.min.js") %>" type="text/javascript"></script>
 </body>
