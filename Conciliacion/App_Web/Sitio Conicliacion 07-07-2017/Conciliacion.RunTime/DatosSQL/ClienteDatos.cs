@@ -9,6 +9,7 @@ using System.Data.SqlTypes;
 using System.Data;
 using System.Web;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -202,22 +203,24 @@ namespace Conciliacion.RunTime.DatosSQL
                 if (_URLGateway != string.Empty)
                 {
                     List<Cliente> lstClientes = new List<Cliente>();
+                    lstClientes = ConsultaCLienteCRMdt(dtRetorno);
                     foreach (DataRow fila in dtRetorno.Rows)
                     {
                         Cliente cliente;
                         cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
-                        if (cliente == null)
-                        {
-                            fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                            cliente = App.Cliente.CrearObjeto();
-                            cliente.NumCliente = int.Parse(fila["cliente"].ToString());
-                            cliente.Nombre = fila["Nombre"].ToString();
-                            lstClientes.Add(cliente);
-                        }
-                        else
+                        if (cliente != null)
                         {
                             fila["Nombre"] = cliente.Nombre;
+                            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                            //cliente = App.Cliente.CrearObjeto();
+                            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                            //cliente.Nombre = fila["Nombre"].ToString();
+                            //lstClientes.Add(cliente);
                         }
+                        //else
+                        //{
+                        //    fila["Nombre"] = cliente.Nombre;
+                        //}
                     }
                 }
             }
@@ -231,6 +234,85 @@ namespace Conciliacion.RunTime.DatosSQL
                 stackTrace = null;
             }
             return dtRetorno;
+        }
+
+        public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario user, byte modulo, string cadenaconexion,string URLGateway)
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+            try
+            {
+                if (URLGateway != string.Empty)
+                {
+                    //AppSettingsReader settings = new AppSettingsReader();
+                    //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                    //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                    Gateway.URLServicio = URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.IDCliente = cliente;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (DireccionEntrega == null ||
+                DireccionEntrega.Nombre == null )
+            {
+                //DireccionEntrega.Message == null ||
+                if(DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
+                {
+                    return "No encontrado";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else
+                return DireccionEntrega.Nombre.Trim();
+        }
+
+        private List<Cliente> ConsultaCLienteCRMdt(DataTable dt)
+        {
+            List<Cliente> lstClientes = new List<Cliente>();
+            List<int> listadistintos = new List<int>();
+            try
+            {
+                foreach (DataRow item in dt.Rows)
+                {
+                    if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                    {
+                        listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                    }
+                }
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                string cadenaconexion = App.CadenaConexion;
+                ParallelOptions options = new ParallelOptions();
+                options.MaxDegreeOfParallelism = 3;
+                Parallel.ForEach(listadistintos, options, (client) => {
+                    Cliente cliente;
+                    cliente = App.Cliente.CrearObjeto();
+                    cliente.NumCliente = client;
+                    cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, _URLGateway );
+                    lstClientes.Add(cliente);
+                });
+
+                while (lstClientes.Count < listadistintos.Count)
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return lstClientes;
         }
 
         public override string consultaClienteCRM(int cliente)
