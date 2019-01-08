@@ -9,6 +9,14 @@ namespace Locker
     public static class LockerExterno
     {
         public static List<RegistroExternoBloqueado> ExternoBloqueado { get; set; }
+
+        public static void EliminarBloqueos(string IDSesion)
+        {
+            if (ExternoBloqueado == null)
+                return;
+            else
+                ExternoBloqueado.RemoveAll(x => x.SessionID == IDSesion);
+        }
     }
 
     public class RegistroExternoBloqueado
@@ -23,5 +31,6 @@ namespace Locker
         public decimal Monto { get; set; }
         public string Descripcion { get; set; }
         public DateTime InicioBloqueo { get; set; }
+        public int Secuencia { get; set; }
     }
 }

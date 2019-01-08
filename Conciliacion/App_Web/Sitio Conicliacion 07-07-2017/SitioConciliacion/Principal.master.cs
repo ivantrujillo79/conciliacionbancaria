@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using Locker;
 
 public partial class Principal : System.Web.UI.MasterPage
 {
@@ -66,6 +67,14 @@ public partial class Principal : System.Web.UI.MasterPage
             //this.pnlTituloVisible = true;
             this.lblInformacionGeneral = (string)HttpContext.Current.Session["PiePagina"];
             this.smPathVisible = true;
+        }
+
+        if (!Page.IsPostBack)
+        {
+            if (this.Request.UrlReferrer != null && this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX"))
+            {
+                LockerExterno.EliminarBloqueos(Session.SessionID);
+            }
         }
     }
 
