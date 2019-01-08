@@ -17,5 +17,11 @@ namespace Locker
         public int Año { get; set; }
         public int Folio { get; set; }
         public int Consecutivo { get; set; }
+        public int Corporativo { get; set; }
+        public int Sucursal { get; set; }
+        public string Usuario { get; set; }
+        public decimal Monto { get; set; }
+        public string Descripcion { get; set; }
+        public DateTime InicioBloqueo { get; set; }
     }
 }

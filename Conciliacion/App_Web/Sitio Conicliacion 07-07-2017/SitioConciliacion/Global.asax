@@ -35,7 +35,7 @@
         if (Locker.LockerExterno.ExternoBloqueado != null)
         {
             int J = Locker.LockerExterno.ExternoBloqueado.Count;
-            for(int i = 0; i<= J; i++)
+            for(int i = 0; i<= J-1; i++)
             {
                 Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == Session.SessionID).ToList()[0]);
             }
