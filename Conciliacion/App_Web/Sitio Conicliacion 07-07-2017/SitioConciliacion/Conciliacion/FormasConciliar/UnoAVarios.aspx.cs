@@ -3239,9 +3239,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia)
     {
         if (LockerExterno.ExternoBloqueado == null)
-            return;
-        
-        LockerExterno.EliminarBloqueos(IDSesion);
+            LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+        else
+            LockerExterno.EliminarBloqueos(IDSesion);
 
         LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado {
             SessionID       = IDSesion,
