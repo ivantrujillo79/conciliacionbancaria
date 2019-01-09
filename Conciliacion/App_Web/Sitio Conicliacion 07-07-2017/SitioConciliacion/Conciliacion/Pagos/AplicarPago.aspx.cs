@@ -906,7 +906,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             int añoConciliacion = 0;
             int folioConciliacion = 0;
             short mesConciliacion = 0;
-            short tipoConciliacion = 0;            
+            short tipoConciliacion = 0;
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
             conexion.AbrirConexion(true,true);           
 
@@ -916,11 +917,11 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 if (urlValida & fuente.Equals("CRM"))
                 {
                    
-                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway);
+                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway, tipoConciliacion);
                 }
                 else
                 {
-                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion);
+                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, tipoConciliacion);
                 }
 
                 //if (objMovimientoCaja.Guardar(conexion))
