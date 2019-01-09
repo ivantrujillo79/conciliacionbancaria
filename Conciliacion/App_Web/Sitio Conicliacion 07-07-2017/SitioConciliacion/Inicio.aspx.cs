@@ -470,7 +470,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         Response.Redirect("~/Conciliacion/Pagos/AplicarPago.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes + "&EsEdificios=" + esEdificios);
+                                     conciliacion.Mes + "&EsEdificios=" + esEdificios + "&TipoConciliacion=" + conciliacion.TipoConciliacion);
     }
 
     //Nueva funcionalidad
