@@ -280,6 +280,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
                 GenerarTablaExternos();
                 LlenaGridViewExternos();
+
                 ActualizarTotalesAgregados();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
@@ -484,6 +485,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 txtDias.Enabled = true;
             }
+
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia);
 
             ActualizarDatos_wucCargaExcel();
             if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null && int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)

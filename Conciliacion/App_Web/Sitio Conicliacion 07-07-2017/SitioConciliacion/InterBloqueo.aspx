@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sitio.master" AutoEventWireup="true" CodeFile="InterBloqueo.aspx.cs" Inherits="InterBloqueo" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="InterBloqueo.aspx.cs" Inherits="InterBloqueo" %>
 
 <%@ Register Src="~/ControlesUsuario/GestorBloqueos/wucInterbloqueosEstadoCuenta.ascx" TagPrefix="uc1" TagName="wucInterbloqueosEstadoCuenta" %>
 
