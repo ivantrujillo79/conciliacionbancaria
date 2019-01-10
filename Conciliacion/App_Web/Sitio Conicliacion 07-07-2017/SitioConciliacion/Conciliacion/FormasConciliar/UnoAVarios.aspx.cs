@@ -3170,7 +3170,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
             indiceExternoSeleccionado = ((GridViewRow)(sender as RadioButton).Parent.Parent).RowIndex;
-            
+
+
+
             if (ValidarExternoBloqueado())
             {
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
@@ -3196,7 +3198,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             Session["StatusFiltro"] = statusFiltro;
             tipoFiltro = String.Empty;
             Session["TipoFiltro"] = tipoFiltro;
-            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia);
+
+            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             //Leer el tipoConciliacion URL
@@ -3240,20 +3243,27 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                             x.Secuencia == rfEx.Secuencia );
     }
 
-    private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia)
+    private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia,string desc,decimal monto)
     {
+        SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+
         if (LockerExterno.ExternoBloqueado == null)
             LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
         else
             LockerExterno.EliminarBloqueos(IDSesion);
 
         LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado {
-            SessionID       = IDSesion,
-            Corporativo     = corporativo,
-            Sucursal        = sucursal,
-            Año             = año,
-            Folio           = folio,
-            Secuencia       = secuencia
+            SessionID = IDSesion,
+            Corporativo = corporativo,
+            Sucursal = sucursal,
+            Año = año,
+            Folio = folio,
+            Secuencia = secuencia,
+            Usuario = usuario.IdUsuario.ToString(),
+            InicioBloqueo = DateTime.Now,
+            Descripcion=desc,
+            Monto=monto
+            
         });
     }
 
