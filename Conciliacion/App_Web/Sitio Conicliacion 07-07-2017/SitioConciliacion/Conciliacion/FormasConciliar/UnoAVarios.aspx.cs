@@ -487,7 +487,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
 
             ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
-            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia);
+            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia,rfEx.Descripcion,rfEx.Monto);
 
             ActualizarDatos_wucCargaExcel();
             if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null && int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
