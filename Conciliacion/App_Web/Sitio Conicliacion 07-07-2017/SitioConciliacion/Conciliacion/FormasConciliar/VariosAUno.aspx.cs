@@ -2553,16 +2553,6 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
             BloqueoEdoCTA = bloqueo == "1" ? true : false;
 
-
-            //if (bloqueo != string.Empty && bloqueo == "1")
-            //{
-            //        BloqueoEdoCTA =true;
-            //}
-            //else
-            //{
-            //         BloqueoEdoCTA = false;
-            //}
-
             if (BloqueoEdoCTA==true)
             {
                 BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
