@@ -1293,7 +1293,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         tblReferenciaInternas = new DataTable("ReferenciasInternas");
         tblReferenciaInternas.Columns.Add("Pedido", typeof(int));
-        tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(int));
+        tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(Int64));
         tblReferenciaInternas.Columns.Add("AñoPed", typeof(int));
         tblReferenciaInternas.Columns.Add("Celula", typeof(int));
         tblReferenciaInternas.Columns.Add("Cliente", typeof(int));
@@ -1301,6 +1301,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
         tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
         tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
+        tblReferenciaInternas.Columns.Add("FolioFactura", typeof(string));
 
         //ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
         //foreach (ReferenciaNoConciliadaPedido rc in listaReferenciaPedidos.Where(rc => !externoSelec.ExisteReferenciaConciliadaPedido(rc.Pedido, rc.CelulaPedido, rc.AñoPedido)))
@@ -1308,14 +1309,15 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         {
             tblReferenciaInternas.Rows.Add(
                 rc.Pedido,
-                rc.PedidoReferencia,
+                rc.PedidoReferencia.Trim(),
                 rc.AñoPedido,
                 rc.CelulaPedido,
                 rc.Cliente,
                 rc.Nombre,
                 rc.FMovimiento,
                 rc.Total,
-                rc.Concepto
+                rc.Concepto,
+                ""
                 );
         }
         HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
@@ -1696,6 +1698,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             int folioConciliacion = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioConciliacion"]);
             int folioExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioExterno"]);
             int secuenciaExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SecuenciaExterno"]);
+            short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
 
             //Leer las TransaccionesConciliadas
             listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
