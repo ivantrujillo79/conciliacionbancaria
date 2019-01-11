@@ -17,6 +17,7 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using AjaxControlToolkit;
 using Conciliacion.RunTime.DatosSQL;
+using Locker;
 
 public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Page
 {
@@ -2542,6 +2543,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
             }
             pintarFilaSeleccionadaExterno(grv.RowIndex);
+
+            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+
+
         }
         else
         {
@@ -3181,4 +3186,35 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia, string desc, decimal monto)
+    {
+        SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+
+        if (LockerExterno.ExternoBloqueado == null)
+            LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+        else
+            LockerExterno.EliminarBloqueos(IDSesion);
+
+        LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+        {
+            SessionID = IDSesion,
+            Corporativo = corporativo,
+            Sucursal = sucursal,
+            Año = año,
+            Folio = folio,
+            Secuencia = secuencia,
+            Usuario = usuario.IdUsuario.ToString(),
+            InicioBloqueo = DateTime.Now,
+            Descripcion = desc,
+            Monto = monto
+
+        });
+    }
+
+
+
+    protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
