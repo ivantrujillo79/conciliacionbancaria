@@ -2522,6 +2522,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         CheckBox chk = sender as CheckBox;
         GridViewRow grv = (GridViewRow)chk.Parent.Parent;
+        bool BloqueoEdoCTA = false;
 
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
@@ -2544,7 +2545,28 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             }
             pintarFilaSeleccionadaExterno(grv.RowIndex);
 
-            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+
+            AppSettingsReader settings = new AppSettingsReader();
+
+            string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+            BloqueoEdoCTA = bloqueo == "1" ? true : false;
+
+
+            //if (bloqueo != string.Empty && bloqueo == "1")
+            //{
+            //        BloqueoEdoCTA =true;
+            //}
+            //else
+            //{
+            //         BloqueoEdoCTA = false;
+            //}
+
+            if (BloqueoEdoCTA==true)
+            {
+                BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+            }
 
 
         }
