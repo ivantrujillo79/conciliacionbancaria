@@ -1410,64 +1410,71 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
 
     private void bloqueaTodoLoSeleccionado(GridView grv)
     {
-        int Corporativo;
-        int Sucursal;
-        int Año;
-        int Folio;
-        int Secuencia;
-        string Descripcion;
-        decimal Monto;
-
-        SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-        if (LockerExterno.ExternoBloqueado == null)
-            LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
-        else
-            LockerExterno.EliminarBloqueos(Session.SessionID);
-
-        int filaindex = 0;
-        foreach (GridViewRow fila in grv.Rows) //grvCantidadConcuerdanPedidos
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+        
+        if (BloqueoEdoCTA == "1")
         {
-            if (fila.RowType == DataControlRowType.DataRow)
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+            else
+                LockerExterno.EliminarBloqueos(Session.SessionID);
+
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows) //grvCantidadConcuerdanPedidos
             {
-                if (tipoConciliacion == 2)
+                if (fila.RowType == DataControlRowType.DataRow)
                 {
-                    listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
-                    Corporativo = listaReferenciaConciliadaPedidos[filaindex].Corporativo;
-                    Sucursal = listaReferenciaConciliadaPedidos[filaindex].Sucursal;
-                    Año = listaReferenciaConciliadaPedidos[filaindex].Año;
-                    Folio = listaReferenciaConciliadaPedidos[filaindex].Folio;
-                    Secuencia = listaReferenciaConciliadaPedidos[filaindex].Secuencia;
-                    Descripcion = listaReferenciaConciliadaPedidos[filaindex].Descripcion;
-                    Monto = listaReferenciaConciliadaPedidos[filaindex].Total; //monto
-                }
-                else
-                {
-                    listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
-                    Corporativo = listaReferenciaConciliada[filaindex].Corporativo;
-                    Sucursal = listaReferenciaConciliada[filaindex].Sucursal;
-                    Año = listaReferenciaConciliada[filaindex].Año;
-                    Folio = listaReferenciaConciliada[filaindex].Folio;
-                    Secuencia = listaReferenciaConciliada[filaindex].Secuencia;
-                    Descripcion = listaReferenciaConciliada[filaindex].Descripcion;
-                    Monto = listaReferenciaConciliada[filaindex].MontoConciliado; //monto
-                }
-                if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
-                {
-                    LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+                    if (tipoConciliacion == 2)
                     {
-                        SessionID = Session.SessionID,
-                        Corporativo = Corporativo,
-                        Sucursal = Sucursal,
-                        Año = Año,
-                        Folio = Folio,
-                        Secuencia = Secuencia,
-                        Usuario = usuario.IdUsuario.ToString(),
-                        InicioBloqueo = DateTime.Now,
-                        Descripcion = Descripcion,
-                        Monto = Monto //monto
-                    });
+                        listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        Corporativo = listaReferenciaConciliadaPedidos[filaindex].Corporativo;
+                        Sucursal = listaReferenciaConciliadaPedidos[filaindex].Sucursal;
+                        Año = listaReferenciaConciliadaPedidos[filaindex].Año;
+                        Folio = listaReferenciaConciliadaPedidos[filaindex].Folio;
+                        Secuencia = listaReferenciaConciliadaPedidos[filaindex].Secuencia;
+                        Descripcion = listaReferenciaConciliadaPedidos[filaindex].Descripcion;
+                        Monto = listaReferenciaConciliadaPedidos[filaindex].Total; //monto
+                    }
+                    else
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        Corporativo = listaReferenciaConciliada[filaindex].Corporativo;
+                        Sucursal = listaReferenciaConciliada[filaindex].Sucursal;
+                        Año = listaReferenciaConciliada[filaindex].Año;
+                        Folio = listaReferenciaConciliada[filaindex].Folio;
+                        Secuencia = listaReferenciaConciliada[filaindex].Secuencia;
+                        Descripcion = listaReferenciaConciliada[filaindex].Descripcion;
+                        Monto = listaReferenciaConciliada[filaindex].MontoConciliado; //monto
+                    }
+                    if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                    {
+                        LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+                        {
+                            SessionID = Session.SessionID,
+                            Corporativo = Corporativo,
+                            Sucursal = Sucursal,
+                            Año = Año,
+                            Folio = Folio,
+                            Secuencia = Secuencia,
+                            Usuario = usuario.IdUsuario.ToString(),
+                            InicioBloqueo = DateTime.Now,
+                            Descripcion = Descripcion,
+                            Monto = Monto //monto
+                        });
+                    }
+                    filaindex++;
                 }
-                filaindex++;
             }
         }
     }
