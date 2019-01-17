@@ -916,7 +916,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("EXTERNO_SELECCIONADO");
         HttpContext.Current.Session.Remove("ImpuestoEDENRED");
         HttpContext.Current.Session.Remove("ComisionMaximaEDENRED");
-
+        HttpContext.Current.Session.Remove("TABLADEAGREGADOS");
     }
     //Cargar Rango DiasMaximo-Minimio-Default
     public void CargarRangoDiasDiferenciaGrupo(short grupoC)
