@@ -282,7 +282,9 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
 
             List<Cliente> lstClientes = new List<Cliente>();
-            lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos, _URLGateway);
+            if (_URLGateway != string.Empty)
+                lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos, _URLGateway);
+
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
             {
                 if (_URLGateway != string.Empty)
@@ -292,16 +294,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     if (cliente != null)
                     {
                         rc.Nombre = cliente.Nombre;
-                        //cliente = App.Cliente.CrearObjeto();
-                        //rc.Nombre = cliente.consultaClienteCRM(rc.Cliente, _URLGateway);
-                        //cliente.NumCliente = rc.Cliente;
-                        //cliente.Nombre = rc.Nombre;
-                        //lstClientes.Add(cliente);
                     }
-                    //else
-                    //{
-                    //    rc.Nombre = cliente.Nombre;
-                    //}
                 }
 
                 tblReferenciasAPagar.Rows.Add(
