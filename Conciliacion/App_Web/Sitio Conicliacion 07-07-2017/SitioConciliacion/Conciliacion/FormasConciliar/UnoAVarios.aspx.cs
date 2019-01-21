@@ -487,7 +487,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
 
             ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
-            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia,rfEx.Descripcion,rfEx.Monto);
+            //BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia,rfEx.Descripcion,rfEx.Monto);
 
             ActualizarDatos_wucCargaExcel();
             if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null && int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
@@ -916,7 +916,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("EXTERNO_SELECCIONADO");
         HttpContext.Current.Session.Remove("ImpuestoEDENRED");
         HttpContext.Current.Session.Remove("ComisionMaximaEDENRED");
-
+        HttpContext.Current.Session.Remove("TABLADEAGREGADOS");
     }
     //Cargar Rango DiasMaximo-Minimio-Default
     public void CargarRangoDiasDiferenciaGrupo(short grupoC)
@@ -1109,6 +1109,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
             ReferenciasPedidoExcel = PedidosBuscadosUsuario;
 
+            RNC.Comision = 0;
+            if (txtComision.Text.Trim() != string.Empty)
+            {
+                try
+                {
+                    RNC.Comision = Convert.ToDecimal(txtComision.Text);
+                }
+                catch (Exception)
+                {
+                    RNC.Comision = 0;
+                }
+            }
+
             foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
             {
                 RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
@@ -1203,12 +1216,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private void ActualizarTotalesAgregadosExcel(GridView Grid)
     {
         Decimal MontoConciliado;
-        //DataTable dt = (DataTable)grvAgregadosPedidos.DataSource;
-        //decimal dComision = 0M;
         DataTable dt = (DataTable)Grid.DataSource;
-        //bool comisionSeleccionada = chkComision.Checked;
-        //bool comisionValida = false;
-
         if (dt != null && dt.Rows.Count > 0)
         {
             MontoConciliado = 0;
@@ -1221,11 +1229,23 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //if (comisionSeleccionada)
             //{
             //    comisionValida = decimal.TryParse(txtComision.Text, out dComision);
-
             //    MontoConciliado += dComision;
             //}
+            decimal dAbono = 0;
+            decimal dComision = 0;
+            if (txtComision.Text.Trim() == "") txtComision.Text = "0.00";
+            if (chkComision.Checked)
+            {
+                dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
+                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency) + dComision;
+            }
+            else
+            {
+                dComision = 0;
+                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+            }
 
-            decimal dAbono      = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+            //decimal dAbono      = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
             decimal dAcumulado  = Decimal.Round(MontoConciliado, 2);
             decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
             dResto = (dResto <= 0 ? 0 : dResto);
@@ -3199,7 +3219,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tipoFiltro = String.Empty;
             Session["TipoFiltro"] = tipoFiltro;
 
-            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+            //BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             //Leer el tipoConciliacion URL
