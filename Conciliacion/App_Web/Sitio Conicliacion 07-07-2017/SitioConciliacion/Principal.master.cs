@@ -71,7 +71,8 @@ public partial class Principal : System.Web.UI.MasterPage
 
         if (!Page.IsPostBack)
         {
-            if (this.Request.UrlReferrer != null && this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX"))
+            if (this.Request.UrlReferrer != null && 
+                (this.Request.UrlReferrer.ToString().ToUpper().Contains("MANUAL.ASPX") || this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX") ) )
             {
                 LockerExterno.EliminarBloqueos(Session.SessionID);
             }

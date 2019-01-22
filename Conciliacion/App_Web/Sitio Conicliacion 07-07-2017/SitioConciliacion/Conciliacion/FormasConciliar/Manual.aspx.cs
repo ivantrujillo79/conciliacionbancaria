@@ -885,7 +885,70 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         return Existen;
     }
 
-    private void bloqueaTodoLoSeleccionado(GridView grv)
+    private void BloqueaUnSeleccionado(ReferenciaNoConciliada rfEx)
+    {
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+
+        if (BloqueoEdoCTA == "1")
+        {
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = AsignaFormaConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+
+            if (objSolicitdConciliacion.ConsultaPedido()) 
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = ""; 
+                Monto = rfEx.Monto;
+            }
+            else 
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = rfEx.Descripcion;
+                Monto = rfEx.Monto;
+            }
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+            {
+                SessionID = Session.SessionID,
+                Corporativo = Corporativo,
+                Sucursal = Sucursal,
+                Año = Año,
+                Folio = Folio,
+                Secuencia = Secuencia,
+                Usuario = usuario.IdUsuario.ToString(),
+                InicioBloqueo = DateTime.Now,
+                Descripcion = Descripcion,
+                Monto = Monto 
+            });
+
+        }
+    }
+
+    private void BloqueaTodoLoSeleccionado(GridView grv)
     {
         AppSettingsReader settings = new AppSettingsReader();
         SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
@@ -963,7 +1026,27 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         }
     }
 
-    private void desBloqueaTodo()
+    private void DesBloquea(ReferenciaNoConciliada rfEx)
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null)
+            {
+                 LockerExterno.ExternoBloqueado.Remove(
+                        Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
+                                                                    x.Sucursal == rfEx.Sucursal &&
+                                                                    x.Año == rfEx.Año &&
+                                                                    x.Folio == rfEx.Folio &&
+                                                                    x.Secuencia == rfEx.Secuencia).ToList()[0]
+                     );
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    private void DesBloqueaTodo()
     {
         try
         {
@@ -995,15 +1078,6 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     List<ReferenciaNoConciliadaPedido> pedSeleccionados = filasSeleccionadasPedidos();
                     if (pedSeleccionados.Count > 0)
                     {
-                        if (hayBloqueados(grvExternos))
-                        {
-                            ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
-                                @"alertify.alert('Conciliaci&oacute;n bancaria','Las partidas ya se est&aacuten conciliando por otro usuario', function(){ });", true);
-                            //Response.Redirect("~/Inicio.aspx", true);
-                            return;
-                        }
-                        else
-                            bloqueaTodoLoSeleccionado(grvExternos);
                         try
                         { 
                             foreach (ReferenciaNoConciliada ex in extSeleccionados)
@@ -1020,7 +1094,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                         }
                         finally
                         {
-                            desBloqueaTodo();
+                            DesBloqueaTodo();
                         }
 
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
@@ -1051,15 +1125,6 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                                 (extSeleccionados.Count > 1 && intSeleccionados.Count == 1) ||
                                 (extSeleccionados.Count == intSeleccionados.Count ) ) 
                             {
-                                if (hayBloqueados(grvExternos))
-                                {
-                                    ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
-                                        @"alertify.alert('Conciliaci&oacute;n bancaria','Las partidas ya se est&aacuten conciliando por otro usuario', function(){ });", true);
-                                    //Response.Redirect("~/Inicio.aspx", true);
-                                    return;
-                                }
-                                else
-                                    bloqueaTodoLoSeleccionado(grvExternos);
                                 try
                                 { 
                                     decimal sumaExt = 0;
@@ -1083,7 +1148,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                                 }
                                 finally
                                 {
-                                    desBloqueaTodo();
+                                    DesBloqueaTodo();
                                 }
                             }
                             else
@@ -2454,6 +2519,9 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                 lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
             }
             pintarFilaSeleccionadaExterno(grv.RowIndex);
+
+            BloqueaUnSeleccionado(rfEx);
+
         }
         else
         {
@@ -2467,6 +2535,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                 lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado - rfEx.Monto), 2).ToString();
             }
             despintarFilaSeleccionadaExterno(grv.RowIndex);
+            DesBloquea(rfEx);
         }
     }
     protected void chkInterno_CheckedChanged(object sender, EventArgs e)

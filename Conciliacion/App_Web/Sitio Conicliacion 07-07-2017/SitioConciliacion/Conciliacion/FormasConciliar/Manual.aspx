@@ -791,7 +791,7 @@
                                         <asp:CheckBox runat="server" ID="chkExterno" 
                                             OnClick='<%# String.Concat("chkExterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"), ");") %>'
                                             OnCheckedChanged="chkExterno_CheckedChanged"
-                                            AutoPostBack="False" Checked='<%# Bind("Selecciona") %>' />
+                                            AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
