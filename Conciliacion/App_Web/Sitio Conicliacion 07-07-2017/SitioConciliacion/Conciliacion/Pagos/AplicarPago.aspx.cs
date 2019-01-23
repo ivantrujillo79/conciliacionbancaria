@@ -281,6 +281,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
 
             List<RTGMCore.DireccionEntrega> lstClientes = new List<RTGMCore.DireccionEntrega >();
+            this._URLGateway = _URLGateway;
             if (_URLGateway != string.Empty)
                 lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos);
 
