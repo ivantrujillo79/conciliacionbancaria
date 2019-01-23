@@ -20,7 +20,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
-    private List<Cliente> lstClientes = new List<Cliente>();
+    private List<RTGMCore.DireccionEntrega> lstClientes = new List<RTGMCore.DireccionEntrega>();
 
     #endregion
     #region "Propiedades Privadas"
@@ -554,65 +554,50 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             throw ex;
         }
     }
-    public void consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario usuariot, byte  modulot, string cadena)
+    public void consultaClienteCRM(RTGMGateway.SolicitudGateway oSolicitud)
     {
         RTGMGateway.RTGMGateway Gateway;
-        RTGMGateway.SolicitudGateway Solicitud;
-        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
-        Cliente _cliente = null;
+        List<RTGMCore.DireccionEntrega> DireccionEntrega = new List<RTGMCore.DireccionEntrega>();
         try
         {
             if (_URLGateway != string.Empty)
             {
                 AppSettingsReader settings = new AppSettingsReader();
-                SeguridadCB.Public.Usuario usuario = usuariot;//(SeguridadCB.Public.Usuario)Session["Usuario"]; //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                byte modulo = modulot;//byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                Gateway = new RTGMGateway.RTGMGateway(modulo, cadena);//App.CadenaConexion);
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
-                Solicitud = new RTGMGateway.SolicitudGateway();
-                Solicitud.IDCliente = cliente;
                 try
                 {
-                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                    DireccionEntrega = Gateway.busquedaDireccionEntregaLista(oSolicitud);
                
-                    if (DireccionEntrega != null)
+                    if (DireccionEntrega == null)
                     {
-                        if (DireccionEntrega.Message != null)
-                        {
-                            _cliente = App.Cliente.CrearObjeto();
-                            _cliente.NumCliente = cliente;
-                            _cliente.Nombre = DireccionEntrega.Message;
-                            lstClientes.Add(_cliente);
-                        }
-                        else
-                        {
-                            _cliente = App.Cliente.CrearObjeto();
-                            _cliente.NumCliente = cliente;
-                            _cliente.Nombre = DireccionEntrega.Nombre;
-                            lstClientes.Add(_cliente);
-                        }
+                        DireccionEntrega = new List<RTGMCore.DireccionEntrega>();
                     }
                     else
                     {
-                        _cliente = App.Cliente.CrearObjeto();
-                        _cliente.NumCliente = cliente;
-                        _cliente.Nombre = "No se encontró cliente";
-                        lstClientes.Add(_cliente);
+                        foreach (var item in DireccionEntrega)
+                        {
+                            if (!lstClientes.Exists(x => x.IDDireccionEntrega == item.IDDireccionEntrega))
+                            {
+                                RTGMCore.DireccionEntrega direccionEntrega = item;
+                                lstClientes.Add(direccionEntrega);
+                            }
+                        }
                     }
+                    
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
-                    _cliente = App.Cliente.CrearObjeto();
-                    _cliente.NumCliente = cliente;
-                    _cliente.Nombre = ex.Message;
-                    lstClientes.Add(_cliente);
+                    
                 }
             }
         }
         catch (Exception ex)
         {
             //throw ex;
-            //App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
         //if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
         //    return DireccionEntrega.Nombre.Trim();
@@ -622,28 +607,19 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     private void ObtieneNombreCliente(List<ReferenciaConciliadaPedido> listadistintos)
     {
-        List<Cliente> clienteconsultar = new List<Cliente>();
-        Cliente cliente = null;
+        List<int?> clienteconsultar = new List<int?>();
         try
         {
             foreach (var item in listadistintos)
             {
-                if (!lstClientes.Exists(x => x.NumCliente == item.Cliente))
+                if (!lstClientes.Exists(x => x.IDDireccionEntrega == item.Cliente))
                 {
-                    cliente = App.Cliente.CrearObjeto();
-                    cliente.NumCliente = item.Cliente;
-                    clienteconsultar.Add(cliente);
+                    clienteconsultar.Add(item.Cliente);
                 }
             }
-            AppSettingsReader settings = new AppSettingsReader();
-            string cadena = App.CadenaConexion;
-            byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-            ParallelOptions options = new ParallelOptions();
-            options.MaxDegreeOfParallelism = 3; //numero de hilos
-            //Parallel.ForEach(clienteconsultar, options, x => x.consultaClienteCRM(x.NumCliente));
-            Parallel.ForEach(clienteconsultar, options, (client) => { consultaClienteCRM(client.NumCliente, user, modulo, cadena); });
-
+            RTGMGateway.SolicitudGateway oSolicitud = new RTGMGateway.SolicitudGateway();
+            oSolicitud.ListaCliente = clienteconsultar;
+            consultaClienteCRM(oSolicitud);
         }
         catch (Exception ex)
         {
@@ -651,21 +627,21 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
     }
 
-    private string ObtieneNombreCliente(List<Cliente> lstClientes, int numCliente, string NombreClienteBD)
+    private string ObtieneNombreCliente( int numCliente, string NombreClienteBD)
     {
         string NombreCliente = "";
         if (_URLGateway != "")
         {
             AppSettingsReader settings = new AppSettingsReader();
-            Cliente cliente = lstClientes.Find(x => x.NumCliente == numCliente);
+            RTGMCore.DireccionEntrega cliente = lstClientes.FirstOrDefault(x => x.IDDireccionEntrega == numCliente);
             if (cliente == null)
             {
-                consultaClienteCRM(numCliente, (SeguridadCB.Public.Usuario)Session["Usuario"], byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);
-                NombreCliente = lstClientes.FirstOrDefault(x => x.NumCliente == numCliente).Nombre;
-                cliente = App.Cliente.CrearObjeto();
-                cliente.NumCliente = numCliente;
-                cliente.Nombre = NombreCliente;
-                lstClientes.Add(cliente);
+                RTGMGateway.SolicitudGateway oSolicitud = new RTGMGateway.SolicitudGateway();
+                List<int?> lstFaltante = new List<int?>();
+                lstFaltante.Add(numCliente);
+                oSolicitud.ListaCliente = lstFaltante;
+                consultaClienteCRM(oSolicitud);
+                NombreCliente = lstClientes.FirstOrDefault(x => x.IDDireccionEntrega == numCliente).Nombre;
             }
             else
             {
@@ -723,16 +699,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             try
             {
-                int limite = 0;
-                while (limite < 5)//while(lstClientes.Count < limite)
-                {
-                    ObtieneNombreCliente(listadistintos);
-                    limite++;
-                }
+
+                ObtieneNombreCliente(listadistintos);
 
                 foreach (var item in listaReferenciaConciliadaPedido)
                 {
-                    Cliente cliente = lstClientes.FirstOrDefault(x => x.NumCliente == item.Cliente);
+                    RTGMCore.DireccionEntrega cliente = lstClientes.FirstOrDefault(x => x.IDDireccionEntrega == item.Cliente);
                     if(cliente != null)
                     {
                         item.Nombre = cliente.Nombre;
@@ -1380,10 +1352,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 AppSettingsReader settings = new AppSettingsReader();
                 _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
                 string NombreCliente = "";
-                List<Cliente> lstClientes = new List<Cliente>();
+               
                 foreach (ReferenciaConciliadaPedido r in trConciliada.ListaReferenciaConciliada)
                 {
-                    NombreCliente = ObtieneNombreCliente(lstClientes, r.Cliente, r.Nombre);
+                    NombreCliente = ObtieneNombreCliente(r.Cliente,r.Nombre);
                     tblDetalleTransaccionConciliada.Rows.Add(
                         r.Pedido,
                         r.PedidoReferencia,

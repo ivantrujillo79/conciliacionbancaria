@@ -13,7 +13,6 @@ using Conciliacion.RunTime;
 using System.Configuration;
 using SeguridadCB.Public;
 using Conciliacion.RunTime.DatosSQL;
-using RTGMGateway;
 using System.Threading.Tasks;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
@@ -281,16 +280,16 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
             tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
 
-            List<Cliente> lstClientes = new List<Cliente>();
+            List<RTGMCore.DireccionEntrega> lstClientes = new List<RTGMCore.DireccionEntrega >();
             if (_URLGateway != string.Empty)
-                lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos, _URLGateway);
+                lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos);
 
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
             {
                 if (_URLGateway != string.Empty)
                 {
-                    Cliente cliente;
-                    cliente = lstClientes.Find(x => x.NumCliente == rc.Cliente);
+                    RTGMCore.DireccionEntrega  cliente;
+                    cliente = lstClientes.Find(x => x.IDDireccionEntrega == rc.Cliente);
                     if (cliente != null)
                     {
                         rc.Nombre = cliente.Nombre;
@@ -337,82 +336,55 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             throw e;
         }
     }
-    private List<Cliente> ConsultaCLienteCRMdt(List<ReferenciaConciliadaPedido> listReferenciaPedidos, string URLGateway)
+    private List<RTGMCore.DireccionEntrega> ConsultaCLienteCRMdt(List<ReferenciaConciliadaPedido> dt)
     {
-        List<Cliente> lstClientes = new List<Cliente>();
-        List<int> listadistintos = new List<int>();
+        List<RTGMCore.DireccionEntrega> lstClientes = new List<RTGMCore.DireccionEntrega>();
+        List<int?> listadistintos = new List<int?>();
         try
         {
-            foreach (var item in listReferenciaPedidos)
+            foreach (var item in dt)
             {
                 if (!listadistintos.Exists(x => x == item.Cliente))
                 {
                     listadistintos.Add(item.Cliente);
                 }
             }
-            AppSettingsReader settings = new AppSettingsReader();
-            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-            byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-            string cadenaconexion = App.CadenaConexion;
-            ParallelOptions options = new ParallelOptions();
-            options.MaxDegreeOfParallelism = 3;
-            Parallel.ForEach(listadistintos, options, (client) => {
-                Cliente cliente;
-                cliente = App.Cliente.CrearObjeto();
-                cliente.NumCliente = client;
-                cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, URLGateway);
-                lstClientes.Add(cliente);
-            });
-
-            while (lstClientes.Count < listadistintos.Count)
-            {
-
-            }
+            RTGMGateway.SolicitudGateway oSolicitud = new RTGMGateway.SolicitudGateway();
+            oSolicitud.ListaCliente = listadistintos;
+            lstClientes = consultaClienteCRM(oSolicitud);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
         return lstClientes;
     }
-    public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario user, byte modulo, string cadenaconexion, string URLGateway)
+
+    public List<RTGMCore.DireccionEntrega> consultaClienteCRM(RTGMGateway.SolicitudGateway oSolicitud)
     {
         RTGMGateway.RTGMGateway Gateway;
-        RTGMGateway.SolicitudGateway Solicitud;
-        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        List<RTGMCore.DireccionEntrega> DireccionEntrega = new List<RTGMCore.DireccionEntrega>();
         try
         {
-            if (URLGateway != string.Empty)
+            if (_URLGateway != string.Empty)
             {
-                //AppSettingsReader settings = new AppSettingsReader();
-                //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
-                Gateway.URLServicio = URLGateway;
-                Solicitud = new RTGMGateway.SolicitudGateway();
-                Solicitud.IDCliente = cliente;
-                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                Gateway.URLServicio = _URLGateway;
+                DireccionEntrega = Gateway.busquedaDireccionEntregaLista(oSolicitud);
+                if (DireccionEntrega == null)
+                {
+                    DireccionEntrega = new List<RTGMCore.DireccionEntrega>();
+                }
             }
         }
         catch (Exception ex)
         {
             throw ex;
         }
-        if (DireccionEntrega == null ||
-            DireccionEntrega.Nombre == null)
-        {
-            //DireccionEntrega.Message == null ||
-            if (DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
-            {
-                return "No encontrado";
-            }
-            else
-            {
-                return "";
-            }
-        }
-        else
-            return DireccionEntrega.Nombre.Trim();
+        return DireccionEntrega;
     }
     /// <summary>
     /// Llena el gridview con las conciliaciones antes leídas
