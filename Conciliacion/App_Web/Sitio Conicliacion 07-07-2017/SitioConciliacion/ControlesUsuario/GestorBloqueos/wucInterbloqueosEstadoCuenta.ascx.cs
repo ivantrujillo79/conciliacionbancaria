@@ -130,7 +130,7 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
                 foreach (RegistroExternoBloqueado obj in LockerExterno.ExternoBloqueado)
                 {                   
 
-                    dtBloqueos.Rows.Add(obj.SessionID, obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Consecutivo, obj.Descripcion, obj.Monto, obj.InicioBloqueo, obj.Usuario);
+                    dtBloqueos.Rows.Add(obj.SessionID, obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Secuencia, obj.Descripcion, obj.Monto, obj.InicioBloqueo, obj.Usuario);
                     
                 }
 
