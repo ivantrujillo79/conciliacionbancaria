@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Locker;
 using System.Data;
+using SeguridadCB.Public;
 
 public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuenta : System.Web.UI.UserControl
 {
@@ -25,6 +26,36 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
 
     #region Metodos
 
+    static DataTable ConvertListToDataTable(List<string[]> list)
+    {
+        // New table.
+        DataTable table = new DataTable();
+
+        // Get max columns.
+        int columns = 0;
+        foreach (var array in list)
+        {
+            if (array.Length > columns)
+            {
+                columns = array.Length;
+            }
+        }
+
+        // Add columns.
+        for (int i = 0; i < columns; i++)
+        {
+            table.Columns.Add();
+        }
+
+        // Add rows.
+        foreach (var array in list)
+        {
+            table.Rows.Add(array);
+        }
+
+        return table;
+    }
+
     private void CargaFiltros()
     {
         DataTable dtFiltros = new DataTable("Folios");
@@ -36,25 +67,84 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         dtFiltros.Columns.Add("Secuencia", typeof(string));
         dtFiltros.Columns.Add("Usuario", typeof(string));
 
-        dtFiltros.Rows.Add("Seleccionar", "Seleccionar", "Seleccionar", "Seleccionar", "Seleccionar", "Seleccionar");
+        //dtFiltros.Rows.Add("Seleccionar", "Seleccionar", "Seleccionar", "Seleccionar", "Seleccionar", "Seleccionar");
 
         if (LockerExterno.ExternoBloqueado != null)
         {
             if (LockerExterno.ExternoBloqueado.Count > 0)
             {
-                //Label1.Text = "Registros: " + LockerExterno.ExternoBloqueado.Count.ToString() + " registro 0: " + LockerExterno.ExternoBloqueado[0].SessionID.ToString() + " " + LockerExterno.ExternoBloqueado[0].Folio.ToString() + " " + LockerExterno.ExternoBloqueado[0].Consecutivo.ToString();
+                
                 foreach (RegistroExternoBloqueado obj in LockerExterno.ExternoBloqueado)
                 {
-                    //' Response.Write(obj.SessionID.ToString() + " " + obj.Folio.ToString() + " " + obj.Consecutivo.ToString() + "<br/>");
+
                     dtFiltros.Rows.Add(obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Consecutivo, obj.Usuario);
 
                 }
 
             }
 
+            DataTable dtEmpresas = new DataTable();
+            Usuario usuario;
+            DataTable dtFiltrosCorporativo = new DataTable();
 
-            ddlCorporativo.DataSource = dtFiltros.DefaultView.ToTable(true, "Corporativo");
-            ddlCorporativo.DataTextField = "Corporativo";
+            DataTable dtResultCorporativo = new DataTable("CoporativoFiltros");
+            dtResultCorporativo.Columns.Add("Corporativo", typeof(int));
+
+
+            usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+            dtEmpresas = usuario.CorporativoAcceso;
+
+            dtFiltrosCorporativo= dtFiltros.DefaultView.ToTable(true, "Corporativo");
+
+
+
+
+            var query =
+                        from dt1 in dtEmpresas.AsEnumerable()
+                        join dt2 in dtFiltrosCorporativo.AsEnumerable()
+                        on dt1.Field<Int16>("Corporativo") equals
+                            dt2.Field<Int16>("Corporativo")
+                        select dt1;
+
+       //select new
+       //{
+       //    Corporativo =
+       //        dt1.Field<int>("Corporativo"),
+       //    NombreCorporativo =
+       //        dt1.Field<string>("NombreCorporativo")
+
+                        //};
+
+            query.CopyToDataTable(dtResultCorporativo, LoadOption.PreserveChanges);
+
+
+            var result = from dataRows1 in dtEmpresas.AsEnumerable()
+                         join dataRows2 in dtFiltrosCorporativo.AsEnumerable()
+                         on dataRows1.Field<int>("Corporativo") equals dataRows2.Field<int>("Corporativo") into lj
+                         from r in lj.DefaultIfEmpty()
+
+                         select dtResultCorporativo.LoadDataRow(new object[]
+                         {
+                                dataRows1.Field<string>("Corporativo"),
+                                dataRows1.Field<string>("NombreCorporativo")
+                          }, false);
+
+            // dtEmpresas=dtEmpresas.Select("")
+
+            //var JoinResult = (from p in dtEmpresas.AsEnumerable()
+            //                  join t in dtFiltrosCorporativo.AsEnumerable()
+            //                  on p.Field<int>("Corporativo") equals t.Field<int>("Corporativo") into tempJoin
+            //                  from leftJoin in tempJoin.DefaultIfEmpty()
+            //                  select new
+            //                  {
+            //                      EmpName = p.Field<string>("Corporativo"),
+            //                      Grade = leftJoin == null ? 0 : leftJoin.Field<int>("CorporativoNombre")
+            //                  }).ToList();
+
+
+
+            ddlCorporativo.DataSource = dtResultCorporativo;
+            ddlCorporativo.DataTextField = "Nombre";
             ddlCorporativo.DataValueField = "Corporativo";
             ddlCorporativo.DataBind();
             ddlCorporativo.SelectedIndex = -1;
@@ -292,6 +382,8 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         }
 
     }
+
+
 
     protected void grdBloqueos_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
