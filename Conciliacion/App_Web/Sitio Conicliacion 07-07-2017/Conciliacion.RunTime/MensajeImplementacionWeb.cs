@@ -18,6 +18,7 @@ namespace Conciliacion.RunTime
                 ScriptManager.RegisterStartupScript(pagina, pagina.GetType(), Guid.NewGuid().ToString(), "alert('" + LimpiarTexto(texto) + "');", true);
         }
 
+
         public void MostrarMensajeError(string texto)
         {
             Page pagina = (Page)this.contenedor;
