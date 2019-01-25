@@ -216,7 +216,7 @@
                     <asp:BoundField DataField="Folio" HeaderText="Folio" SortExpression="Año" />
                     <asp:BoundField DataField="Secuencia" HeaderText="Secuencia" SortExpression="Secuencia" />
                     <asp:BoundField DataField="Descripcion" HeaderText="Descripción" SortExpression="Descripcion" />
-                       <asp:BoundField DataField="Monto" HeaderText="Monto" SortExpression="Monto" />
+                       <asp:BoundField DataField="Monto" HeaderText="Monto" SortExpression="Monto" DataFormatString="{0:#,0.00}" />
                        <asp:BoundField DataField="InicioBloqueo" HeaderText="InicioBloqueo" SortExpression="InicioBloqueo" />
                         <asp:BoundField DataField="Usuario" HeaderText="Usuario" SortExpression="Usuario" />
 

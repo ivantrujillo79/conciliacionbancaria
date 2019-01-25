@@ -933,6 +933,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             }
             LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
             {
+                FormaConciliacion = "MANUAL",
                 SessionID = Session.SessionID,
                 Corporativo = Corporativo,
                 Sucursal = Sucursal,
@@ -1008,6 +1009,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     {
                         LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
                         {
+                            FormaConciliacion = "MANUAL",
                             SessionID = Session.SessionID,
                             Corporativo = Corporativo,
                             Sucursal = Sucursal,
@@ -1030,7 +1032,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
     {
         try
         {
-            if (Locker.LockerExterno.ExternoBloqueado != null)
+            if (Locker.LockerExterno.ExternoBloqueado != null && Locker.LockerExterno.ExternoBloqueado.Count > 0)
             {
                  LockerExterno.ExternoBloqueado.Remove(
                         Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
@@ -2498,30 +2500,140 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         }
     }
 
+    private bool ExisteExternoBloqueado()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+        bool BloqueoEdoCTA = false;
+        BloqueoEdoCTA = bloqueo == "1" ? true : false;
+        if (BloqueoEdoCTA)
+        {
+
+            if (LockerExterno.ExternoBloqueado == null)
+                return false;
+
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+
+            return LockerExterno.ExternoBloqueado.Exists(x => 
+                                                                x.Corporativo == rfEx.Corporativo &&
+                                                                x.Sucursal == rfEx.Sucursal &&
+                                                                x.Año == rfEx.Año &&
+                                                                x.Folio == rfEx.Folio &&
+                                                                x.Secuencia == rfEx.Secuencia);
+        }
+        else
+            return false;
+    }
+
+    private void UnCheckBloquedos(GridView grv)
+    {
+        bool Existen = false;
+        int AlMenosUnoBloqueado = 0;
+        if (LockerExterno.ExternoBloqueado != null)
+        {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]); 
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows)
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido())
+                    {
+                        listaReferenciaExternas[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&
+                                                                            x.Corporativo == listaReferenciaExternas[filaindex].Corporativo &&
+                                                                            x.Sucursal == listaReferenciaExternas[filaindex].Sucursal &&
+                                                                            x.Año == listaReferenciaExternas[filaindex].Año &&
+                                                                            x.Folio == listaReferenciaExternas[filaindex].Folio &&
+                                                                            x.Secuencia == listaReferenciaExternas[filaindex].Secuencia);
+                            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
+                            if (Existen)
+                                AlMenosUnoBloqueado++;
+                        }
+                    }
+                    else
+                    {
+                        listaReferenciaExternas[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&
+                                                                            x.Corporativo == listaReferenciaExternas[filaindex].Corporativo &&
+                                                                            x.Sucursal == listaReferenciaExternas[filaindex].Sucursal &&
+                                                                            x.Año == listaReferenciaExternas[filaindex].Año &&
+                                                                            x.Folio == listaReferenciaExternas[filaindex].Folio &&
+                                                                            x.Secuencia == listaReferenciaExternas[filaindex].Secuencia);
+                            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
+                            if (Existen)
+                                AlMenosUnoBloqueado++;
+                        }
+                    }
+                    filaindex++;
+                }
+            }
+            if (AlMenosUnoBloqueado > 0)
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+        }
+    }
+
+    protected void chkSeleccionarTodosExternos_CheckedChanged(object sender, EventArgs e)
+    {
+
+        CheckBox chk = (sender as CheckBox);
+        listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
+
+        foreach (GridViewRow fila in grvExternos.Rows)
+            if (fila.RowType == DataControlRowType.DataRow)
+                fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = chk.Checked;
+
+        UnCheckBloquedos(grvExternos);
+        //BloqueaTodoLoSeleccionado(grvExternos);
+        
+    }
 
     protected void chkExterno_CheckedChanged(object sender, EventArgs e)
     {
         CheckBox chk = sender as CheckBox;
         GridViewRow grv = (GridViewRow)chk.Parent.Parent;
 
+        int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
 
         if (chk.Checked)
         {
-            rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
-            GenerarTablaExternos();
-            if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+            if (ExisteExternoBloqueado())
             {
-                decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
-                int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
-                lblAgregadosExternos.Text = Convert.ToString(extAgregados + 1);
-                lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+
+                indiceExternoSeleccionado = respaldoIndiceSeleccionado;
+                CheckBox checkbox = sender as CheckBox;
+                checkbox.Checked = false;
+                //return;
             }
-            pintarFilaSeleccionadaExterno(grv.RowIndex);
-
-            BloqueaUnSeleccionado(rfEx);
-
+            else
+            {
+                rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+                GenerarTablaExternos();
+                if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+                {
+                    decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
+                    int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
+                    lblAgregadosExternos.Text = Convert.ToString(extAgregados + 1);
+                    lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
+                }
+                pintarFilaSeleccionadaExterno(grv.RowIndex);
+                BloqueaUnSeleccionado(rfEx);
+            }
         }
         else
         {
@@ -2987,4 +3099,5 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     }
     //------------------------------FIN MODULO "AGREGAR NUEVO INTERNO" -----------------------------------
+
 }

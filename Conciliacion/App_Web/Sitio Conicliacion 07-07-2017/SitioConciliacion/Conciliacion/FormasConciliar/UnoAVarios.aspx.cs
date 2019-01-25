@@ -412,6 +412,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                 }
 
+                if (ExisteExternoBloqueado())
+                {
+                    quitarSeleccionRadio("EXTERNO");
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+                }
+                else
+                {
+                    ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+                    BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+                }
+
             }
             else //!Postback
             {
@@ -485,9 +497,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 txtDias.Enabled = true;
             }
-
-            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
-            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia,rfEx.Descripcion,rfEx.Monto);
 
             ActualizarDatos_wucCargaExcel();
             if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null && int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
@@ -3171,13 +3180,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
             indiceExternoSeleccionado = ((GridViewRow)(sender as RadioButton).Parent.Parent).RowIndex;
 
-
-
-            if (ValidarExternoBloqueado())
+            LockerExterno.EliminarBloqueos(Session.SessionID);
+            if (ExisteExternoBloqueado())
             {
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
-                    @"alertify.alert('Conciliaci&oacute;n bancaria','Ya se est&aacute usando la partida seleccionada', function(){ });", true);
-
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
                 indiceExternoSeleccionado = respaldoIndiceSeleccionado;
                 RadioButton radioButton = sender as RadioButton;
                 radioButton.Checked = false;
@@ -3229,42 +3236,60 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     /// Regresa verdadero si el registro se encuentra bloqueado
     /// </summary>
     /// <returns></returns>
-    private bool ValidarExternoBloqueado()
+    private bool ExisteExternoBloqueado()
     {
-        if (LockerExterno.ExternoBloqueado == null)
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+        bool BloqueoEdoCTA = false;
+        BloqueoEdoCTA = bloqueo == "1" ? true : false;
+        if (BloqueoEdoCTA)
+        {
+
+            if (LockerExterno.ExternoBloqueado == null)
+                return false;
+
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+
+            return LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&
+                                                                x.Corporativo == rfEx.Corporativo &&
+                                                                x.Sucursal == rfEx.Sucursal &&
+                                                                x.Año == rfEx.Año &&
+                                                                x.Folio == rfEx.Folio &&
+                                                                x.Secuencia == rfEx.Secuencia);
+        }
+        else
             return false;
-
-        ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
-
-        return LockerExterno.ExternoBloqueado.Exists(x =>   x.Corporativo == rfEx.Corporativo &&
-                                                            x.Sucursal == rfEx.Sucursal &&
-                                                            x.Año == rfEx.Año &&
-                                                            x.Folio == rfEx.Folio &&
-                                                            x.Secuencia == rfEx.Secuencia );
     }
 
     private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia,string desc,decimal monto)
     {
-        SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-
-        if (LockerExterno.ExternoBloqueado == null)
-            LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
-        else
-            LockerExterno.EliminarBloqueos(IDSesion);
-
-        LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado {
-            SessionID = IDSesion,
-            Corporativo = corporativo,
-            Sucursal = sucursal,
-            Año = año,
-            Folio = folio,
-            Secuencia = secuencia,
-            Usuario = usuario.IdUsuario.ToString(),
-            InicioBloqueo = DateTime.Now,
-            Descripcion=desc,
-            Monto=monto
-            
-        });
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+        if (BloqueoEdoCTA == "1")
+        {
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+            else
+                LockerExterno.EliminarBloqueos(IDSesion);
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+            {
+                FormaConciliacion = "UNOAVARIOS",
+                SessionID = IDSesion,
+                Corporativo = corporativo,
+                Sucursal = sucursal,
+                Año = año,
+                Folio = folio,
+                Secuencia = secuencia,
+                Usuario = usuario.IdUsuario.ToString(),
+                InicioBloqueo = DateTime.Now,
+                Descripcion = desc,
+                Monto = monto
+            });
+        }
     }
 
     ////Seleccion del RadioButton de Referencias Pedidos

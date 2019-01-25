@@ -767,9 +767,9 @@
 	                        <table width="100%">
         	                        <tr>
                 	                    <td class="centradoJustificado" style="width: 30%;">
-                                            <asp:CheckBox ID="chkSeleccionarTodosExternos" runat="server" Text="Seleccionar Todos" AutoPostBack="false" Checked="false" 
+                                            <asp:CheckBox ID="chkSeleccionarTodosExternos" runat="server" Text="Seleccionar Todos" AutoPostBack="true" Checked="false" 
                                                 CssClass="etiqueta fg-color-blanco centradoMedio"
-                                                OnClick="chkSeleccionarTodosExternos_clic()" />
+                                                OnClick="chkSeleccionarTodosExternos_clic()" OnCheckedChanged="chkSeleccionarTodosExternos_CheckedChanged"/>
                 	                    </td>
         	                        </tr>
 	                        </table>
