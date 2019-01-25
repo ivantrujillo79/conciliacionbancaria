@@ -6,6 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Locker;
 using System.Data;
+using Conciliacion.RunTime.ReglasDeNegocio;
+using SeguridadCB.Public;
 
 public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuenta : System.Web.UI.UserControl
 {
@@ -52,19 +54,58 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
 
             }
 
+            DataTable dtCorporativos = dtFiltros.DefaultView.ToTable(true, "Corporativo");
 
-            ddlCorporativo.DataSource = dtFiltros.DefaultView.ToTable(true, "Corporativo");
-            ddlCorporativo.DataTextField = "Corporativo";
+            //var lstCorporativos = (from dr in dtCorporativos.AsEnumerable()
+            //                select new typeCorporativo
+            //                {
+            //                    Descripcion = dr.Field<string>("Descripcion")
+            //                }).ToList();
+
+            List<ListaCombo> listGrupoConciliacion = 
+                Conciliacion.RunTime.App.Consultas.ConsultaGruposConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, "ROPIMA");
+            //foreach (DataRow row in dtCorporativos.Rows)
+            //{
+            //    if (row.ItemArray[0].ToString() != "Seleccionar")
+            //    {
+            //        row.ItemArray[0]
+            //    }
+            //}
+
+            //var dealercontacts = from listCombo in listGrupoConciliacion.ToList()
+            //                     join table in lstCorporativos on listCombo.Identificador equals table.Descripcion
+            //                     select lstCorporativos[0];
+
+            DataTable dtEmpresas = new DataTable();
+            Usuario usuario;
+            usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+            dtEmpresas = usuario.CorporativoAcceso;
+            DataRow row = dtEmpresas.NewRow();
+            row[0] = -1;
+            row[1] = "Seleccionar";
+            row[2] = true;
+
+            dtEmpresas.Rows.InsertAt(row, 0);
+            ddlCorporativo.DataSource = dtEmpresas;
             ddlCorporativo.DataValueField = "Corporativo";
+            ddlCorporativo.DataTextField = "NombreCorporativo";
             ddlCorporativo.DataBind();
             ddlCorporativo.SelectedIndex = -1;
 
-            ddlSucursal.DataSource = dtFiltros.DefaultView.ToTable(true, "Sucursal");
-            ddlSucursal.DataTextField = "Sucursal";
-            ddlSucursal.DataValueField = "Sucursal";
-            ddlSucursal.DataBind();
-            ddlSucursal.SelectedIndex = -1;
+            //ddlSucursal.DataSource = dtFiltros.DefaultView.ToTable(true, "Sucursal");
+            //ddlSucursal.DataTextField = "Sucursal";
+            //ddlSucursal.DataValueField = "Sucursal";
+            //ddlSucursal.DataBind();
+            //ddlSucursal.SelectedIndex = -1;
 
+            List<ListaCombo> listSucursales; // = new List<ListaCombo>();
+            //: Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0
+            //Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0
+            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, 1);
+            ddlSucursal.DataSource = listSucursales;
+            ddlSucursal.DataValueField = "Identificador";
+            ddlSucursal.DataTextField = "Descripcion";
+            ddlSucursal.DataBind();
 
 
             ddlAnio.DataSource = dtFiltros.DefaultView.ToTable(true, "Año");
@@ -130,7 +171,7 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
                 foreach (RegistroExternoBloqueado obj in LockerExterno.ExternoBloqueado)
                 {                   
 
-                    dtBloqueos.Rows.Add(obj.SessionID, obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Consecutivo, obj.Descripcion, obj.Monto, obj.InicioBloqueo, obj.Usuario);
+                    dtBloqueos.Rows.Add(obj.SessionID, obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Secuencia, obj.Descripcion, obj.Monto, obj.InicioBloqueo, obj.Usuario);
                     
                 }
 
@@ -299,4 +340,9 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         grdBloqueos.DataSource = CargaBloqueos();
         grdBloqueos.DataBind();
     }
+}
+
+public struct typeCorporativo
+{
+    public string Descripcion { get; set; }
 }

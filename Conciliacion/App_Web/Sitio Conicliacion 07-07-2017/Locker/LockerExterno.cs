@@ -17,10 +17,19 @@ namespace Locker
             else
                 ExternoBloqueado.RemoveAll(x => x.SessionID == IDSesion);
         }
+
+        public static void EliminarBloqueos(string IDSesion, string FormaConciliacion)
+        {
+            if (ExternoBloqueado == null)
+                return;
+            else
+                ExternoBloqueado.RemoveAll(x => x.SessionID == IDSesion && x.FormaConciliacion == FormaConciliacion);
+        }
     }
 
     public class RegistroExternoBloqueado
     {
+        public string FormaConciliacion { get; set; }
         public string SessionID { get; set; }
         public int Año { get; set; }
         public int Folio { get; set; }

@@ -17,6 +17,7 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using AjaxControlToolkit;
 using Conciliacion.RunTime.DatosSQL;
+using Locker;
 
 public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Page
 {
@@ -2517,10 +2518,56 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
         }
     }
+
+    private bool ExisteExternoBloqueado()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+        bool BloqueoEdoCTA = false;
+        BloqueoEdoCTA = bloqueo == "1" ? true : false;
+        if (BloqueoEdoCTA)
+        {
+            if (LockerExterno.ExternoBloqueado == null)
+                return false;
+
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+
+            return LockerExterno.ExternoBloqueado.Exists(x =>   x.Corporativo == rfEx.Corporativo &&
+                                                                x.Sucursal == rfEx.Sucursal &&
+                                                                x.Año == rfEx.Año &&
+                                                                x.Folio == rfEx.Folio &&
+                                                                x.Secuencia == rfEx.Secuencia);
+        }
+        else
+            return false;
+    }
+
+    private void DesBloquea(ReferenciaNoConciliada rfEx)
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null && Locker.LockerExterno.ExternoBloqueado.Count > 0)
+            {
+                LockerExterno.ExternoBloqueado.Remove(
+                       Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
+                                                                   x.Sucursal == rfEx.Sucursal &&
+                                                                   x.Año == rfEx.Año &&
+                                                                   x.Folio == rfEx.Folio &&
+                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                    );
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
     protected void chkExterno_CheckedChanged(object sender, EventArgs e)
     {
         CheckBox chk = sender as CheckBox;
-        GridViewRow grv = (GridViewRow)chk.Parent.Parent;
+        GridViewRow grv = (GridViewRow)chk.Parent.Parent;        
 
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
@@ -2532,19 +2579,34 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             //    chk.Checked = false;
             //    App.ImplementadorMensajes.MostrarMensaje(rfEx.StatusConciliacion + ". Seleccione otra para continuar.");
             //}
-            rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
-            GenerarTablaExternos();
-            if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+            if (!ExisteExternoBloqueado())
             {
-                decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
-                int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
-                lblAgregadosExternos.Text = Convert.ToString(extAgregados + 1);
-                lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
+                rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+                GenerarTablaExternos();
+                if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+                {
+                    decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
+                    int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
+                    lblAgregadosExternos.Text = Convert.ToString(extAgregados + 1);
+                    lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
+                }
+                pintarFilaSeleccionadaExterno(grv.RowIndex);
+                BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
             }
-            pintarFilaSeleccionadaExterno(grv.RowIndex);
+            else
+            {
+                CheckBox checkbox = sender as CheckBox;
+                checkbox.Checked = false;
+                rfEx.Selecciona = true;//no seleccionado
+                GenerarTablaExternos();
+                despintarFilaSeleccionadaExterno(grv.RowIndex);
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+            }
         }
         else
         {
+            DesBloquea(rfEx);
             rfEx.Selecciona = true;
             GenerarTablaExternos();
             if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
@@ -3181,4 +3243,38 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia, string desc, decimal monto)
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+        bool BloqueoEdoCTA = false;
+        BloqueoEdoCTA = bloqueo == "1" ? true : false;
+        if (BloqueoEdoCTA)
+        { 
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+            {
+                FormaConciliacion = "VARIOSAUNO",
+                SessionID = IDSesion,
+                Corporativo = corporativo,
+                Sucursal = sucursal,
+                Año = año,
+                Folio = folio,
+                Secuencia = secuencia,
+                Usuario = usuario.IdUsuario.ToString(),
+                InicioBloqueo = DateTime.Now,
+                Descripcion = desc,
+                Monto = monto
+            });
+        }
+    }
+
+    protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
