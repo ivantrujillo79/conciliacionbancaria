@@ -8,6 +8,8 @@ using Locker;
 using System.Data;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using SeguridadCB.Public;
+using System.ComponentModel;
+using System.Text;
 
 public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuenta : System.Web.UI.UserControl
 {
@@ -44,69 +46,60 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         {
             if (LockerExterno.ExternoBloqueado.Count > 0)
             {
-                //Label1.Text = "Registros: " + LockerExterno.ExternoBloqueado.Count.ToString() + " registro 0: " + LockerExterno.ExternoBloqueado[0].SessionID.ToString() + " " + LockerExterno.ExternoBloqueado[0].Folio.ToString() + " " + LockerExterno.ExternoBloqueado[0].Consecutivo.ToString();
                 foreach (RegistroExternoBloqueado obj in LockerExterno.ExternoBloqueado)
                 {
-                    //' Response.Write(obj.SessionID.ToString() + " " + obj.Folio.ToString() + " " + obj.Consecutivo.ToString() + "<br/>");
-                    dtFiltros.Rows.Add(obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Consecutivo, obj.Usuario);
-
+                    dtFiltros.Rows.Add(obj.Corporativo, obj.Sucursal, obj.Año, obj.Folio, obj.Secuencia, obj.Usuario);
                 }
-
             }
 
-            DataTable dtCorporativos = dtFiltros.DefaultView.ToTable(true, "Corporativo");
+            DataTable dtCorporativosDatos = dtFiltros.DefaultView.ToTable(true, "Corporativo");
+            if (dtCorporativosDatos.Rows.Count > 1)
+            { 
+                DataTable dtCorporativosNombre = new DataTable();
+                Usuario usuario;
+                usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+                dtCorporativosNombre = usuario.CorporativoAcceso;
 
-            //var lstCorporativos = (from dr in dtCorporativos.AsEnumerable()
-            //                select new typeCorporativo
-            //                {
-            //                    Descripcion = dr.Field<string>("Descripcion")
-            //                }).ToList();
+                IEnumerable<DataRow> query =
+                    from nombre in dtCorporativosNombre.AsEnumerable()
+                    join datos in dtCorporativosDatos.AsEnumerable()
+                    on nombre.Field<short>("Corporativo").ToString() equals datos.Field<string>("Corporativo")
+                    select nombre;
+                DataTable dtCorporativos = query.CopyToDataTable();
 
-            List<ListaCombo> listGrupoConciliacion = 
-                Conciliacion.RunTime.App.Consultas.ConsultaGruposConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, "ROPIMA");
-            //foreach (DataRow row in dtCorporativos.Rows)
-            //{
-            //    if (row.ItemArray[0].ToString() != "Seleccionar")
-            //    {
-            //        row.ItemArray[0]
-            //    }
-            //}
+                DataRow row = dtCorporativos.NewRow();
+                row[0] = -1; row[1] = "Seleccionar"; row[2] = true;
+                dtCorporativos.Rows.InsertAt(row, 0);
 
-            //var dealercontacts = from listCombo in listGrupoConciliacion.ToList()
-            //                     join table in lstCorporativos on listCombo.Identificador equals table.Descripcion
-            //                     select lstCorporativos[0];
+                ddlCorporativo.DataSource = dtCorporativos;
+                ddlCorporativo.DataValueField = "Corporativo";
+                ddlCorporativo.DataTextField = "NombreCorporativo";
+                ddlCorporativo.DataBind();
+                ddlCorporativo.SelectedIndex = -1;
+            }
 
-            DataTable dtEmpresas = new DataTable();
-            Usuario usuario;
-            usuario = (Usuario)HttpContext.Current.Session["Usuario"];
-            dtEmpresas = usuario.CorporativoAcceso;
-            DataRow row = dtEmpresas.NewRow();
-            row[0] = -1;
-            row[1] = "Seleccionar";
-            row[2] = true;
+            DataTable dtSucursalesDatos = dtFiltros.DefaultView.ToTable(true, "Sucursal");
+            if (dtSucursalesDatos.Rows.Count > 1)
+            { 
+                List<ListaCombo> listSucursalesNombre = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, 1);
+                DataTable dtSucursalesNombre = ConvertToDataTable(listSucursalesNombre);
 
-            dtEmpresas.Rows.InsertAt(row, 0);
-            ddlCorporativo.DataSource = dtEmpresas;
-            ddlCorporativo.DataValueField = "Corporativo";
-            ddlCorporativo.DataTextField = "NombreCorporativo";
-            ddlCorporativo.DataBind();
-            ddlCorporativo.SelectedIndex = -1;
+                IEnumerable<DataRow> querySucursales =
+                    from nombre in dtSucursalesNombre.AsEnumerable()
+                    join datos in dtSucursalesDatos.AsEnumerable()
+                    on nombre.Field<int>("Identificador").ToString() equals datos.Field<string>("Sucursal")
+                    select nombre;
+                DataTable dtSucursales = querySucursales.CopyToDataTable();
 
-            //ddlSucursal.DataSource = dtFiltros.DefaultView.ToTable(true, "Sucursal");
-            //ddlSucursal.DataTextField = "Sucursal";
-            //ddlSucursal.DataValueField = "Sucursal";
-            //ddlSucursal.DataBind();
-            //ddlSucursal.SelectedIndex = -1;
+                DataRow rowSuc = dtSucursales.NewRow();
+                rowSuc[0] = -1; rowSuc[1] = "Seleccionar"; 
+                dtSucursales.Rows.InsertAt(rowSuc, 0);
 
-            List<ListaCombo> listSucursales; // = new List<ListaCombo>();
-            //: Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0
-            //Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, 1);
-            ddlSucursal.DataSource = listSucursales;
-            ddlSucursal.DataValueField = "Identificador";
-            ddlSucursal.DataTextField = "Descripcion";
-            ddlSucursal.DataBind();
-
+                ddlSucursal.DataSource = dtSucursales;
+                ddlSucursal.DataValueField = "Identificador";
+                ddlSucursal.DataTextField = "Descripcion";
+                ddlSucursal.DataBind();
+            }
 
             ddlAnio.DataSource = dtFiltros.DefaultView.ToTable(true, "Año");
             ddlAnio.DataTextField = "Año";
@@ -114,23 +107,17 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
             ddlAnio.DataBind();
             ddlAnio.SelectedIndex = -1;
 
-
-
             ddlFolio.DataSource = dtFiltros.DefaultView.ToTable(true, "Folio");
             ddlFolio.DataTextField = "Folio";
             ddlFolio.DataValueField = "Folio";
             ddlFolio.DataBind();
             ddlFolio.SelectedIndex = -1;
 
-
-
             ddlSecuencia.DataSource = dtFiltros.DefaultView.ToTable(true, "Secuencia");
             ddlSecuencia.DataTextField = "Secuencia";
             ddlSecuencia.DataValueField = "Secuencia";
             ddlSecuencia.DataBind();
             ddlSecuencia.SelectedIndex = -1;
-
-
 
             ddlUsuario.DataSource = dtFiltros.DefaultView.ToTable(true, "Usuario");
             ddlUsuario.DataTextField = "Usuario";
@@ -141,6 +128,24 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         }
 
 
+
+    }
+
+    public DataTable ConvertToDataTable<T>(IList<T> data)
+    {
+        PropertyDescriptorCollection properties =
+           TypeDescriptor.GetProperties(typeof(T));
+        DataTable table = new DataTable();
+        foreach (PropertyDescriptor prop in properties)
+            table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+        foreach (T item in data)
+        {
+            DataRow row = table.NewRow();
+            foreach (PropertyDescriptor prop in properties)
+                row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+            table.Rows.Add(row);
+        }
+        return table;
 
     }
 
@@ -237,18 +242,6 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         }
     }
 
-    protected void ddlCorporativo_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
-        if (ddlCorporativo.SelectedValue.ToString() != "Seleccionar")
-        {
-            DataRow[] dr = CargaBloqueos().Select("Corporativo='" + ddlCorporativo.SelectedValue.ToString() + "'");
-
-            grdBloqueos.DataSource = dr.CopyToDataTable();
-        }
-
-    }
-
     protected void grdBloqueos_SelectedIndexChanged(object sender, EventArgs e)
     {
 
@@ -264,50 +257,88 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
 
     }
 
-    protected void ddlSucursal_SelectedIndexChanged(object sender, EventArgs e)
+    private void AplicaFiltros()
     {
-        if (ddlSucursal.SelectedValue.ToString() != "Seleccionar")
+        StringBuilder filtro = new StringBuilder();
+
+        if (ddlCorporativo.SelectedValue.ToString() != "-1")
+            filtro.Append("Corporativo='" + ddlCorporativo.SelectedValue.ToString() + "'");
+
+        if (ddlSucursal.SelectedValue.ToString() != "-1")
         {
-            DataRow[] dr = CargaBloqueos().Select("Sucursal='" + ddlSucursal.SelectedValue.ToString() + "'");
+            if (filtro.ToString() != string.Empty)
+                filtro.Append(" AND ");
+            filtro.Append(" Sucursal='" + ddlSucursal.SelectedValue.ToString() + "'");
+        }
+
+        if (ddlAnio.SelectedValue.ToString() != "Seleccionar")
+        {
+            if (filtro.ToString() != string.Empty)
+                filtro.Append(" AND ");
+            filtro.Append("Año='" + ddlAnio.SelectedValue.ToString() + "'");
+        }
+
+        if (ddlFolio.SelectedValue.ToString() != "Seleccionar")
+        {
+            if (filtro.ToString() != string.Empty)
+                filtro.Append(" AND ");
+            filtro.Append("Folio='" + ddlFolio.SelectedValue.ToString() + "'");
+        }
+
+        if (ddlSecuencia.SelectedValue.ToString() != "Seleccionar")
+        {
+            if (filtro.ToString() != string.Empty)
+                filtro.Append(" AND ");
+            filtro.Append("Secuencia ='" + ddlSecuencia.SelectedValue.ToString() + "'");
+        }
+
+        if (ddlUsuario.SelectedValue.ToString() != "Seleccionar")
+        {
+            if (filtro.ToString() != string.Empty)
+                filtro.Append(" AND ");
+            filtro.Append("Usuario='" + ddlUsuario.SelectedValue.ToString() + "'");
+        }
+
+        if (filtro.ToString() != string.Empty)
+        {
+            DataRow[] dr = CargaBloqueos().Select(filtro.ToString());
             grdBloqueos.DataSource = dr.CopyToDataTable();
         }
+        else
+        {
+            grdBloqueos.DataSource = CargaBloqueos();
+        }
+        grdBloqueos.DataBind();
+    }
+
+    protected void ddlCorporativo_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        AplicaFiltros();
+    }
+
+    protected void ddlSucursal_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        AplicaFiltros();
     }
 
     protected void ddlAnio_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (ddlAnio.SelectedValue.ToString() != "Seleccionar")
-        {
-            DataRow[] dr = CargaBloqueos().Select("Año='" + ddlAnio.SelectedValue.ToString() + "'");
-            grdBloqueos.DataSource = dr.CopyToDataTable();
-        }
+        AplicaFiltros();
     }
 
     protected void ddlFolio_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (ddlCorporativo.SelectedValue.ToString() != "Seleccionar")
-        {
-            DataRow[] dr = CargaBloqueos().Select("Folio='" + ddlFolio.SelectedValue.ToString() + "'");
-            grdBloqueos.DataSource = dr.CopyToDataTable();
-        }
+        AplicaFiltros();
     }
 
     protected void ddlSecuencia_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (ddlSecuencia.SelectedValue.ToString() != "Seleccionar")
-        {
-            DataRow[] dr = CargaBloqueos().Select("Secuencia='" + ddlSecuencia.SelectedValue.ToString() + "'");
-            grdBloqueos.DataSource = dr.CopyToDataTable();
-        }
+        AplicaFiltros();
     }
 
     protected void ddlUsuario_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (ddlUsuario.SelectedValue.ToString() != "Seleccionar")
-        {
-            DataRow[] dr = CargaBloqueos().Select("Usuario='" + ddlUsuario.SelectedValue.ToString() + "'");
-            grdBloqueos.DataSource = dr.CopyToDataTable();
-        }
-
+        AplicaFiltros();
     }
 
     protected void ChkSelTodos_CheckedChanged(object sender, EventArgs e)
@@ -340,9 +371,4 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
         grdBloqueos.DataSource = CargaBloqueos();
         grdBloqueos.DataBind();
     }
-}
-
-public struct typeCorporativo
-{
-    public string Descripcion { get; set; }
 }
