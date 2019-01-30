@@ -155,7 +155,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                 mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                
+
+                HttpContext.Current.Session["Pago_corporativoConciliacion"] = Convert.ToInt32(Request.QueryString["Corporativo"]);
+                HttpContext.Current.Session["Pago_sucursalConciliacion"] = Convert.ToInt16(Request.QueryString["Sucursal"]);
+                HttpContext.Current.Session["Pago_añoConciliacion"] = Convert.ToInt32(Request.QueryString["Año"]);
+                HttpContext.Current.Session["Pago_folioConciliacion"] = Convert.ToInt32(Request.QueryString["Folio"]);
+                HttpContext.Current.Session["Pago_mesConciliacion"] = Convert.ToSByte(Request.QueryString["Mes"]);
+                HttpContext.Current.Session["Pago_tipoConciliacion"] = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+
+
+
 
                 LlenarBarraEstado();
                 Carga_FormasConciliacion(tipoConciliacion);
@@ -829,7 +839,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         string pedidoReferencia;
 
         DataTable tablaReferencias = (DataTable)HttpContext.Current.Session["TAB_REF_PAGAR"];
-        DataTable tablaReferenciasSeleccionadas = new DataTable();
+        DataTable tablaReferenciasSeleccionadas = tablaReferencias.Clone();
         DataRow[] filas;
 
 
@@ -865,11 +875,13 @@ private string TipoCobroDescripcion(int tipoCobro)
         Conexion conexion = new Conexion();
         wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
         wuAreascomunes.TablaPagos = tablaReferenciasSeleccionadas;
-        wuAreascomunes.CorporativoConciliacion = corporativoConciliacion;
-        wuAreascomunes.SucursalConciliacion = sucursalConciliacion;
-        wuAreascomunes.AnioConciliacion = añoConciliacion;
-        wuAreascomunes.MesConciliacion = mesConciliacion;
-        wuAreascomunes.FolioConciliacion = folioConciliacion;
+
+
+        wuAreascomunes.CorporativoConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_corporativoConciliacion"]); 
+        wuAreascomunes.SucursalConciliacion = Convert.ToInt16(HttpContext.Current.Session["Pago_sucursalConciliacion"]); 
+        wuAreascomunes.AnioConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_añoConciliacion"]);
+        wuAreascomunes.MesConciliacion = Convert.ToSByte(HttpContext.Current.Session["Pago_mesConciliacion"]);
+        wuAreascomunes.FolioConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_folioConciliacion"]);
         wuAreascomunes.cargaDatos();
         mpeAreasComunes.Show();
     }

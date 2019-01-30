@@ -229,7 +229,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
 
 
         PedidoReferencia = filaGrid.Cells[7].Text;
-        filasPadre = TablaPagosPadre.Select("pedidoreferencia=" + PedidoReferencia);
+        filasPadre = TablaPagosPadre.Select("pedidoreferencia='" + PedidoReferencia+"'");
 
 
         celulapedido = Convert.ToInt32(filasPadre[0]["celula"]);
@@ -265,7 +265,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     "",
                                                     "",
                                                     "",
-                                                    0,
+                                                    Convert.ToDecimal(filaTabla["Deposito"]),
                                                     0,
                                                     Convert.ToInt32(filaTabla["SucursalPedido"]),
                                                     "",
@@ -283,18 +283,23 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     "",
                                                     Convert.ToInt32(filaTabla["AñoPed"]),
                                                     Conciliacion.RunTime.App.ImplementadorMensajes);
+
+                objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
                 objRCP.Guardar2(conexion);
             }
-
+           // throw new Exception("Hola");
             conexion.CommitTransaction();
         }
         catch (Exception ex)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Ocurrio un error:"+ex.Message+" ');", true);
             conexion.RollBackTransaction();
+            return;
         }
         Response.Redirect(Request.Url.ToString());
 
 
     }
+
+    
 }
