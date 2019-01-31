@@ -100,7 +100,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["corporativo"] = value; }
     }
     
-    public int CuentaBancaria
+    public Int64 CuentaBancaria
     {
         get
         {
