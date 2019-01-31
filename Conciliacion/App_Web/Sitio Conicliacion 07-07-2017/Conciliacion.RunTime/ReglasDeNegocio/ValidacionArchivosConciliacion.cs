@@ -155,7 +155,7 @@ namespace ValidacionArchivosConciliacion
         string CadenaConexion { get; set; }
         string URLGateway { get; set; }
 
-        int CuentaBancaria { get; set; }
+        Int64 CuentaBancaria { get; set; }
         int DocumentoReferencia { get; set; }
 
         int Corporativo { get;  set; }
@@ -204,7 +204,7 @@ namespace ValidacionArchivosConciliacion
         public string CadenaConexion { get; set; }
         public string URLGateway { get; set; }
 
-        public int CuentaBancaria { get; set; }
+        public Int64 CuentaBancaria { get; set; }
         public int DocumentoReferencia { get; set; }
 
         public int Corporativo

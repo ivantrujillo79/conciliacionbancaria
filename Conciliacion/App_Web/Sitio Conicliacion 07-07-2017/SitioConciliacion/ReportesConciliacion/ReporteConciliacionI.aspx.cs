@@ -2087,7 +2087,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
 
             /*      Asignar propiedades de Carga archivo Excel      */
-            ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value.ToString().Replace(" ", "")), deposito, clienteBuscar, corporativo, sucursal);
+            ActualizarControl_CargaArchivo(Convert.ToInt64(hdfCuentaBancaria.Value.ToString().Replace(" ", "")), deposito, clienteBuscar, corporativo, sucursal);
 
         }
         catch (Exception ex)
@@ -2206,7 +2206,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         return obSaldoAFavor.Guardar(conexion);
     }
 
-    private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
+    private void ActualizarControl_CargaArchivo(Int64 cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
     {
         wucCargaExcelCyC.CuentaBancaria = cuenta;
         wucCargaExcelCyC.MontoPago = montoPago;
