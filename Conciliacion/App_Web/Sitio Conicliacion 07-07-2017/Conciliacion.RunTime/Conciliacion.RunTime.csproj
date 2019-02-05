@@ -69,7 +69,8 @@
       <HintPath>..\..\..\..\..\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\bin\Debug\Locker.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="RTGMGateway">
+    <Reference Include="RTGMGateway, Version=1.19.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\RTGMGateway\RTGMGateway\bin\Debug\RTGMGateway.dll</HintPath>
     </Reference>
     <Reference Include="System" />
