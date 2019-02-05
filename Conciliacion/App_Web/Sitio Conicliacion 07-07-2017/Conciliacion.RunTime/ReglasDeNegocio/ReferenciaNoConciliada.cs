@@ -494,7 +494,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool CancelarExternoInterno();
         public abstract bool CancelarInterno();
 
-
+        public abstract string ValidaPedido(string PedidoReferencia);
 
         public abstract ReferenciaNoConciliada CrearObjeto();
 
@@ -1047,16 +1047,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             bool resultado = true;
             try
             {
-                //if ((this.MontoConciliado + referencia.Total > this.monto + this.Diferencia) & (this.MismoClienteM(referencia.Cliente) == false))
-                //{
-                //    this.ImplementadorMensajes.MostrarMensaje("El pedido " + referencia.Pedido + " supera el monto a conciliar: " + this.monto);
-                //    return false;
-                //}
-                //else if (this.MontoConciliado == this.Monto)
-                //{
-                //    this.ImplementadorMensajes.MostrarMensaje("Ha acompletado el monto a conciliar, ya no puede agregar mas pedidos.");
-                //    return false;
-                //}
                 ReferenciaConciliadaPedido RefConciliada;
                 RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliadaPedido.CrearObjeto();
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion
@@ -1187,14 +1177,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
                 else
                 {
-                    //SE QUITA VALIDACION DEBIDO A QUE NO USA EN PEDIDOS
-                    //if ((this.MontoConciliado < this.monto - this.Diferencia) & (this.MismoCliente == false))
-                    //{
-                    //    this.ImplementadorMensajes.MostrarMensaje(
-                    //        "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
-                    //    return false;
-                    //}
-
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {
                         referen.TipoCobro = this.TipoCobro;
@@ -1202,7 +1184,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         this.Completo = true;
                     }
                 }
-
             }
             catch (Exception ex)
             {
