@@ -767,9 +767,9 @@
 	                        <table width="100%">
         	                        <tr>
                 	                    <td class="centradoJustificado" style="width: 30%;">
-                                            <asp:CheckBox ID="chkSeleccionarTodosExternos" runat="server" Text="Seleccionar Todos" AutoPostBack="false" Checked="false" 
+                                            <asp:CheckBox ID="chkSeleccionarTodosExternos" runat="server" Text="Seleccionar Todos" AutoPostBack="true" Checked="false" 
                                                 CssClass="etiqueta fg-color-blanco centradoMedio"
-                                                OnClick="chkSeleccionarTodosExternos_clic()" />
+                                                OnClick="chkSeleccionarTodosExternos_clic()" OnCheckedChanged="chkSeleccionarTodosExternos_CheckedChanged"/>
                 	                    </td>
         	                        </tr>
 	                        </table>
@@ -791,7 +791,7 @@
                                         <asp:CheckBox runat="server" ID="chkExterno" 
                                             OnClick='<%# String.Concat("chkExterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"), ");") %>'
                                             OnCheckedChanged="chkExterno_CheckedChanged"
-                                            AutoPostBack="False" Checked='<%# Bind("Selecciona") %>' />
+                                            AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />

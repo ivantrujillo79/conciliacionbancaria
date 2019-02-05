@@ -76,7 +76,7 @@
                             <asp:Label ID="txtTotalResto" runat="server" Text="0.00" BackColor="purple" ForeColor="white" Width="90px" Height="20px" CssClass="txtAlign"></asp:Label>
                         </td>
                         <td style="vertical-align: middle;">
-                            <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="boton fg-color-blanco bg-color-azulClaro" />
+                            <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="boton fg-color-blanco bg-color-azulClaro" OnClick="btnGuardar_Click" />
                         </td>
                     </tr>
                 </table>

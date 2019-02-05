@@ -182,7 +182,7 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }*/
         
-        public override bool AplicarCobros(Conexion _conexion)
+        public override bool AplicarCobros(Conexion _conexion, short tipoConciliacion)
         {
             bool resultado = false;
             try
@@ -203,17 +203,17 @@ namespace Conciliacion.RunTime.DatosSQL
                         Pedido.MontoConciliado =
                             Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
                         Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
-                        //if (StatusAltaMC == StatusMovimientoCaja.Validado)
-                        //{
+
+                        //PedidoActualizaSaldo() NO se debe ejecutar
+                        //cuando el status emitido y sea diferente de tipo c 2, 
+                        //solo cuando status sea validado 
+                        if (this.StatusAltaMC == StatusMovimientoCaja.Validado && tipoConciliacion != 2)
+                        {
                             Pedido.PedidoActualizaSaldo(_conexion);
-                        //}
+                        }
                         Pedido.ActualizaPagosPorAplicar(_conexion);
                     }
                 }
-                //if (resultado)
-                //{
-                //    this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
-                //}
             }
             catch (Exception ex)
             {
@@ -395,7 +395,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 int.TryParse(dtPedido.Rows[0]["tipocargo"].ToString(), out tipocargo);
                                 int.TryParse(dtPedido.Rows[0]["tipopedido"].ToString(), out tipopedido);
                                 serieremision = dtPedido.Rows[0]["serieremision"].ToString();
-                                lstPedido.Add(new RTGMCore.PedidoCRMDatos
+                                lstPedido.Add(new RTGMCore.PedidoCRMSaldo
                                 {
                                     IDPedido = Pedido.Pedido,
                                     IDZona = Pedido.CelulaPedido, //checar si corresponde con campo Celula
@@ -415,7 +415,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                     Importe = importe, //campo importe
                                     Impuesto = impuesto,//campo impuesto
                                     SerieRemision = serieremision,//campo SerieRemision
-                                    Total = total//campo total    
+                                    Total = total,//campo total  
+                                    PedidoReferencia = Pedido.IDPedidoCRM
                                 });
                             }
                         }
@@ -424,7 +425,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             Pedidos = lstPedido,
                             Portatil = false,
-                            TipoActualizacion = RTGMCore.TipoActualizacion.Liquidacion,
+                            TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
                             Usuario = "ROPIMA"
                         };
                         List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
@@ -437,52 +438,6 @@ namespace Conciliacion.RunTime.DatosSQL
                     if (!resultado)
                         break;
                 }
-
-                //Actualiza Saldo 
-                if (resultado)
-                {
-                    foreach (Cobro Cobro in Cobros)
-                    {
-                        List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
-                        if (Pedidos.Count > 0)
-                        {
-                            RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, App.CadenaConexion);
-                            objGateway.URLServicio = URLGateway;
-                            List<RTGMCore.Pedido> lstPedido = new List<RTGMCore.Pedido>();
-                            foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
-                            {
-                                dtPedido = DatosDePedido(_conexion, Pedido.AñoPedido, Pedido.CelulaPedido, Pedido.Pedido);
-                                if (dtPedido.Rows.Count > 0)
-                                {
-                                    lstPedido.Add(new RTGMCore.PedidoCRMSaldo
-                                    {
-                                        IDEmpresa = corporativo,
-                                        IDPedido = Pedido.Pedido,
-                                        PedidoReferencia = Pedido.Pedido.ToString(),
-                                        IDZona = Pedido.CelulaPedido, 
-                                        Abono = Pedido.MontoConciliado //checar si el importe del abono
-                                    });
-                                }
-                            } //construye lista de pedidos
-
-                            SolicitudActualizarPedido Solicitud = new SolicitudActualizarPedido
-                            {
-                                Pedidos = lstPedido,
-                                Portatil = false,
-                                TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
-                            };
-                            List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
-                            resultado = Exitoso(ListaRespuesta);
-                            SiHayErroresMostrar(ListaRespuesta);
-
-                            if (!resultado)
-                                break;
-
-                        }
-                    }
-                    
-                }
-
             }
             catch (Exception ex)
             {
@@ -491,35 +446,6 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             return resultado;
         }
-
-        /*public override bool ValidaMovimientoCaja()
-        {
-            bool resultado = false;
-            try
-            {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
-                {
-                    cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBValidaMovimientoCaja", cnn);
-                    comando.Parameters.Add("@Caja", System.Data.SqlDbType.SmallInt).Value = this.Caja;
-                    comando.Parameters.Add("@FOperacion", System.Data.SqlDbType.DateTime).Value = this.FOperacion;
-                    comando.Parameters.Add("@Consecutivo", System.Data.SqlDbType.SmallInt).Value = this.Consecutivo;
-                    comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = this.Folio;
-
-                    comando.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlDataReader reader = comando.ExecuteReader();
-                }
-                resultado = true;
-            }
-            catch (SqlException ex)
-            {
-                stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("No se pudo guardar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
-                stackTrace = null;
-            }
-
-            return resultado;
-        }*/
         
         public override bool ValidaMovimientoCaja(Conexion _conexion)
         {
@@ -551,38 +477,15 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }
-        
-        /*public override bool Guardar()
+
+        public override bool Guardar(Conexion conexion, short tipoConciliacion)
         {
             bool resultado = false;
             try
             {
-                MovimientoCajaAlta();
-                AplicarCobros();
-                ValidaMovimientoCaja();
-                resultado = true;
-            }
-            catch (SqlException ex)
-            {
-                stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("No se pudo guardar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
-                stackTrace = null;
-            }
-
-            return resultado;
-        }*/
-
-        public override bool Guardar(Conexion conexion)
-        {
-            bool resultado = false;
-            try
-            {
-                //conexion.AbrirConexion(true);
                 MovimientoCajaAlta(conexion);
-                
-                AplicarCobros(conexion);
+                AplicarCobros(conexion, tipoConciliacion);
                 ValidaMovimientoCaja(conexion);
-               // conexion.Comando.Transaction.Commit();
                 resultado = true;
             }
             catch (Exception ex)
@@ -602,18 +505,16 @@ namespace Conciliacion.RunTime.DatosSQL
         /// <param name="conexion"></param>
         /// <param name="URLGateway"></param>
         /// <returns></returns>
-        public override bool Guardar(Conexion conexion, string URLGateway)
+        public override bool Guardar(Conexion conexion, string URLGateway, short tipoConciliacion)
         {
             bool resultado = false;
             try
             {
-              //  conexion.AbrirConexion(true);
                 if (AplicarCobrosCRM(conexion, URLGateway)) 
                 { 
                     MovimientoCajaAlta(conexion);
-                    AplicarCobros(conexion);
+                    AplicarCobros(conexion, tipoConciliacion);
                     ValidaMovimientoCaja(conexion);
-                    // conexion.Comando.Transaction.Commit();
                     resultado = true;
                 }
                 else

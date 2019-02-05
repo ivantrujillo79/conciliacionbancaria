@@ -106,7 +106,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = this.MesConciliacion;
                     comando.Parameters.Add("@FolioConciliacion ", System.Data.SqlDbType.Int).Value = this.Folio;
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = this.Sucursal;
-                    comando.Parameters.Add("@FolioConciliacion ", System.Data.SqlDbType.Int).Value = this.Folio;
+                    comando.Parameters.Add("@FolioInterno ", System.Data.SqlDbType.Int).Value = 0; //this.Folio;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
                     resultado = true;

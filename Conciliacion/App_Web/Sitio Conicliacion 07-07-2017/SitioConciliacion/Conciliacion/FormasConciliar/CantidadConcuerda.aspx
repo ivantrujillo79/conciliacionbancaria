@@ -645,7 +645,7 @@
                                             <asp:CheckBox ID="chkAllFolios" runat="server" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedArchivos" />
                                         </HeaderTemplate>
                                         <ItemTemplate>
-                                            <asp:CheckBox ID="chkFolio" runat="server" Checked='<%# Bind("Selecciona") %>' />
+                                            <asp:CheckBox ID="chkFolio" runat="server" AutoPostBack="true" Checked='<%# Bind("Selecciona") %>' OnCheckedChanged="chkFolio_CheckedChanged" />
                                         </ItemTemplate>
                                         <ControlStyle Width="100%"></ControlStyle>
                                         <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" ForeColor="Black" VerticalAlign="Middle"
@@ -845,8 +845,7 @@
                                 <Columns>
                                     <asp:TemplateField>
                                         <HeaderTemplate>
-                                            <asp:CheckBox ID="chkAllFolios" runat="server" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedPedidos"
-                                                Checked="True" />
+                                            <asp:CheckBox ID="chkAllFolios" runat="server" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedPedidos" Checked="True" />
                                         </HeaderTemplate>
                                         <ItemTemplate>
                                             <asp:CheckBox ID="chkFolio" runat="server" Checked='<%# Bind("Selecciona") %>' />

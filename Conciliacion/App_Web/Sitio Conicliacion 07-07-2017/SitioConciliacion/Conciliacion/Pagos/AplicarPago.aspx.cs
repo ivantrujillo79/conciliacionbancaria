@@ -14,6 +14,7 @@ using System.Configuration;
 using SeguridadCB.Public;
 using Conciliacion.RunTime.DatosSQL;
 using RTGMGateway;
+using System.Threading.Tasks;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 {
@@ -32,9 +33,53 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     //private RTGMGateway.SolicitudActualizarPedido solicitudActualizaPedido = new RTGMGateway.SolicitudActualizarPedido();
     //private RTGMGateway.RTGMActualizarPedido ActualizaPedido = new RTGMGateway.RTGMActualizarPedido();
     private string _URLGateway;
+ 
+
+    private int PagosSeleccionados
+    {
+        get
+        {
+            return Convert.ToInt32(Session["PagosSeleccionados"]);
+        }
+
+        set
+        {
+            Session["PagosSeleccionados"] = value;
+        }
+    }
+
+    private int ClientePadre
+    {
+        get
+        {
+            return Convert.ToInt32(Session["ClientePadre"]);
+        }
+
+        set
+        {
+            Session["ClientePadre"] = value;
+        }
+    }
+
+
+    private decimal MontoSeleccionado
+    {
+        get
+        {
+            return Convert.ToDecimal(Session["MontoSeleccionado"]);
+        }
+
+        set
+        {
+            Session["MontoSeleccionado"] = value;
+        }
+    }
     #endregion
 
     #region Eventos de la Forma
+
+
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -67,8 +112,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 int visibleAreasComunes;
                 StatusMovimientoCaja status;
 
-               
-                statusInicial= parametros.ValorParametro(30, "StatusInicialMovCaja");
+                ClientePadre = -1;
+                PagosSeleccionados = 0;
+                MontoSeleccionado = 0;
+
+
+                statusInicial = parametros.ValorParametro(30, "StatusInicialMovCaja");
 
 
                 try
@@ -107,7 +156,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                 mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                
+
+                HttpContext.Current.Session["Pago_corporativoConciliacion"] = Convert.ToInt32(Request.QueryString["Corporativo"]);
+                HttpContext.Current.Session["Pago_sucursalConciliacion"] = Convert.ToInt16(Request.QueryString["Sucursal"]);
+                HttpContext.Current.Session["Pago_añoConciliacion"] = Convert.ToInt32(Request.QueryString["Año"]);
+                HttpContext.Current.Session["Pago_folioConciliacion"] = Convert.ToInt32(Request.QueryString["Folio"]);
+                HttpContext.Current.Session["Pago_mesConciliacion"] = Convert.ToSByte(Request.QueryString["Mes"]);
+                HttpContext.Current.Session["Pago_tipoConciliacion"] = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+
+
+
 
                 LlenarBarraEstado();
                 Carga_FormasConciliacion(tipoConciliacion);
@@ -215,7 +274,68 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
     }
 
-    private string TipoCobroDescripcion(int tipoCobro)
+    protected void chkSeleccionado_CheckedChanged(object sender, System.EventArgs e)
+    {
+        decimal diferenciaDecimal;
+        string diferencia;
+        int clientePadreTemp;
+
+
+
+        CheckBox rb = (CheckBox)sender;
+        GridViewRow row = (GridViewRow)rb.NamingContainer;
+       
+
+
+
+        diferencia = ((Label)row.FindControl("lblDiferencia")).Text;
+        clientePadreTemp = int.Parse(((Label)row.FindControl("lblClientePadre")).Text);
+
+        decimal.TryParse(diferencia, System.Globalization.NumberStyles.Currency, null, out diferenciaDecimal);
+
+
+        if (diferenciaDecimal <= 0)
+        {
+            rb.Checked = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor');", true);
+            return;
+        }
+
+        if (rb.Checked)
+        {
+            if (PagosSeleccionados==0)
+            {
+                PagosSeleccionados = PagosSeleccionados + 1;
+                ClientePadre = clientePadreTemp;
+                MontoSeleccionado = MontoSeleccionado + diferenciaDecimal;
+            }
+            else
+            {
+                if (clientePadreTemp==ClientePadre)
+                {
+                    PagosSeleccionados = PagosSeleccionados + 1;
+                    MontoSeleccionado = MontoSeleccionado + diferenciaDecimal;
+                }
+                else
+                {
+                    rb.Checked = false;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor o con Cliente Padre diferentes');", true);
+                    return;
+                }
+            }            
+        }
+        else
+        {
+            PagosSeleccionados = PagosSeleccionados - 1;
+            if (PagosSeleccionados ==0)
+            {
+                ClientePadre = -1;
+                MontoSeleccionado = MontoSeleccionado - diferenciaDecimal;
+            }
+        }
+    }
+
+private string TipoCobroDescripcion(int tipoCobro)
     {
         if (tipoCobro == 10) //Transferencia
             return "Transferencia";
@@ -279,28 +399,27 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
             tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
+            tblReferenciasAPagar.Columns.Add("IdTipoCobro", typeof(int));
+            tblReferenciasAPagar.Columns.Add("FormaConciliacion", typeof(int));
+            tblReferenciasAPagar.Columns.Add("SucursalPedido", typeof(int));
 
             List<Cliente> lstClientes = new List<Cliente>();
+            if (_URLGateway != string.Empty)
+                lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos, _URLGateway);
+
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
             {
                 if (_URLGateway != string.Empty)
                 {
                     Cliente cliente;
                     cliente = lstClientes.Find(x => x.NumCliente == rc.Cliente);
-                    if (cliente == null)
-                    {
-                        cliente = App.Cliente.CrearObjeto();
-                        rc.Nombre = cliente.consultaClienteCRM(rc.Cliente, _URLGateway);
-                        cliente.NumCliente = rc.Cliente;
-                        cliente.Nombre = rc.Nombre;
-                        lstClientes.Add(cliente);
-                    }
-                    else
+                    if (cliente != null)
                     {
                         rc.Nombre = cliente.Nombre;
                     }
                 }
-
+                
+                
                 tblReferenciasAPagar.Rows.Add(
                        rc.Secuencia,
                         rc.Folio,
@@ -330,7 +449,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                         rc.Nombre,
                         rc.Total,
                         rc.ConceptoPedido,
-                        TipoCobroDescripcion(rc.TipoCobro)
+                        TipoCobroDescripcion(rc.TipoCobro),
+                        rc.TipoCobro,
+                        rc.FormaConciliacion,
+                        rc.SucursalPedido
                         );
             }
             HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;
@@ -340,6 +462,83 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         {
             throw e;
         }
+    }
+    private List<Cliente> ConsultaCLienteCRMdt(List<ReferenciaConciliadaPedido> listReferenciaPedidos, string URLGateway)
+    {
+        List<Cliente> lstClientes = new List<Cliente>();
+        List<int> listadistintos = new List<int>();
+        try
+        {
+            foreach (var item in listReferenciaPedidos)
+            {
+                if (!listadistintos.Exists(x => x == item.Cliente))
+                {
+                    listadistintos.Add(item.Cliente);
+                }
+            }
+            AppSettingsReader settings = new AppSettingsReader();
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+            string cadenaconexion = App.CadenaConexion;
+            ParallelOptions options = new ParallelOptions();
+            options.MaxDegreeOfParallelism = 3;
+            Parallel.ForEach(listadistintos, options, (client) => {
+                Cliente cliente;
+                cliente = App.Cliente.CrearObjeto();
+                cliente.NumCliente = client;
+                cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, URLGateway);
+                lstClientes.Add(cliente);
+            });
+
+            while (lstClientes.Count < listadistintos.Count)
+            {
+
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        return lstClientes;
+    }
+    public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario user, byte modulo, string cadenaconexion, string URLGateway)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (URLGateway != string.Empty)
+            {
+                //AppSettingsReader settings = new AppSettingsReader();
+                //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                Gateway.URLServicio = URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.IDCliente = cliente;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        if (DireccionEntrega == null ||
+            DireccionEntrega.Nombre == null)
+        {
+            //DireccionEntrega.Message == null ||
+            if (DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
+            {
+                return "No encontrado";
+            }
+            else
+            {
+                return "";
+            }
+        }
+        else
+            return DireccionEntrega.Nombre.Trim();
     }
     /// <summary>
     /// Llena el gridview con las conciliaciones antes leídas
@@ -708,69 +907,56 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
     protected void btnAreasComunes_Click(object sender, ImageClickEventArgs e)
     {
-        decimal monto=0;
-        decimal montoSeleccionado;
-        string montoPedido;
-        Boolean seleccionado = false;
-        int clientePadre = -1;
-        int clientePadreTemp;
+        CheckBox sel;
+        string referencia;
+        string pedidoReferencia;
+
+        DataTable tablaReferencias = (DataTable)HttpContext.Current.Session["TAB_REF_PAGAR"];
+        DataTable tablaReferenciasSeleccionadas = tablaReferencias.Clone();
+        DataRow[] filas;
 
 
 
-        foreach (GridViewRow fila in grvPagos.Rows)
-        {
-            if (((CheckBox)fila.FindControl("chkSeleccionado")).Checked)
-            {
-                montoPedido= ((Label)fila.FindControl("lblDiferencia")).Text;
-                decimal.TryParse(montoPedido, System.Globalization.NumberStyles.Currency, null, out montoSeleccionado);
-                monto = monto + (montoSeleccionado*-1);
-                seleccionado = true;
-            }
 
-            clientePadreTemp = int.Parse(((Label)fila.FindControl("lblClientePadre")).Text);
 
-            if (clientePadre ==-1)
-            {
-                clientePadre = clientePadreTemp;
-            }
-            else
-            {
-                if (clientePadre != clientePadreTemp)
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No puede seleccionar pedidos de clientes padre diferentes');", true);
-                    return;
-                }
 
-            }
+        //if (PagosSeleccionados==0)
+        //{
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
+        //    return;
+        //}
 
-        }
-        
-
-        if (monto==0)
-        {
-            if (seleccionado)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('La suma de los montos debe ser mayor a 0');", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No ha seleccionado pagos');", true);
-            }
+        foreach(GridViewRow fila in grvPagos.Rows)
+        {            
+            sel = ((CheckBox)fila.FindControl("chkSeleccionado"));              
             
+            if (sel.Checked)
+            {
+                referencia= ((Label)fila.FindControl("lblReferencia")).Text;
+                pedidoReferencia = ((Label)fila.FindControl("lblPedidoReferencia")).Text;
+
+                filas = tablaReferencias.Select("referencia = '"+referencia+"' and pedidoReferencia = '"+pedidoReferencia+"'");
+
+                foreach (DataRow filaTabla in filas)
+                {
+                    tablaReferenciasSeleccionadas.ImportRow(filaTabla);
+                }
+                
+            }         
         }
-        else
-        {
-            Conexion conexion = new Conexion();
 
-            wuAreascomunes.inicializa(clientePadre, monto);
-            wuAreascomunes.cargaDatos();
-            mpeAreasComunes.Show();
-
-        }
+        Conexion conexion = new Conexion();
+        wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
+        wuAreascomunes.TablaPagos = tablaReferenciasSeleccionadas;
 
 
-
-        //Response.Redirect("~/paginaAreasComunes.aspx");
+        wuAreascomunes.CorporativoConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_corporativoConciliacion"]); 
+        wuAreascomunes.SucursalConciliacion = Convert.ToInt16(HttpContext.Current.Session["Pago_sucursalConciliacion"]); 
+        wuAreascomunes.AnioConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_añoConciliacion"]);
+        wuAreascomunes.MesConciliacion = Convert.ToSByte(HttpContext.Current.Session["Pago_mesConciliacion"]);
+        wuAreascomunes.FolioConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_folioConciliacion"]);
+        wuAreascomunes.cargaDatos();
+        mpeAreasComunes.Show();
     }
 
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
@@ -778,7 +964,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         Conexion conexion  = new Conexion();
         bool urlValida = false;
         bool guardoMovimientoCaja = false;
-
+        string fuente="";
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -812,26 +998,36 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             _URLGateway = p.ValorParametro(modulo, "URLGateway");
             urlValida = ValidarURL(_URLGateway);
 
+            try
+            {
+                fuente = p.ValorParametro(modulo, "FuenteCRM").Trim();
+            }
+            catch
+            {
+
+            }
+
             int corporativoConciliacion = 0;
             Int16 sucursalConciliacion = 0;
             int añoConciliacion = 0;
             int folioConciliacion = 0;
             short mesConciliacion = 0;
-            short tipoConciliacion = 0;            
+            short tipoConciliacion = 0;
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
             conexion.AbrirConexion(true,true);           
 
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {             
                 
-                if (urlValida)
+                if (urlValida & fuente.Equals("CRM"))
                 {
                    
-                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway);
+                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway, tipoConciliacion);
                 }
                 else
                 {
-                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion);
+                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, tipoConciliacion);
                 }
 
                 //if (objMovimientoCaja.Guardar(conexion))
@@ -1072,5 +1268,10 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
 
 
-  
+
+
+    protected void grvPagos_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }

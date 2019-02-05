@@ -31,16 +31,21 @@
         // Nota: el evento Session_End se produce solamente con el modo sessionstate
         // se establece como InProc en el archivo Web.config. Si el modo de sesión se establece como StateServer
         // o SQLServer, el evento no se produce.
-
-        if (Locker.LockerExterno.ExternoBloqueado != null)
+        try
         {
-            int J = Locker.LockerExterno.ExternoBloqueado.Count;
-            for(int i = 0; i<= J; i++)
+            if (Locker.LockerExterno.ExternoBloqueado != null)
             {
-                Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == Session.SessionID).ToList()[0]);
+                int J = Locker.LockerExterno.ExternoBloqueado.Count;
+                for(int i = 0; i<= J-1; i++)
+                {
+                    Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == Session.SessionID).ToList()[0]);
+                }
             }
+        }
+        catch (Exception)
+        {
         }
     }
 
-	
+
 </script>

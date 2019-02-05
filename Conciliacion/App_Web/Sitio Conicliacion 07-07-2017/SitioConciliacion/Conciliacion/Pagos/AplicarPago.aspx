@@ -406,7 +406,7 @@
                             <asp:GridView ID="grvPagos" runat="server" AutoGenerateColumns="False" AllowPaging="False"
                             AllowSorting="True" ShowHeader="False" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed" OnRowCreated="grvPagos_RowCreated"
-                            OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound" >
+                            OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound" OnSelectedIndexChanged="grvPagos_SelectedIndexChanged" >
                             <%--<EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen pedidos con cantidades concordantes."></asp:Label>
                             </EmptyDataTemplate>--%>
@@ -414,7 +414,7 @@
                             <Columns>
                                 <asp:TemplateField ItemStyle-Width="2px" ControlStyle-Width="22px"  HeaderText="Sel" ShowHeader="False">
                         <ItemTemplate>
-                            <asp:CheckBox ID="chkSeleccionado" Text=""  runat="server"></asp:CheckBox>
+                            <asp:CheckBox ID="chkSeleccionado" Text=""  OnCheckedChanged="chkSeleccionado_CheckedChanged" AutoPostBack="true" runat="server"></asp:CheckBox>
                         </ItemTemplate>
                         <ControlStyle Width="22px" />
                         <FooterStyle Width="22px" />

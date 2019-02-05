@@ -44,6 +44,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         decimal monto;
         decimal deposito;
         decimal retiro;
+        decimal comision;
         //decimal montoconciliado;
         private decimal resto;
         short formaconciliacion;
@@ -599,6 +600,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { monto = value; }
         }
 
+        public decimal Comision
+        {
+            get { return comision; }
+            set { comision = value; }
+        }
+
         public decimal Resto
         {
             get { return (this.monto + this.Diferencia) - this.MontoConciliado; }
@@ -1065,13 +1072,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 RefConciliada.Folio = this.folio; //Folio del externo
                 RefConciliada.Secuencia = this.secuencia; //Secuencia del externo
                 RefConciliada.Año = this.año; //Año externo
-
-                if ((this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia) ? referencia.Total : ((this.Monto) - this.MontoPedido)) > 0)
+                
+                if ((this.MontoPedido + referencia.Total <= (this.Monto+this.Comision + this.Diferencia) ? referencia.Total : ((this.Monto+this.Comision) - this.MontoPedido)) > 0)
                 {
-                    RefConciliada.MontoConciliado = this.MontoPedido + referencia.Total <= (this.Monto + this.Diferencia)
+                    RefConciliada.MontoConciliado = this.MontoPedido + referencia.Total <= (this.Monto+this.Comision + this.Diferencia)
                                                     ? referencia.Total //Monto del pedido
                     //: (this.MontoPedido + referencia.Total) - this.Monto; //La diferencia
-                                                    : ((this.Monto) - this.MontoPedido); //La diferencia
+                                                    : ((this.Monto+this.Comision) - this.MontoPedido); //La diferencia
                 }
                 else
                     throw new Exception("El total acumulado es mayor a monto del pedido.");

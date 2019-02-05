@@ -100,7 +100,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["corporativo"] = value; }
     }
     
-    public int CuentaBancaria
+    public Int64 CuentaBancaria
     {
         get
         {
@@ -484,9 +484,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 else
                 {
                     App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLSX");
-                    //App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
-                    //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                    //    @"alertify.alert('Conciliaci&oacute;n bancaria','El archivo debe ser de formato Excel', function(){ alertify.error('Error cargando archivo'); });", true);
                 }
             }// fupSeleccionar.HasFile
             else
@@ -497,10 +494,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
-            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-            //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
-        //RecuperaReferenciasNoConciliadas();
     }
 
     private void DispersarPagos(DataTable dtDatos)
