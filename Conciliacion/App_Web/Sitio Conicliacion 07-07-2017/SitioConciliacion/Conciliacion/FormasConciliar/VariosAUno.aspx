@@ -925,13 +925,14 @@
                                         <div class="parrafoTexto" style="width:15cm">
                                             <asp:Label ID="lblConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'></asp:Label>
                                         </div>
+                                        
                                         <asp:HoverMenuExtender ID="hmeConcepto" runat="server" TargetControlID="lblConcepto"
                                             PopupControlID="pnlPopUpConcepto" PopDelay="20" OffsetX="-70" OffsetY="-10">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConcepto" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="15cm" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
+                                            Width="20.5cm" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
                                             <asp:Label ID="lblToolTipConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                CssClass="etiqueta " Font-Size="10px" />
+                                                CssClass="etiqueta " Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Justify" Width="150px"></ItemStyle>

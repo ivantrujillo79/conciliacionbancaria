@@ -694,14 +694,15 @@
                                             <div class="parrafoTexto">
                                                 <asp:Label ID="lblConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoExt").ToString()) %>'></asp:Label>
                                             </div>
+<%--123--%>
                                             <asp:HoverMenuExtender ID="hmeConceptoExt" runat="server" TargetControlID="lblConceptoExt"
                                                 PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-20" OffsetY="-10"
                                                 EnableViewState="True">
                                             </asp:HoverMenuExtender>
                                             <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                                Width="150px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                                Width="20.5cm" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                                 <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoExt").ToString()) %>'
-                                                    CssClass="etiqueta centradoJustificado" Font-Size="10px" />
+                                                    CssClass="etiqueta centradoJustificado" Width="20cm" Font-Size="10px" />
                                             </asp:Panel>
                                         </ItemTemplate>
                                         <ItemStyle Width="150px"></ItemStyle>
@@ -903,9 +904,9 @@
                                                 EnableViewState="True">
                                             </asp:HoverMenuExtender>
                                             <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                                Width="300px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                                Width="20.5cm" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                                 <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                    CssClass="etiqueta centradoJustificado" Font-Size="10px" />
+                                                    CssClass="etiqueta centradoJustificado" Width="20cm" Font-Size="10px" />
                                             </asp:Panel>
                                         </ItemTemplate>
                                         <HeaderStyle Width="150px"></HeaderStyle>

@@ -597,9 +597,9 @@
                                             PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="0" OffsetY="0">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="500px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
+                                            Width="20.5cm" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
                                             <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                CssClass="etiqueta " Font-Size="10px" />
+                                                CssClass="etiqueta " Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Justify" Width="400px"></ItemStyle>
