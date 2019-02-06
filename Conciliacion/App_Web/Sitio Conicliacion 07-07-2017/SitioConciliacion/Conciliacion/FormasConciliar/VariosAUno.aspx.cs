@@ -65,6 +65,27 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
     private string _URLGateway;
 
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+    }
+    private string objControlPostBack;
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
+    }
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -73,8 +94,53 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             operaciones = (SeguridadCB.Public.Operaciones)HttpContext.Current.Session["Operaciones"];
     }
 
+    public static string GetPostBackControlId(Page page)
+    {
+        if (!page.IsPostBack)
+            return string.Empty;
+
+        Control control = null;
+        // Buscar a "__EVENTTARGET" 
+        string controlName = page.Request.Params["__EVENTTARGET"];
+        if (!String.IsNullOrEmpty(controlName))
+        {
+            control = page.FindControl(controlName);
+        }
+        else
+        {
+            // Si __EVENTTARGET es null, el control es de tipo botón
+            // y hay que iterar para encontrarlo
+
+            string controlId;
+            Control foundControl;
+
+
+            foreach (string ctl in page.Request.Form)
+            {
+                // Manejo especial de los ImageButton
+                if (ctl.EndsWith(".x") || ctl.EndsWith(".y"))
+                {
+                    controlId = ctl.Substring(0, ctl.Length - 2);
+                    foundControl = page.FindControl(controlId);
+                }
+                else
+                {
+                    foundControl = page.FindControl(ctl);
+                }
+
+                if (!(foundControl is IButtonControl)) continue;
+
+                control = foundControl;
+                break;
+            }
+        }
+
+        return control == null ? String.Empty : control.ID;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        objControlPostBack = GetPostBackControlId(this.Page);
         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
@@ -94,6 +160,18 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+
+            //if (objControlPostBack == "grvPedidos")
+            //{
+            //    grvPedidos.DataSource = HttpContext.Current.Session["POR_CONCILIAR_PEDIDO"];
+            //    grvPedidos.DataBind();
+            //}
+            //else
+            //{ 
+            //    DataTable dtSortTable = HttpContext.Current.Session["TAB_INTER_RESP"] as DataTable;
+            //    grvPedidos.DataSource = dtSortTable;
+            //    grvPedidos.DataBind();
+            //}
             if (!Page.IsPostBack)
             {
                 //Leer variables de URL
@@ -1037,8 +1115,16 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         try
         {
             grvPedidos.PageIndex = e.NewPageIndex;
-            DataTable dtSortTable = HttpContext.Current.Session["TAB_INTER_RESP"] as DataTable;
-            grvPedidos.DataSource = dtSortTable;
+            if (objControlPostBack == "grvPedidos")
+            {
+                grvPedidos.DataSource = HttpContext.Current.Session["POR_CONCILIAR_PEDIDO"];
+                grvPedidos.DataBind();
+            }
+            else
+            { 
+                DataTable dtSortTable = HttpContext.Current.Session["TAB_INTER_RESP"] as DataTable;
+                grvPedidos.DataSource = dtSortTable;
+            }
             grvPedidos.DataBind();
         }
         catch (Exception ex)
@@ -3243,6 +3329,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        DataTable tablaDestinoDetalleInterno = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
+        this.grvVistaRapidaInterno.DataSource = tablaDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
+    }
     private void BloquearExterno(string IDSesion, int corporativo, int sucursal, int año, int folio, int secuencia, string desc, decimal monto)
     {
         SeguridadCB.Public.Parametros parametros;

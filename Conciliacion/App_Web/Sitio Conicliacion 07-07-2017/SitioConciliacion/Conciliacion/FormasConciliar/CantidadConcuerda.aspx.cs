@@ -54,9 +54,31 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
 
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+        //set { activepaging = value; }
+    }
+
     public int indiceExternoSeleccionado = 0;
 
     #endregion
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
+    }
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -93,6 +115,9 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+            if (true)
+                LlenaGridViewDestinoDetalleInterno();
+
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -109,6 +134,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
+                activepaging = activaPaginacion();
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
 
                 Carga_SucursalCorporativo(corporativoConciliacion);
@@ -184,6 +210,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
+
     //Cargar InfoConciliacion Actual
     public void cargarInfoConciliacionActual()
     {
@@ -2117,7 +2144,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         LlenaGridViewDestinoDetalleInterno();
         lblFolioInterno.Text = ddlFolioInterno.SelectedItem.Value;
         grvVistaRapidaInterno_ModalPopupExtender.Show();
-
+        upDetalleInterno.Update();
     }
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
@@ -2218,6 +2245,13 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     e.Row.Cells[16].Visible = true;
             }
         }
+    }
+
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        this.grvVistaRapidaInterno.DataSource = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"]; //tblDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
     }
 
     private void BloqueaUnSeleccionado(ReferenciaConciliada rfEx)
@@ -2367,5 +2401,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             //GenerarTablaReferenciasAConciliarInternos();
             DesBloquea(rfEx);
         }
+
     }
 }

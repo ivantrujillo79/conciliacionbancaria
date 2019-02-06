@@ -2,6 +2,7 @@
     CodeFile="Manual.aspx.cs" Inherits="Conciliacion_FormasConciliar_Manual" MaintainScrollPositionOnPostback="false" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     CONCILIACIÓN MANUAL
 </asp:Content>
@@ -537,8 +538,10 @@
             <td>
                 <asp:UpdatePanel runat="server" ID="upGrvConciliadas" UpdateMode="Always">
                     <ContentTemplate>
-                        <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" AllowPaging="True"
-                            PageSize="5" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                        <div style="width:1200px; height:250px; overflow:auto;">
+                            <asp:GridView ID="grvConciliadas" runat="server" 
+                                AllowPaging='<%# ActivePaging %>' PageSize="5"
+                                AutoGenerateColumns="False" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             OnPageIndexChanging="grvConciliadas_PageIndexChanging" OnRowDataBound="grvConciliadas_RowDataBound"
                             DataKeyNames="CorporativoConciliacion, SucursalConciliacion, AñoConciliacion, MesConciliacion, FolioConciliacion, FolioExterno, SecuenciaExterno"
                             OnRowCommand="grvConciliadas_RowCommand" OnSelectedIndexChanging="grvConciliadas_SelectedIndexChanging"
@@ -654,6 +657,7 @@
                             </PagerTemplate>
                             <PagerStyle CssClass="estiloPaginacion bg-color-grisOscuro fg-color-blanco" />
                         </asp:GridView>
+                      </div>                  
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </td>
@@ -774,15 +778,14 @@
         	                        </tr>
 	                        </table>
                         </div>
+
                         <div style="height:500px; width:600px; overflow:auto;">                            
-                        <asp:GridView ID="grvExternos" runat="server" AutoGenerateColumns="False" ViewStateMode="Enabled"
+                            <asp:GridView ID="grvExternos" runat="server" 
+                                AllowPaging='<%# ActivePaging %>' PageSize="10" 
+                                AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
                             OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
-                            <%--<EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
-                                        Text="No se encontraron referencias externas."></asp:Label>
-                                </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <RowStyle CssClass="bg-color-blanco fg-color-negro" />
                             <Columns>
@@ -894,7 +897,7 @@
                             </Columns>
                             <SelectedRowStyle BackColor="#66CCFF" ForeColor="Black" />
                             <PagerStyle CssClass="grvPaginacionScroll" />
-                        </asp:GridView>
+                        </asp:GridView>                        
                         </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
@@ -1038,136 +1041,136 @@
 	                        </table>
                         </div>
                         <div style="height:500px; width:590px; overflow:auto;">
-                        <asp:GridView ID="grvInternos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
-                            CssClass="grvResultadoConsultaCss" AllowSorting="True"
-                            OnRowDataBound="grvInternos_RowDataBound" 
-                            Width="100%" DataKeyNames="Secuencia, Folio, Sucursal" 
-
-                            ShowHeaderWhenEmpty="True" ShowFooter="False"
-                            OnSorting="grvInternos_Sorting" 
-                            OnPageIndexChanging="grvInternos_PageIndexChanging">
-                            <HeaderStyle HorizontalAlign="Center" />
-                            <Columns>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:CheckBox runat="server" ID="chkInterno"
-                                            Checked='<%# Bind("Selecciona") %>' 
-                                            OnClick='<%# String.Concat("chkInterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"),");") %>'
-                                            AutoPostBack="False" 
-                                            OnCheckedChanged="chkInterno_CheckedChanged"
-                                            />
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Secuencia" SortExpression="Secuencia">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblSecuenciaIn" runat="server" Text='<%# resaltarBusqueda(Eval("Secuencia").ToString()) %>' />
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" Wrap="True" BackColor="#ebecec"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Wrap="True"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Status" SortExpression="StatusConciliacion">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
-                                            Style="display: none"></asp:Label>
-                                        <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
-                                            Width="25px" Height="25px" CssClass="icono border-color-grisOscuro centradoMedio"
-                                            ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Folio" SortExpression="Folio">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblFolioIn" runat="server" Text='<%# resaltarBusqueda(Eval("Folio").ToString()) %>' />
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="FMovimiento" SortExpression="FMovimiento">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblFMovimiento" runat="server" Text='<%# resaltarBusqueda(Eval("FMovimiento","{0:d}").ToString()) %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="FOperacion" SortExpression="FOperacion">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblFOperacion" runat="server" Text='<%# resaltarBusqueda(Eval("FOperacion","{0:d}").ToString()) %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
-                                    <ItemTemplate>
-                                        <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Retiro" SortExpression="Retiro">
-                                    <ItemTemplate>
-                                        <b>
-                                            <asp:Label ID="lblRetiro" runat="server" Text='<%# resaltarBusqueda(Eval("Retiro","{0:c2}").ToString()) %>'></asp:Label></b>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Deposito" SortExpression="Deposito">
-                                    <ItemTemplate>
-                                        <b>
-                                            <asp:Label ID="lblDeposito" runat="server" Text='<%# resaltarBusqueda(Eval("Deposito","{0:c2}").ToString()) %>'></asp:Label></b>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
-                                    <ItemTemplate>
-                                        <div class="parrafoTexto">
-                                            <asp:Label ID="lblConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'></asp:Label>
-                                        </div>
-                                        <asp:HoverMenuExtender ID="hmeConcepto" runat="server" TargetControlID="lblConcepto"
-                                            PopupControlID="pnlPopUpConcepto" PopDelay="20" OffsetX="-30" OffsetY="0">
-                                        </asp:HoverMenuExtender>
-                                        <asp:Panel ID="pnlPopUpConcepto" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="150px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
-                                            <asp:Label ID="lblToolTipConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                CssClass="etiqueta " Font-Size="10px" />
-                                        </asp:Panel>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Justify"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Descripcion" SortExpression="Descripcion">
-                                    <ItemTemplate>
-                                        <div class="parrafoTexto">
-                                            <asp:Label ID="lblDescripcion" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'></asp:Label>
-                                        </div>
-                                        <asp:HoverMenuExtender ID="hmeDescripcion" runat="server" TargetControlID="lblDescripcion"
-                                            PopupControlID="pnlPopUpDescripcion" PopDelay="20" OffsetX="-30" OffsetY="0">
-                                        </asp:HoverMenuExtender>
-                                        <asp:Panel ID="pnlPopUpDescripcion" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="150px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
-                                            <asp:Label ID="lblToolTipDescripcion" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'
-                                                CssClass="etiqueta " Font-Size="10px" />
-                                        </asp:Panel>
-                                    </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="Justify"></ItemStyle>
-                                    <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                </asp:TemplateField>
-                            </Columns>
-                            <PagerStyle CssClass="grvPaginacionScroll" />
-                        </asp:GridView>
+                            <asp:GridView ID="grvInternos" runat="server" 
+                                AllowPaging='<%# ActivePaging %>' PageSize="10"
+                                AutoGenerateColumns="False" ShowHeader="True"
+                                CssClass="grvResultadoConsultaCss" AllowSorting="True"
+                                OnRowDataBound="grvInternos_RowDataBound" 
+                                Width="100%" DataKeyNames="Secuencia, Folio, Sucursal" 
+                                ShowHeaderWhenEmpty="True" ShowFooter="False"
+                                OnSorting="grvInternos_Sorting" 
+                                OnPageIndexChanging="grvInternos_PageIndexChanging">
+                                <HeaderStyle HorizontalAlign="Center" />
+                                <Columns>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:CheckBox runat="server" ID="chkInterno"
+                                                Checked='<%# Bind("Selecciona") %>' 
+                                                OnClick='<%# String.Concat("chkInterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"),");") %>'
+                                                AutoPostBack="False" 
+                                                OnCheckedChanged="chkInterno_CheckedChanged"
+                                                />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Secuencia" SortExpression="Secuencia">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblSecuenciaIn" runat="server" Text='<%# resaltarBusqueda(Eval("Secuencia").ToString()) %>' />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Wrap="True" BackColor="#ebecec"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Wrap="True"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Status" SortExpression="StatusConciliacion">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblStatusConciliacion" runat="server" Text='<%# Bind("StatusConciliacion") %>'
+                                                Style="display: none"></asp:Label>
+                                            <asp:Image runat="server" ID="imgStatusConciliacion" ImageUrl='<%# Bind("UbicacionIcono") %>'
+                                                Width="25px" Height="25px" CssClass="icono border-color-grisOscuro centradoMedio"
+                                                ToolTip='<%# Bind("StatusConciliacion") %>' AlternateText='<%# Bind("StatusConciliacion") %>' />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Folio" SortExpression="Folio">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFolioIn" runat="server" Text='<%# resaltarBusqueda(Eval("Folio").ToString()) %>' />
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" BackColor="#ebecec"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="FMovimiento" SortExpression="FMovimiento">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFMovimiento" runat="server" Text='<%# resaltarBusqueda(Eval("FMovimiento","{0:d}").ToString()) %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="FOperacion" SortExpression="FOperacion">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblFOperacion" runat="server" Text='<%# resaltarBusqueda(Eval("FOperacion","{0:d}").ToString()) %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Documento" SortExpression="Referencia">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("Referencia").ToString()) %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Retiro" SortExpression="Retiro">
+                                        <ItemTemplate>
+                                            <b>
+                                                <asp:Label ID="lblRetiro" runat="server" Text='<%# resaltarBusqueda(Eval("Retiro","{0:c2}").ToString()) %>'></asp:Label></b>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Deposito" SortExpression="Deposito">
+                                        <ItemTemplate>
+                                            <b>
+                                                <asp:Label ID="lblDeposito" runat="server" Text='<%# resaltarBusqueda(Eval("Deposito","{0:c2}").ToString()) %>'></asp:Label></b>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Concepto" SortExpression="Concepto">
+                                        <ItemTemplate>
+                                            <div class="parrafoTexto">
+                                                <asp:Label ID="lblConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'></asp:Label>
+                                            </div>
+                                            <asp:HoverMenuExtender ID="hmeConcepto" runat="server" TargetControlID="lblConcepto"
+                                                PopupControlID="pnlPopUpConcepto" PopDelay="20" OffsetX="-30" OffsetY="0">
+                                            </asp:HoverMenuExtender>
+                                            <asp:Panel ID="pnlPopUpConcepto" runat="server" CssClass="grvResultadoConsultaCss ocultar"
+                                                Width="150px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
+                                                <asp:Label ID="lblToolTipConcepto" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
+                                                    CssClass="etiqueta " Font-Size="10px" />
+                                            </asp:Panel>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Justify"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Descripcion" SortExpression="Descripcion">
+                                        <ItemTemplate>
+                                            <div class="parrafoTexto">
+                                                <asp:Label ID="lblDescripcion" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'></asp:Label>
+                                            </div>
+                                            <asp:HoverMenuExtender ID="hmeDescripcion" runat="server" TargetControlID="lblDescripcion"
+                                                PopupControlID="pnlPopUpDescripcion" PopDelay="20" OffsetX="-30" OffsetY="0">
+                                            </asp:HoverMenuExtender>
+                                            <asp:Panel ID="pnlPopUpDescripcion" runat="server" CssClass="grvResultadoConsultaCss ocultar"
+                                                Width="150px" Style="padding: 5px 5px 5px 5px" BackColor="White" Wrap="True">
+                                                <asp:Label ID="lblToolTipDescripcion" runat="server" Text='<%# resaltarBusqueda(Eval("Descripcion").ToString()) %>'
+                                                    CssClass="etiqueta " Font-Size="10px" />
+                                            </asp:Panel>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="Justify"></ItemStyle>
+                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <PagerStyle CssClass="grvPaginacionScroll" />
+                            </asp:GridView>
                         </div>
-                        <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="True"
+                        <asp:GridView ID="grvPedidos" runat="server" 
+                            AllowPaging='<%# ActivePaging %>' PageSize="10" 
+                            AutoGenerateColumns="False" ShowHeader="True"
                             CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                             ShowHeaderWhenEmpty="True" DataKeyNames="Celula,Pedido,AñoPed,Cliente" OnSorting="grvPedidos_Sorting"
-                            AllowPaging="True" PageSize="100" OnPageIndexChanging="grvPedidos_PageIndexChanging"
+                            OnPageIndexChanging="grvPedidos_PageIndexChanging"
                             OnRowDataBound="grvPedidos_RowDataBound">
-                            <%-- <EmptyDataTemplate>
-                                <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No se encontraron información sobre pedidos."></asp:Label>
-                            </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
                                 <asp:TemplateField>
@@ -1303,8 +1306,8 @@
                 DropShadow="False" EnableViewState="false" PopupControlID="pnlDetalle" TargetControlID="hdfCerrarDetalle"
                 CancelControlID="btnCerrarDetalle">
             </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlDetalle" runat="server" CssClass="ModalPopup" EnableViewState="false"
-                Width="900px" Style="display: none">
+            <asp:Panel ID="pnlDetalle" runat="server" CssClass="ModalPopup" EnableViewState="true"
+                Width="1010px" Style="display: none">
                 <table style="width: 100%">
                     <tr class="bg-color-grisOscuro">
                         <td colspan="5" style="padding: 5px 5px 5px 5px" class="etiqueta">
@@ -1319,147 +1322,135 @@
                     </tr>
                     <tr>
                         <td style="padding: 5px 5px 5px 5px; width: 100%">
-                            <asp:GridView ID="grvDetalleArchivoInterno" runat="server" AutoGenerateColumns="False"
-                                ShowHeader="True" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
-                                ShowFooter="False" DataKeyNames="SecuenciaInterno, FolioInterno">
-                                <EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
-                                        Text="No se encontraron referencias internas"></asp:Label>
-                                </EmptyDataTemplate>
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <Columns>
-                                    <asp:TemplateField>
-                                        <ItemTemplate>
-                                            <asp:Image ID="img" runat="server" CssClass="icono" Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                                Width="15px"></asp:Image>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
-                                            Width="20px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Secuencia" SortExpression="secuenciaInt">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblSecuenciaInt" runat="server" Text='<%# Bind("SecuenciaInterno") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ControlStyle CssClass="centradoMedio" />
-                                        <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="50px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Folio" SortExpression="folioInterno">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFolioInterno" runat="server" Text='<%# Bind("FolioInterno") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ControlStyle CssClass="centradoMedio" />
-                                        <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="100px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFMovimiento" runat="server" Text='<%# Bind("FMovimientoInt","{0:d}") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ControlStyle CssClass="centradoMedio" />
-                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFOperacion" runat="server" Text='<%# Bind("FOperacionInt","{0:d}") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ControlStyle CssClass="centradoMedio" />
-                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Monto" SortExpression="monto">
-                                        <ItemTemplate>
-                                            <b>
-                                                <asp:Label ID="lblMonto" runat="server" Text='<%# Bind("MontoInterno","{0:c2}") %>'></asp:Label></b>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
-                                        <ItemTemplate>
-                                            <div class="parrafoTexto" style="width: 500px">
-                                                <asp:Label ID="lblConceptoInt" runat="server" Text='<%# Bind("ConceptoInterno") %>'></asp:Label>
-                                            </div>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" Width="500px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="500px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                </Columns>
-                            </asp:GridView>
-                            <asp:GridView ID="grvDetallePedidoInterno" runat="server" AutoGenerateColumns="False"
-                                ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
-                                DataKeyNames="Celula,Pedido,AñoPed">
-                                <HeaderStyle HorizontalAlign="Center" />
-                                <Columns>
-                                    <asp:TemplateField>
-                                        <ItemTemplate>
-                                            <asp:Image ID="img" runat="server" CssClass="icono" Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
-                                                Width="15px"></asp:Image>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
-                                            Width="30px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="30px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Ped." SortExpression="Pedido">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblPedido" runat="server" Text='<%# Eval("Pedido") %>' />
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px">
-                                        </ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Celula" SortExpression="Celula">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblCelula" runat="server" Text='<%# Eval("Celula") %>' />
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Total Pedido" SortExpression="Total">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:c2}") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                    <%--                                    <asp:TemplateField HeaderText="Concepto" SortExpression="ConceptoPedido">
-                                        <ItemTemplate>
-                                            <div class="parrafoTexto" style="width: 350px">
-                                                <asp:Label ID="lblConceptoPedido" runat="server" Text='<%# Eval("ConceptoPedido") %>'></asp:Label>
-                                            </div>
-                                            <asp:HoverMenuExtender ID="hmeConceptoPedido" runat="server" TargetControlID="lblConceptoPedido"
-                                                PopupControlID="pnlPopUpConceptoPedido" PopDelay="20" OffsetX="-20" OffsetY="-10">
-                                            </asp:HoverMenuExtender>
-                                            <asp:Panel ID="pnlPopUpConceptoPedido" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                                Width="400px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
-                                                <asp:Label ID="lblToolTipConceptoPedido" runat="server" Text='<%# Eval("ConceptoPedido") %>'
-                                                    CssClass="etiqueta" Font-Size="10px" />
-                                            </asp:Panel>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Justify" Width="400px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="400px"></HeaderStyle>
-                                    </asp:TemplateField>--%>
-                                    <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
-                                        <ItemTemplate>
-                                            <div class="parrafoTexto" style="width: 350px">
-                                                <asp:Label ID="lblCliente" runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
-                                            </div>
-                                            <asp:HoverMenuExtender ID="hmeCliente" runat="server" TargetControlID="lblCliente"
-                                                PopupControlID="pnlPopUpCliente" PopDelay="20" OffsetX="-20" OffsetY="-10">
-                                            </asp:HoverMenuExtender>
-                                            <asp:Panel ID="pnlPopUpCliente" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                                Width="300px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
-                                                <asp:Label ID="lblToolTipCliente" runat="server" Text='<%# Eval("Nombre") %>' CssClass="etiqueta"
-                                                    Font-Size="10px" />
-                                            </asp:Panel>
-                                        </ItemTemplate>
-                                        <ItemStyle HorizontalAlign="Justify" Width="550px"></ItemStyle>
-                                        <HeaderStyle HorizontalAlign="Center" Width="550px"></HeaderStyle>
-                                    </asp:TemplateField>
-                                </Columns>
-                            </asp:GridView>
+                            <div style="width:100%; height:240px; max-height:480px; overflow:auto;">
+                                <asp:GridView ID="grvDetalleArchivoInterno" runat="server" 
+                                    AllowPaging='<%# ActivePaging %>' PageSize="5"
+                                    AutoGenerateColumns="False" ShowHeader="True" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                                    ShowFooter="False" DataKeyNames="SecuenciaInterno, FolioInterno"
+                                    OnPageIndexChanging="grvDetalleArchivoInterno_PageIndexChanging" >
+                                    <EmptyDataTemplate>
+                                        <asp:Label ID="lblvacio" runat="server" Font-Bold="True" Font-Overline="False" ForeColor="#CC3300"
+                                            Text="No se encontraron referencias internas"></asp:Label>
+                                    </EmptyDataTemplate>
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <Columns>
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                                <asp:Image ID="img" runat="server" CssClass="icono" Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
+                                                    Width="15px"></asp:Image>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
+                                                Width="20px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Secuencia" SortExpression="secuenciaInt">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblSecuenciaInt" runat="server" Text='<%# Bind("SecuenciaInterno") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ControlStyle CssClass="centradoMedio" />
+                                            <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="50px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Folio" SortExpression="folioInterno">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFolioInterno" runat="server" Text='<%# Bind("FolioInterno") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ControlStyle CssClass="centradoMedio" />
+                                            <ItemStyle HorizontalAlign="Center" BackColor="#ebecec" Width="100px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFMovimiento" runat="server" Text='<%# Bind("FMovimientoInt","{0:d}") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ControlStyle CssClass="centradoMedio" />
+                                            <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFOperacion" runat="server" Text='<%# Bind("FOperacionInt","{0:d}") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ControlStyle CssClass="centradoMedio" />
+                                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Monto" SortExpression="monto">
+                                            <ItemTemplate>
+                                                <b>
+                                                    <asp:Label ID="lblMonto" runat="server" Text='<%# Bind("MontoInterno","{0:c2}") %>'></asp:Label></b>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
+                                            <ItemTemplate>
+                                                <div class="parrafoTexto" style="width: 500px">
+                                                    <asp:Label ID="lblConceptoInt" runat="server" Text='<%# Bind("ConceptoInterno") %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="500px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="500px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                                <asp:GridView ID="grvDetallePedidoInterno" runat="server" 
+                                    AllowPaging='<%# ActivePaging %>' PageSize="5"
+                                    AutoGenerateColumns="False" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                                    DataKeyNames="Celula,Pedido,AñoPed">
+                                    <HeaderStyle HorizontalAlign="Center" />
+                                    <Columns>
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                                <asp:Image ID="img" runat="server" CssClass="icono" Height="15px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
+                                                    Width="15px"></asp:Image>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" CssClass="bg-color-verdeClaro centradoMedio"
+                                                Width="30px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="30px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Ped." SortExpression="Pedido">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPedido" runat="server" Text='<%# Eval("Pedido") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" BackColor="#d9b335" ForeColor="White" Width="50px">
+                                            </ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="50px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Celula" SortExpression="Celula">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblCelula" runat="server" Text='<%# Eval("Celula") %>' />
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Total Pedido" SortExpression="Total">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblMontoPedido" runat="server" Text='<%# Eval("Total","{0:c2}") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
+                                            <ItemTemplate>
+                                                <div class="parrafoTexto" style="width: 350px">
+                                                    <asp:Label ID="lblCliente" runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
+                                                </div>
+                                                <asp:HoverMenuExtender ID="hmeCliente" runat="server" TargetControlID="lblCliente"
+                                                    PopupControlID="pnlPopUpCliente" PopDelay="20" OffsetX="-20" OffsetY="-10">
+                                                </asp:HoverMenuExtender>
+                                                <asp:Panel ID="pnlPopUpCliente" runat="server" CssClass="grvResultadoConsultaCss ocultar"
+                                                    Width="300px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
+                                                    <asp:Label ID="lblToolTipCliente" runat="server" Text='<%# Eval("Nombre") %>' CssClass="etiqueta"
+                                                        Font-Size="10px" />
+                                                </asp:Panel>
+                                            </ItemTemplate>
+                                            <ItemStyle HorizontalAlign="Justify" Width="550px"></ItemStyle>
+                                            <HeaderStyle HorizontalAlign="Center" Width="550px"></HeaderStyle>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -1699,8 +1690,9 @@
                             <div class="etiqueta">
                                 Folios Agregados
                             </div>
-                            <asp:GridView ID="grvAgregados" runat="server" AllowPaging="True" AutoGenerateColumns="False"
-                                BorderStyle="Dotted" CssClass="grvResultadoConsultaCss" Font-Size="12px" ShowHeaderWhenEmpty="True"
+                            <asp:GridView ID="grvAgregados" runat="server" 
+                                AllowPaging='<%# ActivePaging %>' 
+                                AutoGenerateColumns="False" BorderStyle="Dotted" CssClass="grvResultadoConsultaCss" Font-Size="12px" ShowHeaderWhenEmpty="True"
                                 Width="90%" ShowHeader="False" BorderColor="White" DataKeyNames="Folio" PageSize="6"
                                 OnRowDeleting="grvAgregados_RowDeleting" OnPageIndexChanging="grvAgregados_PageIndexChanging">
                                 <Columns>
@@ -1769,68 +1761,72 @@
                     </tr>
                     <tr>
                         <td style="padding: 5px 5px 5px 5px">
-                            <asp:GridView ID="grvVistaRapidaInterno" runat="server" AutoGenerateColumns="False"
-                                BorderStyle="Dotted" Font-Size="12px" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
-                                Width="100%" GridLines="Horizontal">
-                                <EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
-                                </EmptyDataTemplate>
-                                <Columns>
-                                    <asp:TemplateField HeaderText="Documento" SortExpression="referencia">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="100px" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFOperracion" runat="server" Text="<%# Bind('FOperacion', '{0:d}') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFMovimiento" runat="server" Text="<%# Bind('FMovimiento','{0:d}') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="50px" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Descripcion" SortExpression="descripcion">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblDescripcion" runat="server" Text="<%# Bind('Descripcion') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="150px" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Deposito" SortExpression="deposito">
-                                        <ItemTemplate>
-                                            <b>
-                                                <asp:Label ID="lblDeposito" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Deposito','{0:c2}') %>"></asp:Label></b>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
-                                            CssClass="fg-color-blanco bg-color-grisClaro" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Retiro" SortExpression="retiro">
-                                        <ItemTemplate>
-                                            <b>
-                                                <asp:Label ID="lblRetiro" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Retiro','{0:c2}') %>"></asp:Label></b>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
-                                            CssClass="fg-color-blanco bg-color-grisClaro" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblConcepto" runat="server" Text="<%# Bind('Concepto') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" Wrap="True" Width="500px" />
-                                    </asp:TemplateField>
-                                </Columns>
-                            </asp:GridView>
+                            <div style="width:1000px; height:340px; overflow:auto;">
+                                <asp:GridView ID="grvVistaRapidaInterno" runat="server" 
+                                    AllowPaging='<%# ActivePaging %>' PageSize="5" 
+                                    AutoGenerateColumns="False" BorderStyle="Dotted" Font-Size="12px" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                                    Width="100%" GridLines="Horizontal"
+                                    OnPageIndexChanging="grvVistaRapidaInterno_PageIndexChanging">
+                                    <EmptyDataTemplate>
+                                        <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
+                                    </EmptyDataTemplate>
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Documento" SortExpression="referencia">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFOperracion" runat="server" Text="<%# Bind('FOperacion', '{0:d}') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFMovimiento" runat="server" Text="<%# Bind('FMovimiento','{0:d}') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="50px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Descripcion" SortExpression="descripcion">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDescripcion" runat="server" Text="<%# Bind('Descripcion') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="150px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Deposito" SortExpression="deposito">
+                                            <ItemTemplate>
+                                                <b>
+                                                    <asp:Label ID="lblDeposito" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Deposito','{0:c2}') %>"></asp:Label></b>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
+                                                CssClass="fg-color-blanco bg-color-grisClaro" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Retiro" SortExpression="retiro">
+                                            <ItemTemplate>
+                                                <b>
+                                                    <asp:Label ID="lblRetiro" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Retiro','{0:c2}') %>"></asp:Label></b>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
+                                                CssClass="fg-color-blanco bg-color-grisClaro" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConcepto" runat="server" Text="<%# Bind('Concepto') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" Wrap="True" Width="500px" />
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
                         </td>
                     </tr>
                 </table>

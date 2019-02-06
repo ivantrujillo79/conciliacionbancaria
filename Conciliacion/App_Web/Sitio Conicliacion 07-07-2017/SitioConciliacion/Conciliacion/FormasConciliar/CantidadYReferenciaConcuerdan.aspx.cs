@@ -57,7 +57,29 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
     private string _URLGateway;
+
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+    }
+
     #endregion
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
+    }
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -98,6 +120,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+            LlenaGridViewDestinoDetalleInterno();
             if (!Page.IsPostBack)
             {
 
@@ -2936,7 +2959,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     private void LlenaGridViewDestinoDetalleInterno()
     {
         DataTable tablaDestinoDetalleInterno = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
-        this.grvVistaRapidaInterno.DataSource = tblDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.DataSource = tablaDestinoDetalleInterno;
         this.grvVistaRapidaInterno.DataBind();
     }
     protected void btnVerDatalleInterno_Click(object sender, ImageClickEventArgs e)
@@ -3083,5 +3106,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
                 @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
 
+    }
+
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        this.grvVistaRapidaInterno.DataSource = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
     }
 }

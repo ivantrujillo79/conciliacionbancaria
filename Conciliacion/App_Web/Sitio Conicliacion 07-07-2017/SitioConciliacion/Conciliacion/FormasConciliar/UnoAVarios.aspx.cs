@@ -96,6 +96,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
 
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+    }
+
     private int indiceExternoSeleccionado
     {
         get { return Convert.ToInt32(hdfIndiceExterno.Value); }
@@ -212,6 +218,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             CargarConfiguracion_wucClientePago();
 
             //imgPagare.Visible = objSolicitdConciliacion.ConsultaActivaPagare();
+
+            LlenaGridViewDestinoDetalleInterno();
 
             if (!Page.IsPostBack)
             {
@@ -523,6 +531,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
                 "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
+    }
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
     }
 
     private void GuardarSeleccionadosPedidos()
@@ -1706,6 +1728,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
                 }
             }
+            HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"] = tblDetalleTransaccionConciliada;
         }
         catch (Exception ex)
         {
@@ -2007,16 +2030,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             //TRAE EL TOTAL DE PAGINAS
             Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
-            _TotalPags.Text = grvAgregadosPedidos.PageCount.ToString();
+            if (_TotalPags != null)
+                _TotalPags.Text = grvAgregadosPedidos.PageCount.ToString();
 
             //LLENA LA LISTA CON EL NUMERO DE PAGINAS
             DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownList");
-            for (int i = 1; i <= Convert.ToInt32(grvAgregadosPedidos.PageCount); i++)
-            {
-                list.Items.Add(i.ToString());
+            if (list != null)
+            { 
+                for (int i = 1; i <= Convert.ToInt32(grvAgregadosPedidos.PageCount); i++)
+                {
+                    list.Items.Add(i.ToString());
+                }
+                list.SelectedValue = (grvAgregadosPedidos.PageIndex + 1).ToString();
             }
-            list.SelectedValue = (grvAgregadosPedidos.PageIndex + 1).ToString();
-
         }
         //}
         //catch (Exception ex)
@@ -7029,6 +7055,42 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             throw new Exception("Ingresa una comisión válida.");
         }
         return resultado;
+    }
+
+    protected void grvAgregadosPedidos_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        this.grvAgregadosPedidos.DataSource = (HttpContext.Current.Session["TABLADEAGREGADOS"] as GridView).DataSource; //tblDestinoDetalleInterno;
+        this.grvAgregadosPedidos.PageIndex = e.NewPageIndex;
+        this.grvAgregadosPedidos.DataBind();
+    }
+
+    protected void grvAgregadosInternos_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+
+    }
+
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        DataTable tablaDestinoDetalleInterno = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
+        this.grvVistaRapidaInterno.DataSource = tablaDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
+    }
+
+    protected void grvDetalleArchivoInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grvDetalleArchivoInterno.DataSource = HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"];
+        grvDetalleArchivoInterno.PageIndex = e.NewPageIndex;
+        grvDetalleArchivoInterno.DataBind();
+        mpeLanzarDetalle.Show();
+    }
+
+    protected void grvDetallePedidoInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grvDetallePedidoInterno.DataSource = HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"];
+        grvDetallePedidoInterno.PageIndex = e.NewPageIndex;
+        grvDetallePedidoInterno.DataBind();
+        mpeLanzarDetalle.Show();
     }
 
 }
