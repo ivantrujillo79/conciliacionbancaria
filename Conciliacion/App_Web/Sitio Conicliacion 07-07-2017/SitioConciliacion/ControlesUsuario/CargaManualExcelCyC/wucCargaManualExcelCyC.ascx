@@ -64,7 +64,7 @@
         <tr>
             <td style="padding-left:10px; padding-right: 5px; box-sizing:border-box;">
                 <div>
-                    <asp:Label ID="lblSaldo" runat="server" CssClass="etiqueta fg-color-negro" Text="Saldo a favor: "
+                    <asp:Label ID="lblSaldo" runat="server" CssClass="etiqueta fg-color-negro" Text="Saldo a favor: " Visible ="false"
                         style="display:inline-block;" Font-Size="0.97em"/>
                 </div>
             </td>

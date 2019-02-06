@@ -282,6 +282,18 @@ namespace Conciliacion.RunTime
 
         }
 
+        private static PagoAreasComunes pagoAreasComunes;
+        public static PagoAreasComunes PagoAreasComunes
+        {
+            get
+            {
+                if (pagoAreasComunes == null)
+                    pagoAreasComunes = new PagoAreasComunesDatos(App.ImplementadorMensajes);
+                return pagoAreasComunes;
+            }
+
+        }
+
         private static Pagare pagare;
         public static Pagare Pagare
         {

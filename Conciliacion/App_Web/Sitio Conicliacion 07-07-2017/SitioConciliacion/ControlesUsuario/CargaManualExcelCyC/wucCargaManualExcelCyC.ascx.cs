@@ -100,7 +100,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["corporativo"] = value; }
     }
     
-    public int CuentaBancaria
+    public Int64 CuentaBancaria
     {
         get
         {
@@ -212,6 +212,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set
         {
             ViewState["saldoAFavor"] = value;
+            lblSaldo.Visible = true;
             lblSaldo.Text = SALDO + String.Format("{0:C}", value);
         }
     }
@@ -271,6 +272,42 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     public short TipoConciliacion { get; set; }
 
     public ModalPopupExtender PopupContenedor { get; set; }
+
+    public string URLGateway
+    {
+        get
+        {
+            if (ViewState["urlgateway"] == null)
+                return "";
+            else
+                return (string)ViewState["urlgateway"];
+        }
+        set { ViewState["urlgateway"] = value; }
+    }
+
+    public byte Modulo
+    {
+        get
+        {
+            if (ViewState["modulo"] == null)
+                return 0;
+            else
+                return (byte)ViewState["modulo"];
+        }
+        set { ViewState["modulo"] = value; }
+    }
+
+    public string CadenaConexion
+    {
+        get
+        {
+            if (ViewState["cadenaconexion"] == null)
+                return "";
+            else
+                return (string)ViewState["cadenaconexion"];
+        }
+        set { ViewState["cadenaconexion"] = value; }
+    }
 
     #endregion
 
@@ -370,87 +407,94 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         iValidador.RutaArchivo = sRutaArchivo;
                         iValidador.NombreArchivo = Path.GetFileName(sArchivo);
                         iValidador.TipoMIME = (sExt == ".xls" ? MIME[0] : MIME[1]);
+                        iValidador.URLGateway = this.URLGateway;
+                        iValidador.Modulo = this.Modulo;
+                        iValidador.CadenaConexion = this.CadenaConexion;
+                        iValidador.Corporativo = this.Corporativo;
+                        iValidador.Sucursal = this.Sucursal;
 
-                        if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
+                        //if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
+                        //{
+                        dtTabla = iValidador.CargaArchivo(sArchivo);
+                        DatosAConciliar = dtTabla;
+                        DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
+
+                        if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                         {
-                            dtTabla = iValidador.CargaArchivo(sArchivo);
-                            DatosAConciliar = dtTabla;
-                            DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
+                            //_URLGateway = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc";
+                            //if (_URLGateway != string.Empty)
+                            //{
+                            //    foreach (DataRow fila in dtTabla.Rows)
+                            //    {
+                            //        fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                            //    }
+                            //}
+                            grvDetalleConciliacionManual.Visible = true;
+                            grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                            grvDetalleConciliacionManual.DataBind();
+                            totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
 
-                            if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
+                            lblArchivo.Text = ARCHIVO + sArchivo;
+                            lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
+                        }
+
+                        sbMensaje = new StringBuilder();
+                        foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
+                        {
+                            if (!detalle.VerificacionValida)
                             {
-                                //_URLGateway = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc";
-                                //if (_URLGateway != string.Empty)
-                                //{
-                                //    foreach (DataRow fila in dtTabla.Rows)
-                                //    {
-                                //        fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                                //    }
-                                //}
-                                grvDetalleConciliacionManual.Visible = true;
-                                grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                                grvDetalleConciliacionManual.DataBind();
-                                totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
-
-                                lblArchivo.Text = ARCHIVO + sArchivo;
-                                lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
-                            }
-
-                            sbMensaje = new StringBuilder();
-                            foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
-                            {
-                                if (!detalle.VerificacionValida)
+                                if (detalle.CodigoError > 0)
                                 {
-                                    if (detalle.CodigoError > 0)
-                                    {
-                                        sbMensaje.Append(detalle.Mensaje + "<br />");
-                                    }
-                                    else
-                                    {
-                                        sbMensaje.Append("El código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
-                                    }
+                                    sbMensaje.Append(detalle.Mensaje + "<br />");
                                 }
-                            }
-                            if (sbMensaje.Length > 0)
-                            {
-                                DatosAConciliar = null;
-                                lblMensajeError.Text = sbMensaje.ToString();
-                                dvAlertaError.Visible = true;
-                            }
-                            else
-                            {
-                                dvMensajeExito.Visible = true;
-                                RecuperaReferenciasNoConciliadas();
-
-                                if (CargarAgregados == true)
+                                else
                                 {
-                                    CargarAgregados = false;
-                                }
-
-                                if (DispersionAutomatica)
-                                {
-                                    DispersarPagos(dtTabla);
+                                    sbMensaje.Append("El código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
                                 }
                             }
                         }
+                        if (sbMensaje.Length > 0)
+                        {
+                            DatosAConciliar = null;
+                            lblMensajeError.Text = sbMensaje.ToString();
+                            dvAlertaError.Visible = true;
+                        }
+                        else
+                        {
+                            dvMensajeExito.Visible = true;
+                            RecuperaReferenciasNoConciliadas();
+
+                            if (CargarAgregados == true)
+                            {
+                                CargarAgregados = false;
+                            }
+
+                            if (DispersionAutomatica)
+                            {
+                                DispersarPagos(dtTabla);
+                            }
+                        }
+                        //}
+                    }
+                    else
+                    {
+                        App.ImplementadorMensajes.MostrarMensaje("El archivo no existe en el servidor.");
                     }
                 }
                 else
                 {
                     App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLSX");
-                    //App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
-                    //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                    //    @"alertify.alert('Conciliaci&oacute;n bancaria','El archivo debe ser de formato Excel', function(){ alertify.error('Error cargando archivo'); });", true);
                 }
             }// fupSeleccionar.HasFile
+            else
+            {
+                App.ImplementadorMensajes.MostrarMensaje("El componente de carga no reconoce el archivo.");
+            }
         }
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
-            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-            //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
-        //RecuperaReferenciasNoConciliadas();
     }
 
     private void DispersarPagos(DataTable dtDatos)

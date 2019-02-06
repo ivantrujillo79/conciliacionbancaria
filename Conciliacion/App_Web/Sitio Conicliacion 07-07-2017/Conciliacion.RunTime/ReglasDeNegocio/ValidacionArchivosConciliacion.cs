@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Conciliacion.RunTime;
+using Conciliacion.RunTime.ReglasDeNegocio;
 
 namespace ValidacionArchivosConciliacion
 {
@@ -150,8 +151,15 @@ namespace ValidacionArchivosConciliacion
         string NombreArchivo { get; set; }
         string TipoMIME { get; set; }
 
-        int CuentaBancaria { get; set; }
+        byte Modulo { get; set; }
+        string CadenaConexion { get; set; }
+        string URLGateway { get; set; }
+
+        Int64 CuentaBancaria { get; set; }
         int DocumentoReferencia { get; set; }
+
+        int Corporativo { get;  set; }
+        int Sucursal { get; set; }
 
         bool ArchivoValido(string RutaArchivo, string NombreArchivo);
         //DataTable CargaArchivo(string RutaArchivo, string NombreArchivo);
@@ -192,8 +200,23 @@ namespace ValidacionArchivosConciliacion
         public string NombreArchivo { get; set; }
         public string TipoMIME { get; set; }
 
-        public int CuentaBancaria { get; set; }
+        public byte Modulo { get; set; }
+        public string CadenaConexion { get; set; }
+        public string URLGateway { get; set; }
+
+        public Int64 CuentaBancaria { get; set; }
         public int DocumentoReferencia { get; set; }
+
+        public int Corporativo
+        {
+            get { return corporativo; }
+            set { corporativo = value; }
+        }
+        public int Sucursal
+        {
+            get { return sucursal; }
+            set { sucursal = value; }
+        }
 
         private const int colDoc = 0;
         private const int colCta = 1;
@@ -211,6 +234,8 @@ namespace ValidacionArchivosConciliacion
         private const int erDocRef_EncontroDocRefDistinto = 7;
 
         private DataTable dtArchivo = null;
+        private int corporativo;
+        private int sucursal;
 
         private string GeneraMD5(string str)
         {
@@ -250,14 +275,21 @@ namespace ValidacionArchivosConciliacion
             List<DetalleValidacion> listDetalleValidacion = new List<DetalleValidacion>();
             if (dtArchivo != null)
             {
-                listDetalleValidacion.Add(ValidaFormatoExcel());
+                //listDetalleValidacion.Add(ValidaFormatoExcel());
                 listDetalleValidacion.Add(ValidaLayout());
                 listDetalleValidacion.Add(ValidaLineaVacia());
                 listDetalleValidacion.Add(ValidaEncabezado());
                 listDetalleValidacion.Add(ValidaCuentaBancaria());
                 listDetalleValidacion.Add(ValidaDocumentoReferencia());
                 listDetalleValidacion.Add(ValidaMonto());
-                listDetalleValidacion.Add(ValidaParentezco());
+                if (!String.IsNullOrEmpty(URLGateway))
+                {
+                    listDetalleValidacion.Add(ValidaParentezcoCRM());
+                }
+                else
+                {
+                    listDetalleValidacion.Add(ValidaParentezco());
+                }
             }
 
             return listDetalleValidacion;
@@ -352,7 +384,9 @@ namespace ValidacionArchivosConciliacion
             {
                 rowNo = rowNo + 1;
 
-                if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
+                //if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
+                ReferenciaNoConciliadaPedido ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, row[colDoc].ToString());
+                if (ReferenciaNoConciliada.Pedido == 0 || ReferenciaNoConciliada.CelulaPedido == 0 || ReferenciaNoConciliada.AñoPedido == 0)
                 {
                     Exito = false;
                     ValoresInvalidos = ValoresInvalidos + rowNo.ToString() + ", ";
@@ -548,7 +582,86 @@ namespace ValidacionArchivosConciliacion
 
             return detallevalidacion;
         }
-        
+
+        public DetalleValidacion ValidaParentezcoCRM()
+        {
+            string Pedidoreferencia = "";
+            string PedidoNoEncontradoError = "";
+            string DetalleError = "";
+            bool ResultadoValidacion = true;
+            DetalleValidacion detalleValidacion = new DetalleValidacion();
+            var ListaPedidoCliente = CrearListaGenerica(new { PedidoReferencia = "", Cliente = "" });
+            ListaPedidoCliente.Clear();
+
+            if (dtArchivo.Rows.Count == 0) { return detalleValidacion; }
+
+            foreach (DataRow row in dtArchivo.Rows)
+            {
+                Pedidoreferencia = row[colDoc].ToString();
+                DataTable dtDetallePedido = Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                if (dtDetallePedido.Rows.Count > 0)
+                {
+                    ListaPedidoCliente.Add(new
+                    {
+                        PedidoReferencia = dtDetallePedido.Rows[0]["PedidoReferencia"].ToString().Trim(),
+                        Cliente = dtDetallePedido.Rows[0]["Cliente"].ToString().Trim()
+                    });
+                }
+                else
+                {
+                    PedidoNoEncontradoError += Pedidoreferencia + " No se encuentra";
+                    ResultadoValidacion = false;
+                }
+            }
+            if (ResultadoValidacion)
+            {
+                RTGMGateway.RTGMGateway obGateway = new RTGMGateway.RTGMGateway(this.Modulo, this.CadenaConexion);
+                obGateway.URLServicio = this.URLGateway;
+                RTGMGateway.SolicitudGateway obSolicitud = new RTGMGateway.SolicitudGateway
+                {
+                    IDCliente = Convert.ToInt32(ListaPedidoCliente[0].Cliente)
+                };
+
+                RTGMCore.DireccionEntrega obDireccionEntrega = obGateway.buscarDireccionEntrega(obSolicitud);
+
+                if (!obDireccionEntrega.Success && !String.IsNullOrEmpty(obDireccionEntrega.Message))
+                {
+                    throw new Exception(obDireccionEntrega.Message);
+                }
+
+                if (obDireccionEntrega.IDClientesRelacionados.Count > 0)
+                {
+                    foreach (var obPedido in ListaPedidoCliente)
+                    {
+                        int cliente = Convert.ToInt32(obPedido.Cliente);
+                        string pedido = obPedido.PedidoReferencia;
+                        if (!obDireccionEntrega.IDClientesRelacionados.Contains(cliente))
+                        {
+                            DetalleError += " \n " + pedido + " del cliente: " + cliente.ToString() + ",";
+                            ResultadoValidacion = false;
+                        }
+                    }
+                }
+            }
+            if (ResultadoValidacion)
+            {
+                detalleValidacion.CodigoError = 0;
+                detalleValidacion.Mensaje = "Todos los pedidos cargados corresponden a clientes emparentados.";
+                detalleValidacion.VerificacionValida = true;
+            }
+            else
+            {
+                if (PedidoNoEncontradoError != string.Empty)
+                    detalleValidacion.Mensaje = PedidoNoEncontradoError+ ".\n No serán cargados.";
+                else
+                    detalleValidacion.Mensaje = "Los pedidos " + DetalleError + "\n no están emparentados y no serán cargados.";
+                detalleValidacion.CodigoError = 500;
+                detalleValidacion.VerificacionValida = false;
+            }
+
+            return detalleValidacion;
+        }
+
         public bool ArchivoValido(string RutaArchivo, string NombreArchivo)
         {
             bool existe;

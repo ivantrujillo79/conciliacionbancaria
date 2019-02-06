@@ -39,6 +39,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         int tipocobro;
         private int tipoCobro;
+        int clientePadre;
+        String _iDPedidoCRM;
 
         #region Constructores
 
@@ -212,6 +214,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { sucursalpedido = value; }
         }
 
+        public abstract void Guardar(Conexion conexion);
+
         public string SucursalPedidoDes
         {
             get { return sucursalpedidodes; }
@@ -333,6 +337,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract List<RTGMCore.Pedido> PedidoActualizaSaldoCRM(string URLGateway);
 
         public abstract ReferenciaConciliadaPedido CrearObjeto();
+        public abstract bool Guardar2(Conexion _conexion);
 
         public virtual string CadenaConexion
         {
@@ -342,5 +347,30 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
+        public int ClientePadre
+        {
+            get
+            {
+                return clientePadre;
+            }
+
+            set
+            {
+                clientePadre = value;
+            }
+        }
+
+        public String IDPedidoCRM
+        {
+            get
+            {
+                return _iDPedidoCRM;
+            }
+
+            set
+            {
+                _iDPedidoCRM = value;
+            }
+        }
     }
 }

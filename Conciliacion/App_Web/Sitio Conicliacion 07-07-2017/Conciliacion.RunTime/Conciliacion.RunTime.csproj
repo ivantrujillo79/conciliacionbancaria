@@ -65,9 +65,13 @@
     <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="Locker">
+      <HintPath>..\..\..\..\..\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\bin\Debug\Locker.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="RTGMGateway">
-      <HintPath>..\..\..\..\..\SigametLibrerias\SigaMetClasses\bin\RTGMGateway.dll</HintPath>
+    <Reference Include="RTGMGateway, Version=1.19.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RTGMGateway\RTGMGateway\bin\Debug\RTGMGateway.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -98,6 +102,7 @@
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\PagareDatos.cs" />
     <Compile Include="DatosSQL\PagoAnticipadoDatos.cs" />
+    <Compile Include="DatosSQL\PagoAreasComunesDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\SaldoAFavorDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
@@ -163,6 +168,7 @@
     <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
     <Compile Include="ReglasDeNegocio\Pagare.cs" />
     <Compile Include="ReglasDeNegocio\PagoAnticipado.cs" />
+    <Compile Include="ReglasDeNegocio\PagoAreasComunes.cs" />
     <Compile Include="ReglasDeNegocio\PagoPropuesto.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />

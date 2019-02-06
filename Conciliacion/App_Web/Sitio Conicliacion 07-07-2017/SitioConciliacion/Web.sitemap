@@ -101,6 +101,9 @@
       
     </siteMapNode>
 
+    <siteMapNode title="Bloqueos" description="Gestión de bloqueos" url="~/Interbloqueo.aspx" resourceKey="1">
+    </siteMapNode>
+    
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
     </siteMapNode>
 

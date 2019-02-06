@@ -1,0 +1,2246 @@
+INFO [47] 2018-08-28 18:40:59,319 RTGMGateway.RTGMGateway   182ms - Creando nueva instancia de RTGMGateway...
+INFO [47] 2018-08-28 18:40:59,611 RTGMGateway.RTGMGateway   474ms - Instancia de RTGMGateway creada.
+INFO [47] 2018-08-28 18:40:59,616 RTGMGateway.RTGMGateway   479ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [47] 2018-08-28 18:40:59,647 RTGMGateway.RTGMGateway   510ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [47] 2018-08-28 18:41:01,797 RTGMGateway.RTGMGateway  2660ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [47] 2018-08-28 18:41:01,797 RTGMGateway.RTGMGateway  2660ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [47] 2018-08-28 18:41:02,936 RTGMGateway.RTGMGateway  3799ms - Creando nueva instancia de RTGMGateway...
+INFO [47] 2018-08-28 18:41:04,208 RTGMGateway.RTGMGateway  5072ms - Instancia de RTGMGateway creada.
+INFO [47] 2018-08-28 18:41:04,208 RTGMGateway.RTGMGateway  5072ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [47] 2018-08-28 18:41:04,209 RTGMGateway.RTGMGateway  5073ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [47] 2018-08-28 18:41:05,357 RTGMGateway.RTGMGateway  6221ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [47] 2018-08-28 18:41:05,357 RTGMGateway.RTGMGateway  6221ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [41] 2018-09-07 16:17:04,681 RTGMGateway.RTGMGateway   227ms - Creando nueva instancia de RTGMGateway...
+INFO [41] 2018-09-07 16:17:04,829 RTGMGateway.RTGMGateway   375ms - Instancia de RTGMGateway creada.
+INFO [41] 2018-09-07 16:17:04,840 RTGMGateway.RTGMGateway   386ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [41] 2018-09-07 16:17:04,967 RTGMGateway.RTGMGateway   513ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [41] 2018-09-07 16:17:09,819 RTGMGateway.RTGMGateway  5365ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [41] 2018-09-07 16:17:09,819 RTGMGateway.RTGMGateway  5365ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [41] 2018-09-07 16:17:09,969 RTGMGateway.RTGMGateway  5515ms - Creando nueva instancia de RTGMGateway...
+INFO [41] 2018-09-07 16:17:10,068 RTGMGateway.RTGMGateway  5614ms - Instancia de RTGMGateway creada.
+INFO [41] 2018-09-07 16:17:10,068 RTGMGateway.RTGMGateway  5614ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [41] 2018-09-07 16:17:10,070 RTGMGateway.RTGMGateway  5616ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 65346, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [41] 2018-09-07 16:17:11,184 RTGMGateway.RTGMGateway  6731ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [41] 2018-09-07 16:17:11,184 RTGMGateway.RTGMGateway  6731ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [15] 2018-09-07 16:33:48,464 RTGMGateway.RTGMActualizarPedido 1004010ms - Creando instancia de RTGMActualizarPedido...
+INFO [15] 2018-09-07 16:33:49,033 RTGMGateway.RTGMActualizarPedido 1004579ms - Instancia de RTGMActualizarPedido creada.
+INFO [15] 2018-09-07 16:43:58,887 RTGMGateway.RTGMActualizarPedido 1614434ms - ===   Inicia ejecución de método ActualizarPedido   ===
+INFO [15] 2018-09-07 16:43:58,890 RTGMGateway.RTGMActualizarPedido 1614437ms - Inicia llamado a ActualizarPedido, ID Empresa: 1, Source: CRM, Pedidos: 4, Portatil: False, Tipo de actualización: Liquidacion, Usuario: ROPIMA
+INFO [15] 2018-09-07 16:44:03,216 RTGMGateway.RTGMActualizarPedido 1618762ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 589</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2018</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2018-01-03T06:36:28</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>161534</FolioRemision>
+  <IDAutotanque>8803</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>60700241</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>664</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>589</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>6</IDZona>
+  <Importe>952.2000</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>589</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>802</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>L</SerieRemision>
+  <Total>952.2000</Total>
+</Pedido>
+INFO [15] 2018-09-07 16:44:03,216 RTGMGateway.RTGMActualizarPedido 1618762ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 138466</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2017</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2017-12-20T06:28:42</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>161178</FolioRemision>
+  <IDAutotanque>8803</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>60700241</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>66444</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>138466</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>6</IDZona>
+  <Importe>569.2500</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>138466</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>802</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>L</SerieRemision>
+  <Total>569.2500</Total>
+</Pedido>
+INFO [15] 2018-09-07 16:44:03,217 RTGMGateway.RTGMActualizarPedido 1618763ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 13093</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2018</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2018-02-06T16:30:03</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>16692805</FolioRemision>
+  <IDAutotanque>286</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>65346</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>7510</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>13093</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>202</IDZona>
+  <Importe>365.4000</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>13093</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>53</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>E</SerieRemision>
+  <Total>365.4000</Total>
+</Pedido>
+INFO [15] 2018-09-07 16:44:03,217 RTGMGateway.RTGMActualizarPedido 1618763ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 13094</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2018</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2018-02-06T16:30:03</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>16692804</FolioRemision>
+  <IDAutotanque>286</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>65346</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>7510</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>13094</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>202</IDZona>
+  <Importe>456.7500</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>13094</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>53</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>E</SerieRemision>
+  <Total>456.7500</Total>
+</Pedido>
+INFO [15] 2018-09-07 16:44:03,217 RTGMGateway.RTGMActualizarPedido 1618763ms - ===   Finaliza ejecución de método ActualizarPedidos   ===
+INFO [58] 2018-09-07 16:47:25,679 RTGMGateway.RTGMGateway 1821225ms - Creando nueva instancia de RTGMGateway...
+INFO [58] 2018-09-07 16:47:25,778 RTGMGateway.RTGMGateway 1821324ms - Instancia de RTGMGateway creada.
+INFO [58] 2018-09-07 16:47:25,778 RTGMGateway.RTGMGateway 1821324ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [58] 2018-09-07 16:47:25,780 RTGMGateway.RTGMGateway 1821326ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [58] 2018-09-07 16:47:26,904 RTGMGateway.RTGMGateway 1822450ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [58] 2018-09-07 16:47:26,904 RTGMGateway.RTGMGateway 1822450ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [58] 2018-09-07 16:47:26,980 RTGMGateway.RTGMGateway 1822526ms - Creando nueva instancia de RTGMGateway...
+INFO [58] 2018-09-07 16:47:27,061 RTGMGateway.RTGMGateway 1822607ms - Instancia de RTGMGateway creada.
+INFO [58] 2018-09-07 16:47:27,061 RTGMGateway.RTGMGateway 1822607ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [58] 2018-09-07 16:47:27,062 RTGMGateway.RTGMGateway 1822608ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 65346, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [58] 2018-09-07 16:47:27,862 RTGMGateway.RTGMGateway 1823408ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [58] 2018-09-07 16:47:27,862 RTGMGateway.RTGMGateway 1823408ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:56:46,897 RTGMGateway.RTGMGateway 23982443ms - Creando nueva instancia de RTGMGateway...
+INFO [92] 2018-09-07 22:56:47,293 RTGMGateway.RTGMGateway 23982839ms - Instancia de RTGMGateway creada.
+INFO [92] 2018-09-07 22:56:47,294 RTGMGateway.RTGMGateway 23982840ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:56:47,298 RTGMGateway.RTGMGateway 23982844ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [92] 2018-09-07 22:57:10,551 RTGMGateway.RTGMGateway 24006097ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [92] 2018-09-07 22:57:10,551 RTGMGateway.RTGMGateway 24006097ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:57:10,571 RTGMGateway.RTGMGateway 24006117ms - Creando nueva instancia de RTGMGateway...
+INFO [92] 2018-09-07 22:57:10,871 RTGMGateway.RTGMGateway 24006417ms - Instancia de RTGMGateway creada.
+INFO [92] 2018-09-07 22:57:10,871 RTGMGateway.RTGMGateway 24006417ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:57:10,872 RTGMGateway.RTGMGateway 24006418ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 65346, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [92] 2018-09-07 22:57:11,822 RTGMGateway.RTGMGateway 24007369ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [92] 2018-09-07 22:57:11,822 RTGMGateway.RTGMGateway 24007369ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:59:11,783 RTGMGateway.RTGMGateway 24127329ms - Creando nueva instancia de RTGMGateway...
+INFO [92] 2018-09-07 22:59:12,271 RTGMGateway.RTGMGateway 24127817ms - Instancia de RTGMGateway creada.
+INFO [92] 2018-09-07 22:59:12,271 RTGMGateway.RTGMGateway 24127817ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:59:12,273 RTGMGateway.RTGMGateway 24127820ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [92] 2018-09-07 22:59:13,772 RTGMGateway.RTGMGateway 24129319ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [92] 2018-09-07 22:59:13,772 RTGMGateway.RTGMGateway 24129319ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:59:13,879 RTGMGateway.RTGMGateway 24129426ms - Creando nueva instancia de RTGMGateway...
+INFO [92] 2018-09-07 22:59:14,190 RTGMGateway.RTGMGateway 24129736ms - Instancia de RTGMGateway creada.
+INFO [92] 2018-09-07 22:59:14,190 RTGMGateway.RTGMGateway 24129736ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [92] 2018-09-07 22:59:14,191 RTGMGateway.RTGMGateway 24129737ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 65346, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [92] 2018-09-07 22:59:15,441 RTGMGateway.RTGMGateway 24130988ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [92] 2018-09-07 22:59:15,442 RTGMGateway.RTGMGateway 24130989ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [9] 2018-09-07 23:55:38,040 RTGMGateway.RTGMGateway   180ms - Creando nueva instancia de RTGMGateway...
+INFO [9] 2018-09-07 23:55:38,140 RTGMGateway.RTGMGateway   280ms - Instancia de RTGMGateway creada.
+INFO [9] 2018-09-07 23:55:38,156 RTGMGateway.RTGMGateway   296ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [9] 2018-09-07 23:55:38,265 RTGMGateway.RTGMGateway   405ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [9] 2018-09-07 23:55:42,166 RTGMGateway.RTGMGateway  4307ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [9] 2018-09-07 23:55:42,166 RTGMGateway.RTGMGateway  4307ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [9] 2018-09-07 23:55:42,284 RTGMGateway.RTGMGateway  4425ms - Creando nueva instancia de RTGMGateway...
+INFO [9] 2018-09-07 23:55:42,395 RTGMGateway.RTGMGateway  4536ms - Instancia de RTGMGateway creada.
+INFO [9] 2018-09-07 23:55:42,395 RTGMGateway.RTGMGateway  4536ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [9] 2018-09-07 23:55:42,397 RTGMGateway.RTGMGateway  4538ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 65346, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+INFO [9] 2018-09-07 23:55:43,386 RTGMGateway.RTGMGateway  5527ms - <?xml version="1.0" encoding="utf-16"?>
+<DireccionEntregaCRMDatos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>DireccionEntregaCRMDatos</Class>
+  <InternalException />
+  <Message>ERROR EN DYNAMICS CRM
+MENSAJE DE DYNAMICS CRM:
+WS-DireccionEntrega (Error): La consulta no produjo resultados con los parametros indicados.
+</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <ConsumoPromedio xsi:nil="true" />
+  <ContratoAprobado>false</ContratoAprobado>
+  <DigitoVerificador>0</DigitoVerificador>
+  <FAlta xsi:nil="true" />
+  <FactorConversion xsi:nil="true" />
+  <FechaConsulta xsi:nil="true" />
+  <FuenteDatos>Sigamet</FuenteDatos>
+  <IDAutotanque xsi:nil="true" />
+  <IDCalle>0</IDCalle>
+  <IDColonia>0</IDColonia>
+  <IDDatosFiscales xsi:nil="true" />
+  <IDDireccionEntrega>0</IDDireccionEntrega>
+  <IDEmpresa>0</IDEmpresa>
+  <IDEntreCalle1 xsi:nil="true" />
+  <IDEntreCalle2 xsi:nil="true" />
+  <IDMunicipio>0</IDMunicipio>
+  <MotivoNoSuministrar>/</MotivoNoSuministrar>
+  <NoSuministrar xsi:nil="true" />
+  <Observaciones />
+  <VIP>false</VIP>
+</DireccionEntregaCRMDatos>
+INFO [9] 2018-09-07 23:55:43,386 RTGMGateway.RTGMGateway  5527ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [19] 2018-09-08 00:01:54,585 RTGMGateway.RTGMActualizarPedido 376725ms - Creando instancia de RTGMActualizarPedido...
+INFO [19] 2018-09-08 00:01:55,404 RTGMGateway.RTGMActualizarPedido 377545ms - Instancia de RTGMActualizarPedido creada.
+INFO [19] 2018-09-08 00:12:32,243 RTGMGateway.RTGMActualizarPedido 1014384ms - ===   Inicia ejecución de método ActualizarPedido   ===
+INFO [19] 2018-09-08 00:12:32,249 RTGMGateway.RTGMActualizarPedido 1014390ms - Inicia llamado a ActualizarPedido, ID Empresa: 1, Source: CRM, Pedidos: 4, Portatil: False, Tipo de actualización: Liquidacion, Usuario: ROPIMA
+INFO [19] 2018-09-08 00:12:48,459 RTGMGateway.RTGMActualizarPedido 1030600ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>- Pedido: 1610 y lineas del mismo actualizadas y liquidadas.</Message>
+  <Method>get_Method</Method>
+  <Success>true</Success>
+  <AnioAtt>2018</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <EstatusBoletin />
+  <EstatusPedido>SURTIDO</EstatusPedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2018-01-03T06:36:28</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>161534</FolioRemision>
+  <IDAutotanque>8803</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>60700241</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido>6</IDEstatusPedido>
+  <IDFolioAtt>664</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>1610</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>205</IDZona>
+  <Importe>952.2000</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>1610</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>802</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>L</SerieRemision>
+  <Total>952.2000</Total>
+</Pedido>
+INFO [19] 2018-09-08 00:12:48,459 RTGMGateway.RTGMActualizarPedido 1030600ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 138466</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2017</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2017-12-20T06:28:42</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>161178</FolioRemision>
+  <IDAutotanque>8803</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>60700241</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>66444</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>138466</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>6</IDZona>
+  <Importe>569.2500</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>138466</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>802</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>L</SerieRemision>
+  <Total>569.2500</Total>
+</Pedido>
+INFO [19] 2018-09-08 00:12:48,460 RTGMGateway.RTGMActualizarPedido 1030601ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 13093</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2018</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2018-02-06T16:30:03</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>16692805</FolioRemision>
+  <IDAutotanque>286</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>65346</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>7510</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>13093</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>202</IDZona>
+  <Importe>365.4000</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>13093</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>53</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>E</SerieRemision>
+  <Total>365.4000</Total>
+</Pedido>
+INFO [19] 2018-09-08 00:12:48,461 RTGMGateway.RTGMActualizarPedido 1030602ms - <?xml version="1.0" encoding="utf-16"?>
+<Pedido xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ExtensionData />
+  <Class>PedidoCRMDatos</Class>
+  <InternalException />
+  <Message>NA Operacion: liquidacion pedido: No existe pedido con el ID: 13094</Message>
+  <Method>get_Method</Method>
+  <Success>false</Success>
+  <AnioAtt>2018</AnioAtt>
+  <AnioPed>2018</AnioPed>
+  <Boletin xsi:nil="true" />
+  <DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>92.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>69.0000</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>952.2000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>952.2000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>55.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>41.2500</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>569.2500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.350000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>569.2500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>36.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>365.4000</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>365.4000</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+    <DetallePedido>
+      <ExtensionData />
+      <Class>DetallePedido</Class>
+      <InternalException />
+      <Method>get_Method</Method>
+      <Success>false</Success>
+      <CantidadLectura>0</CantidadLectura>
+      <CantidadLecturaAnterior>0</CantidadLecturaAnterior>
+      <CantidadSolicitada>0</CantidadSolicitada>
+      <CantidadSurtida>45.00</CantidadSurtida>
+      <DescuentoAplicable>0</DescuentoAplicable>
+      <DescuentoAplicado>0</DescuentoAplicado>
+      <DiferenciaDeLecturas>0</DiferenciaDeLecturas>
+      <IDDetallePedido>0</IDDetallePedido>
+      <IDPedido>0</IDPedido>
+      <Importe>456.7500</Importe>
+      <Impuesto>0</Impuesto>
+      <ImpuestoAplicable>0</ImpuestoAplicable>
+      <PorcentajeTanque>0</PorcentajeTanque>
+      <Precio>10.150000</Precio>
+      <PrecioAplicable>0</PrecioAplicable>
+      <Producto>
+        <ExtensionData />
+        <Class>Producto</Class>
+        <InternalException />
+        <Method>get_Method</Method>
+        <Success>false</Success>
+        <IDProducto>1</IDProducto>
+      </Producto>
+      <RedondeoAnterior>0</RedondeoAnterior>
+      <Total>456.7500</Total>
+      <TotalAplicable>0</TotalAplicable>
+    </DetallePedido>
+  </DetallePedido>
+  <FAlta xsi:nil="true" />
+  <FCargo xsi:nil="true" />
+  <FCompromiso xsi:nil="true" />
+  <FEnvioMovil xsi:nil="true" />
+  <FLecturaAnterior xsi:nil="true" />
+  <FStatusMovil xsi:nil="true" />
+  <FSuministro>2018-02-06T16:30:03</FSuministro>
+  <FolioFactura xsi:nil="true" />
+  <FolioPresupuestoST xsi:nil="true" />
+  <FolioRemision>16692804</FolioRemision>
+  <IDAutotanque>286</IDAutotanque>
+  <IDAutotanqueMovil xsi:nil="true" />
+  <IDCartera xsi:nil="true" />
+  <IDDireccionEntrega>65346</IDDireccionEntrega>
+  <IDEmpresa>1</IDEmpresa>
+  <IDEstatusMovil xsi:nil="true" />
+  <IDEstatusPedido xsi:nil="true" />
+  <IDFolioAtt>7510</IDFolioAtt>
+  <IDFormaPago>8</IDFormaPago>
+  <IDMotivoCancelacion xsi:nil="true" />
+  <IDMovil xsi:nil="true" />
+  <IDPedido>13094</IDPedido>
+  <IDPrioridadPedido xsi:nil="true" />
+  <IDTipoCargo>1</IDTipoCargo>
+  <IDTipoPedido>3</IDTipoPedido>
+  <IDTipoServicio>1</IDTipoServicio>
+  <IDZona>202</IDZona>
+  <Importe>456.7500</Importe>
+  <Impuesto>0.0000</Impuesto>
+  <LlamadaInsistente xsi:nil="true" />
+  <NumeroImpresiones xsi:nil="true" />
+  <Observaciones />
+  <PedidoReferencia>13094</PedidoReferencia>
+  <RutaSuministro xsi:type="RutaCRMDatos">
+    <ExtensionData />
+    <Class>RutaCRMDatos</Class>
+    <InternalException />
+    <Method>get_Method</Method>
+    <Success>false</Success>
+    <IDEmpresa>0</IDEmpresa>
+    <IDRuta>53</IDRuta>
+    <NumeroRuta xsi:nil="true" />
+    <ReporteRAF xsi:nil="true" />
+  </RutaSuministro>
+  <Saldo xsi:nil="true" />
+  <SerieRemision>E</SerieRemision>
+  <Total>456.7500</Total>
+</Pedido>
+INFO [19] 2018-09-08 00:12:48,461 RTGMGateway.RTGMActualizarPedido 1030602ms - ===   Finaliza ejecución de método ActualizarPedidos   ===
+INFO [19] 2018-09-08 09:31:53,571 RTGMGateway.RTGMActualizarPedido 34575711ms - Creando instancia de RTGMActualizarPedido...
+ERROR [19] 2018-09-08 09:31:53,628 RTGMGateway.RTGMActualizarPedido 34575768ms - Connection Timeout Expired.  The timeout period elapsed while attempting to consume the pre-login handshake acknowledgement.  This could be because the pre-login handshake failed or the server was unable to respond back in time.  The duration spent while attempting to connect to this server was - [Pre-Login] initialization=998; handshake=897; 
+INFO [36] 2018-09-08 09:39:30,540 RTGMGateway.RTGMGateway 35032680ms - Creando nueva instancia de RTGMGateway...
+INFO [36] 2018-09-08 09:39:30,688 RTGMGateway.RTGMGateway 35032829ms - Instancia de RTGMGateway creada.
+INFO [36] 2018-09-08 09:39:30,688 RTGMGateway.RTGMGateway 35032829ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [36] 2018-09-08 09:39:30,692 RTGMGateway.RTGMGateway 35032832ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+ERROR [36] 2018-09-08 09:39:52,496 RTGMGateway.RTGMGateway 35054636ms - Class:ConsultaDatosCRM
+Method:get_Method
+Exception:
+System.ServiceModel.EndpointNotFoundException: There was no endpoint listening at http://192.168.1.42:89/ServiceDirEnt.svc that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   --- End of inner exception stack trace ---
+
+Server stack trace: 
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   at System.ServiceModel.Channels.HttpOutput.Send(TimeSpan timeout)
+   at System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.SendRequest(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at GasMetropolitano.Runtime.DynamicsCRM.IGM_WSDireccionesEntregaContract.getDireccionesEntrega(Nullable`1 idDireccionEntrega, Nullable`1 empresa, Nullable`1 sucursal, String telefono, String calle, String colonia, String municipio, String nombre, String noExterior, String noInterior, Nullable`1 tipoServicio, Nullable`1 zona, Nullable`1 ruta, Nullable`1 zonaEconomica, Nullable`1 zonaLecturista)
+   at GasMetropolitano.Runtime.WebServicesCRM.Consultas.ConsultaDatosCRM.BusquedaDireccionEntrega(Nullable`1 IDDireccionEntrega, Int32 IDEmpresa, Nullable`1 IDSucursal, String Telefono, String CalleNombre, String ColoniaNombre, String MunicipioNombre, String Nombre, Nullable`1 NumExterior, String NumInterior, Nullable`1 TipoServicio, Nullable`1 Zona, Nullable`1 Ruta, Nullable`1 ZonaEconomica, Nullable`1 ZonaLecturista, String Usuario, String Referencia, Nullable`1 IDAutotanque, Nullable`1 FechaConsulta)
+Inner Exception:
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+
+INFO [36] 2018-09-08 09:39:52,526 RTGMGateway.RTGMGateway 35054667ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [36] 2018-09-08 09:40:00,934 RTGMGateway.RTGMGateway 35063074ms - Creando nueva instancia de RTGMGateway...
+INFO [36] 2018-09-08 09:40:00,996 RTGMGateway.RTGMGateway 35063136ms - Instancia de RTGMGateway creada.
+INFO [36] 2018-09-08 09:40:00,996 RTGMGateway.RTGMGateway 35063136ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [36] 2018-09-08 09:40:00,998 RTGMGateway.RTGMGateway 35063138ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+ERROR [36] 2018-09-08 09:40:23,506 RTGMGateway.RTGMGateway 35085647ms - Class:ConsultaDatosCRM
+Method:get_Method
+Exception:
+System.ServiceModel.EndpointNotFoundException: There was no endpoint listening at http://192.168.1.42:89/ServiceDirEnt.svc that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   --- End of inner exception stack trace ---
+
+Server stack trace: 
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   at System.ServiceModel.Channels.HttpOutput.Send(TimeSpan timeout)
+   at System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.SendRequest(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at GasMetropolitano.Runtime.DynamicsCRM.IGM_WSDireccionesEntregaContract.getDireccionesEntrega(Nullable`1 idDireccionEntrega, Nullable`1 empresa, Nullable`1 sucursal, String telefono, String calle, String colonia, String municipio, String nombre, String noExterior, String noInterior, Nullable`1 tipoServicio, Nullable`1 zona, Nullable`1 ruta, Nullable`1 zonaEconomica, Nullable`1 zonaLecturista)
+   at GasMetropolitano.Runtime.WebServicesCRM.Consultas.ConsultaDatosCRM.BusquedaDireccionEntrega(Nullable`1 IDDireccionEntrega, Int32 IDEmpresa, Nullable`1 IDSucursal, String Telefono, String CalleNombre, String ColoniaNombre, String MunicipioNombre, String Nombre, Nullable`1 NumExterior, String NumInterior, Nullable`1 TipoServicio, Nullable`1 Zona, Nullable`1 Ruta, Nullable`1 ZonaEconomica, Nullable`1 ZonaLecturista, String Usuario, String Referencia, Nullable`1 IDAutotanque, Nullable`1 FechaConsulta)
+Inner Exception:
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+
+INFO [36] 2018-09-08 09:40:23,532 RTGMGateway.RTGMGateway 35085673ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [32] 2018-09-08 09:41:58,923 RTGMGateway.RTGMGateway 35181063ms - Creando nueva instancia de RTGMGateway...
+INFO [32] 2018-09-08 09:41:58,993 RTGMGateway.RTGMGateway 35181133ms - Instancia de RTGMGateway creada.
+INFO [32] 2018-09-08 09:41:58,993 RTGMGateway.RTGMGateway 35181133ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [32] 2018-09-08 09:41:58,995 RTGMGateway.RTGMGateway 35181135ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+ERROR [32] 2018-09-08 09:42:20,310 RTGMGateway.RTGMGateway 35202450ms - Class:ConsultaDatosCRM
+Method:get_Method
+Exception:
+System.ServiceModel.EndpointNotFoundException: There was no endpoint listening at http://192.168.1.42:89/ServiceDirEnt.svc that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   --- End of inner exception stack trace ---
+
+Server stack trace: 
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   at System.ServiceModel.Channels.HttpOutput.Send(TimeSpan timeout)
+   at System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.SendRequest(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at GasMetropolitano.Runtime.DynamicsCRM.IGM_WSDireccionesEntregaContract.getDireccionesEntrega(Nullable`1 idDireccionEntrega, Nullable`1 empresa, Nullable`1 sucursal, String telefono, String calle, String colonia, String municipio, String nombre, String noExterior, String noInterior, Nullable`1 tipoServicio, Nullable`1 zona, Nullable`1 ruta, Nullable`1 zonaEconomica, Nullable`1 zonaLecturista)
+   at GasMetropolitano.Runtime.WebServicesCRM.Consultas.ConsultaDatosCRM.BusquedaDireccionEntrega(Nullable`1 IDDireccionEntrega, Int32 IDEmpresa, Nullable`1 IDSucursal, String Telefono, String CalleNombre, String ColoniaNombre, String MunicipioNombre, String Nombre, Nullable`1 NumExterior, String NumInterior, Nullable`1 TipoServicio, Nullable`1 Zona, Nullable`1 Ruta, Nullable`1 ZonaEconomica, Nullable`1 ZonaLecturista, String Usuario, String Referencia, Nullable`1 IDAutotanque, Nullable`1 FechaConsulta)
+Inner Exception:
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+
+INFO [32] 2018-09-08 09:42:20,333 RTGMGateway.RTGMGateway 35202473ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [32] 2018-09-08 09:42:20,665 RTGMGateway.RTGMGateway 35202805ms - Creando nueva instancia de RTGMGateway...
+INFO [32] 2018-09-08 09:42:20,728 RTGMGateway.RTGMGateway 35202868ms - Instancia de RTGMGateway creada.
+INFO [32] 2018-09-08 09:42:20,728 RTGMGateway.RTGMGateway 35202868ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [32] 2018-09-08 09:42:20,729 RTGMGateway.RTGMGateway 35202869ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+ERROR [32] 2018-09-08 09:42:42,957 RTGMGateway.RTGMGateway 35225098ms - Class:ConsultaDatosCRM
+Method:get_Method
+Exception:
+System.ServiceModel.EndpointNotFoundException: There was no endpoint listening at http://192.168.1.42:89/ServiceDirEnt.svc that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   --- End of inner exception stack trace ---
+
+Server stack trace: 
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   at System.ServiceModel.Channels.HttpOutput.Send(TimeSpan timeout)
+   at System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.SendRequest(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at GasMetropolitano.Runtime.DynamicsCRM.IGM_WSDireccionesEntregaContract.getDireccionesEntrega(Nullable`1 idDireccionEntrega, Nullable`1 empresa, Nullable`1 sucursal, String telefono, String calle, String colonia, String municipio, String nombre, String noExterior, String noInterior, Nullable`1 tipoServicio, Nullable`1 zona, Nullable`1 ruta, Nullable`1 zonaEconomica, Nullable`1 zonaLecturista)
+   at GasMetropolitano.Runtime.WebServicesCRM.Consultas.ConsultaDatosCRM.BusquedaDireccionEntrega(Nullable`1 IDDireccionEntrega, Int32 IDEmpresa, Nullable`1 IDSucursal, String Telefono, String CalleNombre, String ColoniaNombre, String MunicipioNombre, String Nombre, Nullable`1 NumExterior, String NumInterior, Nullable`1 TipoServicio, Nullable`1 Zona, Nullable`1 Ruta, Nullable`1 ZonaEconomica, Nullable`1 ZonaLecturista, String Usuario, String Referencia, Nullable`1 IDAutotanque, Nullable`1 FechaConsulta)
+Inner Exception:
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+
+INFO [32] 2018-09-08 09:42:42,975 RTGMGateway.RTGMGateway 35225116ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [30] 2018-09-08 09:45:39,010 RTGMGateway.RTGMGateway 35401150ms - Creando nueva instancia de RTGMGateway...
+INFO [30] 2018-09-08 09:45:39,561 RTGMGateway.RTGMGateway 35401702ms - Instancia de RTGMGateway creada.
+INFO [30] 2018-09-08 09:45:39,561 RTGMGateway.RTGMGateway 35401702ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [30] 2018-09-08 09:45:39,562 RTGMGateway.RTGMGateway 35401703ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+ERROR [30] 2018-09-08 09:46:01,164 RTGMGateway.RTGMGateway 35423305ms - Class:ConsultaDatosCRM
+Method:get_Method
+Exception:
+System.ServiceModel.EndpointNotFoundException: There was no endpoint listening at http://192.168.1.42:89/ServiceDirEnt.svc that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   --- End of inner exception stack trace ---
+
+Server stack trace: 
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   at System.ServiceModel.Channels.HttpOutput.Send(TimeSpan timeout)
+   at System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.SendRequest(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at GasMetropolitano.Runtime.DynamicsCRM.IGM_WSDireccionesEntregaContract.getDireccionesEntrega(Nullable`1 idDireccionEntrega, Nullable`1 empresa, Nullable`1 sucursal, String telefono, String calle, String colonia, String municipio, String nombre, String noExterior, String noInterior, Nullable`1 tipoServicio, Nullable`1 zona, Nullable`1 ruta, Nullable`1 zonaEconomica, Nullable`1 zonaLecturista)
+   at GasMetropolitano.Runtime.WebServicesCRM.Consultas.ConsultaDatosCRM.BusquedaDireccionEntrega(Nullable`1 IDDireccionEntrega, Int32 IDEmpresa, Nullable`1 IDSucursal, String Telefono, String CalleNombre, String ColoniaNombre, String MunicipioNombre, String Nombre, Nullable`1 NumExterior, String NumInterior, Nullable`1 TipoServicio, Nullable`1 Zona, Nullable`1 Ruta, Nullable`1 ZonaEconomica, Nullable`1 ZonaLecturista, String Usuario, String Referencia, Nullable`1 IDAutotanque, Nullable`1 FechaConsulta)
+Inner Exception:
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+
+INFO [30] 2018-09-08 09:46:01,182 RTGMGateway.RTGMGateway 35423323ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
+INFO [30] 2018-09-08 09:46:01,624 RTGMGateway.RTGMGateway 35423765ms - Creando nueva instancia de RTGMGateway...
+INFO [30] 2018-09-08 09:46:02,203 RTGMGateway.RTGMGateway 35424344ms - Instancia de RTGMGateway creada.
+INFO [30] 2018-09-08 09:46:02,203 RTGMGateway.RTGMGateway 35424344ms - ===   Inicia ejecución de método buscarDireccionEntrega   ===
+INFO [30] 2018-09-08 09:46:02,204 RTGMGateway.RTGMGateway 35424345ms - Inicia llamado a buscarDireccionEntrega, Source: CRM, Cliente: 60700241, Empresa: 1, Sucursal: , Telefono: , Calle: , Colonia: , Municipio: , Nombre: , Numero exterior: , Numero interior: , Tipo servicio: , Zona: , Ruta: , Zona económina: , Zona lecturista: , Portatil: False, Usuario: , Referencia: , Autotanque: .
+ERROR [30] 2018-09-08 09:46:23,502 RTGMGateway.RTGMGateway 35445642ms - Class:ConsultaDatosCRM
+Method:get_Method
+Exception:
+System.ServiceModel.EndpointNotFoundException: There was no endpoint listening at http://192.168.1.42:89/ServiceDirEnt.svc that could accept the message. This is often caused by an incorrect address or SOAP action. See InnerException, if present, for more details. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   --- End of inner exception stack trace ---
+
+Server stack trace: 
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+   at System.ServiceModel.Channels.HttpOutput.Send(TimeSpan timeout)
+   at System.ServiceModel.Channels.HttpChannelFactory`1.HttpRequestChannel.HttpChannelRequest.SendRequest(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.RequestChannel.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Dispatcher.RequestChannelBinder.Request(Message message, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannel.Call(String action, Boolean oneway, ProxyOperationRuntime operation, Object[] ins, Object[] outs, TimeSpan timeout)
+   at System.ServiceModel.Channels.ServiceChannelProxy.InvokeService(IMethodCallMessage methodCall, ProxyOperationRuntime operation)
+   at System.ServiceModel.Channels.ServiceChannelProxy.Invoke(IMessage message)
+
+Exception rethrown at [0]: 
+   at System.Runtime.Remoting.Proxies.RealProxy.HandleReturnMessage(IMessage reqMsg, IMessage retMsg)
+   at System.Runtime.Remoting.Proxies.RealProxy.PrivateInvoke(MessageData& msgData, Int32 type)
+   at GasMetropolitano.Runtime.DynamicsCRM.IGM_WSDireccionesEntregaContract.getDireccionesEntrega(Nullable`1 idDireccionEntrega, Nullable`1 empresa, Nullable`1 sucursal, String telefono, String calle, String colonia, String municipio, String nombre, String noExterior, String noInterior, Nullable`1 tipoServicio, Nullable`1 zona, Nullable`1 ruta, Nullable`1 zonaEconomica, Nullable`1 zonaLecturista)
+   at GasMetropolitano.Runtime.WebServicesCRM.Consultas.ConsultaDatosCRM.BusquedaDireccionEntrega(Nullable`1 IDDireccionEntrega, Int32 IDEmpresa, Nullable`1 IDSucursal, String Telefono, String CalleNombre, String ColoniaNombre, String MunicipioNombre, String Nombre, Nullable`1 NumExterior, String NumInterior, Nullable`1 TipoServicio, Nullable`1 Zona, Nullable`1 Ruta, Nullable`1 ZonaEconomica, Nullable`1 ZonaLecturista, String Usuario, String Referencia, Nullable`1 IDAutotanque, Nullable`1 FechaConsulta)
+Inner Exception:
+System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.42:89
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetRequestStream(TransportContext& context)
+   at System.Net.HttpWebRequest.GetRequestStream()
+   at System.ServiceModel.Channels.HttpOutput.WebRequestHttpOutput.GetOutputStream()
+
+INFO [30] 2018-09-08 09:46:23,521 RTGMGateway.RTGMGateway 35445661ms - ===   Finaliza ejecución de método buscarDireccionEntrega   ===
