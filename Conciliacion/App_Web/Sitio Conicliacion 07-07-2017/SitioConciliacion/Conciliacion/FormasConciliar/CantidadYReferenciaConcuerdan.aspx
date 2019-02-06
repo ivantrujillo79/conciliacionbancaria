@@ -757,9 +757,9 @@
                                             PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-100" OffsetY="-5">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="300px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                            Width="20.5cm" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                             <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoExt").ToString()) %>'
-                                                CssClass="etiqueta centradoJustificado" Font-Size="10px" />
+                                                CssClass="etiqueta centradoJustificado" Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle Width="150px"></ItemStyle>
@@ -924,9 +924,9 @@
                                             EnableViewState="True">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="300px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                            Width="20.5cm" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                             <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                CssClass="etiqueta centradoJustificado" Font-Size="10px" />
+                                                CssClass="etiqueta centradoJustificado" Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle Width="150px"></ItemStyle>
@@ -983,9 +983,9 @@
                                             PopupControlID="pnlPopUpConceptoPedido" PopDelay="20" OffsetX="0" OffsetY="0">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoPedido" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="100px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
+                                            Width="20.5cm" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
                                             <asp:Label ID="lblToolTipConceptoPedido" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoPedido").ToString()) %>'
-                                                CssClass="etiqueta" Font-Size="10px" />
+                                                CssClass="etiqueta" Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
