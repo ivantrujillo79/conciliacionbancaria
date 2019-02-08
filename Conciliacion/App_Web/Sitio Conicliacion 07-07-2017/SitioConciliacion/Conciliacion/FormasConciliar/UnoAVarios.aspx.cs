@@ -3266,7 +3266,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tipoFiltro = String.Empty;
             Session["TipoFiltro"] = tipoFiltro;
 
-            //BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+            BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             //Leer el tipoConciliacion URL
