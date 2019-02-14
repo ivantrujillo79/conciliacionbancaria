@@ -195,29 +195,29 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         dtResultados = ds.Tables[0];
                     }
-                    if (_URLGateway != string.Empty)
-                    {
-                        List<Cliente> lstClientes = new List<Cliente>();
-                        lstClientes = ConsultaCLienteCRMdt(dtResultados);
-                        foreach (DataRow fila in dtResultados.Rows)
-                        {
-                            Cliente cliente;
-                            cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
-                            if (cliente != null)
-                            {
-                                fila["Nombre"] = cliente.Nombre;
-                                //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                                //cliente = App.Cliente.CrearObjeto();
-                                //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
-                                //cliente.Nombre = fila["Nombre"].ToString();
-                                //lstClientes.Add(cliente);
-                            }
-                            //else
-                            //{
-                            //    fila["Nombre"] = cliente.Nombre;
-                            //}
-                        }
-                    }
+                    //if (_URLGateway != string.Empty)
+                    //{
+                    //    List<Cliente> lstClientes = new List<Cliente>();
+                    //    lstClientes = ConsultaCLienteCRMdt(dtResultados);
+                    //    foreach (DataRow fila in dtResultados.Rows)
+                    //    {
+                    //        Cliente cliente;
+                    //        cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                    //        if (cliente != null)
+                    //        {
+                    //            fila["Nombre"] = cliente.Nombre;
+                    //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                    //            //cliente = App.Cliente.CrearObjeto();
+                    //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                    //            //cliente.Nombre = fila["Nombre"].ToString();
+                    //            //lstClientes.Add(cliente);
+                    //        }
+                    //        //else
+                    //        //{
+                    //        //    fila["Nombre"] = cliente.Nombre;
+                    //        //}
+                    //    }
+                    //}
                 }
                 catch (SqlException ex)
                 {
@@ -262,29 +262,29 @@ namespace Conciliacion.RunTime.DatosSQL
                         dtResultados = ds.Tables[0];
                     }
                     
-                    if (_URLGateway != string.Empty)
-                    {
-                        List<Cliente> lstClientes = new List<Cliente>();
-                        lstClientes = ConsultaCLienteCRMdt(dtResultados);
-                        foreach (DataRow fila in dtResultados.Rows)
-                        {
-                            Cliente cliente;
-                            cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
-                            if (cliente != null)
-                            {
-                                fila["Nombre"] = cliente.Nombre;
-                                //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                                //cliente = App.Cliente.CrearObjeto();
-                                //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
-                                //cliente.Nombre = fila["Nombre"].ToString();
-                                //lstClientes.Add(cliente);
-                            }
-                            //else
-                            //{
-                            //    fila["Nombre"] = cliente.Nombre;
-                            //}
-                        }
-                    }
+                    //if (_URLGateway != string.Empty)
+                    //{
+                    //    List<Cliente> lstClientes = new List<Cliente>();
+                    //    lstClientes = ConsultaCLienteCRMdt(dtResultados);
+                    //    foreach (DataRow fila in dtResultados.Rows)
+                    //    {
+                    //        Cliente cliente;
+                    //        cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                    //        if (cliente != null)
+                    //        {
+                    //            fila["Nombre"] = cliente.Nombre;
+                    //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                    //            //cliente = App.Cliente.CrearObjeto();
+                    //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                    //            //cliente.Nombre = fila["Nombre"].ToString();
+                    //            //lstClientes.Add(cliente);
+                    //        }
+                    //        //else
+                    //        //{
+                    //        //    fila["Nombre"] = cliente.Nombre;
+                    //        //}
+                    //    }
+                    //}
                 }
                 catch (SqlException ex)
                 {

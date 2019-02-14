@@ -52,6 +52,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     private string objControlPostBack;
 
     private string _URLGateway;
+    private List<RTGMCore.DireccionEntrega> listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+    private bool ValidaLista = false;
+    private bool validarPeticion = false;
+    private List<int> listaClientesEnviados;
+    private List<int> listaClientes = new List<int>();
 
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     public DataTable tblDetalleTransaccionConciliada;
@@ -169,7 +174,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);
         hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
-
         /*      Registrar PostBackControl en la página para 
          *      arreglar bug de FileUpload Control dentro de Update Panel    */
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
@@ -522,6 +526,25 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", 
                 "alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+        }
+        if (IsPostBack)
+        {
+            if (Page.Request.Params["__EVENTTARGET"] == "miPostBack")
+            {
+                validarPeticion = false;
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                listaClientes = ViewState["LISTACLIENTES"] as List<int>;
+                //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+                string dat = Page.Request.Params["__EVENTARGUMENT"].ToString();
+                if (dat == "1")
+                {
+                    ObtieneNombreCliente(listaClientes);
+                }
+                else if (dat == "2")
+                {
+                    llenarListaEntrega();
+                }
+            }
         }
     }
 
@@ -1094,7 +1117,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void ActualizarPopUp_CargaArchivo(int cuentaBancaria)
     {
-        wucCargaExcelCyC.CuentaBancaria = cuentaBancaria;
+        wucCargaExcelCyC.CuentaBancaria = Convert.ToInt64(cuentaBancaria.ToString());
         wucCargaExcelCyC.Corporativo    = Convert.ToInt32(Request.QueryString["Corporativo"]);
         wucCargaExcelCyC.Sucursal       = Convert.ToInt16(Request.QueryString["Sucursal"]);
         wucCargaExcelCyC.Anio           = Convert.ToInt32(Request.QueryString["Año"]);
@@ -2578,10 +2601,62 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
             DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-            grvPedidos.PageIndex = 0;
-            grvPedidos.DataSource = tablaReferenciasP;
-            grvPedidos.DataBind();
+            if (_URLGateway != string.Empty)
+            {
+                List<int> listadistintos = new List<int>();
+                listaClientesEnviados = new List<int>();
+                try
+                {
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    if (listaDireccinEntrega == null)
+                    {
+                        listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+                foreach (DataRow item in tablaReferenciasP.Rows)
+                {
+                    if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item[0].ToString())))
+                    {
+                        if (!listadistintos.Exists(x => x == int.Parse(item[0].ToString())))
+                        {
+                            if (item[0].ToString() != string.Empty)
+                            {
+                                listadistintos.Add(int.Parse(item[0].ToString()));
+                            }
+                        }
+                    }
+                }
+                try
+                {
+                    ViewState["tipo"] = "4";
+                    ViewState["POR_CONCILIAR"] = tablaReferenciasP;
+                    if (listadistintos.Count > 0)
+                    {
+                        validarPeticion = true;
+                        ObtieneNombreCliente(listadistintos);
+                    }
+                    else
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            //grvPedidos.PageIndex = 0;
+            //grvPedidos.DataSource = tablaReferenciasP;
+            //grvPedidos.DataBind();
         }
         catch (Exception ex)
         {
@@ -2800,25 +2875,50 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         if (_URLGateway != string.Empty)
         {
-            List<Cliente> lstClientes = new List<Cliente>();
-            lstClientes = ConsultaCLienteCRMdt(tabla);
-            foreach (DataRow fila in tabla.Rows)
+            List<int> listadistintos = new List<int>();
+            listaClientesEnviados = new List<int>();
+            try
             {
-                Cliente cliente;
-                cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()) );
-                if (cliente != null )
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                if (listaDireccinEntrega == null)
                 {
-                    fila["Nombre"] = cliente.Nombre;
-                    //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                    //cliente = App.Cliente.CrearObjeto();
-                    //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
-                    //cliente.Nombre = fila["Nombre"].ToString();
-                    //lstClientes.Add(cliente);
+                    listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
                 }
-                //else
-                //{                    
-                //    fila["Nombre"] = cliente.Nombre;
-                //}
+            }
+            catch (Exception)
+            {
+
+            }
+            foreach (DataRow item in tabla.Rows)
+            {
+                if (item["Cliente"].ToString() != string.Empty)
+                {
+                    if(listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                    {
+                        if (listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                        {
+                            listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                        }
+                    }
+                }
+            }
+            try
+            {
+                ViewState["tipo"] = "1";
+                ViewState["POR_CONCILIAR"] = tabla;
+                if (listadistintos.Count > 0)
+                {
+                    validarPeticion = true;
+                    ObtieneNombreCliente(listadistintos);
+                }
+                else
+                {
+                    llenarListaEntrega();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }
@@ -2861,6 +2961,237 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         else
             return DireccionEntrega.Nombre.Trim();
+    }
+
+    private void completarListaEntregas(List<RTGMCore.DireccionEntrega> direccionEntregas)
+    {
+        RTGMCore.DireccionEntrega direccionEntrega;
+        RTGMCore.DireccionEntrega direccionEntregaTemp;
+        bool errorConsulta = false;
+        try
+        {
+            foreach (var item in direccionEntregas)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        if (item.Message != null)
+                        {
+                            direccionEntrega = new RTGMCore.DireccionEntrega();
+                            direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                            direccionEntrega.Nombre = item.Message;
+                            listaDireccinEntrega.Add(direccionEntrega);
+                        }
+                        else if (item.IDDireccionEntrega == -1)
+                        {
+                            errorConsulta = true;
+                        }
+                        else if (item.IDDireccionEntrega >= 0)
+                        {
+                            listaDireccinEntrega.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        direccionEntrega = new RTGMCore.DireccionEntrega();
+                        direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                        direccionEntrega.Nombre = "No se encontró cliente";
+                        listaDireccinEntrega.Add(direccionEntrega);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    direccionEntrega = new RTGMCore.DireccionEntrega();
+                    direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                    direccionEntrega.Nombre = ex.Message;
+                    listaDireccinEntrega.Add(direccionEntrega);
+                }
+            }
+            if (validarPeticion && errorConsulta)
+            {
+                validarPeticion = false;
+                listaClientes = new List<int>();
+                foreach (var item in listaClientesEnviados)
+                {
+                    direccionEntregaTemp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item);
+                    if (direccionEntregaTemp == null)
+                    {
+                        listaClientes.Add(item);
+                    }
+                }
+                ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+                ViewState["LISTACLIENTES"] = listaClientes;
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje", " mensajeAsincrono(" + listaClientes.Count + ");", true);
+            }
+            else
+            {
+                llenarListaEntrega();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void ObtieneNombreCliente(List<int> listadistintos)
+    {
+        RTGMGateway.RTGMGateway oGateway;
+        RTGMGateway.SolicitudGateway oSolicitud;
+        AppSettingsReader settings = new AppSettingsReader();
+        string cadena = App.CadenaConexion;
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway.ListaCliente = listadistintos;
+            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+            oGateway.eListaEntregas += completarListaEntregas;
+            oSolicitud = new RTGMGateway.SolicitudGateway();
+            listaClientesEnviados = listadistintos;
+            foreach (var item in listadistintos)
+            {
+                oSolicitud.IDCliente = item;
+                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void llenarListaEntrega()
+    {
+        try
+        {
+            string  tipo = ViewState["tipo"] as string;
+            if(tipo== "1")
+            {
+                tblReferenciaAgregadasInternas = ViewState["POR_CONCILIAR"] as DataTable;
+                RTGMCore.DireccionEntrega temp;
+                foreach (DataRow item in tblReferenciaAgregadasInternas.Rows)
+                {
+                    try
+                    {
+                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                        if (temp != null)
+                        {
+                            item["Nombre"] = temp.Nombre;
+                        }
+                        else
+                        {
+                            item["Nombre"] = "No encontrado";
+                        }
+                    }
+                    catch(Exception Ex)
+                    {
+                        item["Nombre"] = Ex.Message;
+                    }
+                }
+                //RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
+                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                grvAgregadosPedidos.DataBind();
+                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                string valor = ViewState["valor"] as string;
+                if (valor == "1")
+                {
+                    grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                    grvAgregadosPedidos.DataBind();
+                    Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                    wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                }
+            }
+            else if(tipo == "2")
+            {
+                DataTable dttemp =  ViewState["POR_CONCILIAR"] as DataTable;
+                RTGMCore.DireccionEntrega temp;
+                foreach (DataRow item in dttemp.Rows)
+                {
+                    try
+                    {
+                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                        if (temp != null)
+                        {
+                            item["Nombre"] = temp.Nombre;
+                        }
+                        else
+                        {
+                            item["Nombre"] = "No encontrado";
+                        }
+                    }
+                    catch (Exception Ex)
+                    {
+                        item["Nombre"] = Ex.Message;
+                    }
+                }
+                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dttemp;
+                grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                grvPedidos.DataBind();
+                grvPedidos.DataBind();
+            }
+            else if(tipo == "3")
+            {
+                DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+                RTGMCore.DireccionEntrega temp;
+                foreach (DataRow item in dttemp.Rows)
+                {
+                    try
+                    {
+                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                        if (temp != null)
+                        {
+                            item["Nombre"] = temp.Nombre;
+                        }
+                        else
+                        {
+                            item["Nombre"] = "No encontrado";
+                        }
+                    }
+                    catch (Exception Ex)
+                    {
+                        item["Nombre"] = Ex.Message;
+                    }
+                }
+                grvPedidos.DataSource = dttemp;
+                grvPedidos.DataBind();
+            }
+            else if (tipo=="4")
+            {
+                DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+                RTGMCore.DireccionEntrega temp;
+                foreach (DataRow item in dttemp.Rows)
+                {
+                    try
+                    {
+                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                        if (temp != null)
+                        {
+                            item["Nombre"] = temp.Nombre;
+                        }
+                        else
+                        {
+                            item["Nombre"] = "No encontrado";
+                        }
+                    }
+                    catch (Exception Ex)
+                    {
+                        item["Nombre"] = Ex.Message;
+                    }
+                }
+                grvPedidos.PageIndex = 0;
+                grvPedidos.DataSource = dttemp;
+                grvPedidos.DataBind();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
     }
 
     private List<Cliente> ConsultaCLienteCRMdt(DataTable dt)
@@ -2921,6 +3252,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
             if (objSolicitdConciliacion.ConsultaPedido())
             {
+                ViewState["Valor"] = 1;
                 tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof(int));
                 tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof(int));
                 tblReferenciaAgregadasInternas.Columns.Add("Celula", typeof(int));
@@ -2947,10 +3279,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
                 }
                 RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
-                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
-                grvAgregadosPedidos.DataBind();
-                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                //grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                //grvAgregadosPedidos.DataBind();
+                //Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                //wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
             }
             else
             {
@@ -2978,7 +3310,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
 
                 }
-                RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
+                //RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
                 grvAgregadosInternos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosInternos.DataBind();
             }
@@ -5378,9 +5710,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.TablaFacturas;
                     tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 }
-                grvPedidos.PageIndex = 0;
-                grvPedidos.DataSource = tablaReferenciasP;
-                grvPedidos.DataBind();
+                LlenaGridViewPedidosBuscadosPorUsuario();
+                //grvPedidos.PageIndex = 0;
+                //grvPedidos.DataSource = tablaReferenciasP;
+                //grvPedidos.DataBind();
             }
 
             if (grvExternos.Rows.Count > 0)
@@ -6732,15 +7065,46 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
                     DataTable tableBuscaCliente = wucBuscaClientesFacturas.BuscaCliente();
+                    ViewState["POR_CONCILIAR"] = tableBuscaCliente;
                     DataTable tableBuscaCliente_AX = tableBuscaCliente.Copy();
                     if (tableBuscaCliente.Rows.Count > 0)
                         tableBuscaCliente = EliminarPedidosAgregados(tableBuscaCliente);
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tableBuscaCliente;
-
+                    ViewState["tipo"] = "2";
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = tableBuscaCliente_AX; // wucBuscaClientesFacturas.BuscaCliente();
-                    grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                    grvPedidos.DataBind();
-                    grvPedidos.DataBind();
+                    //grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    //grvPedidos.DataBind();
+                    //grvPedidos.DataBind();
+                    List<int> listaClientesDistintos = new List<int>();
+                    foreach (DataRow item in tableBuscaCliente.Rows)
+                    {
+                        if (item["Cliente"].ToString() != string.Empty)
+                        {
+                            if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                            {
+                                if (!listaClientesDistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                                {
+                                    listaClientesDistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                }
+                            }
+                        }
+                    }
+                    try
+                    {
+                        if (listaClientesDistintos.Count > 0)
+                        {
+                            validarPeticion = true;
+                            ObtieneNombreCliente(listaClientesDistintos);
+                        }
+                        else
+                        {
+                            llenarListaEntrega();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                     return;
                 }
                 grvInternos.DataBind();
@@ -6754,7 +7118,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
-    
+
     protected void imgBuscaSaldoAFavor_Click(object sender, ImageClickEventArgs e)
     {
         const short SALDO  = 1;
@@ -6881,8 +7245,58 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //grvPedidos.DataSource = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
             DataTable tablePedidoRefer = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
             tablePedidoRefer = EliminarPedidosAgregados(tablePedidoRefer);
-            grvPedidos.DataSource = tablePedidoRefer;
-            grvPedidos.DataBind();
+            try
+            {
+                List<int> listadistintos = new List<int>();
+                listaClientesEnviados = new List<int>();
+                ViewState["tipo"] = "3";
+                ViewState["POR_CONCILIAR"] = tablePedidoRefer;
+                try
+                {
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    if (listaDireccinEntrega == null)
+                    {
+                        listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+                foreach (DataRow  item in tablePedidoRefer.Rows)
+                {
+                    if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                    {
+                        if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                        {
+                            listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                        }
+                    }
+                }
+                try
+                {
+                    if (listadistintos.Count > 0)
+                    {
+                        validarPeticion = true;
+                        ObtieneNombreCliente(listadistintos);
+                    }
+                    else
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+               @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+               + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
+            }
         }
     }
 
