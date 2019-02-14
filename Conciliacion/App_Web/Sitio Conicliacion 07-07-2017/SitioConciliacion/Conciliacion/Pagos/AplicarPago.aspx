@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" Async="true" %>
 <%@ Register Src="~/ControlesUsuario/AreasComunes/areascomunes.ascx" TagPrefix="ControlUsuario" TagName="AreasComunesControl" %>
 
 
@@ -48,6 +48,14 @@
                 horizontalbar: "auto"
 
             });
+        }
+         function mensajeAsincrono(faltante) {
+            var pre = document.createElement('pre');pre.style.maxHeight = '400px';
+                pre.style.margin = '0';
+                pre.style.padding = '24px';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.textAlign = 'justify';
+            pre.appendChild(document.createTextNode('No fue posible encontrar información para ' + faltante + ' clientes de la solicitud ¿desea reintentar?')); alertify.confirm('Conciliaci&oacute;n bancaria',pre, function () { alertify.success('Accepted');    __doPostBack('miPostBack', "1"); }, function () { alertify.error('Declined');  __doPostBack('miPostBack',"2");}).set({ labels: { ok: 'Si', cancel: 'No' }, padding: false });
         }
     </script>
     <!-- Validar: solo numeros-->

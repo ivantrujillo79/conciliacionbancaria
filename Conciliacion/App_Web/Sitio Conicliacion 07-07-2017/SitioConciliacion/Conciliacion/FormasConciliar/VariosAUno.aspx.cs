@@ -64,6 +64,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
     private string _URLGateway;
+    private List<RTGMCore.DireccionEntrega> listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+    private bool ValidaLista = false;
+    private bool validarPeticion = false;
+    private List<int> listaClientesEnviados;
+    private List<int> listaClientes = new List<int>();
 
     private bool activepaging = true;
     public bool ActivePaging
@@ -149,6 +154,29 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             _FormaConciliacion = 6;
         }
 
+        if (IsPostBack)
+        {
+            string entrar = ViewState["Entrar"] as string;
+            if (entrar == "Ok")
+            {
+                if (Page.Request.Params["__EVENTTARGET"] == "miPostBack")
+                {
+                    validarPeticion = false;
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    listaClientes = ViewState["LISTACLIENTES"] as List<int>;
+                    //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+                    string dat = Page.Request.Params["__EVENTARGUMENT"].ToString();
+                    if (dat == "1")
+                    {
+                        ObtieneNombreCliente(listaClientes);
+                    }
+                    else if (dat == "2")
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+            }
+        }
         try
         {
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -3168,8 +3196,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         GridView grvPrima = null;
         DataTable dtPedidos = null;
-        List<ReferenciaNoConciliadaPedido> ListPedidos;
-        ReferenciaNoConciliadaPedido rp;
+        //List<ReferenciaNoConciliadaPedido> ListPedidos;
+        //ReferenciaNoConciliadaPedido rp;
         try
         {
             short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
@@ -3190,27 +3218,72 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
                     dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
                     if (dtPedidos.Rows.Count == 0) return;
-
-                    grvPedidos.DataSource = dtPedidos;
-                    grvPedidos.DataBind();
-                    /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
-                    ListPedidos = new List<ReferenciaNoConciliadaPedido>();
-                    foreach (DataRow tr in dtPedidos.Rows)
+                    List<int> listadistintos = new List<int>();
+                    listaClientesEnviados = new List<int>();
+                    try
                     {
-                        rp = App.ReferenciaNoConciliadaPedido.CrearObjeto();
-                        rp.AñoPedido        = Convert.ToInt32(tr["AñoPed"]);
-                        rp.CelulaPedido     = Convert.ToInt32(tr["Celula"]);
-                        rp.Pedido           = Convert.ToInt32(tr["Pedido"]);
-                        rp.Total            = Convert.ToDecimal(tr["Total"]);
-                        rp.Foliofactura     = tr["FolioFactura"].ToString();
-                        rp.Cliente          = Convert.ToInt32(tr["Cliente"]);
-                        rp.Nombre           = tr["Nombre"].ToString();
-                        rp.FormaConciliacion = formaConciliacion;
-                        rp.FSuministro      = Convert.ToDateTime(tr["FSuministro"]);
-                        ListPedidos.Add(rp);
+                        listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                        if (listaDireccinEntrega == null)
+                        {
+                            listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                        }
                     }
-                    Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
-                    dvExpera.Visible = grvPedidos.Rows.Count == 0;
+                    catch (Exception)
+                    {
+
+                    }
+                    foreach (DataRow item in dtPedidos.Rows)
+                    {
+                        if (item["Cliente"].ToString() != string.Empty)
+                        {
+                            if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                            {
+                                if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                                {
+                                    listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                }
+                            }
+                        }
+                    }
+                    try
+                    {
+                        ViewState["Entrar"] = "Ok";
+                        ViewState["tipo"] = "2";
+                        ViewState["POR_CONCILIAR"] = dtPedidos;
+                        if (listadistintos.Count > 0)
+                        {
+                            validarPeticion = true;
+                            ObtieneNombreCliente(listadistintos);
+                        }
+                        else
+                        {
+                            llenarListaEntrega();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    //grvPedidos.DataSource = dtPedidos;
+                    //grvPedidos.DataBind();
+                    ///*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
+                    //ListPedidos = new List<ReferenciaNoConciliadaPedido>();
+                    //foreach (DataRow tr in dtPedidos.Rows)
+                    //{
+                    //    rp = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                    //    rp.AñoPedido = Convert.ToInt32(tr["AñoPed"]);
+                    //    rp.CelulaPedido = Convert.ToInt32(tr["Celula"]);
+                    //    rp.Pedido = Convert.ToInt32(tr["Pedido"]);
+                    //    rp.Total = Convert.ToDecimal(tr["Total"]);
+                    //    rp.Foliofactura = tr["FolioFactura"].ToString();
+                    //    rp.Cliente = Convert.ToInt32(tr["Cliente"]);
+                    //    rp.Nombre = tr["Nombre"].ToString();
+                    //    rp.FormaConciliacion = formaConciliacion;
+                    //    rp.FSuministro = Convert.ToDateTime(tr["FSuministro"]);
+                    //    ListPedidos.Add(rp);
+                    //}
+                    //Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
+                    //dvExpera.Visible = grvPedidos.Rows.Count == 0;
                     return;
                 }
                 grvInternos.DataBind();
@@ -3250,14 +3323,239 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         try
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
             DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-            grvPedidos.PageIndex = 0;
-            grvPedidos.DataSource = tablaReferenciasP;
-            grvPedidos.DataBind();
+            if (_URLGateway != string.Empty)
+            {
+                List<int> listadistintos = new List<int>();
+                listaClientesEnviados = new List<int>();
+                try
+                {
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    if (listaDireccinEntrega == null)
+                    {
+                        listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+                foreach (DataRow item in tablaReferenciasP.Rows)
+                {
+                    if (item["Cliente"].ToString() != string.Empty)
+                    {
+                        if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                        {
+                            if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                            {
+                                listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                            }
+                        }
+                    }
+                }
+                try
+                {
+                    ViewState["Entrar"] = "Ok";
+                    ViewState["tipo"] = "1";
+                    ViewState["POR_CONCILIAR"] = tablaReferenciasP;
+                    if (listadistintos.Count > 0)
+                    {
+                        validarPeticion = true;
+                        ObtieneNombreCliente(listadistintos);
+                    }
+                    else
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            //DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+            //grvPedidos.PageIndex = 0;
+            //grvPedidos.DataSource = tablaReferenciasP;
+            //grvPedidos.DataBind();
         }
         catch (Exception ex)
         {
             throw ex;
+        }
+    }
+
+    private void completarListaEntregas(List<RTGMCore.DireccionEntrega> direccionEntregas)
+    {
+        RTGMCore.DireccionEntrega direccionEntrega;
+        RTGMCore.DireccionEntrega direccionEntregaTemp;
+        bool errorConsulta = false;
+        try
+        {
+            foreach (var item in direccionEntregas)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        if (item.Message != null)
+                        {
+                            direccionEntrega = new RTGMCore.DireccionEntrega();
+                            direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                            direccionEntrega.Nombre = item.Message;
+                            listaDireccinEntrega.Add(direccionEntrega);
+                        }
+                        else if (item.IDDireccionEntrega == -1)
+                        {
+                            errorConsulta = true;
+                        }
+                        else if (item.IDDireccionEntrega >= 0)
+                        {
+                            listaDireccinEntrega.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        direccionEntrega = new RTGMCore.DireccionEntrega();
+                        direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                        direccionEntrega.Nombre = "No se encontró cliente";
+                        listaDireccinEntrega.Add(direccionEntrega);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    direccionEntrega = new RTGMCore.DireccionEntrega();
+                    direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                    direccionEntrega.Nombre = ex.Message;
+                    listaDireccinEntrega.Add(direccionEntrega);
+                }
+            }
+            if (validarPeticion && errorConsulta)
+            {
+                validarPeticion = false;
+                listaClientes = new List<int>();
+                foreach (var item in listaClientesEnviados)
+                {
+                    direccionEntregaTemp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item);
+                    if (direccionEntregaTemp == null)
+                    {
+                        listaClientes.Add(item);
+                    }
+                }
+                ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+                ViewState["LISTACLIENTES"] = listaClientes;
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje", " mensajeAsincrono(" + listaClientes.Count + ");", true);
+            }
+            else
+            {
+                llenarListaEntrega();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void ObtieneNombreCliente(List<int> listadistintos)
+    {
+        RTGMGateway.RTGMGateway oGateway;
+        RTGMGateway.SolicitudGateway oSolicitud;
+        AppSettingsReader settings = new AppSettingsReader();
+        string cadena = App.CadenaConexion;
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway.ListaCliente = listadistintos;
+            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+            oGateway.eListaEntregas += completarListaEntregas;
+            oSolicitud = new RTGMGateway.SolicitudGateway();
+            listaClientesEnviados = listadistintos;
+            foreach (var item in listadistintos)
+            {
+                oSolicitud.IDCliente = item;
+                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void llenarListaEntrega()
+    {
+        try
+        {
+            DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+            RTGMCore.DireccionEntrega temp;
+            foreach (DataRow item in dttemp.Rows)
+            {
+                try
+                {
+                    temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                    if (temp != null)
+                    {
+                        item["Nombre"] = temp.Nombre;
+                    }
+                    else
+                    {
+                        item["Nombre"] = "No encontrado";
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    item["Nombre"] = Ex.Message;
+                }
+            }
+            string tipo = ViewState["tipo"] as string;
+            if (tipo == "2")
+            {
+                List<ReferenciaNoConciliadaPedido> ListPedidos;
+                ReferenciaNoConciliadaPedido rp;
+                grvPedidos.DataSource = dttemp;
+                grvPedidos.DataBind();
+                /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
+                ListPedidos = new List<ReferenciaNoConciliadaPedido>();
+                foreach (DataRow tr in dttemp.Rows)
+                {
+                    rp = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                    rp.AñoPedido = Convert.ToInt32(tr["AñoPed"]);
+                    rp.CelulaPedido = Convert.ToInt32(tr["Celula"]);
+                    rp.Pedido = Convert.ToInt32(tr["Pedido"]);
+                    rp.Total = Convert.ToDecimal(tr["Total"]);
+                    rp.Foliofactura = tr["FolioFactura"].ToString();
+                    rp.Cliente = Convert.ToInt32(tr["Cliente"]);
+                    rp.Nombre = tr["Nombre"].ToString();
+                    rp.FormaConciliacion = formaConciliacion;
+                    rp.FSuministro = Convert.ToDateTime(tr["FSuministro"]);
+                    ListPedidos.Add(rp);
+                }
+                Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
+                dvExpera.Visible = grvPedidos.Rows.Count == 0;
+            }
+            else
+            {
+                grvPedidos.PageIndex = 0;
+                grvPedidos.DataSource = dttemp;
+                grvPedidos.DataBind();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+        finally
+        {
+            ViewState["Entrar"] = "No";
         }
     }
 

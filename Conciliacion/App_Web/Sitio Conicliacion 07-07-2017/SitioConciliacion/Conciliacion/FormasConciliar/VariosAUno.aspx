@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
     CodeFile="VariosAUno.aspx.cs" Inherits="Conciliacion_FormasConciliar_VariosAUno"
-    MaintainScrollPositionOnPostback="false" %>
+    MaintainScrollPositionOnPostback="false" Async="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorClienteFactura/wucBuscaClientesFacturas.ascx" TagPrefix="uc1" TagName="wucBuscaClientesFacturas" %>
@@ -162,6 +162,14 @@
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
                     onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}
                 });
+        }
+        function mensajeAsincrono(faltante) {
+            var pre = document.createElement('pre');pre.style.maxHeight = '400px';
+                pre.style.margin = '0';
+                pre.style.padding = '24px';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.textAlign = 'justify';
+            pre.appendChild(document.createTextNode('No fue posible encontrar información para ' + faltante + ' clientes de la solicitud ¿desea reintentar?')); alertify.confirm('Conciliaci&oacute;n bancaria',pre, function () { alertify.success('Accepted');    __doPostBack('miPostBack', "1"); }, function () { alertify.error('Declined');  __doPostBack('miPostBack',"2");}).set({ labels: { ok: 'Si', cancel: 'No' }, padding: false });
         }
     </script>
     <!-- Validar: numeros, moneda y alfanuméricos -->
