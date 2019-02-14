@@ -961,6 +961,7 @@ private string TipoCobroDescripcion(int tipoCobro)
 
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
+        btnAplicarPagos.Enabled = false;
         Conexion conexion  = new Conexion();
         bool urlValida = false;
         bool guardoMovimientoCaja = false;

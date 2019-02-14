@@ -20,6 +20,12 @@
         type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <!-- ScrollBar GridView -->
+
+    <script type="text/javascript" language="javascript">
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+    </script>
+
     <script type="text/javascript">
         //        $(document).ready(function () {
         function pageLoad() {
@@ -53,6 +59,9 @@
         function ValidNumDecimal(e) {
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
             return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
+        }
+        function btnAplicarPagos_OnClientClick() {
+            document.getElementById('ctl00_contenidoPrincipal_btnAplicarPagos').disabled = true;
         }
     </script>
     <script type="text/javascript">
