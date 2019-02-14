@@ -1379,8 +1379,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     public void GenerarTablaPedidos()//Genera la tabla Referencias a Conciliar de Pedidos.
     {
         tblReferenciaInternas = new DataTable("ReferenciasInternas");
-        tblReferenciaInternas.Columns.Add("Pedido", typeof(int));
-        tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(int));
+        tblReferenciaInternas.Columns.Add("Pedido", typeof(Int64));
+        tblReferenciaInternas.Columns.Add("PedidoReferencia", typeof(Int64));
         tblReferenciaInternas.Columns.Add("AñoPed", typeof(int));
         tblReferenciaInternas.Columns.Add("Celula", typeof(int));
         tblReferenciaInternas.Columns.Add("Cliente", typeof(int));
@@ -1388,6 +1388,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         tblReferenciaInternas.Columns.Add("FSuministro", typeof(DateTime));
         tblReferenciaInternas.Columns.Add("Total", typeof(decimal));
         tblReferenciaInternas.Columns.Add("Concepto", typeof(string));
+        tblReferenciaInternas.Columns.Add("FolioFactura", typeof(string));
 
         //ReferenciaNoConciliada externoSelec = leerReferenciaExternaSeleccionada();
         //foreach (ReferenciaNoConciliadaPedido rc in listaReferenciaPedidos.Where(rc => !externoSelec.ExisteReferenciaConciliadaPedido(rc.Pedido, rc.CelulaPedido, rc.AñoPedido)))
@@ -1402,7 +1403,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 rc.Nombre,
                 rc.FMovimiento,
                 rc.Total,
-                rc.Concepto
+                rc.Concepto,
+                rc.Foliofactura
                 );
         }
         HttpContext.Current.Session["TAB_INTERNOS"] = tblReferenciaInternas;
