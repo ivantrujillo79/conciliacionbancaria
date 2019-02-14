@@ -2740,10 +2740,58 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
-            grvPedidos.PageIndex = 0;
-            grvPedidos.DataSource = tablaReferenciasP;
-            grvPedidos.DataBind();
+            if (!IsPostBack)
+            {
+                DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
+                List<int> listadistintos = new List<int>();
+                listaClientesEnviados = new List<int>();
+                try
+                {
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    if (listaDireccinEntrega == null)
+                    {
+                        listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+                foreach (DataRow item in tablaReferenciasP.Rows)
+                {
+                    if (item["Cliente"].ToString() != string.Empty)
+                    {
+                        if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                        {
+                            if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                            {
+                                listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                            }
+                        }
+                    }
+                }
+                try
+                {
+                    ViewState["tipo"] = "4";
+                    ViewState["POR_CONCILIAR"] = tablaReferenciasP;
+                    if (listadistintos.Count > 0)
+                    {
+                        validarPeticion = true;
+                        ObtieneNombreCliente(listadistintos);
+                    }
+                    else
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            //grvPedidos.PageIndex = 0;
+            //grvPedidos.DataSource = tablaReferenciasP;
+            //grvPedidos.DataBind();
         }
         catch (Exception ex)
         {
@@ -2919,9 +2967,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 if (item["Cliente"].ToString() != string.Empty)
                 {
-                    if(listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                    if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
                     {
-                        if (listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                        if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
                         {
                             listadistintos.Add(int.Parse(item["Cliente"].ToString()));
                         }

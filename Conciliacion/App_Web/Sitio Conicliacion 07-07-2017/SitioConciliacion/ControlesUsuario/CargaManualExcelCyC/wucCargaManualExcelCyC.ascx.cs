@@ -107,7 +107,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
             if (ViewState["cuentaBancaria"] == null)
                 return 0;
             else
-                return (int)ViewState["cuentaBancaria"];
+                return (Int64)ViewState["cuentaBancaria"];
         }
         set { ViewState["cuentaBancaria"] = value; }
     }
@@ -318,9 +318,36 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     private const string SALDO = "Saldo a favor: ";
 
     private string _URLGateway;
+    private List<RTGMCore.DireccionEntrega> listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+    private bool validarPeticion = false;
+    private List<int> listaClientesEnviados;
+    private List<int> listaClientes = new List<int>();
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (IsPostBack)
+        {
+            string entrar = ViewState["Entrar"] as string;
+            if (entrar == "Ok")
+            {
+                if (Page.Request.Params["__EVENTTARGET"] == "miPostBack")
+                {
+                    validarPeticion = false;
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    listaClientes = ViewState["LISTACLIENTES"] as List<int>;
+                    //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+                    string dat = Page.Request.Params["__EVENTARGUMENT"].ToString();
+                    if (dat == "1")
+                    {
+                        ObtieneNombreCliente(listaClientes);
+                    }
+                    else if (dat == "2")
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+            }
+        }
         OcultarMensajes();
 
         if (MostrarBotonCancelar)
@@ -433,7 +460,6 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                             grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
                             grvDetalleConciliacionManual.DataBind();
                             totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
-
                             lblArchivo.Text = ARCHIVO + sArchivo;
                             lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
                         }
@@ -497,6 +523,149 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
     }
 
+    private void llenarListaEntrega()
+    {
+        DataTable dtTablaPropuestos = ViewState["POR_CONCILIAR"] as DataTable;
+        try
+        {
+            foreach (DataRow item in dtTablaPropuestos.Rows)
+            {
+                try
+                {
+                    RTGMCore.DireccionEntrega cliente = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                    if (cliente != null)
+                    {
+                        item["Nombre"] = cliente.Nombre;
+                    }
+                    else
+                    {
+                        item["Nombre"] = "No encontrado";
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    item["Nombre"] = Ex.Message;
+                }
+            }
+
+
+            grvDetalleConciliacionManual.Visible = false;
+            grvPagosPropuestos.DataSource = dtTablaPropuestos;
+            grvPagosPropuestos.DataBind();
+            grvPagosPropuestos.Visible = true;
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+        finally
+        {
+            ViewState["Entrar"] = "No";
+        }
+    }
+
+    public void completarListaEntregas(List<RTGMCore.DireccionEntrega> direccionEntregas)
+    {
+        RTGMCore.DireccionEntrega direccionEntrega;
+        RTGMCore.DireccionEntrega direccionEntregaTemp;
+        bool errorConsulta = false;
+        try
+        {
+            foreach (var item in direccionEntregas)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        if (item.Message != null)
+                        {
+                            direccionEntrega = new RTGMCore.DireccionEntrega();
+                            direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                            direccionEntrega.Nombre = item.Message;
+                            listaDireccinEntrega.Add(direccionEntrega);
+                        }
+                        else if (item.IDDireccionEntrega == -1)
+                        {
+                            errorConsulta = true;
+                        }
+                        else if (item.IDDireccionEntrega >= 0)
+                        {
+                            listaDireccinEntrega.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        direccionEntrega = new RTGMCore.DireccionEntrega();
+                        direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                        direccionEntrega.Nombre = "No se encontró cliente";
+                        listaDireccinEntrega.Add(direccionEntrega);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    direccionEntrega = new RTGMCore.DireccionEntrega();
+                    direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                    direccionEntrega.Nombre = ex.Message;
+                    listaDireccinEntrega.Add(direccionEntrega);
+                }
+            }
+            if (validarPeticion && errorConsulta)
+            {
+                validarPeticion = false;
+                listaClientes = new List<int>();
+                foreach (var item in listaClientesEnviados)
+                {
+                    direccionEntregaTemp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item);
+                    if (direccionEntregaTemp == null)
+                    {
+                        listaClientes.Add(item);
+                    }
+                }
+                ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+                ViewState["LISTACLIENTES"] = listaClientes;
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje", " mensajeAsincrono(" + listaClientes.Count + ");", true);
+            }
+            else
+            {
+                llenarListaEntrega();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void ObtieneNombreCliente(List<int> listadistintos)
+    {
+        RTGMGateway.RTGMGateway oGateway;
+        RTGMGateway.SolicitudGateway oSolicitud;
+        AppSettingsReader settings = new AppSettingsReader();
+        string cadena = App.CadenaConexion;
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway.ListaCliente = listadistintos;
+            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+            oGateway.eListaEntregas += completarListaEntregas;
+            oSolicitud = new RTGMGateway.SolicitudGateway();
+            listaClientesEnviados = listadistintos;
+            foreach (var item in listadistintos)
+            {
+                oSolicitud.IDCliente = item;
+                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
     private void DispersarPagos(DataTable dtDatos)
     {
         if (dtDatos.Rows.Count > 0)
@@ -539,13 +708,55 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         dtTablaPropuestos = ConvertirListaATabla<PagoPropuesto>(pagosPropuestos);
                         SaldoAFavor = dispersor.SaldoAFavor;
 
-                        grvDetalleConciliacionManual.Visible = false;
-                        grvPagosPropuestos.DataSource = dtTablaPropuestos;
-                        grvPagosPropuestos.DataBind();
-                        grvPagosPropuestos.Visible = true;
+                        ViewState["POR_CONCILIAR"] = dtTablaPropuestos;
+                        ViewState["Entrar"] = "Ok";
+                        List<int> listadistintos = new List<int>();
+                        listaClientesEnviados = new List<int>();
+                        try
+                        {
+                            listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                            if (listaDireccinEntrega == null)
+                            {
+                                listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        foreach (DataRow item in dtTablaPropuestos.Rows)
+                        {
+                            if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                            {
+                                if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                                {
+                                    listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                }
+                            }
+                        }
+                        try
+                        {
+                            if (listadistintos.Count > 0)
+                            {
+                                validarPeticion = true;
+                                ObtieneNombreCliente(listadistintos);
+                            }
+                            else
+                            {
+                                llenarListaEntrega();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                        //grvDetalleConciliacionManual.Visible = false;
+                        //grvPagosPropuestos.DataSource = dtTablaPropuestos;
+                        //grvPagosPropuestos.DataBind();
+                        //grvPagosPropuestos.Visible = true;
 
                         /*          Actualizar etiqueta de registros        */
-                        lblRegistros.Text = REGISTROS + grvPagosPropuestos.Rows.Count.ToString();
+                        lblRegistros.Text = REGISTROS + dtTablaPropuestos.Rows.Count.ToString();
                     }
                 }
                 catch (Exception ex)
