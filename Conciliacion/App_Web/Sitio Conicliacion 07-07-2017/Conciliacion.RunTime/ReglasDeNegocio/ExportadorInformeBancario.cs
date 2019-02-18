@@ -52,6 +52,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private const string CONCEPTO23 = "TOTAL NETO DEPOSITADO";
 
         private const string CONCEPTO24 = "0671084374";
+        private const string CONCEPTO25 = "APLICACION CHEQUE POSFECHADO";
 
         private decimal SumaConcepto1 = 0;
         private decimal SumaConcepto2 = 0;
@@ -791,6 +792,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             }
                             break;
 
+                        case CONCEPTO25:
+                            celdaIniDatos[33, columna + 1].Value = item.Importe;
+                            celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
+
+                            break;
+
                         default:
                             break;
 
@@ -869,7 +876,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             celdaDiaIniInf[30, 1].Value = "Total Depositado";
             celdaDiaIniInf[31, 1].Value = "Vales y aplicación de ant.";
             celdaDiaIniInf[32, 1].Value = "Total neto depositado";
-
+            celdaDiaIniInf[33, 1].Value = "Aplicacion Cheque Posfechado";
             celdaDiaIniInf[34, 1].Value = "Diferencia";
 
             if (descripcioncaja == "TOTAL")
