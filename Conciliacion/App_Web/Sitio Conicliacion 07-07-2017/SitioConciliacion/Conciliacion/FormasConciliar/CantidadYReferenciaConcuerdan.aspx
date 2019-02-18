@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
     CodeFile="CantidadYReferenciaConcuerdan.aspx.cs" Inherits="Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan"
-    Debug="true" EnableEventValidation="true" %>
+    Debug="true" EnableEventValidation="true" Async="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -58,6 +58,14 @@
             } 
         }
 
+        function mensajeAsincrono(faltante) {
+            var pre = document.createElement('pre');pre.style.maxHeight = '400px';
+                pre.style.margin = '0';
+                pre.style.padding = '24px';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.textAlign = 'justify';
+            pre.appendChild(document.createTextNode('No fue posible encontrar información para ' + faltante + ' clientes de la solicitud ¿desea reintentar?')); alertify.confirm('Conciliaci&oacute;n bancaria',pre, function () {  __doPostBack('miPostBack', "1"); }, function () { __doPostBack('miPostBack',"2");}).set({ labels: { ok: 'Si', cancel: 'No' }, padding: false });
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="server">

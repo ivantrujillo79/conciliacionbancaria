@@ -205,29 +205,29 @@ namespace Conciliacion.RunTime.DatosSQL
                 SqlDataAdapter Dap = new SqlDataAdapter(_conexion.Comando);
                 Dap.Fill(dtRetorno);
 
-                if (_URLGateway != string.Empty)
-                {
-                    List<Cliente> lstClientes = new List<Cliente>();
-                    lstClientes = ConsultaCLienteCRMdt(dtRetorno);
-                    foreach (DataRow fila in dtRetorno.Rows)
-                    {
-                        Cliente cliente;
-                        cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
-                        if (cliente != null)
-                        {
-                            fila["Nombre"] = cliente.Nombre;
-                            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                            //cliente = App.Cliente.CrearObjeto();
-                            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
-                            //cliente.Nombre = fila["Nombre"].ToString();
-                            //lstClientes.Add(cliente);
-                        }
-                        //else
-                        //{
-                        //    fila["Nombre"] = cliente.Nombre;
-                        //}
-                    }
-                }
+                //if (_URLGateway != string.Empty)
+                //{
+                //    List<Cliente> lstClientes = new List<Cliente>();
+                //    lstClientes = ConsultaCLienteCRMdt(dtRetorno);
+                //    foreach (DataRow fila in dtRetorno.Rows)
+                //    {
+                //        Cliente cliente;
+                //        cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                //        if (cliente != null)
+                //        {
+                //            fila["Nombre"] = cliente.Nombre;
+                //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                //            //cliente = App.Cliente.CrearObjeto();
+                //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                //            //cliente.Nombre = fila["Nombre"].ToString();
+                //            //lstClientes.Add(cliente);
+                //        }
+                //        //else
+                //        //{
+                //        //    fila["Nombre"] = cliente.Nombre;
+                //        //}
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -254,7 +254,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
                     Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
-                    Gateway.URLServicio = URLGateway;
+                    Gateway.URLServicio = "http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.IDCliente = cliente;
                     DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
