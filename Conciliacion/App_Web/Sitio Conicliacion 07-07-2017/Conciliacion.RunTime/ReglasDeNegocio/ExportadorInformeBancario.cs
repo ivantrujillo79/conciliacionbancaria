@@ -793,7 +793,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             break;
 
                         case CONCEPTO25:
-                            celdaIniDatos[33, columna + 1].Value = item.Importe;
+                            celdaIniDatos[15, columna + 1].Value = item.Importe;
                             celdaIniDatos.Style.Numberformat.Format = "$###,###,##0.00";
 
                             break;
@@ -994,7 +994,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             var xlHoja = excelPackage.Workbook.Worksheets[excelPackage.Workbook.Worksheets.Count()];
             var range = xlHoja.Cells[columna, 4, columna, 14];//Address "b1:c1   
-            xlHoja.Cells[16, columna].Formula = "SUM(" + xlHoja.Cells[4, columna] + ":" + xlHoja.Cells[14, columna] + ")";
+            xlHoja.Cells[16, columna].Formula = "SUM(" + xlHoja.Cells[4, columna] + ":" + xlHoja.Cells[15, columna] + ")";
             xlHoja.Cells[16, columna].Calculate();
             xlHoja.Column(1).Width = 35;
             xlHoja.Cells[16, columna].Style.Numberformat.Format = "$###,###,##0.00";
