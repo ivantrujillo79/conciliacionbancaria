@@ -105,10 +105,10 @@ namespace SeguridadCB.Public
         {
             get { return this.area; }
         }
-        //public string NombreArea
-        //{
-        //    get { return this.nombreArea; }
-        //}
+        public string NombreArea
+        {
+            get { return this.nombreArea; }
+        }
         public DataTable CorporativoAcceso
         {
             get { return TablaCorporativo(); }
