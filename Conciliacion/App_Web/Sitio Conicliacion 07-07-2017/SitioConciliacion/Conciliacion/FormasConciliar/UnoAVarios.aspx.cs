@@ -2650,13 +2650,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 foreach (DataRow item in tablaReferenciasP.Rows)
                 {
-                    if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item[0].ToString())))
+                    if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
                     {
-                        if (!listadistintos.Exists(x => x == int.Parse(item[0].ToString())))
+                        if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
                         {
                             if (item[0].ToString() != string.Empty)
                             {
-                                listadistintos.Add(int.Parse(item[0].ToString()));
+                                listadistintos.Add(int.Parse(item["Cliente"].ToString()));
                             }
                         }
                     }
