@@ -242,6 +242,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 ConsultarParametrosEDENRED();
 
+
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     this.hdfEsPedido.Value = "1";
