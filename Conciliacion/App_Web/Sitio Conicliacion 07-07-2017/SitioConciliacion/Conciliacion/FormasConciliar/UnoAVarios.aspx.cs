@@ -3258,32 +3258,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvPedidos.DataBind();
                 grvPedidos.DataBind();
             }
-            else if(tipo == "3")
-            {
-                DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
-                RTGMCore.DireccionEntrega temp;
-                foreach (DataRow item in dttemp.Rows)
-                {
-                    try
-                    {
-                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
-                        if (temp != null)
-                        {
-                            item["Nombre"] = temp.Nombre;
-                        }
-                        else
-                        {
-                            item["Nombre"] = "No encontrado";
-                        }
-                    }
-                    catch (Exception Ex)
-                    {
-                        item["Nombre"] = Ex.Message;
-                    }
-                }
-                grvPedidos.DataSource = dttemp;
-                grvPedidos.DataBind();
-            }
             else if (tipo=="4")
             {
                 DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
@@ -7408,7 +7382,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 List<int> listadistintos = new List<int>();
                 listaClientesEnviados = new List<int>();
-                ViewState["tipo"] = "3";
+                ViewState["tipo"] = "4";
                 ViewState["POR_CONCILIAR"] = tablePedidoRefer;
                 try
                 {
