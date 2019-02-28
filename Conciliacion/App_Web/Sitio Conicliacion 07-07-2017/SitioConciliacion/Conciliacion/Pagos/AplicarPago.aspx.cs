@@ -1304,8 +1304,9 @@ private string TipoCobroDescripcion(int tipoCobro)
             short tipoConciliacion = 0;
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-            conexion.AbrirConexion(true,true);           
+            conexion.AbrirConexion(true,true);
 
+            Session["CONCILIAR_PAGOS"] = null;
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
             {             
                 
@@ -1465,7 +1466,6 @@ private string TipoCobroDescripcion(int tipoCobro)
             {
                 conexion.Comando.Transaction.Commit();
             }
-
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
