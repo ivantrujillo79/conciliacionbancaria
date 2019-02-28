@@ -2789,6 +2789,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     throw ex;
                 }
             }
+            //DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
             //grvPedidos.PageIndex = 0;
             //grvPedidos.DataSource = tablaReferenciasP;
             //grvPedidos.DataBind();
@@ -2845,39 +2846,88 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-            tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
             if (objSolicitdConciliacion.ConsultaPedido())//tpConciliacion == 2 || tpConciliacion == 6)
             {
-                tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof (int));
-                tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof (int));
-                tblReferenciaAgregadasInternas.Columns.Add("Celula", typeof (int));
-                tblReferenciaAgregadasInternas.Columns.Add("Cliente", typeof (string));
-                tblReferenciaAgregadasInternas.Columns.Add("Nombre", typeof (string));
-                tblReferenciaAgregadasInternas.Columns.Add("FMovimiento", typeof (DateTime));
-                tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof (DateTime));
-                tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof (decimal));
-                tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof (string));
-                tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));																					  
-                //Llena GridView con lista de Agregados del Externo (PEDIDOS)
-                foreach (ReferenciaConciliadaPedido rc in refExternaSelec.ListaReferenciaConciliada)
+                List<int> listadistintos = new List<int>();
+                listaClientesEnviados = new List<int>();
+                try
                 {
-                    tblReferenciaAgregadasInternas.Rows.Add(
-                        rc.Pedido,
-                        rc.AñoPedido,
-                        rc.CelulaPedido,
-                        rc.Cliente,
-                        rc.Nombre,
-                        rc.FMovimiento,
-                        rc.FOperacion,
-                        rc.Total,
-                        rc.ConceptoPedido
-                        );
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    if (listaDireccinEntrega == null)
+                    {
+                        listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                    }
                 }
-                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
-                grvAgregadosPedidos.DataBind();
-                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                catch (Exception)
+                {
+
+                }
+                foreach (ReferenciaConciliadaPedido item in refExternaSelec.ListaReferenciaConciliada)
+                {
+                    if (item.Cliente.ToString() != string.Empty)
+                    {
+                        if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == item.Cliente))
+                        {
+                            if (!listadistintos.Exists(x => x == item.Cliente))
+                            {
+                                listadistintos.Add(item.Cliente);
+                            }
+                        }
+                    }
+                }
+                try
+                {
+                    ViewState["tipo"] = "5";
+                    ViewState["ListaAsync"] = refExternaSelec;
+                    if (listadistintos.Count > 0)
+                    {
+                        validarPeticion = true;
+                        ObtieneNombreCliente(listadistintos);
+                    }
+                    else
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
+               
+            //tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
+            //if (objSolicitdConciliacion.ConsultaPedido())//tpConciliacion == 2 || tpConciliacion == 6)
+            //{
+            //    tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof (int));
+            //    tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof (int));
+            //    tblReferenciaAgregadasInternas.Columns.Add("Celula", typeof (int));
+            //    tblReferenciaAgregadasInternas.Columns.Add("Cliente", typeof (string));
+            //    tblReferenciaAgregadasInternas.Columns.Add("Nombre", typeof (string));
+            //    tblReferenciaAgregadasInternas.Columns.Add("FMovimiento", typeof (DateTime));
+            //    tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof (DateTime));
+            //    tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof (decimal));
+            //    tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof (string));
+            //    tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));																					  
+            //    //Llena GridView con lista de Agregados del Externo (PEDIDOS)
+            //    foreach (ReferenciaConciliadaPedido rc in refExternaSelec.ListaReferenciaConciliada)
+            //    {
+            //        tblReferenciaAgregadasInternas.Rows.Add(
+            //            rc.Pedido,
+            //            rc.AñoPedido,
+            //            rc.CelulaPedido,
+            //            rc.Cliente,
+            //            rc.Nombre,
+            //            rc.FMovimiento,
+            //            rc.FOperacion,
+            //            rc.Total,
+            //            rc.ConceptoPedido
+            //            );
+            //    }
+            //    grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+            //    grvAgregadosPedidos.DataBind();
+            //    Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+            //    wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+            //}
             else
             {
                 tblReferenciaAgregadasInternas.Columns.Add("Secuencia", typeof (int));
@@ -3260,6 +3310,41 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvPedidos.PageIndex = 0;
                 grvPedidos.DataSource = dttemp;
                 grvPedidos.DataBind();
+            }
+            else if(tipo  == "5")
+            {
+                ReferenciaNoConciliada refExternaSelec = ViewState["ListaAsync"] as ReferenciaNoConciliada;
+
+                tblReferenciaAgregadasInternas = new DataTable("ReferenciasInternas");
+                tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Celula", typeof(int));
+                tblReferenciaAgregadasInternas.Columns.Add("Cliente", typeof(string));
+                tblReferenciaAgregadasInternas.Columns.Add("Nombre", typeof(string));
+                tblReferenciaAgregadasInternas.Columns.Add("FMovimiento", typeof(DateTime));
+                tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof(DateTime));
+                tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof(decimal));
+                tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof(string));
+                tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));
+                //Llena GridView con lista de Agregados del Externo (PEDIDOS)
+                foreach (ReferenciaConciliadaPedido rc in refExternaSelec.ListaReferenciaConciliada)
+                {
+                    tblReferenciaAgregadasInternas.Rows.Add(
+                        rc.Pedido,
+                        rc.AñoPedido,
+                        rc.CelulaPedido,
+                        rc.Cliente,
+                        rc.Nombre,
+                        rc.FMovimiento,
+                        rc.FOperacion,
+                        rc.Total,
+                        rc.ConceptoPedido
+                        );
+                }
+                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                grvAgregadosPedidos.DataBind();
+                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
             }
         }
         catch (Exception ex)
