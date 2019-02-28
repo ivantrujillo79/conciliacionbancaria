@@ -205,7 +205,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
                     GenerarTablaReferenciasAConciliarPedidos();
-                    
+                    chkSeleccionarTodos.Visible = true;
                     //_tblReferenciasAConciliarPedido = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
 
@@ -225,6 +225,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     GenerarTablaReferenciasAConciliarArchivos();
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
+                    chkSeleccionarTodos.Visible = false;
                 }
                 else
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
@@ -757,7 +758,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
