@@ -2649,36 +2649,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
 
                 }
-                foreach (DataRow item in tablaReferenciasP.Rows)
+                if (tablaReferenciasP != null)
                 {
-                    if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                    foreach (DataRow item in tablaReferenciasP.Rows)
                     {
-                        if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                        if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
                         {
-                            if (item[0].ToString() != string.Empty)
+                            if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
                             {
-                                listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                if (item[0].ToString() != string.Empty)
+                                {
+                                    listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                }
                             }
                         }
                     }
-                }
-                try
-                {
-                    ViewState["tipo"] = "4";
-                    ViewState["POR_CONCILIAR"] = tablaReferenciasP;
-                    if (listadistintos.Count > 0)
+                    try
                     {
-                        validarPeticion = true;
-                        ObtieneNombreCliente(listadistintos);
+                        ViewState["tipo"] = "4";
+                        ViewState["POR_CONCILIAR"] = tablaReferenciasP;
+                        if (listadistintos.Count > 0)
+                        {
+                            validarPeticion = true;
+                            ObtieneNombreCliente(listadistintos);
+                        }
+                        else
+                        {
+                            llenarListaEntrega();
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        llenarListaEntrega();
+                        throw ex;
                     }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
                 }
             }
             //grvPedidos.PageIndex = 0;
