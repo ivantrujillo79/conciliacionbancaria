@@ -81,7 +81,7 @@
                 grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
                 chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarInternosTodos').checked;
                 for (indice = 1; indice < grv.rows.length; indice++) {
-                    if (grv.rows[i].cells[1] != undefined) {
+                    if (grv.rows[indice].cells[1] != undefined) {
                         grv.rows[indice].cells[1].children[0].checked = chkVal;
                         res = btnAgregarPedidoConciliacion(grv, indice);
                         if (res == false) {
