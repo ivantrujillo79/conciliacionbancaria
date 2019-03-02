@@ -223,13 +223,14 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboMotivosNoConciliado();
                 Carga_SucursalCorporativo(corporativo);
-                if (objSolicitdConciliacion.ConsultaPedido())
-                    Carga_ComboTiposDeCobro();
-                else
+
+                Carga_ComboTiposDeCobro();
+                if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                     lblTiposdeCobro.Visible = false;
                     ddlTiposDeCobro.Visible = false;
                 }
+
                 LlenarBarraEstado();
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE CONCILIACION
                 //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
