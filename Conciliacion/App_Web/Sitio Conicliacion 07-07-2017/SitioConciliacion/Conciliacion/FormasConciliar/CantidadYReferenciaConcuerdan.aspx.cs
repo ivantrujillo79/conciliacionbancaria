@@ -1370,9 +1370,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
             {
                 if (e.Row.Cells.Count >= 15)
-                    e.Row.Cells[15].Visible = false;
+                    e.Row.Cells[14].Visible = false;
                 if (e.Row.Cells.Count >= 16)
-                    e.Row.Cells[16].Visible = false;
+                    e.Row.Cells[15].Visible = false;
             }
             //else
             //{
@@ -3316,5 +3316,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         this.grvVistaRapidaInterno.DataSource = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
         this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
         this.grvVistaRapidaInterno.DataBind();
+    }
+
+    protected void chkSeleccionadoArchivos_CheckedChanged(object sender, EventArgs e)
+    {
+
     }
 }

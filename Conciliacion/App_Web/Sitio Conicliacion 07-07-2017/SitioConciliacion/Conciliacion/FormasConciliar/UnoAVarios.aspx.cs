@@ -2205,6 +2205,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
                         rfExterno.ConInterno = objSolicitdConciliacion.ConsultaArchivo();
+                        
+                        grvPedidos.DataSource = null;
+                        grvPedidos.DataBind();
+
                         if (rfExterno.GuardarReferenciaConciliada())
                         {
                             // Guardar externo para pasarlo al método GuardarSaldoAFavor()
