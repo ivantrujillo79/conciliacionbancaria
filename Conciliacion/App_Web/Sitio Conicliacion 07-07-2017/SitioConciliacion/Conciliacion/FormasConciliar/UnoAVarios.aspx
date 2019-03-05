@@ -159,8 +159,8 @@
                         dResto      = parseFloat(dAbono - sumapreconciliadas);
                     if (dResto <= 0)
                         dResto      = 0;
-                    document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = dResto.toFixed(2);
-                    document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = sumapreconciliadas.toFixed(2);
+                    document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = currencyFormat(dResto); //dResto.toFixed(2);
+                    document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = currencyFormat(sumapreconciliadas); //sumapreconciliadas.toFixed(2);
                     return true; 
                 }
                 else
@@ -175,15 +175,19 @@
             {
                 //No se seleccionó nada
                 document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML;
-                document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = dAgregados.toFixed(2);
+                document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML = currencyFormat(dAgregados); //dAgregados.toFixed(2);
                 sumapreconciliadas = 0.0;
             }
 
         }
 
+        function currencyFormat(num) {
+            return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
+
         var dAbonoSel;
         function ActualizaMonto(){
-            //debugger;
+            debugger;
             var dAbono = 0;
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
@@ -202,12 +206,12 @@
             var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
             var dResto = 0;
             
-            document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML = dAbono.toFixed(2);
+            document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML = currencyFormat(dAbono); //dAbono.toFixed(2);
             if (dAbono > 0)
                 dResto      = parseFloat(dAbono - sumapreconciliadas);
             if (dResto <= 0)
                 dResto      = 0;
-            document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = dResto.toFixed(2);            
+            document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = currencyFormat(dResto); //dResto.toFixed(2);            
 
         }
 
@@ -472,30 +476,36 @@
             //}
         }
 
-        function ConfirmarSaldoAFavor(){
-            var MontoSAF = document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML;
-            var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
-
-            console.log(parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2));
-            console.log(parseFloat(ValorParametro).toFixed(2));
-            console.log(parseFloat(MontoSAF.replace('$', '').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2));
-
-            if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
-                if (parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2)) {
-                    var r = confirm('El monto depositado genera un saldo a favor por ' + MontoSAF + '\n¿Desea generar el saldo a favor?');
-                    if (r == true) {
-                        document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Aceptado';
-                    }
-                    else {
-                        document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Rechazado';
-                        if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
-                            $('#<%= hdfCambiarEstatusPedido.ClientID %>').val("1");
-                            alert("Se guardará el saldo restante para conciliación a futuro.");
+        function ConfirmarSaldoAFavor() {
+            debugger;
+            var numAgregados = document.getElementById('ctl00_contenidoPrincipal_lblAgregadosInternos').innerHTML
+            if (numAgregados === "0" || numAgregados  === "undefined") {
+                alert("No se ha agregado ninguna referencia interna.(front)");
+                return false;
+            }
+            else {                
+                var MontoSAF = document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML;
+                var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
+                console.log(parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2));
+                console.log(parseFloat(ValorParametro).toFixed(2));
+                console.log(parseFloat(MontoSAF.replace('$', '').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2));
+                if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
+                    if (parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2) >= parseFloat(ValorParametro).toFixed(2)) {
+                        var r = confirm('El monto depositado genera un saldo a favor por ' + MontoSAF + '\n¿Desea generar el saldo a favor?');
+                        if (r == true) {
+                            document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Aceptado';
+                        }
+                        else {
+                            document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Rechazado';
+                            if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
+                                $('#<%= hdfCambiarEstatusPedido.ClientID %>').val("1");
+                                alert("Se guardará el saldo restante para conciliación a futuro.");
+                            }
                         }
                     }
                 }
+                return true;
             }
-
         }
 
         function PedidoMultipleSI() {
@@ -1807,7 +1817,7 @@
                                 <td class="etiqueta centradoMedio" style="width: 15%;">
                                     <asp:Button runat="server" ID="btnGuardarUnoAVarios" CssClass="boton bg-color-azulOscuro fg-color-blanco"
                                         Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarUnoAVarios_Click" 
-                                        OnClientClick="ConfirmarSaldoAFavor();"/>
+                                        OnClientClick="return ConfirmarSaldoAFavor();"/>
                                 </td>
                             </tr>
                         </table>
