@@ -179,8 +179,8 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
                         if (columnaMapeo.EsTipoFecha)
                         {
-                            //nr = filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString();
-                            fechas.Add(Convert.ToDateTime(filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString()));
+                            string strFecha = QuitaHora(filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString());
+                            fechas.Add(Convert.ToDateTime( strFecha ));
                         }
 
                     }
@@ -196,6 +196,15 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
             }
             return dtDestinoDetalle;
+        }
+
+        private string QuitaHora(string stringFecha)
+        {
+            string[] arFecha = stringFecha.Split(' ');
+            if (arFecha.Count() > 0)
+                return arFecha[0];
+            else
+                return stringFecha;
         }
 
         //private string BuscarValor(FuenteInformacionDetalleEtiqueta patron, string texto)

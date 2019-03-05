@@ -719,7 +719,7 @@
                             AllowSorting="True" OnSorting="grvCantidadReferenciaConcuerdanArchivos_Sorting">                            
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
-<%--                                <asp:TemplateField>
+                                <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkSeleccionadoArchivos" 
                                             OnCheckedChanged="chkSeleccionadoArchivos_CheckedChanged"
@@ -727,7 +727,7 @@
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="30px" />
-                                </asp:TemplateField>--%>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="F. Ext" SortExpression="FolioExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFolioExt" runat="server" Text='<%# resaltarBusqueda(Eval("FolioExt").ToString()) %>'></asp:Label>
