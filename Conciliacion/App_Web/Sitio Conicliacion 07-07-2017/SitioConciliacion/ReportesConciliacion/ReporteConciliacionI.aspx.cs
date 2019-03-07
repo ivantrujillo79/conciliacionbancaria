@@ -1022,6 +1022,15 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         mpeBusquedaFactura.Show();
     }
 
+    private string QuitaHora(string stringFecha)
+    {
+        string[] arFecha = stringFecha.Split(' ');
+        if (arFecha.Count() > 0)
+            return arFecha[0];
+        else
+            return stringFecha;
+    }
+
     /////////////////////////////////////// EXPORTAR 
     protected void imgExportar_Click(object sender, ImageClickEventArgs e)
     {
@@ -1038,7 +1047,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             DateTime fInicial = Convert.ToDateTime(hdfFInicial.Value);
             DateTime fFinal = Convert.ToDateTime(hdfFFinal.Value);
             string strReporte;
-            bool accesototal = LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim()).AccesoTotal;
+            Int16 accesototal;
+            if (LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim()).AccesoTotal)
+                accesototal = 1;
+            else
+                accesototal = 0;
+            string status = hdfStatusConciliacionSel.Value;
             strReporte = Server.MapPath("~/") + settings.GetValue("RutaReporteInformeMovimientosConciliadosExternos", typeof(string));
 
             if (!File.Exists(strReporte)) return;
@@ -1047,18 +1061,17 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 string strServer = settings.GetValue("Servidor", typeof(string)).ToString();
                 string strDatabase = settings.GetValue("Base", typeof(string)).ToString();
 
-
                 string strUsuario = usuario.IdUsuario.Trim();
                 string strPW = usuario.ClaveDesencriptada;
                 ArrayList Par = new ArrayList();
-
 
                 Par.Add("@AccesoTotal=" + accesototal);
                 Par.Add("@Corporativo=" + corporativo);
                 Par.Add("@Sucursal=" + sucursal);
                 Par.Add("@CuentaBancaria=" + cuentabancaria);
-                Par.Add("@FInicial=" + fInicial);
-                Par.Add("@FFinal=" + fFinal);
+                Par.Add("@FInicial=" + QuitaHora(fInicial.ToString()));
+                Par.Add("@FFinal=" + QuitaHora(fFinal.ToString()));
+                Par.Add("@StatusConciliacion=" + status);
 
                 ClaseReporte reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
                 HttpContext.Current.Session["RepDoc"] = reporte.RepDoc;
@@ -1480,11 +1493,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     protected void btnActualizarConfig_Click(object sender, System.Web.UI.ImageClickEventArgs e)
     {
+        mpeLoading.Hide();
         try
         {
-
-
-
             if (FiltroCorrecto())
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -1505,9 +1516,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 GenerarTablaConciliacionCompartida();
                 LlenaGridViewConciliacionCompartida();
                 ActualizarPopUp_CargaArchivo();
-                mpeLoading.Hide();
             }
-
             else
                 App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
         }
