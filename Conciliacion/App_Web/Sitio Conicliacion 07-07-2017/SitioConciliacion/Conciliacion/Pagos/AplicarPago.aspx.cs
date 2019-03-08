@@ -1235,6 +1235,7 @@ private string TipoCobroDescripcion(int tipoCobro)
 
         Conexion conexion = new Conexion();
         wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
+        //wuAreascomunes.inicializa(0, 1000);
         wuAreascomunes.TablaPagos = tablaReferenciasSeleccionadas;
 
 
