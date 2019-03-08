@@ -1871,9 +1871,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     public void ActualizarTotalesAgregados()
     {
-        //decimal dComision = 0M;
-        //bool comisionSeleccionada = chkComision.Checked;
-
         try
         {
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
@@ -1903,10 +1900,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     dAbono = Decimal.Round(rE.Monto, 2);
                 }
                 if (objSolicitdConciliacion.ConsultaArchivo())
-                    dAcumulado  = Decimal.Round(rE.MontoConciliado, 2);
+                    dAcumulado = Decimal.Round(rE.Monto, 2);
                 if (objSolicitdConciliacion.ConsultaPedido())
-                    dAcumulado  = Decimal.Round(rE.MontoPedido + dComision, 2);
-
+                    foreach (cReferencia referencia in rE.ListaReferenciaConciliada)
+                    {
+                        dAcumulado = dAcumulado + ((Conciliacion.RunTime.ReglasDeNegocio.ReferenciaConciliadaPedido)referencia).Total;
+                    }
+                
                 dResto = (dAbono > 0 ? dAbono - dAcumulado : 0);
                 dResto = (dResto <= 0 ? 0 : dResto);
 
