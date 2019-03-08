@@ -187,7 +187,7 @@
 
         var dAbonoSel;
         function ActualizaMonto(){
-            debugger;
+            //debugger;
             var dAbono = 0;
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
@@ -477,10 +477,10 @@
         }
 
         function ConfirmarSaldoAFavor() {
-            debugger;
+            //debugger;
             var numAgregados = document.getElementById('ctl00_contenidoPrincipal_lblAgregadosInternos').innerHTML
             if (numAgregados === "0" || numAgregados  === "undefined") {
-                alert("No se ha agregado ninguna referencia interna.(front)");
+                alert("No se ha agregado ninguna referencia interna.");
                 return false;
             }
             else {                

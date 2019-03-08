@@ -1089,7 +1089,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             if (objSolicitdConciliacion.ConsultaPedido())
             {
                 grvCantidadReferenciaConcuerdanPedido.DataSource = tablaReferenacias;
-                grvCantidadReferenciaConcuerdanPedido.DataBind();
+                grvCantidadReferenciaConcuerdanPedido.DataBind(); //incidente 199
                 UnCheckBloquedos(grvCantidadReferenciaConcuerdanPedido);
                 bloqueaTodoLoSeleccionado(grvCantidadReferenciaConcuerdanPedido);
             }
@@ -1354,37 +1354,15 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     protected void grvCantidadReferenciaConcuerdanPedido_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        //if (e.Row.RowType == DataControlRowType.Pager && (grvCantidadReferenciaConcuerdanPedido.DataSource != null))
-        //{
-        //    //TRAE EL TOTAL DE PAGINAS
-        //    Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
-        //    _TotalPags.Text = grvCantidadReferenciaConcuerdanPedido.PageCount.ToString();
-
-        //    //LLENA LA LISTA CON EL NUMERO DE PAGINAS
-        //    DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownListPedidos");
-        //    for (int i = 1; i <= Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.PageCount); i++)
-        //    {
-        //        list.Items.Add(i.ToString());
-        //    }
-        //    list.SelectedValue = (grvCantidadReferenciaConcuerdanPedido.PageIndex + 1).ToString();
-        //}
-
         if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
         {
-            if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
+            if (HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] != null && int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
             {
                 if (e.Row.Cells.Count >= 15)
                     e.Row.Cells[14].Visible = false;
                 if (e.Row.Cells.Count >= 16)
                     e.Row.Cells[15].Visible = false;
             }
-            //else
-            //{
-            //    if (e.Row.Cells.Count >= 15)
-            //        e.Row.Cells[15].Visible = true;
-            //    if (e.Row.Cells.Count >= 16)
-            //        e.Row.Cells[16].Visible = true;
-            //}
         }
     }
     protected void grvCantidadReferenciaConcuerdanPedido_PageIndexChanging(object sender, GridViewPageEventArgs e)
