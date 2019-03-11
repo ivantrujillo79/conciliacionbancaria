@@ -270,6 +270,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             decimal retiros = 0;
             decimal depositos = 0;
+            //wsSheet1.Cells[7, 18].Value = "Depositos";
+            //wsSheet1.Cells[7, 19].Value = "Retiros";
             foreach (DetalleReporteEstadoCuentaConciliado detalle in _DetalleAExportar)
             {
                 wsSheet1.Cells[i, 4, i, 8].Merge = true;
@@ -282,17 +284,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 wsSheet1.Cells[i, 10].Value = detalle.Depositos;
                 wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal;
                 wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
-                wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
+                //wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
+                //wsSheet1.Cells[i, 17].Value = detalle.StatusConciliacion;
 
                 if (detalle.StatusConciliacion == "CONCILIADA")
                 {
                     retiros += detalle.Retiros;
                     depositos += detalle.Depositos;
+                    //wsSheet1.Cells[i, 18].Value = detalle.Depositos;
+                    //wsSheet1.Cells[i, 19].Value = detalle.Retiros;
                 }
-
                 i++;
             }
-
+            
             //Get the final row for the column in the worksheet
             int finalrows = wsSheet1.Dimension.End.Row;
 
@@ -318,9 +322,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             wsSheet1.Cells["M4"].Calculate();
 
             //---Depositos
-            wsSheet1.Cells["M6"].Value = depositos;
+            wsSheet1.Cells["M5"].Value = depositos;
             // ---Retiros
-            wsSheet1.Cells["M5"].Value = retiros;
+            wsSheet1.Cells["M6"].Value = retiros;
 
             string ColumnStringDep = "J8:J" + finalrows.ToString();
            // --- Saldos
