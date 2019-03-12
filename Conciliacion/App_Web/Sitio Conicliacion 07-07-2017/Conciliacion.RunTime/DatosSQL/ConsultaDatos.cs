@@ -4670,7 +4670,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativo, int sucursal,
-                                                                                 int año, short mes, int folio)
+                                                                                 int año, short mes, int folio, string usuario)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4693,7 +4693,11 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalExterno", System.Data.SqlDbType.SmallInt).Value = 0;
                     comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = 0;
-
+                    
+                    if (!usuario.Equals(""))
+                    {
+                        comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar,20).Value = usuario;
+                    }
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -4769,7 +4773,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                         int año, short mes, int folio,
                                                                                         int cliente, int corporativoexterno,
                                                                                         int sucursalexterno, int añoexterno,
-                                                                                        int folioexterno, int secuenciaexterno)
+                                                                                        int folioexterno, int secuenciaexterno, 
+                                                                                        string usuario)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4793,6 +4798,10 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalExterno", System.Data.SqlDbType.SmallInt).Value = sucursalexterno;
                     comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = añoexterno;
                     comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = secuenciaexterno;
+                    if (!usuario.Equals(""))
+                    {
+                        comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar, 20).Value = usuario;
+                    }
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -4861,7 +4870,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativo, int sucursal, int año,
-                                                                      short mes, int folio)
+                                                                      short mes, int folio, string usuario)
         {
             List<Cobro> datos = new List<Cobro>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4946,7 +4955,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                    Convert.ToInt32(reader["Sucursal"]),
                                                                                    Convert.ToInt32(reader["Año"]),
                                                                                    Convert.ToInt32(reader["Folio"]),
-                                                                                   Convert.ToInt32(reader["Secuencia"])),
+                                                                                   Convert.ToInt32(reader["Secuencia"]),usuario),
                                                     this.implementadorMensajes);
                         datos.Add(dato);
 
@@ -4968,7 +4977,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativo, int sucursal, int año, short mes,
-                                                                  int folio)
+                                                                  int folio, string usuario)
         {
             MovimientoCajaDatos movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -5015,8 +5024,8 @@ namespace Conciliacion.RunTime.DatosSQL
                         }
                         
                         movimiento.ListaCobros = ConsultaChequeTarjetaAltaModifica(corporativo, sucursal, año, mes,
-                                                                                   folio);
-                        movimiento.ListaPedidos = ConsultaPagosPorAplicar(corporativo, sucursal, año, mes, folio);
+                                                                                   folio, usuario);
+                        movimiento.ListaPedidos = ConsultaPagosPorAplicar(corporativo, sucursal, año, mes, folio, usuario);
                     }
                 }
                 catch (SqlException ex)
