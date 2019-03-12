@@ -256,15 +256,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(Configuracion configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusconcepto, int sucursalinterno);
 
 
-        public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
         public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicarCliente(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int cliente,
-                                                                                        int corporativoexterno, int sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno);
+                                                                                        int corporativoexterno, int sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno, string usuario);
 
 
-        public abstract MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
-        public abstract List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
 
         public abstract string ConsultaFechaActualInicial();

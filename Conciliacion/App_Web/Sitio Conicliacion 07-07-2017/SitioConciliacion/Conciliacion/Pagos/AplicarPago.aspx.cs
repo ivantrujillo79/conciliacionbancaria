@@ -243,7 +243,32 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     {
         try
         {
-            movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            string strUsuario = usuario.IdUsuario.Trim();
+            //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
+
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+
+            int transbanUsuario;
+
+            try
+            {
+                transbanUsuario = int.Parse(parametros.ValorParametro(30, "TransBanPorUsuario"));
+            }
+            catch
+            {
+                transbanUsuario = 0;
+            }
+
+            if (transbanUsuario == 0)
+            {
+                strUsuario = "";
+            }
+           
+
+
+            movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, strUsuario);
 
             //short consecutivo = movimientoCajaAlta.Consecutivo;
             //int folio = movimientoCajaAlta.Folio;
@@ -285,7 +310,27 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             string strUsuario = usuario.IdUsuario.Trim();
             //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
 
-            listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC);
+            string usuarioBusqueda = "";
+
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+
+            int transbanUsuario;
+
+            try
+            {
+                transbanUsuario = int.Parse(parametros.ValorParametro(30, "TransBanPorUsuario"));
+            }
+            catch
+            {
+                transbanUsuario = 0;
+            }
+
+            if (transbanUsuario == 1)
+            {
+                usuarioBusqueda = strUsuario;
+            }
+
+            listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC, usuarioBusqueda);
             listaReferenciaConciliadaPagos.ForEach(pedido => { pedido.Usuario = strUsuario; pedido.Portatil = false; });
 
             HttpContext.Current.Session["LIST_REF_PAGAR"] = listaReferenciaConciliadaPagos;
