@@ -94,7 +94,7 @@
             BehaviorID="mpeAreasComunes" CancelControlID="imgCerrar_AreasComunes">
             <%-- BehaviorID="ModalBehaviour" EnableViewState="false"--%>
         </asp:ModalPopupExtender>
-        <asp:Panel ID="pnlAreasComunes" runat="server" CssClass="ModalPopup" Width="680px" Style="display: none;">
+        <asp:Panel ID="pnlAreasComunes" runat="server" CssClass="ModalPopup" Width="870px" Height="600px" Style="display: none;">
             <asp:UpdatePanel ID="upAreasComunes" runat="server">
                 <ContentTemplate>
                     <div>

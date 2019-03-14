@@ -111,9 +111,9 @@ namespace Conciliacion.RunTime.DatosSQL
             _conexion.Comando.Parameters.Add("@TipoCobro", System.Data.SqlDbType.Int).Value = this.TipoCobro;
 
             _conexion.Comando.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = _conexion.Comando.ExecuteReader();                   
-                
-            
+            SqlDataReader reader = _conexion.Comando.ExecuteReader();
+
+            reader.Close();
            
             
             return resultado;            

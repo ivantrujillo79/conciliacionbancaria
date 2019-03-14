@@ -14,6 +14,108 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
     private int _clientePadre;
     private decimal _monto;
 
+    private class pedidoPagar : ICloneable
+    {
+        private int _celulapedido;
+        private int _añopedido;
+        private int _pedido;
+        private string _pedidoReferencia;
+        private decimal _monto;
+        private int pedidoPadre;
+
+        public pedidoPagar()
+        {
+            this.pedidoPadre = 0;
+        }
+
+        public int Celulapedido
+        {
+            get
+            {
+                return _celulapedido;
+            }
+
+            set
+            {
+                _celulapedido = value;
+            }
+        }
+
+        public int Añopedido
+        {
+            get
+            {
+                return _añopedido;
+            }
+
+            set
+            {
+                _añopedido = value;
+            }
+        }
+
+        public int Pedido
+        {
+            get
+            {
+                return _pedido;
+            }
+
+            set
+            {
+                _pedido = value;
+            }
+        }
+
+        public string PedidoReferencia
+        {
+            get
+            {
+                return _pedidoReferencia;
+            }
+
+            set
+            {
+                _pedidoReferencia = value;
+            }
+        }
+
+        public decimal Monto
+        {
+            get
+            {
+                return _monto;
+            }
+
+            set
+            {
+                _monto = value;
+            }
+        }
+
+        public int PedidoPadre
+        {
+            get
+            {
+                return pedidoPadre;
+            }
+
+            set
+            {
+                pedidoPadre = value;
+            }
+        }
+
+        public pedidoPagar Clonar()
+        {
+            return (pedidoPagar)this.MemberwiseClone();
+        }
+
+        object ICloneable.Clone()
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public int ClientePadre
     {
@@ -151,37 +253,60 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
         consulta(0, "", "", "");        
     }
 
+  
+
     protected void rbSelector_CheckedChanged(object sender, System.EventArgs e)
     {
-        decimal montoSeleccionado;
-        decimal resto;
-        foreach (GridViewRow oldrow in grvPedidosEmparentados.Rows)
-        {
-            ((RadioButton)oldrow.FindControl("RadioButton1")).Checked = false;
-        }
 
         RadioButton rb = (RadioButton)sender;
         GridViewRow row = (GridViewRow)rb.NamingContainer;
 
-        decimal.TryParse(row.Cells[2].Text, System.Globalization.NumberStyles.Currency, null, out montoSeleccionado);
+        foreach (GridViewRow oldrow in grvPedidosEmparentados.Rows)
+        {
+            if (row != oldrow)
+            {
+                if (((TextBox)oldrow.FindControl("TxtMontoPagar")).Text == "")
+                {
+                    ((TextBox)oldrow.FindControl("TxtMontoPagar")).Enabled = false;
+                    ((TextBox)oldrow.FindControl("TxtMontoPagar")).Text = "";
+                    ((RadioButton)oldrow.FindControl("RadioButton1")).Checked = false;
+                }
+            }            
+        }
+
+        //rb.Checked = !rb.Checked;
+        ((TextBox)row.FindControl("TxtMontoPagar")).Enabled = rb.Checked;
+
+        if (!rb.Checked)
+        {
+            ((TextBox)row.FindControl("TxtMontoPagar")).Text = "";
+        }
+        else
+        {
+            ((TextBox)row.FindControl("TxtMontoPagar")).Focus();
+        }
 
 
-        resto = montoSeleccionado - Monto;
+        //decimal.TryParse(row.Cells[2].Text, System.Globalization.NumberStyles.Currency, null, out montoSeleccionado);
+
+       
+
+        //resto = montoSeleccionado - Monto;
 
 
         
 
-        if (resto <0)
-        {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('El monto del pedido debe ser mayor o igual a la suma de los pagos');", true);
-        }
-        else
-        {
-            ((RadioButton)row.FindControl("RadioButton1")).Checked = true;
-            txtTotalSeleccionado.Text = montoSeleccionado.ToString("C");
-            txtTotalResto.Text = resto.ToString("C");
-            txtTotalAbono.Text = Monto.ToString("C");
-        }
+        ////if (resto <0)
+        ////{
+        ////    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('El monto del pedido debe ser mayor o igual a la suma de los pagos');", true);
+        ////}
+        ////else
+        ////{
+        //    ((RadioButton)row.FindControl("RadioButton1")).Checked = true;
+        //    txtTotalSeleccionado.Text = montoSeleccionado.ToString("C");
+        //    txtTotalResto.Text = resto.ToString("C");
+        //    txtTotalAbono.Text = Monto.ToString("C");
+        ////}
         
       
        
@@ -204,45 +329,83 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
     protected void btnGuardar_Click(object sender, EventArgs e)
     {
         Conexion conexion = new Conexion();
-        GridViewRow filaGrid=null;
-        int celulapedido=0;
-        int añopedido=0;
-        int pedido=0;
-        string PedidoReferencia;
-        DataRow[] filasPadre;
+        //GridViewRow filaGrid=null;
+        //int pedidoTemp= 0;
+        //int añopedido=0;
+        //int pedido=0;
+        //string PedidoReferencia;
+        DataRow filaPadre;
 
-        foreach (GridViewRow oldrow in grvPedidosEmparentados.Rows)
-        {
-            if (((RadioButton)oldrow.FindControl("RadioButton1")).Checked)
+        List<pedidoPagar> listaPedidos = new List<pedidoPagar>();
+       
+
+        TextBox txtMontoPagar;
+        decimal montoPagar;
+        decimal montoTotal=0;
+
+
+        List<GridViewRow> filasCheck = new List<GridViewRow>
+                 (from GridViewRow r in grvPedidosEmparentados.Rows
+                  where ((RadioButton)r.FindControl("RadioButton1")).Checked == true
+                  select r);
+
+        foreach (GridViewRow oldrow in filasCheck)
+        {            
+            txtMontoPagar = (TextBox)oldrow.FindControl("TxtMontoPagar");
+
+            decimal.TryParse(txtMontoPagar.Text, out montoPagar);
+
+            if (montoPagar> 0)
             {
-                filaGrid = oldrow;
-                break;
-            }
+                pedidoPagar pedidoTemp = new pedidoPagar();
+                pedidoTemp.PedidoReferencia = oldrow.Cells[7].Text;
+                pedidoTemp.Monto = montoPagar;
+                montoTotal = montoTotal + montoPagar;
+                listaPedidos.Add(pedidoTemp);
+            }            
         }
 
-        if (filaGrid==null)
+        txtTotalSeleccionado.Text= montoTotal.ToString("C");
+
+        if (listaPedidos.Count==0)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
             return;
         }
 
+        if (Monto != montoTotal)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Favor de verificar el monto capturado. ');", true);
+            return;
+        }
 
 
-        PedidoReferencia = filaGrid.Cells[7].Text;
-        filasPadre = TablaPagosPadre.Select("pedidoreferencia='" + PedidoReferencia+"'");
+        foreach (pedidoPagar pedidoTemp in listaPedidos)
+        {
+            filaPadre = TablaPagosPadre.Select("pedidoreferencia='" +pedidoTemp.PedidoReferencia + "'").FirstOrDefault();
+
+            pedidoTemp.Celulapedido = Convert.ToInt32(filaPadre["celula"]);
+            pedidoTemp.Añopedido = Convert.ToInt32(filaPadre["añoPed"]);
+            pedidoTemp.Pedido = Convert.ToInt32(filaPadre["pedido"]);
+        }
+        
+        
+
+        //PedidoReferencia = filaGrid.Cells[7].Text;
+        //filasPadre = TablaPagosPadre.Select("pedidoreferencia='" + PedidoReferencia+"'");
 
 
-        celulapedido = Convert.ToInt32(filasPadre[0]["celula"]);
-        añopedido = Convert.ToInt32(filasPadre[0]["añoPed"]);
-        pedido = Convert.ToInt32(filasPadre[0]["pedido"]);
-
+        //celulapedido = Convert.ToInt32(filasPadre[0]["celula"]);
+        //añopedido = Convert.ToInt32(filasPadre[0]["añoPed"]);
+        //pedido = Convert.ToInt32(filasPadre[0]["pedido"]);
+       
         conexion.AbrirConexion(true, true);
-
+        
         try
         {
-            foreach (DataRow filaTabla in TablaPagos.Rows)
+            foreach(pedidoPagar pedidoAPagar in listaPedidos)
             {
-
+                DataRow filaTabla = TablaPagos.Rows[0];
                 ReferenciaConciliadaPedido objRCP = new ReferenciaConciliadaPedidoDatos(
                                                     CorporativoConciliacion,
                                                     AnioConciliacion,
@@ -253,7 +416,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     Convert.ToInt32(filaTabla["FolioExt"]),
                                                     Convert.ToInt32(filaTabla["Secuencia"]),
                                                     Convert.ToString(filaTabla["Concepto"]),
-                                                    Convert.ToDecimal(filaTabla["Diferencia"]),
+                                                    pedidoAPagar.Monto,
                                                     0,
                                                     Convert.ToInt16(filaTabla["FormaConciliacion"]),
                                                     0,
@@ -265,29 +428,77 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     "",
                                                     "",
                                                     "",
-                                                    Convert.ToDecimal(filaTabla["Deposito"]),
+                                                     Convert.ToDecimal(filaTabla["Deposito"]),
                                                     0,
                                                     Convert.ToInt32(filaTabla["SucursalPedido"]),
                                                     "",
-                                                    celulapedido,
-                                                    añopedido,
-                                                    pedido,
+                                                    pedidoAPagar.Celulapedido,
+                                                    pedidoAPagar.Añopedido,
+                                                    pedidoAPagar.Pedido,
                                                     Convert.ToInt32(filaTabla["RemisionPedido"]),
                                                     Convert.ToString(filaTabla["SeriePedido"]),
                                                     Convert.ToInt32(filaTabla["FolioSat"]),
                                                     Convert.ToString(filaTabla["SerieSat"]),
                                                     Convert.ToString(filaTabla["ConceptoPedido"]),
-                                                    Convert.ToDecimal(filaTabla["Diferencia"]),
+                                                    pedidoAPagar.Monto,
                                                     Convert.ToString(filaTabla["StatusMovimiento"]),
                                                     ClientePadre,
                                                     "",
-                                                    Convert.ToInt32(filaTabla["AñoPed"]),
+                                                    Convert.ToInt32(filaTabla["AñoExterno"]),
                                                     Conciliacion.RunTime.App.ImplementadorMensajes);
 
                 objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
                 objRCP.Guardar2(conexion);
+
             }
-           // throw new Exception("Hola");
+            //foreach (DataRow filaTabla in TablaPagos.Rows)
+            //{
+
+            //    ReferenciaConciliadaPedido objRCP = new ReferenciaConciliadaPedidoDatos(
+            //                                        CorporativoConciliacion,
+            //                                        AnioConciliacion,
+            //                                        MesConciliacion,
+            //                                        FolioConciliacion,
+            //                                        SucursalConciliacion,
+            //                                        "",
+            //                                        Convert.ToInt32(filaTabla["FolioExt"]),
+            //                                        Convert.ToInt32(filaTabla["Secuencia"]),
+            //                                        Convert.ToString(filaTabla["Concepto"]),
+            //                                        Convert.ToDecimal(filaTabla["Diferencia"]),
+            //                                        0,
+            //                                        Convert.ToInt16(filaTabla["FormaConciliacion"]),
+            //                                        0,
+            //                                        "",
+            //                                        DateTime.Now,
+            //                                        DateTime.Now,
+            //                                        "",
+            //                                        "",
+            //                                        "",
+            //                                        "",
+            //                                        "",
+            //                                        Convert.ToDecimal(filaTabla["Deposito"]),
+            //                                        0,
+            //                                        Convert.ToInt32(filaTabla["SucursalPedido"]),
+            //                                        "",
+            //                                        celulapedido,
+            //                                        añopedido,
+            //                                        pedido,
+            //                                        Convert.ToInt32(filaTabla["RemisionPedido"]),
+            //                                        Convert.ToString(filaTabla["SeriePedido"]),
+            //                                        Convert.ToInt32(filaTabla["FolioSat"]),
+            //                                        Convert.ToString(filaTabla["SerieSat"]),
+            //                                        Convert.ToString(filaTabla["ConceptoPedido"]),
+            //                                        Convert.ToDecimal(filaTabla["Diferencia"]),
+            //                                        Convert.ToString(filaTabla["StatusMovimiento"]),
+            //                                        ClientePadre,
+            //                                        "",
+            //                                        Convert.ToInt32(filaTabla["AñoPed"]),
+            //                                        Conciliacion.RunTime.App.ImplementadorMensajes);
+
+            //    objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
+            //    objRCP.Guardar2(conexion);
+            //}
+          // throw new Exception("Hola");
             conexion.CommitTransaction();
         }
         catch (Exception ex)
