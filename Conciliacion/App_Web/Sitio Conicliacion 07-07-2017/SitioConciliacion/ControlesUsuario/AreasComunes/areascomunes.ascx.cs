@@ -337,39 +337,35 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
         DataRow filaPadre;
 
         List<pedidoPagar> listaPedidos = new List<pedidoPagar>();
-        List<pedidoPagar> listaPedidosFinal = new List<pedidoPagar>();
+       
 
         TextBox txtMontoPagar;
         decimal montoPagar;
         decimal montoTotal=0;
 
-        
-       
-        
 
-        foreach (GridViewRow oldrow in grvPedidosEmparentados.Rows)
-        {
-            if (((RadioButton)oldrow.FindControl("RadioButton1")).Checked)
+        List<GridViewRow> filasCheck = new List<GridViewRow>
+                 (from GridViewRow r in grvPedidosEmparentados.Rows
+                  where ((RadioButton)r.FindControl("RadioButton1")).Checked == true
+                  select r);
+
+        foreach (GridViewRow oldrow in filasCheck)
+        {            
+            txtMontoPagar = (TextBox)oldrow.FindControl("TxtMontoPagar");
+
+            decimal.TryParse(txtMontoPagar.Text, out montoPagar);
+
+            if (montoPagar> 0)
             {
-                txtMontoPagar = (TextBox)oldrow.FindControl("TxtMontoPagar");
-
-                decimal.TryParse(txtMontoPagar.Text, out montoPagar);
-
-                if (montoPagar> 0)
-                {
-
-                    pedidoPagar pedidoTemp = new pedidoPagar();
-                    pedidoTemp.PedidoReferencia = oldrow.Cells[7].Text;
-                    pedidoTemp.Monto = montoPagar;
-                    montoTotal = montoTotal + montoPagar;
-                    listaPedidos.Add(pedidoTemp);
-                }               
-
-                //filaGrid = oldrow;
-                //
-                //break;
-            }
+                pedidoPagar pedidoTemp = new pedidoPagar();
+                pedidoTemp.PedidoReferencia = oldrow.Cells[7].Text;
+                pedidoTemp.Monto = montoPagar;
+                montoTotal = montoTotal + montoPagar;
+                listaPedidos.Add(pedidoTemp);
+            }            
         }
+
+        txtTotalSeleccionado.Text= montoTotal.ToString("C");
 
         if (listaPedidos.Count==0)
         {
@@ -392,47 +388,8 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
             pedidoTemp.Añopedido = Convert.ToInt32(filaPadre["añoPed"]);
             pedidoTemp.Pedido = Convert.ToInt32(filaPadre["pedido"]);
         }
-
-        List<decimal> ListaMontosPadre = new List<decimal>();
-
-        ListaMontosPadre.Add(200);
-        ListaMontosPadre.Add(400);
-        ListaMontosPadre.Add(400);
-
-
-
-        int i = 0;
-        int j = 0;
-
-        while (i < listaPedidos.Count())
-        {
-            if (listaPedidos[i].Monto <= ListaMontosPadre[j])
-            {
-                pedidoPagar pedidoTemp = listaPedidos[i].Clonar();
-                pedidoTemp.PedidoPadre = j;
-                listaPedidosFinal.Add(pedidoTemp);
-                ListaMontosPadre[j] = ListaMontosPadre[j] - pedidoTemp.Monto;
-                i = i + 1;
-            }
-            else
-            {
-                pedidoPagar pedidoTemp = listaPedidos[i].Clonar();
-                pedidoTemp.PedidoPadre = j;
-                pedidoTemp.Monto = ListaMontosPadre[j];
-
-                listaPedidos[i].Monto= listaPedidos[i].Monto - ListaMontosPadre[j];
-                ListaMontosPadre[j] = 0;
-                listaPedidosFinal.Add(pedidoTemp);
-            }
-
-            if (ListaMontosPadre[j] == 0)
-            {
-                j = j + 1;
-            }
-        }
-
-
-
+        
+        
 
         //PedidoReferencia = filaGrid.Cells[7].Text;
         //filasPadre = TablaPagosPadre.Select("pedidoreferencia='" + PedidoReferencia+"'");
@@ -446,9 +403,9 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
         
         try
         {
-            foreach(pedidoPagar pedidoAPagar in listaPedidosFinal)
+            foreach(pedidoPagar pedidoAPagar in listaPedidos)
             {
-                DataRow filaTabla = TablaPagos.Rows[pedidoAPagar.PedidoPadre];
+                DataRow filaTabla = TablaPagos.Rows[0];
                 ReferenciaConciliadaPedido objRCP = new ReferenciaConciliadaPedidoDatos(
                                                     CorporativoConciliacion,
                                                     AnioConciliacion,
@@ -471,7 +428,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     "",
                                                     "",
                                                     "",
-                                                    pedidoAPagar.Monto,
+                                                     Convert.ToDecimal(filaTabla["Deposito"]),
                                                     0,
                                                     Convert.ToInt32(filaTabla["SucursalPedido"]),
                                                     "",
@@ -483,11 +440,11 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     Convert.ToInt32(filaTabla["FolioSat"]),
                                                     Convert.ToString(filaTabla["SerieSat"]),
                                                     Convert.ToString(filaTabla["ConceptoPedido"]),
-                                                    Convert.ToDecimal(filaTabla["Diferencia"]),
+                                                    pedidoAPagar.Monto,
                                                     Convert.ToString(filaTabla["StatusMovimiento"]),
                                                     ClientePadre,
                                                     "",
-                                                    Convert.ToInt32(filaTabla["AñoPed"]),
+                                                    Convert.ToInt32(filaTabla["AñoExterno"]),
                                                     Conciliacion.RunTime.App.ImplementadorMensajes);
 
                 objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
@@ -541,7 +498,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
             //    objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
             //    objRCP.Guardar2(conexion);
             //}
-           // throw new Exception("Hola");
+          // throw new Exception("Hola");
             conexion.CommitTransaction();
         }
         catch (Exception ex)

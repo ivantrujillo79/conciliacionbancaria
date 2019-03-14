@@ -306,9 +306,22 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
         CheckBox rb = (CheckBox)sender;
         GridViewRow row = (GridViewRow)rb.NamingContainer;
-       
 
 
+
+        List<GridViewRow> filasCheck =new List<GridViewRow>
+                (from GridViewRow r in grvPagos.Rows
+                 where ((CheckBox)r.FindControl("chkSeleccionado")).Checked == true
+                 select r);
+
+
+        
+        if (filasCheck.Count>1)
+        {
+            rb.Checked = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Solo puede seleccionar un registro');", true);
+            return;
+        }
 
         diferencia = ((Label)row.FindControl("lblDiferencia")).Text;
         clientePadreTemp = int.Parse(((Label)row.FindControl("lblClientePadre")).Text);
@@ -325,6 +338,12 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
         if (rb.Checked)
         {
+
+
+
+
+
+
             if (PagosSeleccionados==0)
             {
                 PagosSeleccionados = PagosSeleccionados + 1;
@@ -712,6 +731,7 @@ private string TipoCobroDescripcion(int tipoCobro)
             tblReferenciasAPagar.Columns.Add("IdTipoCobro", typeof(int));
             tblReferenciasAPagar.Columns.Add("FormaConciliacion", typeof(int));
             tblReferenciasAPagar.Columns.Add("SucursalPedido", typeof(int));
+            tblReferenciasAPagar.Columns.Add("AñoExterno", typeof(int));
             listaReferenciaConciliadaPagos = HttpContext.Current.Session["CONCILIAR_PAGOS"] as List<ReferenciaConciliadaPedido>;
             if (listaReferenciaConciliadaPagos == null)
             {
@@ -774,8 +794,8 @@ private string TipoCobroDescripcion(int tipoCobro)
                         TipoCobroDescripcion(rc.TipoCobro),
                         rc.TipoCobro,
                         rc.FormaConciliacion,
-                        rc.SucursalPedido
-                        );
+                        rc.SucursalPedido,
+                        rc.Año);
             }
             HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;
             ViewState["TAB_REF_PAGAR"] = tblReferenciasAPagar;
@@ -1214,24 +1234,34 @@ private string TipoCobroDescripcion(int tipoCobro)
         //    return;
         //}
 
-        foreach(GridViewRow fila in grvPagos.Rows)
-        {            
-            sel = ((CheckBox)fila.FindControl("chkSeleccionado"));              
-            
-            if (sel.Checked)
-            {
-                referencia= ((Label)fila.FindControl("lblReferencia")).Text;
-                pedidoReferencia = ((Label)fila.FindControl("lblPedidoReferencia")).Text;
+        
 
-                filas = tablaReferencias.Select("referencia = '"+referencia+"' and pedidoReferencia = '"+pedidoReferencia+"'");
+        List<GridViewRow> filasCheck = new List<GridViewRow>
+                (from GridViewRow r in grvPagos.Rows
+                 where ((CheckBox)r.FindControl("chkSeleccionado")).Checked == true
+                 select r);
 
-                foreach (DataRow filaTabla in filas)
-                {
-                    tablaReferenciasSeleccionadas.ImportRow(filaTabla);
-                }
-                
-            }         
+        if (filasCheck.Count ==0)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
+            return;
         }
+
+
+        foreach (GridViewRow fila in filasCheck)
+        {                    
+            referencia= ((Label)fila.FindControl("lblReferencia")).Text;
+            pedidoReferencia = ((Label)fila.FindControl("lblPedidoReferencia")).Text;
+
+            filas = tablaReferencias.Select("referencia = '"+referencia+"' and pedidoReferencia = '"+pedidoReferencia+"'");
+
+            foreach (DataRow filaTabla in filas)
+            {
+                tablaReferenciasSeleccionadas.ImportRow(filaTabla);
+            }               
+                     
+        }
+    
 
         Conexion conexion = new Conexion();
         wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
