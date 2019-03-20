@@ -1,6 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="CantidadYReferenciaConcuerdan.aspx.cs" Inherits="Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan"
-    Debug="true" EnableEventValidation="true" Async="true" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" 
+    AutoEventWireup="true"
+    CodeFile="CantidadYReferenciaConcuerdan.aspx.cs" 
+    Inherits="Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan"
+    EnableEventValidation="true" 
+    Async="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -431,8 +434,8 @@
                 <asp:UpdatePanel runat="server" ID="upGrvConciliadas" UpdateMode="Always">
                     <ContentTemplate>
                         <div style="width:1200px; height:230px; overflow:auto;">
-                            <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" 
-                            AllowPaging='<%# ActivePaging %>' PageSize="5" 
+                            <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False"  
+                            AllowPaging='<%# ActivePaging %>' PageSize="5"
                             Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             OnPageIndexChanging="grvConciliadas_PageIndexChanging" OnRowDataBound="grvConciliadas_RowDataBound"
                             DataKeyNames="CorporativoConciliacion, SucursalConciliacion, AñoConciliacion, MesConciliacion, FolioConciliacion, FolioExt, Secuencia"

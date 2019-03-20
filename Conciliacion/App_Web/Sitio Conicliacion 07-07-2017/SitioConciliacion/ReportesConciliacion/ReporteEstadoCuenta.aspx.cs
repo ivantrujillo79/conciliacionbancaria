@@ -201,7 +201,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                         List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>> lstDetalle = new List<List<InformeBancarioDatos.DetalleReporteEstadoCuentaDia>>();
                         lstDetalle = consultaReporteEstadoCuentaDia("");
                         ExportadorInformeEstadoCuentaDia obExportador = new ExportadorInformeEstadoCuentaDia(
-                            lstDetalle, rutaCompleta, Archivo, "", btnlista.Text, DateTime.Parse(txtFInicial.Text), DateTime.Parse(txtFFinal.Text), usuario.NombreCorporativo);
+                            lstDetalle, rutaCompleta, Archivo, WUCListadoCuentasBancarias1.CuentasSeleccionadas[0].Descripcion, btnlista.Text, 
+                            DateTime.Parse(txtFInicial.Text), DateTime.Parse(txtFFinal.Text), 
+                            usuario.NombreCorporativo);
                         obExportador.generarInforme();       
                        
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",

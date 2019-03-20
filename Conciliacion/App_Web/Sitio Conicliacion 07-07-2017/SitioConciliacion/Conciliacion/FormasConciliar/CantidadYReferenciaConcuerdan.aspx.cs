@@ -142,10 +142,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+
             LlenaGridViewDestinoDetalleInterno();
+
             if (!Page.IsPostBack)
             {
-
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
                 año = Convert.ToInt32(Request.QueryString["Año"]);
@@ -245,11 +246,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
             //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
             if (ddlCriteriosConciliacion.SelectedValue == "2" || ddlCriteriosConciliacion.SelectedValue == "7")
-            { 
-                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-                GenerarTablaConciliados();
-                LlenaGridViewConciliadas();
-            }
+                if (corporativo != 0 && sucursal != 0 && año != 0 && mes != 0 && folio != 0)
+                { 
+                    Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                    GenerarTablaConciliados();
+                    LlenaGridViewConciliadas();
+                }
         }
         catch (SqlException ex)
         {
@@ -879,11 +881,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             if (cliente == null)
             {
                 consultaClienteCRM(numCliente, (SeguridadCB.Public.Usuario)Session["Usuario"], byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);
-                NombreCliente = lstClientes.FirstOrDefault(x => x.NumCliente == numCliente).Nombre;
-                cliente = App.Cliente.CrearObjeto();
-                cliente.NumCliente = numCliente;
-                cliente.Nombre = NombreCliente;
-                lstClientes.Add(cliente);
+                if (lstClientes.Count > 0)
+                { 
+                    NombreCliente = lstClientes.FirstOrDefault(x => x.NumCliente == numCliente).Nombre;
+                    cliente = App.Cliente.CrearObjeto();
+                    cliente.NumCliente = numCliente;
+                    cliente.Nombre = NombreCliente;
+                    lstClientes.Add(cliente);
+                }
             }
             else
             {
@@ -1413,24 +1418,32 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     //Crea la paginacion para Concilidos
     protected void grvConciliadas_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType == DataControlRowType.DataRow)
+        try
         {
-
-        }
-
-        if (e.Row.RowType == DataControlRowType.Pager && (grvConciliadas.DataSource != null))
-        {
-            //TRAE EL TOTAL DE PAGINAS
-            Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
-            _TotalPags.Text = grvConciliadas.PageCount.ToString();
-
-            //LLENA LA LISTA CON EL NUMERO DE PAGINAS
-            DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownListConciliadas");
-            for (int i = 1; i <= Convert.ToInt32(grvConciliadas.PageCount); i++)
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                list.Items.Add(i.ToString());
+
             }
-            list.SelectedValue = (grvConciliadas.PageIndex + 1).ToString();
+
+            if (e.Row.RowType == DataControlRowType.Pager && (grvConciliadas.DataSource != null))
+            {
+                //TRAE EL TOTAL DE PAGINAS
+                Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
+                _TotalPags.Text = grvConciliadas.PageCount.ToString();
+
+                //LLENA LA LISTA CON EL NUMERO DE PAGINAS
+                DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownListConciliadas");
+                for (int i = 1; i <= Convert.ToInt32(grvConciliadas.PageCount); i++)
+                {
+                    list.Items.Add(i.ToString());
+                }
+                list.SelectedValue = (grvConciliadas.PageIndex + 1).ToString();
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
         }
     }
     //Asignar Valoresa Css de cada Row

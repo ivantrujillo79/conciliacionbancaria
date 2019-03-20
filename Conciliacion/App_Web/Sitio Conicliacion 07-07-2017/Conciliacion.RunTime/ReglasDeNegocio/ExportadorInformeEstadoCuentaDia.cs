@@ -63,7 +63,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     ExcelPackage excelPackage = inicializar();
                     for (int i = 0; i <= _ReporteEstadoCuentaDia.Count-1; i++)
                     {
-                            crearEncabezado(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString()) ;
+                            crearEncabezado(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString(), "","");
                             exportarDatos(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString(), 5, _ReporteEstadoCuentaDia[i]);
                     }
                     excelPackage.Save();
@@ -100,11 +100,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             return excel;
         }
 
-        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombrehoja)
+        private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombrehoja, string banco, string cuenta)
         {
             //string banco, cuenta, empresa, saldofinal, depositos, retiro;
             
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
+            
 
             //banco = "BANAMEX ";
             //cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
@@ -124,13 +125,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             //{
             //    nombrehoja = "hoja2";
             //}
-            
+
             ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombrehoja);
             
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:G1"])
             {
-                Rng.Value = _Banco.ToUpper() + _Cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: " + _MesDelPeriodo;
+                //Rng.Value = _Banco.ToUpper() + _Cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: " + _MesDelPeriodo;
+                Rng.Value = nombrehoja + " MOVIMIENTOS DEL MES DE: " + _MesDelPeriodo;
                 Rng.Merge = true;
             }
 
@@ -258,8 +260,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                 i++;
             }
-
             i++;
+            wsSheet1.Cells[i, 8, i, 9].Merge = true;
+            wsSheet1.Cells[i, 10, i, 11].Merge = true;
+            wsSheet1.Cells[i, 12, i, 13].Merge = true;
             wsSheet1.Cells[i, 8].Value = sumaRetiros;
             wsSheet1.Cells[i, 10].Value = sumaDepositos;
             wsSheet1.Cells[i, 12].Value = saldoFila;
