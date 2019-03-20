@@ -100,15 +100,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         private ExcelPackage crearEncabezado(ExcelPackage excelPackage, string nombrehoja)
         {
-            string banco, cuenta, empresa, saldofinal, depositos, retiro;
             DateTime fecha;
             CultureInfo cultureInfo = CultureInfo.GetCultureInfo("es-MX");
-
-            banco = "BANAMEX ";
-            cuenta = "CTA ";// + _ReporteEstadoCuentaConciliado[0].CuentaBancoFinanciero + " ";
-            empresa = "Corporativo";//_ReporteEstadoCuentaConciliado[0].Corporativo;
             fecha = DateTime.Now;//_ReporteEstadoCuentaConciliado[0].Fecha;
-
             //// banco = _DetalleReporteEstadoCuenta[0].
             //  banco = "BANAMEX ";
             // cuenta = "CTA " + ListaEncabezado[0].CuentaBancoFinanciero + " ";
@@ -118,18 +112,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             // saldofinal = ListaEncabezado[0].SaldoFinal;
             // depositos = ListaEncabezado[0].Depositos;
 
-            //if (excelPackage.Workbook.Worksheets.Count > 0)
-            //{
-            //    nombrehoja = "hoja2";
-            //}
-
-            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombrehoja);
-            
+            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets.Add(nombrehoja.Trim());
 
             // Cuenta
             using (ExcelRange Rng = wsSheet1.Cells["B1:H1"])
             {
-                Rng.Value = banco.ToUpper() + cuenta.ToUpper() + " MOVIMIENTOS DEL MES DE: " + fecha.ToString("MMMM", cultureInfo).ToUpper(); ;
+                Rng.Value = _NombreHoja + " MOVIMIENTOS DEL MES DE: " + fecha.ToString("MMMM", cultureInfo).ToUpper(); ;
                 Rng.Merge = true;
             }
 
@@ -137,7 +125,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             using (ExcelRange Rng = wsSheet1.Cells["B2:H2"])
             {
                 Rng.Merge = true;
-                Rng.Value = empresa.ToUpper();
+                Rng.Value = "";// empresa.ToUpper();
             }
 
             // Mes
@@ -241,7 +229,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             int i = aPartirDeLaFila;
 
-            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja];
+            ExcelWorksheet wsSheet1 = excelPackage.Workbook.Worksheets[nombreHoja.Trim()];
 
             foreach (DetalleReporteEstadoCuenta detalle in _ReporteEstadoCuenta)
             {

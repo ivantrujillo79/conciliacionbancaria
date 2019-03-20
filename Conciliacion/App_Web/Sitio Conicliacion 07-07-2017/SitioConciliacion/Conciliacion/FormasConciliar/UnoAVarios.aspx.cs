@@ -7124,6 +7124,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
         GridView grvPrima = null;
+        SeguridadCB.Public.Parametros parametros;
+        AppSettingsReader settings = new AppSettingsReader();
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
         try
         {
             if (tipoConciliacion == 2)
@@ -7153,39 +7157,39 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         tableBuscaCliente = EliminarPedidosAgregados(tableBuscaCliente);
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tableBuscaCliente;
                     ViewState["tipo"] = "2";
-                    HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = tableBuscaCliente_AX; // wucBuscaClientesFacturas.BuscaCliente();
-                    //grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                    //grvPedidos.DataBind();
-                    //grvPedidos.DataBind();
-                    List<int> listaClientesDistintos = new List<int>();
-                    foreach (DataRow item in tableBuscaCliente.Rows)
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = tableBuscaCliente_AX; 
+                    if (_URLGateway != "")
                     {
-                        if (item["Cliente"].ToString() != string.Empty)
+                        List<int> listaClientesDistintos = new List<int>();
+                        foreach (DataRow item in tableBuscaCliente.Rows)
                         {
-                            if(!listaDireccinEntrega.Exists(x=>x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                            if (item["Cliente"].ToString() != string.Empty)
                             {
-                                if (!listaClientesDistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                                if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
                                 {
-                                    listaClientesDistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                    if (!listaClientesDistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                                    {
+                                        listaClientesDistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                    }
                                 }
                             }
                         }
-                    }
-                    try
-                    {
-                        if (listaClientesDistintos.Count > 0)
+                        try
                         {
-                            validarPeticion = true;
-                            ObtieneNombreCliente(listaClientesDistintos);
+                            if (listaClientesDistintos.Count > 0)
+                            {
+                                validarPeticion = true;
+                                ObtieneNombreCliente(listaClientesDistintos);
+                            }
+                            else
+                            {
+                                llenarListaEntrega();
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            llenarListaEntrega();
+                            throw ex;
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
                     }
                     return;
                 }
