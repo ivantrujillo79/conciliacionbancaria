@@ -195,13 +195,15 @@ namespace Conciliacion.RunTime.DatosSQL
                     Cobro.MovimientoCajaEntradaAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
                     Cobro.ActualizaPagoReferenciado(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
 
-                    List<ReferenciaConciliadaPedido> Pedidos =
-                        Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
+
+                    //List<ReferenciaConciliadaPedido> Pedidos =
+                    //    Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
+                    List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.ToList();
 
                     foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
                     {
                         Pedido.MontoConciliado =
-                            Cobro.ListaPedidos.Where(y => y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+                            Cobro.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
                         Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
 
                         //PedidoActualizaSaldo() NO se debe ejecutar
