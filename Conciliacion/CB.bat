@@ -1,4 +1,4 @@
-@Echo OFF
+﻿@Echo OFF
 Echo Start Time - %Time%
 Echo Start Time - %Time% > cb.log
 Echo git checkout SigaMetClasses
@@ -21,6 +21,8 @@ git -C "C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\Ap
 Echo MSbuild Conciliacion Bancaria
 SET SolutionPath="C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SolucionConciliacion.sln"
 MSbuild %SolutionPath% /p:Configuration=Release /p:Platform="Any CPU" >> cb.log
+
+rm "C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\PrecompiledWeb" -r -d -f
 
 Echo Empaquetando Archivos Version %1
 winrar a -m5 App_Web_%1.rar app_web
