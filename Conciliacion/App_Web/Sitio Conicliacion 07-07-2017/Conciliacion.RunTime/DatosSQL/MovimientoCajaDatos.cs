@@ -380,7 +380,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                     DescuentoAplicable = 0,
                                     DiferenciaDeLecturas = 0,
                                     IDDetallePedido = 0,
-                                    IDPedido = int.Parse(Pedido.IDPedidoCRM),
+                                    IDPedido = Pedido.Pedido,
                                     ImpuestoAplicable = 0,
                                     PorcentajeTanque = 0,
                                     PrecioAplicable = 0,
@@ -400,7 +400,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 lstPedido.Add(new RTGMCore.PedidoCRMSaldo
                                 {
                                     AnioPed = Pedido.AñoPedido,
-                                    IDPedido = int.Parse(Pedido.IDPedidoCRM), //Pedido.Pedido,
+                                    IDPedido = Pedido.Pedido, //int.Parse(Pedido.IDPedidoCRM), 
                                     IDZona = Pedido.CelulaPedido, //checar si corresponde con campo Celula
                                     RutaSuministro = obRuta,
                                     DetallePedido = listaDetallePedidos,
@@ -430,7 +430,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             Pedidos = lstPedido,
                             Portatil = false,
                             TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
-                            Usuario = null //"ROPIMA"
+                            Usuario = "ROPIMA"
                         };
                         List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
                         resultado = Exitoso(ListaRespuesta);
