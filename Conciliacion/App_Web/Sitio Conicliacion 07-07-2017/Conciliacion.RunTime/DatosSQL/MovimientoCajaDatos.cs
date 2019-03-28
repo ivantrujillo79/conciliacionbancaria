@@ -331,7 +331,6 @@ namespace Conciliacion.RunTime.DatosSQL
             int tipocargo;
             int tipopedido;
             string serieremision;
-
             AppSettingsReader settings = new AppSettingsReader();
             SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
@@ -381,7 +380,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                     DescuentoAplicable = 0,
                                     DiferenciaDeLecturas = 0,
                                     IDDetallePedido = 0,
-                                    IDPedido = 0,
+                                    IDPedido = int.Parse(Pedido.IDPedidoCRM),
                                     ImpuestoAplicable = 0,
                                     PorcentajeTanque = 0,
                                     PrecioAplicable = 0,
@@ -397,9 +396,11 @@ namespace Conciliacion.RunTime.DatosSQL
                                 int.TryParse(dtPedido.Rows[0]["tipocargo"].ToString(), out tipocargo);
                                 int.TryParse(dtPedido.Rows[0]["tipopedido"].ToString(), out tipopedido);
                                 serieremision = dtPedido.Rows[0]["serieremision"].ToString();
+
                                 lstPedido.Add(new RTGMCore.PedidoCRMSaldo
                                 {
-                                    IDPedido = Pedido.Pedido,
+                                    AnioPed = Pedido.AñoPedido,
+                                    IDPedido = int.Parse(Pedido.IDPedidoCRM), //Pedido.Pedido,
                                     IDZona = Pedido.CelulaPedido, //checar si corresponde con campo Celula
                                     RutaSuministro = obRuta,
                                     DetallePedido = listaDetallePedidos,
@@ -418,6 +419,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                     Impuesto = impuesto,//campo impuesto
                                     SerieRemision = serieremision,//campo SerieRemision
                                     Total = total,//campo total  
+                                    Abono = total,
                                     PedidoReferencia = Pedido.IDPedidoCRM
                                 });
                             }
@@ -428,7 +430,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             Pedidos = lstPedido,
                             Portatil = false,
                             TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
-                            Usuario = "ROPIMA"
+                            Usuario = null //"ROPIMA"
                         };
                         List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
                         resultado = Exitoso(ListaRespuesta);
