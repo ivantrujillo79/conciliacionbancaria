@@ -13,6 +13,8 @@
 <%@ Register Src="~/ControlesUsuario/ConciliadorPagare/wucConciliadorPagare.ascx" TagPrefix="uc1" TagName="wucConciliadorPagare" %>
 <%@ Register Src="~/ControlesUsuario/ClientePago/wucClientePago.ascx" TagPrefix="uc1" TagName="wucClientePago" %>
 <%@ Register Src="~/ControlesUsuario/ClienteDatosBancarios/wucClienteDatosBancarios.ascx" TagPrefix="uc1" TagName="wucClienteDatosBancarios" %>
+<%@ Register Src="~/ControlesUsuario/BuscadorPagoEstadoCuenta/wucBuscadorPagoEstadoCuenta.ascx" TagPrefix="uc1" TagName="wucBuscadorPagoEstadoCuenta" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
@@ -66,6 +68,13 @@
             if (document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro') != null)
                 document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
+
+        $(document).keypress(function (e) {
+            if (e.which == 2) {
+                console.log("ctrl B");
+                $find('ModalBehaviorBuscadorPagoEdoCta').show();
+            }
+        });
 
         function rdbSecuencia_scrollpos() {
             document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value = document.getElementById("divExternos").scrollTop;
@@ -354,6 +363,11 @@
         }
 
         function OcultarPopUpClientePago() {
+            btnClientePagoCancelar_Click();
+            $find("ModalBehaviorClientePago").hide();
+        }
+
+        function OcultarPopUpBuscadorPagoEdoCta() {
             btnClientePagoCancelar_Click();
             $find("ModalBehaviorClientePago").hide();
         }
@@ -3121,6 +3135,7 @@
 
     <!--        INICIO DE POPUP CLIENTE PAGO     -->
     <asp:HiddenField runat="server" ID="hdfClientePago" />
+    
     <asp:ModalPopupExtender ID="mpeClientePago" runat="server" BackgroundCssClass="ModalBackground"
         DropShadow="False" PopupControlID="pnlClientePago" TargetControlID="hdfClientePago"
         BehaviorID="ModalBehaviorClientePago" CancelControlID="btnCerrar_ClientePago">
@@ -3161,6 +3176,42 @@
     </asp:UpdatePanel>
     </asp:Panel>
     <!--        FIN POPUP CLIENTE PAGO     -->
+
+    <%--INICIO POPUP BUSCADORPAGOESTADO DE CUENTA--%>
+    <asp:HiddenField runat="server" ID="hdfBuscadorPagoEdoCta" />
+    <asp:ModalPopupExtender ID="mpeBuscadorPagoEdoCta" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="false" PopupControlID="pnlBuscadorPagoEdoCta" TargetControlID="hdfBuscadorPagoEdoCta"
+        BehaviorID="ModalBehaviorBuscadorPagoEdoCta" CancelControlID="btnCerrar_BuscadorPagoEdoCta">
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlBuscadorPagoEdoCta" runat="server" CssClass="ModalPopup" Width="1200px" style="display: none;">
+        <asp:UpdatePanel ID="upBuscadorPagoEdoCta" runat="server">
+            <ContentTemplate>
+                <asp:HiddenField runat="server" ID="hdfBuscadorPagoEdoCtaMostrar" Value=""/>
+                <div>
+                    <table style="width:100%;">
+                        <tr class="bg-color-grisOscuro">
+                            <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                                <div class="floatDerecha bg-color-grisClaro01">
+                                    <asp:ImageButton runat="server" ID="btnCerrar_BuscadorPagoEdoCta" CssClass="iconoPequeño bg-color-rojo" 
+                                        ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px" 
+                                        OnClientClick="OcultarPopUpBuscadorPagoEdoCta();"/>
+                                </div>
+                                <div class="fg-color-blanco centradoJustificado">
+                                    BUSQUEDA DE MONTO
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <uc1:wucBuscadorPagoEstadoCuenta runat="server" ID="wucBuscadorPagoEstadoCuenta" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </asp:Panel>
+    <%--FIN POPUP BUSCADORPAGOESTADO DE CUENTA--%>
 
     <!--        INICIO DE POPUP CLIENTE DATOS BANCARIOS     -->
     <asp:HiddenField runat="server" ID="hdfClienteDatosBancarios" />

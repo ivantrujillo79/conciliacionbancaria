@@ -2411,6 +2411,25 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    private bool MostrarBuscadorPagoEdoCta(bool EsPedido)
+    {
+        bool seMuestra = false;
+        try
+        {
+            if (EsPedido && hdfBuscadorPagoEdoCtaMostrar.Value == "1")
+            {
+                wucBuscadorPagoEstadoCuenta.CargarGrid();
+                seMuestra = true;
+                mpeBuscadorPagoEdoCta.Show();
+            }
+            return seMuestra;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public void GenerarTablaArchivosInternos() //Genera la tabla Referencias a Conciliar de Archivos Internos
     {
         try
