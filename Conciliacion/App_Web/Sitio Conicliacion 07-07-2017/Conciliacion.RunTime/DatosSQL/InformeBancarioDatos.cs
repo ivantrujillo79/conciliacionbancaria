@@ -576,6 +576,7 @@ namespace Conciliacion.RunTime.DatosSQL
             private string documentoConciliado;
             private string clabe;
             private string statusconciliacion;
+            private int motivonoconciliado;
 
             public string Corporativo
             {
@@ -673,6 +674,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 set { statusconciliacion = value; }
             }
 
+            public int MotivoNoConciliado
+            {
+                get { return motivonoconciliado; }
+                set { motivonoconciliado = value; }
+            }
+
             public DetalleReporteEstadoCuentaConciliado()
             {
             }
@@ -764,6 +771,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                 Convert.ToString(reader["Clabe"]);
 
                             dtReporteEstadosCuentaConciliado.StatusConciliacion = Convert.ToString(reader["StatusConciliacion"]);
+                            if (reader["MotivoNoConciliado"] != DBNull.Value)
+                                dtReporteEstadosCuentaConciliado.MotivoNoConciliado = Convert.ToInt32(reader["MotivoNoConciliado"].ToString());
 
                             ListaResultado.Add(dtReporteEstadosCuentaConciliado);
 

@@ -285,9 +285,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal;
                 wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
                 wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
-                //wsSheet1.Cells[i, 17].Value = detalle.StatusConciliacion;
+                wsSheet1.Cells[i, 17].Value = detalle.StatusConciliacion;
 
-                if (detalle.StatusConciliacion == "CONCILIADA")
+                if ((detalle.StatusConciliacion == "CONCILIADA") || (detalle.StatusConciliacion == "CONCILIACION CANCELADA" && detalle.MotivoNoConciliado > 1))
                 {
                     retiros += detalle.Retiros;
                     depositos += detalle.Depositos;
