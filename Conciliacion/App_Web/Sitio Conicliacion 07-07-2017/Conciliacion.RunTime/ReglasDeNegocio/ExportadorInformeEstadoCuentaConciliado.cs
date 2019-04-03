@@ -217,9 +217,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 estilarEncabezado("Depósitos",Rng["J7"]);
                 estilarEncabezado("Saldo", Rng["K7"]);
                 estilarEncabezado("Concepto conciliado",Rng["L7:O7"],true);
-                estilarEncabezado("Documento", Rng["P7"]);
+                estilarEncabezado("Documento", Rng["P7:S7"],true);
 
-                enmarcarRegion(Rng[7, 2, 7, 16]);
+                enmarcarRegion(Rng[7, 2, 7, 19]);
             }
 
             return excelPackage;
@@ -284,7 +284,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 wsSheet1.Cells[i, 10].Value = detalle.Depositos;
                 wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal;
                 wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
-                //wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
+                wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
                 //wsSheet1.Cells[i, 17].Value = detalle.StatusConciliacion;
 
                 if (detalle.StatusConciliacion == "CONCILIADA")
