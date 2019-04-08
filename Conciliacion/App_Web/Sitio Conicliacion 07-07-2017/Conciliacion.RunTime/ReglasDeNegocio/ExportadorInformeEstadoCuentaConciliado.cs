@@ -218,6 +218,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 estilarEncabezado("Saldo", Rng["K7"]);
                 estilarEncabezado("Concepto conciliado",Rng["L7:O7"],true);
                 estilarEncabezado("Documento", Rng["P7:S7"],true);
+                //estilarEncabezado("Motivo NoConc", Rng["T7"]);
+                //estilarEncabezado("Estatus", Rng["U7:W7"], true);
 
                 enmarcarRegion(Rng[7, 2, 7, 19]);
             }
@@ -285,14 +287,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 wsSheet1.Cells[i, 11].Value = detalle.SaldoFinal;
                 wsSheet1.Cells[i, 12].Value = detalle.ConceptoConciliado;
                 wsSheet1.Cells[i, 16].Value = detalle.DocumentoConciliado;
-                //wsSheet1.Cells[i, 17].Value = detalle.StatusConciliacion;
+                //wsSheet1.Cells[i, 20].Value = detalle.MotivoNoConciliado;
+                //wsSheet1.Cells[i, 21].Value = detalle.StatusConciliacion;
 
                 if ((detalle.StatusConciliacion == "CONCILIADA") || (detalle.StatusConciliacion == "CONCILIACION CANCELADA" && detalle.MotivoNoConciliado > 1))
                 {
                     retiros += detalle.Retiros;
                     depositos += detalle.Depositos;
-                    //wsSheet1.Cells[i, 18].Value = detalle.Depositos;
-                    //wsSheet1.Cells[i, 19].Value = detalle.Retiros;
+                    //if (detalle.Retiros > 0)
+                    //    wsSheet1.Cells[i, 23].Value = detalle.Retiros;
+                    //if (detalle.Depositos > 0)
+                    //    wsSheet1.Cells[i, 24].Value = detalle.Depositos;
                 }
                 i++;
             }
