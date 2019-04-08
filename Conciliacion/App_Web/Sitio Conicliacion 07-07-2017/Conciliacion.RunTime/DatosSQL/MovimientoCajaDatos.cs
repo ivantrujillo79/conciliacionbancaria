@@ -339,108 +339,111 @@ namespace Conciliacion.RunTime.DatosSQL
             try
             {
                 List<Cobro> Cobros = this.ListaCobros;
-                foreach (Cobro Cobro in Cobros)
-                {
-                    List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
-                    if (Pedidos.Count > 0)
+                if (Cobros.Count > 0)
+                { 
+                    foreach (Cobro Cobro in Cobros)
                     {
-                        List<RTGMCore.DetallePedido> listaDetallePedidos = new List<RTGMCore.DetallePedido>();
-
-                        RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, App.CadenaConexion);
-                        objGateway.URLServicio = URLGateway;
-                        List<RTGMCore.Pedido> lstPedido = new List<RTGMCore.Pedido>();
-                        foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                        List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
+                        if (Pedidos.Count > 0)
                         {
-                            dtPedido = DatosDePedido(_conexion, Pedido.AñoPedido, Pedido.CelulaPedido, Pedido.Pedido);
-                            if (dtPedido.Rows.Count > 0)
+                            List<RTGMCore.DetallePedido> listaDetallePedidos = new List<RTGMCore.DetallePedido>();
+
+                            RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, App.CadenaConexion);
+                            objGateway.URLServicio = URLGateway;
+                            List<RTGMCore.Pedido> lstPedido = new List<RTGMCore.Pedido>();
+                            foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
                             {
-                                producto = int.Parse(dtPedido.Rows[0]["producto"].ToString());
-                                int.TryParse(dtPedido.Rows[0]["ruta"].ToString(), out ruta);
-                                decimal.TryParse(dtPedido.Rows[0]["descuento"].ToString(), out descuento);
-                                decimal.TryParse(dtPedido.Rows[0]["importe"].ToString(), out importe);
-                                decimal.TryParse(dtPedido.Rows[0]["impuesto"].ToString(), out impuesto);
-                                decimal.TryParse(dtPedido.Rows[0]["precio"].ToString(), out precio);
-                                decimal.TryParse(dtPedido.Rows[0]["litros"].ToString(), out litros);
-                                decimal.TryParse(dtPedido.Rows[0]["total"].ToString(), out total);
-
-                                RTGMCore.Producto obProducto = new RTGMCore.Producto { IDProducto = producto }; //TipoCobro de pedido
-                                RTGMCore.RutaCRMDatos obRuta = new RTGMCore.RutaCRMDatos { IDRuta = ruta }; //campo ruta de pedido
-                                listaDetallePedidos.Add(new RTGMCore.DetallePedido
+                                dtPedido = DatosDePedido(_conexion, Pedido.AñoPedido, Pedido.CelulaPedido, Pedido.Pedido);
+                                if (dtPedido.Rows.Count > 0)
                                 {
-                                    Producto = obProducto,
-                                    DescuentoAplicado = descuento, //campo descuento tabla pedido
-                                    Importe = importe, //tabla pedido
-                                    Impuesto = impuesto,//tabla pedido
-                                    Precio = precio,//tabla pedido
-                                    CantidadSurtida = litros,//litros tabla pedido
-                                    Total = total,//tabla pedido
-                                    CantidadLectura = 0,
-                                    CantidadLecturaAnterior = 0,
-                                    CantidadSolicitada = 0,
-                                    DescuentoAplicable = 0,
-                                    DiferenciaDeLecturas = 0,
-                                    IDDetallePedido = 0,
-                                    IDPedido = Pedido.Pedido,
-                                    ImpuestoAplicable = 0,
-                                    PorcentajeTanque = 0,
-                                    PrecioAplicable = 0,
-                                    RedondeoAnterior = 0,
-                                    TotalAplicable = 0
-                                });
-                                int.TryParse(dtPedido.Rows[0]["añoatt"].ToString(), out añoatt);
-                                DateTime.TryParse(dtPedido.Rows[0]["fsuministro"].ToString(), out fsuministro);
-                                int.TryParse(dtPedido.Rows[0]["remision"].ToString(), out remision);
-                                int.TryParse(dtPedido.Rows[0]["folio"].ToString(), out folio);
-                                int.TryParse(dtPedido.Rows[0]["autotanque"].ToString(), out autotanque);
-                                int.TryParse(dtPedido.Rows[0]["tipocobro"].ToString(), out tipocobro);
-                                int.TryParse(dtPedido.Rows[0]["tipocargo"].ToString(), out tipocargo);
-                                int.TryParse(dtPedido.Rows[0]["tipopedido"].ToString(), out tipopedido);
-                                serieremision = dtPedido.Rows[0]["serieremision"].ToString();
+                                    producto = int.Parse(dtPedido.Rows[0]["producto"].ToString());
+                                    int.TryParse(dtPedido.Rows[0]["ruta"].ToString(), out ruta);
+                                    decimal.TryParse(dtPedido.Rows[0]["descuento"].ToString(), out descuento);
+                                    decimal.TryParse(dtPedido.Rows[0]["importe"].ToString(), out importe);
+                                    decimal.TryParse(dtPedido.Rows[0]["impuesto"].ToString(), out impuesto);
+                                    decimal.TryParse(dtPedido.Rows[0]["precio"].ToString(), out precio);
+                                    decimal.TryParse(dtPedido.Rows[0]["litros"].ToString(), out litros);
+                                    decimal.TryParse(dtPedido.Rows[0]["total"].ToString(), out total);
 
-                                lstPedido.Add(new RTGMCore.PedidoCRMSaldo
-                                {
-                                    AnioPed = Pedido.AñoPedido,
-                                    IDPedido = Pedido.Pedido, //int.Parse(Pedido.IDPedidoCRM), 
-                                    IDZona = Pedido.CelulaPedido, //checar si corresponde con campo Celula
-                                    RutaSuministro = obRuta,
-                                    DetallePedido = listaDetallePedidos,
-                                    IDDireccionEntrega = Pedido.Cliente,
-                                    AnioAtt = añoatt, //tabla pedido campo añoAtt
-                                    FSuministro = fsuministro, //tabla pedido campo FSuministro
-                                    FolioRemision = remision, //Pedido.RemisionPedido, //checar si corresponde con campo Remision //17327695,
-                                    IDAutotanque = autotanque, //campo Autotanque
-                                    IDEmpresa = corporativo,
-                                    IDFolioAtt = folio, //47697, //tabla pedido campo Folio
-                                    IDFormaPago = tipocobro, //campo TipoCobro
-                                    IDTipoCargo = tipocargo, //campo tipocargo
-                                    IDTipoPedido = tipopedido, //campo TIpopedido
-                                    IDTipoServicio = 1, //queda hardcodeado
-                                    Importe = importe, //campo importe
-                                    Impuesto = impuesto,//campo impuesto
-                                    SerieRemision = serieremision,//campo SerieRemision
-                                    Total = total,//campo total  
-                                    Abono = total,
-                                    PedidoReferencia = Pedido.IDPedidoCRM
-                                });
+                                    RTGMCore.Producto obProducto = new RTGMCore.Producto { IDProducto = producto }; //TipoCobro de pedido
+                                    RTGMCore.RutaCRMDatos obRuta = new RTGMCore.RutaCRMDatos { IDRuta = ruta }; //campo ruta de pedido
+                                    listaDetallePedidos.Add(new RTGMCore.DetallePedido
+                                    {
+                                        Producto = obProducto,
+                                        DescuentoAplicado = descuento, //campo descuento tabla pedido
+                                        Importe = importe, //tabla pedido
+                                        Impuesto = impuesto,//tabla pedido
+                                        Precio = precio,//tabla pedido
+                                        CantidadSurtida = litros,//litros tabla pedido
+                                        Total = total,//tabla pedido
+                                        CantidadLectura = 0,
+                                        CantidadLecturaAnterior = 0,
+                                        CantidadSolicitada = 0,
+                                        DescuentoAplicable = 0,
+                                        DiferenciaDeLecturas = 0,
+                                        IDDetallePedido = 0,
+                                        IDPedido = Pedido.Pedido,
+                                        ImpuestoAplicable = 0,
+                                        PorcentajeTanque = 0,
+                                        PrecioAplicable = 0,
+                                        RedondeoAnterior = 0,
+                                        TotalAplicable = 0
+                                    });
+                                    int.TryParse(dtPedido.Rows[0]["añoatt"].ToString(), out añoatt);
+                                    DateTime.TryParse(dtPedido.Rows[0]["fsuministro"].ToString(), out fsuministro);
+                                    int.TryParse(dtPedido.Rows[0]["remision"].ToString(), out remision);
+                                    int.TryParse(dtPedido.Rows[0]["folio"].ToString(), out folio);
+                                    int.TryParse(dtPedido.Rows[0]["autotanque"].ToString(), out autotanque);
+                                    int.TryParse(dtPedido.Rows[0]["tipocobro"].ToString(), out tipocobro);
+                                    int.TryParse(dtPedido.Rows[0]["tipocargo"].ToString(), out tipocargo);
+                                    int.TryParse(dtPedido.Rows[0]["tipopedido"].ToString(), out tipopedido);
+                                    serieremision = dtPedido.Rows[0]["serieremision"].ToString();
+
+                                    lstPedido.Add(new RTGMCore.PedidoCRMSaldo
+                                    {
+                                        AnioPed = Pedido.AñoPedido,
+                                        IDPedido = Pedido.Pedido, //int.Parse(Pedido.IDPedidoCRM), 
+                                        IDZona = Pedido.CelulaPedido, //checar si corresponde con campo Celula
+                                        RutaSuministro = obRuta,
+                                        DetallePedido = listaDetallePedidos,
+                                        IDDireccionEntrega = Pedido.Cliente,
+                                        AnioAtt = añoatt, //tabla pedido campo añoAtt
+                                        FSuministro = fsuministro, //tabla pedido campo FSuministro
+                                        FolioRemision = remision, //Pedido.RemisionPedido, //checar si corresponde con campo Remision //17327695,
+                                        IDAutotanque = autotanque, //campo Autotanque
+                                        IDEmpresa = corporativo,
+                                        IDFolioAtt = folio, //47697, //tabla pedido campo Folio
+                                        IDFormaPago = tipocobro, //campo TipoCobro
+                                        IDTipoCargo = tipocargo, //campo tipocargo
+                                        IDTipoPedido = tipopedido, //campo TIpopedido
+                                        IDTipoServicio = 1, //queda hardcodeado
+                                        Importe = importe, //campo importe
+                                        Impuesto = impuesto,//campo impuesto
+                                        SerieRemision = serieremision,//campo SerieRemision
+                                        Total = total,//campo total  
+                                        Abono = total,
+                                        PedidoReferencia = Pedido.IDPedidoCRM
+                                    });
+                                }
                             }
-                        }
-                        //Aplica Liquidacion
-                        SolicitudActualizarPedido Solicitud = new SolicitudActualizarPedido
-                        {
-                            Pedidos = lstPedido,
-                            Portatil = false,
-                            TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
-                            Usuario = "ROPIMA"
-                        };
-                        List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
-                        resultado = Exitoso(ListaRespuesta);
+                            //Aplica Liquidacion
+                            SolicitudActualizarPedido Solicitud = new SolicitudActualizarPedido
+                            {
+                                Pedidos = lstPedido,
+                                Portatil = false,
+                                TipoActualizacion = RTGMCore.TipoActualizacion.Saldo,
+                                Usuario = "ROPIMA"
+                            };
+                            List<RTGMCore.Pedido> ListaRespuesta = objGateway.ActualizarPedido(Solicitud);
+                            resultado = Exitoso(ListaRespuesta);
 
-                        SiHayErroresMostrar(ListaRespuesta);
+                            SiHayErroresMostrar(ListaRespuesta);
+                            if (!resultado)
+                                break;
+                        }
                         if (!resultado)
                             break;
                     }
-                    if (!resultado)
-                        break;
                 }
             }
             catch (Exception ex)
