@@ -22,7 +22,10 @@
     <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/semantic.min.css"/>
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/bootstrap.min.css"/>
-
+    <link href="App_Scripts/Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="App_Scripts/Bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="App_Scripts/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="App_Scripts/Bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet" />
 </head>
 <body>
     <form id="formPrincipal" runat="server" onload="Page_Load">
