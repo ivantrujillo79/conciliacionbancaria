@@ -44,6 +44,9 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         public abstract Consultas CrearObjeto();
 
+        public abstract List<Bancos> ObtieneBancos();
+        public abstract List<CuentaContableBanco> ObtieneCuentaContableBanco(int Banco);
+
         public virtual string CadenaConexion
         {
             get

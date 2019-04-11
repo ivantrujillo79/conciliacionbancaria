@@ -25,7 +25,8 @@
     <link href="App_Scripts/Bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="App_Scripts/Bootstrap/css/bootstrap.css" rel="stylesheet" />
     <link href="App_Scripts/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="App_Scripts/Bootstrap/css/bootstrap-tagsinput.css" rel="stylesheet" />
+
+    <script src="App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
 </head>
 <body>
     <form id="formPrincipal" runat="server" onload="Page_Load">

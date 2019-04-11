@@ -9,7 +9,7 @@ public partial class ControlesUsuario_EstadoCuentaPalabrasClave_wucEdoCtaPalabra
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        //ddlBanco.Attributes.Add("onchange", "return CargaCuentasBanco()");
     }
 
     protected void ddlCorporativo_SelectedIndexChanged(object sender, EventArgs e)

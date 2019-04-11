@@ -42,6 +42,49 @@ namespace CatalogoConciliacion.Datos
             }
         }
 
+        public override List<Bancos> ObtieneBancos()
+        {
+           
+            List<Bancos> ListaBancos = new List<Bancos>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaBancos", cnn);
+
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    Bancos banco = new BancosDatos(Convert.ToInt16(reader["banco"]), reader["descripcion"].ToString());
+                    ListaBancos.Add(banco);
+                }
+                return ListaBancos;
+            }
+        }
+
+        
+
+            public override List<CuentaContableBanco> ObtieneCuentaContableBanco(int Banco)
+        {
+
+            List<CuentaContableBanco> ListaCuentaContableBanco = new List<CuentaContableBanco>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaCuentaContable", cnn);
+                comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    CuentaContableBanco banco = new CuentaContableBancoDatos(Convert.ToInt16(reader["banco"]), reader["numerocuenta"].ToString());
+                    ListaCuentaContableBanco.Add(banco);
+                }
+                return ListaCuentaContableBanco;
+            }
+        }
+
+
         //OBTIENE LOS DATOS DE UN GRUPO ESPECIFICO
         public override GrupoConciliacion ObtieneGrupoPorId(int configuracion, int idGrupoConciliacion)
         {
@@ -120,6 +163,9 @@ namespace CatalogoConciliacion.Datos
                 return motivos;
             }
         }
+
+
+
 
 
         //OBTIENE TODOS LOS GRUPOS

@@ -1,0 +1,46 @@
+﻿using Conciliacion.Migracion.Runtime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CatalogoConciliacion.ReglasNegocio
+{
+ 
+
+    public abstract class TipoCobro : EmisorMensajes
+    {
+        int idTipoCobro;
+        string descripcion;
+
+
+        public TipoCobro(IMensajesImplementacion implementadorMensajes)
+        {
+            this.implementadorMensajes = implementadorMensajes;
+        }
+
+        public TipoCobro(int banco, string descripcion)
+        {
+            this.IdTipoCobro = banco;
+            this.descripcion = descripcion;
+        }
+
+
+        public int IdTipoCobro
+        {
+            get { return idTipoCobro; }
+            set { idTipoCobro = value; }
+        }
+
+
+
+        public string Descripcion
+        {
+            get { return descripcion; }
+            set { descripcion = value; }
+        }
+
+        public abstract TipoCobro CrearObjeto();
+
+    }
+}

@@ -1,7 +1,105 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucEdoCtaPalabrasClave.ascx.cs" Inherits="ControlesUsuario_EstadoCuentaPalabrasClave_wucEdoCtaPalabrasClave" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $("#<%=ddlBanco.ClientID%>").change(function () {
+            CargaCuentasBanco();
+            //var selectedText = $(this).find("option:selected").text();
+            //var selectedValue = $(this).val();
+            //alert("Selected Text: " + selectedText + " Value: " + selectedValue);
+        });
+
+       
+});
+
+
+
+     $.ajax({
+                type: "POST",
+                url: "EdoCtaPalabrasClave.aspx/CargaBancos",
+                data: '',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {// función que va a ejecutar si el pedido fue exitoso
+            
+              var datos=JSON.parse(data.d)             
+              var s = '<option value="-1">Seleccione</option>';  
+                                
+               for (var i = 0; i < datos.length; i++) {  
+                   s += '<option value="' + datos[i].Banco + '">' + datos[i].Descripcion + '</option>';  
+                    }                 
+
+            
+                    $("#<%=ddlBanco.ClientID%>").html(s); 
+                },
+                error: function (r) {
+                    alert(r.responseText);
+                },
+                failure: function (r) {
+                    alert(r.responseText);
+                }
+    });
+
+    
+
+    function CargaCuentasBanco() {
+
+      
+        
+      $.ajax({
+                type: "POST",
+                url: "EdoCtaPalabrasClave.aspx/CargaCuentasBanco",
+                data: "{Banco: '" + $("#<%=ddlBanco.ClientID%>").val() + "' }",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {// función que va a ejecutar si el pedido fue exitoso
+            
+              var datos=JSON.parse(data.d)             
+              var s = '<option value="-1">Seleccione</option>';  
+                                
+               for (var i = 0; i < datos.length; i++) {  
+                   s += '<option value="' + datos[i].NumeroCuenta + '">' + datos[i].NumeroCuenta + '</option>';  
+                    }  
+ 
+                   
+
+            
+                    $("#<%=ddlCuenta.ClientID%>").html(s); 
+                },
+                error: function (r) {
+                    alert(r.responseText);
+                },
+                failure: function (r) {
+                    alert(r.responseText);
+                }
+            });
+    }
+
+
+
+
+    
+
+
+
+
+
+</script>
+
+
 <style type="text/css">
     .auto-style1 {
         height: 24px;
+    }
+    .auto-style2 {
+        font-weight: bold;
+        font-size: medium;
+        color: #1D1D1D;
+        vertical-align: middle;
     }
 </style>
 <div id="PalabrasCalve" >
@@ -30,13 +128,13 @@
         <tr>
             <td class="auto-style1"><asp:Label ID="Label2" runat="server" Text="Banco" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
             <td style="align-items:flex-start" class="auto-style1">
-                <asp:DropDownList ID="ddlBanco" runat="server" AutoPostBack="True" Width="150px" >
+                <asp:DropDownList ID="ddlBanco" runat="server" AutoPostBack="false" Width="150px"  >
                     <asp:ListItem>Banamex</asp:ListItem>
                 </asp:DropDownList>
             </td>
             <td class="auto-style1"><asp:Label ID="Label5" runat="server" Text="Cuenta" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
             <td class="auto-style1">
-                <asp:DropDownList ID="ddlCuenta" runat="server"  AutoPostBack="True" Width="150px" >
+                <asp:DropDownList ID="ddlCuenta" runat="server"  AutoPostBack="false" Width="150px" >
                     <asp:ListItem>40981</asp:ListItem>
                 </asp:DropDownList>
             </td>
@@ -52,7 +150,7 @@
         <tr>
             <td><asp:Label ID="Label3" runat="server" Text="Tipo Cobro" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
             <td>
-                <asp:DropDownList ID="ddlTipoCobro" runat="server"  AutoPostBack="True" Width="150px" >
+                <asp:DropDownList ID="ddlTipoCobro" runat="server"  AutoPostBack="false" Width="150px" >
                     <asp:ListItem>Efectivo</asp:ListItem>
                 </asp:DropDownList>
             </td>
@@ -80,7 +178,7 @@
        </tr>
         <tr>
             
-                    <td colspan="4"><asp:Label ID="Label6" runat="server" Text="Forma de Pago Elejida:Efectivo" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
+                    <td colspan="4"><asp:Label ID="Label6" runat="server" Text="Forma de Pago Elegida:Efectivo" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
              
        </tr>
          <tr>
@@ -97,7 +195,7 @@
 
         <tr>
             <td colspan="2" >
-                  Palabras Clave:
+                  <span class="auto-style2">Palabra Clave Elegida:</span>
                   <input type="text" name="name" value="PRUEBA" data-role="tagsinput"  />           
             </td>          
                    
