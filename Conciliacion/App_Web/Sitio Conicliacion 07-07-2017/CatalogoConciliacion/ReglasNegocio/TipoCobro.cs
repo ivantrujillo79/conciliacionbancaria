@@ -19,9 +19,9 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public TipoCobro(int banco, string descripcion)
+        public TipoCobro(int idTipoCobro, string descripcion)
         {
-            this.IdTipoCobro = banco;
+            this.IdTipoCobro = idTipoCobro;
             this.descripcion = descripcion;
         }
 

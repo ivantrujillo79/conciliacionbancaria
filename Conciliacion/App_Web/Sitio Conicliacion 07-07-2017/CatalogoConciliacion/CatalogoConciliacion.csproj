@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Datos\BancosDatos.cs" />
+    <Compile Include="Datos\ColumnaDestinoDatos.cs" />
     <Compile Include="Datos\ConsultasDatos.cs" />
     <Compile Include="Datos\CuentaBancoSaldoDatos.cs" />
     <Compile Include="Datos\CuentaContableBancoDatos.cs" />
@@ -84,11 +85,14 @@
     <Compile Include="Datos\GrupoConciliacionDatos.cs" />
     <Compile Include="Datos\GrupoConciliacionUsuarioDatos.cs" />
     <Compile Include="Datos\MotivoNoConciliadoDatos.cs" />
+    <Compile Include="Datos\PalabrasClaveDatos.cs" />
     <Compile Include="Datos\ParametroAplicacionDatos.cs" />
+    <Compile Include="Datos\TipoCobroDatos.cs" />
     <Compile Include="Datos\TipoMovimientoCuentaDatos.cs" />
     <Compile Include="Datos\ReferenciaACompararDatos.cs" />
     <Compile Include="Datos\TipoConciliacionUsuarioDatos.cs" />
     <Compile Include="ReglasNegocio\Bancos.cs" />
+    <Compile Include="ReglasNegocio\ColumnaDestino.cs" />
     <Compile Include="ReglasNegocio\Consultas.cs" />
     <Compile Include="ReglasNegocio\CuentaBancoSaldo.cs" />
     <Compile Include="ReglasNegocio\CuentaContableBanco.cs" />
@@ -98,6 +102,7 @@
     <Compile Include="ReglasNegocio\GrupoConciliacionUsuario.cs" />
     <Compile Include="ReglasNegocio\MotivoNoConciliado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReglasNegocio\PalabrasClave.cs" />
     <Compile Include="ReglasNegocio\ReferenciaAComparar.cs" />
     <Compile Include="ReglasNegocio\ParametroAplicacion.cs" />
     <Compile Include="ReglasNegocio\TipoCobro.cs" />

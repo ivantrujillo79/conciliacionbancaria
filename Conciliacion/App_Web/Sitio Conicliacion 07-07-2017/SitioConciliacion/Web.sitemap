@@ -37,6 +37,8 @@
         </siteMapNode>
         <siteMapNode title="No. de documentos por TransBan" description="Acceso al catalogo de No. de documentos por TransBan" resourceKey="21" url="~/Catalogos/ConfiguracionEnDocumentosTransban.aspx">
         </siteMapNode>
+        <siteMapNode title="Palabras Clave" description="Palabras Clave" url="~/EdoctaPalabrasClave.aspx " resourceKey="1">
+        </siteMapNode>
 
       </siteMapNode>
 
@@ -103,6 +105,7 @@
 
     <siteMapNode title="Bloqueos" description="Gestión de bloqueos" url="~/Interbloqueo.aspx" resourceKey="1">
     </siteMapNode>
+   
     
     <siteMapNode title="Cerrar" description="Cerrar sesión" url="~/Acceso/Acceso.aspx" resourceKey="1">
     </siteMapNode>
