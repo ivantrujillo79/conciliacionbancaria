@@ -437,6 +437,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
                 }
 
+                indiceExternoSeleccionado = 0;
+                ReferenciaNoConciliada rfExTc = leerReferenciaExternaSeleccionada();
+                ddlTiposDeCobro.SelectedValue = rfExTc.TipoCobro.ToString();
+                if (ddlTiposDeCobro.SelectedValue == "0" || ddlTiposDeCobro.SelectedValue == "10")
+                    ddlTiposDeCobro.CssClass = "select-css-rojo";
+                else
+                    ddlTiposDeCobro.CssClass = "select-css";
+
             }
             else //!Postback
             {
@@ -491,6 +499,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     //    grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                     //    grvPedidos.DataBind();
                     //}
+
                 }
                 //Carga_SucursalCorporativo(corporativo);
                 if (objSolicitdConciliacion.ConsultaArchivo())
@@ -3675,6 +3684,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
             //Limpiar Listas de Referencia de demas Externos
             LimpiarExternosReferencia(rfEx);
+
+            if (rfEx.TipoCobro != 0)
+                ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
+            else
+                ddlTiposDeCobro.SelectedValue = "10";
+            if (ddlTiposDeCobro.SelectedValue == "0" || ddlTiposDeCobro.SelectedValue == "10")
+                ddlTiposDeCobro.CssClass = "select-css-rojo";
+            else
+                ddlTiposDeCobro.CssClass = "select-css";
+
             statusFiltro = false;
             Session["StatusFiltro"] = statusFiltro;
             tipoFiltro = String.Empty;

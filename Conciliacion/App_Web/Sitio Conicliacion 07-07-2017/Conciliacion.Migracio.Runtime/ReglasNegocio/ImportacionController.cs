@@ -15,6 +15,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
     {
         FuenteInformacion fuenteInformacion;
         string rutaArchivo;
+        int IDBanco;
         ILectorEstadoCuentaImplementacion lectorEstadoCuentaImplementacion;
         List<DateTime> fechas = new List<DateTime>();
 
@@ -24,10 +25,11 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
         }
 
-        public ImportacionController(FuenteInformacion fuenteInformacion, string rutaArchivo)
+        public ImportacionController(FuenteInformacion fuenteInformacion, string rutaArchivo, int IDBanco)
         {
             this.fuenteInformacion = fuenteInformacion;
             this.rutaArchivo = rutaArchivo;
+            this.IDBanco = IDBanco;
             lectorEstadoCuentaImplementacion = this.FabricaLectores(new FileInfo(rutaArchivo).Extension.ToUpper());
         }
 
@@ -40,7 +42,6 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                 {
                     if (lectorEstadoCuentaImplementacion != null)
                     {
-
                         DataTable dtEstadoCuenta = this.lectorEstadoCuentaImplementacion.LeerArchivo(fuenteInformacion, rutaArchivo);
                         int rr = dtEstadoCuenta.Rows.Count;
                         int rc = dtEstadoCuenta.Columns.Count;
@@ -57,6 +58,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                                     if (x == 0)
                                     {
                                         tablaDestino.Detalles = LlenarObjetosDestinoDestalle(dtDestinoDetalle, fuenteInformacion.TipoArchivo);
+                                        tablaDestino.Detalles = App.Consultas.LigarPalabraClaveConTipoCobro(tablaDestino.Detalles, this.IDBanco, tablaDestino.CuentaBancoFinanciero);
                                         if (tablaDestino.Detalles != null)
                                         {
                                             tablaDestino.Detalles.ForEach(detalle => detalle.TipoFuenteInformacion = tablaDestino.IdTipoFuenteInformacion);
@@ -582,8 +584,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                     valor = registro["SaldoFinal"].ToString().Trim();
                     if (double.TryParse(Regex.Replace(registro["SaldoFinal"].ToString(), "([^0-9|.])", ""), out prueba))
                         tablaDestinoDetalle.SaldoFinal = string.IsNullOrEmpty(registro["SaldoFinal"].ToString().Trim()) ? 0 : double.Parse(double.Parse(Regex.Replace(registro["SaldoFinal"].ToString(), "([^0-9|.])", ""), System.Globalization.NumberStyles.Number | System.Globalization.NumberStyles.AllowCurrencySymbol).ToString(tipoArchivo.FormatoMoneda), System.Globalization.NumberStyles.Number | System.Globalization.NumberStyles.AllowCurrencySymbol);
-
-
+                    
                     columna = "Movimiento";
                     valor = registro["Movimiento"].ToString().Trim();
                     tablaDestinoDetalle.Movimiento = registro["Movimiento"].ToString().Trim();
@@ -623,6 +624,8 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                     columna = "IdMotivoNoConciliado";
                     valor = registro["IdMotivoNoConciliado"].ToString().Trim();
                     tablaDestinoDetalle.IdMotivoNoConciliado = string.IsNullOrEmpty(registro["IdMotivoNoConciliado"].ToString().Trim()) ? 0 : Convert.ToInt32(registro["IdMotivoNoConciliado"].ToString());
+                    valor = "TipoCobro";
+                    tablaDestinoDetalle.TipoCobro = 0;
 
                     i++;
                     if ((tablaDestinoDetalle.FOperacion != null) && (tablaDestinoDetalle.FMovimiento != null))

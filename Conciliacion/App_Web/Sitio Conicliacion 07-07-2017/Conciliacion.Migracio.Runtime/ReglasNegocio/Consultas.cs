@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Conciliacion.RunTime.ReglasDeNegocio;
@@ -8,6 +9,8 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 {
     public abstract class Consultas : EmisorMensajes
     {
+
+        public abstract List<Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle> LigarPalabraClaveConTipoCobro(List<Conciliacion.Migracion.Runtime.ReglasNegocio.TablaDestinoDetalle> listaTablaDestinoDetalle, int BancoID, string CuentaBanco);
 
         #region tipo Fuente
 

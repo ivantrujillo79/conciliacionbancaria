@@ -2224,6 +2224,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                           Convert.ToDecimal(reader["RetiroInt"]),
                                                           Convert.ToInt32(reader["AñoConciliacion"]),
                                                           Convert.ToInt32(reader["AñoConciliacion"]),
+                                                          Convert.ToInt32(reader["TipoCobro"]),
+                                                          Convert.ToInt32(reader["TipoCobro"]),
                                                           this.implementadorMensajes);
                         datos.Add(dato);
                     }
@@ -5178,12 +5180,12 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
                         App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
-
+                    int tcobro = 0;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
-
+                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 0 : Convert.ToInt16(reader["TipoCobro"]);
                         ReferenciaNoConciliada dato =
                             new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
                                 Convert.ToInt16(reader["Sucursal"]),
@@ -5205,7 +5207,9 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToString(reader["Referencia"]),
                                 Convert.ToString(reader["NombreTercero"]),
                                 Convert.ToString(reader["RFCTercero"]), sucursal,
-                                Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
+                                Convert.ToInt16(reader["Año"]), 1,
+                                tcobro, tcobro,
+                                this.implementadorMensajes);
                         datos.Add(dato);
                     }
                 }

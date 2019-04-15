@@ -506,7 +506,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
                 HttpContext.Current.Session["FInformacion"] = finformacion;
                 string ruta = "~/Plantillas/ImportacionArchivos/Muestras/";
                 string rutaCompleta = MapPath(ruta) + finformacion.RutaArchivo;
-                iController = new ImportacionController(finformacion, rutaCompleta);
+                iController = new ImportacionController(finformacion, rutaCompleta, 0);
 
                 HttpContext.Current.Session["IController"] = iController;
                 cboColumnaOrigen.DataSource = iController.ObtenerCamposEstadoCuenta();

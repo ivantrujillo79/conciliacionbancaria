@@ -37,8 +37,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         bool portatil;
 
-        int tipocobro;
         private int tipoCobro;
+        private int tipoCobroAnterior;
         int clientePadre;
         String _iDPedidoCRM;
 
@@ -323,6 +323,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return tipoCobro; }
             set { tipoCobro = value; }
+        }
+
+        public int TipoCobroAnterior
+        {
+            get { return tipoCobroAnterior; }
+            set { tipoCobroAnterior = value; }
         }
 
         #endregion

@@ -26,25 +26,37 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
-     //   public ReferenciaNoConciliadaDatos(int corporativo, int sucursal, string sucursaldes, int año, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
-     //DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
-     //       string cheque, string referencia, string nombretercero, string rfctercero,
-     //       IMensajesImplementacion implementadorMensajes)
-     //       : base(corporativo, sucursal, sucursaldes, año, folio, secuencia, descripcion, concepto,deposito,retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento,folioconciliacion,mesconciliacion,diferencia,coninterno, 
-     //       cheque,referencia,nombretercero,rfctercero,
-     //       implementadorMensajes)
-     //   {
+        //   public ReferenciaNoConciliadaDatos(int corporativo, int sucursal, string sucursaldes, int año, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
+        //DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
+        //       string cheque, string referencia, string nombretercero, string rfctercero,
+        //       IMensajesImplementacion implementadorMensajes)
+        //       : base(corporativo, sucursal, sucursaldes, año, folio, secuencia, descripcion, concepto,deposito,retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento,folioconciliacion,mesconciliacion,diferencia,coninterno, 
+        //       cheque,referencia,nombretercero,rfctercero,
+        //       implementadorMensajes)
+        //   {
 
-     //   }
+        //   }
+
+        public ReferenciaNoConciliadaDatos
+(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
+DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
+string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente,
+IMensajesImplementacion implementadorMensajes)
+: base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, ubicacionicono, folioconciliacion, mesconciliacion, diferencia, coninterno,
+cheque, referencia, nombretercero, rfctercero, sucursalconciliacion, año,
+implementadorMensajes)
+        {
+
+        }
 
         public ReferenciaNoConciliadaDatos
 (int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
 DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
             string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente,
-            IMensajesImplementacion implementadorMensajes)
+            int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, ubicacionicono, folioconciliacion, mesconciliacion, diferencia, coninterno,
-            cheque,referencia,nombretercero,rfctercero,sucursalconciliacion, año, 
-            implementadorMensajes)
+            cheque,referencia,nombretercero,rfctercero,sucursalconciliacion, año,
+            tipocobro, tipocobroanterior, implementadorMensajes)
         {
 
         }
@@ -62,13 +74,13 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
         {
 
         }
-
+        
         public ReferenciaNoConciliadaDatos
-(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
-DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
-    string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string tipo, string ubicacionicono, int año, int cliente,
-    DetalleSaldoAFavor DetalleSaldo,
-    IMensajesImplementacion implementadorMensajes)
+            (int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
+            DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
+                string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string tipo, string ubicacionicono, int año, int cliente,
+                DetalleSaldoAFavor DetalleSaldo,
+                IMensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, folioconciliacion,
             mesconciliacion, coninterno, listareferenciaconciliada,
             cheque, referencia, nombretercero, rfctercero, sucursalconciliacion, ubicacionicono,año, 
@@ -77,6 +89,74 @@ DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconci
         {
             this.Tipo = tipo;
         }
+
+        //public ReferenciaNoConciliadaDatos
+        //    (int corporativo, 
+        //    int sucursal, 
+        //    string 
+        //    sucursaldes, 
+        //    int añoconciliacion, 
+        //    int folio, 
+        //    int secuencia, 
+        //    string descripcion, 
+        //    string concepto, 
+        //    decimal deposito, 
+        //    decimal retiro, 
+        //    short formaconciliacion, 
+        //    short statusconcepto, 
+        //    string statusconciliacion,
+        //    DateTime foperacion, 
+        //    DateTime fmovimiento, 
+        //    string ubicacionicono, 
+        //    int folioconciliacion, 
+        //    short mesconciliacion, 
+        //    decimal diferencia,
+        //    bool coninterno, 
+        //    string cheque, 
+        //    string referencia, 
+        //    string nombretercero, 
+        //    string rfctercero, 
+        //    int sucursalconciliacion, 
+        //    int año, 
+        //    int cliente,
+        //    int tipocobro,
+        //    int tipocobroanterior,
+        //    IMensajesImplementacion implementadorMensajes)
+        //    : base(corporativo,
+        //        sucursal,
+        //        sucursaldes,
+        //        añoconciliacion,
+        //        folio,
+        //        secuencia,
+        //        descripcion,
+        //        concepto,
+        //        deposito,
+        //        retiro,
+        //        formaconciliacion,
+        //        statusconcepto,
+        //        statusconciliacion,
+        //        foperacion,
+        //        fmovimiento,
+        //        ubicacionicono,
+        //        folioconciliacion,
+        //        mesconciliacion,
+        //        diferencia,
+        //        coninterno,
+        //        cheque,
+        //        referencia,
+        //        nombretercero,
+        //        rfctercero,
+        //        sucursalconciliacion,
+        //        año,
+        //        cliente,
+        //        tipocobro,
+        //        tipocobroanterior,
+        //        implementadorMensajes)
+        //{
+        //    this.TipoCobro = tipocobro;
+        //    this.TipoCobroAnterior = tipocobroanterior;
+        //}
+
         //******************************** NUEVO CONSTRUCTOR CONCILIACION COMPARTIDA ******************************//
         public ReferenciaNoConciliadaDatos(int corporativo, int sucursalconciliacion, int añoconciliacion,
             short mesconciliacion, int folioconciliacion,
@@ -118,6 +198,8 @@ DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconci
                      implementadorMensajes)
         {
         }
+
+        
         public ReferenciaNoConciliadaDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
