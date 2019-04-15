@@ -3421,6 +3421,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
         if (objSolicitdConciliacion.ConsultaPedido())
         {
+            LockerExterno.EliminarBloqueos(Session.SessionID);
             foreach (GridViewRow fila in grvCantidadReferenciaConcuerdanPedido.Rows)
             {
                 CheckBox chk = fila.Cells[0].Controls[1] as CheckBox;

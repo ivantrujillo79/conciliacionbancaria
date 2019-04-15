@@ -209,7 +209,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         //PedidoActualizaSaldo() NO se debe ejecutar
                         //cuando el status emitido y sea diferente de tipo c 2, 
                         //solo cuando status sea validado 
-                        if (this.StatusAltaMC == StatusMovimientoCaja.Validado && tipoConciliacion != 2)
+                        if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
                         {
                             Pedido.PedidoActualizaSaldo(_conexion);
                         }
