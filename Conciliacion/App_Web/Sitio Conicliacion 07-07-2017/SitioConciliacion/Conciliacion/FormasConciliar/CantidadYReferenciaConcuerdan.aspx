@@ -664,7 +664,7 @@
                                     <td style="width: 50%; vertical-align: top" class="centradoJustificado">
                                         <table style="width: 300px">
                                             <tr>
-                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Tipo Cobro
+                                                <td class="etiqueta fg-color-blanco" style="width: 30%">
                                                 </td>
                                                 <td style="width: 70%">
                                                     <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño" Visible="false"

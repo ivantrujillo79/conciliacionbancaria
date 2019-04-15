@@ -2776,8 +2776,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            if (!IsPostBack)
-            {
+            //if (!IsPostBack)
+            //{
                 DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
                 List<int> listadistintos = new List<int>();
                 listaClientesEnviados = new List<int>();
@@ -2824,7 +2824,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     throw ex;
                 }
-            }
+            //}
             //grvPedidos.PageIndex = 0;
             //grvPedidos.DataSource = tablaReferenciasP;
             //grvPedidos.DataBind();
