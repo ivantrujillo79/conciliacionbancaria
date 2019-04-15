@@ -91,8 +91,6 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public DetalleSaldoAFavor DetalleSaldo;
 
-        private int tipocobro;
-
         private List<cReferencia> listareferenciaconciliada = new List<cReferencia>();
         private List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida = new List<ReferenciaConciliadaCompartida>();
         private string statusMovimiento;
@@ -103,6 +101,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int folioex;
         private int secuenciaex;
         private int tipoCobro;
+        private int tipoCobroAnterior;
         #region Constructores
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -253,6 +252,59 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             this.selecciona = true;
             
+        }
+
+        public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
+          string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion,
+          short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion,
+          short mesconciliacion, decimal diferencia, bool coninterno,
+          string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
+          int año, int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+        {
+            this.ImplementadorMensajes = implementadorMensajes;
+
+            this.folioconciliacion = folioconciliacion;
+            this.mesconciliacion = mesconciliacion;
+
+            this.corporativo = corporativo;
+            this.sucursal = sucursal;
+            this.sucursaldes = sucursaldes;
+            this.añoconciliacion = añoconciliacion;
+            this.año = año;
+            this.folio = folio;
+            this.secuencia = secuencia;
+            this.descripcion = descripcion;
+            this.concepto = concepto;
+
+            this.monto = deposito + retiro;
+            this.deposito = deposito;
+            this.retiro = retiro;
+            this.formaconciliacion = formaconciliacion;
+            this.statusconcepto = statusconcepto;
+            this.statusconciliacion = statusconciliacion;
+
+            this.foperacion = foperacion;
+            this.fmovimiento = fmovimiento;
+
+            this.completo = false;
+            this.diferencia = diferencia;
+            this.coninterno = coninterno;
+            this.ubicacionicono = ubicacionicono;
+            this.motivonoconciliado = 0;
+            this.comentarionoconciliado = "";
+
+            this.cheque = cheque;
+            this.referencia = referencia;
+            this.nombretercero = nombretercero;
+            this.rfctercero = rfctercero;
+
+            this.sucursalconciliacion = sucursalconciliacion;
+
+            this.tipoCobro = tipocobro;
+            this.tipoCobroAnterior = tipocobroanterior;
+
+            this.selecciona = true;
+
         }
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -478,6 +530,73 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.foliotraspaso = foliotraspaso;
             this.listareferenciaconciliadacompartida = listareferenciaconciliadacompartida;
             DetalleSaldo = detalleSaldo;
+            this.implementadorMensajes = implementadorMensajes;
+        }
+
+        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string ubicacionicono, int año, int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+        {
+            this.corporativo = corporativo;
+            this.sucursal = sucursal;
+            this.sucursaldes = sucursaldes;
+            this.añoconciliacion = añoconciliacion;
+            this.folio = folio;
+            this.secuencia = secuencia;
+            this.descripcion = descripcion;
+            this.concepto = concepto;
+            this.deposito = deposito;
+            this.retiro = retiro;
+            this.formaconciliacion = formaconciliacion;
+            this.statusconcepto = statusconcepto;
+            this.statusconciliacion = statusconciliacion;
+            this.foperacion = foperacion;
+            this.fmovimiento = fmovimiento;
+            this.folioconciliacion = folioconciliacion;
+            this.mesconciliacion = mesconciliacion;
+            this.coninterno = coninterno;
+            this.listareferenciaconciliada = listareferenciaconciliada;
+            this.cheque = cheque;
+            this.referencia = referencia;
+            this.nombretercero = nombretercero;
+            this.rfctercero = rfctercero;
+            this.sucursalconciliacion = sucursalconciliacion;
+            this.ubicacionicono = ubicacionicono;
+            this.año = año;
+            this.tipoCobro = tipocobro;
+            this.tipoCobroAnterior = tipocobroanterior;
+            this.implementadorMensajes = implementadorMensajes;
+        }
+
+        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente, int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+        {
+            this.corporativo = corporativo;
+            this.sucursal = sucursal;
+            this.sucursaldes = sucursaldes;
+            this.añoconciliacion = añoconciliacion;
+            this.folio = folio;
+            this.secuencia = secuencia;
+            this.descripcion = descripcion;
+            this.concepto = concepto;
+            this.deposito = deposito;
+            this.retiro = retiro;
+            this.formaconciliacion = formaconciliacion;
+            this.statusconcepto = statusconcepto;
+            this.statusconciliacion = statusconciliacion;
+            this.foperacion = foperacion;
+            this.fmovimiento = fmovimiento;
+            this.ubicacionicono = ubicacionicono;
+            this.folioconciliacion = folioconciliacion;
+            this.mesconciliacion = mesconciliacion;
+            this.diferencia = diferencia;
+            this.coninterno = coninterno;
+            this.cheque = cheque;
+            this.referencia = referencia;
+            this.nombretercero = nombretercero;
+            this.rfctercero = rfctercero;
+            this.sucursalconciliacion = sucursalconciliacion;
+            this.año = año;
+            this.cliente = cliente;
+            this.tipoCobro = tipocobro;
+            this.tipoCobroAnterior = tipocobroanterior;
             this.implementadorMensajes = implementadorMensajes;
         }
 
@@ -833,6 +952,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return tipoCobro; }
             set { tipoCobro = value; }
+        }
+
+        public int TipoCobroAnterior
+        {
+            get { return tipoCobroAnterior; }
+            set { tipoCobroAnterior = value; }
         }
 
         public Color ColorTraspaso

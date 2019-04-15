@@ -551,6 +551,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("FOperacionInt", typeof(DateTime));
             tblReferenciasAConciliar.Columns.Add("MontoInt", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoInt", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("TipoCobro", typeof(int));
 
             //tblReferenciasAConciliar.Columns.Add("Pedido", typeof(int));
             //tblReferenciasAConciliar.Columns.Add("Celula", typeof(int));
@@ -596,7 +597,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rc.FMovimientoInt,
                     rc.FOperacionInt,
                     rc.MontoInterno,
-                    rc.ConceptoInterno);
+                    rc.ConceptoInterno,
+                    rc.TipoCobro);
             }
             HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
             ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
@@ -702,6 +704,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
             tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("TipoCobro", typeof(int));
+            tblReferenciasAConciliar.Columns.Add("TipoCobroAnterior", typeof(int));
 
             listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
             foreach (var item in listaReferenciaConciliadaPedido)
@@ -752,7 +756,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rc.Nombre,//NombreCliente, //rc.Nombre,
                     rc.Total,
                     rc.ConceptoPedido,
-                    rc.FolioSat + rc.SerieSat
+                    rc.FolioSat + rc.SerieSat,
+                    rc.TipoCobro,
+                    rc.TipoCobroAnterior
                     );
             }
             HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
@@ -1068,6 +1074,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
     }
 
+    //private void AsignaValoresDefaultTipoCobro(GridView grid)
+    //{
+        
+    //}
+
     private void LlenaGridViewReferenciasConciliadas(int tipoConcilacion)//Llena el gridview con las conciliaciones antes leídas
     {
         try
@@ -1097,6 +1108,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 grvCantidadReferenciaConcuerdanPedido.DataBind(); //incidente 199
                 UnCheckBloquedos(grvCantidadReferenciaConcuerdanPedido);
                 bloqueaTodoLoSeleccionado(grvCantidadReferenciaConcuerdanPedido);
+
+                //AsignaValoresDefaultTipoCobro(grvCantidadReferenciaConcuerdanPedido);
+
             }
             if (objSolicitdConciliacion.ConsultaArchivo())
             {
@@ -1158,7 +1172,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
 
     public void Consulta_ConciliarArchivosCantidadReferencia(int corporativo, int sucursal, int año, short mes, int folio, short dias, decimal centavos, string campoexterno, string campointerno, int statusConcepto)
-    {
+    { 
         SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
         System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
@@ -1206,18 +1220,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 listResultado = new List<ReferenciaConciliadaPedido>();
                 listResultado = rnc.ConciliarPedidoCantidadYReferenciaMovExterno(centavos,
                     statusConcepto, campoExterno, campoInterno);
-                //if(Nhilos < 5)
-                //{
-                //    new Thread(() => ValidacionConsulta(listResultado)).Start();
-                //    Nhilos++;
-                //}
-                //while(Nhilos == 4)
-                //{
-
-                //}
                 listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
                 foreach (ReferenciaConciliadaPedido rc in listResultado)
                 {
+                    rc.TipoCobro = rnc.TipoCobro;
+                    rc.TipoCobroAnterior = rnc.TipoCobro;
                     if (listaTransaccionesConciliadas != null)
                         resultado =
                             listaTransaccionesConciliadas.SelectMany(
@@ -1359,6 +1366,24 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     protected void grvCantidadReferenciaConcuerdanPedido_RowDataBound(object sender, GridViewRowEventArgs e)
     {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            Control ctrlddl = e.Row.FindControl("ddlPorConciliarTipoCobro");
+            Control ctrllbl = e.Row.FindControl("lblTipoCobro");
+            if (ctrlddl != null && ctrllbl != null)
+            {
+                DropDownList dd = ctrlddl as DropDownList;
+                Label lb = ctrllbl as Label;
+                dd.SelectedValue = lb.Text;
+                //e.Row.Attributes.Add("onmouseover", "this.className='bg-color-grisClaro02'");
+                //dd.Attributes.Add("onmouseover", "this.className='bg-color-grisClaro02'");
+                if (lb.Text == "0")
+                    dd.CssClass = "select-css-rojo";
+                else
+                    dd.CssClass = "select-css";
+            }
+        }
+
         if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
         {
             if (HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] != null && int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
@@ -1370,6 +1395,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
         }
     }
+
     protected void grvCantidadReferenciaConcuerdanPedido_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         try
@@ -2696,7 +2722,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                         for (int i = 0; i < listRefCon.Count; i++)
                         {
                             ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
-                            refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+                            //refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
                             if (refcon.Selecciona)
                             {
                                 refcon.Guardar();
@@ -3484,4 +3510,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         GenerarTablaReferenciasAConciliarArchivos();
     }
 
+
+    protected void ddlPorConciliarTipoCobro_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DropDownList ddl = sender as DropDownList;
+        GridViewRow grv = (GridViewRow)ddl.Parent.Parent;
+        indiceExternoSeleccionado = grv.RowIndex;
+        ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+        rfEx.TipoCobro = int.Parse(ddl.SelectedValue.ToString());
+
+    }
 }

@@ -169,6 +169,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         comando.Parameters.Add("@IvaComision", System.Data.SqlDbType.Money).Value = this.IVAComision;
                     }
                     comando.Parameters.Add("@TipoCobro", System.Data.SqlDbType.Int).Value = this.TipoCobro;
+                    comando.Parameters.Add("@TipoCobroAnterior", System.Data.SqlDbType.Int).Value = this.TipoCobroAnterior;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();

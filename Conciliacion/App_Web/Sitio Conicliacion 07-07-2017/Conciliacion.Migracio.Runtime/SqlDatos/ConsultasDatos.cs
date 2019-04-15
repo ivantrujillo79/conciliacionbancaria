@@ -7,12 +7,89 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using Consultas = Conciliacion.Migracion.Runtime.ReglasNegocio.Consultas;
+using System.Data;
 
 namespace Conciliacion.Migracion.Runtime.SqlDatos
 {
     public class ConsultasDatos : Consultas
     {
 
+        private int ObtieneTipoCobro(List<PalabraClaveTipoCobro> listaPalabraClaveTipoCobro, string DescripcionEstadoCta, string ConceptoEstadoCta)
+        {
+            int resultTipoCobro = 0;
+            foreach (PalabraClaveTipoCobro regPalabraClave in listaPalabraClaveTipoCobro)
+            {
+                if (regPalabraClave.ColumnaDestino == "Descripcion")
+                { 
+                    if (DescripcionEstadoCta.Contains(regPalabraClave.PalabraClave))
+                    {
+                        resultTipoCobro = regPalabraClave.TipoCobro;
+                        break;
+                    }
+                }
+                else
+                if (regPalabraClave.ColumnaDestino == "Concepto")
+                { 
+                    if (ConceptoEstadoCta.Contains(regPalabraClave.PalabraClave))
+                    {
+                        resultTipoCobro = regPalabraClave.TipoCobro;
+                        break;
+                    }
+                }
+            }
+            return resultTipoCobro;
+        }
+
+        public override List<TablaDestinoDetalle> LigarPalabraClaveConTipoCobro(List<TablaDestinoDetalle> listaTablaDestinoDetalle, int BancoID, string CuentaBanco)
+        {
+            int i = 2;
+            string columna = string.Empty;
+            string valor = string.Empty;
+
+            //List<TablaDestinoDetalle> result_TablaDestinoDetalle = new List<TablaDestinoDetalle>();
+            List<TablaDestinoDetalle> result_TablaDestinoDetalle = listaTablaDestinoDetalle.ToList();
+
+            if (BancoID > 0)
+            { 
+                try
+                {
+                    List<PalabraClaveTipoCobro> listaPalabraClaveTipoCobro = new List<PalabraClaveTipoCobro>();
+                    using (SqlConnection cnn = new SqlConnection(this.CadenaConexion))
+                    {
+                        cnn.Open();
+                        SqlCommand cmd = new SqlCommand("spCBObtienePalabraClaveTipoCobro", cnn);
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@Banco", System.Data.SqlDbType.SmallInt).Value = BancoID; 
+                        cmd.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = CuentaBanco;
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            PalabraClaveTipoCobro palabraClaveTipoCobro = new PalabraClaveTipoCobro();
+                            palabraClaveTipoCobro.Banco = Convert.ToInt32(reader["Banco"]);
+                            palabraClaveTipoCobro.CuentaBanco = reader["CuentaBanco"].ToString();
+                            palabraClaveTipoCobro.PalabraClave = reader["PalabraClave"].ToString();
+                            palabraClaveTipoCobro.TipoCobro = Convert.ToInt32(reader["TipoCobro"].ToString());
+                            palabraClaveTipoCobro.ColumnaDestino = reader["ColumnaDestino"].ToString();
+                            listaPalabraClaveTipoCobro.Add(palabraClaveTipoCobro);
+                        }
+                        cnn.Close();
+                    }
+                    foreach (TablaDestinoDetalle tabladestinodetalle in listaTablaDestinoDetalle)
+                    {
+                        tabladestinodetalle.TipoCobro = ObtieneTipoCobro(listaPalabraClaveTipoCobro, tabladestinodetalle.Descripcion, tabladestinodetalle.Concepto);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Linea :" + (i).ToString() + "\n\r" + "Columna :" + columna + "  Valor :" + valor + "\n\r" + "Error :" + ex.Message);
+                    stackTrace = null;
+                    return null;
+                }
+            }
+            return listaTablaDestinoDetalle;
+
+        }
 
         public override TipoFuente ConsultaTipoFuentePorId(int id)
         {
@@ -408,6 +485,10 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
                             cmd2.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.SmallInt).Value = tablaDestinoDetalle.IdMotivoNoConciliado;
 
                         cmd2.Parameters.Add("@TipoFuenteInformacion", System.Data.SqlDbType.SmallInt).Value = tablaDestinoDetalle.TipoFuenteInformacion;
+                        if (tablaDestinoDetalle.TipoCobro == 0)
+                            cmd2.Parameters.Add("@TipoCobro", System.Data.SqlDbType.SmallInt).Value = DBNull.Value;
+                        else
+                            cmd2.Parameters.Add("@TipoCobro", System.Data.SqlDbType.SmallInt).Value = tablaDestinoDetalle.TipoCobro;
                         cmd2.ExecuteNonQuery();
                         secuencia++;
                     }

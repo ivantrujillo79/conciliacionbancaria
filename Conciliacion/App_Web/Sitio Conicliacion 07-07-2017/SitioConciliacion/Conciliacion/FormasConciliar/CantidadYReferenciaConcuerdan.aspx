@@ -19,6 +19,8 @@
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
+    <link href="../../App_Scripts/ColorDropDownList/estilocomborojo.css" rel="stylesheet" />
+    <link href="../../App_Scripts/ColorDropDownList/estilocomboverde.css" rel="stylesheet" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <!-- ScrollBar GridView -->
     <script type="text/javascript">
@@ -665,7 +667,7 @@
                                                 <td class="etiqueta fg-color-blanco" style="width: 30%">Tipo Cobro
                                                 </td>
                                                 <td style="width: 70%">
-                                                    <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño"
+                                                    <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño" Visible="false"
                                                         Width="125px" AutoPostBack="True" />
                                                 </td>
                                             </tr>
@@ -912,6 +914,22 @@
                                     <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
                                 </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="T.Cobro" SortExpression="TipoCobro">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblTipoCobro" runat="server" Text='<%# resaltarBusqueda(Eval("TipoCobro").ToString())  %>' Visible="false"></asp:Label>
+                                        <asp:DropDownList ID="ddlPorConciliarTipoCobro" runat="server" ClientIDMode="Static" class ="select-css" OnSelectedIndexChanged="ddlPorConciliarTipoCobro_SelectedIndexChanged">
+                                            <asp:ListItem Text="Transferencia" Value="10" ></asp:ListItem>
+                                            <asp:ListItem Text="Efectivo" Value="5" ></asp:ListItem>
+                                            <asp:ListItem Text="Cheques" Value="3" ></asp:ListItem>
+                                            <asp:ListItem Text="Tarjeta de Crédito" Value="6" ></asp:ListItem>
+                                            <asp:ListItem Text="Tarjeta de Débito" Value="19" ></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" Width="40px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="40px"></HeaderStyle>
+                                </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="F. Mov. Ext." SortExpression="FMovimientoExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFechaMovimientoExt" runat="server" Text='<%# resaltarBusqueda(Eval("FMovimiento","{0:d}").ToString()) %>'></asp:Label>

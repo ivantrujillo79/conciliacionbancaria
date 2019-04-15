@@ -209,7 +209,7 @@ public partial class ImportacionArchivos_FuenteInformacion : System.Web.UI.Page
 
     private int  verificarColumnas(FuenteInformacion fuente, string ruta)
     { 
-        ImportacionController controller = new ImportacionController(fuente,ruta);
+        ImportacionController controller = new ImportacionController(fuente,ruta,0);
         int columnas = controller.ObtenerColumnasEstadoCuenta().Length;
         return columnas;
 

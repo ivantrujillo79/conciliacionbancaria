@@ -57,6 +57,14 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         //public abstract bool Guardar();
         //#endregion
 
+        int tipocobro;
+
+        public int TipoCobro
+        {
+            get { return tipocobro; }
+            set { tipocobro = value; }
+        }
+
         public int IdCorporativo
         {
             get { return idCorporativo; }

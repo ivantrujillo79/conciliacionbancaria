@@ -247,7 +247,9 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                             tablaDestino.CuentaBancoFinanciero = cboCuentaFinanciero.SelectedValue.ToString();
                             tablaDestino.Usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario;
                             tablaDestino.IdTipoFuenteInformacion = finformacion.IdTipoFuenteInformacion;
-                            ImportacionController importador = new ImportacionController(finformacion, rutaCompleta);
+                            ImportacionController importador = new ImportacionController(finformacion, rutaCompleta, int.Parse(cboBancoFinanciero.SelectedValue.ToString()));
+                            //ImportacionController importador = new ImportacionController(finformacion, rutaCompleta,0);
+
 
                             if (importador.ImportarArchivo(tablaDestino))
                                 Limpiar();
