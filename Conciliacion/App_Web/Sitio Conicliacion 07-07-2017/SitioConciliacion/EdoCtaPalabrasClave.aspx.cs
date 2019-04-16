@@ -82,7 +82,7 @@ public partial class EdoCtaPalabrasClave : System.Web.UI.Page
 
         System.Web.Script.Serialization.JavaScriptSerializer jSearializer =
              new System.Web.Script.Serialization.JavaScriptSerializer();
-        return jSearializer.Serialize(ListaPalabrasClave);
+         return jSearializer.Serialize(ListaPalabrasClave);
 
 
     }

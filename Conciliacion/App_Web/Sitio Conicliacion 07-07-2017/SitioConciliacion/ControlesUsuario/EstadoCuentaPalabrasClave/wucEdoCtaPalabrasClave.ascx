@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucEdoCtaPalabrasClave.ascx.cs" Inherits="ControlesUsuario_EstadoCuentaPalabrasClave_wucEdoCtaPalabrasClave" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 
 
 <script type="text/javascript">
@@ -8,22 +8,34 @@
     $(document).ready(function(){
         $("#<%=ddlBanco.ClientID%>").change(function () {
             CargaCuentasBanco();
-            CargaPalabrasClave();
+            CargaPalabrasClave(); 
         });
 
-           $("#<%=ddlCuenta .ClientID%>").change(function () {
+           $("#<%=ddlCuenta.ClientID%>").change(function () {
             CargaPalabrasClave();           
         });
 
         $("#<%=ddlTipoCobro.ClientID%>").change(function () {
-            CargaPalabrasClave();           
+               $("#<%=LblFormaPago.ClientID%>").text('');
+            var fp ='Forma de Pago Elegida: '+$("#<%=ddlTipoCobro.ClientID%>").find("option:selected").text();
+            $("#<%=LblFormaPago.ClientID%>").text(fp);
+            CargaPalabrasClave();  
+             
+           
         });
 
         $("#btnAceptar").click(function(){
-            GuardarPalabrasClave();
-     });
+            GuardarPalabrasClave();      
+        });
 
-       
+
+
+
+
+
+
+
+   
 });
 
 
@@ -167,7 +179,7 @@
               return;
             }
 
-         $("#<%=TxtPalabrasClave.ClientID%>").val(''); 
+        $("#TxtPalabrasClave").tagsinput('removeAll');
 
 
         var objParametros = {};
@@ -184,20 +196,17 @@
                 success: function (data) {// función que va a ejecutar si el pedido fue exitoso
             
               var datos=JSON.parse(data.d)             
-              var s = '';  
+                    var s = ''; 
                                 
                for (var i = 0; i < datos.length; i++) {  
-                   s += ' ' + datos[i].PalabraClave ;  
+                           $("#TxtPalabrasClave").tagsinput('add', datos[i].PalabraClave);
                     }  
- 
                    
-                    if (s!= '')
-                    {
-                        $("#<%=TxtPalabrasClave.ClientID%>").val(s); 
-                    }
-                    else
-                    {
-                        alert('¡No existe información con los datos proporcionados!');
+                    if (datos.length==0)
+                    {                      
+                  
+                    $('#Mensaje').text('¡No existe información con los datos proporcionados!');
+                    $("#myModal").modal('show');
                     }
 
                 },
@@ -215,35 +224,44 @@
 
              if ($("#<%=ddlBanco.ClientID%>").val() == "-1")
             {
-            alert('¡Seleccione un Banco!');
+                 //alert('¡Seleccione un Banco!');
+                   $('#Mensaje').text('¡Seleccione un Banco!');
+                   $("#myModal").modal('show');
               return;
         }
 
         if ($("#<%=ddlCuenta.ClientID%>").val() == "-1")
         {
-             alert('¡Seleccione un cuenta!');
+            //alert('¡Seleccione un cuenta!');
+             $('#Mensaje').text('¡Seleccione un cuenta!');
+                   $("#myModal").modal('show');
               return;
             }
 
            
         if ($("#<%=ddlTipoCobro.ClientID%>").val() == "-1")
         {
-             alert('¡Seleccione un tipo de cobro!');
+            //alert('¡Seleccione un tipo de cobro!');
+             $('#Mensaje').text('¡Seleccione un tipo de cobro!');
+                   $("#myModal").modal('show');
               return;
         }
 
            if ($("#<%=ddlColumna.ClientID%>").val() == "-1")
-        {
-             alert('¡Seleccione una columna!');
+           {
+                $('#Mensaje').text('¡Seleccione una columna!');
+                   $("#myModal").modal('show');
+             //alert('¡Seleccione una columna!');
               return;
         }
 
-       if ($("#<%=TxtPalabrasClave.ClientID%>").val() == "")
+       if ($("#TxtPalabrasClave").val() == "")
         {
-             alert('¡Capture palabras clave!');
+           //alert('¡Capture palabras clave!');
+             $('#Mensaje').text('¡Capture palabras clave!');
+                   $("#myModal").modal('show');
               return;
             }
-
 
 
 
@@ -251,9 +269,28 @@
         var objParametros = {};
         objParametros.banco = $.trim($("#<%=ddlBanco.ClientID%>").val());
         objParametros.cuentabanco = $.trim($("#<%=ddlCuenta.ClientID%>").val());
-        objParametros.tipocobro = $.trim($("#<%=ddlTipoCobro.ClientID%>").val());
-        objParametros.palabraclave = $.trim($("#<%=TxtPalabrasClave.ClientID%>").val());
+        objParametros.tipocobro = $.trim($("#<%=ddlTipoCobro.ClientID%>").val());       
         objParametros.columnadestino = $.trim($("#<%=ddlColumna.ClientID%>").val());
+        objParametros.palabraclave = '';
+
+
+        var objPalabrasClave=$("#TxtPalabrasClave").tagsinput('items').toString();
+        var arr = objPalabrasClave.split(',');
+
+        for (var i = 0; i < arr.length; i++) { 
+                   //s += ' ' + datos[i].PalabraClave ;  
+            if(objParametros.palabraclave==''){ 
+                objParametros.palabraclave = arr[i];
+            }
+            else
+            {
+                objParametros.palabraclave = objParametros.palabraclave + '|' + arr[i];
+             }
+
+              }  
+ 
+
+        
 
          $.ajax({
                 type: "POST",
@@ -266,7 +303,8 @@
                     var res = JSON.parse(data.d)   
 
                     if (res = 'true')
-                        alert('Palabra clave registrada exitosamente');  
+                    $('#Mensaje').text('¡Palabra clave registrada exitosamente!');
+                    $("#myModal").modal('show');
  
                    
 
@@ -278,6 +316,22 @@
                     alert(r.responseText);
                 }
             });
+
+
+    }
+
+    function Cancelar() {
+
+        var fp = 'Forma de Pago Elegida: ';
+        $("#<%=LblFormaPago.ClientID%>").text(fp);
+
+        $("#<%=ddlBanco.ClientID%>").val("-1");
+        $("#<%=ddlCuenta.ClientID%>").val("-1");
+        $("#<%=ddlTipoCobro.ClientID%>").val("-1");
+        $("#<%=ddlColumna.ClientID%>").val("-1");
+        $("#TxtPalabrasClave").tagsinput('removeAll');
+      
+        
 
 
     }
@@ -305,19 +359,19 @@
         vertical-align: middle;
     }
     .auto-style3 {
-        width: 308px;
+        width: 542px;
     }
-</style>
+    </style>
 <div id="PalabrasCalve" >
     <table style="width: 100%">
         
         <tr>
-<td colspan="4"  style="width: 8.3%; text-align:center; color:white;font-weight: bold;" >
+<td colspan="6"  style="width: 8.3%; text-align:center; color:white;font-weight: bold;" >
     &nbsp;</td>
          </tr>
 
         <tr>
-<td colspan="4"  style="width: 8.3%; text-align:center; color:white;font-weight: bold;" >
+<td colspan="6"  style="width: 8.3%; text-align:center; color:white;font-weight: bold;" >
     <asp:Label ID="Label1" runat="server" Text="Asociación de forma de pago a palabras clave" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label>
         
         </td>
@@ -325,20 +379,20 @@
 
         <tr>
             <td>&nbsp;</td>
-            <td style="align-items:flex-start">
+            <td style="align-items:flex-start" colspan="2">
                 &nbsp;</td>
-            <td>&nbsp;</td>
+            <td colspan="2">&nbsp;</td>
             <td>
                 &nbsp;</td>
         </tr>
         <tr>
             <td class="auto-style1" style="text-align:right"><asp:Label ID="Label2" runat="server" Text="Banco" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-            <td style="text-align:left" class="auto-style1">
+            <td style="text-align:left" class="auto-style1" colspan="2">
                 <asp:DropDownList ID="ddlBanco" runat="server" AutoPostBack="false" Width="150px"  >
                    
                 </asp:DropDownList>
             </td>
-            <td style="text-align:right" class="auto-style1"><asp:Label ID="Label5" runat="server" Text="Cuenta" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
+            <td style="text-align:right" class="auto-style1" colspan="2">&nbsp; <asp:Label ID="Label5" runat="server" Text="Cuenta" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
             <td style="text-align:left" class="auto-style1">
                 <asp:DropDownList ID="ddlCuenta" runat="server"  AutoPostBack="false" Width="150px" >
                 </asp:DropDownList>
@@ -346,20 +400,20 @@
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td>
+            <td colspan="2">
                 &nbsp;</td>
-            <td>&nbsp;</td>
+            <td colspan="2">&nbsp;</td>
             <td>
                 &nbsp;</td>
         </tr>
         <tr>
             <td style="text-align:right" ><asp:Label ID="Label3" runat="server" Text="Tipo Cobro" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-            <td style="text-align:left">
+            <td style="text-align:left" colspan="2">
                 <asp:DropDownList ID="ddlTipoCobro" runat="server"  AutoPostBack="false" Width="150px" >
                     
                 </asp:DropDownList>
             </td>
-            <td style="text-align:right"><asp:Label ID="Label4" runat="server" Text="Columna" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
+            <td style="text-align:right" colspan="2"><asp:Label ID="Label4" runat="server" Text="Columna" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
             <td style="text-align:left">
                 <asp:DropDownList ID="ddlColumna" runat="server" AutoPostBack="false" Width="150px">
                    
@@ -368,41 +422,57 @@
         </tr>
         <tr>
             
-                    <td colspan="4"></td>
+                    <td colspan="6"></td>
              
        </tr>
         <tr>
-            <td colspan="4" ></td>
+            <td colspan="6" ></td>
                 
                    
        </tr>
         <tr>
-            <td colspan="4" >&nbsp;</td>
+            <td colspan="6" >&nbsp;</td>
                 
                    
        </tr>
         <tr>
             
-                    <td style="text-align:center" colspan="4"><asp:Label ID="Label6" runat="server" Text="Forma de Pago Elegida:Efectivo" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
+                    <td style="text-align:center" colspan="6"><asp:Label ID="LblFormaPago" runat="server" Text="Forma de Pago Elegida: " CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
              
        </tr>
          <tr>
-            <td colspan="4" ></td>
+            <td colspan="6" ></td>
                 
                    
        </tr>
 
          <tr>
-            <td colspan="4" >&nbsp;</td>
+            <td colspan="6" >&nbsp;</td>
                 
                    
        </tr>
 
         <tr>
-            <td style="text-align:center" colspan="4" >
+            <td style="text-align:center" colspan="2" >
+                  &nbsp;</td>    
+            
+                   
+            <td style="text-align:center" colspan="2" class="auto-style3" >
                   <span class="auto-style2">Palabra Clave Elegida:</span>
-                  <input  type="text" name="name" runat="server"  value="" data-role="tagsinput" id="TxtPalabrasClave" class="auto-style3"  />           
-            </td>          
+                  
+
+  <div class="form-group" style="align-content:center">
+   
+    <input type="text" value=""  id="TxtPalabrasClave"   data-role="tagsinput" class="form-control" />
+  </div>
+         
+
+            </td>    
+            
+                   
+            <td style="text-align:center" colspan="2" >
+                  &nbsp;</td>    
+            
                    
        </tr>
         
@@ -411,8 +481,8 @@
             
                     <td >
                         &nbsp;</td>
-               <td > &nbsp;</td>
-              <td >&nbsp;</td>
+               <td colspan="2" > &nbsp;</td>
+              <td colspan="2" >&nbsp;</td>
               <td >&nbsp;</td>
              
        </tr>
@@ -420,9 +490,9 @@
         
          <tr>
             
-                    <td colspan="2" style="text-align:right"  >
+                    <td colspan="3" style="text-align:right"  >
                         <input type="button" name="btnAceptar" value="Aceptar" style="width:150px" onclick="return GuardarPalabrasClave();" /> </td>
-              <td colspan="2"  style="text-align:left" > <asp:Button ID="btnCancelar" runat="server" AutoPostBack="false" Text="Cancelar" Width="150px"  /> </td>
+              <td colspan="3"  style="text-align:left" ><input type="button"  value="Cancelar" name="btnCancelar" onclick="return Cancelar();" style="width:150px" runat="server"  Text="Cancelar" Width="150px"  /> </td>
              
        </tr>
         
@@ -430,9 +500,9 @@
          <tr>
             
                     <td >
-                        &nbsp;</td>
-               <td > &nbsp;</td>
-              <td >&nbsp;</td>
+                      </td>
+               <td colspan="2" > &nbsp;</td>
+              <td colspan="2" >&nbsp;</td>
               <td >&nbsp;</td>
              
        </tr>
@@ -440,4 +510,22 @@
 
     
 
+</div>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+               
+                <h4 id="TituloMensaje" class="modal-title">Asociación de forma de pago a palabras clave</h4>
+            </div>
+            <div class="modal-body">
+                <p id="Mensaje"></p>
+                            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            
+            </div>
+        </div>
+    </div>
 </div>
