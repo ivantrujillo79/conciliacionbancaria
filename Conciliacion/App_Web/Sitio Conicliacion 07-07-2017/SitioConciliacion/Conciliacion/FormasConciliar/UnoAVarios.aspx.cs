@@ -2776,7 +2776,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            //if (!IsPostBack)
+            //if (!IsPostBack) Se comento por que no actualiza el grid de pedidos cuando cambias de deposito
             //{
                 DataTable tablaReferenciasP = (DataTable)HttpContext.Current.Session["TAB_INTERNOS"];
                 List<int> listadistintos = new List<int>();
