@@ -7,6 +7,7 @@ using System.Reflection;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 {
@@ -143,17 +144,101 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                 return false;
         }
 
+        private DateTime ConvertirFecha(DataRow filaEstadoCuenta, FuenteInformacionDetalle columnaMapeo)
+        {
+            bool conversionFecha = false;
+            DateTime dateResult =DateTime.Now;
+            if (columnaMapeo.EsTipoFecha)
+            {
+                string strFecha = QuitaHora(filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString());
+                try
+                {
+                    fechas.Add(Convert.ToDateTime(strFecha));
+                    filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()] = Convert.ToDateTime(strFecha);
+                    conversionFecha = true;
+                    dateResult = Convert.ToDateTime(strFecha);
+                }
+                catch (FormatException ex)
+                { conversionFecha = false; }
+
+                if (conversionFecha == false)
+                {
+                    try
+                    {
+                        //DateTime dateResult;
+                        CultureInfo ci = new CultureInfo("es-MX");
+                        conversionFecha = (DateTime.TryParseExact(strFecha, "dd-MMM-yy", ci, DateTimeStyles.None, out dateResult));
+                        if (conversionFecha)
+                        {
+                            fechas.Add(dateResult);
+                            filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()] = dateResult;
+                        }
+                    }
+                    catch (FormatException ex)
+                    { conversionFecha = false; }
+                }
+                if (conversionFecha == false)
+                {
+                    try
+                    {
+                        CultureInfo ci = new CultureInfo("es-MX");
+                        conversionFecha = (DateTime.TryParseExact(strFecha, "dd-MM-yy", ci, DateTimeStyles.None, out dateResult));
+                        if (conversionFecha)
+                        {
+                            fechas.Add(dateResult);
+                            filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()] = dateResult;
+                            return dateResult;
+                        }
+                    }
+                    catch (FormatException ex)
+                    { conversionFecha = false; }
+                }
+                if (conversionFecha == false)
+                {
+                    try
+                    {
+                        CultureInfo ci = new CultureInfo("en-US");
+                        strFecha = strFecha.Replace("abr", "apr");
+                        strFecha = strFecha.Replace("ago", "aug");
+                        strFecha = strFecha.Replace("dic", "dec");
+                        conversionFecha = (DateTime.TryParseExact(strFecha, "dd-MMM-yy", ci, DateTimeStyles.None, out dateResult));
+                        if (conversionFecha)
+                        {
+                            fechas.Add(dateResult);
+                            filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()] = dateResult;
+                            return dateResult;
+                        }
+                    }
+                    catch (FormatException ex)
+                    { conversionFecha = false; }
+                }
+                if (conversionFecha == false)
+                {
+                    try
+                    {
+                        CultureInfo ci = new CultureInfo("en-US");
+                        //conversionFecha = 
+                        dateResult = DateTime.ParseExact(strFecha, "MM-dd-yy", ci, DateTimeStyles.None);
+                        fechas.Add(dateResult);
+                        filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()] = dateResult;
+                        return dateResult;
+                    }
+                    catch (FormatException ex)
+                    { throw ex; }
+                }
+            }
+            return dateResult;
+        }
+
         private DataTable MapearTablaDestinoDetalleConEstadoCuenta(DataTable dtEstadoCuenta)
         {
-
             string nr;
-
             fechas.Clear();
             List<FuenteInformacionDetalle> columnasMapeo = fuenteInformacion.FuenteInformacionDetalle;
             DataTable dtDestinoDetalle = CrearDataTableDestinoDetalle(App.TablaDestinoDetalle);
+            string strValor = "";
             try
             {
-
                 foreach (DataRow filaEstadoCuenta in dtEstadoCuenta.Rows)
                 {
                     DataRow campoTabla = dtDestinoDetalle.NewRow();
@@ -169,20 +254,11 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
                                 campoTabla[patron.Etiqueta.ColumnaDestino] = valor;
                             }
                         }
-                        //if (columnaMapeo.ColumnaDestino != "DescripcionInterno")
-                        //{
-                        //    campoTabla[columnaMapeo.ColumnaDestino] = filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString();
-                        //}
-
                         /*Es para que nos deje agregar el archivo*/
+                        strValor = filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString();
                         campoTabla[columnaMapeo.ColumnaDestino] = filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString();
-
                         if (columnaMapeo.EsTipoFecha)
-                        {
-                            //nr = filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString();
-                            fechas.Add(Convert.ToDateTime(filaEstadoCuenta[columnaMapeo.ColumnaOrigen.Trim()].ToString()));
-                        }
-
+                            campoTabla[columnaMapeo.ColumnaDestino] = ConvertirFecha(filaEstadoCuenta, columnaMapeo);
                     }
                     dtDestinoDetalle.Rows.Add(campoTabla);
                 }
@@ -190,12 +266,24 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             catch (Exception ex)
             {
                 stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message + "\n\r" + "Stack :" + ex.StackTrace);
+                this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + 
+                    "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + 
+                    "Error :" + ex.Message +" "+ strValor + "\n\r" + "Stack :" + ex.StackTrace);
                 stackTrace = null;
                 return null;
 
             }
             return dtDestinoDetalle;
+        }
+
+
+        private string QuitaHora(string stringFecha)
+        {
+            string[] arFecha = stringFecha.Split(' ');
+            if (arFecha.Count() > 0)
+                return arFecha[0];
+            else
+                return stringFecha;
         }
 
         //private string BuscarValor(FuenteInformacionDetalleEtiqueta patron, string texto)

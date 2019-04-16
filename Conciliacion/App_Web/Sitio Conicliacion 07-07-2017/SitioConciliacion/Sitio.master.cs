@@ -143,6 +143,9 @@ public partial class Sitio : System.Web.UI.MasterPage
                     case 25:
                         e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Catálogos de Seguridad");
                         break;
+                    case 31:
+                        e.Item.Enabled = operaciones.EstaHabilitada(modulo, "Gestión de bloqueos");
+                        break;
                     default:
                         e.Item.Enabled = false;
                         break;

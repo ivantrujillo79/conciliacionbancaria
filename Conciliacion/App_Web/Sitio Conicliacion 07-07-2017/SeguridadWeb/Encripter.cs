@@ -8,7 +8,7 @@ namespace SeguridadWeb
     {
 
         #region "Funciones generales"
-        public static byte GetASCII(string strChar)
+        public byte GetASCII(string strChar)
         {
             if (strChar.Length > 0)
             {
@@ -21,7 +21,7 @@ namespace SeguridadWeb
             }
         }
 
-        public static string ReverseString(string theString)
+        public string ReverseString(string theString)
         {
             System.Text.StringBuilder theBuffer = new System.Text.StringBuilder();
             int i;
@@ -34,7 +34,7 @@ namespace SeguridadWeb
             return theBuffer.ToString();
         }
 
-        private static string DecimalToBase(int iDec, int numbase)
+        private string DecimalToBase(int iDec, int numbase)
         {
             const int base10 = 10;
             char[] cHexa = new char[] { 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -55,7 +55,7 @@ namespace SeguridadWeb
             return strBin;
         }
 
-        private static byte Reducir(int Numero)
+        private byte Reducir(int Numero)
         {
             int index;
             int res = Math.Abs(Numero);
@@ -72,7 +72,7 @@ namespace SeguridadWeb
         #endregion
 
         //18-01-2006 FUNCION DE ENCRIPTAMIENTO QUE ACTUALMENTE SE ESTA OCUPANDO PARA LOS SISTEMAS
-        public static string ImplicitEncript(string Texto)
+        public string ImplicitEncript(string Texto)
         {
             char[] ArrTexto = new char[Texto.Length];
             string CaracterEncriptado = null;
@@ -99,7 +99,7 @@ namespace SeguridadWeb
         }
 
         //18-01-2006 FUNCION DE DESENCRIPTAMIENTO QUE ACTUALMENTE SE ESTA OCUPANDO PARA LOS SISTEMAS
-        public static string ImplicitUnencript(string Texto)
+        public string ImplicitUnencript(string Texto)
         {
             byte key;
             int index, adder;

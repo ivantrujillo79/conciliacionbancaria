@@ -85,13 +85,14 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
             TablaDestino.IdStatusConciliacion = statusConciliacion;
             /**Aqui**/
 
+            SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
             foreach (RunTime.ReglasDeNegocio.ImportacionAplicacion extractor in listadoExtractores)
             {
                 NombreSp = extractor.Procedimiento;
                 Servidor = extractor.Servidor;
                 BaseDeDatos = extractor.BaseDeDatos;
                 UsuarioConsulta = extractor.UsuarioConsulta;
-                Pass = Seguridad.DesencriptaClave(extractor.Pass);
+                Pass = seguridad.DesencriptaClave(extractor.Pass);
                 TablaDestino.IdTipoFuenteInformacion = extractor.TipoFuenteInformacion; //extractor.Identificador;
 
                 TablaDestino.Detalles.AddRange(LlenarObjetosDestinoDestalle());

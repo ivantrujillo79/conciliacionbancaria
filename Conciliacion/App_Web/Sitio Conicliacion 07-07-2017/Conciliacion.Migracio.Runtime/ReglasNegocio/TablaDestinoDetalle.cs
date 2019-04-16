@@ -41,6 +41,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         int idMotivoNoConciliado;
         private int tipoFuenteInformacion;
         private int clientepago;
+        private int afiliacion;
 
         //#region IObjetoBase Members
         //public virtual string CadenaConexion
@@ -317,6 +318,12 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
         {
             get { return clientepago; }
             set { clientepago = value; }
+        }
+
+        public int Afiliacion
+        {
+            get {return afiliacion; }
+            set { afiliacion = value; }
         }
 
         public MotivoNoConciliado MotivoNoConciliado

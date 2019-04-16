@@ -13,11 +13,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         private int id;
         private string descripcion;
+        private int banco; //MCC 26-04-2018
+        private string nombreBanco; //MCC 26-04-2018
 
-        public Cuenta(int id, string descripcion)
+        public Cuenta(int id, string descripcion,int banco, string nombreBanco)
         {
             this.id = id;
             this.descripcion = descripcion;
+            this.banco = banco;
+            this.nombreBanco = nombreBanco;
         }
 
         #region Propiedades
@@ -33,6 +37,20 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return descripcion; }
             set { descripcion = value; }
         }
+
+
+        public int Banco
+        {
+            get { return banco; }
+            set { banco = value; }
+        }
+
+        public string NombreBanco
+        {
+            get { return nombreBanco; }
+            set { nombreBanco = value; }
+        }
+
 
         #endregion
 

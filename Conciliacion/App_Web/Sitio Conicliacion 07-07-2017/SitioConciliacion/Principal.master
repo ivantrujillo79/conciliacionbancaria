@@ -22,6 +22,25 @@
     <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/semantic.min.css"/>
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="/App_Scripts/alertify/css/themes/bootstrap.min.css"/>
+    <link href="App_Scripts/Bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="App_Scripts/Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="App_Scripts/Bootstrap/dist/bootstrap-tagsinput.css" rel="stylesheet" />
+    <link href="App_Scripts/Bootstrap/bootstrap-3/bootstrap-theme.css" rel="stylesheet" />
+    <link href="App_Scripts/Bootstrap/bootstrap-3/bootstrap-theme.min.css" rel="stylesheet" />
+
+    <link href="App_Scripts/Bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+        <script src="App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+
+    <script src="App_Scripts/Bootstrap/dist/bootstrap-tagsinput.js"  type="text/javascript"></script>
+    <link href="App_Scripts/Bootstrap/assets/app.css" rel="stylesheet" />
+    <script src="App_Scripts/Bootstrap/typeahead.js/dist/typeahead.bundle.js"  type="text/javascript"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+
 
 </head>
 <body>
@@ -59,7 +78,7 @@
         </div>
         <div id="piePagina">
             <asp:Label ID="lblInformacion" runat="server" Width="100%" CssClass="etiqueta fg-color-blanco"></asp:Label>
-            <asp:Label runat="server" ID="lblVersion" Text="    Ver. 2.4.98" CssClass="etiqueta fg-color-blanco"></asp:Label>
+            <asp:Label runat="server" ID="lblVersion" Text="    Ver. 2.5.127"  CssClass="etiqueta fg-color-blanco"></asp:Label>
         </div>
     </div>
     </form>
@@ -67,8 +86,25 @@
     <!--        Bootstrap CSS & JS          -->
     <%--<link rel="Stylesheet" href="../../App_Scripts/Bootstrap/css/bootstrap.min.css" />--%>
     <%--<script src="../../App_Scripts/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js?ver=1.12.5" type="text/javascript"></script>
+
+    <script src="<%= Page.ResolveClientUrl("~/App_Scripts/popper/Popper.min.js") %>" type="text/javascript"></script>
     <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/css/bootstrap.min.css") %>" />
     <script src="<%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/js/bootstrap.min.js") %>" type="text/javascript"></script>
+
+        <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/dist/bootstrap-tagsinput.css") %>" />
+     <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/bootstrap-3/bootstrap-theme.min.css") %>" />
+    <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/bootstrap-3/bootstrap-theme.css") %>" />
+    <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/css/bootstrap.css") %>" />
+  <script src="<%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/dist/bootstrap-tagsinput.js") %>" type="text/javascript"></script>
+        <link rel="Stylesheet" href=" <%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/assets/app.css") %>" />
+      <script src="<%= Page.ResolveClientUrl("~/App_Scripts/Bootstrap/typeahead.js/dist/typeahead.bundle.js") %>" type="text/javascript"></script>
+    
+   
+
+  
+    
+
+     
+  
 </body>
 </html>

@@ -6,6 +6,11 @@ using Conciliacion.RunTime.DatosSQL;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
+    public enum StatusMovimientoCaja
+    {
+        Emitido = 0,
+        Validado = 1
+    }
     public abstract class MovimientoCaja : EmisorMensajes
     {
         short caja;
@@ -18,7 +23,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int empleado;
         string observaciones;
         decimal saldoafavor;
-        
+        private Int16 tipoMovimientoCaja;
+        private StatusMovimientoCaja statusAltaMC;
+
         private List<Cobro> listacobros = new List<Cobro>();
         private List<ReferenciaConciliadaPedido> listapedidos = new List<ReferenciaConciliadaPedido>();
 
@@ -81,6 +88,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { caja = value; }
         }
 
+        public short TipoMovimientoCaja
+        {
+            get { return tipoMovimientoCaja; }
+            set { tipoMovimientoCaja = value; }
+        }
+
         public DateTime FOperacion
         {
             get { return foperacion; }
@@ -130,15 +143,22 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return saldoafavor; }
             set { saldoafavor = value; }
         }
+        public StatusMovimientoCaja StatusAltaMC
+        {
+            get{ return statusAltaMC;}
+            set{ statusAltaMC = value;}
+        }
 
         #endregion
 
         public abstract bool MovimientoCajaAlta(Conexion _conexion);
         public abstract bool ValidaMovimientoCaja(Conexion _conexion);
-        public abstract bool AplicarCobros(Conexion _conexion);
+        public abstract bool AplicarCobros(Conexion _conexion, short tipoConciliacion);
+        public abstract bool AplicarCobrosCRM(Conexion _conexion, string URLGateway);
 
-        public abstract bool Guardar(Conexion conexion);
-        
+        public abstract bool Guardar(Conexion conexion, short tipoConciliacion);
+        public abstract bool Guardar(Conexion conexion, string URLGateway, short tipoConciliacion);
+
         public abstract MovimientoCaja CrearObjeto();
 
         public virtual string CadenaConexion

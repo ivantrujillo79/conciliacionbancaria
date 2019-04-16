@@ -13,6 +13,8 @@ using Conciliacion.RunTime;
 using System.Configuration;
 using SeguridadCB.Public;
 using Conciliacion.RunTime.DatosSQL;
+using RTGMGateway;
+using System.Threading.Tasks;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 {
@@ -26,10 +28,61 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     public int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno, sucursalConciliacion;
     public short mesConciliacion, tipoConciliacion;
+    public short esEdificios;
     public MovimientoCajaDatos movimientoCajaAlta = null;
+    //private RTGMGateway.SolicitudActualizarPedido solicitudActualizaPedido = new RTGMGateway.SolicitudActualizarPedido();
+    //private RTGMGateway.RTGMActualizarPedido ActualizaPedido = new RTGMGateway.RTGMActualizarPedido();
+    private string _URLGateway;
+    private List<RTGMCore.DireccionEntrega> listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+    private bool validarPeticion = false;
+    private List<int> listaClientesEnviados;
+    private List<int> listaClientes = new List<int>();
+
+    private int PagosSeleccionados
+    {
+        get
+        {
+            return Convert.ToInt32(Session["PagosSeleccionados"]);
+        }
+
+        set
+        {
+            Session["PagosSeleccionados"] = value;
+        }
+    }
+
+    private int ClientePadre
+    {
+        get
+        {
+            return Convert.ToInt32(Session["ClientePadre"]);
+        }
+
+        set
+        {
+            Session["ClientePadre"] = value;
+        }
+    }
+
+
+    private decimal MontoSeleccionado
+    {
+        get
+        {
+            return Convert.ToDecimal(Session["MontoSeleccionado"]);
+        }
+
+        set
+        {
+            Session["MontoSeleccionado"] = value;
+        }
+    }
     #endregion
 
     #region Eventos de la Forma
+
+
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -40,9 +93,29 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
+        if (IsPostBack)
+        {
+            if (Page.Request.Params["__EVENTTARGET"] == "miPostBack")
+            {
+                validarPeticion = false;
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                listaClientes = ViewState["LISTACLIENTES"] as List<int>;
+                //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+                string dat = Page.Request.Params["__EVENTARGUMENT"].ToString();
+                if (dat == "1")
+                {
+                    ObtieneNombreCliente(listaClientes);
+                }
+                else if (dat == "2")
+                {
+                    llenarListaEntrega();
+                }
+            }
+        }
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
+            
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
                 if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))
@@ -56,12 +129,67 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
 
+                string statusInicial;
+
+                int visibleAreasComunes;
+                StatusMovimientoCaja status;
+
+                ClientePadre = -1;
+                PagosSeleccionados = 0;
+                MontoSeleccionado = 0;
+
+
+                statusInicial = parametros.ValorParametro(30, "StatusInicialMovCaja");
+
+
+                try
+                {
+                    visibleAreasComunes = int.Parse(parametros.ValorParametro(30, "PAGOAREASCOMUNES"));
+                }
+                catch 
+                {
+                    visibleAreasComunes = 0;
+                }
+
+                td1.Visible= visibleAreasComunes == 1;
+
+                esEdificios = Convert.ToSByte(Request.QueryString["EsEdificios"]);
+
+                if (statusInicial == "EMITIDO")
+                {
+                    status = StatusMovimientoCaja.Emitido;
+                }
+                else
+                {
+                    status = StatusMovimientoCaja.Validado;
+                }
+                
+                if (esEdificios == 1) 
+                {
+                    status = StatusMovimientoCaja.Validado;
+                }
+
+                
+                  
+                
                 corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
                 añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
                 folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
                 mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+                HttpContext.Current.Session["Pago_corporativoConciliacion"] = Convert.ToInt32(Request.QueryString["Corporativo"]);
+                HttpContext.Current.Session["Pago_sucursalConciliacion"] = Convert.ToInt16(Request.QueryString["Sucursal"]);
+                HttpContext.Current.Session["Pago_añoConciliacion"] = Convert.ToInt32(Request.QueryString["Año"]);
+                HttpContext.Current.Session["Pago_folioConciliacion"] = Convert.ToInt32(Request.QueryString["Folio"]);
+                HttpContext.Current.Session["Pago_mesConciliacion"] = Convert.ToSByte(Request.QueryString["Mes"]);
+                HttpContext.Current.Session["Pago_tipoConciliacion"] = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+
+
+
+
                 LlenarBarraEstado();
                 Carga_FormasConciliacion(tipoConciliacion);
                 cargar_ComboCampoFiltroDestino(tipoConciliacion, rdbFiltrarEn.SelectedItem.Value);
@@ -71,7 +199,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 Consulta_MovimientoCaja(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
                 Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
                 GenerarTablaReferenciasAPagarPedidos();
-                LlenaGridViewReferenciasPagos();
+                //LlenaGridViewReferenciasPagos();
 
                 decimal totalTemp = 0;
                 
@@ -79,15 +207,17 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 {
                     totalTemp = totalTemp + objReferencia.MontoConciliado;
                 }
+                HttpContext.Current.Session["TipoMovimientoCaja"]= Convert.ToInt32(Request.QueryString["tipoMovimientoCaja"]);
 
                 movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
+                movimientoCajaAlta.StatusAltaMC = status;
                 movimientoCajaAlta.Total = totalTemp;
+                movimientoCajaAlta.TipoMovimientoCaja = 3;
                 HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
-
+                
                 tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
                 imgExportar.Enabled = false;
             }
-
         }
         catch (Exception ex) { App.ImplementadorMensajes.MostrarMensaje(ex.Message); }
     }
@@ -113,7 +243,32 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     {
         try
         {
-            movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            string strUsuario = usuario.IdUsuario.Trim();
+            //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
+
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+
+            int transbanUsuario;
+
+            try
+            {
+                transbanUsuario = int.Parse(parametros.ValorParametro(30, "TransBanPorUsuario"));
+            }
+            catch
+            {
+                transbanUsuario = 0;
+            }
+
+            if (transbanUsuario == 0)
+            {
+                strUsuario = "";
+            }
+           
+
+
+            movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, strUsuario);
 
             //short consecutivo = movimientoCajaAlta.Consecutivo;
             //int folio = movimientoCajaAlta.Folio;
@@ -151,8 +306,33 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     {
         try
         {
-             //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
-            listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC);
+            usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            string strUsuario = usuario.IdUsuario.Trim();
+            //movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCaja;
+
+            string usuarioBusqueda = "";
+
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+
+            int transbanUsuario;
+
+            try
+            {
+                transbanUsuario = int.Parse(parametros.ValorParametro(30, "TransBanPorUsuario"));
+            }
+            catch
+            {
+                transbanUsuario = 0;
+            }
+
+            if (transbanUsuario == 1)
+            {
+                usuarioBusqueda = strUsuario;
+            }
+
+            listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC, usuarioBusqueda);
+            listaReferenciaConciliadaPagos.ForEach(pedido => { pedido.Usuario = strUsuario; pedido.Portatil = false; });
+
             HttpContext.Current.Session["LIST_REF_PAGAR"] = listaReferenciaConciliadaPagos;
         }
         catch (Exception ex)
@@ -160,13 +340,407 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
+
+    protected void chkSeleccionado_CheckedChanged(object sender, System.EventArgs e)
+    {
+        decimal diferenciaDecimal;
+        string diferencia;
+        int clientePadreTemp;
+
+
+
+        CheckBox rb = (CheckBox)sender;
+        GridViewRow row = (GridViewRow)rb.NamingContainer;
+
+
+
+        List<GridViewRow> filasCheck =new List<GridViewRow>
+                (from GridViewRow r in grvPagos.Rows
+                 where ((CheckBox)r.FindControl("chkSeleccionado")).Checked == true
+                 select r);
+
+
+        
+        if (filasCheck.Count>1)
+        {
+            rb.Checked = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Solo puede seleccionar un registro');", true);
+            return;
+        }
+
+        diferencia = ((Label)row.FindControl("lblDiferencia")).Text;
+        clientePadreTemp = int.Parse(((Label)row.FindControl("lblClientePadre")).Text);
+
+        decimal.TryParse(diferencia, System.Globalization.NumberStyles.Currency, null, out diferenciaDecimal);
+
+
+        if (diferenciaDecimal <= 0)
+        {
+            rb.Checked = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor');", true);
+            return;
+        }
+
+        if (rb.Checked)
+        {
+
+
+
+
+
+
+            if (PagosSeleccionados==0)
+            {
+                PagosSeleccionados = PagosSeleccionados + 1;
+                ClientePadre = clientePadreTemp;
+                MontoSeleccionado = MontoSeleccionado + diferenciaDecimal;
+            }
+            else
+            {
+                if (clientePadreTemp==ClientePadre)
+                {
+                    PagosSeleccionados = PagosSeleccionados + 1;
+                    MontoSeleccionado = MontoSeleccionado + diferenciaDecimal;
+                }
+                else
+                {
+                    rb.Checked = false;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('No se pueden seleccionar registros sin saldo a favor o con Cliente Padre diferentes');", true);
+                    return;
+                }
+            }            
+        }
+        else
+        {
+            PagosSeleccionados = PagosSeleccionados - 1;
+            if (PagosSeleccionados ==0)
+            {
+                ClientePadre = -1;
+                MontoSeleccionado = MontoSeleccionado - diferenciaDecimal;
+            }
+        }
+    }
+
+private string TipoCobroDescripcion(int tipoCobro)
+    {
+        if (tipoCobro == 10) //Transferencia
+            return "Transferencia";
+        else
+        if (tipoCobro == 5) //Efectivo, ID: 
+            return "Efectivo";
+        else
+        if (tipoCobro == 3) //c) Cheques, ID: 3
+            return "Cheques";
+        else
+        if (tipoCobro == 6) //d) Tarjeta de crédito, ID: 
+            return "Tarjeta de crédito";
+        else
+        if (tipoCobro == 19) //e) Tarjeta de débito, ID: 
+            return "Tarjeta de débito";
+        else
+            return "";
+    }
+
     /// <summary>
     /// Genera la tabla Referencias a Pagar Pedidos
     /// </summary>
     public void GenerarTablaReferenciasAPagarPedidos()
     {
+        string _URLGateway = "";
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
         try
         {
+            //tblReferenciasAPagar = new DataTable("ReferenciasAConciliarPedidos");
+            ////Campos Externos
+            //tblReferenciasAPagar.Columns.Add("Secuencia", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("FolioExt", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("RFCTercero", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("Retiro", typeof(decimal));
+            //tblReferenciasAPagar.Columns.Add("Referencia", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("NombreTercero", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("Deposito", typeof(decimal));
+            //tblReferenciasAPagar.Columns.Add("Cheque", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("FMovimiento", typeof(DateTime));
+            //tblReferenciasAPagar.Columns.Add("FOperacion", typeof(DateTime));
+            //tblReferenciasAPagar.Columns.Add("MontoConciliado", typeof(decimal));
+            //tblReferenciasAPagar.Columns.Add("Concepto", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("Descripcion", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("ClientePadre", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("Diferencia", typeof(decimal));
+            //tblReferenciasAPagar.Columns.Add("StatusMovimiento", typeof(string));
+            ////Campos Pedidos
+            //tblReferenciasAPagar.Columns.Add("Pedido", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("PedidoReferencia", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("SeriePedido", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("RemisionPedido", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("FolioSat", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("SerieSat", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("AñoPed", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("Celula", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("Cliente", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("Nombre", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("Total", typeof(decimal));
+            //tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
+            //tblReferenciasAPagar.Columns.Add("IdTipoCobro", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("FormaConciliacion", typeof(int));
+            //tblReferenciasAPagar.Columns.Add("SucursalPedido", typeof(int));
+
+            List<int> listadistintos = new List<int>();//listaReferenciaConciliadaPedido.GroupBy(item => item.Cliente).Select(x=> x.f).ToList();//.GroupBy(x => x.Cliente).Select(c => c.First()).ToList();
+            listaClientesEnviados = new List<int>();
+            try
+            {
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                if (listaDireccinEntrega == null)
+                {
+                    listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            foreach (var item in listaReferenciaConciliadaPagos)
+            {
+                if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == item.Cliente))
+                {
+                    if (!listadistintos.Exists(x => x == item.Cliente))
+                    {
+                        listadistintos.Add(item.Cliente);
+                    }
+                }
+            }
+            try
+            {
+                if (listadistintos.Count > 0)
+                {
+                    HttpContext.Current.Session["CONCILIAR_PAGOS"] = listaReferenciaConciliadaPagos;
+                    validarPeticion = true;
+                    ObtieneNombreCliente(listadistintos);
+                }
+                else
+                {
+                    llenarListaEntrega();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            //List<Cliente> lstClientes = new List<Cliente>();
+            //if (_URLGateway != string.Empty)
+            //    lstClientes = ConsultaCLienteCRMdt(listaReferenciaConciliadaPagos, _URLGateway);
+
+            //foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
+            //{
+            //    if (_URLGateway != string.Empty)
+            //    {
+            //        Cliente cliente;
+            //        cliente = lstClientes.Find(x => x.NumCliente == rc.Cliente);
+            //        if (cliente != null)
+            //        {
+            //            rc.Nombre = cliente.Nombre;
+            //        }
+            //    }
+
+
+            //    tblReferenciasAPagar.Rows.Add(
+            //           rc.Secuencia,
+            //            rc.Folio,
+            //            rc.RFCTercero,
+            //            rc.Retiro,
+            //            rc.Referencia,
+            //            rc.NombreTercero,
+            //            rc.Deposito,
+            //            rc.Cheque,
+            //            rc.FMovimiento,
+            //            rc.FOperacion,
+            //            rc.MontoConciliado,
+            //            rc.Concepto,
+            //            rc.Descripcion,
+            //            rc.ClientePadre,
+            //            rc.Diferencia,
+            //            rc.StatusMovimiento,
+            //            rc.Pedido,
+            //            rc.PedidoReferencia,
+            //            rc.SeriePedido,
+            //            rc.RemisionPedido,
+            //            rc.FolioSat,
+            //            rc.SerieSat,
+            //            rc.AñoPedido,
+            //            rc.CelulaPedido,
+            //            rc.Cliente,
+            //            rc.Nombre,
+            //            rc.Total,
+            //            rc.ConceptoPedido,
+            //            TipoCobroDescripcion(rc.TipoCobro),
+            //            rc.TipoCobro,
+            //            rc.FormaConciliacion,
+            //            rc.SucursalPedido
+            //            );
+            //}
+            //HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;
+            //ViewState["TAB_REF_PAGAR"] = tblReferenciasAPagar;
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+    private List<Cliente> ConsultaCLienteCRMdt(List<ReferenciaConciliadaPedido> listReferenciaPedidos, string URLGateway)
+    {
+        List<Cliente> lstClientes = new List<Cliente>();
+        List<int> listadistintos = new List<int>();
+        try
+        {
+            foreach (var item in listReferenciaPedidos)
+            {
+                if (!listadistintos.Exists(x => x == item.Cliente))
+                {
+                    listadistintos.Add(item.Cliente);
+                }
+            }
+            AppSettingsReader settings = new AppSettingsReader();
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+            string cadenaconexion = App.CadenaConexion;
+            ParallelOptions options = new ParallelOptions();
+            options.MaxDegreeOfParallelism = 3;
+            Parallel.ForEach(listadistintos, options, (client) => {
+                Cliente cliente;
+                cliente = App.Cliente.CrearObjeto();
+                cliente.NumCliente = client;
+                cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, URLGateway);
+                lstClientes.Add(cliente);
+            });
+
+            while (lstClientes.Count < listadistintos.Count)
+            {
+
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+        return lstClientes;
+    }
+
+    private void ObtieneNombreCliente(List<int> listadistintos)
+    {
+        RTGMGateway.RTGMGateway oGateway;
+        RTGMGateway.SolicitudGateway oSolicitud;
+        AppSettingsReader settings = new AppSettingsReader();
+        string cadena = App.CadenaConexion;
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway.ListaCliente = listadistintos;
+            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+            oGateway.eListaEntregas += completarListaEntregas;
+            oSolicitud = new RTGMGateway.SolicitudGateway();
+            listaClientesEnviados = listadistintos;
+            foreach (var item in listadistintos)
+            {
+                oSolicitud.IDCliente = item;
+                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public void completarListaEntregas(List<RTGMCore.DireccionEntrega> direccionEntregas)
+    {
+        RTGMCore.DireccionEntrega direccionEntrega;
+        RTGMCore.DireccionEntrega direccionEntregaTemp;
+        bool errorConsulta = false;
+        try
+        {
+            foreach (var item in direccionEntregas)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        if (item.Message != null)
+                        {
+                            direccionEntrega = new RTGMCore.DireccionEntrega();
+                            direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                            direccionEntrega.Nombre = item.Message;
+                            listaDireccinEntrega.Add(direccionEntrega);
+                        }
+                        else if (item.IDDireccionEntrega == -1)
+                        {
+                            errorConsulta = true;
+                        }
+                        else if (item.IDDireccionEntrega >= 0)
+                        {
+                            listaDireccinEntrega.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        direccionEntrega = new RTGMCore.DireccionEntrega();
+                        direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                        direccionEntrega.Nombre = "No se encontró cliente";
+                        listaDireccinEntrega.Add(direccionEntrega);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    direccionEntrega = new RTGMCore.DireccionEntrega();
+                    direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                    direccionEntrega.Nombre = ex.Message;
+                    listaDireccinEntrega.Add(direccionEntrega);
+                }
+            }
+            if (validarPeticion && errorConsulta)
+            {
+                validarPeticion = false;
+                listaClientes = new List<int>();
+                foreach (var item in listaClientesEnviados)
+                {
+                    direccionEntregaTemp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item);
+                    if (direccionEntregaTemp == null)
+                    {
+                        listaClientes.Add(item);
+                    }
+                }
+                ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+                ViewState["LISTACLIENTES"] = listaClientes;
+                HttpContext.Current.Session["CONCILIAR_PAGOS"] = listaReferenciaConciliadaPagos;
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje", "mensajeAsincrono(" + listaClientes.Count + ");", true);
+            }
+            else
+            {
+                llenarListaEntrega();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void llenarListaEntrega()
+    {
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
             tblReferenciasAPagar = new DataTable("ReferenciasAConciliarPedidos");
             //Campos Externos
             tblReferenciasAPagar.Columns.Add("Secuencia", typeof(int));
@@ -182,6 +756,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("MontoConciliado", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("Concepto", typeof(string));
             tblReferenciasAPagar.Columns.Add("Descripcion", typeof(string));
+            tblReferenciasAPagar.Columns.Add("ClientePadre", typeof(int));
             tblReferenciasAPagar.Columns.Add("Diferencia", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("StatusMovimiento", typeof(string));
             //Campos Pedidos
@@ -197,46 +772,126 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             tblReferenciasAPagar.Columns.Add("Nombre", typeof(string));
             tblReferenciasAPagar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAPagar.Columns.Add("ConceptoPedido", typeof(string));
-
+            tblReferenciasAPagar.Columns.Add("TipoCobro", typeof(string));
+            tblReferenciasAPagar.Columns.Add("IdTipoCobro", typeof(int));
+            tblReferenciasAPagar.Columns.Add("FormaConciliacion", typeof(int));
+            tblReferenciasAPagar.Columns.Add("SucursalPedido", typeof(int));
+            tblReferenciasAPagar.Columns.Add("AñoExterno", typeof(int));
+            listaReferenciaConciliadaPagos = HttpContext.Current.Session["CONCILIAR_PAGOS"] as List<ReferenciaConciliadaPedido>;
+            if (listaReferenciaConciliadaPagos == null)
+            {
+                listaReferenciaConciliadaPagos = new List<ReferenciaConciliadaPedido>();
+            }
+            if (_URLGateway != string.Empty)
+            {
+                foreach (var rc in listaReferenciaConciliadaPagos)
+                {
+                    try
+                    {
+                        RTGMCore.DireccionEntrega cliente;
+                        cliente = listaDireccinEntrega.Find(x => x.IDDireccionEntrega == rc.Cliente);
+                        if (cliente != null)
+                        {
+                            rc.Nombre = cliente.Nombre;
+                        }
+                        else
+                        {
+                            rc.Nombre = "No encontrado";
+                        }
+                    }
+                    catch(Exception Ex)
+                    {
+                        rc.Nombre = Ex.Message;
+                    }
+                }
+            }
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPagos)
             {
                 tblReferenciasAPagar.Rows.Add(
-                   rc.Secuencia,
-                    rc.Folio,
-                    rc.RFCTercero,
-                    rc.Retiro,
-                    rc.Referencia,
-                    rc.NombreTercero,
-                    rc.Deposito,
-                    rc.Cheque,
-                    rc.FMovimiento,
-                    rc.FOperacion,
-                    rc.MontoConciliado,
-                    rc.Concepto,
-                    rc.Descripcion,
-                    rc.Diferencia,
-                    rc.StatusMovimiento,
-                    rc.Pedido,
-                    rc.PedidoReferencia,
-                    rc.SeriePedido,
-                    rc.RemisionPedido,
-                    rc.FolioSat,
-                    rc.SerieSat,
-                    rc.AñoPedido,
-                    rc.CelulaPedido,
-                    rc.Cliente,
-                    rc.Nombre,
-                    rc.Total,
-                    rc.ConceptoPedido
-                    );
+                       rc.Secuencia,
+                        rc.Folio,
+                        rc.RFCTercero,
+                        rc.Retiro,
+                        rc.Referencia,
+                        rc.NombreTercero,
+                        rc.Deposito,
+                        rc.Cheque,
+                        rc.FMovimiento,
+                        rc.FOperacion,
+                        rc.MontoConciliado,
+                        rc.Concepto,
+                        rc.Descripcion,
+                        rc.ClientePadre,
+                        rc.Diferencia,
+                        rc.StatusMovimiento,
+                        rc.Pedido,
+                        rc.PedidoReferencia,
+                        rc.SeriePedido,
+                        rc.RemisionPedido,
+                        rc.FolioSat,
+                        rc.SerieSat,
+                        rc.AñoPedido,
+                        rc.CelulaPedido,
+                        rc.Cliente,
+                        rc.Nombre,
+                        rc.Total,
+                        rc.ConceptoPedido,
+                        TipoCobroDescripcion(rc.TipoCobro),
+                        rc.TipoCobro,
+                        rc.FormaConciliacion,
+                        rc.SucursalPedido,
+                        rc.Año);
             }
             HttpContext.Current.Session["TAB_REF_PAGAR"] = tblReferenciasAPagar;
             ViewState["TAB_REF_PAGAR"] = tblReferenciasAPagar;
+            ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+            ViewState["LISTACLIENTES"] = listaClientes;
+            LlenaGridViewReferenciasPagos();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
+    }
+
+    public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario user, byte modulo, string cadenaconexion, string URLGateway)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (URLGateway != string.Empty)
+            {
+                //AppSettingsReader settings = new AppSettingsReader();
+                //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                Gateway.URLServicio = URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.IDCliente = cliente;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        if (DireccionEntrega == null ||
+            DireccionEntrega.Nombre == null)
+        {
+            //DireccionEntrega.Message == null ||
+            if (DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
+            {
+                return "No encontrado";
+            }
+            else
+            {
+                return "";
+            }
+        }
+        else
+            return DireccionEntrega.Nombre.Trim();
     }
     /// <summary>
     /// Llena el gridview con las conciliaciones antes leídas
@@ -567,13 +1222,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             cargarInfoConciliacionActual();
             Consulta_TransaccionesAPagar(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
             GenerarTablaReferenciasAPagarPedidos();
-            LlenaGridViewReferenciasPagos();
+            //LlenaGridViewReferenciasPagos();
         }
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
+
     private bool HaySaldoAFavor(List<Cobro> ListaCobros)
     {
         bool resultado = false;
@@ -585,18 +1241,103 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
         }
         return resultado;
     }
+
+    //private void PreparaPedidoRTGM(ReferenciaConciliadaPedido objPedido)
+    //{
+    //    solicitudActualizaPedido.TipoActualizacion = RTGMCore.TipoActualizacion.Liquidacion;
+    //    solicitudActualizaPedido.Fuente = RTGMCore.Fuente.Sigamet;
+    //    solicitudActualizaPedido.IDEmpresa = 1;
+    //    //solicitudActualizaPedido.Portatil = ? booleano;
+    //    //solicitudActualizaPedido.Usuario = ? "ROPIMA";
+
+    //    RTGMCore.Pedido pedido = new RTGMCore.Pedido();
+    //    pedido.IDPedido = objPedido.Pedido;
+    //    pedido.IDZona = objPedido.CelulaPedido;
+    //    pedido.AnioPed = objPedido.AñoPedido;
+
+    //    solicitudActualizaPedido.Pedidos.Add(pedido);
+    //}
+
+    protected void btnAreasComunes_Click(object sender, ImageClickEventArgs e)
+    {
+        CheckBox sel;
+        string referencia;
+        string pedidoReferencia;
+
+        DataTable tablaReferencias = (DataTable)HttpContext.Current.Session["TAB_REF_PAGAR"];
+        DataTable tablaReferenciasSeleccionadas = tablaReferencias.Clone();
+        DataRow[] filas;
+
+
+
+
+
+
+        //if (PagosSeleccionados==0)
+        //{
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
+        //    return;
+        //}
+
+        
+
+        List<GridViewRow> filasCheck = new List<GridViewRow>
+                (from GridViewRow r in grvPagos.Rows
+                 where ((CheckBox)r.FindControl("chkSeleccionado")).Checked == true
+                 select r);
+
+        if (filasCheck.Count ==0)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
+            return;
+        }
+
+
+        foreach (GridViewRow fila in filasCheck)
+        {                    
+            referencia= ((Label)fila.FindControl("lblReferencia")).Text;
+            pedidoReferencia = ((Label)fila.FindControl("lblPedidoReferencia")).Text;
+
+            filas = tablaReferencias.Select("referencia = '"+referencia+"' and pedidoReferencia = '"+pedidoReferencia+"'");
+
+            foreach (DataRow filaTabla in filas)
+            {
+                tablaReferenciasSeleccionadas.ImportRow(filaTabla);
+            }               
+                     
+        }
+    
+
+        Conexion conexion = new Conexion();
+        wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
+        //wuAreascomunes.inicializa(0, 1000);
+        wuAreascomunes.TablaPagos = tablaReferenciasSeleccionadas;
+
+
+        wuAreascomunes.CorporativoConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_corporativoConciliacion"]); 
+        wuAreascomunes.SucursalConciliacion = Convert.ToInt16(HttpContext.Current.Session["Pago_sucursalConciliacion"]); 
+        wuAreascomunes.AnioConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_añoConciliacion"]);
+        wuAreascomunes.MesConciliacion = Convert.ToSByte(HttpContext.Current.Session["Pago_mesConciliacion"]);
+        wuAreascomunes.FolioConciliacion = Convert.ToInt32(HttpContext.Current.Session["Pago_folioConciliacion"]);
+        wuAreascomunes.cargaDatos();
+        mpeAreasComunes.Show();
+    }
+
     protected void btnAplicarPagos_Click(object sender, ImageClickEventArgs e)
     {
-        Conexion conexion  = new Conexion(); ;
+        btnAplicarPagos.Enabled = false;
+        Conexion conexion  = new Conexion();
+        bool urlValida = false;
+        bool guardoMovimientoCaja = false;
+        string fuente="";
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
             AppSettingsReader settings = new AppSettingsReader();
-            short modulo = Convert.ToSByte(settings.GetValue("Modulo", typeof(string)));
+            byte modulo = Convert.ToByte(settings.GetValue("Modulo", typeof(string)));
+            string valor = p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN");
 
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
-            
-            string valor = p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN");
 
             if (valor.Equals(""))
             {
@@ -607,20 +1348,57 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             TransBan objTransBan = new TransBan();
             cargarInfoConciliacionActual();
 
+
+            if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Emitido)
+            {
+                movimientoCajaAlta.Status = "EMITIDO";
+            }
+            else
+            {
+                movimientoCajaAlta.Status = "VALIDADO";
+            }
+
             List<MovimientoCaja> lstMovimientoCaja = objTransBan.ReorganizaTransban(movimientoCajaAlta, MaxDocumentos);
-           
+
+            _URLGateway = p.ValorParametro(modulo, "URLGateway");
+            urlValida = ValidarURL(_URLGateway);
+
+            try
+            {
+                fuente = p.ValorParametro(modulo, "FuenteCRM").Trim();
+            }
+            catch
+            {
+
+            }
+
             int corporativoConciliacion = 0;
             Int16 sucursalConciliacion = 0;
             int añoConciliacion = 0;
             int folioConciliacion = 0;
             short mesConciliacion = 0;
             short tipoConciliacion = 0;
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-            conexion.AbrirConexion(true);
+            conexion.AbrirConexion(true,true);
 
+            Session["CONCILIAR_PAGOS"] = null;
             foreach (MovimientoCaja objMovimientoCaja in lstMovimientoCaja)
-            {
-                if (objMovimientoCaja.Guardar(conexion))
+            {             
+                
+                if (urlValida & fuente.Equals("CRM"))
+                {
+                   
+                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, _URLGateway, tipoConciliacion);
+                }
+                else
+                {
+                    guardoMovimientoCaja = objMovimientoCaja.Guardar(conexion, tipoConciliacion);
+                }
+
+                //if (objMovimientoCaja.Guardar(conexion))
+                //{
+                if (guardoMovimientoCaja)
                 {
                     corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
                     sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -630,18 +1408,27 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
                     GenerarTablaReferenciasAPagarPedidos();
-                    LlenaGridViewReferenciasPagos();
+                    //LlenaGridViewReferenciasPagos();
 
                     int idCobranza = 0;
 
                     parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
                     string aplicacobranza = parametros.ValorParametro(30, "AplicaCobranza");
 
-                    List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
+                    List<ReferenciaConciliadaPedido> _listaReferenciaConciliadaPagos = objMovimientoCaja.ListaPedidos;
 
                     foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
                     {
-                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(corporativoConciliacion, sucursalConciliacion, añoConciliacion,  folioConciliacion, mesConciliacion,objPedido.Pedido, conexion);
+                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
+                                                    corporativoConciliacion,
+                                                    sucursalConciliacion,
+                                                    añoConciliacion,
+                                                    folioConciliacion,
+                                                    mesConciliacion,
+                                                    objPedido.Pedido,
+                                                    objPedido.CelulaPedido,
+                                                    objPedido.AñoPedido,
+                                                    conexion);
                     }
 
                     if (aplicacobranza == "1")
@@ -727,22 +1514,39 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                     throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
-            conexion.AbrirConexion(true);
-            FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
-            objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
-            objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
-            objFacturasComplemento.AnioConciliacion = añoConciliacion;
-            objFacturasComplemento.MesConciliacion = mesConciliacion;
-            objFacturasComplemento.FolioConciliacion = folioConciliacion;
-            objFacturasComplemento.Guardar(conexion);
+          //  conexion.AbrirConexion(true);
+         
+            if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Validado)
+            {
+                FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
+                objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
+                objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
+                objFacturasComplemento.AnioConciliacion = añoConciliacion;
+                objFacturasComplemento.MesConciliacion = mesConciliacion;
+                objFacturasComplemento.FolioConciliacion = folioConciliacion;
+                objFacturasComplemento.Guardar(conexion);
+            }
 
-            conexion.Comando.Transaction.Commit();
+
+            //if ( ! EjecutaActualizaPedidoRTGM() )
+            //    throw new Exception("Ocurrió un error en GMGateway.");
+
+            //if (_URLGateway != string.Empty)
+            //    if (_listaReferenciaConciliadaPagos != null)
+            //        foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
+            //            if ( !objPedido.PedidoActualizaSaldoCRM(_URLGateway) )
+            //                throw new Exception("Ocurrio un error al actualizar saldo en CRM");
+
+           
+            if (conexion.Comando.Transaction != null)
+            {
+                conexion.Comando.Transaction.Commit();
+            }
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
-        {
-            
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+        {            
+            App.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar .Detalles: "+ex.Message);//RRV
             try
             {
                 conexion.Comando.Transaction.Rollback();
@@ -754,6 +1558,26 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             
         }
     }
+
+
+    //private bool EjecutaActualizaPedidoRTGM()
+    //{
+    //    bool exito = true; 
+    //    //SeguridadCB.Public.Parametros parametros;
+    //    //parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+    //    AppSettingsReader settings = new AppSettingsReader();
+    //    string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+    //    if (_URLGateway != string.Empty)
+    //    {
+    //        List<RTGMCore.Pedido> lstPedidosRepuesta = new List<RTGMCore.Pedido>();
+    //        ActualizaPedido.URLServicio = _URLGateway;
+    //        lstPedidosRepuesta = ActualizaPedido.ActualizarPedido(solicitudActualizaPedido);
+    //        if (lstPedidosRepuesta.Count > 0)
+    //            if (lstPedidosRepuesta[0].Message != "NO HAY ERROR")
+    //                exito = false;
+    //    }
+    //    return exito;
+    //}
 
     protected void grvPagos_RowCreated(object sender, GridViewRowEventArgs e)
     {
@@ -795,5 +1619,24 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 tdAplicarPagos.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
             }
         }
+    }
+
+    /// <summary>
+    /// Verifíca que la URL es correcta
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    private bool ValidarURL(string url)
+    {
+        Uri uriValidada = null;
+        return Uri.TryCreate(url, UriKind.Absolute, out uriValidada);
+    }
+
+
+
+
+    protected void grvPagos_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
     }
 }

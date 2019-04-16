@@ -166,6 +166,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia);
 
+        public abstract string consultaClienteCRM(int cliente);
+
         public abstract List<ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria);
 
         //public abstract DataTable CBPedidosPorFactura(string SerieFactura);
@@ -210,7 +212,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool ValidaPedidoEspecifico(int corporativo, int sucursal,
             string pedidoReferencia);
 
-        public abstract bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, Conexion _conexion);
+        public abstract bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, int celula, int añoped, Conexion _conexion);
 
 
         public abstract ReferenciaNoConciliadaPedido ConsultaPedidoReferenciaEspecifico(
@@ -254,15 +256,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(Configuracion configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusconcepto, int sucursalinterno);
 
 
-        public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
         public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicarCliente(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int cliente,
-                                                                                        int corporativoexterno, int sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno);
+                                                                                        int corporativoexterno, int sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno, string usuario);
 
 
-        public abstract MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
-        public abstract List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
+        public abstract List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
 
         public abstract string ConsultaFechaActualInicial();
@@ -298,7 +300,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract Boolean ObtieneExternosTransferencia(short corporativoTD, short sucursalTD,
                                                                                      int añoTD, int folioTD, int secuenciaTD);
         public abstract List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo, int sucursal,
-        string cuentaBancaria, DateTime finicial, DateTime ffinal);
+        string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion);
 
         public abstract List<ReferenciaConciliadaCompartida> ConsultaMovimientosConciliadosMovExterno(int corporativoconciliacion, int sucursalconciliacion,
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativo, int sucursal, int año, int folio, int secuencia);
@@ -331,5 +333,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 return App.CadenaConexion;
             }
         }
+
+        //MCC 26-04-2018
+        public abstract List<Cuenta> ConsultaCuentasUsuario
+       (string Usuario);
     }
 }

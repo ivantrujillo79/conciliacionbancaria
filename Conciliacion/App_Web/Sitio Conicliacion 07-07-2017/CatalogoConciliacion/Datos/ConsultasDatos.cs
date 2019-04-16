@@ -9,6 +9,7 @@ using Conciliacion.Migracion.Runtime.ReglasNegocio;
 using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using MotivoNoConciliado = CatalogoConciliacion.ReglasNegocio.MotivoNoConciliado;
+using System.Web;
 
 namespace CatalogoConciliacion.Datos
 {
@@ -41,6 +42,116 @@ namespace CatalogoConciliacion.Datos
                 return motivo;
             }
         }
+
+        public override List<Bancos> ObtieneBancos()
+        {
+           
+            List<Bancos> ListaBancos = new List<Bancos>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaBancos", cnn);
+
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    Bancos banco = new BancosDatos(Convert.ToInt16(reader["banco"]), reader["descripcion"].ToString());
+                    ListaBancos.Add(banco);
+                }
+                return ListaBancos;
+            }
+        }
+
+        
+
+            public override List<CuentaContableBanco> ObtieneCuentaContableBanco(int Banco)
+        {
+
+            List<CuentaContableBanco> ListaCuentaContableBanco = new List<CuentaContableBanco>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaCuentaContable", cnn);
+                comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
+                comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).Corporativo;
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    CuentaContableBanco banco = new CuentaContableBancoDatos(Convert.ToInt16(reader["banco"]), reader["numerocuenta"].ToString());
+                    ListaCuentaContableBanco.Add(banco);
+                }
+                return ListaCuentaContableBanco;
+            }
+        }
+
+        public override List<TipoCobro> ObtieneTipoCobro()
+        {
+
+            List<TipoCobro> ListaTipoCobro = new List<TipoCobro>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaTtipoCobro", cnn);
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    TipoCobro TipoCobro = new TipoCobroDatos(Convert.ToInt16(reader["tipocobro"]), reader["Descripcion"].ToString());
+                    ListaTipoCobro.Add(TipoCobro);
+                }
+                return ListaTipoCobro;
+            }
+        }
+
+        public override List<ColumnaDestino> ObtieneColumnaDestino()
+        {
+
+            List<ColumnaDestino> ListaColumnaDestino = new List<ColumnaDestino>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaColumnaDestino", cnn);
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    ColumnaDestino TipoCobro = new ColumnaDestinoDatos(reader["ColumnaDestino"].ToString());
+                    ListaColumnaDestino.Add(TipoCobro);
+                }
+                return ListaColumnaDestino;
+            }
+        }
+
+        public override List<PalabrasClave> ConsultarPalabrasClave(int Banco,string CuentaBanco,int TipoCobro)
+        {
+
+            List<PalabrasClave> ListaPalabrasClave = new List<PalabrasClave>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBConsultaPalabrasClave", cnn);
+                comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
+                comando.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = CuentaBanco;
+                comando.Parameters.Add("@TipoCobro", System.Data.SqlDbType.Int).Value = TipoCobro;
+
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    PalabrasClave PalabrasClave = new PalabrasClaveDatos(Convert.ToInt16(reader["banco"]), reader["cuentabanco"].ToString(), Convert.ToInt16(reader["tipocobro"]), reader["palabraclave"].ToString(), reader["ColumnaDestino"].ToString());
+                    ListaPalabrasClave.Add(PalabrasClave);
+                }
+                return ListaPalabrasClave;
+            }
+        }
+
+
+        
+
+
+
 
         //OBTIENE LOS DATOS DE UN GRUPO ESPECIFICO
         public override GrupoConciliacion ObtieneGrupoPorId(int configuracion, int idGrupoConciliacion)
@@ -120,6 +231,9 @@ namespace CatalogoConciliacion.Datos
                 return motivos;
             }
         }
+
+
+
 
 
         //OBTIENE TODOS LOS GRUPOS

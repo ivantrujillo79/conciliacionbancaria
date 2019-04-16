@@ -5,6 +5,7 @@ using System.Text;
 using System.Configuration;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using Conciliacion.RunTime.DatosSQL;
+using System.Web;
 
 namespace Conciliacion.RunTime
 {
@@ -281,6 +282,18 @@ namespace Conciliacion.RunTime
 
         }
 
+        private static PagoAreasComunes pagoAreasComunes;
+        public static PagoAreasComunes PagoAreasComunes
+        {
+            get
+            {
+                if (pagoAreasComunes == null)
+                    pagoAreasComunes = new PagoAreasComunesDatos(App.ImplementadorMensajes);
+                return pagoAreasComunes;
+            }
+
+        }
+
         private static Pagare pagare;
         public static Pagare Pagare
         {
@@ -325,6 +338,17 @@ namespace Conciliacion.RunTime
             }
         }
 
+        private static BusquedaClienteDatosBancarios busquedaclientedatosbancarios;
+        public static BusquedaClienteDatosBancarios BusquedaClienteDatosBancarios
+        {
+            get
+            {
+                if (busquedaclientedatosbancarios == null)
+                    busquedaclientedatosbancarios = new BusquedaClienteDatosBancariosDatos(App.ImplementadorMensajes);
+                return busquedaclientedatosbancarios;
+            }
+        }
+
         private static string cadenaconexion;
        
         
@@ -332,7 +356,23 @@ namespace Conciliacion.RunTime
         {
             get
             {
-                return cadenaconexion;
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                AppSettingsReader settings = new AppSettingsReader();
+                string servidor = settings.GetValue("Servidor", typeof(string)).ToString();
+                string baseDatos = settings.GetValue("Base", typeof(string)).ToString();
+                SeguridadCB.Seguridad.TipoSeguridad seguridad;
+                string ConnectionString = "";
+                if (settings.GetValue("Seguridad", typeof(string)).ToString() == "NT")
+                    seguridad = SeguridadCB.Seguridad.TipoSeguridad.NT;
+                else
+                    seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
+                if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
+                    ConnectionString = "Application Name = Conciliación Bancaría" + " v.2.5.0.0" + "; Data Source = " + servidor + "; Initial Catalog = " +
+                                        baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Integrated Security = Yes";
+                else
+                    ConnectionString = "Application Name = " + "; Data Source = " + servidor + "; Initial Catalog = " +
+                                        baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Password = " + usuario.Clave;
+                return ConnectionString;
             }
             set
             {

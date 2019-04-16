@@ -101,7 +101,8 @@ public class ClaseReporte
                 }
 
                 //Pasa los valores a los parametros
-                System.Data.SqlClient.SqlCommand cmdRep = SeguridadCB.Seguridad.Conexion.CreateCommand();
+                SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+                System.Data.SqlClient.SqlCommand cmdRep = seguridad.Conexion.CreateCommand();
                 cmdRep.CommandType = CommandType.StoredProcedure;
                 cmdRep.CommandText = TablaNombre;
                 crParameterFieldDefinitions = RepDoc.DataDefinition.ParameterFields;
@@ -112,15 +113,12 @@ public class ClaseReporte
                         if (Existe_Parametro(Parametros, par.Name))
                         {
                             crParameterFieldDefinition = crParameterFieldDefinitions[par.Name];
-                            //crParameterFieldDefinition = crParameterFieldDefinitions[par.Name, par.ReportName];
                             crParametervalues = crParameterFieldDefinition.CurrentValues;
                             crParameterDiscretValue = new CrystalDecisions.Shared.ParameterDiscreteValue();
                             strValor = Leer_Valor_Parametro(Parametros, par.Name);
                             crParameterDiscretValue.Value = strValor;
                             crParametervalues.Add(crParameterDiscretValue);
                             crParameterFieldDefinition.ApplyCurrentValues(crParametervalues);
-
-                            //RepDoc.SetParameterValue(par.Name, strValor);
 
                             System.Data.SqlClient.SqlParameter parNuevo = new System.Data.SqlClient.SqlParameter();
                             parNuevo.ParameterName = par.Name;
@@ -138,18 +136,10 @@ public class ClaseReporte
                 System.Data.DataTable dtRep = new DataTable(TablaNombre);
                 daRep.Fill(dtRep);
                 RepDoc.SetDataSource(dtRep);
-                
-                
-                
-                
-                
-                
+
                 //Pasa los parametros a los subreportes
-                
                 foreach (CrystalDecisions.CrystalReports.Engine.ReportDocument lRepDoc in RepDoc.Subreports)
-                //foreach (CrystalDecisions.CrystalReports.Engine.ReportObject sRepObj in RepDoc.ReportDefinition.ReportObjects)
                 {
-                    //ReportDocument lRepDoc = OpenSubreport(RepDoc, sRepObj.Name);
                     if (lRepDoc != null)
                     {
                         lRepDoc.SetDatabaseLogon(Usuario, PW, Servidor, Base);
@@ -178,7 +168,7 @@ public class ClaseReporte
                         }
 
                         //Pasa los valores a los parametros
-                        System.Data.SqlClient.SqlCommand cmdsRep = SeguridadCB.Seguridad.Conexion.CreateCommand();
+                        System.Data.SqlClient.SqlCommand cmdsRep = seguridad.Conexion.CreateCommand();
                         cmdsRep.CommandType = CommandType.StoredProcedure;
                         cmdsRep.CommandText = TablaNombre;
                         crParameterFieldDefinitions = lRepDoc.DataDefinition.ParameterFields;
@@ -189,16 +179,12 @@ public class ClaseReporte
                                 if (Existe_Parametro(Parametros, par.Name))
                                 {
                                     crParameterFieldDefinition = crParameterFieldDefinitions[par.Name];
-                                    //crParameterFieldDefinition = crParameterFieldDefinitions[par.Name, par.ReportName];
                                     crParametervalues = crParameterFieldDefinition.CurrentValues;
                                     crParameterDiscretValue = new CrystalDecisions.Shared.ParameterDiscreteValue();
                                     strValor = Leer_Valor_Parametro(Parametros, par.Name);
                                     crParameterDiscretValue.Value = strValor;
                                     crParametervalues.Add(crParameterDiscretValue);
                                     crParameterFieldDefinition.ApplyCurrentValues(crParametervalues);
-
-                                    //lRepDoc.SetParameterValue(par.Name, strValor);
-
                                     System.Data.SqlClient.SqlParameter parNuevo = new System.Data.SqlClient.SqlParameter();
                                     parNuevo.ParameterName = par.Name;
                                     parNuevo.Value = strValor;
@@ -225,7 +211,6 @@ public class ClaseReporte
                             this._strError = exs.ToString();
                         }
                     }
-                    //RepDoc.VerifyDatabase();
                 }
             }
             catch (Exception ex)
@@ -238,9 +223,193 @@ public class ClaseReporte
             this._strError = "No existe el reporte en la ruta especificada";
         }
     }
-#endregion
 
-#region "Funciones Publicas"
+    public ClaseReporte(string Reporte, ArrayList Parametros, string Servidor, string Base, string Usuario, string PW, string Comentarios)
+    {
+        if (File.Exists(Reporte))
+        {
+            try
+            {
+                this._strReporte = Reporte;
+                this._arrPar = (ArrayList)Parametros.Clone();
+                this._strServidor = Servidor;
+                this._strBase = Base;
+                this._strUsuario = Usuario;
+                this._strPW = PW;
+
+                try
+                {
+                    RepDoc.FileName = Reporte;
+                }
+                catch
+                {
+                }
+                RepDoc.Load(Reporte);
+
+                //Variables
+                TableLogOnInfo _LogonInfo;
+                ParameterFieldDefinitions crParameterFieldDefinitions;
+                ParameterFieldDefinition crParameterFieldDefinition;
+                CrystalDecisions.Shared.ParameterValues crParametervalues;
+                CrystalDecisions.Shared.ParameterDiscreteValue crParameterDiscretValue;
+                string TablaNombre = "";
+                string strValor = "";
+
+                //Pasa los datos de la conexion al reporte principal
+                RepDoc.SetDatabaseLogon(Usuario, PW, Servidor, Base);
+                foreach (CrystalDecisions.CrystalReports.Engine.Table _TablaReporte in RepDoc.Database.Tables)
+                {
+                    _LogonInfo = _TablaReporte.LogOnInfo;
+                    _LogonInfo.ConnectionInfo.ServerName = Servidor;
+                    _LogonInfo.ConnectionInfo.DatabaseName = Base;
+                    _LogonInfo.ConnectionInfo.UserID = Usuario;
+                    _LogonInfo.ConnectionInfo.Password = PW;
+                    try
+                    {
+                        _TablaReporte.ApplyLogOnInfo(_LogonInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        this._strError = ex.ToString();
+                    }
+
+                    //pasa un datatable al reporte
+                    TablaNombre = "";
+                    if (_TablaReporte.Name.IndexOf(";") > 0)
+                        TablaNombre = _TablaReporte.Name.Substring(0, _TablaReporte.Name.IndexOf(";"));
+                    else
+                        TablaNombre = _TablaReporte.Name;
+                }
+
+                //Pasa los valores a los parametros
+                SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+                System.Data.SqlClient.SqlCommand cmdRep = seguridad.Conexion.CreateCommand();
+                cmdRep.CommandType = CommandType.StoredProcedure;
+                cmdRep.CommandText = TablaNombre;
+                crParameterFieldDefinitions = RepDoc.DataDefinition.ParameterFields;
+                foreach (ParameterFieldDefinition par in RepDoc.DataDefinition.ParameterFields)
+                {
+                    try
+                    {
+                        if (Existe_Parametro(Parametros, par.Name))
+                        {
+                            crParameterFieldDefinition = crParameterFieldDefinitions[par.Name];
+                            crParametervalues = crParameterFieldDefinition.CurrentValues;
+                            crParameterDiscretValue = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                            strValor = Leer_Valor_Parametro(Parametros, par.Name);
+                            crParameterDiscretValue.Value = strValor;
+                            crParametervalues.Add(crParameterDiscretValue);
+                            crParameterFieldDefinition.ApplyCurrentValues(crParametervalues);
+
+                            System.Data.SqlClient.SqlParameter parNuevo = new System.Data.SqlClient.SqlParameter();
+                            parNuevo.ParameterName = par.Name;
+                            parNuevo.Value = strValor;
+                            if (!cmdRep.Parameters.Contains(par.Name))
+                                cmdRep.Parameters.Add(parNuevo);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this._strError = ex.ToString();
+                    }
+                }
+                System.Data.SqlClient.SqlDataAdapter daRep = new System.Data.SqlClient.SqlDataAdapter();
+                daRep.SelectCommand = cmdRep;
+                System.Data.DataTable dtRep = new DataTable(TablaNombre);
+                daRep.Fill(dtRep);
+                RepDoc.SetDataSource(dtRep);
+
+                RepDoc.SummaryInfo.ReportComments = Comentarios;
+
+                //Pasa los parametros a los subreportes
+                foreach (CrystalDecisions.CrystalReports.Engine.ReportDocument lRepDoc in RepDoc.Subreports)
+                {
+                    if (lRepDoc != null)
+                    {
+                        lRepDoc.SetDatabaseLogon(Usuario, PW, Servidor, Base);
+                        foreach (CrystalDecisions.CrystalReports.Engine.Table _TablasReporte in lRepDoc.Database.Tables)
+                        {
+                            _LogonInfo = _TablasReporte.LogOnInfo;
+                            _LogonInfo.ConnectionInfo.ServerName = Servidor;
+                            _LogonInfo.ConnectionInfo.DatabaseName = Base;
+                            _LogonInfo.ConnectionInfo.UserID = Usuario;
+                            _LogonInfo.ConnectionInfo.Password = PW;
+                            try
+                            {
+                                _TablasReporte.ApplyLogOnInfo(_LogonInfo);
+                            }
+                            catch (Exception ex)
+                            {
+                                this._strError = ex.ToString();
+                            }
+
+                            //pasa un datatable al reporte
+                            TablaNombre = "";
+                            if (_TablasReporte.Name.IndexOf(";") > 0)
+                                TablaNombre = _TablasReporte.Name.Substring(0, _TablasReporte.Name.IndexOf(";"));
+                            else
+                                TablaNombre = _TablasReporte.Name;
+                        }
+
+                        //Pasa los valores a los parametros
+                        System.Data.SqlClient.SqlCommand cmdsRep = seguridad.Conexion.CreateCommand();
+                        cmdsRep.CommandType = CommandType.StoredProcedure;
+                        cmdsRep.CommandText = TablaNombre;
+                        crParameterFieldDefinitions = lRepDoc.DataDefinition.ParameterFields;
+                        foreach (ParameterFieldDefinition par in lRepDoc.DataDefinition.ParameterFields)
+                        {
+                            try
+                            {
+                                if (Existe_Parametro(Parametros, par.Name))
+                                {
+                                    crParameterFieldDefinition = crParameterFieldDefinitions[par.Name];
+                                    crParametervalues = crParameterFieldDefinition.CurrentValues;
+                                    crParameterDiscretValue = new CrystalDecisions.Shared.ParameterDiscreteValue();
+                                    strValor = Leer_Valor_Parametro(Parametros, par.Name);
+                                    crParameterDiscretValue.Value = strValor;
+                                    crParametervalues.Add(crParameterDiscretValue);
+                                    crParameterFieldDefinition.ApplyCurrentValues(crParametervalues);
+                                    System.Data.SqlClient.SqlParameter parNuevo = new System.Data.SqlClient.SqlParameter();
+                                    parNuevo.ParameterName = par.Name;
+                                    parNuevo.Value = strValor;
+                                    if (!cmdsRep.Parameters.Contains(par.Name)) cmdsRep.Parameters.Add(parNuevo);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                this._strError = ex.ToString();
+                            }
+                        }
+
+                        System.Data.SqlClient.SqlDataAdapter dasRep = new System.Data.SqlClient.SqlDataAdapter();
+                        cmdsRep.CommandType = CommandType.StoredProcedure;
+                        dasRep.SelectCommand = cmdsRep;
+                        System.Data.DataTable dtsRep = new DataTable(TablaNombre);
+                        dasRep.Fill(dtsRep);
+                        try
+                        {
+                            lRepDoc.SetDataSource(dtsRep);
+                        }
+                        catch (Exception exs)
+                        {
+                            this._strError = exs.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this._strError = ex.ToString();
+            }
+        }
+        else
+        {
+            this._strError = "No existe el reporte en la ruta especificada";
+        }
+    }
+    #endregion
+
+    #region "Funciones Publicas"
     /// <summary>
     /// Envía a impresora el reporte especificado
     /// </summary>

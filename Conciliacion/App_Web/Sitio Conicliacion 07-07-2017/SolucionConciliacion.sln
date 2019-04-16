@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SitioConciliacion(3)", "SitioConciliacion\", "{7A5FA135-BF53-4A16-AC90-49DC4884C944}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -37,6 +37,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeguridadWeb", "SeguridadWeb\SeguridadWeb.csproj", "{3A19B75E-4312-4871-8368-72562FE91241}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conciliacion.RunTimeTests1", "Conciliacion.RunTimeTests1\Conciliacion.RunTimeTests1.csproj", "{A372446E-7335-474D-BBE4-4A56AB81132C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locker", "Locker\Locker.csproj", "{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +100,14 @@ Global
 		{A372446E-7335-474D-BBE4-4A56AB81132C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A372446E-7335-474D-BBE4-4A56AB81132C}.Release|x86.ActiveCfg = Release|Any CPU
 		{A372446E-7335-474D-BBE4-4A56AB81132C}.Release|x86.Build.0 = Release|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Debug|x86.Build.0 = Debug|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Release|x86.ActiveCfg = Release|Any CPU
+		{FF1A3892-58A9-416F-80F7-DD4FC02EDDC2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

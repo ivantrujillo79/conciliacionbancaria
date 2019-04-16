@@ -62,9 +62,22 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Locker">
+      <HintPath>..\..\..\..\..\ConciliacionBancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Locker\bin\Debug\Locker.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="RTGMGateway, Version=1.19.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\RTGMGateway\RTGMGateway\bin\Debug\RTGMGateway.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -76,16 +89,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="DatosSQL\BusquedaClienteDatosBancariosDatos.cs" />
     <Compile Include="DatosSQL\ClienteDatos.cs" />
     <Compile Include="DatosSQL\ConciliacionReferenciaDatos.cs" />
     <Compile Include="DatosSQL\ConsultarMultiplesDocumentosTransBanDatos.cs" />
     <Compile Include="DatosSQL\DetallePagareDatos.cs" />
     <Compile Include="DatosSQL\DispersorPagoDatos.cs" />
+    <Compile Include="DatosSQL\ExportadorInformeInternosAFuturoDatos.cs" />
     <Compile Include="DatosSQL\FacturaManualDatos.cs" />
     <Compile Include="DatosSQL\FacturasComplementoDatos.cs" />
+    <Compile Include="DatosSQL\InformeBancarioDatos.cs" />
     <Compile Include="DatosSQL\MovimientoCajaConciliacionDatos.cs" />
     <Compile Include="DatosSQL\PagareDatos.cs" />
     <Compile Include="DatosSQL\PagoAnticipadoDatos.cs" />
+    <Compile Include="DatosSQL\PagoAreasComunesDatos.cs" />
     <Compile Include="DatosSQL\RelacionCobranzaDatos.cs" />
     <Compile Include="DatosSQL\SaldoAFavorDatos.cs" />
     <Compile Include="DatosSQL\ValidacionArchivosConciliacionDatos.cs" />
@@ -111,11 +128,13 @@
     <Compile Include="DatosSQL\TransferenciaBancariasDetalleDatos.cs" />
     <Compile Include="DetalleValidacion.cs" />
     <Compile Include="EmisorMensajes.cs" />
+    <Compile Include="ExportadorInformeInternosAFuturo.cs" />
     <Compile Include="IMensajesImplementacion.cs" />
     <Compile Include="MensajeImplemantacionForm.cs" />
     <Compile Include="MensajeImplementacionConsola.cs" />
     <Compile Include="MensajeImplementacionWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReglasDeNegocio\BusquedaClienteDatosBancarios.cs" />
     <Compile Include="ReglasDeNegocio\Caja.cs" />
     <Compile Include="ReglasDeNegocio\Cliente.cs" />
     <Compile Include="ReglasDeNegocio\ClienteException.cs" />
@@ -132,6 +151,10 @@
     <Compile Include="ReglasDeNegocio\DispersorPago.cs" />
     <Compile Include="ReglasDeNegocio\DispersorPagoException.cs" />
     <Compile Include="ReglasDeNegocio\Enrutador.cs" />
+    <Compile Include="ReglasDeNegocio\ExportadorInformeBancario.cs" />
+    <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuentaDia.cs" />
+    <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuenta.cs" />
+    <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuentaConciliado.cs" />
     <Compile Include="ReglasDeNegocio\FacturaManual.cs" />
     <Compile Include="ReglasDeNegocio\FlujoProyectado.cs" />
     <Compile Include="ReglasDeNegocio\FacturasComplemento.cs" />
@@ -139,11 +162,13 @@
     <Compile Include="ReglasDeNegocio\GrupoConciliacionDiasDiferencia.cs" />
     <Compile Include="ReglasDeNegocio\IConciliacion.cs" />
     <Compile Include="ReglasDeNegocio\ImportacionAplicacion.cs" />
+    <Compile Include="ReglasDeNegocio\InformeBancario.cs" />
     <Compile Include="ReglasDeNegocio\ListaCombo.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCaja.cs" />
     <Compile Include="ReglasDeNegocio\MovimientoCajaConciliacion.cs" />
     <Compile Include="ReglasDeNegocio\Pagare.cs" />
     <Compile Include="ReglasDeNegocio\PagoAnticipado.cs" />
+    <Compile Include="ReglasDeNegocio\PagoAreasComunes.cs" />
     <Compile Include="ReglasDeNegocio\PagoPropuesto.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />
@@ -165,6 +190,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SeguridadCB\SeguridadCB.csproj">
+      <Project>{C924B2CB-B08E-4786-9E41-77F9278A8372}</Project>
+      <Name>SeguridadCB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

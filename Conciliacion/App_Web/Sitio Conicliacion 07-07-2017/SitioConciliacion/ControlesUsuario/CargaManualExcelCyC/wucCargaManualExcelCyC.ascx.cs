@@ -13,6 +13,7 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using Conciliacion.RunTime.DatosSQL;
 using System.ComponentModel;
+using System.Configuration;
 
 public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
@@ -99,14 +100,14 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set { ViewState["corporativo"] = value; }
     }
     
-    public int CuentaBancaria
+    public Int64 CuentaBancaria
     {
         get
         {
             if (ViewState["cuentaBancaria"] == null)
                 return 0;
             else
-                return (int)ViewState["cuentaBancaria"];
+                return (Int64)ViewState["cuentaBancaria"];
         }
         set { ViewState["cuentaBancaria"] = value; }
     }
@@ -211,6 +212,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         set
         {
             ViewState["saldoAFavor"] = value;
+            lblSaldo.Visible = true;
             lblSaldo.Text = SALDO + String.Format("{0:C}", value);
         }
     }
@@ -271,6 +273,42 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 
     public ModalPopupExtender PopupContenedor { get; set; }
 
+    public string URLGateway
+    {
+        get
+        {
+            if (ViewState["urlgateway"] == null)
+                return "";
+            else
+                return (string)ViewState["urlgateway"];
+        }
+        set { ViewState["urlgateway"] = value; }
+    }
+
+    public byte Modulo
+    {
+        get
+        {
+            if (ViewState["modulo"] == null)
+                return 0;
+            else
+                return (byte)ViewState["modulo"];
+        }
+        set { ViewState["modulo"] = value; }
+    }
+
+    public string CadenaConexion
+    {
+        get
+        {
+            if (ViewState["cadenaconexion"] == null)
+                return "";
+            else
+                return (string)ViewState["cadenaconexion"];
+        }
+        set { ViewState["cadenaconexion"] = value; }
+    }
+
     #endregion
 
     private const string ARCHIVO = "Archivo: ";
@@ -279,8 +317,37 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
     private const string REFERENCIA = "Cliente: ";
     private const string SALDO = "Saldo a favor: ";
 
+    private string _URLGateway;
+    private List<RTGMCore.DireccionEntrega> listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+    private bool validarPeticion = false;
+    private List<int> listaClientesEnviados;
+    private List<int> listaClientes = new List<int>();
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (IsPostBack)
+        {
+            string entrar = ViewState["Entrar"] as string;
+            if (entrar == "Ok")
+            {
+                if (Page.Request.Params["__EVENTTARGET"] == "miPostBack")
+                {
+                    validarPeticion = false;
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    listaClientes = ViewState["LISTACLIENTES"] as List<int>;
+                    //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+                    string dat = Page.Request.Params["__EVENTARGUMENT"].ToString();
+                    if (dat == "1")
+                    {
+                        ObtieneNombreCliente(listaClientes);
+                    }
+                    else if (dat == "2")
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+            }
+        }
         OcultarMensajes();
 
         if (MostrarBotonCancelar)
@@ -304,6 +371,35 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         btnCancelar_Click(sender, e);
     }
 
+    public string consultaClienteCRM(int cliente)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        try
+        {
+            if (_URLGateway != string.Empty)
+            {
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
+                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.IDCliente = cliente;
+                DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
+            return DireccionEntrega.Nombre.Trim();
+        else
+            return "No encontrado";
+    }
+
     protected void btnSubirArchivo_Click(object sender, EventArgs e)
     {
         DataTable dtTabla = new DataTable();
@@ -313,7 +409,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         string sRutaArchivo;
         string sExt;
         StringBuilder sbMensaje;
-        string[] extensiones = { ".xls", ".xlsx" };
+        string[] extensiones = { ".xlsx" };
         string[] MIME = {"application/vnd.ms-excel" ,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
@@ -338,78 +434,236 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         iValidador.RutaArchivo = sRutaArchivo;
                         iValidador.NombreArchivo = Path.GetFileName(sArchivo);
                         iValidador.TipoMIME = (sExt == ".xls" ? MIME[0] : MIME[1]);
+                        iValidador.URLGateway = this.URLGateway;
+                        iValidador.Modulo = this.Modulo;
+                        iValidador.CadenaConexion = this.CadenaConexion;
+                        iValidador.Corporativo = this.Corporativo;
+                        iValidador.Sucursal = this.Sucursal;
 
-                        if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
+                        //if (iValidador.ArchivoValido(sRutaArchivo, Path.GetFileName(sArchivo)))
+                        //{
+                        dtTabla = iValidador.CargaArchivo(sArchivo);
+                        DatosAConciliar = dtTabla;
+                        DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
+
+                        if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
                         {
-                            dtTabla = iValidador.CargaArchivo(sRutaArchivo, Path.GetFileName(sArchivo));
-                            DatosAConciliar = dtTabla;
-                            DetalleProcesoDeCarga = iValidador.ValidacionCompleta();
+                            //_URLGateway = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc";
+                            //if (_URLGateway != string.Empty)
+                            //{
+                            //    foreach (DataRow fila in dtTabla.Rows)
+                            //    {
+                            //        fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                            //    }
+                            //}
+                            grvDetalleConciliacionManual.Visible = true;
+                            grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
+                            grvDetalleConciliacionManual.DataBind();
+                            totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
+                            lblArchivo.Text = ARCHIVO + sArchivo;
+                            lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
+                        }
 
-                            if (DetalleProcesoDeCarga.Where(x => x.CodigoError != 0).Count() == 0)
+                        sbMensaje = new StringBuilder();
+                        foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
+                        {
+                            if (!detalle.VerificacionValida)
                             {
-                                grvDetalleConciliacionManual.Visible = true;
-                                grvDetalleConciliacionManual.DataSource = dtTabla.DefaultView;
-                                grvDetalleConciliacionManual.DataBind();
-                                totalRegistrosCargados = grvDetalleConciliacionManual.Rows.Count;
-
-                                lblArchivo.Text = ARCHIVO + sArchivo;
-                                lblRegistros.Text = REGISTROS + totalRegistrosCargados.ToString();
-                            }
-
-                            sbMensaje = new StringBuilder();
-                            foreach (ValidacionArchivosConciliacion.DetalleValidacion detalle in DetalleProcesoDeCarga)
-                            {
-                                if (!detalle.VerificacionValida)
+                                if (detalle.CodigoError > 0)
                                 {
-                                    if (detalle.CodigoError > 0)
-                                    {
-                                        sbMensaje.Append(detalle.Mensaje + "<br />");
-                                    }
-                                    else
-                                    {
-                                        sbMensaje.Append("El código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
-                                    }
+                                    sbMensaje.Append(detalle.Mensaje + "<br />");
+                                }
+                                else
+                                {
+                                    sbMensaje.Append("El código de error y la validación no concuerdan: " + detalle.Mensaje + "\n");
                                 }
                             }
-                            if (sbMensaje.Length > 0)
-                            {
-                                DatosAConciliar = null;
-                                lblMensajeError.Text = sbMensaje.ToString();
-                                dvAlertaError.Visible = true;
-                            }
-                            else
-                            {
-                                dvMensajeExito.Visible = true;
-                                RecuperaReferenciasNoConciliadas();
+                        }
+                        if (sbMensaje.Length > 0)
+                        {
+                            DatosAConciliar = null;
+                            lblMensajeError.Text = sbMensaje.ToString();
+                            dvAlertaError.Visible = true;
+                        }
+                        else
+                        {
+                            dvMensajeExito.Visible = true;
+                            RecuperaReferenciasNoConciliadas();
 
-                                if (CargarAgregados == true)
-                                {
-                                    CargarAgregados = false;
-                                }
-
-                                if (DispersionAutomatica)
-                                {
-                                    DispersarPagos(dtTabla);
-                                }
+                            if (CargarAgregados == true)
+                            {
+                                CargarAgregados = false;
                             }
-                        } // if ArchivoValido
-                    } // if File.Exists
+
+                            if (DispersionAutomatica)
+                            {
+                                DispersarPagos(dtTabla);
+                            }
+                        }
+                        //}
+                    }
+                    else
+                    {
+                        App.ImplementadorMensajes.MostrarMensaje("El archivo no existe en el servidor.");
+                    }
                 }
                 else
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLS o XLSX");
-                    //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                    //    @"alertify.alert('Conciliaci&oacute;n bancaria','El archivo debe ser de formato Excel', function(){ alertify.error('Error cargando archivo'); });", true);
+                    App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLSX");
                 }
             }// fupSeleccionar.HasFile
+            else
+            {
+                App.ImplementadorMensajes.MostrarMensaje("El componente de carga no reconoce el archivo.");
+            }
         }
         catch (Exception ex)
         {
             App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
-            //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-            //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + ex.Message + "', function(){ alertify.error('Error cargando archivo'); });", true);
         }
-        //RecuperaReferenciasNoConciliadas();
+    }
+
+    private void llenarListaEntrega()
+    {
+        DataTable dtTablaPropuestos = ViewState["POR_CONCILIAR"] as DataTable;
+        try
+        {
+            foreach (DataRow item in dtTablaPropuestos.Rows)
+            {
+                try
+                {
+                    RTGMCore.DireccionEntrega cliente = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                    if (cliente != null)
+                    {
+                        item["Nombre"] = cliente.Nombre;
+                    }
+                    else
+                    {
+                        item["Nombre"] = "No encontrado";
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    item["Nombre"] = Ex.Message;
+                }
+            }
+
+
+            grvDetalleConciliacionManual.Visible = false;
+            grvPagosPropuestos.DataSource = dtTablaPropuestos;
+            grvPagosPropuestos.DataBind();
+            grvPagosPropuestos.Visible = true;
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+        finally
+        {
+            ViewState["Entrar"] = "No";
+        }
+    }
+
+    public void completarListaEntregas(List<RTGMCore.DireccionEntrega> direccionEntregas)
+    {
+        RTGMCore.DireccionEntrega direccionEntrega;
+        RTGMCore.DireccionEntrega direccionEntregaTemp;
+        bool errorConsulta = false;
+        try
+        {
+            foreach (var item in direccionEntregas)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        if (item.Message != null)
+                        {
+                            direccionEntrega = new RTGMCore.DireccionEntrega();
+                            direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                            direccionEntrega.Nombre = item.Message;
+                            listaDireccinEntrega.Add(direccionEntrega);
+                        }
+                        else if (item.IDDireccionEntrega == -1)
+                        {
+                            errorConsulta = true;
+                        }
+                        else if (item.IDDireccionEntrega >= 0)
+                        {
+                            listaDireccinEntrega.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        direccionEntrega = new RTGMCore.DireccionEntrega();
+                        direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                        direccionEntrega.Nombre = "No se encontró cliente";
+                        listaDireccinEntrega.Add(direccionEntrega);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    direccionEntrega = new RTGMCore.DireccionEntrega();
+                    direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                    direccionEntrega.Nombre = ex.Message;
+                    listaDireccinEntrega.Add(direccionEntrega);
+                }
+            }
+            if (validarPeticion && errorConsulta)
+            {
+                validarPeticion = false;
+                listaClientes = new List<int>();
+                foreach (var item in listaClientesEnviados)
+                {
+                    direccionEntregaTemp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item);
+                    if (direccionEntregaTemp == null)
+                    {
+                        listaClientes.Add(item);
+                    }
+                }
+                ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+                ViewState["LISTACLIENTES"] = listaClientes;
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje", " mensajeAsincrono(" + listaClientes.Count + ");", true);
+            }
+            else
+            {
+                llenarListaEntrega();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void ObtieneNombreCliente(List<int> listadistintos)
+    {
+        RTGMGateway.RTGMGateway oGateway;
+        RTGMGateway.SolicitudGateway oSolicitud;
+        AppSettingsReader settings = new AppSettingsReader();
+        string cadena = App.CadenaConexion;
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway.ListaCliente = listadistintos;
+            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+            oGateway.eListaEntregas += completarListaEntregas;
+            oSolicitud = new RTGMGateway.SolicitudGateway();
+            listaClientesEnviados = listadistintos;
+            foreach (var item in listadistintos)
+            {
+                oSolicitud.IDCliente = item;
+                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 
     private void DispersarPagos(DataTable dtDatos)
@@ -454,13 +708,55 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         dtTablaPropuestos = ConvertirListaATabla<PagoPropuesto>(pagosPropuestos);
                         SaldoAFavor = dispersor.SaldoAFavor;
 
-                        grvDetalleConciliacionManual.Visible = false;
-                        grvPagosPropuestos.DataSource = dtTablaPropuestos;
-                        grvPagosPropuestos.DataBind();
-                        grvPagosPropuestos.Visible = true;
+                        ViewState["POR_CONCILIAR"] = dtTablaPropuestos;
+                        ViewState["Entrar"] = "Ok";
+                        List<int> listadistintos = new List<int>();
+                        listaClientesEnviados = new List<int>();
+                        try
+                        {
+                            listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                            if (listaDireccinEntrega == null)
+                            {
+                                listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        foreach (DataRow item in dtTablaPropuestos.Rows)
+                        {
+                            if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                            {
+                                if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                                {
+                                    listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                                }
+                            }
+                        }
+                        try
+                        {
+                            if (listadistintos.Count > 0)
+                            {
+                                validarPeticion = true;
+                                ObtieneNombreCliente(listadistintos);
+                            }
+                            else
+                            {
+                                llenarListaEntrega();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                        //grvDetalleConciliacionManual.Visible = false;
+                        //grvPagosPropuestos.DataSource = dtTablaPropuestos;
+                        //grvPagosPropuestos.DataBind();
+                        //grvPagosPropuestos.Visible = true;
 
                         /*          Actualizar etiqueta de registros        */
-                        lblRegistros.Text = REGISTROS + grvPagosPropuestos.Rows.Count.ToString();
+                        lblRegistros.Text = REGISTROS + dtTablaPropuestos.Rows.Count.ToString();
                     }
                 }
                 catch (Exception ex)

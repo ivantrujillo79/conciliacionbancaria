@@ -20,8 +20,9 @@ public partial class Acceso_Acceso : System.Web.UI.Page
             }
         }
 
-        if (SeguridadCB.Seguridad.Conexion != (null))
-            SeguridadCB.Seguridad.Conexion.Close();
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        if (seguridad.Conexion != (null))
+            seguridad.Conexion.Close();
 
         if (Session.Count > 0)
         {

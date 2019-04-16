@@ -7,11 +7,15 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Data.SqlTypes;
+using System.Configuration;
+using System.Web;
+using System.Threading.Tasks;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
     public class ConsultaDatos : Consultas
     {
+        string _URLGateway;
 
         public ConsultaDatos(IMensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
@@ -54,9 +58,125 @@ namespace Conciliacion.RunTime.DatosSQL
         //    }
         //}
 
+        public override string consultaClienteCRM(int cliente)
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+            try
+            {
+                if (_URLGateway != string.Empty)
+                {
+                    AppSettingsReader settings = new AppSettingsReader();
+                    SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                    byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                    Gateway.URLServicio = _URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.IDCliente = cliente;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (DireccionEntrega == null || 
+                DireccionEntrega.Nombre == null || 
+                DireccionEntrega.Message == null || 
+                DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
+                return "No encontrado";
+            else
+                return DireccionEntrega.Nombre.Trim();
+        }
+
+        public  string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario user, byte modulo, string cadenaconexion, string URLGateway )
+        {
+            RTGMGateway.RTGMGateway Gateway;
+            RTGMGateway.SolicitudGateway Solicitud;
+            RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+            try
+            {
+                if (URLGateway != string.Empty)
+                {
+                    //AppSettingsReader settings = new AppSettingsReader();
+                    //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                    //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                    Gateway.URLServicio = URLGateway;
+                    Solicitud = new RTGMGateway.SolicitudGateway();
+                    Solicitud.IDCliente = cliente;
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (DireccionEntrega == null ||
+                DireccionEntrega.Nombre == null)
+                {
+                //DireccionEntrega.Message == null ||
+                if (DireccionEntrega.Message.Contains("La consulta no produjo resultados con los parametros indicados."))
+                {
+                    return "No encontrado";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else
+                return DireccionEntrega.Nombre.Trim();
+        }
+
+        private List<Cliente> ConsultaCLienteCRMdt(DataTable dt)
+        {
+            List<Cliente> lstClientes = new List<Cliente>();
+            List<int> listadistintos = new List<int>();
+            try
+            {
+                foreach (DataRow  item in dt.Rows )
+                {
+                    if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                    {
+                        listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                    }
+                }
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                string cadenaconexion = App.CadenaConexion;
+                ParallelOptions options = new ParallelOptions();
+                options.MaxDegreeOfParallelism = 3;
+                Parallel.ForEach(listadistintos , options, (client) => {
+                    Cliente cliente;
+                    cliente = App.Cliente.CrearObjeto();
+                    cliente.NumCliente = client;
+                    cliente.Nombre = consultaClienteCRM(client, usuario, modulo,cadenaconexion,_URLGateway );
+                    lstClientes.Add(cliente);
+                });
+
+                while(lstClientes.Count < listadistintos.Count)
+                {
+
+                }
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            return lstClientes;
+        }
+
         public override DataTable CBPedidosPorFactura(string SerieFactura)
         {
-            DataTable dtResultados = null;
+            DataTable dtResultados = null;            
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
@@ -75,6 +195,29 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         dtResultados = ds.Tables[0];
                     }
+                    //if (_URLGateway != string.Empty)
+                    //{
+                    //    List<Cliente> lstClientes = new List<Cliente>();
+                    //    lstClientes = ConsultaCLienteCRMdt(dtResultados);
+                    //    foreach (DataRow fila in dtResultados.Rows)
+                    //    {
+                    //        Cliente cliente;
+                    //        cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                    //        if (cliente != null)
+                    //        {
+                    //            fila["Nombre"] = cliente.Nombre;
+                    //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                    //            //cliente = App.Cliente.CrearObjeto();
+                    //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                    //            //cliente.Nombre = fila["Nombre"].ToString();
+                    //            //lstClientes.Add(cliente);
+                    //        }
+                    //        //else
+                    //        //{
+                    //        //    fila["Nombre"] = cliente.Nombre;
+                    //        //}
+                    //    }
+                    //}
                 }
                 catch (SqlException ex)
                 {
@@ -92,17 +235,25 @@ namespace Conciliacion.RunTime.DatosSQL
         public override DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia)
         {
             DataTable dtResultados = null;
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBPedidosPorPedidoReferencia", cnn);
+                    SqlCommand comando;
+                    if (PedidoMultiple == "1")
+                        comando = new SqlCommand("spCBPedidosPorPedidoReferenciaPM", cnn);
+                    else
+                        comando = new SqlCommand("spCBPedidosPorPedidoReferencia", cnn);
                     comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
 
                     DataSet ds = new DataSet();
-
                     SqlDataAdapter dap = new SqlDataAdapter(comando);
                     dap.Fill(ds);
 
@@ -110,13 +261,37 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         dtResultados = ds.Tables[0];
                     }
+                    
+                    //if (_URLGateway != string.Empty)
+                    //{
+                    //    List<Cliente> lstClientes = new List<Cliente>();
+                    //    lstClientes = ConsultaCLienteCRMdt(dtResultados);
+                    //    foreach (DataRow fila in dtResultados.Rows)
+                    //    {
+                    //        Cliente cliente;
+                    //        cliente = lstClientes.Find(x => x.NumCliente == int.Parse(fila["cliente"].ToString()));
+                    //        if (cliente != null)
+                    //        {
+                    //            fila["Nombre"] = cliente.Nombre;
+                    //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
+                    //            //cliente = App.Cliente.CrearObjeto();
+                    //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
+                    //            //cliente.Nombre = fila["Nombre"].ToString();
+                    //            //lstClientes.Add(cliente);
+                    //        }
+                    //        //else
+                    //        //{
+                    //        //    fila["Nombre"] = cliente.Nombre;
+                    //        //}
+                    //    }
+                    //}
                 }
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
                     this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
-                                                              this.GetType().Name + "\n\r" + "Metodo :" +
-                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              this.GetType().Name + "\n\r" + 
+                                                              //"Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
                     stackTrace = null;
                 }
@@ -2967,13 +3142,21 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                       string cliente,
                                                                                       bool clientepadre)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConciliacionBusquedaPedido", cnn);
+                    SqlCommand comando;
+                    if (PedidoMultiple == "1")
+                        comando = new SqlCommand("spCBConciliacionBusquedaPedidoPM", cnn);
+                    else
+                        comando = new SqlCommand("spCBConciliacionBusquedaPedido", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativoconciliacion;
@@ -3239,13 +3422,22 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      decimal diferencia,
                                                                                      string pedidoReferencia)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
+
             ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaUnPedidoEspecificoCliente", cnn);
+                    SqlCommand comando;
+                    if (PedidoMultiple == "1")
+                        comando = new SqlCommand("spCBConsultaUnPedidoEspecificoClientePM", cnn);
+                    else
+                        comando = new SqlCommand("spCBConsultaUnPedidoEspecificoCliente", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 1;
                     comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value =
                         corporativoconciliacion;
@@ -3625,17 +3817,12 @@ namespace Conciliacion.RunTime.DatosSQL
                                                             Convert.ToString(reader["NombreTercero"]),
                                                             Convert.ToString(reader["RFCTercero"]), sucursal,
                                                             Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
-/*<<<<<<< HEAD
-
-                        dato.SerieFactura = "";//reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
-                        dato.ClienteReferencia = "";//reader["CliReferencia"].ToString().Trim();
-=======*/
                         
                         dato.SerieFactura = reader["SerieFactura"].ToString().Trim() + reader["Factura"].ToString().Trim();
                         dato.ClienteReferencia = reader["CliReferencia"].ToString().Trim();
-                        dato.Pedido = Convert.ToInt32(reader["Pedido"]);
+                        dato.Pedido = Convert.ToInt32( reader["Pedido"].ToString().Trim() == string.Empty ? "0" : reader["Pedido"].ToString().Trim() );
                         dato.StatusMovimiento= reader["StatusMovimiento"].ToString().Trim();
-//>>>>>>> dev_cinco
+                        dato.TipoCobro = Convert.ToInt32(reader["TipoCobro"].ToString().Trim() == string.Empty ? "0" : reader["TipoCobro"].ToString().Trim()); 
                         datos.Add(dato);
                     }
                 }
@@ -4445,7 +4632,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, Conexion _conexion)
+        public override bool ActualizaStatusConciliacionPedido(int corporativo, int sucursal, int año, int folio, int mes, int pedido, int celula, int añoped, Conexion _conexion)
         {
             bool valido = false;
             try
@@ -4459,6 +4646,10 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioConciliacion", System.Data.SqlDbType.Int)).Value = folio;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MesConciliacion", System.Data.SqlDbType.Int)).Value = mes;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = pedido;
+
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Celula", System.Data.SqlDbType.Int)).Value = celula;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Añoped", System.Data.SqlDbType.Int)).Value = añoped;
+
                 _conexion.Comando.ExecuteNonQuery();
 
                 valido = true;
@@ -4479,7 +4670,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativo, int sucursal,
-                                                                                 int año, short mes, int folio)
+                                                                                 int año, short mes, int folio, string usuario)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4502,7 +4693,11 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalExterno", System.Data.SqlDbType.SmallInt).Value = 0;
                     comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = 0;
-
+                    
+                    if (!usuario.Equals(""))
+                    {
+                        comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar,20).Value = usuario;
+                    }
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -4552,6 +4747,12 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToDecimal(reader["Retiro"]),
                                                                 Convert.ToInt32(reader["AñoExterno"]),
                                                                 this.implementadorMensajes);
+                        dato.TipoProducto = (byte)reader["TipoProducto"];
+                        dato.TipoCobro = (int)reader["TipoCobro"];
+                        dato.ClientePadre = Convert.ToInt32(reader["ClientePadre"]);
+
+                        dato.IDPedidoCRM = Convert.ToString(reader["IDCRM"]);
+
                         datos.Add(dato);
                     }
                 }
@@ -4572,7 +4773,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                         int año, short mes, int folio,
                                                                                         int cliente, int corporativoexterno,
                                                                                         int sucursalexterno, int añoexterno,
-                                                                                        int folioexterno, int secuenciaexterno)
+                                                                                        int folioexterno, int secuenciaexterno, 
+                                                                                        string usuario)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4596,6 +4798,10 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalExterno", System.Data.SqlDbType.SmallInt).Value = sucursalexterno;
                     comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = añoexterno;
                     comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = secuenciaexterno;
+                    if (!usuario.Equals(""))
+                    {
+                        comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar, 20).Value = usuario;
+                    }
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -4644,6 +4850,9 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["PedidoReferencia"]),
                                                                 Convert.ToInt32(reader["AñoExterno"]),
                                                                 this.implementadorMensajes);
+                        dato.TipoProducto = (byte)reader["TipoProducto"];
+                        dato.IDPedidoCRM = Convert.ToString(reader["IDCRM"]);
+
                         datos.Add(dato);
                     }
                 }
@@ -4661,7 +4870,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override List<Cobro> ConsultaChequeTarjetaAltaModifica(int corporativo, int sucursal, int año,
-                                                                      short mes, int folio)
+                                                                      short mes, int folio, string usuario)
         {
             List<Cobro> datos = new List<Cobro>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4746,7 +4955,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                    Convert.ToInt32(reader["Sucursal"]),
                                                                                    Convert.ToInt32(reader["Año"]),
                                                                                    Convert.ToInt32(reader["Folio"]),
-                                                                                   Convert.ToInt32(reader["Secuencia"])),
+                                                                                   Convert.ToInt32(reader["Secuencia"]),usuario),
                                                     this.implementadorMensajes);
                         datos.Add(dato);
 
@@ -4768,7 +4977,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override MovimientoCajaDatos ConsultaMovimientoCajaAlta(int corporativo, int sucursal, int año, short mes,
-                                                                  int folio)
+                                                                  int folio, string usuario)
         {
             MovimientoCajaDatos movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -4813,9 +5022,10 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             movimiento.SaldoAFavor = 0;
                         }
+                        
                         movimiento.ListaCobros = ConsultaChequeTarjetaAltaModifica(corporativo, sucursal, año, mes,
-                                                                                   folio);
-                        movimiento.ListaPedidos = ConsultaPagosPorAplicar(corporativo, sucursal, año, mes, folio);
+                                                                                   folio, usuario);
+                        movimiento.ListaPedidos = ConsultaPagosPorAplicar(corporativo, sucursal, año, mes, folio, usuario);
                     }
                 }
                 catch (SqlException ex)
@@ -5563,7 +5773,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ReferenciaNoConciliada> ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo,
            int sucursal,
-           string cuentaBancaria, DateTime finicial, DateTime ffinal)
+           string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -5578,6 +5788,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = cuentaBancaria;
                     comando.Parameters.Add("@FInicial", System.Data.SqlDbType.DateTime).Value = finicial;
                     comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = ffinal;
+                    comando.Parameters.Add("@StatusConciliacion", SqlDbType.VarChar).Value = statusconciliacion; //RRV
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -5972,6 +6183,11 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override ListaCombo ConsultaDatosCliente(Int64 cliente)
         {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+
             ListaCombo dato = null;
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
@@ -5981,18 +6197,23 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlCommand comando = new SqlCommand("spCCLConsultaVwDatosClienteReferencia", cnn);
                     comando.Parameters.Add("@Cliente", System.Data.SqlDbType.VarChar).Value = cliente.ToString();
 
+                    string NombreCliente;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
+                        if (_URLGateway != string.Empty)
+                            NombreCliente = consultaClienteCRM(Convert.ToInt32(reader["Cliente"]));
+                        else
+                            NombreCliente = Convert.ToString(reader["Nombre"]);
 
-                        dato = new ListaCombo(Convert.ToInt32(reader["Cliente"]), Convert.ToString(reader["Nombre"]));
+                        dato = new ListaCombo(Convert.ToInt32(reader["Cliente"]), NombreCliente);
                     }
                 }
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
@@ -6001,7 +6222,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 catch (Exception ex)
                 {
                     stackTrace = new StackTrace();
-                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" +
                                                               this.GetType().Name + "\n\r" + "Metodo :" +
                                                               stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
                                                               "Error :" + ex.Message);
@@ -6288,6 +6509,43 @@ namespace Conciliacion.RunTime.DatosSQL
 
                 return ListaDSAF;
             }
+        }
+
+
+
+        public override List<Cuenta> ConsultaCuentasUsuario (string Usuario)
+        {
+            List<Cuenta> lista = new List<Cuenta>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaUsuarioCuenta", cnn);
+                    comando.Parameters.Add("@Usuario", System.Data.SqlDbType.Char).Value = Usuario;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Cuenta dato =
+                            new Cuenta(Convert.ToInt16(reader["IdUsuarioCuenta"]), Convert.ToString(reader["CUENTABANCO"]),
+                            Convert.ToInt16(reader["BANCO"]), Convert.ToString(reader["DSCBANCO"]));
+                        lista.Add(dato);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+            }
+            return lista;
         }
     }
 

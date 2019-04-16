@@ -83,6 +83,7 @@ namespace Conciliacion.Migracion.Runtime.ReglasNegocio
 
         //StatusConcepto por Grupo de Conciliación.
         public abstract List<StatusConcepto> ObtenieneStatusConceptosGrupoConciliacion(int configuracion, int grupoconciliacion);
+        public abstract List<StatusConcepto> ObtenieneStatusConceptos();
 
         #endregion
 

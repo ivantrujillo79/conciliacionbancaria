@@ -108,7 +108,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             try
             {
-                conexion.AbrirConexion(true);
+               // conexion.AbrirConexion(true);
 
                 List<ReferenciaConciliadaPedido> listaReferenciaConciliadaPedido = this.ListaReferenciaConciliadaPedido;
 

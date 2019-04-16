@@ -31,8 +31,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int cliente;
         string nombre;
         string pedidoreferencia;
+        byte tipoproducto;
         decimal saldo;
+        int clientePago;
 
+        bool portatil;
+
+        int tipocobro;
+        private int tipoCobro;
+        int clientePadre;
+        String _iDPedidoCRM;
 
         #region Constructores
 
@@ -162,13 +170,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.nombre = "";
             this.pedidoreferencia = "";
 
+            this.tipoproducto = 0;
+            this.portatil = false;
         }
 
         #endregion
 
         #region Propiedades
 
-               public string PedidoReferencia 
+        public string PedidoReferencia 
         {
             get { return pedidoreferencia; }
             set { pedidoreferencia = value; }
@@ -203,6 +213,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return sucursalpedido; }
             set { sucursalpedido = value; }
         }
+
+        public abstract void Guardar(Conexion conexion);
 
         public string SucursalPedidoDes
         {
@@ -289,6 +301,30 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { saldo = value; }
         }
 
+        public int ClientePago
+        {
+            get { return clientePago; }
+            set { clientePago = value; }
+        }
+
+        public byte TipoProducto
+        {
+            get { return tipoproducto; }
+            set { tipoproducto = value; }
+        }
+
+        public bool Portatil
+        {
+            get { return portatil; }
+            set { portatil = value; }
+        }
+
+        public int TipoCobro
+        {
+            get { return tipoCobro; }
+            set { tipoCobro = value; }
+        }
+
         #endregion
 
 
@@ -298,9 +334,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract bool ActualizaPagosPorAplicar(Conexion _conexion);
 
-
+        public abstract List<RTGMCore.Pedido> PedidoActualizaSaldoCRM(string URLGateway);
 
         public abstract ReferenciaConciliadaPedido CrearObjeto();
+        public abstract bool Guardar2(Conexion _conexion);
 
         public virtual string CadenaConexion
         {
@@ -310,5 +347,30 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
         }
 
+        public int ClientePadre
+        {
+            get
+            {
+                return clientePadre;
+            }
+
+            set
+            {
+                clientePadre = value;
+            }
+        }
+
+        public String IDPedidoCRM
+        {
+            get
+            {
+                return _iDPedidoCRM;
+            }
+
+            set
+            {
+                _iDPedidoCRM = value;
+            }
+        }
     }
 }

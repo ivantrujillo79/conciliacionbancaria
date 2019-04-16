@@ -1,7 +1,12 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true" CodeFile="AplicarPago.aspx.cs" Inherits="Conciliacion_Pagos_AplicarPago" Async="true" %>
+<%@ Register Src="~/ControlesUsuario/AreasComunes/areascomunes.ascx" TagPrefix="ControlUsuario" TagName="AreasComunesControl" %>
+
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     APLICAR PAGOS
 </asp:Content>
@@ -15,6 +20,12 @@
         type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <!-- ScrollBar GridView -->
+
+    <script type="text/javascript" language="javascript">
+        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
+        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
+    </script>
+
     <script type="text/javascript">
         //        $(document).ready(function () {
         function pageLoad() {
@@ -38,6 +49,14 @@
 
             });
         }
+         function mensajeAsincrono(faltante) {
+            var pre = document.createElement('pre');pre.style.maxHeight = '400px';
+                pre.style.margin = '0';
+                pre.style.padding = '24px';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.textAlign = 'justify';
+            pre.appendChild(document.createTextNode('No fue posible encontrar información para ' + faltante + ' clientes de la solicitud ¿desea reintentar?')); alertify.confirm('Conciliaci&oacute;n bancaria',pre, function () {   __doPostBack('miPostBack', "1"); }, function () {   __doPostBack('miPostBack',"2");}).set({ labels: { ok: 'Si', cancel: 'No' }, padding: false });
+        }
     </script>
     <!-- Validar: solo numeros-->
     <script type="text/javascript">
@@ -49,6 +68,15 @@
             var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
             return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
         }
+        function btnAplicarPagos_OnClientClick() {
+            document.getElementById('ctl00_contenidoPrincipal_btnAplicarPagos').disabled = true;
+        }
+    </script>
+    <script type="text/javascript">
+        function OcultarPopUpAreasComunes() {
+            $find("mpeAreasComunes").hide();
+        }
+
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
@@ -59,6 +87,41 @@
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%= mpeLoading.ClientID %>';        
     </script>
+     <!--        INICIO DE POPUP CONCILIAR PAGARES     -->
+        <asp:HiddenField runat="server" ID="hdfAreasComunes" />
+        <asp:ModalPopupExtender ID="mpeAreasComunes" runat="server" BackgroundCssClass="ModalBackground"
+            DropShadow="False" PopupControlID="pnlAreasComunes" TargetControlID="hdfAreasComunes"
+            BehaviorID="mpeAreasComunes" CancelControlID="imgCerrar_AreasComunes">
+            <%-- BehaviorID="ModalBehaviour" EnableViewState="false"--%>
+        </asp:ModalPopupExtender>
+        <asp:Panel ID="pnlAreasComunes" runat="server" CssClass="ModalPopup" Width="870px" Height="600px" Style="display: none;">
+            <asp:UpdatePanel ID="upAreasComunes" runat="server">
+                <ContentTemplate>
+                    <div>
+                        <table style="width: 100%;">
+                            <tr class="bg-color-grisOscuro">
+                                <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                                    <div class="floatDerecha bg-color-grisClaro01">
+                                        <asp:ImageButton runat="server" ID="imgCerrar_AreasComunes" CssClass="iconoPequeño bg-color-rojo"
+                                            ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px"
+                                            OnClientClick="OcultarPopUpAreasComunes();" />
+                                    </div>
+                                    <div class="fg-color-blanco centradoJustificado">
+                                 Listado de documentos por cliente padre
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ControlUsuario:AreasComunesControl runat="server" ID="wuAreascomunes" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </asp:Panel>
+        <!--        FIN POPUP CONCILIAR PAGARES     -->
     <asp:UpdatePanel runat="server" ID="upAplicarPagos" UpdateMode="Always">
         <ContentTemplate>
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
@@ -176,7 +239,7 @@
                                     <asp:DropDownList runat="server" ID="ddlCriteriosConciliacion" CssClass="etiqueta dropDownPequeño"
                                         Width="150px" Style="margin-bottom: 3px; margin-right: 3px" AutoPostBack="False"
                                         Enabled="False" />
-                                </td>
+                                    </td>
                             </tr>
                         </table>
                     </td>
@@ -289,6 +352,17 @@
                     <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top">
                         <table class="etiqueta opcionBarra">
                             <tr>
+                                <td class="iconoOpcion bg-color-grisClaro01" style="height: 30px" id="td1"
+                                    runat="server">
+                                    <asp:ImageButton ID="btnAreasComunes" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Detalle.png"
+                                        ToolTip="PAGO DE AREAS COMUNES" Width="25px" OnClick="btnAreasComunes_Click" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 1%; padding: 3px 3px 3px 0px; vertical-align: top;" >
+                        <table class="etiqueta opcionBarra">
+                            <tr>
                                 <td class="iconoOpcion bg-color-azulOscuro" style="height: 30px" id="tdAplicarPagos"
                                     runat="server">
                                     <asp:ImageButton ID="btnAplicarPagos" runat="server" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Pagos.png"
@@ -324,7 +398,24 @@
                         <table class="grvResultadoConsultaCss" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
 	                        <tbody>
 		                        <tr align="center">
-			                        <th align="center" scope="col" style="width:25px;">&nbsp;</th><th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Secuencia')">Sec. Ext.</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Referencia')">Referencia</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FMovimiento')">F. Mov. Ext.</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FOperacion')">F. Op. Ext.</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Diferencia')">Diferencia</a></th><th scope="col" style="width:200px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Concepto')">Concepto</a></th><th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$PedidoReferencia')">Documento</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$RemisionPedido')">Remision Ped.</a></th><th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SeriePedido')">Serie Ped.</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FolioSat')">Folio Sat</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SerieSat')">Serie Sat</a></th><th align="center" scope="col" style="width:120px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$ConceptoPedido')">Concepto</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Total')">Total Pedido</a></th><th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Cliente')">Cliente</a></th><th align="center" scope="col" style="width:150px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Nombre')">Nom. Cliente</a></th>
+			                        <th align="center" scope="col" style="width:25px;">&nbsp;</th>
+                                    <th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Secuencia')">Sec. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Referencia')">Referencia</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FMovimiento')">F. Mov. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FOperacion')">F. Op. Ext.</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$ClientePadre')">Cliente Padre</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Diferencia')">Diferencia</a></th>
+                                    <th scope="col" style="width:200px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Concepto')">Concepto</a></th>
+                                    <th align="center" scope="col" style="width:70px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$PedidoReferencia')">Documento</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$RemisionPedido')">Remision Ped.</a></th>
+                                    <th align="center" scope="col" style="width:40px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SeriePedido')">Serie Ped.</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$FolioSat')">Folio Sat</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$SerieSat')">Serie Sat</a></th>
+                                    <th align="center" scope="col" style="width:120px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$ConceptoPedido')">Concepto</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Total')">Total Pedido</a></th>
+                                    <th align="center" scope="col" style="width:100px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Cliente')">Cliente</a></th>
+                                    <th align="center" scope="col" style="width:150px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$Nombre')">Nom. Cliente</a></th>
+                                    <th align="center" scope="col" style="width:150px;"><a href="javascript:__doPostBack('ctl00$contenidoPrincipal$grvPagos','Sort$TipoCobro')">T. Cobro</a></th>
 		                        </tr>
 	                        </tbody>
                         </table>
@@ -332,12 +423,22 @@
                             <asp:GridView ID="grvPagos" runat="server" AutoGenerateColumns="False" AllowPaging="False"
                             AllowSorting="True" ShowHeader="False" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed" OnRowCreated="grvPagos_RowCreated"
-                            OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound">
+                            OnSorting="grvPagos_Sorting" OnRowDataBound="grvPagos_RowDataBound" OnSelectedIndexChanged="grvPagos_SelectedIndexChanged" >
                             <%--<EmptyDataTemplate>
                                 <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen pedidos con cantidades concordantes."></asp:Label>
                             </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
+                                <asp:TemplateField ItemStyle-Width="2px" ControlStyle-Width="22px"  HeaderText="Sel" ShowHeader="False">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkSeleccionado" Text=""  OnCheckedChanged="chkSeleccionado_CheckedChanged" AutoPostBack="true" runat="server"></asp:CheckBox>
+                        </ItemTemplate>
+                        <ControlStyle Width="22px" />
+                        <FooterStyle Width="22px" />
+                        <HeaderStyle Width="22px" />
+                        <ItemStyle Width="22
+                            px" />
+                    </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Image ID="imgStatusMovimiento" runat="server" CssClass="icono" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Exito.png"
@@ -376,6 +477,17 @@
                                     <ItemStyle HorizontalAlign="Center" Width="70px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="70px"></HeaderStyle>
                                 </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="ClientePadre" SortExpression="ClientePadre">
+                                    <ItemTemplate>
+                                        <b>
+                                            <asp:Label ID="lblClientePadre" runat="server" Text='<%# resaltarBusqueda(Eval("ClientePadre").ToString()) %>'></asp:Label>
+                                        </b>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Diferencia" SortExpression="Diferencia">
                                     <ItemTemplate>
                                         <b>
@@ -471,6 +583,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Cliente" SortExpression="Cliente">
                                     <ItemTemplate>
                                         <b>
@@ -480,6 +593,7 @@
                                     <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                                 </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="Nom. Cliente" SortExpression="Nombre">
                                     <ItemTemplate>
                                         <div class="parrafoTexto" style="width: 150px">
@@ -497,6 +611,17 @@
                                     <ItemStyle HorizontalAlign="Justify" Width="150px"></ItemStyle>
                                     <HeaderStyle HorizontalAlign="Center" Width="150px"></HeaderStyle>
                                 </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="TipoCobro" SortExpression="TipoCobro">
+                                    <ItemTemplate>
+                                        <b>
+                                            <asp:Label ID="lblTipoCobro" runat="server" Text='<%# resaltarBusqueda(Eval("TipoCobro").ToString()) %>'></asp:Label>
+                                        </b>
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                                </asp:TemplateField>
+
                             </Columns>
                         </asp:GridView>
                         </div>
@@ -547,6 +672,11 @@
                     </td>
                 </tr>
             </table>
+            <%--            Panel popup inicia --%>
+           
+            <%--            Panel popup termina --%>
+
+
         </ContentTemplate>
     </asp:UpdatePanel>
     <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upAplicarPagos">
@@ -556,6 +686,7 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
     <asp:ModalPopupExtender ID="mpeLoading" runat="server" BackgroundCssClass="ModalBackground"
+
         PopupControlID="panelBloqueo" TargetControlID="panelBloqueo">
     </asp:ModalPopupExtender>
 </asp:Content>

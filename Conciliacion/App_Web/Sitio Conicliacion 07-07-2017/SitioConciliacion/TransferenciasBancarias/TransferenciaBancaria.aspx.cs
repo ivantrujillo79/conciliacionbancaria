@@ -27,6 +27,8 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
 
     private DataTable tblTransferenciaBancarias = new DataTable("TransferenciaBancarias");
 
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -81,11 +83,11 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
     public void Consulta_TablaTranferenciaBancaria(short corporativoorigen, int sucursalorigen, 
                                                                                       string cuentabancoorigen, int año, short mes, string status)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {

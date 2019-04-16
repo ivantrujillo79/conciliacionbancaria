@@ -31,7 +31,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string rfctercerointerno;
         decimal depositointerno;
         decimal retirointerno;
-
+        int clientepago;
 
         #region Constructores
 
@@ -254,6 +254,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public string SerieFactura { get; set; }
 
         public string ClienteReferencia { get; set; }
+
+        public int ClientePago
+        {
+            get { return clientepago; }
+            set { clientepago = value; }
+        }
 
         #endregion
 

@@ -111,7 +111,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Concepto", SqlDbType.VarChar, 500)).Value = concepto;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MontoConciliado", SqlDbType.Money)).Value = montoconciliado;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@MontoExterno", SqlDbType.Money)).Value = montoexterno;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@MontoInterno", SqlDbType.Int)).Value = montointerno;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@MontoInterno", SqlDbType.Money)).Value = montointerno;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FormaConciliacion", SqlDbType.SmallInt)).Value = formaconciliacion;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConcepto", SqlDbType.SmallInt)).Value = statusconcepto;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@StatusConciliacion", SqlDbType.VarChar, 20)).Value = statusconciliacion;

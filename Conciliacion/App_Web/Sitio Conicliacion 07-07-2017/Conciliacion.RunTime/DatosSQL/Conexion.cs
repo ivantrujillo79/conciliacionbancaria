@@ -60,6 +60,35 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public void AbrirConexion(Boolean transaccion, Boolean NoRepetible)
+        {
+            if (Conexionbd.State == ConnectionState.Closed)
+            {
+                try
+                {
+                    Conexionbd.Open();
+                    Comando = Conexionbd.CreateCommand();
+                    Comando.CommandTimeout = 0;
+                    if (transaccion)
+                    {
+                        if (NoRepetible)
+                        {
+                            Transaccion = Conexionbd.BeginTransaction(IsolationLevel.ReadUncommitted);
+                        }
+                        else
+                        {
+                            Transaccion = Conexionbd.BeginTransaction(IsolationLevel.ReadUncommitted);
+                        }
+                        Comando.Transaction = Transaccion;
+                    }
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+        }
+
         public void CerrarConexion()
         {
             try

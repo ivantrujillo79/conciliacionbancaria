@@ -53,8 +53,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private DataTable tblPedidos;
     private ReferenciaConciliadaCompartida movSeleccionado;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
-    private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();
-
+    private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();//RRV quita private string StatusConciliacionSel = "";
+    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -231,9 +231,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
-
             DropDownList ddlStatus = sender as DropDownList;
             string status = ddlStatus.SelectedItem.Text;
+            hdfStatusConciliacionSel.Value = status;//RRV
             FiltrarStatusConciliacionMovimiento(status);
         }
         catch (Exception ex)
@@ -1022,9 +1022,19 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         mpeBusquedaFactura.Show();
     }
 
+    private string QuitaHora(string stringFecha)
+    {
+        string[] arFecha = stringFecha.Split(' ');
+        if (arFecha.Count() > 0)
+            return arFecha[0];
+        else
+            return stringFecha;
+    }
+
     /////////////////////////////////////// EXPORTAR 
     protected void imgExportar_Click(object sender, ImageClickEventArgs e)
     {
+        btnActualizarConfig_Click(btnActualizarConfig,null);//RRV
         try
         {
             AppSettingsReader settings = new AppSettingsReader();
@@ -1037,7 +1047,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             DateTime fInicial = Convert.ToDateTime(hdfFInicial.Value);
             DateTime fFinal = Convert.ToDateTime(hdfFFinal.Value);
             string strReporte;
-            bool accesototal = LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim()).AccesoTotal;
+            Int16 accesototal;
+            if (LeerGrupoConciliacionUsuarioEspecifico(usuario.IdUsuario.Trim()).AccesoTotal)
+                accesototal = 1;
+            else
+                accesototal = 0;
+            string status = hdfStatusConciliacionSel.Value;
             strReporte = Server.MapPath("~/") + settings.GetValue("RutaReporteInformeMovimientosConciliadosExternos", typeof(string));
 
             if (!File.Exists(strReporte)) return;
@@ -1046,18 +1061,17 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 string strServer = settings.GetValue("Servidor", typeof(string)).ToString();
                 string strDatabase = settings.GetValue("Base", typeof(string)).ToString();
 
-
                 string strUsuario = usuario.IdUsuario.Trim();
                 string strPW = usuario.ClaveDesencriptada;
                 ArrayList Par = new ArrayList();
-
 
                 Par.Add("@AccesoTotal=" + accesototal);
                 Par.Add("@Corporativo=" + corporativo);
                 Par.Add("@Sucursal=" + sucursal);
                 Par.Add("@CuentaBancaria=" + cuentabancaria);
-                Par.Add("@FInicial=" + fInicial);
-                Par.Add("@FFinal=" + fFinal);
+                Par.Add("@FInicial=" + QuitaHora(fInicial.ToString()));
+                Par.Add("@FFinal=" + QuitaHora(fFinal.ToString()));
+                Par.Add("@StatusConciliacion=" + status);
 
                 ClaseReporte reporte = new ClaseReporte(strReporte, Par, strServer, strDatabase, strUsuario, strPW);
                 HttpContext.Current.Session["RepDoc"] = reporte.RepDoc;
@@ -1098,16 +1112,21 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     public void ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo, int sucursal,
         string cuentaBancaria, DateTime finicial, DateTime ffinal)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        string statusconciliacion = "";
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
+            if (hdfStatusConciliacionSel.Value == "TODOS")//RRV
+                statusconciliacion = "";
+            else//RRV
+                statusconciliacion = hdfStatusConciliacionSel.Value;//RRV
             listMovimientos =
                 Conciliacion.RunTime.App.Consultas.ConsultaMovimientosConciliacionCompartida(accesoTotal, corporativo,
-                    sucursal, cuentaBancaria, finicial, ffinal);
+                    sucursal, cuentaBancaria, finicial, ffinal, statusconciliacion);
 
             //Session["MOVIMIENTOS"] = listMovimientos;
             listMovimientos = LeerListaReferenciasNoRepetidos(listMovimientos);
@@ -1474,10 +1493,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     protected void btnActualizarConfig_Click(object sender, System.Web.UI.ImageClickEventArgs e)
     {
+        mpeLoading.Hide();
         try
         {
-
-
             if (FiltroCorrecto())
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -1498,9 +1516,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 GenerarTablaConciliacionCompartida();
                 LlenaGridViewConciliacionCompartida();
                 ActualizarPopUp_CargaArchivo();
-                mpeLoading.Hide();
             }
-
             else
                 App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
         }
@@ -1775,10 +1791,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     public void Consulta_Pedidos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
                                      short mesconciliacion, int folioconciliacion, int folio, int secuencia, string cliente, bool clientepadre)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -1800,10 +1816,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     public void Consulta_PedidosFactura(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion,
                              short mesconciliacion, int folioconciliacion, int folio, int secuencia, string cliente, bool clientepadre, SqlString factura, DateTime fechafactura)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -1824,10 +1840,10 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void Consulta_FacturasManual(int cliente, bool clientepadre, SqlString factura, DateTime fechaIni, DateTime fechaFin)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
         }
         try
         {
@@ -1861,6 +1877,11 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void GenerarTablaPedidos() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
         //tblPedidos = new DataTable("ReferenciasInternas");
         //tblPedidos.Columns.Add("Pedido", typeof(int));
         //tblPedidos.Columns.Add("PedidoReferencia", typeof(int));
@@ -1885,7 +1906,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         tblPedidos.Columns.Add("Celula", typeof(int));
         tblPedidos.Columns.Add("AñoPed", typeof(int));
 
-
         foreach (
             ReferenciaNoConciliadaPedido rc in
                 listaReferenciaPedidos)
@@ -1898,7 +1918,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 rc.SerieSat,
                 rc.Total,
                 rc.FMovimiento,
-                rc.Nombre,
+                _URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
                 rc.Concepto,
                 rc.Cliente,
                 rc.CelulaPedido,
@@ -1911,8 +1931,13 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public void GenerarTablaFacturas() //Genera la tabla Referencias a Conciliar de Pedidos.
     {
-        tblPedidos = new DataTable("FacturasManual");
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
 
+        tblPedidos = new DataTable("FacturasManual");
         tblPedidos.Columns.Add("Cliente", typeof(string));
         tblPedidos.Columns.Add("Nombre", typeof(string));
         tblPedidos.Columns.Add("Factura", typeof(int));
@@ -1927,7 +1952,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             tblPedidos.Rows.Add(
                 rc.Cliente,
-                rc.Nombre,
+                _URLGateway != string.Empty ? cliente.consultaClienteCRM(rc.Cliente, _URLGateway) : rc.Nombre,
                 rc.Factura,
                 rc.Ffactura,
                 rc.Foliofactura,
@@ -2045,19 +2070,19 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             {
                 conexion.AbrirConexion(true);
 
-                if (iStatus == 28) // 28 = Deposito por pago anticipado
-                {
-                    bool clienteValido;
-                    clienteValido = ValidarClientePagoAnticipado(conexion, clienteBuscar);
-
-                    if (!clienteValido)
-                        throw new Exception("El cliente indicado no existe en la relación de pagos anticipados.");
-                }
-
                 Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
                 objCliente.Referencia = clienteBuscar.ToString();
                 if (objCliente.ValidaClienteExiste(conexion))
                 {
+                    if (iStatus == 28) // 28 = Deposito por pago anticipado
+                    {
+                        bool clienteValido = ValidarClientePagoAnticipado(conexion, clienteBuscar);
+
+                        if (!clienteValido)
+                            throw new Exception("El cliente indicado no existe en la relación de pagos " +
+                                                "anticipados o se encuentra inactivo.");
+                    }
+
                     BuscarPedidosClientes();
                 }
                 else
@@ -2071,7 +2096,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             //mpeTipoCliente.Show(); MOD: SALTAR PROCESO DE SELECCION
 
             /*      Asignar propiedades de Carga archivo Excel      */
-            ActualizarControl_CargaArchivo(Convert.ToInt32(hdfCuentaBancaria.Value.ToString().Replace(" ", "")), deposito, clienteBuscar, corporativo, sucursal);
+            ActualizarControl_CargaArchivo(Convert.ToInt64(hdfCuentaBancaria.Value.ToString().Replace(" ", "")), deposito, clienteBuscar, corporativo, sucursal);
 
         }
         catch (Exception ex)
@@ -2116,7 +2141,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             Pago.AñoExterno                     = Referencia.Año;
             Pago.FolioExterno                   = Referencia.Folio;
             Pago.SecuenciaExterno               = Referencia.Secuencia;
-            Pago.MontoExterno                   = Referencia.Deposito;
+            //Pago.MontoExterno                   = Referencia.Deposito;
+            Pago.MontoExterno                   = Referencia.MontoExterno;
             Pago.FormaConciliacion              = Referencia.FormaConciliacion;
             Pago.ComentarioNoConciliado         = "";
             Pago.Usuario                        = usuario.IdUsuario.Trim();
@@ -2134,7 +2160,62 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
     }
 
-    private void ActualizarControl_CargaArchivo(int cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
+    private List<GridViewRow> ObtenerFacturasSeleccionadas()
+    {
+        List<GridViewRow> facturasSeleccionadas = new List<GridViewRow>();
+        listaReferenciaFacturaConsulta = Session["FACTURAS_CONSULTAR_LISTA"] as List<ReferenciaNoConciliadaPedido>;
+
+        if (listaReferenciaFacturaConsulta != null && listaReferenciaFacturaConsulta.Count > 0)
+        {
+            facturasSeleccionadas =
+                grvPedidosFacturados.Rows.Cast<GridViewRow>()
+                           .Where(
+                               fila =>
+                               fila.RowType == DataControlRowType.DataRow &&
+                               (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked))
+                           .ToList();
+        }
+        return facturasSeleccionadas;
+    }
+    
+    private bool RegistraPagoAnticipado(Conexion conexion, ReferenciaConciliadaCompartida rfExterno, decimal monto)
+    {
+        const int TIPOMOVIMIENTO = 3;       // Pago anticipado
+        int iCliente = 0;
+        
+        SaldoAFavor obSaldoAFavor = Conciliacion.RunTime.App.SaldoAFavor.CrearObjeto();
+        
+        int.TryParse(hdfClienteBuscar.Value, out iCliente);
+        if (iCliente <= 0) return false;
+        if (monto <= 0) return false;
+            
+        obSaldoAFavor.FolioMovimiento           = -1;      // Se genera un consecutivo automáticamente
+        obSaldoAFavor.AñoMovimiento             = DateTime.Now.Year;
+        obSaldoAFavor.TipoMovimientoAConciliar  = TIPOMOVIMIENTO;
+        obSaldoAFavor.Factura                   = 0;
+        obSaldoAFavor.Monto                     = monto;
+        obSaldoAFavor.StatusMovimiento          = "REGISTRADO";
+        obSaldoAFavor.FMovimiento               = rfExterno.FOperacion;
+
+        obSaldoAFavor.StatusConciliacion        = "CONCILIADA";
+        obSaldoAFavor.FConciliacion             = DateTime.Now;
+        obSaldoAFavor.CorporativoConciliacion   = rfExterno.CorporativoConciliacion;
+        obSaldoAFavor.SucursalConciliacion      = rfExterno.SucursalConciliacion;
+        obSaldoAFavor.AñoConciliacion           = rfExterno.AñoConciliacion;
+        obSaldoAFavor.MesConciliacion           = rfExterno.MesConciliacion;
+        obSaldoAFavor.FolioConciliacion         = rfExterno.FolioConciliacion;
+
+        obSaldoAFavor.CorporativoExterno        = rfExterno.CorporativoExterno;
+        obSaldoAFavor.SucursalExterno           = rfExterno.SucursalExterno;
+        obSaldoAFavor.AñoExterno                = rfExterno.AñoExterno;
+        obSaldoAFavor.FolioExterno              = rfExterno.FolioExterno;
+        obSaldoAFavor.SecuenciaExterno          = rfExterno.SecuenciaExterno;
+        obSaldoAFavor.Cliente                   = iCliente;
+
+        return obSaldoAFavor.Guardar(conexion);
+    }
+
+    private void ActualizarControl_CargaArchivo(Int64 cuenta, decimal montoPago, Int64 cliente, int corporativo, short sucursal)
     {
         wucCargaExcelCyC.CuentaBancaria = cuenta;
         wucCargaExcelCyC.MontoPago = montoPago;
@@ -2149,8 +2230,6 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         bool resultado = false;
         try
         {
-            //Conexion conexion = new Conexion();
-            //conexion.AbrirConexion(false);
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
             listaReferenciaFacturaConsulta = Session["FACTURAS_CONSULTAR_LISTA"] as List<ReferenciaNoConciliadaPedido>;
@@ -2195,18 +2274,21 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     decimal montoExterno            = rfExterna.MontoExterno;
                     short formaConciliacion         = rfExterna.FormaConciliacion = 5;
                     short statusConcepto            = rfExterna.StatusConcepto;
-                    string statusConciliacion       = rfExterna.StatusConciliacion;
+                    //string statusConciliacion       = rfExterna.StatusConciliacion;
+                    string statusConciliacion       = "CONCILIADA";
                     DateTime fAlta                  = DateTime.Now;
                     DateTime fStatusConcepto        = DateTime.Now;
-                    string statusMovimiento         = rfExterna.StatusConciliacionMovimiento;
+                    //string statusMovimiento         = rfExterna.StatusConciliacionMovimiento;
+                    string statusMovimiento         = "CONCILIADA";
                                                                                      
-                    facturaManual.Guardar(conexion, corporativoConciliacion, sucursalConciliacion, añoConciliacion,
+                    resultado = facturaManual.Guardar(conexion, corporativoConciliacion, sucursalConciliacion, añoConciliacion,
                                         mesConciliacion, folioConciliacion, secuenciaRelacion, factura, corporativoExterno,
                                         sucursalExterno, añoExterno, folioExterno, secuenciaExterno, concepto, montoConciliado,
                                         montoExterno, montoInterno, formaConciliacion, statusConcepto, statusConciliacion, statusMovimiento,
                                         usuario.IdUsuario.Trim(), fAlta, "", usuario.IdUsuario.Trim(), fStatusConcepto);
+
+                    if (!resultado) break;
                 }
-                resultado = true;
             }        
             else
             {
@@ -2222,35 +2304,49 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     protected void btnConciliarFACT_Click(object sender, EventArgs e)
     {
+        decimal montoFacturas = 0M;
         bool conciliacionFactura = false;
         bool registraConciliacion = false;
+        bool registraPagoAnticipado = false;
+        const string ERROR_CONCILIACION = "Ocurrió un error conciliando la(s) factura(s). Comuníquese con el área de sistemas.";
         Conexion conexion = new Conexion();
         try
         {
             if (grvPedidosFacturados.Rows.Count > 0)
             {
-                conexion.AbrirConexion(true);
+                if (!VerificarTotalFacturas() && hdfStatusConcepto.Value == "28")
+                {
+                    throw new Exception("El total de la(s) factura(s) debe ser igual al monto del desposito");
+                }
+
                 //if (!RecuperarReferencias_wucCargaExcel()) return;
                 ReferenciaConciliadaCompartida rnc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
                 rnc.BorrarReferenciaConciliada();
 
-                conciliacionFactura      = ConciliarFactura(conexion, rnc);
+                montoFacturas = Convert.ToDecimal(hdfTotalFacturas.Value);
+
+                conexion.AbrirConexion(true);
+                conciliacionFactura = ConciliarFactura(conexion, rnc);
                 if (hdfStatusConcepto.Value == "28")
                 {
                     registraConciliacion = RegistraConciliacionReferencia(conexion, rnc);
+                    registraPagoAnticipado = RegistraPagoAnticipado(conexion, rnc, montoFacturas);
+
+                    if (!conciliacionFactura || !registraConciliacion || !registraPagoAnticipado)
+                    {
+                        throw new Exception(ERROR_CONCILIACION);
+                    }
                 }
+
+                if (!conciliacionFactura)
+                {
+                    throw new Exception(ERROR_CONCILIACION);
+                }
+
                 conexion.CommitTransaction();
 
                 mpeBusquedaFactura.Hide(); mpeBusquedaFactura.Dispose();
                 popUpConciliarMovPedido.Hide(); popUpConciliarMovPedido.Dispose();
-                if (hdfStatusConcepto.Value == "28")
-                {
-                    if (!conciliacionFactura || !registraConciliacion) return;
-                }
-                else 
-                    if (!conciliacionFactura) return;
-                
-                App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
 
                 //      Recargar la Vista con los datos
                 if (FiltroCorrecto())
@@ -2267,14 +2363,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     GenerarTablaConciliacionCompartida();
                     LlenaGridViewConciliacionCompartida();
                 }
+
+                App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
             }
             else
             {
                 App.ImplementadorMensajes.MostrarMensaje("Para conciliar una factura manual primero debe buscarla por criterio de fecha o por su identificador.");
-                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
-                //    + "Para conciliar una factura manual primero debe buscarla por criterio de fecha o por su identificador.', "
-                //    + "function(){ alertify.error('Error en la solicitud'); });", true);
             }
         }
         catch (Exception ex)
@@ -2574,12 +2668,54 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     }
 
+    /// <summary>
+    /// Verifíca que el monto de las facturas seleccionadas sea igual 
+    /// al monto del externo. En caso contrario regresa falso
+    /// </summary>
+    /// <returns></returns>
+    private bool VerificarTotalFacturas()
+    {
+        decimal totalFacturas = 0M;
+        bool resultado = false;
+
+        List<GridViewRow> facturas = ObtenerFacturasSeleccionadas();
+        ReferenciaConciliadaCompartida rncExterno = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
+
+        if ((facturas != null && facturas.Count > 0)
+            && (listaReferenciaFacturaConsulta != null && listaReferenciaFacturaConsulta.Count > 0))
+        {
+            foreach (GridViewRow row in facturas)
+            {
+                int iFactura = Convert.ToInt32(grvPedidosFacturados.DataKeys[row.RowIndex].Values["Factura"].ToString());
+
+                ReferenciaNoConciliadaPedido rnpFactura =
+                    listaReferenciaFacturaConsulta.Single(s => s.Factura == iFactura);
+
+                totalFacturas += rnpFactura.Total;
+            }
+
+            if (rncExterno != null)
+            {
+                resultado = totalFacturas == rncExterno.MontoExterno;
+                if (resultado)
+                {
+                    hdfTotalFacturas.Value = totalFacturas.ToString();
+                }
+                else
+                {
+                    hdfTotalFacturas.Value = "0";
+                }
+            }
+        }
+        return resultado;
+    }
+
     //protected void chkSeleccionado_CheckedChanged(object sender, EventArgs e)
     //{
     //    decimal mMonto, mMontoExterno, mResto;
     //    mMonto = mMontoExterno = mResto = 0M;
     //    listaReferenciaPedidos = Session["PEDIDOS_CONCILIAR"] as List<ReferenciaNoConciliadaPedido>;
-        
+
     //    /*          LEER MONTO EXTERNO          */
     //    ReferenciaConciliadaCompartida rfc = Session["MOVIMIENTO_SELECCIONADO"] as ReferenciaConciliadaCompartida;
     //    mMontoExterno = rfc.MontoExterno;

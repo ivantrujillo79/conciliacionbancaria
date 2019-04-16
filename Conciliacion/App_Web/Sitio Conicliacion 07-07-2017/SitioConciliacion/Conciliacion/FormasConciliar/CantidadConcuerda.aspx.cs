@@ -15,6 +15,7 @@ using Conciliacion.RunTime;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using CrystalDecisions.Shared.Json;
+using Locker;
 
 public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web.UI.Page
 {
@@ -43,7 +44,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     public DataTable tblDetalleTransaccionConciliada;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     public string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
-    public int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno,sucursalConciliacion;
+    public int corporativoConciliacion, añoConciliacion, folioConciliacion, folioExterno, sucursalConciliacion;
     public short mesConciliacion, tipoConciliacion, grupoConciliacion;
 
     private List<ListaCombo> listTipoFuenteInformacionExternoInterno = new List<ListaCombo>();
@@ -53,7 +54,31 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
 
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+        //set { activepaging = value; }
+    }
+
+    public int indiceExternoSeleccionado = 0;
+
     #endregion
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
+    }
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -62,13 +87,20 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         else
             operaciones = (SeguridadCB.Public.Operaciones)HttpContext.Current.Session["Operaciones"];
     }
+    private short ObtieneFormaConciliacion()
+    {
+        short formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (formaConciliacion == 0)
+        {
+            formaConciliacion = 1;
+        }
+        return formaConciliacion;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
-        if (_FormaConciliacion == 0)
-        {
-            _FormaConciliacion = 1;
-        }
+        Session["BLOQUEO_ORIGEN"] = "CANTIDADCONCUERDA";
+        short _FormaConciliacion = ObtieneFormaConciliacion();
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         try
         {
@@ -83,9 +115,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+            if (true)
+                LlenaGridViewDestinoDetalleInterno();
+
             if (!Page.IsPostBack)
             {
-                usuario = (SeguridadCB.Public.Usuario) HttpContext.Current.Session["Usuario"];
+                usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
                 corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
@@ -99,7 +134,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
-
+                activepaging = activaPaginacion();
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
 
                 Carga_SucursalCorporativo(corporativoConciliacion);
@@ -110,6 +145,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 Consulta_ConciliarPorCantidad(corporativoConciliacion, sucursalConciliacion, añoConciliacion,
                     mesConciliacion, folioConciliacion, tipoConciliacion, Convert.ToSByte(txtDias.Text),
                     Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
                 if (ddlCriteriosConciliacion.SelectedValue != "")
                     Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion,
@@ -133,7 +169,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     lblArchivosInternos.Visible = true;
                     btnActualizarConfig.ValidationGroup = "CantidadArchivos";
                 }*/
-                
+
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     lblPedidos.Visible = true;
@@ -149,9 +185,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     GenerarTablaReferenciasAConciliarInternos();
                     lblArchivosInternos.Visible = true;
                     btnActualizarConfig.ValidationGroup = "CantidadArchivos";
-
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
-
                 }
                 else
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
@@ -159,8 +193,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 txtDias.Enabled = true;
 
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
-
-                //Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
             }
         }
@@ -178,6 +210,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
+
     //Cargar InfoConciliacion Actual
     public void cargarInfoConciliacionActual()
     {
@@ -191,7 +224,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     //Limpiar las variables de Session
     public void limpiarVariablesSession()
     {
-          //Eliminar las variables de Session utilizadas en la Vista
+        //Eliminar las variables de Session utilizadas en la Vista
         HttpContext.Current.Session["CONCILIADAS"] = null;
         HttpContext.Current.Session["TAB_CONCILIADAS"] = null;
         HttpContext.Current.Session["TAB_REF_CONCILIAR"] = null;
@@ -241,7 +274,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            
+
             throw ex;
         }
     }
@@ -251,7 +284,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-                ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD CONCUERDA").Value;
+            ddlCriteriosConciliacion.SelectedValue = ddlCriteriosConciliacion.Items.FindByText("CANTIDAD CONCUERDA").Value;
         }
         catch (NullReferenceException ex)
         {
@@ -415,11 +448,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     public
     void Consulta_TransaccionesConciliadas(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int formaconciliacion)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -513,10 +547,10 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            
+
             throw ex;
         }
-        
+
 
     }
     //Llena el Gridview Transacciones Concilidadas
@@ -765,8 +799,11 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             throw ex;
         }
     }
-    private void LlenaGridViewReferenciasConciliadas(int tipoConciliacion)//Llena el gridview con las conciliaciones antes leídas
+    private void LlenaGridViewReferenciasConciliadas(short tipoConciliacion)//Llena el gridview con las conciliaciones antes leídas
     {
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = ObtieneFormaConciliacion();
         try
         {
             DataTable tablaReferenacias = (DataTable)HttpContext.Current.Session["TAB_REF_CONCILIAR"];
@@ -780,6 +817,16 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 grvCantidadConcuerdanArchivos.DataSource = tablaReferenacias;
                 grvCantidadConcuerdanArchivos.DataBind();
             }
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
+                UnCheckBloquedos(grvCantidadConcuerdanPedidos);
+                bloqueaTodoLoSeleccionado(grvCantidadConcuerdanPedidos);
+            }
+            if (objSolicitdConciliacion.ConsultaArchivo())
+            {
+                UnCheckBloquedos(grvCantidadConcuerdanArchivos);
+                bloqueaTodoLoSeleccionado(grvCantidadConcuerdanArchivos);
+            }
         }
         catch (Exception ex)
         {
@@ -791,11 +838,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+            SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+            System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
             if (Connection.State == ConnectionState.Closed)
             {
-                SeguridadCB.Seguridad.Conexion.Open();
-                Connection = SeguridadCB.Seguridad.Conexion;
+                seguridad.Conexion.Open();
+                Connection = seguridad.Conexion;
             }
             if (tipoConciliacion == 2)
             {
@@ -835,22 +883,26 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     protected void OnCheckedChangedArchivos(object sender, EventArgs e)
     {
         CheckBox chk = (sender as CheckBox);
+        listaReferenciaConciliada = Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
         if (chk.ID == "chkAllFolios")
         {
-            foreach (
-                GridViewRow fila in
-                    grvCantidadConcuerdanArchivos.Rows.Cast<GridViewRow>()
+            foreach (GridViewRow fila in grvCantidadConcuerdanArchivos.Rows.Cast<GridViewRow>()
                                                  .Where(fila => fila.RowType == DataControlRowType.DataRow))
                 fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = chk.Checked;
+            UnCheckBloquedos(grvCantidadConcuerdanArchivos);
+            bloqueaTodoLoSeleccionado(grvCantidadConcuerdanArchivos);
         }
     }
     protected void OnCheckedChangedPedidos(object sender, EventArgs e)
     {
         CheckBox chk = (sender as CheckBox);
+        listaReferenciaConciliadaPedidos = Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
         if (chk.ID == "chkAllFolios")
             foreach (GridViewRow fila in grvCantidadConcuerdanPedidos.Rows)
                 if (fila.RowType == DataControlRowType.DataRow)
                     fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = chk.Checked;
+        UnCheckBloquedos(grvCantidadConcuerdanPedidos);
+        bloqueaTodoLoSeleccionado(grvCantidadConcuerdanPedidos);
     }
     //Metodos Busqueda
     public string resaltarBusqueda(string entradaTexto)
@@ -1363,9 +1415,204 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                                       "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
                                       mesConciliacion + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
+
+    private bool hayBloqueados(GridView grv)
+    {
+        bool Existen = false;
+        if (LockerExterno.ExternoBloqueado != null)
+        {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = ObtieneFormaConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows)
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido())  
+                    {
+                        listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == listaReferenciaConciliadaPedidos[filaindex].Corporativo &&
+                                                                                x.Sucursal == listaReferenciaConciliadaPedidos[filaindex].Sucursal &&
+                                                                                x.Año == listaReferenciaConciliadaPedidos[filaindex].Año &&
+                                                                                x.Folio == listaReferenciaConciliadaPedidos[filaindex].Folio &&
+                                                                                x.Secuencia == listaReferenciaConciliadaPedidos[filaindex].Secuencia);
+                        }
+                    }
+                    else
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == listaReferenciaConciliada[filaindex].Corporativo &&
+                                                                                x.Sucursal == listaReferenciaConciliada[filaindex].Sucursal &&
+                                                                                x.Año == listaReferenciaConciliada[filaindex].Año &&
+                                                                                x.Folio == listaReferenciaConciliada[filaindex].Folio &&
+                                                                                x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia);
+                        }
+                    }
+                    if (Existen)
+                        break;
+                    filaindex++;
+                }
+            }
+        }
+        return Existen;
+    }
+
+    private void UnCheckBloquedos(GridView grv)
+    {
+        bool Existen = false;
+        if (LockerExterno.ExternoBloqueado != null)
+        {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = ObtieneFormaConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows)
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido())
+                    {
+                        listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        { 
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID && 
+                                                                            x.Corporativo == listaReferenciaConciliadaPedidos[filaindex].Corporativo &&
+                                                                            x.Sucursal == listaReferenciaConciliadaPedidos[filaindex].Sucursal &&
+                                                                            x.Año == listaReferenciaConciliadaPedidos[filaindex].Año &&
+                                                                            x.Folio == listaReferenciaConciliadaPedidos[filaindex].Folio &&
+                                                                            x.Secuencia == listaReferenciaConciliadaPedidos[filaindex].Secuencia);
+                            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
+                        }
+                    }
+                    else
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        { 
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&  
+                                                                            x.Corporativo == listaReferenciaConciliada[filaindex].Corporativo &&
+                                                                            x.Sucursal == listaReferenciaConciliada[filaindex].Sucursal &&
+                                                                            x.Año == listaReferenciaConciliada[filaindex].Año &&
+                                                                            x.Folio == listaReferenciaConciliada[filaindex].Folio &&
+                                                                            x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia);
+                            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
+                        }
+                    }
+                    filaindex++;
+                }
+            }
+        }
+    }
+
+    private void bloqueaTodoLoSeleccionado(GridView grv)
+    {
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+        
+        if (BloqueoEdoCTA == "1")
+        {
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = ObtieneFormaConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;            
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+            else
+                LockerExterno.EliminarBloqueos(Session.SessionID);
+
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows) //grvCantidadConcuerdanPedidos
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido()) //if (tipoConciliacion == 2)
+                    {
+                        listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        Corporativo = listaReferenciaConciliadaPedidos[filaindex].Corporativo;
+                        Sucursal = listaReferenciaConciliadaPedidos[filaindex].Sucursal;
+                        Año = listaReferenciaConciliadaPedidos[filaindex].Año;
+                        Folio = listaReferenciaConciliadaPedidos[filaindex].Folio;
+                        Secuencia = listaReferenciaConciliadaPedidos[filaindex].Secuencia;
+                        Descripcion = listaReferenciaConciliadaPedidos[filaindex].Descripcion;
+                        Monto = listaReferenciaConciliadaPedidos[filaindex].Total; //monto
+                    }
+                    else 
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        Corporativo = listaReferenciaConciliada[filaindex].Corporativo;
+                        Sucursal = listaReferenciaConciliada[filaindex].Sucursal;
+                        Año = listaReferenciaConciliada[filaindex].Año;
+                        Folio = listaReferenciaConciliada[filaindex].Folio;
+                        Secuencia = listaReferenciaConciliada[filaindex].Secuencia;
+                        Descripcion = listaReferenciaConciliada[filaindex].Descripcion;
+                        Monto = listaReferenciaConciliada[filaindex].MontoConciliado; //monto
+                    }
+                    if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                    {
+                        LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+                        {
+                            FormaConciliacion = "CANTIDADCONCUERDA",
+                            SessionID = Session.SessionID,
+                            Corporativo = Corporativo,
+                            Sucursal = Sucursal,
+                            Año = Año,
+                            Folio = Folio,
+                            Secuencia = Secuencia,
+                            Usuario = usuario.IdUsuario.ToString(),
+                            InicioBloqueo = DateTime.Now,
+                            Descripcion = Descripcion,
+                            Monto = Monto //monto
+                        });
+                    }
+                    filaindex++;
+                }
+            }
+        }
+    }
+
+    private void desBloqueaTodo()
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null)
+            {
+                int J = Locker.LockerExterno.ExternoBloqueado.Count;
+                for (int i = 0; i <= J - 1; i++)
+                {
+                    Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == Session.SessionID).ToList()[0]);
+                }
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {
         bool resultado = false;
+        bool AlgunChequeado = false;
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
         if (tipoConciliacion == 2)
@@ -1374,7 +1621,29 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             listaReferenciaConciliadaPedidos = Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
 
             if (listaReferenciaConciliadaPedidos != null && listaReferenciaConciliadaPedidos.Count > 0)
-                listaReferenciaConciliadaPedidos.ForEach(x => resultado = x.Guardar());
+            {
+                try
+                {
+                    int filaindex = 0;
+                    foreach (GridViewRow fila in grvCantidadConcuerdanPedidos.Rows)
+                        if (fila.RowType == DataControlRowType.DataRow)
+                        {
+                            listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                            if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                            {
+                                AlgunChequeado = true;
+                                resultado = listaReferenciaConciliadaPedidos[filaindex].Guardar();
+                                if (!resultado)
+                                    break;
+                            }
+                            filaindex++;
+                        }
+                }
+                finally
+                {
+                    desBloqueaTodo();
+                }
+            }
             else
                 App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
         }
@@ -1382,14 +1651,39 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         {
             //Leer la lista de Referencias por Conciliar : Tipo Conciliacion = 2
             listaReferenciaConciliada = Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
-
             if (listaReferenciaConciliada != null && listaReferenciaConciliada.Count > 0)
-                listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
-
+            {
+                try
+                {
+                    int filaindex = 0;
+                    foreach (GridViewRow fila in grvCantidadConcuerdanArchivos.Rows)
+                        if (fila.RowType == DataControlRowType.DataRow)
+                        {
+                            listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                            if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                            {
+                                AlgunChequeado = true;
+                                resultado = listaReferenciaConciliada[filaindex].Guardar();
+                                if (!resultado)
+                                    break;
+                            }
+                            filaindex++;
+                        }
+                }
+                finally
+                {
+                    desBloqueaTodo();
+                }
+            }
             else
                 App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
-
         }
+        if (! AlgunChequeado)
+            App.ImplementadorMensajes.MostrarMensaje("Seleccione al menos uno para continuar.");
+
+        if (AlgunChequeado && ! resultado)
+            App.ImplementadorMensajes.MostrarMensaje("Ocurrieron errores al guardar. Verifique");
+
         if (resultado)
         {
             //Leer Variables URL 
@@ -1401,17 +1695,15 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             LlenaGridViewConciliadas();
             Consulta_ConciliarPorCantidad(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, tipoConciliacion, Convert.ToSByte(txtDias.Text),
                                                                 Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-
             if (tipoConciliacion == 2)
                 GenerarTablaReferenciasAConciliarPedidos();
             else
                 GenerarTablaReferenciasAConciliarInternos();
             LlenaGridViewReferenciasConciliadas(tipoConciliacion);
         }
-        else
-            App.ImplementadorMensajes.MostrarMensaje("Ocurrieron errores al guardar. Verifique");
 
     }
+
     protected void Nueva_Ventana(string Pagina, string Titulo, int Ancho, int Alto, int X, int Y)
     {
         ScriptManager.RegisterClientScriptBlock(this.upBarraHerramientas,
@@ -1780,11 +2072,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     /// </summary>
     public void Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -1851,7 +2144,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         LlenaGridViewDestinoDetalleInterno();
         lblFolioInterno.Text = ddlFolioInterno.SelectedItem.Value;
         grvVistaRapidaInterno_ModalPopupExtender.Show();
-
+        upDetalleInterno.Update();
     }
 
     //---FIN MODULO "AGREGAR NUEVO INTERNO"
@@ -1952,5 +2245,162 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     e.Row.Cells[16].Visible = true;
             }
         }
+    }
+
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        this.grvVistaRapidaInterno.DataSource = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"]; //tblDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
+    }
+
+    private void BloqueaUnSeleccionado(ReferenciaConciliada rfEx)
+    {
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+
+        if (BloqueoEdoCTA == "1")
+        {
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = ObtieneFormaConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = "";
+                Monto = rfEx.MontoConciliado;
+            }
+            else
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = rfEx.Descripcion;
+                Monto = rfEx.MontoConciliado;
+            }
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+            {
+                FormaConciliacion = "CANTIDADCONCUERDA",
+                SessionID = Session.SessionID,
+                Corporativo = Corporativo,
+                Sucursal = Sucursal,
+                Año = Año,
+                Folio = Folio,
+                Secuencia = Secuencia,
+                Usuario = usuario.IdUsuario.ToString(),
+                InicioBloqueo = DateTime.Now,
+                Descripcion = Descripcion,
+                Monto = Monto
+            });
+
+        }
+    }
+
+    private void DesBloquea(ReferenciaConciliada rfEx)
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null && Locker.LockerExterno.ExternoBloqueado.Count > 0)
+            {
+                LockerExterno.ExternoBloqueado.Remove(
+                       Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
+                                                                   x.Sucursal == rfEx.Sucursal &&
+                                                                   x.Año == rfEx.Año &&
+                                                                   x.Folio == rfEx.Folio &&
+                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                    );
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public ReferenciaConciliada leerReferenciaExternaSeleccionada()
+    {
+        listaReferenciaConciliada = Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
+        int secuenciaExterno = Convert.ToInt32(grvCantidadConcuerdanArchivos.DataKeys[indiceExternoSeleccionado].Values["SecuenciaExt"]);
+        int folioExterno = Convert.ToInt32(grvCantidadConcuerdanArchivos.DataKeys[indiceExternoSeleccionado].Values["FolioExt"]);
+        return listaReferenciaConciliada.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno);
+    }
+
+    private bool ExisteExternoBloqueado()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+        bool BloqueoEdoCTA = false;
+        BloqueoEdoCTA = bloqueo == "1" ? true : false;
+        if (BloqueoEdoCTA)
+        {
+            if (LockerExterno.ExternoBloqueado == null)
+                return false;
+
+            ReferenciaConciliada rfEx = leerReferenciaExternaSeleccionada();
+            return LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == rfEx.Corporativo &&
+                                                                x.Sucursal == rfEx.Sucursal &&
+                                                                x.Año == rfEx.Año &&
+                                                                x.Folio == rfEx.Folio &&
+                                                                x.Secuencia == rfEx.Secuencia);
+        }
+        else
+            return false;
+    }
+
+    protected void chkFolio_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox chk = sender as CheckBox;
+        GridViewRow grv = (GridViewRow)chk.Parent.Parent;
+
+        int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
+        indiceExternoSeleccionado = grv.RowIndex;
+        ReferenciaConciliada rfEx = leerReferenciaExternaSeleccionada();
+
+        if (chk.Checked)
+        {
+            rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+            //GenerarTablaReferenciasAConciliarInternos();
+            if (ExisteExternoBloqueado())
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+                indiceExternoSeleccionado = respaldoIndiceSeleccionado;
+                CheckBox checkbox = sender as CheckBox;
+                checkbox.Checked = false;
+                return;
+            }
+            else
+                BloqueaUnSeleccionado(rfEx);
+        }
+        else
+        {
+            rfEx.Selecciona = true;
+            //GenerarTablaReferenciasAConciliarInternos();
+            DesBloquea(rfEx);
+        }
+
     }
 }

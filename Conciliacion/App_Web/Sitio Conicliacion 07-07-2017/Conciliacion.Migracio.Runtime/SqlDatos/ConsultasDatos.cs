@@ -1472,6 +1472,39 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
             }
         }
 
+        /// <summary>
+        /// Devuelve Catalogo Estatus Concepto
+        /// </summary>
+        /// <returns></returns>
+        public override List<StatusConcepto> ObtenieneStatusConceptos()
+        {
+            List<StatusConcepto> datos = new List<StatusConcepto>();
+
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBCargaComboStatusConceptoReportes", cnn);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        StatusConcepto dato = new StatusConceptoDatos(Convert.ToInt32(reader["Identificador"]), Convert.ToString(reader["Descripcion"]), Convert.ToString(reader["Usuario"]), Convert.ToString(reader["Status"]), Convert.ToDateTime(reader["FAlta"]), this.implementadorMensajes);
+                        datos.Add(dato);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Error al consultar la informacion.\n\rClase :" + this.GetType().Name + "\n\r" + "Método :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                return datos;
+            }
+        }
+
     }
 
     

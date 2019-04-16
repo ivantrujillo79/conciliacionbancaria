@@ -8,34 +8,49 @@ namespace SeguridadCB
 {
     public class Seguridad
     {
-        private Seguridad()
+        private string _InicialCorporativo = "";
+        public Seguridad()
         {
 
         }
 
-        public static SqlConnection Conexion
+        public SqlConnection Conexion
         {
             get { return SeguridadDataLayer.Conexion; }
             set { SeguridadDataLayer.InicializaInterfase(value); }
         }
 
-        public static bool ExisteUsuarioActivo(string usuario)
+        public bool ExisteUsuarioActivo(string usuario)
         {
             return SeguridadDataLayer.ExisteUsuarioActivo(usuario);
         }
 
-        public static Usuario DatosUsuario(string usuario)
+        public Usuario DatosUsuario(string usuario)
         {
+            _InicialCorporativo = SeguridadDataLayer.InicialCorporativosUsuario(usuario);
             DataTable dtCorporativos = new DataTable("Corporativos");
-            dtCorporativos = SeguridadDataLayer.CorporativosUsuario(usuario);
-            //Se quito AreasUsuario como parametro para la lectura de un usuario.
+            dtCorporativos = SeguridadDataLayer.CorporativosUsuario(usuario);                          
+            //Se quitó AreasUsuario como parametro para la lectura de un usuario.
             //DataTable dtAreas = SeguridadDataLayer.AreasUsuario(usuario);
             SqlDataReader rdr = null;
             try
             {
                 rdr = SeguridadDataLayer.DatosUsuario(usuario);
                 rdr.Read();
-                return new Usuario(rdr["Usuario"].ToString(), rdr["Nombre"].ToString(), Convert.ToInt32(rdr["Empleado"]), Encripter.ImplicitUnencript(rdr["Clave"].ToString()), Encripter.ImplicitUnencript(rdr["Clave"].ToString()), Convert.ToByte(rdr["Corporativo"]), rdr["NombreCorporativo"].ToString(), Convert.ToInt16(rdr["Sucursal"]), rdr["SucursalDescripcion"].ToString(), dtCorporativos);//Convert.ToInt16(rdr["Area"]), rdr["NombreArea"].ToString(), dtAreas
+                Encripter objEncrypter = new Encripter();
+                return  new Usuario(rdr["Usuario"].ToString(),
+                                    rdr["Nombre"].ToString(), 
+                                    Convert.ToInt32(rdr["Empleado"]), 
+                                    objEncrypter.ImplicitUnencript(rdr["Clave"].ToString()), 
+                                    objEncrypter.ImplicitUnencript(rdr["Clave"].ToString()), 
+                                    Convert.ToByte(rdr["Corporativo"]), 
+                                    rdr["NombreCorporativo"].ToString(), 
+                                    Convert.ToInt16(rdr["Sucursal"]), 
+                                    rdr["SucursalDescripcion"].ToString(), 
+                                    dtCorporativos,
+                                    _InicialCorporativo
+                                    ,Convert.ToInt16(rdr["Area"].ToString())
+                                    );//Convert.ToInt16(rdr["Area"]), rdr["NombreArea"].ToString(), dtAreas
             }
             catch (SqlException ex)
             {
@@ -53,38 +68,40 @@ namespace SeguridadCB
             }
         }
 
-        public static bool ComparaClaves(string clave, Usuario datosUsuario)
+        public bool ComparaClaves(string clave, Usuario datosUsuario)
         {
             return clave == datosUsuario.ClaveDesencriptada;
         }
 
-        public static Modulos Modulos(string usuario)
+        public Modulos Modulos(string usuario)
         {
             DataTable dt = SeguridadDataLayer.ModulosUsuario(usuario);
             return new Modulos(dt);
         }
 
-        public static Operaciones Operaciones(string modulo, string usuario)
+        public Operaciones Operaciones(string modulo, string usuario)
         {
             DataTable dt = SeguridadDataLayer.OperacionesUsuarioModulo(modulo, usuario);
             return new Operaciones(dt);
         }
 
         //Se cambio a solo un modulo, no lista
-        public static Parametros Parametros(string modulo, byte corporativo, int sucursal)
+        public Parametros Parametros(string modulo, byte corporativo, int sucursal)
         {
             DataTable dt = SeguridadDataLayer.ParametrosModulo(modulo, corporativo, sucursal);
             return new Parametros(dt);
         }
        
-        public static string EncriptaClave(string clave)
+        public string EncriptaClave(string clave)
         {
-            return Encripter.ImplicitEncript(clave);
+            Encripter objEncrypter = new Encripter();
+            return objEncrypter.ImplicitEncript(clave);
         }
 
-        public static string DesencriptaClave(string clave)
+        public string DesencriptaClave(string clave)
         {
-            return Encripter.ImplicitUnencript(clave);
+            Encripter objEncrypter = new Encripter();
+            return objEncrypter.ImplicitUnencript(clave);
         }
 
         public enum TipoSeguridad : byte { SQL = 0, NT = 1 }

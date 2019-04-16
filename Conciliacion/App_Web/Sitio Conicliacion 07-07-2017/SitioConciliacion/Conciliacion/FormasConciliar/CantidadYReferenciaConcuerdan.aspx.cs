@@ -12,24 +12,33 @@ using Conciliacion.RunTime;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Threading;
+using Locker;
 
 public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan : System.Web.UI.Page
 {
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
+    private List<Cliente> lstClientes = new List<Cliente>();
+    private List<RTGMCore.DireccionEntrega> listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+    private bool validarPeticion = false;
+    private List<int> listaClientesEnviados;
+    private List<int> listaClientes = new List<int>();
 
     #endregion
     #region "Propiedades Privadas"
     public int corporativo, año, folio, sucursal;
     public short mes;
     public short tipoConciliacion, grupoConciliacion;
+    public int Nhilos = 0;
 
     public List<ReferenciaConciliada> listaReferenciaConciliada = new List<ReferenciaConciliada>();
     public List<ReferenciaConciliadaPedido> listaReferenciaConciliadaPedido = new List<ReferenciaConciliadaPedido>();
     public List<ReferenciaNoConciliada> listaTransaccionesConciliadas = new List<ReferenciaNoConciliada>();
     public List<ReferenciaNoConciliada> listaReferenciaExternas = new List<ReferenciaNoConciliada>();
-
+    public int indiceExternoSeleccionado = 0;
 
     private List<ListaCombo> listSucursales = new List<ListaCombo>();
     private List<ListaCombo> listStatusConcepto = new List<ListaCombo>();
@@ -51,7 +60,30 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
+    private string _URLGateway;
+
+    private bool activepaging = true;
+    public bool ActivePaging
+    {
+        get { return activaPaginacion(); }
+    }
+
     #endregion
+
+    public bool activaPaginacion()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        bool activar;
+
+        activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
+        usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        if (usuario.Area == 8) //el usuario es de metropoli
+            activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
+
+        return activar;
+    }
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -62,20 +94,39 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
-        if (_FormaConciliacion == 0)
+        short _FormaConciliacion = Asigna_FormaConciliacionActual();
+        //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        //if (_FormaConciliacion == 0)
+        //{
+        //    if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+        //    {
+        //        _FormaConciliacion = 7;
+        //    }
+        //    else
+        //    {
+        //        _FormaConciliacion = 2;
+        //    }
+        //}
+
+        if (IsPostBack)
         {
-            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+            if (Page.Request.Params["__EVENTTARGET"] == "miPostBack")
             {
-                _FormaConciliacion = 7;
-            }
-            else
-            {
-                _FormaConciliacion = 2;
+                validarPeticion = false;
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                listaClientes = ViewState["LISTACLIENTES"] as List<int>;
+                //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+                string dat = Page.Request.Params["__EVENTARGUMENT"].ToString();
+                if (dat == "1")
+                {
+                    ObtieneNombreCliente(listaClientes);
+                }
+                else if (dat == "2")
+                {
+                    llenarListaEntrega();
+                }
             }
         }
-
-
         Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         DataTable _tblReferenciasAConciliarPedido = new DataTable();
         DataTable _tblReferenciasAConciliarArchivo = new DataTable();
@@ -91,9 +142,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                 }
             }
+
+            LlenaGridViewDestinoDetalleInterno();
+
             if (!Page.IsPostBack)
             {
-
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
                 sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
                 año = Convert.ToInt32(Request.QueryString["Año"]);
@@ -117,6 +170,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 Carga_SucursalCorporativo(corporativo);
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
+                if (objSolicitdConciliacion.ConsultaPedido())
+                    Carga_ComboTiposDeCobro();
+                else
+                {
+                    //lblTiposdeCobro.Visible = false;
+                    ddlTiposDeCobro.Visible = false;
+                }
                 try
                 {
                     Carga_CamposExternos(tipoConciliacion);
@@ -127,11 +187,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 }
 
                 LlenarBarraEstado();
-
-                //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
-                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-                GenerarTablaConciliados();
-                LlenaGridViewConciliadas();
+                ////CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
+                //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                //GenerarTablaConciliados();
+                //LlenaGridViewConciliadas();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -144,7 +203,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
                     Consulta_ConciliarPedidosCantidadReferencia(Convert.ToDecimal(txtDiferencia.Text), Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value), ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
                     GenerarTablaReferenciasAConciliarPedidos();
-                    _tblReferenciasAConciliarPedido = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
+                    chkSeleccionarTodos.Visible = true;
+                    //_tblReferenciasAConciliarPedido = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                 }
 
                 if (objSolicitdConciliacion.ConsultaArchivo())
@@ -160,11 +220,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     {
                         App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
                     }
-
-
                     GenerarTablaReferenciasAConciliarArchivos();
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
+                    chkSeleccionarTodos.Visible = false;
                 }
                 else
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 0;
@@ -184,11 +243,19 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 }
 
             }
+
+            //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
+            if (ddlCriteriosConciliacion.SelectedValue == "2" || ddlCriteriosConciliacion.SelectedValue == "7")
+                if (corporativo != 0 && sucursal != 0 && año != 0 && mes != 0 && folio != 0)
+                { 
+                    Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                    GenerarTablaConciliados();
+                    LlenaGridViewConciliadas();
+                }
         }
         catch (SqlException ex)
         {
             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
-
             if (ex.Class >= 20)
             {
                 Response.Redirect("~/Inicio.aspx", true);
@@ -213,7 +280,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
              * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
              * estatica el valor del tipo conciliacion*/
 
-        tipoConciliacion = 2; //Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]); //antes estaba asi: tipoConciliacion = 2; 
     }
     //Limpian variables de Session
     public void limpiarVariablesSession()
@@ -410,6 +477,30 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             listCamposDestino = tConciliacion != 2 ? Conciliacion.RunTime.App.Consultas.ConsultaDestino() : Conciliacion.RunTime.App.Consultas.ConsultaDestinoPedido();
 
     }
+
+    public void Carga_ComboTiposDeCobro()
+    {
+        try
+        {
+            IDictionary<int, string> dictTiposDeCobro = new Dictionary<int, string>
+            {
+                { 10, "Transferencia" },
+                { 5, "Efectivo" },
+                { 3, "Cheques" },
+                { 6, "Tarjeta de Crédito" },
+                { 19, "Tarjeta de Débito" }
+            };
+            this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
+            this.ddlTiposDeCobro.DataTextField = "Value";
+            this.ddlTiposDeCobro.DataValueField = "Key";
+            this.ddlTiposDeCobro.DataBind();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
     //Enlazar Campo a Filtrar/Busqueda
     public void enlazarCampoFiltrar()
     {
@@ -434,6 +525,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("Selecciona", typeof(bool));
             tblReferenciasAConciliar.Columns.Add("FolioExt", typeof(int));
             tblReferenciasAConciliar.Columns.Add("SecuenciaExt", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("Secuencia", typeof(int));
             tblReferenciasAConciliar.Columns.Add("RFCTerceroExt", typeof(string));
             tblReferenciasAConciliar.Columns.Add("RetiroExt", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ReferenciaExt", typeof(string));
@@ -459,6 +551,22 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("FOperacionInt", typeof(DateTime));
             tblReferenciasAConciliar.Columns.Add("MontoInt", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoInt", typeof(string));
+
+            //tblReferenciasAConciliar.Columns.Add("Pedido", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("Celula", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("AñoPed", typeof(int));
+            //tblReferenciasAConciliar.Columns.Add("FMovimiento", typeof(DateTime));
+            //tblReferenciasAConciliar.Columns.Add("FOperacion", typeof(DateTime));
+            //tblReferenciasAConciliar.Columns.Add("MontoConciliado", typeof(decimal));
+            //tblReferenciasAConciliar.Columns.Add("Concepto", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Descripcion", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("PedidoReferencia", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
+            //tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));
+            //tblReferenciasAConciliar.Columns.Add("Cliente", typeof(string));
+
             foreach (ReferenciaConciliada rc in listaReferenciaConciliada)
             {
                 tblReferenciasAConciliar.Rows.Add(
@@ -498,7 +606,73 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             throw ex;
         }
     }
-    public void GenerarTablaReferenciasAConciliarPedidos()//Genera la tabla Referencias a Conciliar
+    public void consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario usuariot, byte  modulot, string cadena)
+    {
+        RTGMGateway.RTGMGateway Gateway;
+        RTGMGateway.SolicitudGateway Solicitud;
+        RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
+        Cliente _cliente = null;
+        try
+        {
+            if (_URLGateway != string.Empty)
+            {
+                AppSettingsReader settings = new AppSettingsReader();
+                SeguridadCB.Public.Usuario usuario = usuariot;//(SeguridadCB.Public.Usuario)Session["Usuario"]; //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                byte modulo = modulot;//byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
+                Gateway = new RTGMGateway.RTGMGateway(modulo, cadena);//App.CadenaConexion);
+                Gateway.URLServicio = _URLGateway;
+                Solicitud = new RTGMGateway.SolicitudGateway();
+                Solicitud.IDCliente = cliente;
+                try
+                {
+                    DireccionEntrega = Gateway.buscarDireccionEntrega(Solicitud);
+               
+                    if (DireccionEntrega != null)
+                    {
+                        if (DireccionEntrega.Message != null)
+                        {
+                            _cliente = App.Cliente.CrearObjeto();
+                            _cliente.NumCliente = cliente;
+                            _cliente.Nombre = DireccionEntrega.Message;
+                            lstClientes.Add(_cliente);
+                        }
+                        else
+                        {
+                            _cliente = App.Cliente.CrearObjeto();
+                            _cliente.NumCliente = cliente;
+                            _cliente.Nombre = DireccionEntrega.Nombre;
+                            lstClientes.Add(_cliente);
+                        }
+                    }
+                    else
+                    {
+                        _cliente = App.Cliente.CrearObjeto();
+                        _cliente.NumCliente = cliente;
+                        _cliente.Nombre = "No se encontró cliente";
+                        lstClientes.Add(_cliente);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cliente = App.Cliente.CrearObjeto();
+                    _cliente.NumCliente = cliente;
+                    _cliente.Nombre = ex.Message;
+                    lstClientes.Add(_cliente);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //throw ex;
+            //App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+        //if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
+        //    return DireccionEntrega.Nombre.Trim();
+        //else
+        //    return "No encontrado";
+    }
+
+    private void llenarListaEntrega()
     {
         try
         {
@@ -527,10 +701,32 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
             tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
             tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
-            tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));            
+            tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));
+
+            listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+            foreach (var item in listaReferenciaConciliadaPedido)
+            {
+                try
+                {
+                    RTGMCore.DireccionEntrega cliente = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item.Cliente);
+                    if (cliente != null)
+                    {
+                        item.Nombre = cliente.Nombre;
+                    }
+                    else
+                    {
+                        item.Nombre = "No encontrado";
+                    }
+                }
+                catch(Exception Ex)
+                {
+                    item.Nombre = Ex.Message;
+                }
+            }
 
             foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPedido)
             {
+                //NombreCliente = ObtieneNombreCliente(lstClientes, rc.Cliente, rc.Nombre);
                 tblReferenciasAConciliar.Rows.Add(
                     //EXTERNO
                     rc.Selecciona,
@@ -553,20 +749,325 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     rc.AñoPedido,
                     rc.CelulaPedido,
                     rc.Cliente,
-                    rc.Nombre,
+                    rc.Nombre,//NombreCliente, //rc.Nombre,
                     rc.Total,
                     rc.ConceptoPedido,
                     rc.FolioSat + rc.SerieSat
                     );
             }
             HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+            Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
             ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+            ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+            ViewState["LISTACLIENTES"] = listaClientes;
+            LlenaGridViewReferenciasConciliadas(tipoConciliacion);
+        }
+        catch(Exception ex)
+        {
+             App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    public void completarListaEntregas(List<RTGMCore.DireccionEntrega> direccionEntregas)
+    {
+        RTGMCore.DireccionEntrega direccionEntrega;
+        RTGMCore.DireccionEntrega direccionEntregaTemp;
+        bool errorConsulta = false ;
+        try
+        {
+            foreach (var item in direccionEntregas)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        if (item.Message != null)
+                        {
+                            direccionEntrega = new RTGMCore.DireccionEntrega();
+                            direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                            direccionEntrega.Nombre = item.Message;
+                            listaDireccinEntrega.Add(direccionEntrega);
+                        }
+                        else if (item.IDDireccionEntrega == -1)
+                        {
+                            errorConsulta = true;
+                        }
+                        else if(item.IDDireccionEntrega >= 0)
+                        {
+                            listaDireccinEntrega.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        direccionEntrega = new RTGMCore.DireccionEntrega();
+                        direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                        direccionEntrega.Nombre = "No se encontró cliente";
+                        listaDireccinEntrega.Add(direccionEntrega);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    direccionEntrega = new RTGMCore.DireccionEntrega();
+                    direccionEntrega.IDDireccionEntrega = item.IDDireccionEntrega;
+                    direccionEntrega.Nombre = ex.Message;
+                    listaDireccinEntrega.Add(direccionEntrega);
+                }
+            }
+            if (validarPeticion && errorConsulta)
+            {
+                validarPeticion = false;
+                listaClientes = new List<int>();
+                foreach (var item in listaClientesEnviados)
+                {
+                    direccionEntregaTemp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item);
+                    if(direccionEntregaTemp == null)
+                    {
+                        listaClientes.Add(item);
+                    }
+                }
+                ViewState["LISTAENTREGA"] = listaDireccinEntrega;
+                ViewState["LISTACLIENTES"] = listaClientes;
+                HttpContext.Current.Session["POR_CONCILIAR"] = listaReferenciaConciliadaPedido;
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje", " mensajeAsincrono("+listaClientes.Count+");", true);
+            }
+            else
+            {
+                llenarListaEntrega();
+            }
+        }
+        catch (Exception ex)
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+        }
+    }
+
+    private void ObtieneNombreCliente(List<int> listadistintos)
+    {
+        RTGMGateway.RTGMGateway oGateway;
+        RTGMGateway.SolicitudGateway oSolicitud;
+        AppSettingsReader settings = new AppSettingsReader();
+        string cadena = App.CadenaConexion;
+        try
+        {
+            SeguridadCB.Public.Parametros parametros;
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway.ListaCliente = listadistintos;
+            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+            oGateway.eListaEntregas += completarListaEntregas;
+            oSolicitud = new RTGMGateway.SolicitudGateway();
+            listaClientesEnviados = listadistintos;
+            foreach (var item in listadistintos)
+            {
+                oSolicitud.IDCliente = item;
+                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    private string ObtieneNombreCliente(List<Cliente> lstClientes, int numCliente, string NombreClienteBD)
+    {
+        string NombreCliente = "";
+        if (_URLGateway != "")
+        {
+            AppSettingsReader settings = new AppSettingsReader();
+            Cliente cliente = lstClientes.Find(x => x.NumCliente == numCliente);
+            if (cliente == null)
+            {
+                consultaClienteCRM(numCliente, (SeguridadCB.Public.Usuario)Session["Usuario"], byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);
+                if (lstClientes.Count > 0)
+                { 
+                    NombreCliente = lstClientes.FirstOrDefault(x => x.NumCliente == numCliente).Nombre;
+                    cliente = App.Cliente.CrearObjeto();
+                    cliente.NumCliente = numCliente;
+                    cliente.Nombre = NombreCliente;
+                    lstClientes.Add(cliente);
+                }
+            }
+            else
+            {
+                NombreCliente = cliente.Nombre;
+            }
+        }
+        else
+            NombreCliente = NombreClienteBD;
+        return NombreCliente;
+    }
+
+    public void GenerarTablaReferenciasAConciliarPedidos()//Genera la tabla Referencias a Conciliar
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+        try
+        {
+            tblReferenciasAConciliar = new DataTable("ReferenciasConciliadas");
+            //EXTERNO
+            tblReferenciasAConciliar.Columns.Add("Selecciona", typeof(bool));
+            tblReferenciasAConciliar.Columns.Add("FolioExt", typeof(int));
+            tblReferenciasAConciliar.Columns.Add("Secuencia", typeof(int));
+            tblReferenciasAConciliar.Columns.Add("RFCTercero", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Retiro", typeof(decimal));
+            tblReferenciasAConciliar.Columns.Add("Referencia", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("NombreTercero", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Descripcion", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Deposito", typeof(decimal));
+            tblReferenciasAConciliar.Columns.Add("Cheque", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("FMovimiento", typeof(DateTime));
+            tblReferenciasAConciliar.Columns.Add("FOperacion", typeof(DateTime));
+            tblReferenciasAConciliar.Columns.Add("MontoConciliado", typeof(decimal));
+            tblReferenciasAConciliar.Columns.Add("Concepto", typeof(string));
+            //PEDIDO
+            tblReferenciasAConciliar.Columns.Add("Pedido", typeof(int));
+            tblReferenciasAConciliar.Columns.Add("PedidoReferencia", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("AñoPed", typeof(int));
+            tblReferenciasAConciliar.Columns.Add("Celula", typeof(int));
+            tblReferenciasAConciliar.Columns.Add("Cliente", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Nombre", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Total", typeof(decimal));
+            tblReferenciasAConciliar.Columns.Add("ConceptoPedido", typeof(string));
+            tblReferenciasAConciliar.Columns.Add("Factura", typeof(string));
+
+            //string NombreCliente = "";
+            //List<Cliente> lstClientes = new List<Cliente>();
+            List<int> listadistintos = new List<int>();//listaReferenciaConciliadaPedido.GroupBy(item => item.Cliente).Select(x=> x.f).ToList();//.GroupBy(x => x.Cliente).Select(c => c.First()).ToList();
+            listaClientesEnviados = new List<int>();
+            try
+            {
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                if(listaDireccinEntrega == null)
+                {
+                    listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                }
+            }
+            catch(Exception)
+            {
+
+            }
+            foreach (var item in listaReferenciaConciliadaPedido)
+            {
+                if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == item.Cliente))
+                {
+                    if (!listadistintos.Exists(x => x == item.Cliente))
+                    {
+                        listadistintos.Add(item.Cliente);
+                    }
+                }
+            }
+            try
+            {
+                if (listadistintos.Count > 0)
+                {
+                    validarPeticion = true;
+                    ObtieneNombreCliente(listadistintos);
+                }
+                else
+                {
+                    llenarListaEntrega();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            //foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPedido)
+            //{
+            //    //NombreCliente = ObtieneNombreCliente(lstClientes, rc.Cliente, rc.Nombre);
+            //    tblReferenciasAConciliar.Rows.Add(
+            //        //EXTERNO
+            //        rc.Selecciona,
+            //        rc.Folio,
+            //        rc.Secuencia,
+            //        rc.RFCTercero,
+            //        rc.Retiro,
+            //        rc.Referencia,
+            //        rc.NombreTercero,
+            //        rc.Descripcion,
+            //        rc.Deposito,
+            //        rc.Cheque,
+            //        rc.FMovimiento,
+            //        rc.FOperacion,
+            //        rc.MontoConciliado,
+            //        rc.Concepto,
+            //        //PEDIDO
+            //        rc.Pedido,
+            //        rc.PedidoReferencia,
+            //        rc.AñoPedido,
+            //        rc.CelulaPedido,
+            //        rc.Cliente,
+            //        rc.Nombre,//NombreCliente, //rc.Nombre,
+            //        rc.Total,
+            //        rc.ConceptoPedido,
+            //        rc.FolioSat + rc.SerieSat
+            //        );
+            //}
+            ////HttpContext.Current.Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+            //Session["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
+            //ViewState["TBL_REFCON_CANTREF"] = tblReferenciasAConciliar;
         }
         catch (Exception ex)
         {
             throw ex;
         }
     }
+
+    private void UnCheckBloquedos(GridView grv)
+    {
+        bool Existen = false;
+        if (LockerExterno.ExternoBloqueado != null)
+        {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows)
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido())
+                    {
+                        listaReferenciaConciliadaPedido[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&
+                                                                            x.Corporativo == listaReferenciaConciliadaPedido[filaindex].Corporativo &&
+                                                                            x.Sucursal == listaReferenciaConciliadaPedido[filaindex].Sucursal &&
+                                                                            x.Año == listaReferenciaConciliadaPedido[filaindex].Año &&
+                                                                            x.Folio == listaReferenciaConciliadaPedido[filaindex].Folio &&
+                                                                            x.Secuencia == listaReferenciaConciliadaPedido[filaindex].Secuencia);
+                            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
+                        }
+                    }
+                    else
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&
+                                                                            x.Corporativo == listaReferenciaConciliada[filaindex].Corporativo &&
+                                                                            x.Sucursal == listaReferenciaConciliada[filaindex].Sucursal &&
+                                                                            x.Año == listaReferenciaConciliada[filaindex].Año &&
+                                                                            x.Folio == listaReferenciaConciliada[filaindex].Folio &&
+                                                                            x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia);
+                            fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
+                        }
+                    }
+                    filaindex++;
+                }
+            }
+        }
+    }
+
     private void LlenaGridViewReferenciasConciliadas(int tipoConcilacion)//Llena el gridview con las conciliaciones antes leídas
     {
         try
@@ -593,12 +1094,16 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             if (objSolicitdConciliacion.ConsultaPedido())
             {
                 grvCantidadReferenciaConcuerdanPedido.DataSource = tablaReferenacias;
-                grvCantidadReferenciaConcuerdanPedido.DataBind();
+                grvCantidadReferenciaConcuerdanPedido.DataBind(); //incidente 199
+                UnCheckBloquedos(grvCantidadReferenciaConcuerdanPedido);
+                bloqueaTodoLoSeleccionado(grvCantidadReferenciaConcuerdanPedido);
             }
             if (objSolicitdConciliacion.ConsultaArchivo())
             {
                 grvCantidadReferenciaConcuerdanArchivos.DataSource = tablaReferenacias;
                 grvCantidadReferenciaConcuerdanArchivos.DataBind();
+                UnCheckBloquedos(grvCantidadReferenciaConcuerdanArchivos);
+                bloqueaTodoLoSeleccionado(grvCantidadReferenciaConcuerdanArchivos);
             }
         }
         catch (Exception ex)
@@ -610,10 +1115,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     public void Consulta_Externos(int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia,
                                   int tipoConciliacion, int statusConcepto, bool esDeposito)
     {
-        System.Data.SqlClient.SqlConnection connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
         if (connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
+            seguridad.Conexion.Open();
             /*
                         connection = SeguridadCB.Seguridad.Conexion;
             */
@@ -653,11 +1159,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     public void Consulta_ConciliarArchivosCantidadReferencia(int corporativo, int sucursal, int año, short mes, int folio, short dias, decimal centavos, string campoexterno, string campointerno, int statusConcepto)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -676,11 +1183,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     public void Consulta_ConciliarPedidosCantidadReferencia(decimal centavos, short statusConcepto, string campoExterno, string campoInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -698,6 +1206,15 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 listResultado = new List<ReferenciaConciliadaPedido>();
                 listResultado = rnc.ConciliarPedidoCantidadYReferenciaMovExterno(centavos,
                     statusConcepto, campoExterno, campoInterno);
+                //if(Nhilos < 5)
+                //{
+                //    new Thread(() => ValidacionConsulta(listResultado)).Start();
+                //    Nhilos++;
+                //}
+                //while(Nhilos == 4)
+                //{
+
+                //}
                 listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
                 foreach (ReferenciaConciliadaPedido rc in listResultado)
                 {
@@ -713,25 +1230,67 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
                     if (resultado) break;
 
-                  resultado = listaReferenciaConciliadaPedido.Exists(
-                        c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
+                    resultado = listaReferenciaConciliadaPedido.Exists(
+                          c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
                     if (resultado) break;
                 }
 
                 if (resultado) continue;
-                if (listResultado.Count <= 2 && listResultado.Count > 0)
-                    listaReferenciaConciliadaPedido.AddRange(listResultado);
+
+                //if (listResultado.Count <= 2 && listResultado.Count > 0) // Se comenta para corregir incidencia 109
+                listaReferenciaConciliadaPedido.AddRange(listResultado);
             }
-            //listaReferenciaConciliadaPedido = Conciliacion.RunTime.App.Consultas.ConsultaConciliarPedidoCantidadReferencia(corporativo, sucursal, año, mes, folio, centavos, statusConcepto, campoExterno, campoInterno);
             HttpContext.Current.Session["POR_CONCILIAR"] = listaReferenciaConciliadaPedido;
+            Nhilos = 0;
         }
         catch (SqlException ex)
         {
+            Nhilos = 0;
             throw ex;
         }
         catch (Exception ex)
         {
+            Nhilos = 0;
             throw ex;
+        }
+    }
+
+
+    public void ValidacionConsulta(List<ReferenciaConciliadaPedido> listResultado)
+    {
+        try
+        {
+            bool resultado = false;
+            listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
+            foreach (ReferenciaConciliadaPedido rc in listResultado)
+            {
+                if (listaTransaccionesConciliadas != null)
+                    resultado =
+                        listaTransaccionesConciliadas.SelectMany(
+                            rcc => rcc.ListaReferenciaConciliada.Cast<ReferenciaConciliadaPedido>())
+                            .ToList()
+                            .Exists(
+                                p =>
+                                    p.AñoPedido == rc.AñoPedido && p.Pedido == rc.Pedido &&
+                                    p.CelulaPedido == rc.CelulaPedido);
+
+                if (resultado) break;
+
+                resultado = listaReferenciaConciliadaPedido.Exists(
+                      c => c.Pedido == rc.Pedido && c.AñoPedido == rc.AñoPedido && c.CelulaPedido == rc.CelulaPedido);
+                if (resultado) break;
+            }
+
+            if (!resultado)
+            {
+                //if (listResultado.Count <= 2 && listResultado.Count > 0) // Se comenta para corregir incidencia 109
+                listaReferenciaConciliadaPedido.AddRange(listResultado);
+            }
+            Nhilos--;
+        }
+        catch(Exception)
+        {
+            Nhilos--;
         }
     }
 
@@ -800,36 +1359,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
     protected void grvCantidadReferenciaConcuerdanPedido_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        //if (e.Row.RowType == DataControlRowType.Pager && (grvCantidadReferenciaConcuerdanPedido.DataSource != null))
-        //{
-        //    //TRAE EL TOTAL DE PAGINAS
-        //    Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
-        //    _TotalPags.Text = grvCantidadReferenciaConcuerdanPedido.PageCount.ToString();
-
-        //    //LLENA LA LISTA CON EL NUMERO DE PAGINAS
-        //    DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownListPedidos");
-        //    for (int i = 1; i <= Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.PageCount); i++)
-        //    {
-        //        list.Items.Add(i.ToString());
-        //    }
-        //    list.SelectedValue = (grvCantidadReferenciaConcuerdanPedido.PageIndex + 1).ToString();
-        //}
-
         if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
         {
-            if (int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
+            if (HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] != null && int.Parse(HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"].ToString()) == 1)
             {
                 if (e.Row.Cells.Count >= 15)
+                    e.Row.Cells[14].Visible = false;
+                if (e.Row.Cells.Count >= 16)
                     e.Row.Cells[15].Visible = false;
-                if (e.Row.Cells.Count >= 16)
-                    e.Row.Cells[16].Visible = false;
-            }
-            else
-            {
-                if (e.Row.Cells.Count >= 15)
-                    e.Row.Cells[15].Visible = true;
-                if (e.Row.Cells.Count >= 16)
-                    e.Row.Cells[16].Visible = true;
             }
         }
     }
@@ -881,24 +1418,32 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     //Crea la paginacion para Concilidos
     protected void grvConciliadas_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType == DataControlRowType.DataRow)
+        try
         {
-
-        }
-
-        if (e.Row.RowType == DataControlRowType.Pager && (grvConciliadas.DataSource != null))
-        {
-            //TRAE EL TOTAL DE PAGINAS
-            Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
-            _TotalPags.Text = grvConciliadas.PageCount.ToString();
-
-            //LLENA LA LISTA CON EL NUMERO DE PAGINAS
-            DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownListConciliadas");
-            for (int i = 1; i <= Convert.ToInt32(grvConciliadas.PageCount); i++)
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                list.Items.Add(i.ToString());
+
             }
-            list.SelectedValue = (grvConciliadas.PageIndex + 1).ToString();
+
+            if (e.Row.RowType == DataControlRowType.Pager && (grvConciliadas.DataSource != null))
+            {
+                //TRAE EL TOTAL DE PAGINAS
+                Label _TotalPags = (Label)e.Row.FindControl("lblTotalNumPaginas");
+                _TotalPags.Text = grvConciliadas.PageCount.ToString();
+
+                //LLENA LA LISTA CON EL NUMERO DE PAGINAS
+                DropDownList list = (DropDownList)e.Row.FindControl("paginasDropDownListConciliadas");
+                for (int i = 1; i <= Convert.ToInt32(grvConciliadas.PageCount); i++)
+                {
+                    list.Items.Add(i.ToString());
+                }
+                list.SelectedValue = (grvConciliadas.PageIndex + 1).ToString();
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
         }
     }
     //Asignar Valoresa Css de cada Row
@@ -943,11 +1488,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     //Consulta transacciones conciliadas
     public void Consulta_TransaccionesConciliadas(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int formaconciliacion)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -991,8 +1537,9 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         tblTransaccionesConciliadas.Columns.Add("Concepto", typeof(string));
         tblTransaccionesConciliadas.Columns.Add("SerieFactura", typeof(string));
         tblTransaccionesConciliadas.Columns.Add("ClienteReferencia", typeof(string));
+        tblTransaccionesConciliadas.Columns.Add("TipoCobro", typeof(int));
 
-        foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
+            foreach (ReferenciaNoConciliada rc in listaTransaccionesConciliadas)
         {
             tblTransaccionesConciliadas.Rows.Add(
                 rc.Folio,
@@ -1014,7 +1561,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 rc.MontoConciliado,
                 rc.Concepto,
                 rc.SerieFactura,
-                rc.ClienteReferencia);
+                rc.ClienteReferencia,
+                rc.TipoCobro);
         }
 
         HttpContext.Current.Session["TAB_CONCILIADAS"] = tblTransaccionesConciliadas;
@@ -1101,15 +1649,22 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             else
             {
+                SeguridadCB.Public.Parametros parametros;
+                parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+                AppSettingsReader settings = new AppSettingsReader();
+                _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
+                string NombreCliente = "";
+                List<Cliente> lstClientes = new List<Cliente>();
                 foreach (ReferenciaConciliadaPedido r in trConciliada.ListaReferenciaConciliada)
                 {
+                    NombreCliente = ObtieneNombreCliente(lstClientes, r.Cliente, r.Nombre);
                     tblDetalleTransaccionConciliada.Rows.Add(
                         r.Pedido,
                         r.PedidoReferencia,
                         r.AñoPedido,
                         r.CelulaPedido,
                         r.Cliente,
-                        r.Nombre,
+                        NombreCliente, //r.Nombre,
                         r.Total,
                         r.ConceptoPedido
                         );
@@ -1327,7 +1882,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             LlenaGridViewConciliadas();
             LlenarBarraEstado();
             //Cargo y refresco nuevamente los archivos externos
-            if (tipoConciliacion != 2)
+
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            //if (tipoConciliacion != 2)
+            if (objSolicitdConciliacion.ConsultaArchivo())
             {
                 Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
                                                              Convert.ToSByte(txtDias.Text),
@@ -1337,7 +1898,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                              Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                 GenerarTablaReferenciasAConciliarArchivos();
             }
-            else
+            if (objSolicitdConciliacion.ConsultaPedido())
             {
                 //cargarInfoConciliacionActual();
                 Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
@@ -1799,58 +2360,370 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
                                       mes + "&TipoConciliacion=" + Convert.ToSByte(Request.QueryString["TipoConciliacion"]) + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
     }
+
+    private short Asigna_FormaConciliacionActual()
+    {
+        short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+        if (_FormaConciliacion == 0)
+        {
+            if (Convert.ToSByte(Request.QueryString["TipoConciliacion"]) == 6)
+            {
+                _FormaConciliacion = 7;
+            }
+            else
+            {
+                _FormaConciliacion = 2;
+            }
+        }
+        return _FormaConciliacion;
+    }
+
+    private void BloqueaUnSeleccionado(ReferenciaConciliadaPedido rfEx)
+    {
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+
+        if (BloqueoEdoCTA == "1")
+        {
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = "";
+                Monto = rfEx.MontoConciliado;
+            }
+            else
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = rfEx.Descripcion;
+                Monto = rfEx.MontoConciliado;
+            }
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+            {
+                FormaConciliacion = "CANTIDADYREFERENCIACONCUERDA",
+                SessionID = Session.SessionID,
+                Corporativo = Corporativo,
+                Sucursal = Sucursal,
+                Año = Año,
+                Folio = Folio,
+                Secuencia = Secuencia,
+                Usuario = usuario.IdUsuario.ToString(),
+                InicioBloqueo = DateTime.Now,
+                Descripcion = Descripcion,
+                Monto = Monto
+            });
+
+        }
+    }
+
+    private void BloqueaUnSeleccionadoArchivo(ReferenciaConciliada rfEx)
+    {
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+
+        if (BloqueoEdoCTA == "1")
+        {
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = "";
+                Monto = rfEx.MontoConciliado;
+            }
+            else
+            {
+                Corporativo = rfEx.Corporativo;
+                Sucursal = rfEx.Sucursal;
+                Año = rfEx.Año;
+                Folio = rfEx.Folio;
+                Secuencia = rfEx.Secuencia;
+                Descripcion = rfEx.Descripcion;
+                Monto = rfEx.MontoConciliado;
+            }
+            LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+            {
+                FormaConciliacion = "CANTIDADYREFERENCIACONCUERDA",
+                SessionID = Session.SessionID,
+                Corporativo = Corporativo,
+                Sucursal = Sucursal,
+                Año = Año,
+                Folio = Folio,
+                Secuencia = Secuencia,
+                Usuario = usuario.IdUsuario.ToString(),
+                InicioBloqueo = DateTime.Now,
+                Descripcion = Descripcion,
+                Monto = Monto
+            });
+
+        }
+    }
+
+    private bool hayBloqueados(GridView grv)
+    {
+        bool Existen = false;
+        if (LockerExterno.ExternoBloqueado != null)
+        {
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows) //grvCantidadConcuerdanPedidos
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido())  //if (tipoConciliacion == 2)
+                    {
+                        listaReferenciaConciliadaPedido[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == listaReferenciaConciliadaPedido[filaindex].Corporativo &&
+                                                                                x.Sucursal == listaReferenciaConciliadaPedido[filaindex].Sucursal &&
+                                                                                x.Año == listaReferenciaConciliadaPedido[filaindex].Año &&
+                                                                                x.Folio == listaReferenciaConciliadaPedido[filaindex].Folio &&
+                                                                                x.Secuencia == listaReferenciaConciliadaPedido[filaindex].Secuencia);
+                        }
+                    }
+                    else
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                        {
+                            Existen = LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == listaReferenciaConciliada[filaindex].Corporativo &&
+                                                                                x.Sucursal == listaReferenciaConciliada[filaindex].Sucursal &&
+                                                                                x.Año == listaReferenciaConciliada[filaindex].Año &&
+                                                                                x.Folio == listaReferenciaConciliada[filaindex].Folio &&
+                                                                                x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia);
+                        }
+                    }
+                    if (Existen)
+                        break;
+                    filaindex++;
+                }
+            }
+        }
+        return Existen;
+    }
+
+    private void bloqueaTodoLoSeleccionado(GridView grv)
+    {
+        AppSettingsReader settings = new AppSettingsReader();
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        string BloqueoEdoCTA = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA");
+
+        if (BloqueoEdoCTA == "1")
+        {
+            int Corporativo;
+            int Sucursal;
+            int Año;
+            int Folio;
+            int Secuencia;
+            string Descripcion;
+            decimal Monto;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            if (LockerExterno.ExternoBloqueado == null)
+                LockerExterno.ExternoBloqueado = new List<RegistroExternoBloqueado>();
+            else
+                LockerExterno.EliminarBloqueos(Session.SessionID);
+
+            int filaindex = 0;
+            foreach (GridViewRow fila in grv.Rows) //grvCantidadConcuerdanPedidos
+            {
+                if (fila.RowType == DataControlRowType.DataRow)
+                {
+                    if (objSolicitdConciliacion.ConsultaPedido()) //if (tipoConciliacion == 2)
+                    {
+                        listaReferenciaConciliadaPedido[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        Corporativo = listaReferenciaConciliadaPedido[filaindex].Corporativo;
+                        Sucursal = listaReferenciaConciliadaPedido[filaindex].Sucursal;
+                        Año = listaReferenciaConciliadaPedido[filaindex].Año;
+                        Folio = listaReferenciaConciliadaPedido[filaindex].Folio;
+                        Secuencia = listaReferenciaConciliadaPedido[filaindex].Secuencia;
+                        Descripcion = listaReferenciaConciliadaPedido[filaindex].Descripcion;
+                        Monto = listaReferenciaConciliadaPedido[filaindex].Total; //monto
+                    }
+                    else //if (objSolicitdConciliacion.ConsultaArchivo())
+                    {
+                        listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                        Corporativo = listaReferenciaConciliada[filaindex].Corporativo;
+                        Sucursal = listaReferenciaConciliada[filaindex].Sucursal;
+                        Año = listaReferenciaConciliada[filaindex].Año;
+                        Folio = listaReferenciaConciliada[filaindex].Folio;
+                        Secuencia = listaReferenciaConciliada[filaindex].Secuencia;
+                        Descripcion = listaReferenciaConciliada[filaindex].Descripcion;
+                        Monto = listaReferenciaConciliada[filaindex].MontoConciliado; //monto
+                    }
+                    if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
+                    {
+                        LockerExterno.ExternoBloqueado.Add(new RegistroExternoBloqueado
+                        {
+                            FormaConciliacion = "CANTIDADYREFERENCIACONCUERDA",
+                            SessionID = Session.SessionID,
+                            Corporativo = Corporativo,
+                            Sucursal = Sucursal,
+                            Año = Año,
+                            Folio = Folio,
+                            Secuencia = Secuencia,
+                            Usuario = usuario.IdUsuario.ToString(),
+                            InicioBloqueo = DateTime.Now,
+                            Descripcion = Descripcion,
+                            Monto = Monto //monto
+                        });
+                    }
+                    filaindex++;
+                }
+            }
+        }
+    }
+
+    private void desBloqueaTodo()
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null)
+            {
+                int J = Locker.LockerExterno.ExternoBloqueado.Count;
+                for (int i = 0; i <= J - 1; i++)
+                {
+                    Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == Session.SessionID).ToList()[0]);
+                }
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
     protected void btnGuardar_Click(object sender, ImageClickEventArgs e)
     {
         bool resultado = false;
-
+        short _FormaConciliacion = Asigna_FormaConciliacionActual();
         //Leer Variables URL 
+        hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
         cargarInfoConciliacionActual();
 
-        if (tipoConciliacion == 2)
-        {
-            if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)  //if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
-            {
-                //listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
-                //if (listaReferenciaConciliadaPedido != null)
-                //    listaReferenciaConciliadaPedido.ForEach(x => resultado = x.Guardar());
-                listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
-                if (listaReferenciaConciliada != null)
-                    listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
-            }
-            else
-                App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
-        }
-        else
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+        if (objSolicitdConciliacion.ConsultaArchivo())
         {
             if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)
             {
-                //ReferenciaConciliada rc;
-
-                //foreach (GridViewRow un in grvCantidadReferenciaConcuerdanArchivos.Rows)
-                //{
-                //    int folioExt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioExt"]);
-                //    int folioInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["FolioInt"]);
-                //    int secuenciaEx = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaExt"]);
-                //    int secuenciaInt = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[un.RowIndex].Values["SecuenciaInt"]);
-                //    rc = listaReferenciaConciliada.Single(x => x.Secuencia == secuenciaEx && x.Folio == folioExt && x.SecuenciaInterno == secuenciaInt && x.FolioInterno == folioInt);
-                //    resultado = rc.Guardar();
-                //}
                 listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
-                if (listaReferenciaConciliada != null) listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
+                try
+                {
+                    if (listaReferenciaConciliada != null)
+                        listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
+                    else
+                        App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
+                }
+                finally
+                {
+                    desBloqueaTodo();
+                }
             }
             else
-            {
                 App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
-            }
         }
-
+        if (objSolicitdConciliacion.ConsultaPedido())
+        {
+            bool guardado = false;
+            if (grvCantidadReferenciaConcuerdanPedido.Rows.Count > 0)
+            {
+                listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+                IList listRefCon = listaReferenciaConciliadaPedido;
+                if (listRefCon != null)
+                {
+                    try
+                    {
+                        for (int i = 0; i < listRefCon.Count; i++)
+                        {
+                            ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
+                            refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+                            if (refcon.Selecciona)
+                            {
+                                refcon.Guardar();
+                                guardado = true;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        desBloqueaTodo();
+                    }
+                    if (!guardado)
+                        App.ImplementadorMensajes.MostrarMensaje("No se selecciono ninguna referencia a conciliar. Verifique");
+                }
+                else
+                    App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
+            }
+            else
+                App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
+            resultado = guardado;
+        }
 
         //ACTUALIZAR BARRAS Y DE MAS 
         LlenarBarraEstado();
         Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedItem.Value));
         GenerarTablaConciliados();
         LlenaGridViewConciliadas();
-
 
         if (tipoConciliacion == 2)
         {
@@ -2292,11 +3165,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     /// </summary>
     public void Consulta_TablaDestinoDetalleInterno(Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioInterno)
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -2347,7 +3221,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     private void LlenaGridViewDestinoDetalleInterno()
     {
         DataTable tablaDestinoDetalleInterno = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
-        this.grvVistaRapidaInterno.DataSource = tblDestinoDetalleInterno;
+        this.grvVistaRapidaInterno.DataSource = tablaDestinoDetalleInterno;
         this.grvVistaRapidaInterno.DataBind();
     }
     protected void btnVerDatalleInterno_Click(object sender, ImageClickEventArgs e)
@@ -2365,4 +3239,249 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         grvVistaRapidaInterno_ModalPopupExtender.Show();
 
     }
+
+    public List<ReferenciaConciliadaPedido> filasSeleccionadasPedidos()
+    {
+        listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+        return listaReferenciaConciliadaPedido.Where(fila => fila.Selecciona == false).ToList();
+    }
+
+    public ReferenciaConciliadaPedido leerReferenciaExternaSeleccionada()
+    {
+        listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
+        int secuenciaExterno = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
+        int folioExterno = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["FolioExt"]);
+        int Pedido = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["Pedido"]);
+        int Celula = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["Celula"]);
+        int AñoPed = Convert.ToInt32(grvCantidadReferenciaConcuerdanPedido.DataKeys[indiceExternoSeleccionado].Values["AñoPed"]);
+        return listaReferenciaConciliadaPedido.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno && x.Pedido == Pedido && x.CelulaPedido == Celula && x.AñoPedido == AñoPed);
+    }
+
+    public ReferenciaConciliada leerReferenciaExternaSeleccionadaArchivo()
+    {        
+        listaReferenciaConciliada = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliada>;
+        int secuenciaExterno = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[indiceExternoSeleccionado].Values["SecuenciaExt"]);
+        int folioExterno = Convert.ToInt32(grvCantidadReferenciaConcuerdanArchivos.DataKeys[indiceExternoSeleccionado].Values["FolioExt"]);
+        return listaReferenciaConciliada.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno);
+    }
+
+    private bool ExisteExternoBloqueado()
+    {
+        SeguridadCB.Public.Parametros parametros;
+        parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string bloqueo = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "BloqueoEdoCTA").Trim();
+        bool BloqueoEdoCTA = false;
+        BloqueoEdoCTA = bloqueo == "1" ? true : false;
+        if (BloqueoEdoCTA)
+        {
+
+            if (LockerExterno.ExternoBloqueado == null)
+                return false;
+
+            short _FormaConciliacion = Asigna_FormaConciliacionActual();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+            { 
+                ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+                return LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == rfEx.Corporativo &&
+                                                                x.Sucursal == rfEx.Sucursal &&
+                                                                x.Año == rfEx.Año &&
+                                                                x.Folio == rfEx.Folio &&
+                                                                x.Secuencia == rfEx.Secuencia);
+            }
+            else //if (objSolicitdConciliacion.ConsultaArchivo())
+            {
+                ReferenciaConciliada rfEx = leerReferenciaExternaSeleccionadaArchivo();
+                return LockerExterno.ExternoBloqueado.Exists(x => x.Corporativo == rfEx.Corporativo &&
+                                                                x.Sucursal == rfEx.Sucursal &&
+                                                                x.Año == rfEx.Año &&
+                                                                x.Folio == rfEx.Folio &&
+                                                                x.Secuencia == rfEx.Secuencia);
+            }
+        }
+        else
+            return false;
+    }
+
+    private void DesBloqueaPedido(ReferenciaConciliadaPedido rfEx)
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null && Locker.LockerExterno.ExternoBloqueado.Count > 0)
+            {
+                LockerExterno.ExternoBloqueado.Remove(
+                       Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
+                                                                   x.Sucursal == rfEx.Sucursal &&
+                                                                   x.Año == rfEx.Año &&
+                                                                   x.Folio == rfEx.Folio &&
+                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                    );
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    private void DesBloqueaArchivo(ReferenciaConciliada rfEx)
+    {
+        try
+        {
+            if (Locker.LockerExterno.ExternoBloqueado != null && Locker.LockerExterno.ExternoBloqueado.Count > 0)
+            {
+                LockerExterno.ExternoBloqueado.Remove(
+                       Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
+                                                                   x.Sucursal == rfEx.Sucursal &&
+                                                                   x.Año == rfEx.Año &&
+                                                                   x.Folio == rfEx.Folio &&
+                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                    );
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    protected void chkSeleccionado_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox chk = sender as CheckBox;
+        GridViewRow grv = (GridViewRow)chk.Parent.Parent;
+
+        int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
+        indiceExternoSeleccionado = grv.RowIndex;
+        ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+
+        if (chk.Checked)
+        {
+            rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+            //GenerarTablaReferenciasAConciliarInternos();
+            if (ExisteExternoBloqueado())
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+
+                indiceExternoSeleccionado = respaldoIndiceSeleccionado;
+                CheckBox checkbox = sender as CheckBox;
+                checkbox.Checked = false;
+                return;
+            }
+            else
+                BloqueaUnSeleccionado(rfEx);
+            rfEx.Selecciona = true;
+        }
+        else
+        { 
+            rfEx.Selecciona = false;
+            DesBloqueaPedido(rfEx);
+        }
+        GenerarTablaReferenciasAConciliarPedidos();
+    }
+
+    protected void chkSeleccionarTodos_CheckedChanged1(object sender, EventArgs e)
+    {
+        int index = 0;
+        int almenosunoBloqueado = 0;
+        short _FormaConciliacion = Asigna_FormaConciliacionActual();
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+        if (objSolicitdConciliacion.ConsultaPedido())
+        {
+            foreach (GridViewRow fila in grvCantidadReferenciaConcuerdanPedido.Rows)
+            {
+                CheckBox chk = fila.Cells[0].Controls[1] as CheckBox;
+                indiceExternoSeleccionado = index;
+                ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+                if (!ExisteExternoBloqueado())
+                {
+                    chk.Checked = chkSeleccionarTodos.Checked;
+                    rfEx.Selecciona = chkSeleccionarTodos.Checked;
+                    BloqueaUnSeleccionado(rfEx);
+                }
+                else
+                {
+                    almenosunoBloqueado++;
+                    chk.Checked = false;
+                    rfEx.Selecciona = false;
+                }
+                index++;
+            }
+            GenerarTablaReferenciasAConciliarPedidos();
+        }
+        if (objSolicitdConciliacion.ConsultaArchivo())
+        {
+            foreach (GridViewRow fila in grvCantidadReferenciaConcuerdanArchivos.Rows)
+            {
+                CheckBox chk = fila.Cells[0].Controls[1] as CheckBox;
+                indiceExternoSeleccionado = index;
+                ReferenciaConciliada rfEx = leerReferenciaExternaSeleccionadaArchivo();
+                if (!ExisteExternoBloqueado())
+                {
+                    chk.Checked = chkSeleccionarTodos.Checked;
+                    rfEx.Selecciona = chkSeleccionarTodos.Checked;
+                    BloqueaUnSeleccionadoArchivo(rfEx);
+                }
+                else
+                {
+                    almenosunoBloqueado++;
+                    chk.Checked = false;
+                    rfEx.Selecciona = false;
+                }
+                index++;
+            }
+            GenerarTablaReferenciasAConciliarArchivos();
+        }
+        if (almenosunoBloqueado > 0)
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+    }
+
+    protected void grvVistaRapidaInterno_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        this.grvVistaRapidaInterno.DataSource = (DataTable)HttpContext.Current.Session["DETALLEINTERNO"];
+        this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
+        this.grvVistaRapidaInterno.DataBind();
+    }
+
+    protected void chkSeleccionadoArchivos_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox chk = sender as CheckBox;
+        GridViewRow grv = (GridViewRow)chk.Parent.Parent;
+
+        int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
+        indiceExternoSeleccionado = grv.RowIndex;
+        ReferenciaConciliada rfEx = leerReferenciaExternaSeleccionadaArchivo();
+
+        if (chk.Checked)
+        {
+            rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+            if (ExisteExternoBloqueado())
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+                indiceExternoSeleccionado = respaldoIndiceSeleccionado;
+                CheckBox checkbox = sender as CheckBox;
+                checkbox.Checked = false;
+                return;
+            }
+            else
+                BloqueaUnSeleccionadoArchivo(rfEx);
+            rfEx.Selecciona = true;
+        }
+        else
+        {
+            rfEx.Selecciona = false;
+            DesBloqueaArchivo(rfEx);
+        }
+        GenerarTablaReferenciasAConciliarArchivos();
+    }
+
 }

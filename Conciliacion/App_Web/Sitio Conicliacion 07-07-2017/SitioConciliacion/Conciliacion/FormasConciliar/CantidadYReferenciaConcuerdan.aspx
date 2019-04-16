@@ -1,8 +1,12 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="CantidadYReferenciaConcuerdan.aspx.cs" Inherits="Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan"
-    Debug="true" EnableEventValidation="true" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" 
+    AutoEventWireup="true"
+    CodeFile="CantidadYReferenciaConcuerdan.aspx.cs" 
+    Inherits="Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan"
+    EnableEventValidation="true" 
+    Async="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     CANTIDAD Y REFERENCIA CONCUERDAN
 </asp:Content>
@@ -11,6 +15,7 @@
     <script src="../../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
+
     <!-- Script se utiliza para el Scroll del GridView-->
     <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
@@ -19,7 +24,8 @@
     <script type="text/javascript">
         //        $(document).ready(function () {
         function pageLoad() {
-            gridviewScroll();
+            if (document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro') != null)
+                document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
         //        );
         
@@ -55,6 +61,14 @@
             } 
         }
 
+        function mensajeAsincrono(faltante) {
+            var pre = document.createElement('pre');pre.style.maxHeight = '400px';
+                pre.style.margin = '0';
+                pre.style.padding = '24px';
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.textAlign = 'justify';
+            pre.appendChild(document.createTextNode('No fue posible encontrar información para ' + faltante + ' clientes de la solicitud ¿desea reintentar?')); alertify.confirm('Conciliaci&oacute;n bancaria',pre, function () {  __doPostBack('miPostBack', "1"); }, function () { __doPostBack('miPostBack',"2");}).set({ labels: { ok: 'Si', cancel: 'No' }, padding: false });
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="server">
@@ -87,6 +101,7 @@
             $find("ModalBehaviourInterno").hide();
         }
     </script>
+
     <script type="text/javascript" language="javascript">
         var ModalProgress = '<%= mpeLoading.ClientID %>';        
     </script>
@@ -418,8 +433,10 @@
             <td>
                 <asp:UpdatePanel runat="server" ID="upGrvConciliadas" UpdateMode="Always">
                     <ContentTemplate>
-                        <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False" AllowPaging="True"
-                            PageSize="5" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                        <div style="width:1200px; height:230px; overflow:auto;">
+                            <asp:GridView ID="grvConciliadas" runat="server" AutoGenerateColumns="False"  
+                            AllowPaging='<%# ActivePaging %>' PageSize="5"
+                            Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             OnPageIndexChanging="grvConciliadas_PageIndexChanging" OnRowDataBound="grvConciliadas_RowDataBound"
                             DataKeyNames="CorporativoConciliacion, SucursalConciliacion, AñoConciliacion, MesConciliacion, FolioConciliacion, FolioExt, Secuencia"
                             OnRowCommand="grvConciliadas_RowCommand" OnSelectedIndexChanging="grvConciliadas_SelectedIndexChanging"
@@ -517,6 +534,13 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>                                
+                                       <asp:TemplateField HeaderText="TipoCobro" SortExpression="TipoCobro">
+                                            <ItemTemplate>
+                                                <div>
+                                                    <asp:Label runat="server" ID="lblTipoCobro" Text='<%# resaltarBusqueda(Eval("TipoCobro").ToString()) %>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                           
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button runat="server" ID="imgDesconciliar" CssClass="Desconciliar centradoMedio boton"
@@ -549,6 +573,7 @@
                             </PagerTemplate>
                             <PagerStyle CssClass="estiloPaginacion bg-color-grisOscuro fg-color-blanco" />
                         </asp:GridView>
+                        </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </td>
@@ -616,7 +641,7 @@
                                     <td style="width: 50%; vertical-align: top">
                                         <table style="width: 300px">
                                             <tr>
-                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Campo Externo
+                                                <td class="etiqueta fg-color-blanco" style="width: 40%">Campo Externo
                                                 </td>
                                                 <td style="width: 70%">
                                                     <asp:DropDownList runat="server" ID="ddlCampoExterno" CssClass="dropDownPequeño"
@@ -633,6 +658,34 @@
                                             </tr>
                                         </table>
                                     </td>
+                                    <td style="width: 1%"></td>
+                                    <td style="width: 50%; vertical-align: top" class="centradoJustificado">
+                                        <table style="width: 300px">
+                                            <tr>
+                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Tipo Cobro
+                                                </td>
+                                                <td style="width: 70%">
+                                                    <asp:DropDownList runat="server" ID="ddlTiposDeCobro" CssClass="dropDownPequeño"
+                                                        Width="125px" AutoPostBack="True" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <td style="width: 1%"></td>
+                                    <td style="width: 50%; vertical-align: top" class="centradoJustificado">
+                                        <table style="width: 300px">
+                                            <tr>
+                                                <td class="etiqueta fg-color-blanco" style="width: 30%">Seleccionar Todos
+                                                </td>
+                                                <td style="width: 70%">
+                                                    <asp:CheckBox ID="chkSeleccionarTodos" runat="server" AutoPostBack="true" Checked="true" OnCheckedChanged="chkSeleccionarTodos_CheckedChanged1"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+
                                     <td style="width: 1%"></td>
                                     <td style="width: 50%; vertical-align: top" class="centradoJustificado">
                                         <table style="width: 300px">
@@ -660,16 +713,24 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <asp:GridView ID="grvCantidadReferenciaConcuerdanArchivos" runat="server" AutoGenerateColumns="False"
-                            AllowPaging="True" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
-                            ShowFooter="false" PageSize="100" OnPageIndexChanging="grvCantidadReferenciaConcuerdanArchivos_PageIndexChanging"
+                        <asp:GridView ID="grvCantidadReferenciaConcuerdanArchivos" 
+                            AllowPaging='<%# ActivePaging %>' PageSize="10" 
+                            runat="server" AutoGenerateColumns="False" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
+                            ShowFooter="false" OnPageIndexChanging="grvCantidadReferenciaConcuerdanArchivos_PageIndexChanging"
                             OnRowDataBound="grvCantidadReferenciaConcuerdanArchivos_RowDataBound" ShowHeaderWhenEmpty="True"
                             OnRowCreated="grvCantidadReferenciaConcuerdanArchivos_RowCreated" DataKeyNames="FolioExt,SecuenciaExt,FolioInt,SecuenciaInt"
-                            AllowSorting="True" OnSorting="grvCantidadReferenciaConcuerdanArchivos_Sorting">
-                            <%-- <EmptyDataTemplate>
-                                <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen referencias con cantidades concordantes."></asp:Label></EmptyDataTemplate>--%>
+                            AllowSorting="True" OnSorting="grvCantidadReferenciaConcuerdanArchivos_Sorting">                            
                             <HeaderStyle HorizontalAlign="Center" />
                             <Columns>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox runat="server" ID="chkSeleccionadoArchivos" 
+                                            OnCheckedChanged="chkSeleccionadoArchivos_CheckedChanged"
+                                            AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="30px" />
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="F. Ext" SortExpression="FolioExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFolioExt" runat="server" Text='<%# resaltarBusqueda(Eval("FolioExt").ToString()) %>'></asp:Label>
@@ -716,9 +777,9 @@
                                             PopupControlID="pnlPopUpConceptoExt" PopDelay="20" OffsetX="-100" OffsetY="-5">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="300px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                            Width="20.5cm" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                             <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoExt").ToString()) %>'
-                                                CssClass="etiqueta centradoJustificado" Font-Size="10px" />
+                                                CssClass="etiqueta centradoJustificado" Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle Width="150px"></ItemStyle>
@@ -813,39 +874,29 @@
                                     <HeaderStyle HorizontalAlign="Center" Width="120px"></HeaderStyle>
                                 </asp:TemplateField>
                             </Columns>
-                            <%-- <PagerTemplate>
-                                Página
-                                <asp:DropDownList ID="paginasDropDownList" Font-Size="12px" AutoPostBack="true" runat="server"
-                                    OnSelectedIndexChanged="paginasDropDownList_SelectedIndexChanged" CssClass="dropDown"
-                                    Width="60px">
-                                </asp:DropDownList>
-                                de
-                                <asp:Label ID="lblTotalNumPaginas" runat="server" CssClass="etiqueta" />
-                                &nbsp;&nbsp;
-                                <asp:Button ID="btnInicial" runat="server" CommandName="Page" ToolTip="Prim. Pag"
-                                    CommandArgument="First" CssClass="boton pagInicial" />
-                                <asp:Button ID="btnAnterior" runat="server" CommandName="Page" ToolTip="Pág. anterior"
-                                    CommandArgument="Prev" CssClass="boton pagAnterior" />
-                                <asp:Button ID="btnSiguiente" runat="server" CommandName="Page" ToolTip="Sig. página"
-                                    CommandArgument="Next" CssClass="boton pagSiguiente" />
-                                <asp:Button ID="btnUltima" runat="server" CommandName="Page" ToolTip="Últ. Pag" CommandArgument="Last"
-                                    CssClass="boton pagUltima" />
-                            </PagerTemplate>--%>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
-                        <asp:GridView ID="grvCantidadReferenciaConcuerdanPedido" runat="server" AllowPaging="True"
-                            AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" PageSize="100"
+                        <asp:GridView ID="grvCantidadReferenciaConcuerdanPedido" runat="server" 
+                            AllowPaging='<%# ActivePaging %>' PageSize="10"
+                            AutoGenerateColumns="False" CssClass="grvResultadoConsultaCss" 
                             OnPageIndexChanging="grvCantidadReferenciaConcuerdanPedido_PageIndexChanging"
                             OnRowDataBound="grvCantidadReferenciaConcuerdanPedido_RowDataBound" ShowHeader="True"
                             ShowHeaderWhenEmpty="True" Width="100%" DataKeyNames="Secuencia,FolioExt,Pedido,Celula,AñoPed"
                             AllowSorting="True" OnRowCreated="grvCantidadReferenciaConcuerdanPedido_RowCreated"
                             OnSorting="grvCantidadReferenciaConcuerdanPedido_Sorting">
-                            <%--<EmptyDataTemplate>
-                                <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="No existen conciliaciones con Montos Concordantes"></asp:Label>
-                            </EmptyDataTemplate>--%>
                             <HeaderStyle HorizontalAlign="Center" />
                             <AlternatingRowStyle BackColor="#CCCCCC" />
                             <Columns>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:CheckBox runat="server" ID="chkSeleccionado" 
+                                            OnCheckedChanged="chkSeleccionado_CheckedChanged"
+                                            AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
+                                    </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="Center" VerticalAlign="Top" Width="30px" BackColor="#ebecec"></ItemStyle>
+                                    <HeaderStyle HorizontalAlign="Center" Width="30px" />
+                                </asp:TemplateField>
+
                                 <asp:TemplateField HeaderText="F. Ext" SortExpression="FolioExt">
                                     <ItemTemplate>
                                         <asp:Label ID="lblFolioExt" runat="server" Text='<%# resaltarBusqueda(Eval("FolioExt").ToString()) %>'></asp:Label>
@@ -893,9 +944,9 @@
                                             EnableViewState="True">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoExt" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="300px" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
+                                            Width="20.5cm" Wrap="True" Style="padding: 5px 5px 5px 5px" BackColor="White">
                                             <asp:Label ID="lblToolTipConceptoExt" runat="server" Text='<%# resaltarBusqueda(Eval("Concepto").ToString()) %>'
-                                                CssClass="etiqueta centradoJustificado" Font-Size="10px" />
+                                                CssClass="etiqueta centradoJustificado" Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle Width="150px"></ItemStyle>
@@ -916,7 +967,6 @@
                                     </ItemTemplate>
                                     <ItemStyle Width="120px"></ItemStyle>
                                 </asp:TemplateField>
-
                                 <asp:TemplateField HeaderText="Documento" SortExpression="PedidoReferencia">
                                     <ItemTemplate>
                                         <asp:Label ID="lblPedidoReferencia" runat="server" Text='<%# resaltarBusqueda(Eval("PedidoReferencia").ToString()) %>' />
@@ -953,9 +1003,9 @@
                                             PopupControlID="pnlPopUpConceptoPedido" PopDelay="20" OffsetX="0" OffsetY="0">
                                         </asp:HoverMenuExtender>
                                         <asp:Panel ID="pnlPopUpConceptoPedido" runat="server" CssClass="grvResultadoConsultaCss ocultar"
-                                            Width="100px" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
+                                            Width="20.5cm" Wrap="True" BackColor="White" Style="padding: 5px 5px 5px 5px">
                                             <asp:Label ID="lblToolTipConceptoPedido" runat="server" Text='<%# resaltarBusqueda(Eval("ConceptoPedido").ToString()) %>'
-                                                CssClass="etiqueta" Font-Size="10px" />
+                                                CssClass="etiqueta" Width="20cm" Font-Size="10px" />
                                         </asp:Panel>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" Width="120px"></ItemStyle>
@@ -993,23 +1043,6 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
-                            <%--   <PagerTemplate>
-                                Página
-                                <asp:DropDownList ID="paginasDropDownListPedidos" runat="server" AutoPostBack="true"
-                                    CssClass="dropDown" Font-Size="12px" Width="60px" OnSelectedIndexChanged="paginasDropDownListPedidos_SelectedIndexChanged">
-                                </asp:DropDownList>
-                                de
-                                <asp:Label ID="lblTotalNumPaginas" runat="server" CssClass="etiqueta"></asp:Label>
-                                &nbsp;&nbsp;
-                                <asp:Button ID="btnInicial" runat="server" CommandArgument="First" CommandName="Page"
-                                    CssClass="boton pagInicial" ToolTip="Prim. Pag" />
-                                <asp:Button ID="btnAnterior" runat="server" CommandArgument="Prev" CommandName="Page"
-                                    CssClass="boton pagAnterior" ToolTip="Pág. anterior" />
-                                <asp:Button ID="btnSiguiente" runat="server" CommandArgument="Next" CommandName="Page"
-                                    CssClass="boton pagSiguiente" ToolTip="Sig. página" />
-                                <asp:Button ID="btnUltima" runat="server" CommandArgument="Last" CommandName="Page"
-                                    CssClass="boton pagUltima" ToolTip="Últ. Pag" />
-                            </PagerTemplate>--%>
                             <PagerStyle CssClass="grvPaginacionScroll" />
                         </asp:GridView>
                     </td>
@@ -1541,9 +1574,11 @@
                             <div class="etiqueta">
                                 Folios Agregados
                             </div>
-                            <asp:GridView ID="grvAgregados" runat="server" AllowPaging="True" AutoGenerateColumns="False"
+                            <asp:GridView ID="grvAgregados" runat="server" 
+                                AllowPaging='<%# ActivePaging %>' PageSize="6"
+                                AutoGenerateColumns="False"
                                 BorderStyle="Dotted" CssClass="grvResultadoConsultaCss" Font-Size="12px" ShowHeaderWhenEmpty="True"
-                                Width="90%" ShowHeader="False" BorderColor="White" DataKeyNames="Folio" PageSize="6"
+                                Width="90%" ShowHeader="False" BorderColor="White" DataKeyNames="Folio" 
                                 OnRowDeleting="grvAgregados_RowDeleting" OnPageIndexChanging="grvAgregados_PageIndexChanging">
                                 <Columns>
                                     <asp:TemplateField>
@@ -1553,7 +1588,7 @@
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" Wrap="True" Width="30px" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Folias Agregados" SortExpression="fAgregados">
+                                    <asp:TemplateField HeaderText="Folios Agregados" SortExpression="fAgregados">
                                         <ItemTemplate>
                                             <asp:Label ID="lblFoliosAgregados" runat="server" Text="<%# Bind('Folio') %>"></asp:Label>
                                         </ItemTemplate>
@@ -1588,6 +1623,7 @@
     </asp:Panel>
 
     <asp:HiddenField ID="hdfDetalleInternoOculto" runat="server" />
+    <asp:HiddenField ID="hfTipoCobroSeleccionado" runat="server" />
     <asp:ModalPopupExtender ID="grvVistaRapidaInterno_ModalPopupExtender" runat="server"
         PopupControlID="pnlVistaRapidaInterno" TargetControlID="hdfDetalleInternoOculto"
         BackgroundCssClass="ModalBackground" BehaviorID="ModalBehaviourInterno">
@@ -1610,68 +1646,72 @@
                     </tr>
                     <tr>
                         <td style="padding: 5px 5px 5px 5px">
-                            <asp:GridView ID="grvVistaRapidaInterno" runat="server" AutoGenerateColumns="False"
-                                BorderStyle="Dotted" Font-Size="12px" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
-                                Width="100%" GridLines="Horizontal">
-                                <EmptyDataTemplate>
-                                    <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
-                                </EmptyDataTemplate>
-                                <Columns>
-                                    <asp:TemplateField HeaderText="Referencia" SortExpression="referencia">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="100px" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFOperracion" runat="server" Text="<%# Bind('FOperacion', '{0:d}') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblFMovimiento" runat="server" Text="<%# Bind('FMovimiento','{0:d}') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="50px" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Descripcion" SortExpression="descripcion">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblDescripcion" runat="server" Text="<%# Bind('Descripcion') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="150px" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Deposito" SortExpression="deposito">
-                                        <ItemTemplate>
-                                            <b>
-                                                <asp:Label ID="lblDeposito" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Deposito','{0:c2}') %>"></asp:Label></b>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
-                                            CssClass="fg-color-blanco bg-color-grisClaro" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Retiro" SortExpression="retiro">
-                                        <ItemTemplate>
-                                            <b>
-                                                <asp:Label ID="lblRetiro" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Retiro','{0:c2}') %>"></asp:Label></b>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
-                                            CssClass="fg-color-blanco bg-color-grisClaro" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblConcepto" runat="server" Text="<%# Bind('Concepto') %>"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle HorizontalAlign="Center" />
-                                        <ItemStyle HorizontalAlign="Justify" Wrap="True" Width="500px" />
-                                    </asp:TemplateField>
-                                </Columns>
-                            </asp:GridView>
+                            <div style="width:1000px; height:260px; overflow:auto;">
+                                <asp:GridView ID="grvVistaRapidaInterno" runat="server" 
+                                    AllowPaging='<%# ActivePaging %>' PageSize="8" 
+                                    AutoGenerateColumns="False" BorderStyle="Dotted" Font-Size="12px" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
+                                    Width="100%" GridLines="Horizontal"
+                                    OnPageIndexChanging="grvVistaRapidaInterno_PageIndexChanging" >
+                                    <EmptyDataTemplate>
+                                        <asp:Label ID="lblvacio" runat="server" CssClass="etiqueta fg-color-rojo" Text="Sin detalle del folio de la conciliacion."></asp:Label>
+                                    </EmptyDataTemplate>
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Referencia" SortExpression="referencia">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblReferencia" runat="server" Text="<%# Bind('Referencia') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="100px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="FOperacion" SortExpression="fOperacion">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFOperracion" runat="server" Text="<%# Bind('FOperacion', '{0:d}') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="FMovimiento" SortExpression="fMovimiento">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblFMovimiento" runat="server" Text="<%# Bind('FMovimiento','{0:d}') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="50px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Descripcion" SortExpression="descripcion">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblDescripcion" runat="server" Text="<%# Bind('Descripcion') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" VerticalAlign="Middle" Wrap="True" Width="150px" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Deposito" SortExpression="deposito">
+                                            <ItemTemplate>
+                                                <b>
+                                                    <asp:Label ID="lblDeposito" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Deposito','{0:c2}') %>"></asp:Label></b>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
+                                                CssClass="fg-color-blanco bg-color-grisClaro" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Retiro" SortExpression="retiro">
+                                            <ItemTemplate>
+                                                <b>
+                                                    <asp:Label ID="lblRetiro" runat="server" Font-Size="10px" Width="100px" Text="<%# Bind('Retiro','{0:c2}') %>"></asp:Label></b>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Right" VerticalAlign="Middle" Wrap="True" Width="100px"
+                                                CssClass="fg-color-blanco bg-color-grisClaro" />
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Concepto" SortExpression="concepto">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblConcepto" runat="server" Text="<%# Bind('Concepto') %>"></asp:Label>
+                                            </ItemTemplate>
+                                            <HeaderStyle HorizontalAlign="Center" />
+                                            <ItemStyle HorizontalAlign="Justify" Wrap="True" Width="500px" />
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
                         </td>
                     </tr>
                 </table>

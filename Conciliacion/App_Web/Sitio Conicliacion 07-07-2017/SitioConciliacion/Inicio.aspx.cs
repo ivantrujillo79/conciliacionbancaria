@@ -358,12 +358,13 @@ public partial class Inicio : System.Web.UI.Page
     /// </summary>
     public void Consulta_Conciliacion()
     {
-        System.Data.SqlClient.SqlConnection Connection = SeguridadCB.Seguridad.Conexion;
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         if (Connection.State == ConnectionState.Closed)
         {
-            SeguridadCB.Seguridad.Conexion.Open();
-            Connection = SeguridadCB.Seguridad.Conexion;
+            seguridad.Conexion.Open();
+            Connection = seguridad.Conexion;
         }
         try
         {
@@ -446,21 +447,30 @@ public partial class Inicio : System.Web.UI.Page
     }
     protected void lnkDetalle_Click(object sender, EventArgs e)
     {
-
+       
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
+
+        
         Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes + "&TipoConciliacion=" + conciliacion.TipoConciliacion);
+                                     conciliacion.Mes );
 
     }
     protected void lnkPagos_Click(object sender, EventArgs e)
     {
+        short esEdificios = 0;
+
         int folioConciliacion = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == folioConciliacion);
+
+        if (conciliacion.TipoConciliacion == 2)
+        {
+            esEdificios = 1;
+        }
         Response.Redirect("~/Conciliacion/Pagos/AplicarPago.aspx?Folio=" + folioConciliacion + "&Corporativo=" + conciliacion.Corporativo +
                                      "&Sucursal=" + conciliacion.Sucursal + "&Año=" + conciliacion.Año + "&Mes=" +
-                                     conciliacion.Mes);
+                                     conciliacion.Mes + "&EsEdificios=" + esEdificios + "&TipoConciliacion=" + conciliacion.TipoConciliacion);
     }
 
     //Nueva funcionalidad
@@ -601,4 +611,5 @@ public partial class Inicio : System.Web.UI.Page
         HttpContext.Current.Session["filtros"] = filtros;
         Response.Redirect("~/Conciliacion/ConsultarDocumentos.aspx");
     }
+
 }
