@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
+
     public class PalabraClaveTipoCobro : EmisorMensajes
     {
         int banco;
