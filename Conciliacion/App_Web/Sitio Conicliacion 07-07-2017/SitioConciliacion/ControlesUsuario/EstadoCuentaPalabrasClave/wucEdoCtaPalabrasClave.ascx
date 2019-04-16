@@ -386,17 +386,20 @@
                 &nbsp;</td>
         </tr>
         <tr>
-            <td class="auto-style1" style="text-align:right"><asp:Label ID="Label2" runat="server" Text="Banco" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-            <td style="text-align:left" class="auto-style1" colspan="2">
-                <asp:DropDownList ID="ddlBanco" runat="server" AutoPostBack="false" Width="150px"  >
+            <td class="auto-style1" style="text-align:right">&nbsp;</td>
+            <td style="text-align:right" class="auto-style1" colspan="2">
+                <asp:Label ID="Label2" runat="server" Text="Banco:" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label>
+                &nbsp;<asp:DropDownList ID="ddlBanco" runat="server" AutoPostBack="false" Width="150px"  >
                    
                 </asp:DropDownList>
             </td>
-            <td style="text-align:right" class="auto-style1" colspan="2">&nbsp; <asp:Label ID="Label5" runat="server" Text="Cuenta" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-            <td style="text-align:left" class="auto-style1">
+            <td style="text-align:left" class="auto-style1" colspan="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:Label ID="Label5" runat="server" Text="Cuenta:" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label>
+                &nbsp;&nbsp;&nbsp;
                 <asp:DropDownList ID="ddlCuenta" runat="server"  AutoPostBack="false" Width="150px" >
                 </asp:DropDownList>
             </td>
+            <td style="text-align:left" class="auto-style1">
+                &nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -407,18 +410,19 @@
                 &nbsp;</td>
         </tr>
         <tr>
-            <td style="text-align:right" ><asp:Label ID="Label3" runat="server" Text="Tipo Cobro" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-            <td style="text-align:left" colspan="2">
-                <asp:DropDownList ID="ddlTipoCobro" runat="server"  AutoPostBack="false" Width="150px" >
+            <td style="text-align:right" >&nbsp;</td>
+            <td style="text-align:right" colspan="2">
+                <asp:Label ID="Label3" runat="server" Text="Tipo Cobro:" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label>&nbsp;<asp:DropDownList ID="ddlTipoCobro" runat="server"  AutoPostBack="false" Width="150px" >
                     
                 </asp:DropDownList>
             </td>
-            <td style="text-align:right" colspan="2"><asp:Label ID="Label4" runat="server" Text="Columna" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-            <td style="text-align:left">
-                <asp:DropDownList ID="ddlColumna" runat="server" AutoPostBack="false" Width="150px">
+            <td style="text-align:left" colspan="2">&nbsp;&nbsp;&nbsp;&nbsp; <asp:Label ID="Label4" runat="server" Text="Columna:" CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label>
+                &nbsp;<asp:DropDownList ID="ddlColumna" runat="server" AutoPostBack="false" Width="150px">
                    
                 </asp:DropDownList>
             </td>
+            <td style="text-align:left">
+                &nbsp;</td>
         </tr>
         <tr>
             
@@ -437,7 +441,7 @@
        </tr>
         <tr>
             
-                    <td style="text-align:center" colspan="6"><asp:Label ID="LblFormaPago" runat="server" Text="Forma de Pago Elegida: " CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
+                    <td style="text-align:center" colspan="6"><asp:Label ID="LblFormaPago" runat="server" Text="Forma de Pago Elegida:    " CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
              
        </tr>
          <tr>
