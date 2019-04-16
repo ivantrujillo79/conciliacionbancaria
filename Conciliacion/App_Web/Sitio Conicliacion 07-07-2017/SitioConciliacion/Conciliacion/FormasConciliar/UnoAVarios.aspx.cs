@@ -1909,7 +1909,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     dAbono = Decimal.Round(rE.Monto, 2);
                 }
                 if (objSolicitdConciliacion.ConsultaArchivo())
-                    dAcumulado = Decimal.Round(rE.Monto, 2);
+                    dAcumulado = Decimal.Round(rE.MontoConciliado, 2);
                 if (objSolicitdConciliacion.ConsultaPedido())
                     foreach (cReferencia referencia in rE.ListaReferenciaConciliada)
                     {
