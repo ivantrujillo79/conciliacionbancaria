@@ -5123,6 +5123,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         int secuenciaExterno = 0;
         int folioExterno = 0;
+        int añoo = 0;
         try
         {
             listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
@@ -5131,12 +5132,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 secuenciaExterno =
                     Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
                 folioExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Folio"]);
+                añoo = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Año"]);
             }
             else
             {
                 throw new Exception("No existen registros externos para el criterio elegido");
             }
-            return listaReferenciaExternas.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno);
+            return listaReferenciaExternas.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno && x.Año == añoo);
         }
         catch (Exception ex)
         {
