@@ -452,7 +452,7 @@
 
         function OcultarPopUpBuscadorPagoEdoCta() {
             btnClientePagoCancelar_Click();
-            $find("ModalBehaviorClientePago").hide();
+            $find("ModalBehaviorBuscadorPagoEdoCta").hide();
         }
 
         function OcultarPopUpClienteDatosBancarios() {
