@@ -151,6 +151,7 @@
     <Compile Include="ReglasDeNegocio\DispersorPago.cs" />
     <Compile Include="ReglasDeNegocio\DispersorPagoException.cs" />
     <Compile Include="ReglasDeNegocio\Enrutador.cs" />
+    <Compile Include="ReglasDeNegocio\EstadoDeCuenta.cs" />
     <Compile Include="ReglasDeNegocio\ExportadorInformeBancario.cs" />
     <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuentaDia.cs" />
     <Compile Include="ReglasDeNegocio\ExportadorInformeEstadoCuenta.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="ReglasDeNegocio\PagoAnticipado.cs" />
     <Compile Include="ReglasDeNegocio\PagoAreasComunes.cs" />
     <Compile Include="ReglasDeNegocio\PagoPropuesto.cs" />
+    <Compile Include="ReglasDeNegocio\PalabraClaveTipoCobro.cs" />
     <Compile Include="ReglasDeNegocio\PedidoCobranza.cs" />
     <Compile Include="ReglasDeNegocio\Referencia.cs" />
     <Compile Include="ReglasDeNegocio\ReferenciaConciliada.cs" />
