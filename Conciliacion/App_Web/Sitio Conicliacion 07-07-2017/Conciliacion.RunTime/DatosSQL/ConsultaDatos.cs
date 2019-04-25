@@ -27,36 +27,42 @@ namespace Conciliacion.RunTime.DatosSQL
             return new ConsultaDatos(App.ImplementadorMensajes);
         }
 
-        //public override List<ReferenciaNoConciliada> ObtieneReferenciasPorConciliacion(int corporativo, int sucursal, int año, short mes, int folio)
-        //{
-        //    List<ReferenciaNoConciliada> referencias = new List<ReferenciaNoConciliada>();
-
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
-        //    {
-        //        cnn.Open();
-        //        SqlCommand comando = new SqlCommand("spCBConsultaReferenciasPorConciliacion", cnn);
-        //        comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.Int).Value = 0;
-        //        comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = corporativo;
-        //        comando.Parameters.Add("@Sucursal", System.Data.SqlDbType.Int).Value = sucursal;
-        //        comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = año;
-        //        comando.Parameters.Add("@Mes", System.Data.SqlDbType.Int).Value = mes;
-        //        comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = folio;
-
-        //        comando.CommandType = System.Data.CommandType.StoredProcedure;
-        //        SqlDataReader reader = comando.ExecuteReader();
-        //        while (reader.Read())
-        //        {
-
-        //            ReferenciaNoConciliada referencia = new ReferenciaNoConciliadaDatos(Convert.ToInt32(reader["Corporativo"]), Convert.ToInt32(reader["Sucursal"]), Convert.ToInt32(reader["Año"]),
-        //            Convert.ToInt32(reader["Folio"]), Convert.ToInt32(reader["Secuencia"]), reader["Concepto"].ToString(), Convert.ToDecimal(reader["MontoConciliado"]), Convert.ToDecimal(reader["Diferencia"]),
-        //            Convert.ToDecimal(reader["Monto"]), Convert.ToInt16(reader["FormaConciliacion"]), Convert.ToInt16(reader["StatusConcepto"]), reader["statusconciliacion"].ToString(),
-        //            App.ImplementadorMensajes);
-
-        //            referencias.Add(referencia);
-        //        }
-        //        return referencias;
-        //    }
-        //}
+        public override List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito)
+        {
+            List<EstadoDeCuenta> datos = new List<EstadoDeCuenta>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                cnn.Open();
+                SqlCommand comando = new SqlCommand("spCBBuscaPagoEdoCta", cnn);
+                comando.Parameters.Add("@FInicio", System.Data.SqlDbType.Date).Value = FInicio;
+                comando.Parameters.Add("@FFinal", System.Data.SqlDbType.Date).Value = FFinal;
+                comando.Parameters.Add("@Monto", System.Data.SqlDbType.Decimal).Value = Monto;
+                comando.Parameters.Add("@BuscaEnRetiro", System.Data.SqlDbType.TinyInt).Value = BuscaEnRetiro;
+                comando.Parameters.Add("@BuscaEnDeposito", System.Data.SqlDbType.TinyInt).Value = BuscaEnDeposito;
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    EstadoDeCuenta dato =
+                        new EstadoDeCuenta(
+                                                                                Convert.ToInt32(reader["AñoConciliacion"]),
+                                                                                Convert.ToInt32(reader["MesConciliacion"]),
+                                                                                Convert.ToInt32(reader["FolioConciliacion"]),
+                                                                                Convert.ToInt32(reader["FolioExterno"]),
+                                                                                Convert.ToString(reader["Documento"]),
+                                                                                Convert.ToString(reader["TransBan"]),
+                                                                                Convert.ToDateTime(reader["FMovTransban"]),
+                                                                                Convert.ToDateTime(reader["FOperacion"]),
+                                                                                Convert.ToDecimal(reader["Retiro"]),
+                                                                                Convert.ToDecimal(reader["Deposito"]),
+                                                                                Convert.ToString(reader["Concepto"]),
+                                                                                Convert.ToString(reader["Descripcion"])
+                                                                                );
+                    datos.Add(dato);
+                }
+                return datos;
+            }
+        }
 
         public override string consultaClienteCRM(int cliente)
         {
