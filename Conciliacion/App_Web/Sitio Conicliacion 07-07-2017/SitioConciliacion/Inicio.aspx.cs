@@ -94,7 +94,7 @@ public partial class Inicio : System.Web.UI.Page
                 Consulta_Conciliacion();
                 GenerarTablaConciliaciones();
                 LlenaGridViewConciliaciones();
-                wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = false;
+                //wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = false;
             }
             Consulta_Conciliacion();
             this.ddlEmpresa.Focus();            
