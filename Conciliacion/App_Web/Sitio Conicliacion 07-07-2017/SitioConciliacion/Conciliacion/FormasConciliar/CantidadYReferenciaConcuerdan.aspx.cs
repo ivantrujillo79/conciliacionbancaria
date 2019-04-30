@@ -145,6 +145,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
             LlenaGridViewDestinoDetalleInterno();
 
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+
             if (!Page.IsPostBack)
             {
                 corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);

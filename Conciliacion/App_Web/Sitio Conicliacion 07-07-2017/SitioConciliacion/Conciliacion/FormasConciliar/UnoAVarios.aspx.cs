@@ -225,6 +225,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             LlenaGridViewDestinoDetalleInterno();
 
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+
             if (!Page.IsPostBack)
             {
                 limpiarVariablesSession();

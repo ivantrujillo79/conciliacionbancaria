@@ -450,7 +450,6 @@
         }
 
         function OcultarPopUpBuscadorPagoEdoCta() {
-            btnClientePagoCancelar_Click();
             $find("ModalBehaviorBuscadorPagoEdoCta").hide();
         }
 

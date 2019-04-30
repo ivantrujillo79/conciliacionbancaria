@@ -1,4 +1,5 @@
-﻿using Conciliacion.RunTime.ReglasDeNegocio;
+﻿using AjaxControlToolkit;
+using Conciliacion.RunTime.ReglasDeNegocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,9 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
     private int Mes;
     private int Folio;
     //public ListaPago;
+
+    public object Contenedor { get; set; }
+
     public bool ActivaEstaConciliacion
     {
         get { return activaEstaConciliacion; }
@@ -46,15 +50,28 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
 
     protected void btnAceptar_Click(object sender, EventArgs e)
     {
-
+        ModalPopupExtender objContenedor;
+        objContenedor = (ModalPopupExtender)this.Contenedor;
+        objContenedor.Hide();
     }
 
     protected void btnBuscar_Click(object sender, EventArgs e)
     {
+        if (txtMonto.Text.Trim() == "")
+            txtMonto.Text = "0";
         List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked);
         grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
         if (listaEstadoCuenta.Count > 0)
             grvPagoEstadoCuenta.DataBind();
+        else
+        {
+            ModalPopupExtender objContenedor;
+            objContenedor = (ModalPopupExtender)this.Contenedor;
+            objContenedor.Hide();
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','No se encontr&oacute; registro que coincida con los par&aacute;metros de b&uacute;squeda proporcionados.', function(){ });", true);
 
-    } 
+        }
+
+    }
 }

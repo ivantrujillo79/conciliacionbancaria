@@ -118,6 +118,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             if (true)
                 LlenaGridViewDestinoDetalleInterno();
 
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];

@@ -1,16 +1,18 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucBuscadorPagoEstadoCuenta.ascx.cs" Inherits="ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta" %>
     
-    <script src="../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
-    <script src="../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
-    <link href="../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
+    <script src="/App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="/App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="/../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+
+    <link href="/App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css"
         rel="stylesheet" type="text/css" />
-    <script src="../App_Scripts/FuncionesGenerales.js" type="text/javascript"></script>
-    <script src="../App_Scripts/Validaciones.js" type="text/javascript"></script>
+
+    <%--<script src="../App_Scripts/FuncionesGenerales.js" type="text/javascript"></script>
+    <script src="../App_Scripts/Validaciones.js" type="text/javascript"></script>--%>
     <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
-    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
-    <link href="../App_Themes/GasMetropolitanoSkin/Sitio.css" rel="stylesheet" type="text/css" />
+    <%--<link href="../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet" type="text/css" />
+    <script src="../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>--%>
+    <link href="/App_Themes/GasMetropolitanoSkin/Sitio.css" rel="stylesheet" type="text/css" />
     
     <script type="text/javascript">
         function pageLoad() {
