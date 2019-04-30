@@ -2,6 +2,9 @@
     CodeFile="Inicio.aspx.cs" Inherits="Inicio" Debug="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<%@ Register Src="~/ControlesUsuario/BuscadorPagoEstadoCuenta/wucBuscadorPagoEstadoCuenta.ascx" TagPrefix="uc1" TagName="wucBuscadorPagoEstadoCuenta" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     CONCILIACIÓN
 </asp:Content>
@@ -351,6 +354,44 @@
             </ul>
         </ContentTemplate>
     </asp:UpdatePanel>
+
+            <%--INICIO POPUP BUSCADORPAGOESTADO DE CUENTA--%>
+    <asp:HiddenField runat="server" ID="hdfBuscadorPagoEdoCta" />
+    <asp:ModalPopupExtender ID="mpeBuscadorPagoEdoCta" runat="server" BackgroundCssClass="ModalBackground"
+        DropShadow="false" PopupControlID="pnlBuscadorPagoEdoCta" TargetControlID="hdfBuscadorPagoEdoCta"
+        BehaviorID="ModalBehaviorBuscadorPagoEdoCta" CancelControlID="btnCerrar_BuscadorPagoEdoCta">
+    </asp:ModalPopupExtender>
+    <asp:Panel ID="pnlBuscadorPagoEdoCta" runat="server" CssClass="ModalPopup" Width="1200px" style="display: none;">
+        <asp:UpdatePanel ID="upBuscadorPagoEdoCta" runat="server">
+            <ContentTemplate>
+                <asp:HiddenField runat="server" ID="hdfBuscadorPagoEdoCtaMostrar" Value=""/>
+                <div>
+                    <table style="width:100%;">
+                        <tr class="bg-color-grisOscuro">
+                            <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
+                                <div class="floatDerecha bg-color-grisClaro01">
+                                    <asp:ImageButton runat="server" ID="btnCerrar_BuscadorPagoEdoCta" CssClass="iconoPequeño bg-color-rojo" 
+                                        ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px" 
+                                        OnClientClick="OcultarPopUpBuscadorPagoEdoCta();"/>
+                                </div>
+                                <div class="fg-color-blanco centradoJustificado">
+                                    BUSQUEDA DE MONTO
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <%--<uc1:wucBuscadorPagoEstadoCuenta runat="server" ID="wucBuscadorPagoEstadoCuenta" />--%>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </asp:Panel>
+    <%--FIN POPUP BUSCADORPAGOESTADO DE CUENTA--%>
+
+
     <asp:UpdateProgress ID="panelBloqueo" runat="server" AssociatedUpdatePanelID="upInicio">
         <ProgressTemplate>
             <asp:Image ID="imgLoad" runat="server" CssClass="icono bg-color-blanco" Height="40px"

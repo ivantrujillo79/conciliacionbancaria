@@ -200,6 +200,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             //    grvPedidos.DataSource = dtSortTable;
             //    grvPedidos.DataBind();
             //}
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
             if (!Page.IsPostBack)
             {
                 //Leer variables de URL

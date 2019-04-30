@@ -10,11 +10,11 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
     <!--Libreria jQuery-->
-    <script src="../../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
-    <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
+    <script src="/App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="/App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="/App_Scripts/Common.js" type="text/javascript"></script>
     <!-- Script se utiliza para el Scroll del GridView-->
-    <link href="../../App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
+    <link href="/App_Scripts/ScrollGridView/GridviewScroll.css" rel="stylesheet"
         type="text/css" />
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <!-- ScrollBar GridView -->
@@ -34,7 +34,7 @@
         });
 
         function OcultarPopUpBuscadorPagoEdoCta() {
-            btnClientePagoCancelar_Click();
+            //btnClientePagoCancelar_Click();
             $find("ModalBehaviorBuscadorPagoEdoCta").hide();
         }
 

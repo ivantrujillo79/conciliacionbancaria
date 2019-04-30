@@ -112,6 +112,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                 }
             }
             LlenaGridViewDestinoDetalleInterno();
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
             if (!Page.IsPostBack)
             {
                 //Leer variables de URL
