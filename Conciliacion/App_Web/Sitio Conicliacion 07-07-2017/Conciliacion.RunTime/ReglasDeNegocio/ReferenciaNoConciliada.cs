@@ -1295,7 +1295,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         if (referen.SucursalInterno == null || referen.SucursalInterno == 0)
                         {
                             referen.SucursalInterno = this.sucursal;
-                        }                        
+                        }
+                        referen.TipoCobro = this.TipoCobro;
                         referen.Guardar();
                         this.Completo = true;
                     }

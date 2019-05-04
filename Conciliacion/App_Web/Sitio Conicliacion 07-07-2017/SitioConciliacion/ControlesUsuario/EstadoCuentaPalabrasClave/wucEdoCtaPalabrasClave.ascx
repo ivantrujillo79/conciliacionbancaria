@@ -11,32 +11,35 @@
             CargaPalabrasClave(); 
         });
 
-           $("#<%=ddlCuenta.ClientID%>").change(function () {
+        $("#<%=ddlCuenta.ClientID%>").change(function () {
             CargaPalabrasClave();           
+        });
+
+        $("#<%=ddlColumna.ClientID%>").change(function () {
+            CargaPalabrasClave();
+        });
+
+        $("#TxtPalabrasClave").change(function () {
+            CargaPalabrasClaveRepetida();
         });
 
         $("#<%=ddlTipoCobro.ClientID%>").change(function () {
                $("#<%=LblFormaPago.ClientID%>").text('');
             var fp ='Forma de Pago Elegida: '+$("#<%=ddlTipoCobro.ClientID%>").find("option:selected").text();
             $("#<%=LblFormaPago.ClientID%>").text(fp);
-            CargaPalabrasClave();  
-             
-           
+            CargaPalabrasClave();
         });
 
         $("#btnAceptar").click(function(){
             GuardarPalabrasClave();      
         });
-
-
-
-
-
-
-
-
    
 });
+
+    function TxtPalabrasClave_CuandoCambie() {
+        console.log("hola");
+        return false;
+    }
 
 
 
@@ -158,36 +161,41 @@
             });
     }
 
+    function CargaPalabrasClaveRepetida() {
+        $('#Mensaje').text('¡Prueba!');
+    }
+
     function CargaPalabrasClave() {
 
         if ($("#<%=ddlBanco.ClientID%>").val() == "-1")
-            {
-            
+        {   
               return;
         }
 
         if ($("#<%=ddlCuenta.ClientID%>").val() == "-1")
-        {
-             
+        {     
               return;
-            }
-
+        }
            
         if ($("#<%=ddlTipoCobro.ClientID%>").val() == "-1")
-        {
-             
+        {    
               return;
-            }
+        }
+
+        if ($("#<%=ddlColumna.ClientID%>").val() == "-1")
+        {    
+              return;
+        }
 
         $("#TxtPalabrasClave").tagsinput('removeAll');
-
 
         var objParametros = {};
         objParametros.banco = $.trim($("#<%=ddlBanco.ClientID%>").val());
         objParametros.cuentabanco = $.trim($("#<%=ddlCuenta.ClientID%>").val());
         objParametros.tipocobro = $.trim($("#<%=ddlTipoCobro.ClientID%>").val());
+        objParametros.columnadestino = $.trim($("#<%=ddlColumna.ClientID%>").val());
 
-         $.ajax({
+        $.ajax({
                 type: "POST",
                 url: "EdoCtaPalabrasClave.aspx/ConsultarPalabrasClave",
                 data: JSON.stringify(objParametros),
@@ -195,20 +203,18 @@
                 dataType: "json",
                 success: function (data) {// función que va a ejecutar si el pedido fue exitoso
             
-              var datos=JSON.parse(data.d)             
-                    var s = ''; 
-                                
-               for (var i = 0; i < datos.length; i++) {  
-                           $("#TxtPalabrasClave").tagsinput('add', datos[i].PalabraClave);
+                    var datos=JSON.parse(data.d)             
+                    var s = '';
+
+                    for (var i = 0; i < datos.length; i++) {  
+                        $("#TxtPalabrasClave").tagsinput('add', datos[i].PalabraClave);
                     }  
                    
                     if (datos.length==0)
-                    {                      
-                  
-                    $('#Mensaje').text('¡No existe información con los datos proporcionados!');
-                    $("#myModal").modal('show');
+                    {
+                        $('#Mensaje').text('¡No existe información con los datos proporcionados!');
+                        $("#myModal").modal('show');
                     }
-
                 },
                 error: function (r) {
                     alert(r.responseText);
@@ -255,13 +261,13 @@
               return;
         }
 
-       if ($("#TxtPalabrasClave").val() == "")
-        {
-           //alert('¡Capture palabras clave!');
-             $('#Mensaje').text('¡Capture palabras clave!');
-                   $("#myModal").modal('show');
-              return;
-            }
+       //if ($("#TxtPalabrasClave").val() == "")
+       // {
+       //    //alert('¡Capture palabras clave!');
+       //      $('#Mensaje').text('¡Capture palabras clave!');
+       //            $("#myModal").modal('show');
+       //       return;
+       //     }
 
 
 
@@ -289,9 +295,6 @@
 
               }  
  
-
-        
-
          $.ajax({
                 type: "POST",
                 url: "EdoCtaPalabrasClave.aspx/GuardarPalabrasClave",
@@ -302,8 +305,12 @@
             
                     var res = JSON.parse(data.d)   
 
-                    if (res = 'true')
-                    $('#Mensaje').text('¡Palabra clave registrada exitosamente!');
+                    if (res = 'true') {
+                        if (objParametros.palabraclave == '')
+                            $('#Mensaje').text('¡La palabra clave se ha eliminado con éxito!');
+                        else
+                            $('#Mensaje').text('¡Palabra clave registrada exitosamente!');
+                    }
                     $("#myModal").modal('show');
  
                    
@@ -467,7 +474,7 @@
 
   <div class="form-group" style="align-content:center">
    
-    <input type="text" value=""  id="TxtPalabrasClave"   data-role="tagsinput" class="form-control" />
+    <input type="text" value=""  id="TxtPalabrasClave"   data-role="tagsinput" class="form-control" onchange="return TxtPalabrasClave_CuandoCambie();" />
   </div>
          
 
