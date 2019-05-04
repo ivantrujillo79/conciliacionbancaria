@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Conciliacion.RunTime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,6 @@ public partial class EdoCtaPalabrasClave : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
     }
 
 
@@ -74,17 +74,16 @@ public partial class EdoCtaPalabrasClave : System.Web.UI.Page
     }
 
     [System.Web.Services.WebMethod]
-    public static string ConsultarPalabrasClave(string banco,string cuentabanco, string tipocobro)
+    public static string ConsultarPalabrasClave(string banco,string cuentabanco, string tipocobro, string columnadestino)
     {
         List<CatalogoConciliacion.ReglasNegocio.PalabrasClave> ListaPalabrasClave = new List<CatalogoConciliacion.ReglasNegocio.PalabrasClave>();
 
-        ListaPalabrasClave = CatalogoConciliacion.App.Consultas.ConsultarPalabrasClave(int.Parse(banco), cuentabanco, int.Parse(tipocobro));
+        ListaPalabrasClave = CatalogoConciliacion.App.Consultas.ConsultarPalabrasClave(int.Parse(banco), cuentabanco, int.Parse(tipocobro), columnadestino);
 
         System.Web.Script.Serialization.JavaScriptSerializer jSearializer =
              new System.Web.Script.Serialization.JavaScriptSerializer();
          return jSearializer.Serialize(ListaPalabrasClave);
-
-
+        
     }
 
     [System.Web.Services.WebMethod]

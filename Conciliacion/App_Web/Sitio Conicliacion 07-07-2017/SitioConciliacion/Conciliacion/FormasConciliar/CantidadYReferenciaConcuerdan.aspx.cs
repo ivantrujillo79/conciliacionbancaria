@@ -860,17 +860,20 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
-            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
-            oGateway.ListaCliente = listadistintos;
-            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
-            oGateway.eListaEntregas += completarListaEntregas;
-            oSolicitud = new RTGMGateway.SolicitudGateway();
-            listaClientesEnviados = listadistintos;
-            foreach (var item in listadistintos)
+            if (_URLGateway != string.Empty)
             {
-                oSolicitud.IDCliente = item;
-                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+                SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+                oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+                oGateway.ListaCliente = listadistintos;
+                oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+                oGateway.eListaEntregas += completarListaEntregas;
+                oSolicitud = new RTGMGateway.SolicitudGateway();
+                listaClientesEnviados = listadistintos;
+                foreach (var item in listadistintos)
+                {
+                    oSolicitud.IDCliente = item;
+                    oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+                }
             }
         }
         catch (Exception ex)

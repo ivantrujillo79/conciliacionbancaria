@@ -48,7 +48,7 @@ namespace CatalogoConciliacion.ReglasNegocio
         public abstract List<CuentaContableBanco> ObtieneCuentaContableBanco(int Banco);
         public abstract List<TipoCobro> ObtieneTipoCobro();
         public abstract List<ColumnaDestino> ObtieneColumnaDestino();
-        public abstract List<PalabrasClave> ConsultarPalabrasClave(int Banco,string CuentaBanco,int TipoCobro);
+        public abstract List<PalabrasClave> ConsultarPalabrasClave(int Banco,string CuentaBanco,int TipoCobro, string columna);
 
         public virtual string CadenaConexion
         {

@@ -7,6 +7,7 @@ using CatalogoConciliacion.ReglasNegocio;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Web;
+using System.Web.UI;
 
 namespace CatalogoConciliacion.Datos
 {
@@ -33,6 +34,18 @@ namespace CatalogoConciliacion.Datos
         public override bool Guardar()
         {
             bool resultado = true;
+
+            List<string> pcRepetidas = this.PalabraClave.Split('|').GroupBy(x => x)
+              .Where(g => g.Count() > 1)
+              .Select(y => y.Key)
+              .ToList();
+
+            if (pcRepetidas.Count > 0)
+            {
+                this.ImplementadorMensajes.MostrarMensaje("Existen palabras clave repetidas, corrija para continuar.");
+                resultado = false;
+            }
+
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
                 try
@@ -47,9 +60,7 @@ namespace CatalogoConciliacion.Datos
                     comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar).Value = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
-                    //this.ImplementadorMensajes.MostrarMensaje("Registro Guardado Con éxito");
                 }
-
                 catch (SqlException ex)
                 {
                     stackTrace = new StackTrace();

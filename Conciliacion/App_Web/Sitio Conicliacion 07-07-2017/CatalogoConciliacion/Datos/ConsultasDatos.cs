@@ -124,9 +124,8 @@ namespace CatalogoConciliacion.Datos
             }
         }
 
-        public override List<PalabrasClave> ConsultarPalabrasClave(int Banco,string CuentaBanco,int TipoCobro)
+        public override List<PalabrasClave> ConsultarPalabrasClave(int Banco,string CuentaBanco,int TipoCobro, string columnadestino)
         {
-
             List<PalabrasClave> ListaPalabrasClave = new List<PalabrasClave>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
             {
@@ -135,6 +134,7 @@ namespace CatalogoConciliacion.Datos
                 comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
                 comando.Parameters.Add("@CuentaBanco", System.Data.SqlDbType.VarChar).Value = CuentaBanco;
                 comando.Parameters.Add("@TipoCobro", System.Data.SqlDbType.Int).Value = TipoCobro;
+                comando.Parameters.Add("@ColumnaDestino", System.Data.SqlDbType.VarChar).Value = columnadestino;
 
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlDataReader reader = comando.ExecuteReader();
