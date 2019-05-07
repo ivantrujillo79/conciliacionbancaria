@@ -158,6 +158,9 @@
             }
         });
 
+        function clickBotonMuestraAFuturo() {
+            $('#dvMuestraAFuturo').slideToggle();
+        }
         function rdbSecuencia_scrollpos() {
             document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value = document.getElementById("divExternos").scrollTop;
         }
@@ -492,6 +495,7 @@
         }
         
         function activarDatePickers() {
+            
             // DatePickers SALDO A FAVOR
             $("#<%= txtFechaInicioSAF.ClientID%>").datepicker({
                 defaultDate: "+1w",
@@ -572,6 +576,26 @@
                         $("#<%=txtFSInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
                     }
                 });
+
+                $("#<%= txtAFuturo_FInicio.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
+
             //}
         }
 
@@ -1318,6 +1342,13 @@
                                     <b>
                                         <asp:Label ID="lblMontoTotalExterno" runat="server" CssClass="etiqueta fg-color-blanco"></asp:Label></b>
                                 </td>
+
+                                <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
+                                    <%--123--%>
+                                    <input type="button" name="btnMuestraAFuturo" value="Futuro" class="button blue" onclick="clickBotonMuestraAFuturo();"
+                                         runat="server" ID="btnMuestraAFuturo"/>
+                                </td>
+
                                 <td class="bg-color-grisClaro02" style="width: 60%">
                                     <b>Archivos Externos</b>
                                 </td>
@@ -1328,6 +1359,7 @@
                             </tr>
                         </table>
                     </td>
+
                     <td rowspan="3" style="width: 1%"></td>
                     <td style="width: 50%;" class="centradoMedio">
                         <table style="width: 100%;" class="grids">
@@ -1371,10 +1403,37 @@
                             </tr>
                         </table>
                     </td>
+
                 </tr>
                 <tr>
                     <td style="vertical-align: top">
                         <div id="configuracionExternos" class="bg-color-grisClaro">
+                            
+                            <div id="dvMuestraAFuturo" style="display: none">
+                                <div style="width:450px; height:40px; overflow:auto;">
+                                <table width="100%">
+                                    <tr>
+                                        <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                            <asp:Label ID="Label1" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                                Text=" Fecha"></asp:Label>
+                                        </td>
+                                        <td style="width: 12.5%;">
+                                            <asp:TextBox ID="txtAFuturo_FInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
+                                            <asp:TextBox ID="txtAFuturo_FFInal" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                Width="80px"></asp:TextBox>
+                                        </td>
+                                        <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                            <asp:ImageButton ID="btnFiltraAFuturo" runat="server" CssClass="icono bg-color-azulClaro"
+                                                Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                                OnClick="btnFiltraAFuturo_Click" ToolTip="FILTRAR Transacciones a Futuro" 
+                                                Width="25px" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                </div>
+                            </div>
+
                             <table width="100%">
                                 <tr>
                                     <td class="centradoJustificado" style="width: 15%;">
@@ -1799,7 +1858,6 @@
                                             <td></td>
                                         </tr>
                                         <tr>
-                                            <%--123--%>
                                             <td style="width: 15%" class="centradoJustificado">
                                                 <asp:CheckBox ID="chkSeleccionarInternosTodos" runat="server" Text="Selecciona Todos" CssClass="etiqueta fg-color-blanco"
                                                     ToolTip="SELECCIONA TODOS LOS INTERNOS"
@@ -1920,6 +1978,7 @@
                                 </td>
                             </tr>
                         </table>
+                        
                         <div id="dvAgregados" style="display: none">
                             <div style="width:600px; height:100px; overflow:auto;">
                                 <asp:GridView ID="grvAgregadosPedidos" runat="server" AutoGenerateColumns="False"
@@ -2007,7 +2066,7 @@
                                     </asp:TemplateField>
                                 </Columns>
                                 </asp:GridView>
-    						        <asp:GridView ID="grvAgregadosInternos" runat="server" AutoGenerateColumns="False"
+    						    <asp:GridView ID="grvAgregadosInternos" runat="server" AutoGenerateColumns="False"
                                     AllowPaging='<%# ActivePaging %>' PageSize="5" ShowHeader="True" Width="100%" CssClass="grvResultadoConsultaCss"
                                     ShowHeaderWhenEmpty="False" ShowFooter="False" DataKeyNames="Folio,Secuencia,Año,Sucursal"
                                     OnRowCreated="grvAgregadosInternos_RowCreated"

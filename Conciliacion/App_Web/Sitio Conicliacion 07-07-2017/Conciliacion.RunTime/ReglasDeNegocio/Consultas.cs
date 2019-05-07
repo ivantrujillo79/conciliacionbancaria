@@ -279,6 +279,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ReferenciaNoConciliada> ConsultaDetalleInternoPendienteDeposito(ConciliacionInterna configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int sucursalinterno, short dias, decimal diferencia, int statusconcepto, decimal monto, bool deposito, DateTime fminima, DateTime fmaxima);
 
+        public abstract List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDepositoAFuturo(DateTime FInicio, DateTime FFinal,
+            ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio,
+            decimal diferencia, int statusconcepto, bool deposito);
+
         //Lista Nueva
         public abstract List<TransferenciaBancarias> ObtenieneTransferenciasBancarias(short corporativoOrigen, int sucursalOrigen,
                                                                                       string cuentabancoOrigen, int año, short mes, string status);
