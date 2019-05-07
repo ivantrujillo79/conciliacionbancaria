@@ -3616,6 +3616,45 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         return rdbVerDepositoRetiro.SelectedValue.Equals("DEPOSITOS");
     }
 
+    public void Consulta_Externos_AFuturo(DateTime FInicio, DateTime FFinal, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia,
+                              int tipoConciliacion, int statusConcepto, bool esDeposito)
+    {
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
+        if (connection.State == ConnectionState.Closed)
+        {
+            seguridad.Conexion.Open();
+        }
+        try
+        {
+            listaReferenciaExternas = tipoConciliacion == 2 || tipoConciliacion == 6
+                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
+                                                (FInicio, FFinal,
+                                                 chkReferenciaEx.Checked
+                                                     ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
+                                                     : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
+                                                 corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
+                                                 esDeposito)
+                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
+                                                (FInicio, FFinal,
+                                                 chkReferenciaEx.Checked
+                                                     ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno
+                                                     : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.TodoInterno,
+                                                 corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
+                                                 esDeposito);
+
+            Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
+
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public void Consulta_Externos(int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia,
                                   int tipoConciliacion, int statusConcepto, bool esDeposito)
     {
@@ -7617,4 +7656,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         mpeLanzarDetalle.Show();
     }
 
+    protected void btnFiltraAFuturo_Click(object sender, ImageClickEventArgs e)
+    {
+        Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+                                  tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+    }
 }
