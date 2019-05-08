@@ -1635,6 +1635,51 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
+    public void Consulta_Externos_AFuturo(DateTime FInicio, DateTime FFinal, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia,
+                              int tipoConciliacion, int statusConcepto, bool esDeposito)
+    {
+        SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
+        if (connection.State == ConnectionState.Closed)
+        {
+            seguridad.Conexion.Open();
+        }
+
+        try
+        {
+
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]);
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = Convert.ToSByte(tipoConciliacion);
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+            if (objSolicitdConciliacion.ConsultaPedido())
+                listaReferenciaExternas =
+                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo(FInicio, FFinal, chkReferenciaEx.Checked
+                                                         ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
+                                                         : Consultas.ConsultaExterno.DepositosPedido,
+                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+            if (objSolicitdConciliacion.ConsultaArchivo())
+                listaReferenciaExternas =
+                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
+                                                    (FInicio, FFinal, chkReferenciaEx.Checked
+                                                         ? Consultas.ConsultaExterno.ConReferenciaInterno
+                                                         : Consultas.ConsultaExterno.TodoInterno,
+                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+
+            Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     protected void rdbSecuenciaIn_CheckedChanged(object sender, EventArgs e)
     {
         quitarSeleccionRadio("ARCHIVOINTERNO");
@@ -3670,6 +3715,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+                                  tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
     }
 }
