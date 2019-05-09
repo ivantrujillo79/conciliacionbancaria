@@ -1306,6 +1306,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {
                         referen.TipoCobro = this.TipoCobro;
+                        referen.TipoCobroAnterior = this.TipoCobroAnterior;
                         referen.Guardar();
                         this.Completo = true;
                     }

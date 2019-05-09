@@ -37,7 +37,7 @@
 });
 
     function TxtPalabrasClave_CuandoCambie() {
-        console.log("hola");
+        //console.log("hola");
         return false;
     }
 
