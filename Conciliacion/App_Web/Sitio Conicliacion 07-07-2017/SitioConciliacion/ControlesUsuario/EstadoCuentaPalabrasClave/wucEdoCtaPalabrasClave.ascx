@@ -1,9 +1,13 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="wucEdoCtaPalabrasClave.ascx.cs" Inherits="ControlesUsuario_EstadoCuentaPalabrasClave_wucEdoCtaPalabrasClave" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
+<script src="/App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
 
 <script type="text/javascript">
+     var arrPalabrasInicial={};
 
     $(document).ready(function(){
         $("#<%=ddlBanco.ClientID%>").change(function () {
@@ -19,9 +23,9 @@
             CargaPalabrasClave();
         });
 
-        $("#TxtPalabrasClave").change(function () {
-            CargaPalabrasClaveRepetida();
-        });
+        //$("#TxtPalabrasClave").change(function () {
+        //    CargaPalabrasClaveRepetida();
+        //});
 
         $("#<%=ddlTipoCobro.ClientID%>").change(function () {
                $("#<%=LblFormaPago.ClientID%>").text('');
@@ -33,6 +37,17 @@
         $("#btnAceptar").click(function(){
             GuardarPalabrasClave();      
         });
+
+         $("#TxtPalabrasClave").tagsinput({
+              onTagExists: function(item, $tag) {
+                  $tag.hide().fadeIn();
+
+                   $('#Mensaje').text('¡Ya existe la palabra clave '+item +', favor de verificar!');
+                   $("#myModal").modal('show');
+                  
+              }
+        });
+
    
 });
 
@@ -215,6 +230,10 @@
                         $('#Mensaje').text('¡No existe información con los datos proporcionados!');
                         $("#myModal").modal('show');
                     }
+                    else
+                     {
+                        arrPalabrasInicial=$("#TxtPalabrasClave").tagsinput('items').toString();
+                     }
                 },
                 error: function (r) {
                     alert(r.responseText);
@@ -261,13 +280,6 @@
               return;
         }
 
-       //if ($("#TxtPalabrasClave").val() == "")
-       // {
-       //    //alert('¡Capture palabras clave!');
-       //      $('#Mensaje').text('¡Capture palabras clave!');
-       //            $("#myModal").modal('show');
-       //       return;
-       //     }
 
 
 
@@ -280,11 +292,12 @@
         objParametros.palabraclave = '';
 
 
-        var objPalabrasClave=$("#TxtPalabrasClave").tagsinput('items').toString();
+        var objPalabrasClave = $("#TxtPalabrasClave").tagsinput('items').toString();
+
+        var arrInicial=arrPalabrasInicial.split(',');
         var arr = objPalabrasClave.split(',');
 
         for (var i = 0; i < arr.length; i++) { 
-                   //s += ' ' + datos[i].PalabraClave ;  
             if(objParametros.palabraclave==''){ 
                 objParametros.palabraclave = arr[i];
             }
@@ -293,7 +306,9 @@
                 objParametros.palabraclave = objParametros.palabraclave + '|' + arr[i];
              }
 
-              }  
+           }  
+
+
  
          $.ajax({
                 type: "POST",
@@ -306,14 +321,15 @@
                     var res = JSON.parse(data.d)   
 
                     if (res = 'true') {
-                        if (objParametros.palabraclave == '')
+                        if (objParametros.palabraclave == '' || arr.length<arrInicial.length )
                             $('#Mensaje').text('¡La palabra clave se ha eliminado con éxito!');
                         else
                             $('#Mensaje').text('¡Palabra clave registrada exitosamente!');
                     }
                     $("#myModal").modal('show');
- 
-                   
+
+                    CargaPalabrasClave();
+
 
                 },
                 error: function (r) {
@@ -342,6 +358,10 @@
 
 
     }
+
+    function compareArrays(arr1, arr2) {
+    return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
+};
 
 
 
