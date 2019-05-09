@@ -1500,7 +1500,8 @@
                                         <asp:DropDownList ID="ddlTiposDeCobro" runat="server" AutoPostBack="False"
                                             CssClass="etiqueta dropDownPequeño" Style="margin-bottom: 3px; margin-right: 3px"
                                             Width="150px"
-                                            ToolTip="Seleccione el tipo de cobro para asignarlo al guardar">
+                                            ToolTip="Seleccione el tipo de cobro para asignarlo al guardar"
+                                            >
                                             </asp:DropDownList>
                                     </td>
                                 </tr>

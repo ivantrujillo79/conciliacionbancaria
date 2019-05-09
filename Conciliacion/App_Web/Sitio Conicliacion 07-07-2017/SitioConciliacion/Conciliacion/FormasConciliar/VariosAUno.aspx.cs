@@ -2735,6 +2735,15 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
 
+        if (rfEx.TipoCobro == 0 || rfEx.TipoCobro == 10)
+        {
+            rfEx.TipoCobro = 10;
+            ddlTiposDeCobro.CssClass = "select-css-rojo";
+        }
+        else
+            ddlTiposDeCobro.CssClass = "select-css";
+        ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
+
         if (chk.Checked)
         {
             //if (rfEx.StatusConciliacion == "CONCILIACION CANCELADA")
@@ -3713,9 +3722,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         }
     }
 
-    protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)
+    protected void btnFiltraAFuturo_Click(object sender, ImageClickEventArgs e)
     {
         Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+    }
+
+    protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)
+    {
     }
 }

@@ -3727,9 +3727,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             LimpiarExternosReferencia(rfEx);
 
             if (rfEx.TipoCobro != 0)
+            {
                 ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
+                rfEx.TipoCobroAnterior = rfEx.TipoCobro;
+            }
             else
+            {
                 ddlTiposDeCobro.SelectedValue = "10";
+                rfEx.TipoCobroAnterior = 10;
+                rfEx.TipoCobro = 10;
+            }
             if (ddlTiposDeCobro.SelectedValue == "0" || ddlTiposDeCobro.SelectedValue == "10")
                 ddlTiposDeCobro.CssClass = "select-css-rojo";
             else
@@ -7279,10 +7286,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             throw ex;
                         }
                     }
+                    SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                    objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                    objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+                    if (objSolicitdConciliacion.ConsultaPedido())
+                    {
+                        grvPedidos.DataSource = tableBuscaCliente;
+                        grvPedidos.DataBind();
+                    }
                     return;
                 }
-                grvInternos.DataBind();
-                grvInternos.DataBind();
+                //else
+                //{
+                    grvInternos.DataBind();
+                    grvInternos.DataBind();
+                //}
             }
         }
         catch(Exception ex)
@@ -7660,5 +7678,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+    }
+
+    protected void ddlTiposDeCobro_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        
     }
 }
