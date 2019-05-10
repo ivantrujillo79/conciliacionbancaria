@@ -227,6 +227,7 @@
                    
                     if (datos.length==0)
                     {
+
                         $('#Mensaje').text('¡No existe información con los datos proporcionados!');
                         $("#myModal").modal('show');
                     }
@@ -284,6 +285,9 @@
 
 
 
+
+
+
         var objParametros = {};
         objParametros.banco = $.trim($("#<%=ddlBanco.ClientID%>").val());
         objParametros.cuentabanco = $.trim($("#<%=ddlCuenta.ClientID%>").val());
@@ -294,7 +298,15 @@
 
         var objPalabrasClave = $("#TxtPalabrasClave").tagsinput('items').toString();
 
-        var arrInicial=arrPalabrasInicial.split(',');
+        if (arrPalabrasInicial.length > 0)
+        { 
+                var arrInicial = arrPalabrasInicial.split(',');
+        }
+        else
+        {
+            var arrInicial = {};
+        }
+
         var arr = objPalabrasClave.split(',');
 
         for (var i = 0; i < arr.length; i++) { 
