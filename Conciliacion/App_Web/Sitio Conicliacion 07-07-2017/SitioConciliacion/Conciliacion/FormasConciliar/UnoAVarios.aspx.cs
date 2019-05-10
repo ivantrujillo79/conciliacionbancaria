@@ -3182,134 +3182,137 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void llenarListaEntrega()
     {
-        try
-        {
-            string  tipo = ViewState["tipo"] as string;
-            if(tipo== "1")
+        if (_URLGateway != null && _URLGateway != string.Empty)
+        { 
+            try
             {
-                tblReferenciaAgregadasInternas = ViewState["POR_CONCILIAR"] as DataTable;
-                RTGMCore.DireccionEntrega temp;
-                foreach (DataRow item in tblReferenciaAgregadasInternas.Rows)
+                string tipo = ViewState["tipo"] as string;
+                if (tipo == "1")
                 {
-                    try
+                    tblReferenciaAgregadasInternas = ViewState["POR_CONCILIAR"] as DataTable;
+                    RTGMCore.DireccionEntrega temp;
+                    foreach (DataRow item in tblReferenciaAgregadasInternas.Rows)
                     {
-                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
-                        if (temp != null)
+                        try
                         {
-                            item["Nombre"] = temp.Nombre;
+                            temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                            if (temp != null)
+                            {
+                                item["Nombre"] = temp.Nombre;
+                            }
+                            else
+                            {
+                                if (_URLGateway != string.Empty)
+                                    item["Nombre"] = "No encontrado";
+                            }
                         }
-                        else
+                        catch (Exception Ex)
                         {
-                            if (_URLGateway != string.Empty)
-                                item["Nombre"] = "No encontrado";
+                            item["Nombre"] = Ex.Message;
                         }
                     }
-                    catch(Exception Ex)
-                    {
-                        item["Nombre"] = Ex.Message;
-                    }
-                }
-                //RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
-                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
-                grvAgregadosPedidos.DataBind();
-                Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                string valor = ViewState["valor"] as string;
-                if (valor == "1")
-                {
+                    //RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
                     grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                     grvAgregadosPedidos.DataBind();
                     Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                    wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                    string valor = ViewState["valor"] as string;
+                    if (valor == "1")
+                    {
+                        grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                        grvAgregadosPedidos.DataBind();
+                        Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
+                        wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                    }
                 }
-            }
-            else if(tipo == "2")
-            {
-                DataTable dttemp =  ViewState["POR_CONCILIAR"] as DataTable;
-                RTGMCore.DireccionEntrega temp;
-                foreach (DataRow item in dttemp.Rows)
+                else if (tipo == "2")
                 {
-                    try
+                    DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+                    RTGMCore.DireccionEntrega temp;
+                    foreach (DataRow item in dttemp.Rows)
                     {
-                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
-                        if (temp != null)
+                        try
                         {
-                            item["Nombre"] = temp.Nombre;
+                            temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                            if (temp != null)
+                            {
+                                item["Nombre"] = temp.Nombre;
+                            }
+                            else
+                            {
+                                if (_URLGateway != string.Empty)
+                                    item["Nombre"] = "No encontrado";
+                            }
                         }
-                        else
+                        catch (Exception Ex)
                         {
-                            if (_URLGateway != string.Empty)
-                                item["Nombre"] = "No encontrado";
+                            item["Nombre"] = Ex.Message;
                         }
                     }
-                    catch (Exception Ex)
-                    {
-                        item["Nombre"] = Ex.Message;
-                    }
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dttemp;
+                    grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
+                    grvPedidos.DataBind();
+                    grvPedidos.DataBind();
                 }
-                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dttemp;
-                grvPedidos.DataSource = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
-                grvPedidos.DataBind();
-                grvPedidos.DataBind();
-            }
-            else if(tipo == "3")
-            {
-                DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
-                RTGMCore.DireccionEntrega temp;
-                foreach (DataRow item in dttemp.Rows)
+                else if (tipo == "3")
                 {
-                    try
+                    DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+                    RTGMCore.DireccionEntrega temp;
+                    foreach (DataRow item in dttemp.Rows)
                     {
-                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
-                        if (temp != null)
+                        try
                         {
-                            item["Nombre"] = temp.Nombre;
+                            temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                            if (temp != null)
+                            {
+                                item["Nombre"] = temp.Nombre;
+                            }
+                            else
+                            {
+                                if (_URLGateway != string.Empty)
+                                    item["Nombre"] = "No encontrado";
+                            }
                         }
-                        else
+                        catch (Exception Ex)
                         {
-                            if (_URLGateway != string.Empty)
-                                item["Nombre"] = "No encontrado";
+                            item["Nombre"] = Ex.Message;
                         }
                     }
-                    catch (Exception Ex)
-                    {
-                        item["Nombre"] = Ex.Message;
-                    }
+                    grvPedidos.DataSource = dttemp;
+                    grvPedidos.DataBind();
                 }
-                grvPedidos.DataSource = dttemp;
-                grvPedidos.DataBind();
-            }
-            else if (tipo=="4")
-            {
-                DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
-                RTGMCore.DireccionEntrega temp;
-                foreach (DataRow item in dttemp.Rows)
+                else if (tipo == "4")
                 {
-                    try
+                    DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+                    RTGMCore.DireccionEntrega temp;
+                    foreach (DataRow item in dttemp.Rows)
                     {
-                        temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
-                        if (temp != null)
+                        try
                         {
-                            item["Nombre"] = temp.Nombre;
+                            temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                            if (temp != null)
+                            {
+                                item["Nombre"] = temp.Nombre;
+                            }
+                            else
+                            {
+                                if (_URLGateway != string.Empty)
+                                    item["Nombre"] = "No encontrado";
+                            }
                         }
-                        else
+                        catch (Exception Ex)
                         {
-                            if (_URLGateway != string.Empty)
-                                item["Nombre"] = "No encontrado";
+                            item["Nombre"] = Ex.Message;
                         }
                     }
-                    catch (Exception Ex)
-                    {
-                        item["Nombre"] = Ex.Message;
-                    }
+                    grvPedidos.PageIndex = 0;
+                    grvPedidos.DataSource = dttemp;
+                    grvPedidos.DataBind();
                 }
-                grvPedidos.PageIndex = 0;
-                grvPedidos.DataSource = dttemp;
-                grvPedidos.DataBind();
             }
-        }
-        catch (Exception ex)
-        {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            catch (Exception ex)
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            }
         }
     }
 
