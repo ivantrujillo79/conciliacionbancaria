@@ -2727,7 +2727,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                         for (int i = 0; i < listRefCon.Count; i++)
                         {
                             ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
-                            //refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+                            refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
                             if (refcon.Selecciona)
                             {
                                 refcon.Guardar();
