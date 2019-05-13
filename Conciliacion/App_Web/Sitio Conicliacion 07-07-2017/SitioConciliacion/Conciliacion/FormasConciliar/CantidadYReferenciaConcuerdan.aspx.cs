@@ -147,13 +147,13 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
             wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
 
+            corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+            sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+            año = Convert.ToInt32(Request.QueryString["Año"]);
+            folio = Convert.ToInt32(Request.QueryString["Folio"]);
+            mes = Convert.ToSByte(Request.QueryString["Mes"]);
             if (!Page.IsPostBack)
             {
-                corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                año = Convert.ToInt32(Request.QueryString["Año"]);
-                folio = Convert.ToInt32(Request.QueryString["Folio"]);
-                mes = Convert.ToSByte(Request.QueryString["Mes"]);
 
                 /*Se requiere realizar la modificacion de tipoConimgAutomaticaciliacion desde esta vista, 
                  * ya que no se requiere modifcar alguna otra vista por lo cual se envia de manera 
@@ -710,23 +710,26 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             tblReferenciasAConciliar.Columns.Add("TipoCobroAnterior", typeof(int));
 
             listaReferenciaConciliadaPedido = HttpContext.Current.Session["POR_CONCILIAR"] as List<ReferenciaConciliadaPedido>;
-            foreach (var item in listaReferenciaConciliadaPedido)
-            {
-                try
+            if (_URLGateway != string.Empty)
+            { 
+                foreach (var item in listaReferenciaConciliadaPedido)
                 {
-                    RTGMCore.DireccionEntrega cliente = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item.Cliente);
-                    if (cliente != null)
+                    try
                     {
-                        item.Nombre = cliente.Nombre;
+                        RTGMCore.DireccionEntrega cliente = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == item.Cliente);
+                        if (cliente != null)
+                        {
+                            item.Nombre = cliente.Nombre;
+                        }
+                        else
+                        {
+                            item.Nombre = "No encontrado";
+                        }
                     }
-                    else
+                    catch(Exception Ex)
                     {
-                        item.Nombre = "No encontrado";
+                        item.Nombre = Ex.Message;
                     }
-                }
-                catch(Exception Ex)
-                {
-                    item.Nombre = Ex.Message;
                 }
             }
 
@@ -979,10 +982,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     validarPeticion = true;
                     ObtieneNombreCliente(listadistintos);
                 }
-                else
-                {
+                //else
+                //{
                     llenarListaEntrega();
-                }
+                //}
             }
             catch (Exception ex)
             {

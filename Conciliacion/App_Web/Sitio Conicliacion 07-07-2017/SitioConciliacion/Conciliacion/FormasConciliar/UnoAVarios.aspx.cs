@@ -2985,10 +2985,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void RellenaColumnaNombreClienteDeCRM(DataTable tabla)
     {
+        List<int> listadistintos = new List<int>();
+        listaClientesEnviados = new List<int>();
         if (_URLGateway != string.Empty)
         {
-            List<int> listadistintos = new List<int>();
-            listaClientesEnviados = new List<int>();
             try
             {
                 listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
@@ -3014,25 +3014,27 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                 }
             }
-            try
+        }
+
+        try
+        {
+            ViewState["tipo"] = "1";
+            ViewState["POR_CONCILIAR"] = tabla;
+            if (listadistintos.Count > 0)
             {
-                ViewState["tipo"] = "1";
-                ViewState["POR_CONCILIAR"] = tabla;
-                if (listadistintos.Count > 0)
-                {
-                    validarPeticion = true;
-                    ObtieneNombreCliente(listadistintos);
-                }
-                else
-                {
-                    llenarListaEntrega();
-                }
+                validarPeticion = true;
+                ObtieneNombreCliente(listadistintos);
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                llenarListaEntrega();
             }
         }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
     }
 
     public string consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario user, byte modulo, string cadenaconexion, string URLGateway)
@@ -3182,8 +3184,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void llenarListaEntrega()
     {
-        if (_URLGateway != null && _URLGateway != string.Empty)
-        { 
+        //if (_URLGateway != null && _URLGateway != string.Empty)
+        //{ 
             try
             {
                 string tipo = ViewState["tipo"] as string;
@@ -3313,7 +3315,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
             }
-        }
+        //}
     }
 
     private List<Cliente> ConsultaCLienteCRMdt(DataTable dt)
@@ -5912,13 +5914,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
 
                 listaReferenciaPedidos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliadaPedido>;
-
+                if (grvPedidos.Rows.Count == 0)
+                {
+                    grvPedidos.DataSource = listaReferenciaPedidos;
+                    grvPedidos.DataBind();
+                }
                 int pedido = 0;
                 int celulaPedido = 0;
                 int añoPedido = 0;
                 string folioFactura = "";
                 ReferenciaNoConciliadaPedido rnc;
-
+                
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
                     pedido = Convert.ToInt32(grvPedidos.DataKeys[gRowIn.RowIndex].Values["Pedido"]);
@@ -7228,7 +7234,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
         try
         {
-            if (tipoConciliacion == 2)
+            if (tipoConciliacion == 2 && tipoConciliacion == 4)
             {
                 if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "UnoAVarios")
                     grvPrima = (GridView)Session["TABLADEAGREGADOS"];
