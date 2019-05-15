@@ -59,6 +59,7 @@ public partial class Inicio : System.Web.UI.Page
                     Response.Cache.SetExpires(DateTime.Now);
                 }
             }
+            //wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -612,4 +613,26 @@ public partial class Inicio : System.Web.UI.Page
         Response.Redirect("~/Conciliacion/ConsultarDocumentos.aspx");
     }
 
+
+    protected void btnBuscaPagoEdoCtaAceptar_Click(object sender, EventArgs e)
+    {
+        mpeBuscadorPagoEdoCta.Hide();
+    }
+
+    protected void btnBuscaEdoCtaBuscar_Click(object sender, EventArgs e)
+    {
+        if (txtMonto.Text.Trim() == "")
+            txtMonto.Text = "0";
+        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked);
+        grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
+        if (listaEstadoCuenta.Count > 0)
+            grvPagoEstadoCuenta.DataBind();
+        else
+        {
+            mpeBuscadorPagoEdoCta.Hide();
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','No se encontr&oacute; registro que coincida con los par&aacute;metros de b&uacute;squeda proporcionados.', function(){ });", true);
+
+        }
+    }
 }

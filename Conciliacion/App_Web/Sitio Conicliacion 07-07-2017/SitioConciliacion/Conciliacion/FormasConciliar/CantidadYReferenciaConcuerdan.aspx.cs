@@ -1233,6 +1233,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 {
                     rc.TipoCobro = rnc.TipoCobro;
                     rc.TipoCobroAnterior = rnc.TipoCobro;
+                    //if (rnc.TipoCobro == 0)
+                    //{
+                    //    rc.TipoCobro = 10;
+                    //    rc.TipoCobroAnterior = 10;
+                    //}
                     if (listaTransaccionesConciliadas != null)
                         resultado =
                             listaTransaccionesConciliadas.SelectMany(
@@ -2730,7 +2735,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                         for (int i = 0; i < listRefCon.Count; i++)
                         {
                             ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
-                            refcon.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
                             if (refcon.Selecciona)
                             {
                                 refcon.Guardar();
@@ -3526,7 +3530,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         GridViewRow grv = (GridViewRow)ddl.Parent.Parent;
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
+        rfEx.TipoCobroAnterior = rfEx.TipoCobro;
         rfEx.TipoCobro = int.Parse(ddl.SelectedValue.ToString());
-
     }
 }
