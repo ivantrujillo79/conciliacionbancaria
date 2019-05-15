@@ -21,10 +21,7 @@
     <script src="../../App_Scripts/ScrollGridView/gridviewScroll.min.js" type="text/javascript"></script>
     <!-- ScrollBar GridView -->
 
-    <script type="text/javascript" language="javascript">
-        Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(BeginRequestHandler);
-        function BeginRequestHandler(sender, args) { var oControl = args.get_postBackElement(); oControl.disabled = true; }
-    </script>
+
 
     <script type="text/javascript">
         //        $(document).ready(function () {

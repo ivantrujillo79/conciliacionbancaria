@@ -4893,6 +4893,11 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = año;
                     comando.Parameters.Add("@Mes", System.Data.SqlDbType.Int).Value = mes;
                     comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = folio;
+                    if (usuario !="")
+                    {
+                        comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar,20).Value = usuario;
+                    }
+
                     comando.CommandTimeout = 900;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -5001,6 +5006,10 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Año", System.Data.SqlDbType.Int).Value = año;
                     comando.Parameters.Add("@Mes", System.Data.SqlDbType.Int).Value = mes;
                     comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = folio;
+                    if (usuario !="")
+                    {
+                        comando.Parameters.Add("@UsuarioLogin", System.Data.SqlDbType.VarChar,20).Value = usuario;
+                    }
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
