@@ -1149,6 +1149,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
         try
         {
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             listaReferenciaExternas =
                 //tipoConciliacion == 2 ? 
                 Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito(
@@ -1156,7 +1157,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                        Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido,
                 //: Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
                                                  corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
-                                                 esDeposito)
+                                                 esDeposito, c.Banco, lblCuenta.Text)
                 //: Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                 //      (chkReferenciaEx.Checked
                 //           ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno

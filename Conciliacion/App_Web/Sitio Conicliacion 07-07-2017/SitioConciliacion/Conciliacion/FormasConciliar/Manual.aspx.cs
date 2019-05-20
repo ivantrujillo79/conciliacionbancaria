@@ -1533,17 +1533,20 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
         try
         {
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             listaReferenciaExternas = tipoConciliacion == 2
                                           ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                                      : Consultas.ConsultaExterno.DepositosPedido,
-                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito)
+                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
+                                                     c.Banco,lblCuenta.Text)
                                           : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Consultas.ConsultaExterno.ConReferenciaInterno
                                                      : Consultas.ConsultaExterno.TodoInterno,
-                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
+                                                     c.Banco, lblCuenta.Text);
 
             Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
         }

@@ -1608,20 +1608,22 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             objSolicitdConciliacion.TipoConciliacion = Convert.ToSByte(tipoConciliacion);
             objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             if (objSolicitdConciliacion.ConsultaPedido())
                 listaReferenciaExternas =
                     Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito(chkReferenciaEx.Checked
                                                          ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                                          : Consultas.ConsultaExterno.DepositosPedido,
-                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
+                                                         c.Banco, lblCuenta.Text.Trim());
             if (objSolicitdConciliacion.ConsultaArchivo())
                 listaReferenciaExternas =
                     Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                     (chkReferenciaEx.Checked
                                                          ? Consultas.ConsultaExterno.ConReferenciaInterno
                                                          : Consultas.ConsultaExterno.TodoInterno,
-                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito);
+                                                         corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
+                                                         c.Banco, lblCuenta.Text.Trim());
 
             Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
         }

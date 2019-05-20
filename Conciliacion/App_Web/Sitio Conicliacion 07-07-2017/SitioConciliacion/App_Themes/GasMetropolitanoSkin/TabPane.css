@@ -42,7 +42,7 @@
 {
     border-color: #333;
     color: #41b2c1;
-    background: url(../App_Themes/GasMetroPolitanoSkin/Imagenes/activo.png) left center no-repeat;
+    background: url(/App_Themes/GasMetroPolitanoSkin/Imagenes/activo.png) left center no-repeat;
     background-repeat: no-repeat;
 }
 .tabEstilo .ajax__tab_body

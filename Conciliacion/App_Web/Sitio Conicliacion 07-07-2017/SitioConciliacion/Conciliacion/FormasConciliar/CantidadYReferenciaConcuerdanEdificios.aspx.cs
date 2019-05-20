@@ -548,14 +548,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
         try
         {
-            listaReferenciaExternas =
+           // listaReferenciaExternas =
                 //tipoConciliacion == 2 ? 
-                Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito(
+                //Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito(
                 //chkReferenciaEx.Checked? 
-                                                       Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido,
+                                                      // Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido,
                 //: Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
-                                                 corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
-                                                 esDeposito)
+                                                 //corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
+                                                 //esDeposito)
                 //: Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                 //      (chkReferenciaEx.Checked
                 //           ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno
