@@ -3674,19 +3674,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         try
         {
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             listaReferenciaExternas = tipoConciliacion == 2 || tipoConciliacion == 6
                                           ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                                      : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
                                                  corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
-                                                 esDeposito)
+                                                 esDeposito, cboCuentaBanco.SelectedIndex, lblCuenta.Text.Trim())
                                           : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno
                                                      : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.TodoInterno,
                                                  corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
-                                                 esDeposito);
+                                                 esDeposito, c.Banco, lblCuenta.Text.Trim());
 
             Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
 

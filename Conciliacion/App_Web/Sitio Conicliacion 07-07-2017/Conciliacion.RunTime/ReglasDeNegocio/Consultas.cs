@@ -275,7 +275,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract bool BorrarTransaccionesNoCorrespondidas(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
 
-        public abstract List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia, int statusconcepto, bool deposito);
+        public abstract List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia, int statusconcepto, bool deposito, int Banco, string CuentaBancaria);
 
         public abstract List<ReferenciaNoConciliada> ConsultaDetalleInternoPendienteDeposito(ConciliacionInterna configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int sucursalinterno, short dias, decimal diferencia, int statusconcepto, decimal monto, bool deposito, DateTime fminima, DateTime fmaxima);
 

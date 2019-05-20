@@ -40,7 +40,30 @@
                 $("#<%=miMenu.ClientID%>").hide();
             });
             gridview = $('#' + gridviewID);
+
+            activarDatePickers();
         }
+
+        function activarDatePickers() {
+            // DatePickers BUSCA MONTO EN EDO CTA
+            $("#<%= txtFinicio.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFfinal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%= txtFfinal.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFinicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        }
+
     </script>
     <script src="App_Scripts/jsHoverGridView.js" type="text/javascript"></script>
 </asp:Content>
@@ -86,7 +109,8 @@
                 function OcultarPopUpBuscadorPagoEdoCta() {
                     $find("ModalBehaviorBuscadorPagoEdoCta").hide();
                 }
-                
+
+
             </script>
             <table style="width: 100%">
                 <tr>
