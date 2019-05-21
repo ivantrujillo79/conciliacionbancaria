@@ -2,9 +2,12 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
 <script src="/App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
+<%--<link href="../../App_Scripts/Bootstrap/bootstrap-335/bootstrap.min.css" rel="stylesheet" />
+<link href="../../App_Scripts/Bootstrap/bootstrap-335/bootstrap-theme.min.css" rel="stylesheet" />--%>
 
 <script type="text/javascript">
      var arrPalabrasInicial={};
@@ -478,10 +481,10 @@
                 
                    
        </tr>
-        <tr>
-            
-                    <td style="text-align:center" colspan="6"><asp:Label ID="LblFormaPago" runat="server" Text="Forma de Pago Elegida:    " CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label></td>
-             
+       <tr>            
+            <td style="text-align:center" colspan="6">
+                <asp:Label ID="LblFormaPago" runat="server" Text="Forma de Pago Elegida:    " CssClass="etiqueta fg-color-negro centradoMedio" Font-Bold="True" Font-Size="Medium"></asp:Label>
+            </td>
        </tr>
          <tr>
             <td colspan="6" ></td>
@@ -497,16 +500,15 @@
 
         <tr>
             <td style="text-align:center" colspan="2" >
-                  &nbsp;</td>    
-            
-                   
+                  &nbsp;
+            </td>
+
             <td style="text-align:center" colspan="2" class="auto-style3" >
                   <span class="auto-style2">Palabra Clave Elegida:</span>
-                  
 
-  <div class="form-group" style="align-content:center">
-   
-    <input type="text" value=""  id="TxtPalabrasClave"   data-role="tagsinput" class="form-control" onchange="return TxtPalabrasClave_CuandoCambie();" />
+            <div class="form-group" style="align-content:center">
+
+            <input type="text" value=""  id="TxtPalabrasClave"   data-role="tagsinput" class="form-control" onchange="return TxtPalabrasClave_CuandoCambie();" />
   </div>
          
 
