@@ -3726,8 +3726,15 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     protected void btnFiltraAFuturo_Click(object sender, ImageClickEventArgs e)
     {
-        Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+        corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+        sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+        año = Convert.ToInt32(Request.QueryString["Año"]);
+        folio = Convert.ToInt32(Request.QueryString["Folio"]);
+        mes = Convert.ToSByte(Request.QueryString["Mes"]);
+            Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+        GenerarTablaExternos();
+        LlenaGridViewExternos();
     }
 
     protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)

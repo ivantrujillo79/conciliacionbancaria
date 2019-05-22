@@ -5307,6 +5307,8 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
                         App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
+                    comando.Parameters.Add("@FechaIni", System.Data.SqlDbType.DateTime).Value = FInicio;
+                    comando.Parameters.Add("@FechaFin", System.Data.SqlDbType.DateTime).Value = FFinal;
                     int tcobro = 0;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
