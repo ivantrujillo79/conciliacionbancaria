@@ -306,6 +306,14 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 {
                     selectedListItem.Selected = true;
                 }
+                //Selecciona el primer externo
+
+                foreach (GridViewRow fila in grvExternos.Rows.Cast<GridViewRow>().Where(fila => fila.RowType == DataControlRowType.DataRow))
+                {
+                    fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = true;
+                    chkExterno_CheckedChanged(fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault(), null);
+                    break;
+                }
             }
             dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
