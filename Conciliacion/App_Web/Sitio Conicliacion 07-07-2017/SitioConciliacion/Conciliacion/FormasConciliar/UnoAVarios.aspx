@@ -20,14 +20,19 @@
     UNO A VARIOS</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
     <!--Libreria jQuery-->
-    <script src="../../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
-    <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
 
+<%--    <script src="../../App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="../../App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
     <link href="../../App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
-    <script src="../../App_Scripts/Common.js" type="text/javascript"></script>
+    <script src="../../App_Scripts/Common.js" type="text/javascript"></script>--%>
+
+    <script src="/App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="/App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="/../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+    <link href="/App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
 
     <%--    <script src="../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>--%>
-    <script src="../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js"></script>
+<%--    <script src="../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js"></script>--%>
 
     <style type="text/css">
         .select-css {
@@ -498,6 +503,25 @@
         }
         
         function activarDatePickers() {
+
+                $("#<%= txtAFuturo_FInicio.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
             
             // DatePickers SALDO A FAVOR
             $("#<%= txtFechaInicioSAF.ClientID%>").datepicker({
@@ -577,25 +601,6 @@
                     numberOfMonths: 2,
                     onClose: function(selectedDate) {
                         $("#<%=txtFSInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
-
-                $("#<%= txtAFuturo_FInicio.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker("option", "minDate", selectedDate);
-                    }
-                });
-                $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtAFuturo_FInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
                     }
                 });
 
