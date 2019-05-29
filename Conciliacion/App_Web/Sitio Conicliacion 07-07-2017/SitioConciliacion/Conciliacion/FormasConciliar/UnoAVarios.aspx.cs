@@ -1221,11 +1221,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            if (wucCargaExcelCyC.RecuperoNoConciliados && wucCargaExcelCyC.CargarAgregados == false )
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            if (wucCargaExcelCyC.RecuperoNoConciliados && wucCargaExcelCyC.CargarAgregados == false)
             {
                 List<ReferenciaNoConciliada> ReferenciasExcel;
                 List<ReferenciaNoConciliadaPedido> ReferenciasPedidoExcel;
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 wucCargaExcelCyC.TipoConciliacion = tipoConciliacion;
                 decimal monto = 0;
                 int agregados = 0;
@@ -1253,7 +1253,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         ReferenciaPedido.Nombre = objDetalleCliente.NombreCliente;
                         RNC.AgregarReferenciaConciliadaSinVerificacion(ReferenciaPedido);
                         monto += ReferenciaPedido.Total;
-                        agregados ++;
+                        agregados++;
                     }
 
                     GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
@@ -1284,6 +1284,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     this.hdfVisibleCargaArchivo.Value = "0";
                 }
                 wucCargaExcelCyC.CargarAgregados = true;
+            }
+            else
+            {
+                ReferenciaNoConciliada RNC = leerReferenciaExternaSeleccionada();
+                GenerarTablaAgregadosArchivosInternos(RNC,tipoConciliacion);
             }
         }
         catch(Exception ex)
@@ -1730,6 +1735,58 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
     }
 
+    private void RellenaColumnaNombreClienteDeCRM_Detalle(DataTable tabla)
+    {
+        List<int> listadistintos = new List<int>();
+        listaClientesEnviados = new List<int>();
+        if (_URLGateway != string.Empty)
+        {
+            try
+            {
+                listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                if (listaDireccinEntrega == null)
+                {
+                    listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            foreach (DataRow item in tabla.Rows)
+            {
+                {
+                    if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                    {
+                        if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
+                        {
+                            listadistintos.Add(int.Parse(item["Cliente"].ToString()));
+                        }
+                    }
+                }
+            }
+        }
+
+        try
+        {
+            ViewState["tipo"] = "5";
+            ViewState["POR_CONCILIAR"] = tabla;
+            if (listadistintos.Count > 0)
+            {
+                validarPeticion = true;
+                ObtieneNombreCliente(listadistintos);
+            }
+            //else
+            //{
+            //    llenarListaEntrega();
+            //}
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     public void ConsultaDetalleTransaccionConciliada(ReferenciaNoConciliada trConciliada)
     {
         try
@@ -1763,6 +1820,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
                 }
             }
+            RellenaColumnaNombreClienteDeCRM_Detalle(tblDetalleTransaccionConciliada);
             HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"] = tblDetalleTransaccionConciliada;
         }
         catch (Exception ex)
@@ -2191,7 +2249,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (ListaVerificacionRemanente.Count != 0)
             {
                 //Se interrumpe el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
-                throw new Exception("Existe(n) " + ListaVerificacionRemanente.Count.ToString() + " pedido(s) que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
+                // se comenta porque exite un conflicto con saldo a favor
+                //throw new Exception("Existe(n) " + ListaVerificacionRemanente.Count.ToString() + " pedido(s) que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
                 return;
             }
 
@@ -2895,7 +2954,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 tblReferenciaAgregadasInternas.Columns.Add("FOperacion", typeof (DateTime));
                 tblReferenciaAgregadasInternas.Columns.Add("Monto", typeof (decimal));
                 tblReferenciaAgregadasInternas.Columns.Add("Concepto", typeof (string));
-                tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));																					  
+                tblReferenciaAgregadasInternas.Columns.Add("ClienteID", typeof(int));
+
                 //Llena GridView con lista de Agregados del Externo (PEDIDOS)
                 foreach (ReferenciaConciliadaPedido rc in refExternaSelec.ListaReferenciaConciliada)
                 {
@@ -2911,6 +2971,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         rc.ConceptoPedido
                         );
                 }
+                RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
                 grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                 grvAgregadosPedidos.DataBind();
                 Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
@@ -3310,6 +3371,35 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     grvPedidos.DataSource = dttemp;
                     grvPedidos.DataBind();
                 }
+                else if (tipo == "5")
+                {
+                    DataTable dttemp = ViewState["POR_CONCILIAR"] as DataTable;
+                    RTGMCore.DireccionEntrega temp;
+                    foreach (DataRow item in dttemp.Rows)
+                    {
+                        try
+                        {
+                            temp = listaDireccinEntrega.FirstOrDefault(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString()));
+                            if (temp != null)
+                            {
+                                item["Nombre"] = temp.Nombre;
+                            }
+                            else
+                            {
+                                if (_URLGateway != string.Empty)
+                                    item["Nombre"] = "No encontrado";
+                            }
+                        }
+                        catch (Exception Ex)
+                        {
+                            item["Nombre"] = Ex.Message;
+                        }
+                    }
+                    grvDetallePedidoInterno.PageIndex = 0;
+                    grvDetallePedidoInterno.DataSource = dttemp;
+                    grvDetallePedidoInterno.DataBind();
+                }
+
             }
             catch (Exception ex)
             {
