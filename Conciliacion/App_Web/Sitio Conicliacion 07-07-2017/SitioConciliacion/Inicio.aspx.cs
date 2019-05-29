@@ -623,6 +623,10 @@ public partial class Inicio : System.Web.UI.Page
     {
         if (txtMonto.Text.Trim() == "")
             txtMonto.Text = "0";
+        if (txtFinicio.Text == "")
+            txtFinicio.Text = DateTime.Now.AddMonths(-1).ToShortDateString();
+        if (txtFfinal.Text == "")
+            txtFfinal.Text = DateTime.Now.ToShortDateString();
         List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked);
         grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
         if (listaEstadoCuenta.Count > 0)

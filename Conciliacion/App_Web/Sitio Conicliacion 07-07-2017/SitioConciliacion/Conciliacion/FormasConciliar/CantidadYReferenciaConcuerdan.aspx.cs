@@ -244,16 +244,16 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     selectedListItem.Selected = true;
                 }
 
+                //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
+                if (ddlCriteriosConciliacion.SelectedValue == "2" || ddlCriteriosConciliacion.SelectedValue == "7")
+                    if (corporativo != 0 && sucursal != 0 && año != 0 && mes != 0 && folio != 0)
+                    {
+                        Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                        GenerarTablaConciliados();
+                        LlenaGridViewConciliadas();
+                    }
             }
 
-            //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
-            if (ddlCriteriosConciliacion.SelectedValue == "2" || ddlCriteriosConciliacion.SelectedValue == "7")
-                if (corporativo != 0 && sucursal != 0 && año != 0 && mes != 0 && folio != 0)
-                { 
-                    Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-                    GenerarTablaConciliados();
-                    LlenaGridViewConciliadas();
-                }
         }
         catch (SqlException ex)
         {
@@ -3533,5 +3533,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
         rfEx.TipoCobroAnterior = rfEx.TipoCobro;
         rfEx.TipoCobro = int.Parse(ddl.SelectedValue.ToString());
+    }
+
+    protected void imgDesconciliar_Click(object sender, EventArgs e)
+    {
+
     }
 }
