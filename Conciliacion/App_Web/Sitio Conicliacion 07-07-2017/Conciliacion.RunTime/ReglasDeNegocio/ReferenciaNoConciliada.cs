@@ -1297,6 +1297,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                             referen.SucursalInterno = this.sucursal;
                         }
                         referen.TipoCobro = this.TipoCobro;
+                        referen.TipoCobroAnterior = this.TipoCobroAnterior;
                         referen.Guardar();
                         this.Completo = true;
                     }
