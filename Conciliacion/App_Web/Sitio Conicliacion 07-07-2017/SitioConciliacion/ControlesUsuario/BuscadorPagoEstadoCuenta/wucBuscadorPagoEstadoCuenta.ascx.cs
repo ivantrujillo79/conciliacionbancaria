@@ -40,7 +40,7 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
             txtFinicio.Text = (DateTime.Today.AddMonths(-1)).ToShortDateString();
             txtFfinal.Text = DateTime.Today.ToShortDateString();
         }
-        chkBuscarEnEsta.Enabled = ActivaEstaConciliacion;
+        chkBuscarEnEsta.Enabled = true; // ActivaEstaConciliacion;
     }
 
     public void CargarGrid()

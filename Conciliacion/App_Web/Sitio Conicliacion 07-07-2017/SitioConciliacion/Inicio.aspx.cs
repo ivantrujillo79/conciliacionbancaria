@@ -96,6 +96,8 @@ public partial class Inicio : System.Web.UI.Page
                 GenerarTablaConciliaciones();
                 LlenaGridViewConciliaciones();
                 //wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = false;
+                txtFinicio.Text = (DateTime.Today.AddMonths(-1)).ToShortDateString();
+                txtFfinal.Text = DateTime.Today.ToShortDateString();
             }
             Consulta_Conciliacion();
             this.ddlEmpresa.Focus();            

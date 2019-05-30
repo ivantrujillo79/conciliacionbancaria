@@ -121,7 +121,7 @@
         </tr>
         <tr>
             <td style="padding-left: 3px" class="auto-style3" colspan="12">
-                <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Liberar Bloqeos Seleccionados" Width="228px" />
+                <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Liberar Bloqueos Seleccionados" Width="228px" />
             </td>
         </tr>
         <tr>
