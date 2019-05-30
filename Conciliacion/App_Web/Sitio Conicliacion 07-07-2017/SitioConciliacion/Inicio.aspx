@@ -446,7 +446,7 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 1%; padding-left:3px"> 
-                                            <asp:CheckBox ID="chkBuscarEnEsta" Text="Buscar en esta conciliacion" runat="server" Enabled="false" />
+                                            <asp:CheckBox ID="chkBuscarEnEsta" Text="Buscar en esta conciliación" runat="server" Enabled="false" />
                                         </td>
                                         <td style="width: 1%;"> 
                                             <asp:Label ID="Label2" runat="server" Text="Monto" CssClass="etiqueta fg-color-negro centradoMedio"></asp:Label>
@@ -477,7 +477,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 1%; padding-left:3px"> 
-                                            <asp:CheckBox ID="chkBuscarEnDepositos" Text="Buscar en depositos" runat="server" />
+                                            <asp:CheckBox ID="chkBuscarEnDepositos" Text="Buscar en depósitos" runat="server" />
                                         </td>
                                         <td style="width: 1%;"> 
                                             <asp:Label ID="Label3" runat="server" Text="F. Final" CssClass="etiqueta fg-color-negro centradoMedio"></asp:Label>

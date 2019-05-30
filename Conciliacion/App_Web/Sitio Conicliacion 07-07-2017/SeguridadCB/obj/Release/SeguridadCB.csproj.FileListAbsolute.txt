@@ -3,3 +3,9 @@ C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicl
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\obj\Release\SeguridadCB.dll
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\obj\Release\SeguridadCB.pdb
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadCB\obj\Release\SeguridadCB.csprojResolveAssemblyReference.cache
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\bin\Release\SeguridadCB.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\bin\Release\SeguridadCB.pdb
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Release\SeguridadCB.csprojAssemblyReference.cache
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Release\SeguridadCB.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Release\SeguridadCB.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadCB\obj\Release\SeguridadCB.pdb
