@@ -226,7 +226,8 @@
             if (document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos') != null) {
                 grvPreCon = document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos');
                 for (i = 0; i < grvPreCon.rows.length; i++) {
-                    dAgregados = parseFloat(dAgregados) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
+                    if (grvPreCon.rows[i].cells[5] != undefined)
+                        dAgregados = parseFloat(dAgregados) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
                 }
             }
 
