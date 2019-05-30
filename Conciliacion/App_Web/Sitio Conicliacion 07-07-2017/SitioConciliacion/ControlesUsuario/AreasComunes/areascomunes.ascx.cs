@@ -14,6 +14,38 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
     private int _clientePadre;
     private decimal _monto;
 
+    private class claseCliente
+    {
+        private int _cliente;
+        private string _nombre;
+
+        public int Cliente
+        {
+            get
+            {
+                return _cliente;
+            }
+
+            set
+            {
+                _cliente = value;
+            }
+        }
+
+        public string Nombre
+        {
+            get
+            {
+                return _nombre;
+            }
+
+            set
+            {
+                _nombre = value;
+            }
+        }
+    }
+
     private class pedidoPagar : ICloneable
     {
         private int _celulapedido;
@@ -191,12 +223,22 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
         txtTotalSeleccionado.Text = 0.ToString("C");
         txtTotalResto.Text = 0.ToString("C");
 
+        txtFSuministroInicio.Text = "";
+        txtFSuministroFin.Text = "";
+        txtPedidoReferencia.Text = "";
     }
+
+
 
 
     public void consulta(short opcion, string fInicio, string fFinal, string pReferencia)
     {
         Conexion conexion = new Conexion();
+        SeguridadCB.Public.Parametros parametros;
+        List<claseCliente> listaClientes = new List<claseCliente>();
+        claseCliente objCliente;
+        
+
         try
         {            
             conexion.AbrirConexion(false);
@@ -214,7 +256,94 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
             }
             
             objAC.consulta(conexion);
-           
+
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+
+            String fuenteCRM="";
+
+            try
+            {
+                fuenteCRM = parametros.ValorParametro(30, "FuenteCRM");
+            }
+            catch
+            {
+
+            }
+
+            String urlGateway = "";
+
+            try
+            {
+                urlGateway = parametros.ValorParametro(30, "URLGateway");
+            }
+            catch
+            {
+
+            }
+
+            try
+            {
+                if (fuenteCRM != "" & urlGateway != "")
+                {
+                    Cliente clienteCRM = new ClienteDatos(Conciliacion.RunTime.App.ImplementadorMensajes);
+                    int numeroCliente;
+
+                    objCliente = new claseCliente();
+
+                    objCliente.Cliente = ClientePadre;
+
+                    listaClientes.Add(objCliente);
+
+                    foreach (DataRow fila in objAC.Pagos.Rows)
+                    {
+                        numeroCliente = Convert.ToInt32(fila[8]);
+
+                        if (!listaClientes.Exists(cliente => cliente.Cliente == numeroCliente))
+                        {
+                            objCliente = new claseCliente();
+                            objCliente.Cliente = numeroCliente;
+                        }
+                    }
+
+                    foreach(claseCliente cliente in listaClientes)
+                    {
+                        cliente.Nombre = clienteCRM.consultaClienteCRM(cliente.Cliente, urlGateway);
+                    }
+
+                    objCliente = listaClientes.FirstOrDefault(cliente => cliente.Cliente == ClientePadre);
+
+                    if (objCliente != null)
+                    {
+                        objAC.NombreClientePadre = objCliente.Nombre;
+                    }                    
+
+
+                    foreach (DataRow fila in objAC.Pagos.Rows)
+                    {
+                        numeroCliente = Convert.ToInt32(fila[8]);
+
+                        objCliente = listaClientes.FirstOrDefault(cliente => cliente.Cliente == numeroCliente);
+                        
+                        if (objCliente != null)
+                        {
+                            fila[5] = objCliente.Nombre;
+                        }
+
+                        
+                    }
+
+
+
+                }
+            }
+            catch (Exception ex1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Error al consultar clientes en el gateway:" + ex1.Message + ");", true);
+            }
+
+            
+
+
 
             lblClientePadre.Text = "Cliente padre " + ClientePadre + " " + objAC.NombreClientePadre;
 
@@ -261,18 +390,24 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
         RadioButton rb = (RadioButton)sender;
         GridViewRow row = (GridViewRow)rb.NamingContainer;
 
-        foreach (GridViewRow oldrow in grvPedidosEmparentados.Rows)
-        {
-            if (row != oldrow)
-            {
-                if (((TextBox)oldrow.FindControl("TxtMontoPagar")).Text == "")
-                {
-                    ((TextBox)oldrow.FindControl("TxtMontoPagar")).Enabled = false;
-                    ((TextBox)oldrow.FindControl("TxtMontoPagar")).Text = "";
-                    ((RadioButton)oldrow.FindControl("RadioButton1")).Checked = false;
-                }
-            }            
-        }
+
+        //List<GridViewRow> filasCheck = new List<GridViewRow>
+        //        (from GridViewRow r in grvPedidosEmparentados.Rows
+        //         where ((RadioButton)r.FindControl("RadioButton1")).Checked == true
+        //         select r);
+
+        //foreach (GridViewRow oldrow in filasCheck)
+        //{
+        //    if (row != oldrow)
+        //    {
+        //        if (((TextBox)oldrow.FindControl("TxtMontoPagar")).Text == "")
+        //        {
+        //            ((TextBox)oldrow.FindControl("TxtMontoPagar")).Enabled = false;
+        //            ((TextBox)oldrow.FindControl("TxtMontoPagar")).Text = "";
+        //            ((RadioButton)oldrow.FindControl("RadioButton1")).Checked = false;
+        //        }
+        //    }            
+        //}
 
         //rb.Checked = !rb.Checked;
         ((TextBox)row.FindControl("TxtMontoPagar")).Enabled = rb.Checked;
@@ -512,5 +647,43 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
 
     }
 
-    
+    private void calcular()
+    {
+        TextBox txtMontoPagar;
+        decimal montoPagar;
+        decimal montoTotal = 0;
+
+        List<GridViewRow> filasCheck = new List<GridViewRow>
+                  (from GridViewRow r in grvPedidosEmparentados.Rows
+                   where ((RadioButton)r.FindControl("RadioButton1")).Checked == true
+                   select r);
+
+        foreach (GridViewRow oldrow in filasCheck)
+        {
+            txtMontoPagar = (TextBox)oldrow.FindControl("TxtMontoPagar");
+
+            decimal.TryParse(txtMontoPagar.Text, out montoPagar);
+
+            if (montoPagar > 0)
+            {
+                montoTotal = montoTotal + montoPagar;
+            }
+        }
+
+        txtTotalSeleccionado.Text = montoTotal.ToString("C");
+        txtTotalResto.Text=(Monto-montoTotal).ToString("C");
+    }
+
+    protected void btnCalcular_Click(object sender, EventArgs e)
+    {
+        calcular();
+    }
+
+    protected void TxtMontoPagar_TextChanged(object sender, EventArgs e)
+    {
+        calcular();
+    }
+
+
+
 }

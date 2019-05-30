@@ -69,6 +69,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
                 NombreClientePadre = _conexion.Comando.Parameters["@NombreClientePadre"].Value.ToString();
                 TienePagos = Pagos.Rows.Count > 0;
+
+
+                
  
               
             }
