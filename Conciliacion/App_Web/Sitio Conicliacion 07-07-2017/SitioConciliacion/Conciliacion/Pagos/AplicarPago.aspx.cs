@@ -1276,20 +1276,20 @@ private string TipoCobroDescripcion(int tipoCobro)
 
 
 
-        //if (PagosSeleccionados==0)
+        //if (PagosSeleccionados == 0)
         //{
         //    ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
         //    return;
         //}
 
-        
+
 
         List<GridViewRow> filasCheck = new List<GridViewRow>
                 (from GridViewRow r in grvPagos.Rows
                  where ((CheckBox)r.FindControl("chkSeleccionado")).Checked == true
                  select r);
 
-        if (filasCheck.Count ==0)
+        if (filasCheck.Count==0)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Es necesario que seleccione un registro');", true);
             return;
@@ -1306,14 +1306,13 @@ private string TipoCobroDescripcion(int tipoCobro)
             foreach (DataRow filaTabla in filas)
             {
                 tablaReferenciasSeleccionadas.ImportRow(filaTabla);
-            }               
-                     
+            }                     
         }
     
 
         Conexion conexion = new Conexion();
         wuAreascomunes.inicializa(ClientePadre, MontoSeleccionado);
-        //wuAreascomunes.inicializa(0, 1000);
+      //  wuAreascomunes.inicializa(8885, 1000);
         wuAreascomunes.TablaPagos = tablaReferenciasSeleccionadas;
 
 

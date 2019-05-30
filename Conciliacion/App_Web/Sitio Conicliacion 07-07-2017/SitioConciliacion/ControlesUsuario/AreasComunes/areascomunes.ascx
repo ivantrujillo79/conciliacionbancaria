@@ -1,12 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="areascomunes.ascx.cs" Inherits="ControlesUsuario_AreasComunes_areascomunes" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc2" %>
-<script runat="server">
-
-    protected void MontoPagar_TextChanged(object sender, EventArgs e)
-    {
-
-    }
-</script>
 
 
 <style type="text/css">
@@ -15,7 +8,7 @@
     }
 </style>
 
-<div style="max-height: 816px; max-height:540px;   overflow: auto; text-align: left">
+<div style="max-height: 816px; max-height:540px;   overflow: auto; text-align: left" >
 
     <p>
         <asp:Label ID="lblClientePadre" runat="server">Prueba</asp:Label>
@@ -23,8 +16,12 @@
 <%--    <asp:ScriptManager ID="ScriptManager1" runat="server"
         EnableScriptGlobalization="True">
     </asp:ScriptManager>--%>
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+<asp:Panel ID="panel" runat="server"  DefaultButton="btnCalcular">
+
+ 
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server" >
         <ContentTemplate>
+               <asp:ImageButton  ID="btnCalcular" runat="server"  Width="1px"  />
             <div>
                 <table border="0" style="width: 816px;">
                     <tr>
@@ -112,7 +109,7 @@
                     <asp:BoundField DataField="pedidoreferencia" HeaderText="P. Referencia" />
                     <asp:TemplateField HeaderText="Monto A Pagar">
                         <ItemTemplate>
-                            <asp:TextBox ID="TxtMontoPagar" Width="100px" Enabled="false" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="TxtMontoPagar" Width="100px" Enabled="false" OnTextChanged="TxtMontoPagar_TextChanged" AutoPostBack="true" runat="server"></asp:TextBox>
                             <asp:CompareValidator ID="CompareValidator1" runat="server" Display="None"
                             ControlToValidate="TxtMontoPagar" ErrorMessage="Monto a pagar debe ser menor o igual al Monto"
                             Operator="LessThanEqual" Type="Double"
@@ -130,4 +127,5 @@
 
         </ContentTemplate>
     </asp:UpdatePanel>
+    </asp:Panel>
 </div>
