@@ -1005,7 +1005,7 @@
                                     <td class="etiqueta lineaVertical centradoMedio bg-color-naranja" style="width: 5%; padding: 5px 5px 5px 5px"
                                         id="tdVerINEX" runat="server">
                                         <asp:ImageButton runat="server" ID="btnVerInternos" ToolTip="VER INTERNOS" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Ir.png"
-                                            Width="20px" Height="20px" OnClick="btnVerInternos_Click" ValidationGroup="VariosUno" />
+                                            Width="20px" Height="20px" OnClick="btnVerInternos_Click" ValidationGroup="VariosUno" Visible="true" />
                                         <asp:ImageButton runat="server" ID="btnRegresarExternos" ToolTip="REGRESAR EXTERNOS"
                                             ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Regresar.png" Width="30px"
                                             Visible="false" OnClick="btnRegresarExternos_Click" />
@@ -1036,8 +1036,8 @@
                                 </tr>
                             </table>
                         </div>
-                        <div style="width:595px; height:700px; overflow:auto;">
-                            <asp:GridView ID="grvExternos" runat="server" 
+                        <div style="width:595px; height:400px; overflow:auto;">
+                            <asp:GridView ID="grvExternos" runat="server"  Enabled="true"
                             AllowPaging='<%# ActivePaging %>' PageSize="10" 
                             AutoGenerateColumns="False" ViewStateMode="Enabled"
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"

@@ -5241,7 +5241,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         //ObtieneTipoCobroPorCuentaBancaria(cnn, corporativo, Banco, CuentaBancaria);
-                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 0 : Convert.ToInt16(reader["TipoCobro"]);
+                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 10 : Convert.ToInt16(reader["TipoCobro"]);
                         ReferenciaNoConciliada dato =
                             new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
                                 Convert.ToInt16(reader["Sucursal"]),

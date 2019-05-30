@@ -1178,6 +1178,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     protected void btnGuardarVariosAUno_Click(object sender, EventArgs e)
     {
         bool resultado = false;
+        grvExternos.Enabled = true;
+        btnVerInternos.Visible = true;
+        btnRegresarExternos.Visible = false;
         try
         {
             hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
@@ -1243,7 +1246,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         ex.ConInterno = false;
                     if (objSolicitdConciliacion.ConsultaArchivo())
                         ex.ConInterno = true;
+
+                    if (ex.TipoCobro == 0)
+                        ex.TipoCobro = 10;
+                    if (ex.TipoCobroAnterior == 0)
+                        ex.TipoCobroAnterior = 10;
                     ex.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+                    
 
                     //throw new Exception("STOP");
 
@@ -1259,7 +1268,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         LlenarBarraEstado();
 
                         dvExpera.Visible = grvPedidos.Rows.Count == 0;
-                        btnRegresarExternos.Visible = false;
+                        //btnRegresarExternos.Visible = true;
                         if (tipoConciliacion == 2)
                         {
                             grvPedidos.Visible = false;
@@ -1870,6 +1879,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             int folioConciliacion = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioConciliacion"]);
             int folioExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["FolioExterno"]);
             int secuenciaExterno = Convert.ToInt32(grvConciliadas.DataKeys[gRowConciliado.RowIndex].Values["SecuenciaExterno"]);
+            short formaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
 
             //Leer las TransaccionesConciliadas
             listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
