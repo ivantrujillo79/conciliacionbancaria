@@ -258,6 +258,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(Configuracion configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusconcepto, int sucursalinterno);
 
 
+        public abstract bool ExistenPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
+
         public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
         public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicarCliente(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int cliente,
