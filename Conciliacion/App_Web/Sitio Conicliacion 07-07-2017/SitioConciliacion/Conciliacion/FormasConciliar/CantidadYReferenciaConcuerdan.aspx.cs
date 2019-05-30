@@ -146,6 +146,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             LlenaGridViewDestinoDetalleInterno();
 
             wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
 
             corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
             sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);

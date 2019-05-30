@@ -9,10 +9,14 @@
     CONCILIACIÓN
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
-    <script src="App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
-    <script src="App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="App_Scripts/Common.js" type="text/javascript"></script>
-    <link href="App_Scripts/MenuContextual/css/Estilo.css" rel="stylesheet" type="text/css" />
+    <script src="/App_Scripts/jQueryScripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="/App_Scripts/jQueryScripts/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="/App_Scripts/Common.js" type="text/javascript"></script>
+
+    <script src="/../../App_Scripts/jQueryScripts/jquery.ui.datepicker-es.js" type="text/javascript"></script>
+    <link href="/App_Scripts/jQueryScripts/css/custom-theme/jquery-ui-1.10.2.custom.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="/App_Scripts/MenuContextual/css/Estilo.css" rel="stylesheet" type="text/css" />
     <!--  MenuContextual -->
     <script type="text/javascript">
         function pageLoad() {
@@ -20,6 +24,27 @@
             var gridviewID = "<%=grvConciliacion.ClientID%>";
             var rowid = 0;
 
+            $("#<%= txtFinicio.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd/mm/yy',
+                numberOfMonths: 1,
+                onClose: function (selectedDate) {
+                    $("#<%=txtFfinal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%=txtFfinal.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                dateFormat: 'dd/mm/yy',
+                changeYear: true,
+                numberOfMonths: 1,
+                onClose: function (selectedDate) {
+                    $("#<%=txtFinicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+        
             //Funciones Click Derecho sobre GridView
             $("#<%=miMenu.ClientID%>").hide();
             $("table[id$='grvConciliacion'] > tbody > tr").bind('contextmenu', function (e) {
@@ -41,7 +66,7 @@
             });
             gridview = $('#' + gridviewID);
 
-            activarDatePickers();
+            //activarDatePickers();
         }
 
         function activarDatePickers() {
@@ -421,7 +446,7 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td style="width: 1%; padding-left:3px"> 
-                                            <asp:CheckBox ID="chkBuscarEnEsta" Text="Buscar en esta conciliacion" runat="server" />
+                                            <asp:CheckBox ID="chkBuscarEnEsta" Text="Buscar en esta conciliacion" runat="server" Enabled="false" />
                                         </td>
                                         <td style="width: 1%;"> 
                                             <asp:Label ID="Label2" runat="server" Text="Monto" CssClass="etiqueta fg-color-negro centradoMedio"></asp:Label>
