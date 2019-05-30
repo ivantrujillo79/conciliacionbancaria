@@ -1819,8 +1819,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         r.ConceptoPedido
                         );
                 }
+                RellenaColumnaNombreClienteDeCRM_Detalle(tblDetalleTransaccionConciliada);
             }
-            RellenaColumnaNombreClienteDeCRM_Detalle(tblDetalleTransaccionConciliada);
             HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"] = tblDetalleTransaccionConciliada;
         }
         catch (Exception ex)
