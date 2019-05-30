@@ -3,9 +3,3 @@ C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicl
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadWeb\obj\Release\SeguridadWeb.csprojResolveAssemblyReference.cache
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadWeb\obj\Release\SeguridadWeb.dll
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\SeguridadWeb\obj\Release\SeguridadWeb.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Release\SeguridadWeb.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\bin\Release\SeguridadWeb.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Release\SeguridadWeb.csprojAssemblyReference.cache
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Release\SeguridadWeb.csproj.CoreCompileInputs.cache
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Release\SeguridadWeb.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\SeguridadWeb\obj\Release\SeguridadWeb.pdb

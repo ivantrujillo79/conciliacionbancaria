@@ -7,23 +7,3 @@ C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicl
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.csprojResolveAssemblyReference.cache
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.dll
 C:\Users\Desarollo_Transforma\Dropbox\Proyectos\Conciliacion\Codigo\Sitio Conicliacion 06-03-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\CatalogoConciliacion.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\CatalogoConciliacion.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\Conciliacion.Migracion.Runtime.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\Conciliacion.RunTime.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\SeguridadCB.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\RTGMGateway.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\EPPlus.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\log4net.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\Conciliacion.Migracion.Runtime.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\Conciliacion.RunTime.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\SeguridadCB.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\RTGMGateway.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\RTGMGateway.dll.config
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\EPPlus.xml
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\bin\Release\log4net.xml
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.csprojAssemblyReference.cache
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.csproj.CoreCompileInputs.cache
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\CatalogoConciliacion\obj\Release\CatalogoConciliacion.csproj.CopyComplete

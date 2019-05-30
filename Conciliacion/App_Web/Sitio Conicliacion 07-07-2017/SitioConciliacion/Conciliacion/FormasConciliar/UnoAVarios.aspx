@@ -182,7 +182,7 @@
         }
 
         function chkSeleccionaTodosPedido() {
-            debugger;
+            //debugger;
             if (document.getElementById('ctl00_contenidoPrincipal_grvPedidos') != null) {
                 grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
                 chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarInternosTodos').checked;
@@ -226,8 +226,7 @@
             if (document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos') != null) {
                 grvPreCon = document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos');
                 for (i = 0; i < grvPreCon.rows.length; i++) {
-                    if (grvPreCon.rows[i].cells[5] != undefined)
-                        dAgregados = parseFloat(dAgregados) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
+                    dAgregados = parseFloat(dAgregados) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
                 }
             }
 
