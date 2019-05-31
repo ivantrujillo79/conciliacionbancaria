@@ -1831,6 +1831,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     public void LlenarGridDetalleInterno(ReferenciaNoConciliada trConciliada)
     {
+        grvDetalleArchivoInterno.Visible = trConciliada.ConInterno;
+        grvDetallePedidoInterno.Visible = ! trConciliada.ConInterno;
         if (trConciliada.ConInterno)
         {
             grvDetalleArchivoInterno.DataSource = tblDetalleTransaccionConciliada;
