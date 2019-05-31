@@ -57,6 +57,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
     #endregion
 
+    
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -1130,6 +1132,62 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
             //Session["MOVIMIENTOS"] = listMovimientos;
             listMovimientos = LeerListaReferenciasNoRepetidos(listMovimientos);
+
+            SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+            AppSettingsReader settings = new AppSettingsReader();
+            string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+            
+            if (_URLGateway != "")
+            {
+                BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, Conciliacion.RunTime.App.ImplementadorMensajes);
+
+                int indice;
+                foreach (ReferenciaNoConciliada obj in listMovimientos)
+                {
+                    foreach (ReferenciaConciliadaCompartida obj2 in obj.ListaReferenciaConciliadaCompartida)
+                    {
+                        if (obj2.Cliente >= 0)
+                        {
+                            clientesCRM.AgregaCliente(obj2.Cliente);
+                            if (obj2.DescripcionInterno.Trim() != "")
+                            {
+                                indice = obj2.DescripcionInterno.IndexOf("|");
+                                indice = obj2.DescripcionInterno.IndexOf("|", indice + 1);
+
+                                if (indice > 0)
+                                {
+                                    obj2.DescripcionInterno = obj2.DescripcionInterno.Substring(0, indice + 1);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                clientesCRM.consultar();
+
+                foreach (ReferenciaNoConciliada obj in listMovimientos)
+                {
+                    foreach (ReferenciaConciliadaCompartida obj2 in obj.ListaReferenciaConciliadaCompartida)
+                    {
+                        if (obj2.Cliente >= 0)
+                        {
+                            if (obj2.DescripcionInterno.Trim() != "")
+                            {
+                                indice = obj2.DescripcionInterno.IndexOf("|");
+                                indice = obj2.DescripcionInterno.IndexOf("|", indice + 1);
+
+                                if (indice > 0)
+                                {
+                                    obj2.DescripcionInterno = obj2.DescripcionInterno + clientesCRM.ObtenNombre(obj2.Cliente);
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
             Session["MOVIMIENTOS"] = listMovimientos;
             //Sacar los Meses y Años de la Consulta
             List<ReferenciaNoConciliada> distinctAñoMes = listMovimientos.GroupBy(s => new { s.AñoConciliacion, s.MesConciliacion }).Select(s => s.First()).ToList();
@@ -1759,14 +1817,37 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         ClienteAuxiliar ClienteRetorno = new ClienteAuxiliar();
         ClienteRetorno.Referencia = cliente;
+
+        SeguridadCB.Public.Parametros parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
+        AppSettingsReader settings = new AppSettingsReader();
+        string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
+
         
+
         bool resultado = true;
         try
         {
             Int64 cli = Convert.ToInt64(cliente);
             ListaCombo clt = Conciliacion.RunTime.App.Consultas.ConsultaDatosCliente(cli);
             ClienteRetorno.Cliente = clt.Identificador;
+
             lblCliente.Text = clt != null ? clt.Descripcion : "Cliente no Identificado";
+
+            //if (_URLGateway != "")
+            //{
+            //    BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, Conciliacion.RunTime.App.ImplementadorMensajes);
+
+            //    try
+            //    {
+            //        clientesCRM.AgregaCliente(Convert.ToInt32(cli));
+            //        clientesCRM.consultar();
+            //        lblCliente.Text = clt != null ? clientesCRM.ObtenNombre(Convert.ToInt32(cli)) : "Cliente no Identificado";
+            //    }
+            //    catch
+            //    {
+
+            //    }
+            //}
         }
         catch (FormatException e)
         {
