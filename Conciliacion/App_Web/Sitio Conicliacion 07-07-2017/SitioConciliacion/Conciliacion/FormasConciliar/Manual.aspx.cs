@@ -112,19 +112,24 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                 }
             }
             LlenaGridViewDestinoDetalleInterno();
+
+            //Leer variables de URL
+            corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+            sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+            año = Convert.ToInt32(Request.QueryString["Año"]);
+            folio = Convert.ToInt32(Request.QueryString["Folio"]);
+            mes = Convert.ToSByte(Request.QueryString["Mes"]);
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
+            //statusFiltro = false;
             wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
+            wucBuscadorPagoEstadoCuenta.Corporativo = corporativo;
+            wucBuscadorPagoEstadoCuenta.Sucursal = sucursal;
+            wucBuscadorPagoEstadoCuenta.Año = año;
+            wucBuscadorPagoEstadoCuenta.Folio = folio;
             if (!Page.IsPostBack)
             {
-                //Leer variables de URL
-                corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                año = Convert.ToInt32(Request.QueryString["Año"]);
-                folio = Convert.ToInt32(Request.QueryString["Folio"]);
-                mes = Convert.ToSByte(Request.QueryString["Mes"]);
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
-                //statusFiltro = false;
-
                 CargarRangoDiasDiferenciaGrupo(grupoConciliacion);
                 Carga_StatusConcepto(Consultas.ConfiguracionStatusConcepto.ConEtiquetas);
                 Carga_FormasConciliacion(tipoConciliacion);
@@ -1308,7 +1313,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         try
         {
             listaReferenciaArchivosInternos =
-             Conciliacion.RunTime.App.Consultas.ConsultaTrasaccionesInternasPendientes(FInicio, FFinal, Consultas.Configuracion.Todos, corporativo, sucursal, año, mes, folio, statusConcepto, sucursalInterno);
+             Conciliacion.RunTime.App.Consultas.ConsultaTrasaccionesInternasPendientesAFuturo(FInicio, FFinal, Consultas.Configuracion.Todos, corporativo, sucursal, año, mes, folio, statusConcepto, sucursalInterno);
             Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
         }
         catch (SqlException ex)
@@ -1605,14 +1610,14 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         {
             cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             listaReferenciaExternas = tipoConciliacion == 2
-                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
-                                                (
+                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
+                                                (FInicio, FFInal,
                                                 chkReferenciaEx.Checked
                                                      ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                                      : Consultas.ConsultaExterno.DepositosPedido,
                                                      corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
                                                      c.Banco, lblCuenta.Text)
-                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
                                                 (FInicio, FFInal, 
                                                 chkReferenciaEx.Checked
                                                      ? Consultas.ConsultaExterno.ConReferenciaInterno

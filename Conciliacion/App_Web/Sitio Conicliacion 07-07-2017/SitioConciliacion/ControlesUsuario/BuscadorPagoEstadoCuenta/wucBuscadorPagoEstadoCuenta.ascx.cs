@@ -58,6 +58,10 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
             CargarGrid();
             txtFinicio.Text = (DateTime.Today.AddMonths(-1)).ToShortDateString();
             txtFfinal.Text = DateTime.Today.ToShortDateString();
+            grvPagoEstadoCuenta.DataSource = null;
+            chkBuscaEnRetiros.Checked = false;
+            chkBuscarEnDepositos.Checked = false;
+            chkBuscarEnEsta.Checked = false;
         }
         chkBuscarEnEsta.Enabled = true; // ActivaEstaConciliacion;
     }
@@ -78,13 +82,24 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
     {
         if (txtMonto.Text.Trim() == "")
             txtMonto.Text = "0";
-        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
-            decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked,
-            corporativo,
-            sucursal,
-            año,
-            mes,
-            folio);
+        List<EstadoDeCuenta> listaEstadoCuenta;
+        if (activaEstaConciliacion == true)
+            listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
+                decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked,
+                corporativo,
+                sucursal,
+                año,
+                mes,
+                folio);
+        else
+            listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
+                decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked,
+                0,
+                0,
+                0,
+                0,
+                0);
+
         grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
         if (listaEstadoCuenta.Count > 0)
             grvPagoEstadoCuenta.DataBind();

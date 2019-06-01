@@ -204,18 +204,24 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             //    grvPedidos.DataSource = dtSortTable;
             //    grvPedidos.DataBind();
             //}
+            //Leer variables de URL
+            corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+            sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+            año = Convert.ToInt32(Request.QueryString["Año"]);
+            folio = Convert.ToInt32(Request.QueryString["Folio"]);
+            mes = Convert.ToSByte(Request.QueryString["Mes"]);
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
+            formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]);
+
             wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
+            wucBuscadorPagoEstadoCuenta.Corporativo = corporativo;
+            wucBuscadorPagoEstadoCuenta.Sucursal = sucursal;
+            wucBuscadorPagoEstadoCuenta.Año = año;
+            wucBuscadorPagoEstadoCuenta.Folio = folio;
             if (!Page.IsPostBack)
             {
-                //Leer variables de URL
-                corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                año = Convert.ToInt32(Request.QueryString["Año"]);
-                folio = Convert.ToInt32(Request.QueryString["Folio"]);
-                mes = Convert.ToSByte(Request.QueryString["Mes"]);
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
-                formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]);
 
                 SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;

@@ -118,19 +118,23 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             if (true)
                 LlenaGridViewDestinoDetalleInterno();
 
+            corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
+            sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
+            añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
+            folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
+            mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
             wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
-
+            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
+            wucBuscadorPagoEstadoCuenta.Corporativo = corporativoConciliacion;
+            wucBuscadorPagoEstadoCuenta.Sucursal = sucursalConciliacion;
+            wucBuscadorPagoEstadoCuenta.Año = añoConciliacion;
+            wucBuscadorPagoEstadoCuenta.Folio = folioConciliacion;
             if (!Page.IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
-                corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
-                folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
-                mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
                 SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
