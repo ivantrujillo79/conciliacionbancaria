@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
@@ -1146,7 +1146,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             txtAFuturo_FInicio.Text = "01/"+c.Mes.ToString()+"/"+c.Año;
             txtAFuturo_FFInal.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
             txtAFuturo_FInicioInternos.Text = txtAFuturo_FInicio.Text;
-            txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInal.Text;        }
+            txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInal.Text;
+
+        }
         catch (SqlException ex)
         {
             throw ex;
@@ -1839,6 +1841,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     public void LlenarGridDetalleInterno(ReferenciaNoConciliada trConciliada)
     {
+        grvDetalleArchivoInterno.Visible = trConciliada.ConInterno;
+        grvDetallePedidoInterno.Visible = ! trConciliada.ConInterno;
         if (trConciliada.ConInterno)
         {
             grvDetalleArchivoInterno.DataSource = tblDetalleTransaccionConciliada;
