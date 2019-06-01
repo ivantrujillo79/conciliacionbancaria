@@ -629,7 +629,8 @@ public partial class Inicio : System.Web.UI.Page
             txtFinicio.Text = DateTime.Now.AddMonths(-1).ToShortDateString();
         if (txtFfinal.Text == "")
             txtFfinal.Text = DateTime.Now.ToShortDateString();
-        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked);
+        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), 
+            decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked,0,0,0,0,0);
         grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
         if (listaEstadoCuenta.Count > 0)
             grvPagoEstadoCuenta.DataBind();
