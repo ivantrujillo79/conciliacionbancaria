@@ -148,7 +148,9 @@
         var sumapreconciliadas = 0;
         var TipoCobroSeleccionado = 0;
 
-        $( document ).ready(function() {            Calendarios();        });
+        $( document ).ready(function() {
+            Calendarios();
+        });
 
         function Calendarios() {
 
