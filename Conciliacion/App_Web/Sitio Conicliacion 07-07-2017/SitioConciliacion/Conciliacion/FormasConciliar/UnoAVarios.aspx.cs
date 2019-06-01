@@ -225,25 +225,29 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             LlenaGridViewDestinoDetalleInterno();
 
-            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+            //Leer variables de URL
+            corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+            sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+            año = Convert.ToInt32(Request.QueryString["Año"]);
+            folio = Convert.ToInt32(Request.QueryString["Folio"]);
+            mes = Convert.ToSByte(Request.QueryString["Mes"]);
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
+            wucBuscadorPagoEstadoCuenta.Corporativo = corporativo;
+            wucBuscadorPagoEstadoCuenta.Sucursal = sucursal;
+            wucBuscadorPagoEstadoCuenta.Año = año;
+            wucBuscadorPagoEstadoCuenta.Folio = folio;
             if (!Page.IsPostBack)
             {
                 limpiarVariablesSession();
-                //Leer variables de URL
-                corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
-                sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
-                año = Convert.ToInt32(Request.QueryString["Año"]);
-                folio = Convert.ToInt32(Request.QueryString["Folio"]);
-                mes = Convert.ToSByte(Request.QueryString["Mes"]);
-                tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-                grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
                 ConsultarParametrosEDENRED();
-
 
                 if (objSolicitdConciliacion.ConsultaPedido())
                 {
@@ -2614,7 +2618,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (hdfInternosControl.Value.Equals("PENDIENTES"))
             {
                 listaReferenciaArchivosInternos =
-                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleInternoPendiente(
+                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleInternoPendienteAFuturo(
                         FInicio, FFinal,
                         obtenerConfiguracionInterno(),
                         corporativoconciliacion,
@@ -7899,6 +7903,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         año = Convert.ToInt32(Request.QueryString["Año"]);
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
+
+        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
+        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+        if (txtAFuturo_FInicio.Text.Trim() == string.Empty)
+            txtAFuturo_FInicio.Text = "01/" + c.Mes.ToString() + "/" + c.Año;
+        if (txtAFuturo_FFInal.Text.Trim() == string.Empty)
+            txtAFuturo_FFInal.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
+
         Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
         GenerarTablaExternos();
@@ -7917,6 +7930,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         año = Convert.ToInt32(Request.QueryString["Año"]);
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
+
+        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
+        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+        if (txtAFuturo_FInicioInternos.Text.Trim() == string.Empty)
+            txtAFuturo_FInicioInternos.Text = txtAFuturo_FInicio.Text;
+        if (txtAFuturo_FFInalInternos.Text.Trim() == string.Empty)
+            txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInal.Text;
+
         ConsultarArchivosInternos_AFuturo(DateTime.Parse(txtAFuturo_FInicioInternos.Text),DateTime.Parse(txtAFuturo_FFInalInternos.Text));
     }
 }

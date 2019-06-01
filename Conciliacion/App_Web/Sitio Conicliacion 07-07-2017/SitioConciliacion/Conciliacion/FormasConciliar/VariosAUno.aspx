@@ -136,7 +136,8 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {            Calendarios();
+        $(document).ready(function () {
+            Calendarios();
         });
 
         function Calendarios() {

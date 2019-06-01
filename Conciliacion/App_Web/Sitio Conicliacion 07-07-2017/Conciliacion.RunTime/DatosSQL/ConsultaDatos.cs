@@ -40,11 +40,10 @@ namespace Conciliacion.RunTime.DatosSQL
                 comando.Parameters.Add("@Monto", System.Data.SqlDbType.Decimal).Value = Monto;
                 comando.Parameters.Add("@BuscaEnRetiro", System.Data.SqlDbType.TinyInt).Value = BuscaEnRetiro;
                 comando.Parameters.Add("@BuscaEnDeposito", System.Data.SqlDbType.TinyInt).Value = BuscaEnDeposito;
-                comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = corporativo;
-                comando.Parameters.Add("@sucursal", System.Data.SqlDbType.Int).Value = sucursal;
-                comando.Parameters.Add("@año", System.Data.SqlDbType.Int).Value = año;
-                comando.Parameters.Add("@mes", System.Data.SqlDbType.Int).Value = mes;
-                comando.Parameters.Add("@folio", System.Data.SqlDbType.Int).Value = folio;
+                comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.Int).Value = corporativo;
+                comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursal;
+                comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = año;
+                comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
 
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlDataReader reader = comando.ExecuteReader();
@@ -2492,18 +2491,18 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override List<ReferenciaNoConciliada> ConsultaDetalleInternoPendiente(DateTime FInicio, DateTime FFinal,
-                                                                             ConciliacionInterna configuracion,
-                                                                             int corporativoconciliacion,
-                                                                             int sucursalconciliacion,
-                                                                             int añoconciliacion,
-                                                                             short mesconciliacion,
-                                                                             int folioconciliacion,
-                                                                             int folioexterno,
-                                                                             int secuenciaexterno,
-                                                                             int sucursalinterno, short dias,
-                                                                             decimal diferencia,
-                                                                             int statusconcepto)
+        public override List<ReferenciaNoConciliada> ConsultaDetalleInternoPendienteAFuturo(DateTime FInicio, DateTime FFinal,
+                                                                     ConciliacionInterna configuracion,
+                                                                     int corporativoconciliacion,
+                                                                     int sucursalconciliacion,
+                                                                     int añoconciliacion,
+                                                                     short mesconciliacion,
+                                                                     int folioconciliacion,
+                                                                     int folioexterno,
+                                                                     int secuenciaexterno,
+                                                                     int sucursalinterno, short dias,
+                                                                     decimal diferencia,
+                                                                     int statusconcepto)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -2511,7 +2510,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConciliacionBusquedaInterna", cnn);
+                    SqlCommand comando = new SqlCommand("spCBConciliacionBusquedaInternaAFuturo", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativoconciliacion;
@@ -4595,7 +4594,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(DateTime FInicio, DateTime FFInal, Configuracion configuracion,
+        public override List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientesAFuturo(DateTime FInicio, DateTime FFInal, Configuracion configuracion,
                                                                                     int corporativoconciliacion,
                                                                                     int sucursalconciliacion,
                                                                                     int añoconciliacion,
@@ -4610,7 +4609,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConsultaTrasaccionesInternasPendientes", cnn);
+                    SqlCommand comando = new SqlCommand("spCBConsultaTrasaccionesInternasPendientesAFuturo", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativoconciliacion;
@@ -5372,7 +5371,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //     return resultado
         //}
 
-        public override List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(DateTime FInicio, DateTime FFinal,
+        public override List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDepositoAFuturo(DateTime FInicio, DateTime FFinal,
             ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio,
             decimal diferencia, int statusconcepto, bool deposito, int Banco, string CuentaBancaria)
         {
@@ -5386,7 +5385,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipo", cnn);
+                    SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipoAFuturo", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativo;
@@ -5538,7 +5537,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 try
                 {
                     cnn.Open();
-                    SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipo", cnn);
+                    SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipoAFuturo", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
                     comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
                         corporativo;

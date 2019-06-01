@@ -145,14 +145,18 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
 
             LlenaGridViewDestinoDetalleInterno();
 
-            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
-            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
-
             corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
             sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
             año = Convert.ToInt32(Request.QueryString["Año"]);
             folio = Convert.ToInt32(Request.QueryString["Folio"]);
             mes = Convert.ToSByte(Request.QueryString["Mes"]);
+
+            wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
+            wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = true;
+            wucBuscadorPagoEstadoCuenta.Corporativo = corporativo;
+            wucBuscadorPagoEstadoCuenta.Sucursal = sucursal;
+            wucBuscadorPagoEstadoCuenta.Año = año;
+            wucBuscadorPagoEstadoCuenta.Folio = folio;
             if (!Page.IsPostBack)
             {
 
