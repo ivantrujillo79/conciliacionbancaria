@@ -1139,7 +1139,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             
             if (_URLGateway != "")
             {
-                //BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, Conciliacion.RunTime.App.ImplementadorMensajes);
+                BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, Conciliacion.RunTime.App.ImplementadorMensajes);
 
                 int indice;
                 foreach (ReferenciaNoConciliada obj in listMovimientos)
@@ -1148,7 +1148,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     {
                         if (obj2.Cliente >= 0)
                         {
-                            //clientesCRM.AgregaCliente(obj2.Cliente);
+                            clientesCRM.AgregaCliente(obj2.Cliente);
                             if (obj2.DescripcionInterno.Trim() != "")
                             {
                                 indice = obj2.DescripcionInterno.IndexOf("|");
@@ -1163,7 +1163,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     }
                 }
 
-                //clientesCRM.consultar();
+                clientesCRM.consultar();
 
                 foreach (ReferenciaNoConciliada obj in listMovimientos)
                 {
@@ -1178,7 +1178,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
                                 if (indice > 0)
                                 {
-                                    //obj2.DescripcionInterno = obj2.DescripcionInterno + clientesCRM.ObtenNombre(obj2.Cliente);
+                                    obj2.DescripcionInterno = obj2.DescripcionInterno + clientesCRM.ObtenNombre(obj2.Cliente);
                                 }
                             }
                         }
