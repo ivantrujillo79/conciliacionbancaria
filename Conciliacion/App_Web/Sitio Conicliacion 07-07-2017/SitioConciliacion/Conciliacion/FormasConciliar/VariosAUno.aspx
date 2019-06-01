@@ -135,7 +135,111 @@
     </style>
 
     <script type="text/javascript">
+
+        $(document).ready(function () {            Calendarios();
+        });
+
+        function Calendarios() {
+
+            $("#<%= txtAFuturo_FInicioInternos.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 1,
+                onClose: function (selectedDate) {
+                    $("#<%=txtAFuturo_FFInalInternos.ClientID%>").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%=txtAFuturo_FFInalInternos.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 1,
+                onClose: function (selectedDate) {
+                    $("#<%=txtAFuturo_FInicioInternos.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
+
+            $("#<%= txtAFuturo_FInicioExternos.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 1,
+                onClose: function (selectedDate) {
+                    $("#<%=txtAFuturo_FFInalExternos.ClientID%>").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%=txtAFuturo_FFInalExternos.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 1,
+                onClose: function (selectedDate) {
+                    $("#<%=txtAFuturo_FInicioExternos.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+            
+            $( "#<%= txtFOInicio.ClientID%>" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function( selectedDate ) {
+                        $( "#<%=txtFOTermino.ClientID%>" ).datepicker( "option", "minDate", selectedDate );
+                    }
+                });
+                $( "#<%=txtFOTermino.ClientID%>" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function( selectedDate ) {
+                        $( "#<%=txtFOInicio.ClientID%>" ).datepicker( "option", "maxDate", selectedDate );
+                    }
+                });
+                //DatePicker FMovimiento
+                $( "#<%= txtFMInicio.ClientID%>" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function( selectedDate ) {
+                        $( "#<%=txtFMTermino.ClientID%>" ).datepicker( "option", "minDate", selectedDate );
+                    }
+                });
+                $( "#<%=txtFMTermino.ClientID%>" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function( selectedDate ) {
+                        $( "#<%=txtFMInicio.ClientID%>" ).datepicker( "option", "maxDate", selectedDate );
+                    }
+                });
+           
+                $( "#<%= txtFSInicio.ClientID%>" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function( selectedDate ) {
+                        $( "#<%=txtFSTermino.ClientID%>" ).datepicker( "option", "minDate", selectedDate );
+                    }
+                });
+                $( "#<%=txtFSTermino.ClientID%>" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function( selectedDate ) {
+                        $( "#<%=txtFSInicio.ClientID%>" ).datepicker( "option", "maxDate", selectedDate );
+                    }
+                });
+        }
+
         function pageLoad() {
+            alert('hola');
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
@@ -156,11 +260,17 @@
             $find("ModalBehaviorBuscadorPagoEdoCta").hide();
         }
 
-        function clickBotonMuestraAFuturo() {
-            $('#dvMuestraAFuturo').slideToggle();
+        function clickBotonMuestraAFuturoInternos() {
+            $('#dvMuestraAFuturoInternos').slideToggle();
+        }
+        function clickBotonMuestraAFuturoExternos() {
+            $('#dvMuestraAFuturoExternos').slideToggle();
         }
 
         function activarDatePickers() {
+
+
+
             //DataPicker Rango-Fechas 
             //if (<%= tipoConciliacion %> != 2) {
                 //DatePicker FOperacion
@@ -888,8 +998,8 @@
 
                                 <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
                                     <%--123--%>
-                                    <input type="button" name="btnMuestraAFuturo" value="Futuro" class="button blue" onclick="clickBotonMuestraAFuturo();"
-                                         runat="server" ID="btnMuestraAFuturo"/>
+                                    <input type="button" name="btnMuestraAFuturoExterno" value="Futuro" class="button blue" onclick="clickBotonMuestraAFuturoExternos();"
+                                         runat="server" ID="btnMuestraAFuturoExterno"/>
                                 </td>
 
 
@@ -915,6 +1025,11 @@
                                     <b>
                                         <asp:Label ID="lblMontoTotalInterno" runat="server" CssClass="etiqueta fg-color-negro"></asp:Label></b>
                                 </td>
+                                <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
+                                    <%--123--%>
+                                    <input type="button" name="btnMuestraAFuturoInterno" value="Futuro" class="button blue" onclick="clickBotonMuestraAFuturoInternos();"
+                                         runat="server" ID="btnMuestraAFuturoInterno"/>
+                                </td>
                                 <td class="bg-color-grisClaro02" style="width: 64%">
                                     <b>
                                         <asp:Label ID="lblArchivosInternos" Text="Archivos Internos" runat="server" Visible="false"></asp:Label>
@@ -939,7 +1054,7 @@
                     <td style="vertical-align: top">
                         <div id="configuracionExternos" class="bg-color-grisClaro">
 
-                            <div id="dvMuestraAFuturo" style="display: none">
+                            <div id="dvMuestraAFuturoExternos" style="display: none">
                                 <div style="width:450px; height:40px; overflow:auto;">
                                 <table width="100%">
                                     <tr>
@@ -948,13 +1063,13 @@
                                                 Text=" Fecha"></asp:Label>
                                         </td>
                                         <td style="width: 12.5%;">
-                                            <asp:TextBox ID="txtAFuturo_FInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                            <asp:TextBox ID="txtAFuturo_FInicioExternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
                                                 ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
-                                            <asp:TextBox ID="txtAFuturo_FFInal" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                            <asp:TextBox ID="txtAFuturo_FFInalExternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
                                                 Width="80px"></asp:TextBox>
                                         </td>
                                         <td rowspan="2" style="vertical-align: top; width: 12.5%;">
-                                            <asp:ImageButton ID="btnFiltraAFuturo" runat="server" CssClass="icono bg-color-azulClaro"
+                                            <asp:ImageButton ID="btnFiltraAFuturoExternos" runat="server" CssClass="icono bg-color-azulClaro"
                                                 Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
                                                 OnClick="btnFiltraAFuturo_Click" ToolTip="FILTRAR Transacciones a Futuro" 
                                                 Width="25px" />
@@ -1161,6 +1276,33 @@
                     </td>
                     <td style="vertical-align: top" colspan="2">
                         <div id="configuracionInternosPedidos" class="bg-color-grisClaro">
+
+                           <div id="dvMuestraAFuturoInternos" style="display: none">
+                                <div style="width:450px; height:40px; overflow:auto;">
+                                    <table width="100%">
+                                        <tr>
+                                                <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                                    <asp:Label ID="Label2" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                                        Text=" Fecha"></asp:Label>
+                                                </td>
+                                                <td style="width: 12.5%;">
+                                                    <asp:TextBox ID="txtAFuturo_FInicioInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                        ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
+                                                    <asp:TextBox ID="txtAFuturo_FFInalInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                        Width="80px"></asp:TextBox>
+                                                </td>
+                                                <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                                    <asp:ImageButton ID="btnFiltraAFuturoInterno" runat="server" CssClass="icono bg-color-azulClaro"
+                                                        Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                        OnClick="btnFiltraAFuturoInterno_Click"  ToolTip="FILTRAR Transacciones a Futuro" 
+                                                        Width="25px" />
+                                                </td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
                             <table width="100%">
                                 <tr>
                                     <td style="width: 15%" class="centradoJustificado">

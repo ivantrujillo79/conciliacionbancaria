@@ -177,6 +177,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 }
             }
         }
+        else
+        {
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios", @"Calendarios();", true);
+        }
         try
         {
             Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
@@ -314,6 +318,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     chkExterno_CheckedChanged(fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault(), null);
                     break;
                 }
+                btnMuestraAFuturoInterno.Visible = objSolicitdConciliacion.ConsultaArchivo();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios", @"Calendarios();", true);
             }
             dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
             if (int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
@@ -575,6 +584,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             lblMontoTotalInterno.Text = c.MontoTotalInterno.ToString("C2");
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
+
+            var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            txtAFuturo_FInicioExternos.Text = "01/" + c.Mes.ToString() + "/" + c.Año;
+            txtAFuturo_FFInalExternos.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
+            txtAFuturo_FInicioInternos.Text = txtAFuturo_FInicioExternos.Text;
+            txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInalExternos.Text;
         }
         catch (SqlException ex)
         {
@@ -1786,6 +1802,26 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         LlenaGridViewArchivosInternos();
 
     }
+    public void ConsultarArchivosInternos(DateTime FInicial, DateTime FFinal)
+    {
+        //Leer info actual de la conciliación.
+        cargarInfoConciliacionActual();
+
+        //dvExpera.Visible = grvExternos.Enabled = grvInternos.Enabled = btnVerInternos.Visible = false;
+        dvExpera.Visible = grvExternos.Enabled = btnVerInternos.Visible = false;
+        btnRegresarExternos.Visible = grvInternos.Visible = true;
+        tdVerINEX.Attributes.Add("class", "etiqueta lineaVertical centradoMedio bg-color-grisOscuro");
+
+        ocultarOpciones("EXTERNO");
+        encenderOpciones("INTERNO");
+
+        Consulta_ArchivosInternos(corporativo, sucursal, año, mes, folio, Convert.ToInt16(ddlSucursal.SelectedItem.Value), Convert.ToSByte(txtDias.Text), Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value), 
+            EsDepositoRetiro(), Convert.ToDecimal(lblMontoAcumuladoExterno.Text), FFinal, FInicial);
+        GenerarTablaArchivosInternos();
+        LlenaGridViewArchivosInternos();
+
+    }
+
     public void quitarSeleccionRadio(string nombreGrid)
     {
         switch (nombreGrid)
@@ -3749,7 +3785,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         año = Convert.ToInt32(Request.QueryString["Año"]);
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
-            Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicio.Text), DateTime.Parse(txtAFuturo_FFInal.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
+            Consulta_Externos_AFuturo(DateTime.Parse(txtAFuturo_FInicioExternos.Text), DateTime.Parse(txtAFuturo_FFInalExternos.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text),
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
         GenerarTablaExternos();
         LlenaGridViewExternos();
@@ -3758,4 +3794,32 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     protected void grvExternos_SelectedIndexChanged(object sender, EventArgs e)
     {
     }
+
+    protected void btnFiltraAFuturoInterno_Click(object sender, ImageClickEventArgs e)
+    {
+
+        //Leer el tipoConciliacion URL
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        formaConciliacion = Convert.ToInt16(Request.QueryString["FormaConciliacion"]); //const short _FormaConciliacion = 6;
+
+        dvExpera.Visible = grvPedidos.Rows.Count == 0;
+
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+        if (Convert.ToInt32(lblAgregadosExternos.Text) > 0)
+        {
+            if (objSolicitdConciliacion.ConsultaArchivo())
+            {
+                ConsultarArchivosInternos(DateTime.Parse(txtAFuturo_FInicioExternos.Text), DateTime.Parse(txtAFuturo_FFInalExternos.Text));
+            }
+        }
+        else
+        {
+            App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ninguna referencia externa correcta.");
+        }
+
+    }
+
 }
