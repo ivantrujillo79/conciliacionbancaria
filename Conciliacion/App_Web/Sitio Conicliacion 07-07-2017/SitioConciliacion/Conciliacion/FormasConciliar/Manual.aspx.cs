@@ -168,6 +168,10 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                 Carga_TipoFuenteInformacionInterno(Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno);
                 activarImportacion(tipoConciliacion);
             }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios", @"Calendarios();", true);
+            }
         }
         catch (SqlException ex)
         {
@@ -369,7 +373,13 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             lblMontoTotalInterno.Text = c.MontoTotalInterno.ToString("C2");
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
-        }
+
+            var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            txtAFuturo_FInicioInternos.Text = "01/" + c.Mes.ToString() + "/" + c.Año;
+            txtAFuturo_FFInalInternos.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
+            txtAFuturo_FInicioExternos.Text = txtAFuturo_FInicioInternos.Text;
+            txtAFuturo_FFInalExternos.Text = txtAFuturo_FFInalInternos.Text;        }
         catch (SqlException ex)
         {
             throw ex;
@@ -1287,6 +1297,29 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         grvInternos.DataBind();
 
     }
+
+    public void Consulta_ArchivosInternos_PorFecha(DateTime FInicio, DateTime FFinal, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusConcepto, short sucursalInterno)
+    {
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
+        if (connection.State == ConnectionState.Closed)
+        {
+            seguridad.Conexion.Open();
+        }
+        try
+        {
+            listaReferenciaArchivosInternos =
+             Conciliacion.RunTime.App.Consultas.ConsultaTrasaccionesInternasPendientes(FInicio, FFinal, Consultas.Configuracion.Todos, corporativo, sucursal, año, mes, folio, statusConcepto, sucursalInterno);
+            Session["POR_CONCILIAR_INTERNO"] = listaReferenciaArchivosInternos;
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
     public void Consulta_ArchivosInternos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusConcepto, short sucursalInterno)
     {
         System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
@@ -1560,6 +1593,45 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         }
     }
 
+    public void Consulta_Externos_PorFechas(DateTime FInicio, DateTime FFInal, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia, int tipoConciliacion, int statusConcepto, bool esDeposito)
+    {
+        System.Data.SqlClient.SqlConnection connection = seguridad.Conexion;
+        if (connection.State == ConnectionState.Closed)
+        {
+            seguridad.Conexion.Open();
+        }
+
+        try
+        {
+            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+            listaReferenciaExternas = tipoConciliacion == 2
+                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+                                                (
+                                                chkReferenciaEx.Checked
+                                                     ? Consultas.ConsultaExterno.DepositosConReferenciaPedido
+                                                     : Consultas.ConsultaExterno.DepositosPedido,
+                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
+                                                     c.Banco, lblCuenta.Text)
+                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+                                                (FInicio, FFInal, 
+                                                chkReferenciaEx.Checked
+                                                     ? Consultas.ConsultaExterno.ConReferenciaInterno
+                                                     : Consultas.ConsultaExterno.TodoInterno,
+                                                     corporativo, sucursal, año, mes, folio, diferencia, statusConcepto, esDeposito,
+                                                     c.Banco, lblCuenta.Text);
+
+            Session["POR_CONCILIAR_EXTERNO"] = listaReferenciaExternas;
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     protected void rdbSecuenciaIn_CheckedChanged(object sender, EventArgs e)
     {
         quitarSeleccionRadio("ARCHIVOINTERNO");
@@ -1631,6 +1703,27 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             throw ex;
         }
         
+    }
+
+    public void ConsultarArchivosInternos_PorFecha(DateTime FInicio, DateTime FFinal)
+    {
+        try
+        {
+            //Leer INFO Actual de la Conciliacion
+            cargarInfoConciliacionActual();
+
+            Consulta_ArchivosInternos_PorFecha(FInicio, FFinal, corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value), Convert.ToInt16(ddlSucursal.SelectedItem.Value));
+            GenerarTablaArchivosInternos();
+            LlenaGridViewArchivosInternos();
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     public void ConsultarArchivosInternos()
@@ -3140,5 +3233,22 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         this.grvVistaRapidaInterno.DataSource = tablaDestinoDetalleInterno;
         this.grvVistaRapidaInterno.PageIndex = e.NewPageIndex;
         this.grvVistaRapidaInterno.DataBind();
+    }
+
+    protected void btnFiltraAFuturoInterno_Click(object sender, ImageClickEventArgs e)
+    {
+        ConsultarArchivosInternos_PorFecha(DateTime.Parse(txtAFuturo_FInicioInternos.Text), DateTime.Parse(txtAFuturo_FFInalInternos.Text));
+    }
+
+    protected void btnFiltraAFuturoExternos_Click(object sender, ImageClickEventArgs e)
+    {
+        corporativo = Convert.ToInt32(Request.QueryString["Corporativo"]);
+        sucursal = Convert.ToInt16(Request.QueryString["Sucursal"]);
+        año = Convert.ToInt32(Request.QueryString["Año"]);
+        folio = Convert.ToInt32(Request.QueryString["Folio"]);
+        mes = Convert.ToSByte(Request.QueryString["Mes"]);
+        Consulta_Externos_PorFechas(DateTime.Parse(txtAFuturo_FInicioExternos.Text), DateTime.Parse(txtAFuturo_FFInalExternos.Text), corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+        GenerarTablaExternos();
+        LlenaGridViewExternos();
     }
 }

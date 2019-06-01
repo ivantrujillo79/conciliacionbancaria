@@ -166,8 +166,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia);
 
-        public abstract List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito);
-        
+        public abstract List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito, int corporativo, int sucursal, int año, int mes, int folio);
+
+
         public abstract string consultaClienteCRM(int cliente);
 
         public abstract List<ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria);
@@ -191,6 +192,18 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ReferenciaNoConciliada> ConsultaDetalleInternoPendiente(ConciliacionInterna configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, int sucursalinterno, short dias, decimal diferencia, int statusconcepto);
 
+        public abstract List<ReferenciaNoConciliada> ConsultaDetalleInternoPendiente(DateTime FInicio, DateTime FFinal,
+                                                                             ConciliacionInterna configuracion,
+                                                                             int corporativoconciliacion,
+                                                                             int sucursalconciliacion,
+                                                                             int añoconciliacion,
+                                                                             short mesconciliacion,
+                                                                             int folioconciliacion,
+                                                                             int folioexterno,
+                                                                             int secuenciaexterno,
+                                                                             int sucursalinterno, short dias,
+                                                                             decimal diferencia,
+                                                                             int statusconcepto);
 
         public abstract List<ReferenciaNoConciliada> ConciliacionBusqueda(BusquedaConciliacion configuracion, int corporativo, int sucursal, int año, short mes, int folio, String campo, string operacion, string valor, string tipocampo, decimal diferencia);
 
@@ -257,6 +270,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(Configuracion configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusconcepto, int sucursalinterno);
 
+        public abstract List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(DateTime FInicio, DateTime FFInal, Configuracion configuracion,
+                                                                                                    int corporativoconciliacion,
+                                                                                                    int sucursalconciliacion,
+                                                                                                    int añoconciliacion,
+                                                                                                    short mesconciliacion,
+                                                                                                    int folioconciliacion,
+                                                                                                    int statusconcepto,
+                                                                                                    int sucursalinterno);
 
         public abstract List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, string usuario);
 
@@ -276,6 +297,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool BorrarTransaccionesNoCorrespondidas(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion);
 
         public abstract List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia, int statusconcepto, bool deposito, int Banco, string CuentaBancaria);
+
+        public abstract List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(DateTime FInicio, DateTime FFinal,
+            ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio,
+            decimal diferencia, int statusconcepto, bool deposito, int Banco, string CuentaBancaria);
 
         public abstract List<ReferenciaNoConciliada> ConsultaDetalleInternoPendienteDeposito(ConciliacionInterna configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int sucursalinterno, short dias, decimal diferencia, int statusconcepto, decimal monto, bool deposito, DateTime fminima, DateTime fmaxima);
 

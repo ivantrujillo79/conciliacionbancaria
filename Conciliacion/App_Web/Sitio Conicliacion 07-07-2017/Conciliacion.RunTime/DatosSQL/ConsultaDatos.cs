@@ -27,7 +27,8 @@ namespace Conciliacion.RunTime.DatosSQL
             return new ConsultaDatos(App.ImplementadorMensajes);
         }
 
-        public override List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito)
+        public override List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito, 
+            int corporativo, int sucursal, int año, int mes, int folio)
         {
             List<EstadoDeCuenta> datos = new List<EstadoDeCuenta>();
             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
@@ -39,6 +40,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 comando.Parameters.Add("@Monto", System.Data.SqlDbType.Decimal).Value = Monto;
                 comando.Parameters.Add("@BuscaEnRetiro", System.Data.SqlDbType.TinyInt).Value = BuscaEnRetiro;
                 comando.Parameters.Add("@BuscaEnDeposito", System.Data.SqlDbType.TinyInt).Value = BuscaEnDeposito;
+                comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Int).Value = corporativo;
+                comando.Parameters.Add("@sucursal", System.Data.SqlDbType.Int).Value = sucursal;
+                comando.Parameters.Add("@año", System.Data.SqlDbType.Int).Value = año;
+                comando.Parameters.Add("@mes", System.Data.SqlDbType.Int).Value = mes;
+                comando.Parameters.Add("@folio", System.Data.SqlDbType.Int).Value = folio;
+
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlDataReader reader = comando.ExecuteReader();
                 while (reader.Read())
@@ -2485,6 +2492,91 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override List<ReferenciaNoConciliada> ConsultaDetalleInternoPendiente(DateTime FInicio, DateTime FFinal,
+                                                                             ConciliacionInterna configuracion,
+                                                                             int corporativoconciliacion,
+                                                                             int sucursalconciliacion,
+                                                                             int añoconciliacion,
+                                                                             short mesconciliacion,
+                                                                             int folioconciliacion,
+                                                                             int folioexterno,
+                                                                             int secuenciaexterno,
+                                                                             int sucursalinterno, short dias,
+                                                                             decimal diferencia,
+                                                                             int statusconcepto)
+        {
+            List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConciliacionBusquedaInterna", cnn);
+                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
+                        corporativoconciliacion;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value =
+                        sucursalconciliacion;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = añoconciliacion;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = mesconciliacion;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folioconciliacion;
+                    comando.Parameters.Add("@Folio", System.Data.SqlDbType.Int).Value = folioexterno;
+                    comando.Parameters.Add("@Secuencia", System.Data.SqlDbType.Int).Value = secuenciaexterno;
+                    comando.Parameters.Add("@Dias", System.Data.SqlDbType.SmallInt).Value = dias;
+                    comando.Parameters.Add("@Diferencia", System.Data.SqlDbType.SmallInt).Value = diferencia;
+                    comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
+                    comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
+                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
+                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                                                               añoconciliacion, mesconciliacion, folioconciliacion,
+                                                               statusconcepto);
+                    comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value = FInicio;
+                    comando.Parameters.Add("@FFinal", System.Data.SqlDbType.DateTime).Value = FFinal;
+
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        ReferenciaNoConciliada dato =
+                            new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
+                                                            Convert.ToInt16(reader["Sucursal"]),
+                                                            Convert.ToString(reader["SucursalDes"]), añoconciliacion,
+                                                            Convert.ToInt16(reader["Folio"]),
+                                                            Convert.ToInt16(reader["Secuencia"]),
+                                                            Convert.ToString(reader["Descripcion"]),
+                                                            Convert.ToString(reader["Concepto"]),
+                                                            Convert.ToDecimal(reader["Deposito"]),
+                                                            Convert.ToDecimal(reader["Retiro"]),
+                                                            Convert.ToInt16(reader["FormaConciliacion"]),
+                                                            Convert.ToInt16(reader["StatusConcepto"]),
+                                                            Convert.ToString(reader["StatusConciliacion"]),
+                                                            Convert.ToDateTime(reader["FOperacion"]),
+                                                            Convert.ToDateTime(reader["FMovimiento"]),
+                                                            Convert.ToString(reader["UbicacionIcono"]),
+                                                            folioconciliacion, mesconciliacion, 0, true,
+
+                                                            Convert.ToString(reader["Cheque"]),
+                                                            Convert.ToString(reader["Referencia"]),
+                                                            Convert.ToString(reader["NombreTercero"]),
+                                                            Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
+                        datos.Add(dato);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return datos;
+            }
+        }
+
         public override List<ReferenciaNoConciliada> ConciliacionBusqueda(BusquedaConciliacion configuracion,
                                                                           int corporativo, int sucursal, int año,
                                                                           short mes, int folio, String campo,
@@ -4460,7 +4552,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
-
+                    
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -4503,6 +4595,80 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
+        public override List<ReferenciaNoConciliada> ConsultaTrasaccionesInternasPendientes(DateTime FInicio, DateTime FFInal, Configuracion configuracion,
+                                                                                    int corporativoconciliacion,
+                                                                                    int sucursalconciliacion,
+                                                                                    int añoconciliacion,
+                                                                                    short mesconciliacion,
+                                                                                    int folioconciliacion,
+                                                                                    int statusconcepto,
+                                                                                    int sucursalinterno)
+        {
+            List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaTrasaccionesInternasPendientes", cnn);
+                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
+                        corporativoconciliacion;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value =
+                        sucursalconciliacion;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = añoconciliacion;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = mesconciliacion;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folioconciliacion;
+                    comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
+                    comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
+                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
+                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                                                               añoconciliacion, mesconciliacion, folioconciliacion,
+                                                               statusconcepto);
+                    comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value = FInicio;
+                    comando.Parameters.Add("@FFInal", System.Data.SqlDbType.DateTime).Value = FFInal;
+
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+
+                        ReferenciaNoConciliada dato =
+                            new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
+                                                            Convert.ToInt16(reader["Sucursal"]),
+                                                            Convert.ToString(reader["SucursalDes"]), añoconciliacion,
+                                                            Convert.ToInt32(reader["Folio"]),
+                                                            Convert.ToInt32(reader["Secuencia"]),
+                                                            Convert.ToString(reader["Descripcion"]),
+                                                            Convert.ToString(reader["Concepto"]),
+                                                            Convert.ToDecimal(reader["Deposito"]),
+                                                            Convert.ToDecimal(reader["Retiro"]),
+                                                            Convert.ToInt16(reader["FormaConciliacion"]),
+                                                            Convert.ToInt16(reader["StatusConcepto"]),
+                                                            Convert.ToString(reader["StatusConciliacion"]),
+                                                            Convert.ToDateTime(reader["FOperacion"]),
+                                                            Convert.ToDateTime(reader["FMovimiento"]),
+                                                            Convert.ToString(reader["UbicacionIcono"]),
+                                                            folioconciliacion, mesconciliacion, 0, true,
+                                                            Convert.ToString(reader["Cheque"]),
+                                                            Convert.ToString(reader["Referencia"]),
+                                                            Convert.ToString(reader["NombreTercero"]),
+                                                            Convert.ToString(reader["RFCTercero"]), sucursalconciliacion,
+                                                            Convert.ToInt16(reader["Año"]), 1, this.implementadorMensajes);
+                        datos.Add(dato);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                return datos;
+            }
+        }
         /*public override List<ReferenciaNoConciliada> ConsultaDetalleInternoCanceladoPendiente(
             ConciliacionInterna configuracion, int corporativoconciliacion, int sucursalconciliacion,
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno,
@@ -5170,43 +5336,120 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }*/
 
-       // public override int ObtieneTipoCobroPorCuentaBancaria(SqlConnection cnn, int Corporativo, int Banco, string CuentaBancaria)
-       // {
-       //     int resultado = 0;
-       //     SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipo", cnn);
+        // public override int ObtieneTipoCobroPorCuentaBancaria(SqlConnection cnn, int Corporativo, int Banco, string CuentaBancaria)
+        // {
+        //     int resultado = 0;
+        //     SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipo", cnn);
 
-       //     using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
-       //     {
-       //         try
-       //         {
-       //             cnn.Open();
-       //             SqlCommand comando = new SqlCommand("spCBConsultaCuentaBanco";
-       //         }
-       //         catch (SqlException ex)
-       //         {
-       //             throw ex;
-       //         }
-       //         catch (Exception ex)
-       //         {
-       //             throw ex;
-       //         }
-       //     }
-       //     _conexion.Comando.Parameters.Clear();
-       //     _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.TinyInt)).Value = Corporativo;
-       //     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value = Banco;
-       //     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value = CuentaBancaria;
-       //     SqlDataReader reader = _conexion.Comando.ExecuteReader();
-       //     if (reader.HasRows)
-       //     {
-       //         while (reader.Read())
-       //         { 
-       //             resultado = Convert.ToInt32(reader["TipoCobro"]);
-       //         }
-       //     }
-       //     return resultado
-       //}
+        //     using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //     {
+        //         try
+        //         {
+        //             cnn.Open();
+        //             SqlCommand comando = new SqlCommand("spCBConsultaCuentaBanco";
+        //         }
+        //         catch (SqlException ex)
+        //         {
+        //             throw ex;
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             throw ex;
+        //         }
+        //     }
+        //     _conexion.Comando.Parameters.Clear();
+        //     _conexion.Comando.Parameters.Add(new SqlParameter("@Corporativo", System.Data.SqlDbType.TinyInt)).Value = Corporativo;
+        //     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value = Banco;
+        //     _conexion.Comando.Parameters.Add(new SqlParameter("@Banco", System.Data.SqlDbType.SmallInt)).Value = CuentaBancaria;
+        //     SqlDataReader reader = _conexion.Comando.ExecuteReader();
+        //     if (reader.HasRows)
+        //     {
+        //         while (reader.Read())
+        //         { 
+        //             resultado = Convert.ToInt32(reader["TipoCobro"]);
+        //         }
+        //     }
+        //     return resultado
+        //}
 
-    public override List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(
+        public override List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(DateTime FInicio, DateTime FFinal,
+            ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio,
+            decimal diferencia, int statusconcepto, bool deposito, int Banco, string CuentaBancaria)
+        {
+            bool coninterno =
+                !(configuracion == ConsultaExterno.DepositosConReferenciaPedido ||
+                  configuracion == ConsultaExterno.DepositosPedido);
+
+            List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipo", cnn);
+                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = configuracion;
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
+                        corporativo;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursal;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = año;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = mes;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
+                    comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
+                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
+                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                    comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
+                    comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = CuentaBancaria;
+                    comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
+                    comando.Parameters.Add("@FechaIni", System.Data.SqlDbType.DateTime).Value = FInicio;
+                    comando.Parameters.Add("@FechaFin", System.Data.SqlDbType.DateTime).Value = FFinal;
+                    int tcobro = 0;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        //ObtieneTipoCobroPorCuentaBancaria(cnn, corporativo, Banco, CuentaBancaria);
+                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 10 : Convert.ToInt16(reader["TipoCobro"]);
+                        ReferenciaNoConciliada dato =
+                            new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
+                                Convert.ToInt16(reader["Sucursal"]),
+                                Convert.ToString(reader["SucursalDes"]), año,
+                                Convert.ToInt16(reader["Folio"]),
+                                Convert.ToInt16(reader["Secuencia"]),
+                                Convert.ToString(reader["Descripcion"]),
+                                Convert.ToString(reader["Concepto"]),
+                                Convert.ToDecimal(reader["Deposito"]),
+                                Convert.ToDecimal(reader["Retiro"]),
+                                Convert.ToInt16(reader["FormaConciliacion"]),
+                                Convert.ToInt16(reader["StatusConcepto"]),
+                                Convert.ToString(reader["StatusConciliacion"]),
+                                Convert.ToDateTime(reader["FOperacion"]),
+                                Convert.ToDateTime(reader["FMovimiento"]),
+                                Convert.ToString(reader["UbicacionIcono"]),
+                                folio, mes, diferencia, coninterno,
+                                Convert.ToString(reader["Cheque"]),
+                                Convert.ToString(reader["Referencia"]),
+                                Convert.ToString(reader["NombreTercero"]),
+                                Convert.ToString(reader["RFCTercero"]), sucursal,
+                                Convert.ToInt16(reader["Año"]), 1,
+                                tcobro, tcobro,
+                                this.implementadorMensajes);
+                        datos.Add(dato);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                return datos;
+            }
+        }
+
+        public override List<ReferenciaNoConciliada> ConsultaDetalleExternoPendienteDeposito(
             ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio,
             decimal diferencia, int statusconcepto, bool deposito, int Banco, string CuentaBancaria)
         {

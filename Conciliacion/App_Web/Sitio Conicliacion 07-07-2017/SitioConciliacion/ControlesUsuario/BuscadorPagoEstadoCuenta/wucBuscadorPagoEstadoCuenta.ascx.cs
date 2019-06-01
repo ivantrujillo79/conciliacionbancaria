@@ -17,12 +17,31 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
     //public ListaPago;
     private bool activaEstaConciliacion;
 
-    private int Corporativo;
-    private int Sucursal;
-    private int Año;
-    private int Mes;
-    private int Folio;
-    //public ListaPago;
+    public int Corporativo
+    {
+        get { return corporativo; }
+        set { corporativo = value; }
+    }
+    public int Sucursal
+    {
+        get { return sucursal; }
+        set { sucursal = value; }
+    }
+    public int Año
+    {
+        get { return año; }
+        set { año = value; }
+    }
+    public int Mes
+    {
+        get { return mes; }
+        set { mes = value; }
+    }
+    public int Folio
+    {
+        get { return folio; }
+        set { folio = value; }
+    }
 
     public object Contenedor { get; set; }
 
@@ -59,7 +78,13 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
     {
         if (txtMonto.Text.Trim() == "")
             txtMonto.Text = "0";
-        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked);
+        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
+            decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked,
+            corporativo,
+            sucursal,
+            año,
+            mes,
+            folio);
         grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
         if (listaEstadoCuenta.Count > 0)
             grvPagoEstadoCuenta.DataBind();

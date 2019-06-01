@@ -15,7 +15,6 @@
 <%@ Register Src="~/ControlesUsuario/ClienteDatosBancarios/wucClienteDatosBancarios.ascx" TagPrefix="uc1" TagName="wucClienteDatosBancarios" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorPagoEstadoCuenta/wucBuscadorPagoEstadoCuenta.ascx" TagPrefix="uc1" TagName="wucBuscadorPagoEstadoCuenta" %>
 
-
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="server">
     UNO A VARIOS</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
@@ -149,7 +148,132 @@
         var sumapreconciliadas = 0;
         var TipoCobroSeleccionado = 0;
 
-        function pageLoad() {
+        $( document ).ready(function() {            Calendarios();        });
+
+        function Calendarios() {
+
+             $("#<%= txtAFuturo_FInicioInternos.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 1,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FFInalInternos.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtAFuturo_FFInalInternos.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 1,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FInicioInternos.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
+            
+             $("#<%= txtAFuturo_FInicio.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 1,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 1,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtAFuturo_FInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
+            
+            // DatePickers SALDO A FAVOR
+            $("#<%= txtFechaInicioSAF.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFechaFinSAF.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    //$("#ctl00_contenidoPrincipal_txtFechaFinSAF").datepicker("option", "minDate", selectedDate);
+                }
+            });
+            $("#<%= txtFechaFinSAF.ClientID%>").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function (selectedDate) {
+                    $("#<%= txtFechaInicioSAF.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    //$("#ctl00_contenidoPrincipal_txtFechaInicioSAF").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
+            //DataPicker Rango-Fechas 
+            //if (<%= tipoConciliacion %> != 2) {
+                //DatePicker FOperacion
+                $("#<%= txtFOInicio.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtFOTermino.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtFOTermino.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtFOInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
+                //DatePicker FMovimiento
+                $("#<%= txtFMInicio.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtFMTermino.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtFMTermino.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtFMInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
+            //} else {
+                //DatePicker FSuministro
+                $("#<%= txtFSInicio.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtFSTermino.ClientID%>").datepicker("option", "minDate", selectedDate);
+                    }
+                });
+                $("#<%=txtFSTermino.ClientID%>").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 2,
+                    onClose: function(selectedDate) {
+                        $("#<%=txtFSInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
+                    }
+                });
+        }
+
+        function PageLoad() {
+            console.writeline('ejectuando desde pageload');
             //debugger;
             activarDatePickers();
             MuestraSaldoAFavor();
@@ -168,6 +292,9 @@
 
         function clickBotonMuestraAFuturo() {
             $('#dvMuestraAFuturo').slideToggle();
+        }
+        function clickBotonMuestraAFuturoInterno() {
+            $('#dvMuestraAFuturoInternos').slideToggle();
         }
         function rdbSecuencia_scrollpos() {
             document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value = document.getElementById("divExternos").scrollTop;
@@ -504,108 +631,9 @@
         }
         
         function activarDatePickers() {
+            console.writeline('ejectuando la funcion de los calendatios');
 
-                $("#<%= txtAFuturo_FInicio.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker("option", "minDate", selectedDate);
-                    }
-                });
-                $("#<%=txtAFuturo_FFInal.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtAFuturo_FInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
-            
-            // DatePickers SALDO A FAVOR
-            $("#<%= txtFechaInicioSAF.ClientID%>").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (selectedDate) {
-                    $("#<%= txtFechaFinSAF.ClientID%>").datepicker("option", "minDate", selectedDate);
-                    //$("#ctl00_contenidoPrincipal_txtFechaFinSAF").datepicker("option", "minDate", selectedDate);
-                }
-            });
-            $("#<%= txtFechaFinSAF.ClientID%>").datepicker({
-                defaultDate: "+1w",
-                changeMonth: true,
-                changeYear: true,
-                onClose: function (selectedDate) {
-                    $("#<%= txtFechaInicioSAF.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    //$("#ctl00_contenidoPrincipal_txtFechaInicioSAF").datepicker("option", "maxDate", selectedDate);
-                }
-            });
 
-            //DataPicker Rango-Fechas 
-            //if (<%= tipoConciliacion %> != 2) {
-                //DatePicker FOperacion
-                $("#<%= txtFOInicio.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtFOTermino.ClientID%>").datepicker("option", "minDate", selectedDate);
-                    }
-                });
-                $("#<%=txtFOTermino.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtFOInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
-                //DatePicker FMovimiento
-                $("#<%= txtFMInicio.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtFMTermino.ClientID%>").datepicker("option", "minDate", selectedDate);
-                    }
-                });
-                $("#<%=txtFMTermino.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtFMInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
-            //} else {
-                //DatePicker FSuministro
-                $("#<%= txtFSInicio.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtFSTermino.ClientID%>").datepicker("option", "minDate", selectedDate);
-                    }
-                });
-                $("#<%=txtFSTermino.ClientID%>").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    changeYear: true,
-                    numberOfMonths: 2,
-                    onClose: function(selectedDate) {
-                        $("#<%=txtFSInicio.ClientID%>").datepicker("option", "maxDate", selectedDate);
-                    }
-                });
-
-            //}
         }
 
         function ConfirmarSaldoAFavor() {
@@ -1380,6 +1408,13 @@
                                     <b>
                                         <asp:Label ID="lblMontoTotalInterno" runat="server" CssClass="etiqueta fg-color-negro"></asp:Label></b>
                                 </td>
+
+                                <td class="icono bg-color-grisClaro02 fg-color-amarillo" style="width: 1%">
+                                    <%--123--%>
+                                    <input type="button" name="btnMuestraAFuturoInterno" value="Futuro" class="button blue" onclick="clickBotonMuestraAFuturoInterno();"
+                                         runat="server" ID="btnMuestraAFuturoInterno"/>
+                                </td>
+
                                 <td class="bg-color-grisClaro02" style="width: 64%">
                                     <b>
                                         <asp:Label ID="lblArchivosInternos" Text="Archivos Internos" runat="server" Visible="false"></asp:Label>
@@ -1434,7 +1469,7 @@
                                         </td>
                                         <td rowspan="2" style="vertical-align: top; width: 12.5%;">
                                             <asp:ImageButton ID="btnFiltraAFuturo" runat="server" CssClass="icono bg-color-azulClaro"
-                                                Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Filtrar.png"
+                                                Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
                                                 OnClick="btnFiltraAFuturo_Click" ToolTip="FILTRAR Transacciones a Futuro" 
                                                 Width="25px" />
                                         </td>
@@ -1442,7 +1477,7 @@
                                 </table>
                                 </div>
                             </div>
-
+                            
                             <table width="100%">
                                 <tr>
                                     <td class="centradoJustificado" style="width: 15%;">
@@ -1648,6 +1683,33 @@
                     </td>
                     <td style="vertical-align: top" colspan="2">
                         <div id="configuracionInternosPedidos" class="bg-color-grisClaro">
+<%--123--%>
+                           <div id="dvMuestraAFuturoInternos" style="display: none">
+                                <div style="width:450px; height:40px; overflow:auto;">
+                                    <table width="100%">
+                                        <tr>
+                                                <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                                    <asp:Label ID="Label2" runat="server" CssClass="etiqueta fg-color-blanco centradoMedio"
+                                                        Text=" Fecha"></asp:Label>
+                                                </td>
+                                                <td style="width: 12.5%;">
+                                                    <asp:TextBox ID="txtAFuturo_FInicioInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                        ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
+                                                    <asp:TextBox ID="txtAFuturo_FFInalInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                        Width="80px"></asp:TextBox>
+                                                </td>
+                                                <td rowspan="2" style="vertical-align: top; width: 12.5%;">
+                                                    <asp:ImageButton ID="btnFiltraAFuturoInterno" runat="server" CssClass="icono bg-color-azulClaro"
+                                                        Height="25px" ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Buscar.png"
+                                                        OnClick="btnFiltraAFuturoInterno_Click" ToolTip="FILTRAR Transacciones a Futuro" 
+                                                        Width="25px" />
+                                                </td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
                             <table width="100%">
                                 <tr>
                                     <td style="width: 15%" class="centradoJustificado">
