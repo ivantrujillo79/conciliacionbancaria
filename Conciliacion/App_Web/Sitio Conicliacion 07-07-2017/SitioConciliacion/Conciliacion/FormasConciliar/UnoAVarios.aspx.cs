@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
@@ -1829,7 +1829,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         r.ConceptoPedido
                         );
                 }
-                RellenaColumnaNombreClienteDeCRM_Detalle(tblDetalleTransaccionConciliada);
+            RellenaColumnaNombreClienteDeCRM_Detalle(tblDetalleTransaccionConciliada);
             }
             HttpContext.Current.Session["DETALLETRANSACCIONCONCILIADA"] = tblDetalleTransaccionConciliada;
         }
@@ -7917,7 +7917,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         año = Convert.ToInt32(Request.QueryString["Año"]);
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
-        ConsultarArchivosInternos_AFuturo(DateTime.Parse(txtAFuturo_FInicioInternos.Text), DateTime.Parse(txtAFuturo_FFInalInternos.Text));
-
+        ConsultarArchivosInternos_AFuturo(DateTime.Parse(txtAFuturo_FInicioInternos.Text),DateTime.Parse(txtAFuturo_FFInalInternos.Text));
     }
 }

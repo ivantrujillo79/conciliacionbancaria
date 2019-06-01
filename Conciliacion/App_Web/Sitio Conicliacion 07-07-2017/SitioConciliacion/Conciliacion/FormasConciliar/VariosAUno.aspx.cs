@@ -590,7 +590,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             txtAFuturo_FInicioExternos.Text = "01/" + c.Mes.ToString() + "/" + c.Año;
             txtAFuturo_FFInalExternos.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
             txtAFuturo_FInicioInternos.Text = txtAFuturo_FInicioExternos.Text;
-            txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInalExternos.Text;
+            txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInalExternos.Text;
+
         }
         catch (SqlException ex)
         {
