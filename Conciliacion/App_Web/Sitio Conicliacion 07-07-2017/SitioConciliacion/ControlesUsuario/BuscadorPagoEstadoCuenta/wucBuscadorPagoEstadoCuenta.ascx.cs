@@ -83,7 +83,7 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
         if (txtMonto.Text.Trim() == "")
             txtMonto.Text = "0";
         List<EstadoDeCuenta> listaEstadoCuenta;
-        if (activaEstaConciliacion == true)
+        if (chkBuscarEnEsta.Checked)
             listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
                 decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked,
                 corporativo,

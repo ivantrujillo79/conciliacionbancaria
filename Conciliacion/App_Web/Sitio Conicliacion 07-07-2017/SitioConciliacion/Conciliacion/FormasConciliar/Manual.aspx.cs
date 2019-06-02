@@ -384,7 +384,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             txtAFuturo_FInicioInternos.Text = "01/" + c.Mes.ToString() + "/" + c.Año;
             txtAFuturo_FFInalInternos.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
             txtAFuturo_FInicioExternos.Text = txtAFuturo_FInicioInternos.Text;
-            txtAFuturo_FFInalExternos.Text = txtAFuturo_FFInalInternos.Text;        }
+            txtAFuturo_FFInalExternos.Text = txtAFuturo_FFInalInternos.Text;
+        }
         catch (SqlException ex)
         {
             throw ex;
