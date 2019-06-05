@@ -1356,14 +1356,7 @@ private string TipoCobroDescripcion(int tipoCobro)
             mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
             string usuariotemp = Convert.ToString(HttpContext.Current.Session["UsuarioTransBan"]);
 
-            bool hayPagos = Conciliacion.RunTime.App.Consultas.ExistenPagosPorAplicar(corporativoConciliacion, 
-                sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, usuariotemp);
-
-            if (!hayPagos)
-            {
-                App.ImplementadorMensajes.MostrarMensaje("Pagos ya aplicados");
-                return;
-            }
+            
 
             if (valor.Equals(""))
             {
@@ -1400,6 +1393,15 @@ private string TipoCobroDescripcion(int tipoCobro)
 
 
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+            bool hayPagos = Conciliacion.RunTime.App.Consultas.ExistenPagosPorAplicar(corporativoConciliacion,
+                sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, usuariotemp);
+
+            if (!hayPagos)
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Pagos ya aplicados");
+                return;
+            }
 
             conexion.AbrirConexion(true,true);
 
