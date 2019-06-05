@@ -265,8 +265,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             {
                 strUsuario = "";
             }
-           
 
+            HttpContext.Current.Session["UsuarioTransBan"] = strUsuario;
 
             movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, strUsuario);
 
@@ -1332,6 +1332,13 @@ private string TipoCobroDescripcion(int tipoCobro)
         bool urlValida = false;
         bool guardoMovimientoCaja = false;
         string fuente="";
+        int corporativoConciliacion = 0;
+        Int16 sucursalConciliacion = 0;
+        int añoConciliacion = 0;
+        int folioConciliacion = 0;
+        short mesConciliacion = 0;
+        short tipoConciliacion = 0;
+
         try
         {
             Parametros p = Session["Parametros"] as Parametros;
@@ -1340,6 +1347,15 @@ private string TipoCobroDescripcion(int tipoCobro)
             string valor = p.ValorParametro(modulo, "NumeroDocumentosTRANSBAN");
 
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
+
+            corporativoConciliacion = Convert.ToInt32(Request.QueryString["Corporativo"]);
+            sucursalConciliacion = Convert.ToInt16(Request.QueryString["Sucursal"]);
+            añoConciliacion = Convert.ToInt32(Request.QueryString["Año"]);
+            folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
+            mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
+            string usuariotemp = Convert.ToString(HttpContext.Current.Session["UsuarioTransBan"]);
+
+            
 
             if (valor.Equals(""))
             {
@@ -1374,13 +1390,17 @@ private string TipoCobroDescripcion(int tipoCobro)
 
             }
 
-            int corporativoConciliacion = 0;
-            Int16 sucursalConciliacion = 0;
-            int añoConciliacion = 0;
-            int folioConciliacion = 0;
-            short mesConciliacion = 0;
-            short tipoConciliacion = 0;
+
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+
+            bool hayPagos = Conciliacion.RunTime.App.Consultas.ExistenPagosPorAplicar(corporativoConciliacion,
+                sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, usuariotemp);
+
+            if (!hayPagos)
+            {
+                App.ImplementadorMensajes.MostrarMensaje("Pagos ya aplicados");
+                return;
+            }
 
             conexion.AbrirConexion(true,true);
 

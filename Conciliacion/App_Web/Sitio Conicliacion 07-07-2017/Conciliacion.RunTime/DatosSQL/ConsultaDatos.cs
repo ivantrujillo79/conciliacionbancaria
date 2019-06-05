@@ -4843,6 +4843,55 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
+        public override bool ExistenPagosPorAplicar(int corporativo, int sucursal,
+                                                    int año, short mes, int folio, string usuario)
+        {
+
+            bool resultado = false;
+            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBConsultaPagosPorAplicar", cnn);
+                    comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 0;
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value =
+                        corporativo;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = sucursal;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = año;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.SmallInt).Value = mes;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
+                    comando.Parameters.Add("@Cliente", System.Data.SqlDbType.Int).Value = 0;
+
+                    comando.Parameters.Add("@FolioExterno", System.Data.SqlDbType.Int).Value = 0;
+                    comando.Parameters.Add("@CorporativoExterno", System.Data.SqlDbType.Int).Value = 0;
+                    comando.Parameters.Add("@SucursalExterno", System.Data.SqlDbType.SmallInt).Value = 0;
+                    comando.Parameters.Add("@AñoExterno", System.Data.SqlDbType.Int).Value = 0;
+                    comando.Parameters.Add("@SecuenciaExterno", System.Data.SqlDbType.Int).Value = 0;
+
+                    if (!usuario.Equals(""))
+                    {
+                        comando.Parameters.Add("@Usuario", System.Data.SqlDbType.VarChar, 20).Value = usuario;
+                    }
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    resultado = reader.Read();
+                    reader.Close();
+                }
+                catch (SqlException ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+                return resultado;
+            }
+        }
+
         public override List<ReferenciaConciliadaPedido> ConsultaPagosPorAplicar(int corporativo, int sucursal,
                                                                                  int año, short mes, int folio, string usuario)
         {
