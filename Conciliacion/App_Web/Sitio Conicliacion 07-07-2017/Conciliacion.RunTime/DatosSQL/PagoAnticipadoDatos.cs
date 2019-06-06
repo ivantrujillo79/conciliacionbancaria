@@ -157,7 +157,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AñoInterno", System.Data.SqlDbType.Int)).Value = DBNull.Value;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@FolioInterno", System.Data.SqlDbType.Int)).Value = DBNull.Value;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@SecuenciaInterno", System.Data.SqlDbType.Int)).Value = DBNull.Value;
-
+                _conexion.Comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
                 //int RegistrosAfectados = _conexion.Comando.ExecuteNonQuery();
                 //resultado = RegistrosAfectados == 1;
                 _conexion.Comando.ExecuteNonQuery();

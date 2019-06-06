@@ -15,6 +15,7 @@ using SeguridadCB.Public;
 using Conciliacion.RunTime.DatosSQL;
 using RTGMGateway;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 {
@@ -265,10 +266,14 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             {
                 strUsuario = "";
             }
-           
 
-
-            movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, strUsuario);
+            movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(
+                corporativoConciliacion, 
+                sucursalConciliacion, 
+                añoConciliacion, 
+                mesConciliacion, 
+                folioConciliacion, 
+                strUsuario);
 
             //short consecutivo = movimientoCajaAlta.Consecutivo;
             //int folio = movimientoCajaAlta.Folio;
@@ -1547,8 +1552,14 @@ private string TipoCobroDescripcion(int tipoCobro)
             App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
-        {            
-            App.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar .Detalles: "+ex.Message);//RRV
+        {
+            App.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar."+
+                                                    "Detalles: \n\rClase: " +
+                                                      this.GetType().Name + "\n\r Metodo :" +
+                                                      ex.StackTrace + "\n\r Error :" +
+                                                      ex.Message
+                                                      );
+            
             try
             {
                 conexion.Comando.Transaction.Rollback();

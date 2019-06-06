@@ -5195,7 +5195,12 @@ namespace Conciliacion.RunTime.DatosSQL
                         }
 
                         movimiento.Usuario = reader["Usuario"].ToString();
-                        movimiento.Empleado = Convert.ToInt32(reader["Empleado"]);
+                        if (reader["Empleado"] != System.DBNull.Value)
+                            movimiento.Empleado = Convert.ToInt32(reader["Empleado"]);
+                        else
+                            movimiento.Empleado = 9999;
+                        //movimiento.Usuario = "ROPIMA";
+                        //movimiento.Empleado = 0;
                         movimiento.Observaciones = reader["Observaciones"].ToString();
                         if (reader["SaldoAFavor"] != System.DBNull.Value)
                         {

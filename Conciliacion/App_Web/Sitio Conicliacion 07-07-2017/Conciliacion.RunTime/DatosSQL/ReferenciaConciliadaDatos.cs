@@ -110,6 +110,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     //if (this.ClientePago == 0)
                     //    this.ClientePago = this.;
                     comando.Parameters.Add("@ClientePago", System.Data.SqlDbType.Int).Value = this.ClientePago;
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();                   

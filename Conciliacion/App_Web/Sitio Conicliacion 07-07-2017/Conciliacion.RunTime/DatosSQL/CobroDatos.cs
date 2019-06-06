@@ -87,6 +87,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             SqlDataReader drConsulta = null;
             // Cobro cobro = new CobroDatos(this.implementadorMensajes);
+
             try
             {
 

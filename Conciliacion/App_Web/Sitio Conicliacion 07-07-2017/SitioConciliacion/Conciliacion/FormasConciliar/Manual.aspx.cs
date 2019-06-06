@@ -16,6 +16,7 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Web.Services;
 using Locker;
+using SeguridadCB.Public;
 
 public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 {
@@ -1120,16 +1121,18 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     if (pedSeleccionados.Count > 0)
                     {
                         try
-                        { 
+                        {
+                            Usuario usuario = (Usuario)HttpContext.Current.Session["Usuario"];
                             foreach (ReferenciaNoConciliada ex in extSeleccionados)
                             {
+                                ex.ListaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
                                 foreach (ReferenciaNoConciliadaPedido ap in pedSeleccionados)
-                                    //if (!ex.AgregarReferenciaConciliada(ap))
                                     if (!ex.AgregarReferenciaConciliadaSinVerificacion(ap))
                                     {
                                         App.ImplementadorMensajes.MostrarMensaje("Error al Agregar Pedido");
                                         return;
                                     }
+                                
                                 ex.GuardarReferenciaConciliada();
                             }
                         }

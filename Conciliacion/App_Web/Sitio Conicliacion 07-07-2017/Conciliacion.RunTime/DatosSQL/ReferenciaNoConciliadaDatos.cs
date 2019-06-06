@@ -312,6 +312,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                             comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                             comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                             comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+                            //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null ;
 
                             comando.CommandType = System.Data.CommandType.StoredProcedure;
                             comando.Transaction = transaction;
@@ -382,6 +383,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                     comando.Parameters.Add("@StatusMovimiento", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null; // this.Usuario == "" ? null : this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -435,6 +437,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -488,6 +491,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                     comando.Parameters.Add("@StatusMovimiento", System.Data.SqlDbType.VarChar).Value = "PENDIENTE";
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = this.ComentarioNoConciliado;
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null; //this.Usuario == "" ? null : this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -541,6 +545,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value =  this.ComentarioNoConciliado;
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -594,6 +599,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = this.ComentarioNoConciliado;
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
