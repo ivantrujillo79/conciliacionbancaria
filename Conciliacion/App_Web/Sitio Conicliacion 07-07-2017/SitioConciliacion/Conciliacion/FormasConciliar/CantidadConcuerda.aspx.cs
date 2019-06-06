@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using CrystalDecisions.Shared.Json;
 using Locker;
+using SeguridadCB.Public;
 
 public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web.UI.Page
 {
@@ -1631,10 +1632,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 try
                 {
                     int filaindex = 0;
+                    Usuario usuario = (Usuario)HttpContext.Current.Session["Usuario"];
                     foreach (GridViewRow fila in grvCantidadConcuerdanPedidos.Rows)
                         if (fila.RowType == DataControlRowType.DataRow)
                         {
                             listaReferenciaConciliadaPedidos[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                            listaReferenciaConciliadaPedidos[filaindex].Usuario = usuario.IdUsuario;
                             if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
                             {
                                 AlgunChequeado = true;

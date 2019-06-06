@@ -109,6 +109,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add("@IvaComision", System.Data.SqlDbType.Money).Value = this.IVAComision;
             }
             _conexion.Comando.Parameters.Add("@TipoCobro", System.Data.SqlDbType.Int).Value = this.TipoCobro;
+            _conexion.Comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
 
             _conexion.Comando.CommandType = System.Data.CommandType.StoredProcedure;
             SqlDataReader reader = _conexion.Comando.ExecuteReader();
@@ -174,6 +175,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     //    this.TipoCobroAnterior = 10; //se asigna el primer elemento del dropdownlist
                     comando.Parameters.Add("@TipoCobro", System.Data.SqlDbType.Int).Value = this.TipoCobro;
                     comando.Parameters.Add("@TipoCobroAnterior", System.Data.SqlDbType.Int).Value = this.TipoCobroAnterior;
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();

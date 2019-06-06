@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Threading;
 using Locker;
+using SeguridadCB.Public;
 
 public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan : System.Web.UI.Page
 {
@@ -2707,6 +2708,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
         objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
 
+        Usuario usuario = (Usuario)HttpContext.Current.Session["Usuario"];
         if (objSolicitdConciliacion.ConsultaArchivo())
         {
             if (grvCantidadReferenciaConcuerdanArchivos.Rows.Count > 0)
@@ -2715,7 +2717,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 try
                 {
                     if (listaReferenciaConciliada != null)
+                    {
+                        listaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
                         listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
+                    }
                     else
                         App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
                 }
@@ -2743,6 +2748,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                             ReferenciaConciliadaPedido refcon = (ReferenciaConciliadaPedido)listRefCon[i];
                             if (refcon.Selecciona)
                             {
+                                refcon.Usuario = usuario.IdUsuario;
                                 refcon.Guardar();
                                 guardado = true;
                             }

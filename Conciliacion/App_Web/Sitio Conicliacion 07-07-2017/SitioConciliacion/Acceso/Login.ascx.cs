@@ -137,7 +137,7 @@ public partial class Acceso_Login : System.Web.UI.UserControl
             this.seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
         if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
             cn.ConnectionString = "Application Name = Conciliación Bancaría" + " v.1.0.0.0" + "; Data Source = " + this.servidor + "; Initial Catalog = " +
-            this.baseDatos + "; User ID = " + this.txtUsuario.Text.Trim() + "; Integrated Security = Yes";
+            this.baseDatos + "; User ID = " + this.txtUsuario.Text.Trim() + "; Integrated Security = SSPI";
         else
             cn.ConnectionString = "Application Name = " + "; Data Source = " + this.servidor + "; Initial Catalog = " +
             this.baseDatos + "; User ID = " + this.txtUsuario.Text.Trim() + "; Password = " + this.txtClave.Text.Trim();

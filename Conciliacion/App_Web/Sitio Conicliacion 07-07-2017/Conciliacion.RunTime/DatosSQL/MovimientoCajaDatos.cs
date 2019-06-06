@@ -89,7 +89,12 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             //   MovimientoCaja movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
             SqlDataReader drConsulta = null;
-            
+
+            this.ImplementadorMensajes.MostrarMensaje(
+                " Caja: " + this.Caja.ToString()+
+                " Usuario: " + this.Usuario.ToString()+
+                " Empleado: " + this.Empleado.ToString()
+                );
 
             bool resultado = false;
             try
@@ -119,7 +124,10 @@ namespace Conciliacion.RunTime.DatosSQL
                         this.Consecutivo = Convert.ToInt16(drConsulta["Consecutivo"]);
                         this.Folio = Convert.ToInt32(drConsulta["Folio"]);
                     }
+                    this.ImplementadorMensajes.MostrarMensaje("OK "+this.Folio.ToString());
                 }
+                if (this.Caja == 0)
+                    throw new Exception("El usuario "+this.Usuario+" no tiene una caja valida.");
                 resultado = true;
             }
             catch (SqlException ex)
@@ -190,6 +198,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 List<Cobro> Cobros = this.ListaCobros;
                 foreach (Cobro Cobro in Cobros)
                 {
+                    Cobro.Usuario = this.Usuario;
                     resultado = Cobro.ChequeTarjetaAltaModifica(_conexion);
                     Cobro.MovimientoCajaCobroAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
                     Cobro.MovimientoCajaEntradaAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);

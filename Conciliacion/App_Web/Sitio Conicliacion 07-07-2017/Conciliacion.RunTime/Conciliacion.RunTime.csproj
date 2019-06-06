@@ -135,6 +135,7 @@
     <Compile Include="MensajeImplementacionWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReglasDeNegocio\BusquedaClienteDatosBancarios.cs" />
+    <Compile Include="ReglasDeNegocio\BusquedaClientesCRM.cs" />
     <Compile Include="ReglasDeNegocio\Caja.cs" />
     <Compile Include="ReglasDeNegocio\Cliente.cs" />
     <Compile Include="ReglasDeNegocio\ClienteException.cs" />

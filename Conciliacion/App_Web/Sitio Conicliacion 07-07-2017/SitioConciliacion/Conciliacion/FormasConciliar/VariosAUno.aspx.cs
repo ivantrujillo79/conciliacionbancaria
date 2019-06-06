@@ -18,6 +18,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using AjaxControlToolkit;
 using Conciliacion.RunTime.DatosSQL;
 using Locker;
+using SeguridadCB.Public;
 
 public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Page
 {
@@ -1263,6 +1264,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 numRegInter = grvInternos.Rows.Count;
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
             {
+                usuario = (Usuario)HttpContext.Current.Session["Usuario"];
                 foreach (ReferenciaNoConciliada ex in extSeleccionados)
                 {
                     if (objSolicitdConciliacion.ConsultaPedido())
@@ -1275,7 +1277,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     if (ex.TipoCobroAnterior == 0)
                         ex.TipoCobroAnterior = 10;
                     ex.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
-                    
+
+                    ex.ListaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
 
                     //throw new Exception("STOP");
 

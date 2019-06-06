@@ -92,6 +92,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = String.IsNullOrEmpty(this.DescripcionInterno) ? null: this.DescripcionInterno;
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     comando.ExecuteNonQuery();
 
@@ -145,8 +146,8 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@StatusMovimiento", System.Data.SqlDbType.VarChar).Value = "PENDIENTE";
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
-                    comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = String.IsNullOrEmpty(this.DescripcionInterno) ? null : this.DescripcionInterno; 
-
+                    comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = String.IsNullOrEmpty(this.DescripcionInterno) ? null : this.DescripcionInterno;
+                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
                     resultado = true;
