@@ -191,7 +191,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 }
                 catch(Exception ex)
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                    if (!ex.Message.Contains("#C2"))
+                        App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
                 }
 
                 LlenarBarraEstado();
@@ -226,8 +227,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     }
                     catch (Exception ex)
                     {
-                        App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                        if (! ex.Message.Contains("#C2"))
+                            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
                     }
+
                     GenerarTablaReferenciasAConciliarArchivos();
                     _tblReferenciasAConciliarArchivo = (DataTable)HttpContext.Current.Session["TBL_REFCON_CANTREF"];
                     HttpContext.Current.Session["SolicitdConciliacionConsultaArchivo"] = 1;
@@ -249,7 +252,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 {
                     selectedListItem.Selected = true;
                 }
-
                 //CARGAR LAS TRANSACCIONES CONCILIADAS POR EL CRITERIO DE AUTOCONCILIACIÓN
                 if (ddlCriteriosConciliacion.SelectedValue == "2" || ddlCriteriosConciliacion.SelectedValue == "7")
                     if (corporativo != 0 && sucursal != 0 && año != 0 && mes != 0 && folio != 0)
@@ -259,11 +261,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                         LlenaGridViewConciliadas();
                     }
             }
-
         }
         catch (SqlException ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            if (!ex.Message.Contains("#C2"))
+                App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
             if (ex.Class >= 20)
             {
                 Response.Redirect("~/Inicio.aspx", true);
@@ -271,7 +273,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            if (!ex.Message.Contains("#C2"))
+                App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -340,8 +343,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (Exception ex)
         {
-
-            throw ex;
+            if (!ex.Message.Contains("#C2"))
+                if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
 
@@ -369,11 +372,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2"))
+                throw ex;
         }
         
     }
@@ -393,11 +397,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2"))
+                throw ex;
         }
     }
     /// <summary>
@@ -420,11 +425,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     //Colocar el DropDown de Criterios de Evaluacion en la Actual
@@ -465,11 +470,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     /// <summary>
@@ -613,7 +618,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     public void consultaClienteCRM(int cliente, SeguridadCB.Public.Usuario usuariot, byte  modulot, string cadena)
@@ -995,7 +1000,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             }
             catch (Exception ex)
             {
-                throw ex;
+                if (!ex.Message.Contains("#C2")) 
+                    throw ex;
             }
 
             //foreach (ReferenciaConciliadaPedido rc in listaReferenciaConciliadaPedido)
@@ -1035,7 +1041,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
 
@@ -1136,7 +1142,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     //Consultar archivo Externo
@@ -1177,11 +1183,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
 
     }
@@ -1202,11 +1208,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
 
     }
@@ -1273,12 +1279,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         catch (SqlException ex)
         {
             Nhilos = 0;
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
             Nhilos = 0;
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
 
@@ -1548,11 +1554,15 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            if (!ex.Message.Contains("#C2"))
+                if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            //App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            if (! ex.Message.Contains("#C2"))
+                if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     //Genera la tabla de transacciones Conciliadas
@@ -1616,7 +1626,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     //Llena el Gridview Transacciones Concilidadas
@@ -1627,12 +1637,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             DataTable tablaConciliadas = (DataTable)HttpContext.Current.Session["TAB_CONCILIADAS"];
             grvConciliadas.DataSource = tablaConciliadas;
             grvConciliadas.DataBind();
-
         }
         catch (Exception ex)
         {
-            
-            throw ex;
+            if (!ex.Message.Contains("#C2")) 
+                if (!ex.Message.Contains("#C2")) throw ex;
         }
        
     }
@@ -1777,11 +1786,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         }
         catch (SqlException ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
         catch (Exception ex)
         {
-            throw ex;
+            if (!ex.Message.Contains("#C2")) throw ex;
         }
     }
     /// <summary>

@@ -1622,6 +1622,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         bool AlgunChequeado = false;
         //Leer el tipoConciliacion URL
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        Usuario usuario = (Usuario)HttpContext.Current.Session["Usuario"];
         if (tipoConciliacion == 2)
         {
             //Leer la lista de Referencias por Conciliar : Tipo Conciliacion = 2
@@ -1632,7 +1633,6 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 try
                 {
                     int filaindex = 0;
-                    Usuario usuario = (Usuario)HttpContext.Current.Session["Usuario"];
                     foreach (GridViewRow fila in grvCantidadConcuerdanPedidos.Rows)
                         if (fila.RowType == DataControlRowType.DataRow)
                         {
@@ -1669,6 +1669,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                         if (fila.RowType == DataControlRowType.DataRow)
                         {
                             listaReferenciaConciliada[filaindex].Selecciona = fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked;
+                            listaReferenciaConciliada[filaindex].Usuario = usuario.IdUsuario;
                             if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked)
                             {
                                 AlgunChequeado = true;

@@ -240,7 +240,6 @@
         }
 
         function pageLoad() {
-            alert('hola');
             // Script se utiliza para llamar a  la funcion de jQuery desplegable
             $("#btnMostrarAgregados").click(function () {
                 $("#dvAgregados").slideToggle();
@@ -253,6 +252,18 @@
         $(document).keypress(function (e) {
             if (e.which == 2) {
                 console.log("ctrl B");
+                var hoy = new Date();
+                var dd = String(hoy.getDate()).padStart(2, '0');
+                var mm = String(hoy.getMonth()).padStart(2, '0'); 
+                var yyyy = hoy.getFullYear();
+                document.getElementById("ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_txtFinicio").value = dd + '/' + mm + '/' + yyyy;
+                var mesAnterior = String(hoy.getMonth() + 1).padStart(2, '0'); 
+                document.getElementById("ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_txtFfinal").value = dd + '/' + mesAnterior + '/' + yyyy;
+                $('#ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_grvPagoEstadoCuenta').remove();
+                document.getElementById("ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_txtMonto").value = "0.00";
+                document.getElementById("ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_chkBuscaEnRetiros").checked = false;
+                document.getElementById("ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_chkBuscarEnDepositos").checked = false;
+                document.getElementById("ctl00_contenidoPrincipal_wucBuscadorPagoEstadoCuenta_chkBuscarEnEsta").checked = false;
                 $find('ModalBehaviorBuscadorPagoEdoCta').show();
             }
         });

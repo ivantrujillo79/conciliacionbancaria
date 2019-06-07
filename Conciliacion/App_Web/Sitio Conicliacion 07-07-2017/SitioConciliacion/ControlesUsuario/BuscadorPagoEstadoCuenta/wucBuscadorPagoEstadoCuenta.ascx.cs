@@ -80,6 +80,7 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
 
     protected void btnBuscar_Click(object sender, EventArgs e)
     {
+        grvPagoEstadoCuenta.Visible = true;
         if (txtMonto.Text.Trim() == "")
             txtMonto.Text = "0";
         List<EstadoDeCuenta> listaEstadoCuenta;
