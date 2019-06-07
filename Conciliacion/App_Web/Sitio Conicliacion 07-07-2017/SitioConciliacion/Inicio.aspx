@@ -89,6 +89,11 @@
             });
         }
 
+        function ValidNumDecimal(e) {
+            var tecla = document.all ? tecla = e.keyCode : tecla = e.which;
+            return ((tecla > 47 && tecla < 58) || tecla == 46 || tecla == 8);
+        }
+
     </script>
     <script src="App_Scripts/jsHoverGridView.js" type="text/javascript"></script>
 </asp:Content>
@@ -127,6 +132,19 @@
                 $(document).keypress(function (e) {
                     if (e.which == 2) {
                         console.log("ctrl B");
+                        var hoy = new Date();
+                        var dd = String(hoy.getDate()).padStart(2, '0');
+                        var mm = String(hoy.getMonth()).padStart(2, '0'); 
+                        var yyyy = hoy.getFullYear();
+                        document.getElementById("<%=txtFinicio.ClientID %>").value = dd + '/' + mm + '/' + yyyy;
+                        var mesAnterior = String(hoy.getMonth() + 1).padStart(2, '0'); 
+                        document.getElementById("<%=txtFfinal.ClientID %>").value = dd + '/' + mesAnterior + '/' + yyyy;
+                        var grid = document.getElementById("<%=grvPagoEstadoCuenta.ClientID %>");
+                        $('#ctl00_contenidoPrincipal_grvPagoEstadoCuenta').remove();
+                        document.getElementById("<%=txtMonto.ClientID %>").value = "0.00";
+                        document.getElementById("ctl00_contenidoPrincipal_chkBuscaEnRetiros").checked = false;
+                        document.getElementById("ctl00_contenidoPrincipal_chkBuscarEnDepositos").checked = false;
+                        document.getElementById("ctl00_contenidoPrincipal_chkBuscarEnEsta").checked = false;
                         $find('ModalBehaviorBuscadorPagoEdoCta').show();
                     }
                 });

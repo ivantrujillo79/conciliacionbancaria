@@ -3324,13 +3324,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         {
             short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
 
-            if (tipoConciliacion == 2)
-            {
-                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                    grvPrima = (GridView)Session["TABLADEAGREGADOS"];
-            }
-            else
-            {
+            //if (tipoConciliacion == 2)
+            //{
+            //    if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+            //        grvPrima = (GridView)Session["TABLADEAGREGADOS"];
+            //}
+            //else
+            //{
                 if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
                     grvPrima = (GridView)Session["TABLADEINTERNOS"];
 
@@ -3410,7 +3410,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 }
                 grvInternos.DataBind();
                 grvInternos.DataBind();
-            }
+            //}
             dvExpera.Visible = grvPedidos.Rows.Count == 0;
         }
         catch(Exception ex)
