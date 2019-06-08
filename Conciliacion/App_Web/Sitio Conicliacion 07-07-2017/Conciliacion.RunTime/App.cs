@@ -38,7 +38,6 @@ namespace Conciliacion.RunTime
 
     public class App
     {
-
         private MensajesImplementacion implementadorMensajes;
         public MensajesImplementacion ImplementadorMensajes
         {

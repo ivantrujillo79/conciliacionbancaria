@@ -293,6 +293,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
              * estatica el valor del tipo conciliacion*/
 
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]); //antes estaba asi: tipoConciliacion = 2; 
+        grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
+
     }
     //Limpian variables de Session
     public void limpiarVariablesSession()
@@ -2414,7 +2416,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                      mes + "&TipoConciliacion=" + Convert.ToSByte(Request.QueryString["TipoConciliacion"]) + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
+                                      mes + "&TipoConciliacion=" + Convert.ToSByte(Request.QueryString["TipoConciliacion"]) + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)
+                                      + "&GrupoConciliacion=" + grupoConciliacion);
     }
 
     private short Asigna_FormaConciliacionActual()

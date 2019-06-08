@@ -420,7 +420,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-
+        grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
     }
     //Limpian variables de Session
     public void limpiarVariablesSession()
@@ -1330,7 +1330,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             resultado = false;  objApp.ImplementadorMensajes.MostrarMensaje("Error\nVerifique su selección. DEtalles:"+Ex.Message);
         }
         if (resultado)
+        {
+            LockerExterno.EliminarBloqueos(Session.SessionID);
             objApp.ImplementadorMensajes.MostrarMensaje("Transacciones guardadas correctamente.");
+        }
     }
 
     public void GenerarTablaArchivosInternos()//Genera la tabla Referencias a Conciliar de Archivos Internos
@@ -2509,7 +2512,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                                       "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                      mes + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
+                                      mes + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)
+                                      + "&GrupoConciliacion=" + grupoConciliacion);
     }
     protected void Nueva_Ventana(string pagina, string titulo, int ancho, int alto, int x, int y)
     {

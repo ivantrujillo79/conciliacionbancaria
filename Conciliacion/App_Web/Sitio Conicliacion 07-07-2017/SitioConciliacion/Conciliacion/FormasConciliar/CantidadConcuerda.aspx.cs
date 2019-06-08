@@ -69,6 +69,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
 
     public bool activaPaginacion()
     {
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         SeguridadCB.Public.Parametros parametros;
         parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
         AppSettingsReader settings = new AppSettingsReader();
@@ -228,6 +229,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
         mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
     }
     //Limpiar las variables de Session
     public void limpiarVariablesSession()
@@ -1421,7 +1423,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
                                       "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
-                                      mesConciliacion + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
+                                      mesConciliacion + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)
+                                      + "&GrupoConciliacion=" + grupoConciliacion);
     }
 
     private bool hayBloqueados(GridView grv)

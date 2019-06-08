@@ -1477,7 +1477,7 @@
                                         <td style="width: 12.5%;">
                                             <asp:TextBox ID="txtAFuturo_FInicio" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
                                                 ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
-                                            <asp:TextBox ID="txtAFuturo_FFInal" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                            <asp:TextBox ID="txtAFuturo_FFInal" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Final"
                                                 Width="80px"></asp:TextBox>
                                         </td>
                                         <td rowspan="2" style="vertical-align: top; width: 12.5%;">

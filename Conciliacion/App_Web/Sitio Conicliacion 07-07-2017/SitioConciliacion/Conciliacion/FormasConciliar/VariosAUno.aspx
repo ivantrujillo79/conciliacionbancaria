@@ -1077,7 +1077,7 @@
                                         <td style="width: 12.5%;">
                                             <asp:TextBox ID="txtAFuturo_FInicioExternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
                                                 ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
-                                            <asp:TextBox ID="txtAFuturo_FFInalExternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                            <asp:TextBox ID="txtAFuturo_FFInalExternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Final"
                                                 Width="80px"></asp:TextBox>
                                         </td>
                                         <td rowspan="2" style="vertical-align: top; width: 12.5%;">
@@ -1300,7 +1300,7 @@
                                                 <td style="width: 12.5%;">
                                                     <asp:TextBox ID="txtAFuturo_FInicioInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
                                                         ValidationGroup="vgFOperacion" Width="80px"></asp:TextBox>
-                                                    <asp:TextBox ID="txtAFuturo_FFInalInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Inicio"
+                                                    <asp:TextBox ID="txtAFuturo_FFInalInternos" runat="server" CssClass="cajaTextoPequeño" ToolTip="F Final"
                                                         Width="80px"></asp:TextBox>
                                                 </td>
                                                 <td rowspan="2" style="vertical-align: top; width: 12.5%;">
