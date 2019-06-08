@@ -60,7 +60,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         }
 
-        public InformeBancario(IMensajesImplementacion implementadorMensajes)
+        public InformeBancario(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
         }

@@ -22,7 +22,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int cobranza;
 
         #region Constructores
-        public MovimientoCajaConciliacion(IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacion(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.Caja = 0;
@@ -36,7 +36,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.Status = ""; 
         }
 
-        public MovimientoCajaConciliacion(short caja, DateTime foperacion, short consecutivo, int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, int cobranza,IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacion(short caja, DateTime foperacion, short consecutivo, int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, int cobranza,MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.Caja = caja;

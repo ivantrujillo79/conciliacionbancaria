@@ -9,7 +9,9 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class DetallePagareDatos : DetallePagare
     {
-        public DetallePagareDatos(IMensajesImplementacion implementadorMensajes)
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
+        public DetallePagareDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -28,7 +30,7 @@ namespace Conciliacion.RunTime.DatosSQL
             DateTime fsaldo, 
             decimal importe, 
             string conciliada, 
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
             : base(seleccionado,
                    folio,
                    año,
@@ -56,7 +58,7 @@ namespace Conciliacion.RunTime.DatosSQL
             List<DetallePagare> ListaRetorno = new List<DetallePagare>();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     if (TipoMovimientoAConciliar <= 0)
                     {
@@ -109,7 +111,7 @@ namespace Conciliacion.RunTime.DatosSQL
             if (Folio <= 0 || Año <= 0)
                 throw new Exception("Parámetros incorrectos.");
 
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {

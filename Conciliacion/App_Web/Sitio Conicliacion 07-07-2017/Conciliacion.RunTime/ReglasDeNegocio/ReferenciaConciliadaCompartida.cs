@@ -8,6 +8,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class ReferenciaConciliadaCompartida : cReferencia
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         //Conciliacion
 
         int corporativoconciliacion;
@@ -72,7 +73,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         int? celula, int? añoped, int? pedido, decimal? total, int cliente,
                         string conceptoint, string descripcionint, string motivonoconciliado, string comentarionoconciliado, string ubicacionicono, decimal montoexterno,
 
-                        IMensajesImplementacion implementadorMensajes)
+                        MensajesImplementacion implementadorMensajes)
 
             : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto,
               statusConciliacionMovimiento, foperacionext, fmovimientoext, chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno, implementadorMensajes)
@@ -120,7 +121,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
 
-        public ReferenciaConciliadaCompartida(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaConciliadaCompartida(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
 
@@ -337,7 +338,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 //    return false;
                 //}
                 ReferenciaConciliadaPedido RefConciliada;
-                RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliadaPedido.CrearObjeto();
+                RefConciliada = objApp.ReferenciaConciliadaPedido.CrearObjeto();
                 RefConciliada.Corporativo = this.CorporativoExterno; //CoporrativoConcialicion
                 RefConciliada.Sucursal = this.SucursalConciliacion;//SucursalConciliacion
                 RefConciliada.AñoConciliacion = this.AñoConciliacion; //AñoConciliacion

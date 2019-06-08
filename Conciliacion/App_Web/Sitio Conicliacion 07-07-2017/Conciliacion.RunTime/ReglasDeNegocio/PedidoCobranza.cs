@@ -14,7 +14,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private Int16 gestionInicial;
 
 
-          public PedidoCobranza(IMensajesImplementacion implementadorMensajes)
+          public PedidoCobranza(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.anioPed = 0;
@@ -30,7 +30,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             int pedido,
             int cobranza,
             decimal saldo,
-            Int16 gestionInicial, IMensajesImplementacion implementadorMensajes)
+            Int16 gestionInicial, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.anioPed = anioPed;
@@ -41,6 +41,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.gestionInicial = gestionInicial;
         }
 
+        //protected PedidoCobranza(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         public int AnioPed
         {
@@ -87,7 +91,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
     }

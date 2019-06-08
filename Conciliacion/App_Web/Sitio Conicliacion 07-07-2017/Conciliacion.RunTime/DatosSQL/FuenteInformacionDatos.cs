@@ -8,13 +8,13 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class FuenteInformacionDatos : cFuenteInformacion
     {
-        public FuenteInformacionDatos(IMensajesImplementacion implementadorMensajes)
+        public FuenteInformacionDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
         public FuenteInformacionDatos(int fuenteinformacion, string rutaarchivo, string cuentabancofinanciero, short tipofuenteinformacion, 
-            string tipofuenteinformaciondes,short tipofuente, string tipofuentedes, short tipoarchivo, string tipoarchivodes, IMensajesImplementacion implementadorMensajes): base (fuenteinformacion,rutaarchivo,cuentabancofinanciero,tipofuenteinformacion, tipofuenteinformaciondes,tipofuente,tipofuentedes,tipoarchivo,tipoarchivodes,implementadorMensajes)
+            string tipofuenteinformaciondes,short tipofuente, string tipofuentedes, short tipoarchivo, string tipoarchivodes, MensajesImplementacion implementadorMensajes): base (fuenteinformacion,rutaarchivo,cuentabancofinanciero,tipofuenteinformacion, tipofuenteinformaciondes,tipofuente,tipofuentedes,tipoarchivo,tipoarchivodes,implementadorMensajes)
         {
         }
 

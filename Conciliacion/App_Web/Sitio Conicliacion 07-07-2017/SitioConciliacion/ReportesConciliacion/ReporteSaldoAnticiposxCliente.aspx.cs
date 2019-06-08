@@ -16,6 +16,8 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
 {
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -24,7 +26,7 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
 
     public GrupoConciliacionUsuario LeerGrupoConciliacionUsuarioEspecifico(string usuario)
     {
-        return CatalogoConciliacion.App.Consultas.ObtieneGrupoConciliacionUsuarioEspecifico(usuario);
+        return objAppCat.Consultas.ObtieneGrupoConciliacionUsuarioEspecifico(usuario);
     }
 
     private bool FiltroCorrecto()
@@ -129,12 +131,12 @@ public partial class ReportesConciliacion_ReporteSaldoAnticiposxCliente : System
                 }
                 catch (Exception ex)
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("Error: Generar Reporte\n" + ex.Message);
+                    objApp.ImplementadorMensajes.MostrarMensaje("Error: Generar Reporte\n" + ex.Message);
                 }
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Error: Leer Valores.\n" + ex.Message);
+                objApp.ImplementadorMensajes.MostrarMensaje("Error: Leer Valores.\n" + ex.Message);
             }
         }
     }

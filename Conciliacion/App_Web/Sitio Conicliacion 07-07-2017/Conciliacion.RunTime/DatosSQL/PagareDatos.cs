@@ -19,7 +19,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /// Constructor sobrecargado de la clase
         /// </summary>
         /// <param name="implementadorMensajes"></param>
-        public PagareDatos(IMensajesImplementacion implementadorMensajes)
+        public PagareDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -55,7 +55,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int cobranza,
             decimal saldo,
             short gestioninicial,
-            IMensajesImplementacion implementadorMensajes
+            MensajesImplementacion implementadorMensajes
             )
             : base(
                 foliocorte,

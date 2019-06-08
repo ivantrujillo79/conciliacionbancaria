@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CatalogoConciliacion.ReglasNegocio;
 using Conciliacion.Migracion.Runtime;
+using Conciliacion.RunTime;
 
 namespace CatalogoConciliacion.Datos
 {
@@ -12,7 +13,7 @@ namespace CatalogoConciliacion.Datos
     {
 
 
-        public TipoCobroDatos(IMensajesImplementacion implementadorMensajes)
+        public TipoCobroDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }

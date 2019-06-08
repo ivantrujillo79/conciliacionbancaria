@@ -13,7 +13,8 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 {
-
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Usuario usuario;
     #endregion
@@ -41,12 +42,12 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
            
             //Llamamos a la clase app perteneciente a libreria de clases donde estamos apuntando
-            CatalogoConciliacion.App.ImplementadorMensajes.ContenedorActual = this;
+            objAppCat.ImplementadorMensajes.ContenedorActual = this;
             if (!IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -78,7 +79,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-           App.ImplementadorMensajes.MostrarMensaje("Error\n"+ex.Message);
+           objApp.ImplementadorMensajes.MostrarMensaje("Error\n"+ex.Message);
         }
 
     }
@@ -95,13 +96,13 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         try
         {
-            ListExtractores = Conciliacion.RunTime.App.Consultas.ConsultaImportacionesAplicacion( sucursal, cuentaBanco);
+            ListExtractores = objApp.Consultas.ConsultaImportacionesAplicacion( sucursal, cuentaBanco);
             
             
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -163,7 +164,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -171,7 +172,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.cboSucursal.DataSource = listSucursales;
             this.cboSucursal.DataValueField = "Identificador";
             this.cboSucursal.DataTextField = "Descripcion";
@@ -180,7 +181,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -190,7 +191,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
        try
        {
 
-           listBancos = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+           listBancos = objApp.Consultas.ConsultaBancos(corporativo);
            this.cboNombreBanco.DataSource = listBancos;
            this.cboNombreBanco.DataValueField = "Identificador";
            this.cboNombreBanco.DataTextField = "Descripcion";
@@ -199,7 +200,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
        }
        catch (Exception ex)
        {
-           App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+           objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
        }
    }
     
@@ -208,7 +209,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
        try
        {
 
-           listCuentaBancaria = Conciliacion.RunTime.App.Consultas.ConsultaCuentasBancaria(corporativo, banco);
+           listCuentaBancaria = objApp.Consultas.ConsultaCuentasBancaria(corporativo, banco);
            
           // ListaCombo dato = new ListaCombo(0, "VER TODOS", "TODAS LAS CUENTAS");
           // listCuentaBancaria.Insert(0,dato);
@@ -239,7 +240,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         try
         {
            
-            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp1 = Conciliacion.RunTime.App.Consultas.ConsultaImportacionesAplicacion(Convert.ToInt16(cboSucursal.SelectedItem.Value), cboCuentaBanco.SelectedItem.Text.Trim()); ;
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp1 = objApp.Consultas.ConsultaImportacionesAplicacion(Convert.ToInt16(cboSucursal.SelectedItem.Value), cboCuentaBanco.SelectedItem.Text.Trim()); ;
 
             for (int i = 0; i < listImportacionAplicacionTemp1.Count; i++)
             {
@@ -248,7 +249,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 
 
 
-            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp2 = Conciliacion.RunTime.App.Consultas.ConsultaImportacionAplicacion(Convert.ToInt16(cboSucursal.SelectedItem.Value)); ;
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp2 = objApp.Consultas.ConsultaImportacionAplicacion(Convert.ToInt16(cboSucursal.SelectedItem.Value)); ;
             for (int i = 0; i < listImportacionAplicacionTemp2.Count; i++)
             {
                 foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion importacionObjeto in listImportacionAplicacionTemp1)
@@ -273,7 +274,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -321,7 +322,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     protected void btnAgregar_Click1(object sender, EventArgs e)
@@ -342,8 +343,8 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
     protected void btnGuardarInterno_Click(object sender, EventArgs e)
     {
 
-        //CuentaTransferencia cta = CatalogoConciliacion.App.ReferenciaCuentaTransferencia.CrearObjeto();
-        TipoMovimientoCuenta movimiento = CatalogoConciliacion.App.TipoMovimientoCuenta.CrearObjeto();
+        //CuentaTransferencia cta =  objAppCat.ReferenciaCuentaTransferencia.CrearObjeto();
+        TipoMovimientoCuenta movimiento =  objAppCat.TipoMovimientoCuenta.CrearObjeto();
 
         movimiento.Cuenta = cboCuentaBanco.SelectedItem.Text.Trim();
         movimiento.TipoMovimiento = Convert.ToInt16(cboTipoMovimientoNuevo.SelectedItem.Value);
@@ -376,10 +377,10 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
        
 
-        //CatalogoConciliacion.App.ConsultasDos.
+        // objAppCat.ConsultasDos.
 
         /*   usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-           CuentaTransferencia cta = CatalogoConciliacion.App.ReferenciaCuentaTransferencia.CrearObjeto();
+           CuentaTransferencia cta =  objAppCat.ReferenciaCuentaTransferencia.CrearObjeto();
            cta.CuentaTransferencia_ = 0;
            cta.Corporativo = Convert.ToInt16(cboCorporativo_.SelectedItem.Value);
            cta.Sucursal = Convert.ToInt16(cboSucursal_.SelectedItem.Value);
@@ -475,7 +476,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         /* aqui if (e.CommandName.Equals("CAMBIARSTATUS"))
          {
              GridViewRow gRow = (GridViewRow)(e.CommandSource as Button).Parent.Parent;
-             CatalogoConciliacion.App.ReferenciaCuentaTransferencia.CambiarStatus(Convert.ToInt16(grdExtractores.DataKeys[gRow.RowIndex].Values["CuentaTransferenciaId"]));
+              objAppCat.ReferenciaCuentaTransferencia.CambiarStatus(Convert.ToInt16(grdExtractores.DataKeys[gRow.RowIndex].Values["CuentaTransferenciaId"]));
 
              //Refrescamos el DGV
              Consulta_TablaImportacionAplicacionCuenta(Convert.ToInt16(cboCorporativo.SelectedItem.Value),
@@ -492,7 +493,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 
             GridViewRow row = grdExtractores.Rows[index];
 
-           if(App.TipoMovimientoCuenta.Eliminar(Convert.ToInt16(grdExtractores.DataKeys[gRow.RowIndex].Values["Identificador"]),
+           if(objAppCat.TipoMovimientoCuenta.Eliminar(Convert.ToInt16(grdExtractores.DataKeys[gRow.RowIndex].Values["Identificador"]),
 
                 cboCuentaBanco.SelectedItem.Text.Trim()
                 ))

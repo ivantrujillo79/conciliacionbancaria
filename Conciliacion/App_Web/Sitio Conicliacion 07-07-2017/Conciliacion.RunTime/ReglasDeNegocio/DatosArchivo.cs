@@ -24,31 +24,43 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
        string statusconciliacion;
 
        #region Constructores
-       public DatosArchivo(IMensajesImplementacion implementadorMensajes)
-       {
-           this.ImplementadorMensajes = implementadorMensajes;
-           this.corporativo=0;
-           this.sucursal=0;
-           this.año=0;
-           this.folio=0;
-           this.cuentabanco="";
-           this.tipofuenteinformacion=0;
-           this.statusconciliacion="";
-       }
-
-       //public DatosArchivo(int corporativo, int sucursal, int año, int folio, string cuentabanco, short tipofuenteinformacion, string statusconciliacion, IMensajesImplementacion implementadorMensajes)
+       //public DatosArchivo(MensajesImplementacion implementadorMensajes)
        //{
-       //    this.corporativo=corporativo;
-       //    this.sucursal=sucursal;
-       //    this.año=año;
-       //    this.folio=folio;
-       //    this.cuentabanco=cuentabanco;
-       //    this.tipofuenteinformacion=tipofuenteinformacion;
-       //    this.statusconciliacion=statusconciliacion;
        //    this.ImplementadorMensajes = implementadorMensajes;
+       //    this.corporativo=0;
+       //    this.sucursal=0;
+       //    this.año=0;
+       //    this.folio=0;
+       //    this.cuentabanco="";
+       //    this.tipofuenteinformacion=0;
+       //    this.statusconciliacion="";
        //}
 
-       public DatosArchivo(int corporativo, int sucursal, int año, int folio, string cuentabanco,DateTime finicial, DateTime ffinal, short tipofuenteinformacion, string tipofuenteinformaciondes, string statusconciliacion, short tipofuente, string tipofuentedes,int sucursalconciliacion, int folioconciliacion, short mesconciliacion, IMensajesImplementacion implementadorMensajes)
+        protected DatosArchivo(MensajesImplementacion implementadorMensajes)
+        {
+            this.implementadorMensajes = implementadorMensajes;
+            this.corporativo = 0;
+            this.sucursal = 0;
+            this.año = 0;
+            this.folio = 0;
+            this.cuentabanco = "";
+            this.tipofuenteinformacion = 0;
+            this.statusconciliacion = "";
+        }
+
+        //public DatosArchivo(int corporativo, int sucursal, int año, int folio, string cuentabanco, short tipofuenteinformacion, string statusconciliacion, MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.corporativo=corporativo;
+        //    this.sucursal=sucursal;
+        //    this.año=año;
+        //    this.folio=folio;
+        //    this.cuentabanco=cuentabanco;
+        //    this.tipofuenteinformacion=tipofuenteinformacion;
+        //    this.statusconciliacion=statusconciliacion;
+        //    this.ImplementadorMensajes = implementadorMensajes;
+        //}
+
+        public DatosArchivo(int corporativo, int sucursal, int año, int folio, string cuentabanco,DateTime finicial, DateTime ffinal, short tipofuenteinformacion, string tipofuenteinformaciondes, string statusconciliacion, short tipofuente, string tipofuentedes,int sucursalconciliacion, int folioconciliacion, short mesconciliacion, MensajesImplementacion implementadorMensajes)
        {
            this.corporativo = corporativo;
            this.sucursal = sucursal;
@@ -68,9 +80,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
            this.ImplementadorMensajes = implementadorMensajes;
        }
 
-       #endregion
+        #endregion
 
-       
+
         public abstract DatosArchivo CrearObjeto();
         public abstract bool GuardarArchivoInterno();
         public abstract bool ExisteArchivoInternoConciliacion();
@@ -167,7 +179,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

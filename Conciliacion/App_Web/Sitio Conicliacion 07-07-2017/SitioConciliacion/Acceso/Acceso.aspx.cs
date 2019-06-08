@@ -9,7 +9,8 @@ public partial class Acceso_Acceso : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (HttpContext.Current.Request.UrlReferrer != null)
         {
             if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) || (HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("Acceso.aspx")))

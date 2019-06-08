@@ -19,6 +19,7 @@ using System.Diagnostics;
 
 public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
@@ -113,7 +114,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 }
             }
         }
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
             
@@ -220,7 +221,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 imgExportar.Enabled = false;
             }
         }
-        catch (Exception ex) { App.ImplementadorMensajes.MostrarMensaje(ex.Message); }
+        catch (Exception ex) { objApp.ImplementadorMensajes.MostrarMensaje(ex.Message); }
     }
 
     #endregion
@@ -269,7 +270,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
 
 HttpContext.Current.Session["UsuarioTransBan"] = strUsuario;
 
-movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAlta(
+movimientoCajaAlta = objApp.Consultas.ConsultaMovimientoCajaAlta(
                 corporativoConciliacion, 
                 sucursalConciliacion, 
                 añoConciliacion, 
@@ -284,7 +285,7 @@ movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAl
             HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
             HttpContext.Current.Session["LIST_REF_PAGAR"] = movimientoCajaAlta.ListaPedidos;
         }
-        catch (Exception ex) { App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.StackTrace + "\nMensaje: " + ex.Message); }
+        catch (Exception ex) { objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.StackTrace + "\nMensaje: " + ex.Message); }
 
     }
     /// <summary>
@@ -294,7 +295,7 @@ movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAl
     {
         try
         {
-            listFormasConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
+            listFormasConciliacion = objApp.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
             this.ddlCriteriosConciliacion.DataSource = listFormasConciliacion;
             this.ddlCriteriosConciliacion.DataValueField = "Identificador";
             this.ddlCriteriosConciliacion.DataTextField = "Descripcion";
@@ -303,7 +304,7 @@ movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAl
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -337,14 +338,14 @@ movimientoCajaAlta = Conciliacion.RunTime.App.Consultas.ConsultaMovimientoCajaAl
                 usuarioBusqueda = strUsuario;
             }
 
-            listaReferenciaConciliadaPagos = Conciliacion.RunTime.App.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC, usuarioBusqueda);
+            listaReferenciaConciliadaPagos = objApp.Consultas.ConsultaPagosPorAplicar(corporativoC, sucursalC, añoC, mesC, folioC, usuarioBusqueda);
             listaReferenciaConciliadaPagos.ForEach(pedido => { pedido.Usuario = strUsuario; pedido.Portatil = false; });
 
             HttpContext.Current.Session["LIST_REF_PAGAR"] = listaReferenciaConciliadaPagos;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -614,12 +615,12 @@ private string TipoCobroDescripcion(int tipoCobro)
             AppSettingsReader settings = new AppSettingsReader();
             SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-            string cadenaconexion = App.CadenaConexion;
+            string cadenaconexion = objApp.CadenaConexion;
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 3;
             Parallel.ForEach(listadistintos, options, (client) => {
                 Cliente cliente;
-                cliente = App.Cliente.CrearObjeto();
+                cliente = objApp.Cliente.CrearObjeto();
                 cliente.NumCliente = client;
                 cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, URLGateway);
                 lstClientes.Add(cliente);
@@ -642,7 +643,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         RTGMGateway.RTGMGateway oGateway;
         RTGMGateway.SolicitudGateway oSolicitud;
         AppSettingsReader settings = new AppSettingsReader();
-        string cadena = App.CadenaConexion;
+        string cadena = objApp.CadenaConexion;
         try
         {
             SeguridadCB.Public.Parametros parametros;
@@ -651,7 +652,7 @@ private string TipoCobroDescripcion(int tipoCobro)
             if (_URLGateway != string.Empty)
             { 
                 SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-                oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+                oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), objApp.CadenaConexion);//,_URLGateway);
                 oGateway.ListaCliente = listadistintos;
                 oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
                 oGateway.eListaEntregas += completarListaEntregas;
@@ -739,7 +740,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -860,7 +861,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -876,7 +877,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                 //AppSettingsReader settings = new AppSettingsReader();
                 //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// objApp.CadenaConexion);
                 Gateway.URLServicio = URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.IDCliente = cliente;
@@ -916,7 +917,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception e)
         {
-            App.ImplementadorMensajes.MostrarMensaje(e.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(e.Message);
         }
 
     }
@@ -925,7 +926,7 @@ private string TipoCobroDescripcion(int tipoCobro)
     {
         try
         {
-            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+            cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
             lblFolio.Text = c.Folio.ToString();
             lblBanco.Text = c.BancoStr;
             lblCuenta.Text = c.CuentaBancaria;
@@ -953,14 +954,14 @@ private string TipoCobroDescripcion(int tipoCobro)
         try
         {
             listCamposDestino = filtrarEn.Equals("Externos")
-                                            ? Conciliacion.RunTime.App.Consultas.ConsultaDestino()
-                                            : Conciliacion.RunTime.App.Consultas.ConsultaDestinoPedido();
+                                            ? objApp.Consultas.ConsultaDestino()
+                                            : objApp.Consultas.ConsultaDestinoPedido();
 
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
 
     }
@@ -978,7 +979,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -1062,7 +1063,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -1177,7 +1178,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
     }
 
@@ -1207,7 +1208,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
     }
 
@@ -1221,7 +1222,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
         }
     }
     protected void btnActualizar_Click(object sender, ImageClickEventArgs e)
@@ -1236,7 +1237,7 @@ private string TipoCobroDescripcion(int tipoCobro)
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
 
@@ -1400,12 +1401,12 @@ private string TipoCobroDescripcion(int tipoCobro)
 
             tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
 
-            bool hayPagos = Conciliacion.RunTime.App.Consultas.ExistenPagosPorAplicar(corporativoConciliacion,
+            bool hayPagos = objApp.Consultas.ExistenPagosPorAplicar(corporativoConciliacion,
                 sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, usuariotemp);
 
             if (!hayPagos)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Pagos ya aplicados");
+                objApp.ImplementadorMensajes.MostrarMensaje("Pagos ya aplicados");
                 return;
             }
 
@@ -1448,7 +1449,7 @@ private string TipoCobroDescripcion(int tipoCobro)
 
                     foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
                     {
-                        Conciliacion.RunTime.App.Consultas.ActualizaStatusConciliacionPedido(
+                        objApp.Consultas.ActualizaStatusConciliacionPedido(
                                                     corporativoConciliacion,
                                                     sucursalConciliacion,
                                                     añoConciliacion,
@@ -1464,7 +1465,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                     {
                         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                         string strUsuario = usuario.IdUsuario.Trim();
-                        Cobranza cobranza = Conciliacion.RunTime.App.Cobranza.CrearObjeto();
+                        Cobranza cobranza = objApp.Cobranza.CrearObjeto();
                         cobranza.FCobranza = DateTime.Now;
                         cobranza.UsuarioCaptura = strUsuario;
                         cobranza.ListaReferenciaConciliadaPedido = _listaReferenciaConciliadaPagos;
@@ -1476,12 +1477,12 @@ private string TipoCobroDescripcion(int tipoCobro)
                         RelacionCobranza rCobranza;
                         try
                         {
-                            rCobranza = App.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
-                            rCobranza.CadenaConexion = App.CadenaConexion;
+                            rCobranza = objApp.RelCobranza.CrearObjeto(objMovimientoCaja, HasBoveda);
+                            rCobranza.CadenaConexion = objApp.CadenaConexion;
                             rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
                             if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
                             {
-                               App.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                               objApp.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                             }
                         }
                         catch (Exception ex)
@@ -1495,14 +1496,15 @@ private string TipoCobroDescripcion(int tipoCobro)
                     }
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
-                         corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, new MensajeImplemantacionForm());
+                         corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, 
+                         new MensajesImplementacion());
                     objMCC.Guardar(conexion);
 
                     List<ReferenciaConciliadaPedido> ListaConciliados = (List<ReferenciaConciliadaPedido>)HttpContext.Current.Session["LIST_REF_PAGAR"];
 
                     if (HaySaldoAFavor(objMovimientoCaja.ListaCobros))
                     {
-                        SaldoAFavor objSaldoAFavor = App.SaldoAFavor.CrearObjeto();
+                        SaldoAFavor objSaldoAFavor = objApp.SaldoAFavor.CrearObjeto();
 
                         foreach(ReferenciaConciliadaPedido referencia in ListaConciliados)
                         {
@@ -1547,7 +1549,7 @@ private string TipoCobroDescripcion(int tipoCobro)
          
             if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Validado)
             {
-                FacturasComplemento objFacturasComplemento = App.FacturasComplemento;
+                FacturasComplemento objFacturasComplemento = objApp.FacturasComplemento;
                 objFacturasComplemento.CorporativoConciliacion = corporativoConciliacion;
                 objFacturasComplemento.SucursalConciliacion = sucursalConciliacion;
                 objFacturasComplemento.AnioConciliacion = añoConciliacion;
@@ -1571,11 +1573,11 @@ private string TipoCobroDescripcion(int tipoCobro)
             {
                 conexion.Comando.Transaction.Commit();
             }
-            App.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
+            objApp.ImplementadorMensajes.MostrarMensaje("El registro se guardó con éxito.");
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar."+
+            objApp.ImplementadorMensajes.MostrarMensaje("Perdida de Conexion con el servidor, favor de intentar nuevamente saliendose y volviendo a entrar."+
                                                     "Detalles: \n\rClase: " +
                                                       this.GetType().Name + "\n\r Metodo :" +
                                                       ex.StackTrace + "\n\r Error :" +

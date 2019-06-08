@@ -12,13 +12,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
 
         }
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
         public List<ListaCombo> CargarFormaConciliacion(short tipoconciliacion)
         {
             List<ListaCombo> ListaRespuesta = new List<ListaCombo>();
             try
             {
-                ListaRespuesta = Conciliacion.RunTime.App.Consultas.CargarFormaConciliacion(tipoconciliacion);
+                ListaRespuesta = objApp.Consultas.CargarFormaConciliacion(tipoconciliacion);
             }
             catch (Exception ex)
             {
@@ -32,7 +33,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             string UrlDestino = "";
             try
             {
-                UrlDestino = Conciliacion.RunTime.App.Consultas.ObtieneURLSolicitud(Solicitud.TipoConciliacion,
+                UrlDestino = objApp.Consultas.ObtieneURLSolicitud(Solicitud.TipoConciliacion,
                                                                                 Solicitud.FormaConciliacion);
             }
             catch (Exception ex)
@@ -47,7 +48,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             string UrlDestino = "";
             try
             {
-                UrlDestino = Conciliacion.RunTime.App.Consultas.ObtieneURLSolicitud(Solicitud.TipoConciliacion,
+                UrlDestino = objApp.Consultas.ObtieneURLSolicitud(Solicitud.TipoConciliacion,
                                                                                 Solicitud.FormaConciliacion);
             }
             catch (Exception ex)

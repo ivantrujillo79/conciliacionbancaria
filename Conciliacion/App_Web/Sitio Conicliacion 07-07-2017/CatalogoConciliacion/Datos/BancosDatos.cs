@@ -11,7 +11,7 @@ namespace CatalogoConciliacion.Datos
     public class BancosDatos : Bancos   {
 
 
-        public BancosDatos(IMensajesImplementacion implementadorMensajes)
+        public BancosDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }

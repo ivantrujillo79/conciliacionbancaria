@@ -11,12 +11,12 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class MovimientoCajaConciliacionDatos: MovimientoCajaConciliacion {
 
-        public MovimientoCajaConciliacionDatos(IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacionDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-        public MovimientoCajaConciliacionDatos(short caja, DateTime foperacion, short consecutivo,int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, int cobranza, IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaConciliacionDatos(short caja, DateTime foperacion, short consecutivo,int folio, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, String status, int cobranza, MensajesImplementacion implementadorMensajes)
             : base(caja, foperacion, consecutivo, folio, corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, status, cobranza, implementadorMensajes)
         {
         }

@@ -12,14 +12,14 @@ namespace Conciliacion.RunTime.DatosSQL
     public class CobroDatos : Cobro
     {
 
-        public CobroDatos(IMensajesImplementacion implementadorMensajes)
+        public CobroDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
         public CobroDatos(short añocobro, int numcobro, string numerocheque, decimal total, decimal saldo, string numerocuenta, string numerocuentadestino,
             DateTime fcheque, int cliente, short banco, short bancoorigen, string observaciones, string status, short tipocobro, Boolean alta,
-            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, IMensajesImplementacion implementadorMensajes)
+            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, MensajesImplementacion implementadorMensajes)
             : base(añocobro, numcobro, numerocheque, total, saldo, numerocuenta, numerocuentadestino,
              fcheque, cliente, banco, bancoorigen, observaciones, status, tipocobro, alta,
              usuario, saldoafavor, sucursalbancaria, descripcion, clientepago, listapedidos, implementadorMensajes)
@@ -29,7 +29,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override Cobro CrearObjeto()
         {
-            return new CobroDatos(App.ImplementadorMensajes);
+            return new CobroDatos(ImplementadorMensajes);
         }
 
 

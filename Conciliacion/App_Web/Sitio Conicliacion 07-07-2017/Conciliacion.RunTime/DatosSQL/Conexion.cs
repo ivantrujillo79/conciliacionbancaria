@@ -15,8 +15,9 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             try
             {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
                 Conexionbd = new SqlConnection();
-                Conexionbd.ConnectionString = App.CadenaConexion;
+                Conexionbd.ConnectionString = objApp.CadenaConexion;
             }
             catch
             {
@@ -28,8 +29,9 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             try
             {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
                 Conexionbd = new SqlConnection();
-                Conexionbd.ConnectionString = App.CadenaConexion;
+                Conexionbd.ConnectionString = objApp.CadenaConexion;
 
             }
             catch

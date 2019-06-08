@@ -17,7 +17,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         #region Constructores
 
-        public GrupoConciliacionUsuario(IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacionUsuario(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.grupoConciliacion = 0;
@@ -25,7 +25,7 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.accesoTotal = false ;
         }
 
-        public GrupoConciliacionUsuario(int grupoConciliacion, string usuario, bool accesoTotal, IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacionUsuario(int grupoConciliacion, string usuario, bool accesoTotal, MensajesImplementacion implementadorMensajes)
         {
             this.grupoConciliacion = grupoConciliacion;
             this.usuario = usuario ;
@@ -60,7 +60,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

@@ -11,8 +11,9 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class CobranzaDatos:Cobranza
     {
-       
-         public CobranzaDatos(IMensajesImplementacion implementadorMensajes)
+
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        public CobranzaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -30,7 +31,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int cobranzaOrigen,
             string usuarioEntrega,
             DateTime fEntrega,
-            string statusEntrega, IMensajesImplementacion implementadorMensajes)
+            string statusEntrega, MensajesImplementacion implementadorMensajes)
             : base(cobranza,
                 tipoCobranza,
                 fCobranza,
@@ -126,7 +127,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
                 foreach (ReferenciaConciliadaPedido referenciaConciliadaPedido in listaReferenciaConciliadaPedido)
                 {
-                    PedidoCobranza pedidoCobranza = Conciliacion.RunTime.App.PedidoCobranza.CrearObjeto();
+                    PedidoCobranza pedidoCobranza = objApp.PedidoCobranza.CrearObjeto();
                     pedidoCobranza.Pedido = referenciaConciliadaPedido.Pedido;
                     pedidoCobranza.AnioPed = referenciaConciliadaPedido.AñoPedido;
                     pedidoCobranza.Celula = referenciaConciliadaPedido.CelulaPedido;

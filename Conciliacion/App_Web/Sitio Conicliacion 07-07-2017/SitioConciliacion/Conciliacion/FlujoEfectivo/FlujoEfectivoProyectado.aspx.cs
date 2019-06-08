@@ -24,6 +24,7 @@ using TextBox = System.Web.UI.WebControls.TextBox;
 
 public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
@@ -50,7 +51,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
     {
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
             if (HttpContext.Current.Request.UrlReferrer != null)
@@ -94,7 +95,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
 
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
         }
     }
 
@@ -168,7 +169,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = "Identificador";
             this.ddlSucursal.DataTextField = "Descripcion";
@@ -177,7 +178,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     protected void ddlEmpresa_DataBound(object sender, EventArgs e)
@@ -248,7 +249,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         try
         {
             listFlujoRealProyectado =
-                Conciliacion.RunTime.App.Consultas.ConsultaFlujoEfectivo(corporativo, sucursal, tipotransferencia, fInicial, fFinal);
+                objApp.Consultas.ConsultaFlujoEfectivo(corporativo, sucursal, tipotransferencia, fInicial, fFinal);
 
             switch (tipotransferencia)
             {
@@ -265,7 +266,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     public void GenerarTablaFlujoRealProyectado(Consultas.TipoTransferencia tipotransferencia)
@@ -364,7 +365,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al Crear las Columnas Dinamicas.\nError:" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al Crear las Columnas Dinamicas.\nError:" + ex.Message);
         }
     }
 
@@ -477,12 +478,12 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
             }
 
             else
-                App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
+                objApp.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
 
@@ -512,7 +513,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X DIA: \nError:" + ex.Source + ":" + ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X DIA: \nError:" + ex.Source + ":" + ex.StackTrace);
         }
     }
 
@@ -543,7 +544,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X DIA: \nError:" + ex.Source + ":" + ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X DIA: \nError:" + ex.Source + ":" + ex.StackTrace);
         }
     }
 
@@ -570,7 +571,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X DIA: \nError:" + ex.Source + ":" + ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X DIA: \nError:" + ex.Source + ":" + ex.StackTrace);
         }
     }
 
@@ -603,7 +604,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X CONCEPTO: \nError:" + ex.Source + ":" + ex.StackTrace + "\nMensaje:" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error en el momento del calculo de los TOTALES X CONCEPTO: \nError:" + ex.Source + ":" + ex.StackTrace + "\nMensaje:" + ex.Message);
         }
     }
 
@@ -632,7 +633,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(
+            objApp.ImplementadorMensajes.MostrarMensaje(
                 "Error en el momento del calculo del Saldo del DIA \nError:" + ex.Source);
         }
 
@@ -664,7 +665,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(
+            objApp.ImplementadorMensajes.MostrarMensaje(
                 "Error en el momento del calculo del Saldo del DIA \nError:" + ex.Source);
         }
 
@@ -684,6 +685,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
     public static DataTable GetInversedDataTable(DataTable table, string columnX,
          string columnY, string columnZ, string nullValue, bool sumValues)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         //Crear un DataTable
         DataTable returnTable = new DataTable();
 
@@ -770,7 +772,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("Las columnas proporcionadas no existen en la estructura de la Tabla");
+            objApp.ImplementadorMensajes.MostrarMensaje("Las columnas proporcionadas no existen en la estructura de la Tabla");
         }
 
         //if a nullValue is provided, fill the datable with it
@@ -813,7 +815,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     protected void grvFlujoEfectivoSalida_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -846,7 +848,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     protected void grvFlujoEfectivoSaldos_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -868,7 +870,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     public bool GuardarFlujoRealProyectado(Consultas.TipoTransferencia tipoTransferencia, GridView grvFlujoEfectivo)
@@ -929,7 +931,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
                             }
                             catch (Exception ex)
                             {
-                                App.ImplementadorMensajes.MostrarMensaje(
+                                objApp.ImplementadorMensajes.MostrarMensaje(
                                     "Ha ocurrido un erro al intentar el leer el valor introducido.\nError:" + ex.Message);
 
                             }
@@ -942,7 +944,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
                 }
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Conceptos por" +
+                objApp.ImplementadorMensajes.MostrarMensaje("Conceptos por" +
                                                             (tipoTransferencia == Consultas.TipoTransferencia.Entrada
                                                             ? "INGRESOS"
                                                             : "EGRESOS")
@@ -950,7 +952,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al intentar guardar el FLUJO DE EFECTIVO.\nEl proceso se detendra, recargue la vista.\n" + ex.Message + "\nSource:" + ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al intentar guardar el FLUJO DE EFECTIVO.\nEl proceso se detendra, recargue la vista.\n" + ex.Message + "\nSource:" + ex.StackTrace);
         }
         return resultado;
 
@@ -1156,7 +1158,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al generar el estilo por columna.\nError: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al generar el estilo por columna.\nError: " + ex.Message);
         }
         return resultado + "';";
     }
@@ -1176,7 +1178,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
 
     }
@@ -1217,7 +1219,7 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
                 LlenaGridViewFlujoEfectivo(Consultas.TipoTransferencia.Entrada);
                 //CalcularTotalesColumnas(Consultas.TipoTransferencia.Entrada);
                 CalcularTotalesFilas(Consultas.TipoTransferencia.Entrada);
-                App.ImplementadorMensajes.MostrarMensaje("Movimientos de ENTRADA guardados existosamente.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Movimientos de ENTRADA guardados existosamente.");
             }
 
             if (resultado)
@@ -1236,14 +1238,14 @@ public partial class Conciliacion_FlujoEfectivo_FlujoEfectivoProyectado : System
                 LlenaGridViewFlujoEfectivo(Consultas.TipoTransferencia.Salida);
                 //CalcularTotalesColumnas(Consultas.TipoTransferencia.Salida);
                 CalcularTotalesFilas(Consultas.TipoTransferencia.Salida);
-                App.ImplementadorMensajes.MostrarMensaje("Movimientos de SALIDA guardados existosamente.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Movimientos de SALIDA guardados existosamente.");
             }
 
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
 
     }

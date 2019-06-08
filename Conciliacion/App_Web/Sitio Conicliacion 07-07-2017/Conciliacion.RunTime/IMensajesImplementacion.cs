@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Conciliacion.RunTime
 {
+    //QUITAR DEL PROYECTO
     public interface IMensajesImplementacion
     {
         object ContenedorActual { get; set; }

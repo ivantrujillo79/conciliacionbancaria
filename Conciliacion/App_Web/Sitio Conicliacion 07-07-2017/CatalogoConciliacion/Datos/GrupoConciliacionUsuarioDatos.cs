@@ -14,13 +14,13 @@ namespace CatalogoConciliacion.Datos
     {
 
         
-         public GrupoConciliacionUsuarioDatos(IMensajesImplementacion implementadorMensajes)
+         public GrupoConciliacionUsuarioDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
 
-         public GrupoConciliacionUsuarioDatos(int grupoConciliacion, string usuario, bool  accesoTotal, IMensajesImplementacion implementadorMensajes)
+         public GrupoConciliacionUsuarioDatos(int grupoConciliacion, string usuario, bool  accesoTotal, MensajesImplementacion implementadorMensajes)
             : base(grupoConciliacion,  usuario,  accesoTotal , implementadorMensajes)
         {
         }

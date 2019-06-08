@@ -18,7 +18,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         #region constructores
 
-        public CuentaBancoSaldo(IMensajesImplementacion implemntadorMensajes)
+        public CuentaBancoSaldo(MensajesImplementacion implemntadorMensajes)
         {
             this.corporativo = 0;
             this.sucursal = 0;
@@ -30,7 +30,7 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.implementadorMensajes = implemntadorMensajes;
         }
         public CuentaBancoSaldo(int corporativo, int sucursal, int banco, string bancodes, string cuentabancaria,
-                                decimal saldoinicialmes, decimal saldofinal, IMensajesImplementacion implemntadorMensajes)
+                                decimal saldoinicialmes, decimal saldofinal, MensajesImplementacion implemntadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursal = sucursal;
@@ -83,7 +83,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
         #endregion

@@ -10,6 +10,8 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ReferenciaConciliadaCompartidaDatos : ReferenciaConciliadaCompartida
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
         public ReferenciaConciliadaCompartidaDatos(int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion,
                                                     int secuenciarelacion,
                                                     int corporativo, int sucursalext, string sucursalextdes, int añoexterno, int folioext, int secuenciaext, string conceptoext,
@@ -21,7 +23,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     int? celula, int? añoped, int? pedido, decimal? total, int cliente,
                                                     string conceptoint, string descripcionint, string motivonoconciliado, string comentarionoconciliado, string ubicacionicono, decimal montoexterno,
 
-                                                    IMensajesImplementacion implementadorMensajes)
+                                                    MensajesImplementacion implementadorMensajes)
 
             : base(corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion, secuenciarelacion,
 
@@ -42,7 +44,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
 
-        public ReferenciaConciliadaCompartidaDatos(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaConciliadaCompartidaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
 
@@ -52,7 +54,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override ReferenciaConciliada CrearObjeto()
         {
-            return new ReferenciaConciliadaDatos(App.ImplementadorMensajes);
+            return new ReferenciaConciliadaDatos(objApp.ImplementadorMensajes);
         }
 
         public override bool ActualizarStatusConceptoDescripcionConciliacionReferencia()
@@ -60,7 +62,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);
@@ -113,7 +115,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionPedido", cnn);

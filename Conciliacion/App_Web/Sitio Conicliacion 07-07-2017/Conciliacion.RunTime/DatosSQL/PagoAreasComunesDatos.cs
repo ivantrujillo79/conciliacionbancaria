@@ -11,13 +11,14 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class PagoAreasComunesDatos : PagoAreasComunes
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
-        public PagoAreasComunesDatos(IMensajesImplementacion implementadorMensajes)
+        public PagoAreasComunesDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-        public PagoAreasComunesDatos(int clientePadre, IMensajesImplementacion implementadorMensajes)
+        public PagoAreasComunesDatos(int clientePadre, MensajesImplementacion implementadorMensajes)
             : base(clientePadre, implementadorMensajes)
         {
         }
@@ -25,7 +26,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override PagoAreasComunes CrearObjeto()
         {
-            return new PagoAreasComunesDatos(App.ImplementadorMensajes);
+            return new PagoAreasComunesDatos(objApp.ImplementadorMensajes);
         }
 
         public override void consulta(Conexion _conexion)

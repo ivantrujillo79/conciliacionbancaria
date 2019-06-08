@@ -10,6 +10,7 @@ using Conciliacion.RunTime;
 
 public partial class Reporte_Reporte : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     private ReportDocument RepDoc = new ReportDocument();
     private int intPagMax = 0;
 
@@ -33,7 +34,7 @@ public partial class Reporte_Reporte : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     #region "Funciones privadas"

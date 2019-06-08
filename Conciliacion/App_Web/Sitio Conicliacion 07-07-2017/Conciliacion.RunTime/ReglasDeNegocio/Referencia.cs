@@ -29,7 +29,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string rfctercero;
         decimal deposito;
         decimal retiro;
-        private IMensajesImplementacion iMensajesImplementacion;
+        private MensajesImplementacion MensajesImplementacion;
 
         decimal importeComision;
         decimal ivaComision;
@@ -40,7 +40,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public cReferencia(int corporativo, int sucursal, string sucursaldes, int año, int folio,int secuencia, string concepto, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, 
             string cheque, string referencia, string descripcion, string nombretercero, string rfctercero, decimal deposito, decimal retiro,
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativo = corporativo;
@@ -67,7 +67,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.retiro=retiro;
         }
 
-        public cReferencia(IMensajesImplementacion implementadorMensajes)
+        public cReferencia(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativo = 0;
@@ -93,7 +93,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.usuario = "";
         }
 
-     
+        //protected cReferencia(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
+
+
 
         #endregion
 
@@ -254,7 +259,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

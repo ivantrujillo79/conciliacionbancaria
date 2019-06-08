@@ -31,7 +31,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string usuariostatusconcepto;
         private DateTime fstatusconcepto;
 
-        public PagoAnticipado(IMensajesImplementacion implementadorMensajes)
+        public PagoAnticipado(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.corporativoconciliacion = 0;
@@ -81,7 +81,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             string descripcion,
             string usuariostatusconcepto,
             DateTime fstatusconcepto,
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
         {
             this.corporativoconciliacion = 0;
             this.sucursalconciliacion = 0;
@@ -107,6 +107,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.fstatusconcepto = DateTime.MinValue;
             this.implementadorMensajes = implementadorMensajes;
         }
+
+        //protected PagoAnticipado(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         public int CorporativoConciliacion
         {

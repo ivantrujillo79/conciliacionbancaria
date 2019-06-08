@@ -10,6 +10,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
 
     private SeguridadCB.Public.Usuario usuario;
@@ -29,7 +30,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
       
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             if (!IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -83,7 +84,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0,corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0,corporativo);
             this.ddlSucursal.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = "Identificador";
             this.ddlSucursal.DataTextField = "Descripcion";
@@ -99,7 +100,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
         try
         {
 
-            listTipoFuenteInformacion = Conciliacion.RunTime.App.Consultas.ConsultaTipoInformacionDatos(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacion);
+            listTipoFuenteInformacion = objApp.Consultas.ConsultaTipoInformacionDatos(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacion);
             this.ddlTipoFuenteInformacion.DataSource = listTipoFuenteInformacion;
             this.ddlTipoFuenteInformacion.DataValueField = "Identificador";
             this.ddlTipoFuenteInformacion.DataTextField = "Descripcion";
@@ -118,7 +119,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
         try
         {
 
-            listBancos = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            listBancos = objApp.Consultas.ConsultaBancos(corporativo);
             this.ddlBanco.DataSource = listBancos;
             this.ddlBanco.DataValueField = "Identificador";
             this.ddlBanco.DataTextField = "Descripcion";
@@ -137,7 +138,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
         try
         {
 
-            listCuentaBancaria = Conciliacion.RunTime.App.Consultas.ConsultaCuentasBancaria(corporativo, banco);
+            listCuentaBancaria = objApp.Consultas.ConsultaCuentasBancaria(corporativo, banco);
             this.ddlCuentaBancaria.DataSource = listCuentaBancaria;
             this.ddlCuentaBancaria.DataValueField = "Identificador";
             this.ddlCuentaBancaria.DataTextField = "Descripcion";
@@ -191,7 +192,7 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
         }
         try
         {
-            listFuenteInformacion = Conciliacion.RunTime.App.Consultas.ConsultaFuenteInformacion(
+            listFuenteInformacion = objApp.Consultas.ConsultaFuenteInformacion(
                         Convert.ToInt32(ddlEmpresa.SelectedItem.Value),
                         Convert.ToInt32(ddlSucursal.SelectedItem.Value),
                         Convert.ToString(this.ddlCuentaBancaria.SelectedItem.Text),

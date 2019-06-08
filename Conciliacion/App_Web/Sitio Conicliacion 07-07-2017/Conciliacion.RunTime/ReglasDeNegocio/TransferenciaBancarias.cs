@@ -54,7 +54,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private List<TransferenciaBancariaOrigen> listTransferenciaBancariaOrigen= new List<TransferenciaBancariaOrigen>();
 
 
-        public TransferenciaBancarias(IMensajesImplementacion implementadorMensajes)
+        public TransferenciaBancarias(MensajesImplementacion implementadorMensajes)
         {
             //this.corporativoOrigDest = 0;
             //this.sucursalOrigDest = 0;
@@ -103,7 +103,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                       string usuarioCaptura, DateTime fCaptura, string usuariooAprobo, DateTime fAprobado,
                                       string status, string descripcion, string bancoNombreOrigen, string cuentaBancoOrigen,
                                        string bancoNombreDestino, string cuentaBancoDestino, decimal monto, short entrada,//decimal abono,decimal cargo,
-                                      IMensajesImplementacion implementadorMensajes)
+                                      MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursal = sucursal;
@@ -133,9 +133,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
+        //protected TransferenciaBancarias(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
+
         //public TransferenciaBancarias(short folio, short corporativoOrigDest, string nombreCorporativo, int sucursalOrigDest,
         //    string nombreSucursal, short banco, string nombreBancoOrigDest, int monto, short entrada, DateTime año, string status,
-        //    IMensajesImplementacion implementadorMensajes)
+        //    MensajesImplementacion implementadorMensajes)
         //{
 
         //    this.corporativoOrigDest = corporativoOrigDest;
@@ -296,7 +301,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get { Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App(); return objApp.CadenaConexion; }
         }
         #endregion
 

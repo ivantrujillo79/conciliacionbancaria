@@ -14,14 +14,14 @@ namespace CatalogoConciliacion.ReglasNegocio
         #region Constructores
 
 
-        public TipoConciliacionUsuario(IMensajesImplementacion implementadorMensajes)
+        public TipoConciliacionUsuario(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.tipoConciliacion = 0;
             this.usuario = string.Empty;
         }
 
-        public TipoConciliacionUsuario(int tipoConciliacion, string usuario, IMensajesImplementacion implementadorMensajes)
+        public TipoConciliacionUsuario(int tipoConciliacion, string usuario, MensajesImplementacion implementadorMensajes)
         {
             this.tipoConciliacion = tipoConciliacion;
             this.usuario = usuario ;
@@ -49,7 +49,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 
 public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     private DataTable tblConsultarDocumentos = new DataTable("ConsultarDocumentos");
     public List<ConsultarMultiplesDocumentosTransBan> listaDocumentos = new List<ConsultarMultiplesDocumentosTransBan>();
     private ClaseFiltros filtros;
@@ -32,12 +33,12 @@ public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
     {
         try
         {
-            listaDocumentos = Conciliacion.RunTime.App.Consultas.ConsultaConsultarMultiplesDocumentosTransBan(filtros.Conciliacion.Corporativo,filtros.Conciliacion.Sucursal,filtros.Conciliacion.Año,filtros.Conciliacion.Mes,filtros.Folio);
+            listaDocumentos = objApp.Consultas.ConsultaConsultarMultiplesDocumentosTransBan(filtros.Conciliacion.Corporativo,filtros.Conciliacion.Sucursal,filtros.Conciliacion.Año,filtros.Conciliacion.Mes,filtros.Folio);
             HttpContext.Current.Session["LISTA_DOCUMENTOS"] = listaDocumentos;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     private void GenerarTabla()
@@ -176,7 +177,7 @@ public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
     }
 }

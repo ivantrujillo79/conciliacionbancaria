@@ -13,13 +13,13 @@ namespace CatalogoConciliacion.Datos
     {
 
 
-        public GrupoConciliacionDatos(IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacionDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
 
-        public GrupoConciliacionDatos(int grupoConciliacion, string descripcion, string usuario, string status, DateTime fAlta, int diasDefault, int diasMaxima, int diasMinima, decimal diferenciaDefault, decimal diferenciaMaxima, decimal diferenciaMinima, IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacionDatos(int grupoConciliacion, string descripcion, string usuario, string status, DateTime fAlta, int diasDefault, int diasMaxima, int diasMinima, decimal diferenciaDefault, decimal diferenciaMaxima, decimal diferenciaMinima, MensajesImplementacion implementadorMensajes)
             : base(grupoConciliacion, descripcion, usuario, status, fAlta, diasDefault, diasMaxima, diasMinima, diferenciaDefault, diferenciaMaxima, diferenciaMinima, implementadorMensajes)
         {
         }

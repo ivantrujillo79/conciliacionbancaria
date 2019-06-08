@@ -28,7 +28,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private decimal saldo;
         private short gestioninicial;
 
-        public Pagare(IMensajesImplementacion implementadorMensajes)
+        public Pagare(MensajesImplementacion implementadorMensajes)
         {
             this.conexion = null;
             this.FolioCorte = 0;
@@ -47,7 +47,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.ImplementadorMensajes = implementadorMensajes;
         }
 
-        public Pagare(int foliocorte, DateTime foperacion, int caja, int consecutivo, string descripcion, decimal total, string observaciones, short anioPed, short celula, int pedido, int cobranza, decimal saldo, short gestioninicial, IMensajesImplementacion implementadorMensajes)
+        public Pagare(int foliocorte, DateTime foperacion, int caja, int consecutivo, string descripcion, decimal total, string observaciones, short anioPed, short celula, int pedido, int cobranza, decimal saldo, short gestioninicial, MensajesImplementacion implementadorMensajes)
         {
             this.foliocorte = foliocorte;
             this.foperacion = foperacion;
@@ -65,6 +65,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
+        //protected Pagare(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
+
         public abstract List<Pagare> ConsultaPagares(Conexion _conexion, DateTime FechaFin, DateTime FechaIni);
         public abstract List<Pagare> CargaPagare(Conexion _conexion, sbyte Corporativo, sbyte Sucursal, DateTime FechaIni, DateTime FechaFin, string CuentaBanco);
 
@@ -72,7 +77,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
+            }
         }
         
 		public int FolioCorte{

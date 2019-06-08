@@ -8,7 +8,9 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ConsultarMultiplesDocumentosTransBanDatos : ConsultarMultiplesDocumentosTransBan
     {
-        public ConsultarMultiplesDocumentosTransBanDatos(IMensajesImplementacion implementadorMensajes)
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
+        public ConsultarMultiplesDocumentosTransBanDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
 
@@ -20,7 +22,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
         public override ConsultarMultiplesDocumentosTransBan CrearObjeto()
         {
-            return new ConsultarMultiplesDocumentosTransBanDatos(App.ImplementadorMensajes);
+            return new ConsultarMultiplesDocumentosTransBanDatos(objApp.ImplementadorMensajes);
         }
     }
 }

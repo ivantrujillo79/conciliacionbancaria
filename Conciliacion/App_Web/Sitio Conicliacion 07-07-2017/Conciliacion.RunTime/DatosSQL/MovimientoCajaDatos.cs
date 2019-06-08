@@ -14,8 +14,9 @@ namespace Conciliacion.RunTime.DatosSQL
 {    
     public class MovimientoCajaDatos : MovimientoCaja
     {
-        private string status;
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
+        private string status;
         public string Status
         {
             get {return status;}
@@ -27,19 +28,19 @@ namespace Conciliacion.RunTime.DatosSQL
             
         }
 
-        public MovimientoCajaDatos(IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-        public MovimientoCajaDatos(short caja, DateTime foperacion, short consecutivo, int folio, DateTime fmovimiento, decimal total, string usuario, int empleado, string observaciones, decimal saldoafavor, List<Cobro> listacobros, IMensajesImplementacion implementadorMensajes)
+        public MovimientoCajaDatos(short caja, DateTime foperacion, short consecutivo, int folio, DateTime fmovimiento, decimal total, string usuario, int empleado, string observaciones, decimal saldoafavor, List<Cobro> listacobros, MensajesImplementacion implementadorMensajes)
             : base(caja, foperacion, consecutivo, folio, fmovimiento, total, usuario, empleado, observaciones, saldoafavor, listacobros, implementadorMensajes)
         {
         }
 
         public override MovimientoCaja CrearObjeto()
         {
-            return new MovimientoCajaDatos(App.ImplementadorMensajes);
+            return new MovimientoCajaDatos(objApp.ImplementadorMensajes);
         }
 
         /*public override bool MovimientoCajaAlta()
@@ -350,7 +351,7 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             List<RTGMCore.DetallePedido> listaDetallePedidos = new List<RTGMCore.DetallePedido>();
 
-                            RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, App.CadenaConexion);
+                            RTGMActualizarPedido objGateway = new RTGMActualizarPedido(modulo, objApp.CadenaConexion);
                             objGateway.URLServicio = URLGateway;
                             List<RTGMCore.Pedido> lstPedido = new List<RTGMCore.Pedido>();
                             foreach (ReferenciaConciliadaPedido Pedido in Pedidos)

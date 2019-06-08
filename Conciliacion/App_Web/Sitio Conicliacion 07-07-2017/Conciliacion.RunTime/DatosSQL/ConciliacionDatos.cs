@@ -11,21 +11,25 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ConciliacionDatos : cConciliacion
     {
-        public ConciliacionDatos(IMensajesImplementacion implementadorMensajes)
-            : base(implementadorMensajes)
+        //public ConciliacionDatos(MensajesImplementacion implementadorMensajes)
+        //    : base(implementadorMensajes)
+        //{
+        //}
+
+        public ConciliacionDatos(MensajesImplementacion implementadorMensajes) : base(implementadorMensajes)
         {
         }
 
         public ConciliacionDatos(int corporativo, int sucursal, int año, short mes, int folio, DateTime finicial, DateTime ffinal, string statusconciliacion,
             int grupoconciliacion, short tipoconciliacion, int transaccionesinternas, int conciliadasinternas, int transaccionesexternas, int conciliadasexternas, decimal montoTotalExterno, decimal montoTotalInterno,
-            string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes, string sucursaldes, IMensajesImplementacion implementadorMensajes)
+            string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes, string sucursaldes, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, año, mes, folio, finicial, ffinal, statusconciliacion, grupoconciliacion, tipoconciliacion, transaccionesinternas, conciliadasinternas, transaccionesexternas, conciliadasexternas, montoTotalExterno, montoTotalInterno, grupoconciliacionstr, accesototal, cuentabancaria, corporativodes, sucursaldes, implementadorMensajes)
         {
         }
 
         public ConciliacionDatos(int corporativo, int sucursal, int año, short mes, int folio, DateTime finicial, DateTime ffinal, string statusconciliacion,
             int grupoconciliacion, short tipoconciliacion, int transaccionesinternas, int conciliadasinternas, int transaccionesexternas, int conciliadasexternas, decimal montoTotalExterno, decimal montoTotalInterno,
-            string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes, string sucursaldes, string bancostr, string ubicacionicono, IMensajesImplementacion implementadorMensajes)
+            string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes, string sucursaldes, string bancostr, string ubicacionicono, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, año, mes, folio, finicial, ffinal, statusconciliacion, grupoconciliacion, tipoconciliacion, transaccionesinternas, conciliadasinternas, transaccionesexternas, conciliadasexternas, montoTotalExterno, montoTotalInterno, grupoconciliacionstr, accesototal, cuentabancaria,
             corporativodes, sucursaldes, bancostr, ubicacionicono, implementadorMensajes)
         {
@@ -33,7 +37,8 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override IConciliacion CrearObjeto()
         {
-            return new ConciliacionDatos(App.ImplementadorMensajes);
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            return new ConciliacionDatos(objApp.ImplementadorMensajes);
         }
 
         public override bool AgregarReferencia(cReferencia referenciaexterna, cReferencia referenciainterna)
@@ -44,10 +49,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool Guardar(String usuario)
         {
             bool resultado = false;
-
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacion", cnn);
@@ -101,10 +106,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool GuardarSinInterno(String usuario)
         {
             bool resultado = false;
-
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacion", cnn);
@@ -159,9 +164,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool BorrarArchivosInternos()
         {
             bool resultado = false;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionArchivo", cnn);
@@ -191,10 +197,11 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool BorrarConciliacion()
         {
             bool resultado = false;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             try
             {
                 this.BorrarArchivosInternos();
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacion", cnn);
@@ -227,11 +234,12 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool CerrarConciliacion(string usuario)
         {
             bool resultado = false;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             if (this.PuedeCerrar() == true)
             {
                 try
                 {
-                    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                     {
                         cnn.Open();
                         SqlCommand comando = new SqlCommand("spCBCierraConciliacion", cnn);
@@ -271,9 +279,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool PuedeCerrar()
         {
             bool resultado = false;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBCierraConciliacion", cnn);
@@ -314,11 +323,12 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool CancelarConciliacion(string usuario)
         {
             bool resultado = false;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             if (this.PuedeCancelar())
             {
                 try
                 {
-                    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                     {
                         cnn.Open();
                         SqlCommand comando = new SqlCommand("spCBCierraConciliacion", cnn);
@@ -358,9 +368,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool PuedeCancelar()
         {
             bool resultado = false;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBCierraConciliacion", cnn);

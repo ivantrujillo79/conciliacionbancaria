@@ -20,6 +20,7 @@ using SeguridadCB.Public;
 
 public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
@@ -68,6 +69,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
 
     public bool activaPaginacion()
     {
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         SeguridadCB.Public.Parametros parametros;
         parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
         AppSettingsReader settings = new AppSettingsReader();
@@ -102,10 +104,10 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         Session["BLOQUEO_ORIGEN"] = "CANTIDADCONCUERDA";
         short _FormaConciliacion = ObtieneFormaConciliacion();
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
 
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
@@ -205,7 +207,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (SqlException ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
 
             if (ex.Class >= 20)
             {
@@ -214,7 +216,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -227,6 +229,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         folioConciliacion = Convert.ToInt32(Request.QueryString["Folio"]);
         mesConciliacion = Convert.ToSByte(Request.QueryString["Mes"]);
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        grupoConciliacion = Convert.ToSByte(Request.QueryString["GrupoConciliacion"]);
     }
     //Limpiar las variables de Session
     public void limpiarVariablesSession()
@@ -257,10 +260,10 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            GrupoConciliacionDiasDiferencia gcd = App.GrupoConciliacionDias(grupoC);
+            GrupoConciliacionDiasDiferencia gcd = objApp.GrupoConciliacionDias(grupoC);
             if (!gcd.CargarDatos())
             {
-                App.ImplementadorMensajes.MostrarMensaje("Conflicto al leer Grupo Conciliación");
+                objApp.ImplementadorMensajes.MostrarMensaje("Conflicto al leer Grupo Conciliación");
                 return;
             }
             txtDias.Text = Convert.ToString(gcd.DiferenciaDiasDefault);
@@ -311,7 +314,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+            cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
             lblFolio.Text = c.Folio.ToString();
             lblBanco.Text = c.BancoStr;
             lblCuenta.Text = c.CuentaBancaria;
@@ -344,7 +347,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            //listFormasConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
+            //listFormasConciliacion = objApp.Consultas.ConsultaFormaConciliacion(tipoConciliacion);
             Enrutador objEnrutador = new Enrutador();
             listFormasConciliacion = objEnrutador.CargarFormaConciliacion(Convert.ToSByte(Request.QueryString["TipoConciliacion"]));
             this.ddlCriteriosConciliacion.DataSource = listFormasConciliacion;
@@ -370,7 +373,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = this.ddlSucursalInterno.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = this.ddlSucursalInterno.DataValueField = "Identificador";
             this.ddlSucursal.DataTextField = this.ddlSucursalInterno.DataTextField = "Descripcion";
@@ -397,7 +400,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            listStatusConcepto = Conciliacion.RunTime.App.Consultas.ConsultaStatusConcepto(cConcepto);
+            listStatusConcepto = objApp.Consultas.ConsultaStatusConcepto(cConcepto);
             this.ddlStatusConcepto.DataSource = listStatusConcepto;
             this.ddlStatusConcepto.DataValueField = "Identificador";
             this.ddlStatusConcepto.DataTextField = "Descripcion";
@@ -421,16 +424,16 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         try
         {
             listCamposDestino = filtrarEn.Equals("Externos") || filtrarEn.Equals("Conciliados")
-                                            ? Conciliacion.RunTime.App.Consultas.ConsultaDestino()
+                                            ? objApp.Consultas.ConsultaDestino()
                                             : (tConciliacion != 2
-                                                   ? Conciliacion.RunTime.App.Consultas.ConsultaDestino()
-                                                   : Conciliacion.RunTime.App.Consultas.ConsultaDestinoPedido());
+                                                   ? objApp.Consultas.ConsultaDestino()
+                                                   : objApp.Consultas.ConsultaDestinoPedido());
 
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -447,7 +450,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -464,7 +467,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         try
         {
-            listaTransaccionesConciliadas = Conciliacion.RunTime.App.Consultas.ConsultaTransaccionesConciliadas(
+            listaTransaccionesConciliadas = objApp.Consultas.ConsultaTransaccionesConciliadas(
                                             corporativoconciliacion,
                                             sucursalconciliacion,
                                             añoconciliacion,
@@ -636,7 +639,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     public void LlenarGridDetalleInterno(ReferenciaNoConciliada trConciliada)
@@ -855,7 +858,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             if (tipoConciliacion == 2)
             {
                 listaReferenciaConciliadaPedidos =
-                    Conciliacion.RunTime.App.Consultas.ConsultaConciliarPedidoCantidad(corporativo, sucursal, año, mes,
+                    objApp.Consultas.ConsultaConciliarPedidoCantidad(corporativo, sucursal, año, mes,
                         folio, centavos, statusConcepto);
                 Session["POR_CONCILIAR"] = listaReferenciaConciliadaPedidos;
             }
@@ -863,7 +866,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             else
             {
                 listaReferenciaConciliada =
-                    Conciliacion.RunTime.App.Consultas.ConsultaConciliarArchivosCantidad(corporativo, sucursal, año, mes,
+                    objApp.Consultas.ConsultaConciliarArchivosCantidad(corporativo, sucursal, año, mes,
                         folio, dias, centavos,
                         statusConcepto);
                 Session["POR_CONCILIAR"] = listaReferenciaConciliada;
@@ -985,7 +988,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Verifique:\n- Valor no valido por tipo de Campo seleccionado.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique:\n- Valor no valido por tipo de Campo seleccionado.");
         }
         return "";
         //return tipoCampo.Equals("Cadena")
@@ -1055,7 +1058,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Verifique:\na.-Valor no valido por tipo de Campo seleccionado.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique:\na.-Valor no valido por tipo de Campo seleccionado.");
             mpeFiltrar.Hide();
         }
 
@@ -1148,7 +1151,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     //Ver el detalle de la Transaccion Conciliada
@@ -1420,7 +1423,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         Response.Redirect("~/Conciliacion/FormasConciliar/" + criterioConciliacion +
                                       ".aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
                                       "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
-                                      mesConciliacion + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue));
+                                      mesConciliacion + "&TipoConciliacion=" + tipoConciliacion + "&FormaConciliacion=" + Convert.ToSByte(ddlCriteriosConciliacion.SelectedValue)
+                                      + "&GrupoConciliacion=" + grupoConciliacion);
     }
 
     private bool hayBloqueados(GridView grv)
@@ -1654,7 +1658,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 }
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
+                objApp.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
         }
         else
         {
@@ -1686,13 +1690,13 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                 }
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
+                objApp.ImplementadorMensajes.MostrarMensaje("Lista de Referencias a Conciliar esta Vacia");
         }
         if (! AlgunChequeado)
-            App.ImplementadorMensajes.MostrarMensaje("Seleccione al menos uno para continuar.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Seleccione al menos uno para continuar.");
 
         if (AlgunChequeado && ! resultado)
-            App.ImplementadorMensajes.MostrarMensaje("Ocurrieron errores al guardar. Verifique");
+            objApp.ImplementadorMensajes.MostrarMensaje("Ocurrieron errores al guardar. Verifique");
 
         if (resultado)
         {
@@ -1762,12 +1766,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     protected void imgCerrarConciliacion_Click(object sender, ImageClickEventArgs e)
@@ -1776,10 +1780,10 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         //Leer Variables URL 
         cargarInfoConciliacionActual();
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
         if (c.CerrarConciliacion(usuario.IdUsuario))
         {
-            App.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
+            objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
             System.Threading.Thread.Sleep(3000);
             Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
                                     "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
@@ -1787,7 +1791,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("ERRORES AL CERRAR LA CONCILIACIÓN");
+            objApp.ImplementadorMensajes.MostrarMensaje("ERRORES AL CERRAR LA CONCILIACIÓN");
         }
     }
     protected void imgCancelarConciliacion_Click(object sender, ImageClickEventArgs e)
@@ -1796,16 +1800,16 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         //Leer Variables URL 
         cargarInfoConciliacionActual();
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
         if (c.CancelarConciliacion(usuario.IdUsuario))
         {
-            App.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CANCELADA EXITOSAMENTE");
+            objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CANCELADA EXITOSAMENTE");
             System.Threading.Thread.Sleep(3000);
             Response.Redirect("../../Inicio.aspx");
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("ERRORES AL CANCELAR LA CONCILIACIÓN");
+            objApp.ImplementadorMensajes.MostrarMensaje("ERRORES AL CANCELAR LA CONCILIACIÓN");
         }
     }
     protected void imgFiltrar_Click(object sender, ImageClickEventArgs e)
@@ -1843,7 +1847,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         try
         {
 
-            listTipoFuenteInformacionExternoInterno = Conciliacion.RunTime.App.Consultas.ConsultaTipoInformacionDatos(tipo);
+            listTipoFuenteInformacionExternoInterno = objApp.Consultas.ConsultaTipoInformacionDatos(tipo);
             this.ddlTipoFuenteInfoInterno.DataSource = listTipoFuenteInformacionExternoInterno;
             this.ddlTipoFuenteInfoInterno.DataValueField = "Identificador";
             this.ddlTipoFuenteInfoInterno.DataTextField = "Descripcion";
@@ -1852,7 +1856,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -1895,12 +1899,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     {
         try
         {
-            listFoliosInterno = Conciliacion.RunTime.App.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
+            listFoliosInterno = objApp.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
             //HttpContext.Current.Session["listFoliosInterno"] = listFoliosInterno;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -1958,15 +1962,15 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
 
         if (listArchivosInternos != null && listArchivosInternos.Exists(x => x.Folio == Convert.ToInt32(ddlFolioInterno.SelectedItem.Value)))
         {
-            App.ImplementadorMensajes.MostrarMensaje("Este Folio Interno ya esta Agregado");
+            objApp.ImplementadorMensajes.MostrarMensaje("Este Folio Interno ya esta Agregado");
         }
         else
         {
             //Leer Variables URL 
             cargarInfoConciliacionActual();
 
-            cConciliacion conciliacion = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
-            DatosArchivo datosArchivoInterno = App.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
+            cConciliacion conciliacion = objApp.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+            DatosArchivo datosArchivoInterno = objApp.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
 
             datosArchivoInterno.FolioConciliacion = conciliacion.Folio;
             datosArchivoInterno.SucursalConciliacion = conciliacion.Sucursal;
@@ -2015,7 +2019,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
             //Leer Variables URL 
             cargarInfoConciliacionActual();
 
-            cConciliacion conciliacion = App.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
+            cConciliacion conciliacion = objApp.Consultas.ConsultaConciliacionDetalle(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion);
             listArchivosInternos.ForEach(x => resultado = conciliacion.AgregarArchivo(x, cConciliacion.Operacion.Edicion));
 
             if (resultado)
@@ -2029,10 +2033,10 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     GenerarTablaReferenciasAConciliarPedidos();
                 LlenaGridViewReferenciasConciliadas(tipoConciliacion);
 
-                App.ImplementadorMensajes.MostrarMensaje("Agregado de Folios Internos exitoso.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Agregado de Folios Internos exitoso.");
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Ocurrieron problemas al agregar el nuevo Folio");
+                objApp.ImplementadorMensajes.MostrarMensaje("Ocurrieron problemas al agregar el nuevo Folio");
             //Limpiar Remover Variable (Session) de Internos 
             limpiarVistaImportarInterno();
 
@@ -2042,7 +2046,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("No se ha agregado un nuevo Archivo Interno");
+            objApp.ImplementadorMensajes.MostrarMensaje("No se ha agregado un nuevo Archivo Interno");
         }
     }
     protected void grvAgregados_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -2091,7 +2095,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         try
         {
-            listaDestinoDetalleInterno = Conciliacion.RunTime.App.Consultas.ConsultaTablaDestinoDetalle(
+            listaDestinoDetalleInterno = objApp.Consultas.ConsultaTablaDestinoDetalle(
                         configuracion,
                         empresa,
                         sucursal,
@@ -2100,7 +2104,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al Consultar Detalle.\r\nError" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al Consultar Detalle.\r\nError" + ex.Message);
         }
     }
     /// <summary>
@@ -2183,7 +2187,7 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                     rcp = listaReferenciaConciliadaPedidos.Single(x => x.Secuencia == secuenciaEx && x.Folio == folioExt && x.Pedido == pedido && x.CelulaPedido == celula);
                     resultado = rcp.Guardar();
                 }
-                App.ImplementadorMensajes.MostrarMensaje(resultado
+                objApp.ImplementadorMensajes.MostrarMensaje(resultado
                                                                       ? "Guardado Exitosamente"
                                                                       : "Error al Guardar");
             }
@@ -2207,12 +2211,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                             x.SecuenciaInterno == secuenciaInt);
                     resultado = rcp.Guardar();
                 }
-                App.ImplementadorMensajes.MostrarMensaje(resultado ? "Guardado Exitosamente"
+                objApp.ImplementadorMensajes.MostrarMensaje(resultado ? "Guardado Exitosamente"
                                                                       : "Error al Guardar");
             }
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia seleccionada. Verifique");
+            objApp.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia seleccionada. Verifique");
 
 
         LlenarBarraEstado();

@@ -10,7 +10,9 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 
 public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
-{  
+{
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     #endregion
@@ -18,6 +20,7 @@ public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
     private List<ListaCombo> listEmpleados = new List<ListaCombo>();
     private List<ListaCombo> listaAsignados = new List<ListaCombo>();
     private List<ListaCombo> listaNoAsignados = new List<ListaCombo>();
+
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -28,9 +31,7 @@ public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-      
-        CatalogoConciliacion.App.ImplementadorMensajes.ContenedorActual = this;
-
+        objAppCat.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         { 
             CargarComboEmpleados();
@@ -39,7 +40,7 @@ public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
 
     public void CargarComboEmpleados()
     {
-        listEmpleados = CatalogoConciliacion.App.Consultas.ObtieneEmpleados(1,0);
+        listEmpleados =  objAppCat.Consultas.ObtieneEmpleados(1,0);
         ddlEmpleado.DataSource = listEmpleados;
         this.ddlEmpleado.DataValueField = "Campo1"; //"Identificador";
         this.ddlEmpleado.DataTextField = "Descripcion";
@@ -57,14 +58,14 @@ public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
     public void ConsultaTipoConciliacionUsuario()
     {
 
-        listaAsignados = Conciliacion.RunTime.App.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, ddlEmpleado.SelectedItem.Value);
+        listaAsignados =  objApp.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, ddlEmpleado.SelectedItem.Value);
         ddlAsignados.DataSource = listaAsignados;
         ddlAsignados.DataValueField = "Identificador";
         ddlAsignados.DataTextField = "Descripcion";
         ddlAsignados.DataBind();
         ddlAsignados.Dispose();
 
-        listaNoAsignados = Conciliacion.RunTime.App.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.NoAsignados, ddlEmpleado.SelectedItem.Value);
+        listaNoAsignados =  objApp.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.NoAsignados, ddlEmpleado.SelectedItem.Value);
         ddlNoAsignados.DataSource = listaNoAsignados;
         ddlNoAsignados.DataValueField = "Identificador";
         ddlNoAsignados.DataTextField = "Descripcion";
@@ -95,7 +96,7 @@ public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
         int a;
         a = Convert.ToInt32(ddlAsignados.SelectedItem.Value);
 
-        CatalogoConciliacion.App.TipoConciliacionUsuario.DesasignarTipo(a, ddlEmpleado.SelectedItem.Value);
+         objAppCat.TipoConciliacionUsuario.DesasignarTipo(a, ddlEmpleado.SelectedItem.Value);
         ConsultaTipoConciliacionUsuario();
         ValidarBotones();
 
@@ -105,7 +106,7 @@ public partial class Catalogos_TipoConciliacionUsuario : System.Web.UI.Page
         int a;
         a = Convert.ToInt32(ddlNoAsignados.SelectedItem.Value);
 
-        CatalogoConciliacion.App.TipoConciliacionUsuario.AsignarTipo(a, ddlEmpleado.SelectedItem.Value);
+         objAppCat.TipoConciliacionUsuario.AsignarTipo(a, ddlEmpleado.SelectedItem.Value);
         ConsultaTipoConciliacionUsuario();
         ValidarBotones();
 

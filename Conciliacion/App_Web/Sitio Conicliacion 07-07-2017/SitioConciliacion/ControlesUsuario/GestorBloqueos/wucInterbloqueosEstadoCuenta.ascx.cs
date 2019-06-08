@@ -31,6 +31,7 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
 
     private void CargaFiltros()
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         DataTable dtFiltros = new DataTable("Folios");
 
         dtFiltros.Columns.Add("Corporativo", typeof(string));
@@ -81,7 +82,7 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
             DataTable dtSucursalesDatos = dtFiltros.DefaultView.ToTable(true, "Sucursal");
             if (dtSucursalesDatos.Rows.Count > 1)
             { 
-                List<ListaCombo> listSucursalesNombre = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, 1);
+                List<ListaCombo> listSucursalesNombre = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, 1);
                 DataTable dtSucursalesNombre = ConvertToDataTable(listSucursalesNombre);
 
                 IEnumerable<DataRow> querySucursales =

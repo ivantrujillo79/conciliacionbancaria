@@ -8,11 +8,18 @@ namespace Conciliacion.RunTime
     public class EmisorMensajes
     {
         protected StackTrace stackTrace;
-        protected IMensajesImplementacion implementadorMensajes;
-        public IMensajesImplementacion ImplementadorMensajes
+        //protected MensajesImplementacion implementadorMensajes;
+        //public MensajesImplementacion ImplementadorMensajes
+        //{
+        //    get { return implementadorMensajes; }
+        //    set { implementadorMensajes = value; }
+        //}
+        protected MensajesImplementacion implementadorMensajes;
+        public MensajesImplementacion ImplementadorMensajes
         {
             get { return implementadorMensajes; }
             set { implementadorMensajes = value; }
         }
+
     }
 }

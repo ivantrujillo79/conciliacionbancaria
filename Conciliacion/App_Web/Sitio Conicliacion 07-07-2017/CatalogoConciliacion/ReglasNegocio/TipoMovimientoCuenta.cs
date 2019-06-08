@@ -14,14 +14,14 @@ namespace CatalogoConciliacion.ReglasNegocio
         #region Constructores
 
 
-        public TipoMovimientoCuenta(IMensajesImplementacion implementadorMensajes)
+        public TipoMovimientoCuenta(MensajesImplementacion implementadorMensajes)
         {       
             this.tipoMovimiento = 0;
             this.cuenta = string.Empty;
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public TipoMovimientoCuenta(int tipoMovimiento, string cuenta, IMensajesImplementacion implementadorMensajes)
+        public TipoMovimientoCuenta(int tipoMovimiento, string cuenta, MensajesImplementacion implementadorMensajes)
         {
             this.tipoMovimiento = tipoMovimiento;
             this.cuenta = cuenta ;
@@ -49,7 +49,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

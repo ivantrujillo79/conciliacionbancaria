@@ -11,7 +11,7 @@ namespace Conciliacion.RunTime.DatosSQL
     public class PagoAnticipadoDatos : PagoAnticipado
     {
 
-        public PagoAnticipadoDatos(IMensajesImplementacion implementadorMensajes)
+        public PagoAnticipadoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -37,7 +37,7 @@ namespace Conciliacion.RunTime.DatosSQL
             DateTime falta,
             string descripcion,
             string usuariostatusconcepto,
-            DateTime fstatusconcepto, IMensajesImplementacion implementadorMensajes)
+            DateTime fstatusconcepto, MensajesImplementacion implementadorMensajes)
             : base(corporativoconciliacion,
                     sucursalconciliacion,
                     añoconciliacion,

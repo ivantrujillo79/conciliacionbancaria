@@ -25,7 +25,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string statusEntrega;
 
 
-        public Cobranza(IMensajesImplementacion implementadorMensajes)
+        public Cobranza(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.cobranza = 0;
@@ -57,7 +57,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int cobranzaOrigen,
         string usuarioEntrega,
         DateTime fEntrega,
-        string statusEntrega, IMensajesImplementacion implementadorMensajes)
+        string statusEntrega, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.cobranza = cobranza;
@@ -76,7 +76,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.statusEntrega = statusEntrega;
         }
 
-
+        //protected Cobranza(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         public int Id
         {
@@ -179,7 +182,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
     }

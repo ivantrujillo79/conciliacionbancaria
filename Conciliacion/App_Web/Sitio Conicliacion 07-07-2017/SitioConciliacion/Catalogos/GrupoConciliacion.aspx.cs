@@ -15,6 +15,7 @@ using System.Text;
 
 public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     #endregion
@@ -38,10 +39,13 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
 
-        CatalogoConciliacion.App.ImplementadorMensajes.ContenedorActual = this;
+        objAppCat.ImplementadorMensajes.ContenedorActual = this;
         Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
             ConsultaGruposConciliacion();
@@ -61,7 +65,8 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     // Consulta los grupos en la base de datos
     public void ConsultaGruposConciliacion()
     {
-        listaGrupos = CatalogoConciliacion.App.Consultas.ObtieneGrupos(1, 0); // Configuracion 1 todos los grupos activos e inactivos 
+        CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
+        listaGrupos = objApp.Consultas.ObtieneGrupos(1, 0); // Configuracion 1 todos los grupos activos e inactivos 
         // GenerarTablaGruposConciliacion();
 
     }
@@ -122,7 +127,8 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     // Consulta la base de datos los usuarios del grupo seleccionado
     public void ConsultaUsuarioGrupo(int grupo)
     {
-        listaUsuarios = CatalogoConciliacion.App.Consultas.ObtieneUsuariosPorGrupo(0, grupo);
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+        listaUsuarios = objAppCat.Consultas.ObtieneUsuariosPorGrupo(0, grupo);
     }
 
     //Genera la estructura de la tabla temporal para guardar lo que devulva la consulta
@@ -182,8 +188,9 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     // Llena el combo de empleados
     public void CargarComboEmpleados(int grupoId)
     {
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
 
-        listEmpleados = CatalogoConciliacion.App.Consultas.ObtieneEmpleados(0, grupoConciliacionId);
+        listEmpleados = objAppCat.Consultas.ObtieneEmpleados(0, grupoConciliacionId);
         ddlEmpleado.DataSource = listEmpleados;
         this.ddlEmpleado.DataValueField = "Campo1"; //"Identificador";
         this.ddlEmpleado.DataTextField = "Descripcion";
@@ -201,7 +208,8 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     //Guardar usuario Nuevo en la bd
     protected void btnGuardarUsuario_Click(object sender, EventArgs e)
     {
-        CatalogoConciliacion.App.GrupoConciliacionUsuario.AgregaUsuario(grupoConciliacionId, txtUsuario.Text, ckbAccesoTotal.Checked);
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+        objAppCat.GrupoConciliacionUsuario.AgregaUsuario(grupoConciliacionId, txtUsuario.Text, ckbAccesoTotal.Checked);
         ConsultaUsuarioGrupo(grupoConciliacionId);
         GenerarTablaUsuariosGrupo();
         LlenaGridViewUsuarios();
@@ -294,7 +302,8 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
         if (e.CommandName.Equals("CAMBIARSTATUS"))
         {
             GridViewRow gRow = (GridViewRow)(e.CommandSource as Button).Parent.Parent;
-            CatalogoConciliacion.App.GrupoConciliacion.CambiarStatus(Convert.ToInt32(grdGrupos.DataKeys[gRow.RowIndex].Values["GrupoConciliacionId"]));
+            CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+            objAppCat.GrupoConciliacion.CambiarStatus(Convert.ToInt32(grdGrupos.DataKeys[gRow.RowIndex].Values["GrupoConciliacionId"]));
             ConsultaGruposConciliacion();
             GenerarTablaGruposConciliacion();
             LlenaGridViewGrupos();
@@ -307,7 +316,8 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
 
     protected void grdUsuarios_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        CatalogoConciliacion.App.GrupoConciliacionUsuario.EliminaUsuario(grupoConciliacionId, Convert.ToString(grdUsuarios.DataKeys[e.RowIndex].Value));
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+        objAppCat.GrupoConciliacionUsuario.EliminaUsuario(grupoConciliacionId, Convert.ToString(grdUsuarios.DataKeys[e.RowIndex].Value));
         ConsultaUsuarioGrupo(grupoConciliacionId);
         GenerarTablaUsuariosGrupo();
         LlenaGridViewUsuarios();
@@ -352,6 +362,7 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     }
     public void verStatusConceptoGrupo()
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         try
         {
             grupoConciliacionId = Convert.ToInt32(grdGrupos.DataKeys[indiceSeleccionadoGrupo].Values["GrupoConciliacionId"]);
@@ -365,7 +376,7 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
 
     }
@@ -402,6 +413,7 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
 
     private void CargarComboStatusConcepto(int grupoConciliacionId)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         try
         {
 
@@ -414,40 +426,41 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al Consultar los Status Concepto:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al Consultar los Status Concepto:\n" + ex.Message);
         }
     }
     protected void btnVerUsuarios_Click(object sender, EventArgs e)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         if (indiceSeleccionadoGrupo >= 0)
             verUsuariosGrupo();
         else
-            Conciliacion.RunTime.App.ImplementadorMensajes.MostrarMensaje("Seleccione un Grupo de Conciliación");
+            objApp.ImplementadorMensajes.MostrarMensaje("Seleccione un Grupo de Conciliación");
 
     }
     protected void btnVerStatusConcepto_Click(object sender, EventArgs e)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         if (indiceSeleccionadoGrupo >= 0)
             verStatusConceptoGrupo();
         else
-            Conciliacion.RunTime.App.ImplementadorMensajes.MostrarMensaje("Seleccione un Grupo de Conciliación");
+            objApp.ImplementadorMensajes.MostrarMensaje("Seleccione un Grupo de Conciliación");
 
     }
     protected void btnUsuarios_Click(object sender, ImageClickEventArgs e)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         if (indiceSeleccionadoGrupo >= 0)
-
             verUsuariosGrupo();
-
-
         else
-            App.ImplementadorMensajes.MostrarMensaje("Seleccione un Grupo de Conciliación");
+            objApp.ImplementadorMensajes.MostrarMensaje("Seleccione un Grupo de Conciliación");
     }
 
     protected void btnGuardarGrupoConciliacion_Click(object sender, EventArgs e)
     {
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-        CatalogoConciliacion.App.GrupoConciliacion.Guardar(txtDescripcion.Text, usuario.IdUsuario.Trim(), Convert.ToInt32(txtDiasDefault.Text), Convert.ToInt32(txtDiasMaxima.Text), Convert.ToInt32(txtDiasMinima.Text), Convert.ToDecimal(txtDiferenciaDefault.Text), Convert.ToDecimal(txtDiferenciaMaxima.Text), Convert.ToDecimal(txtDiferenciaMinima.Text));
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+        objAppCat.GrupoConciliacion.Guardar(txtDescripcion.Text, usuario.IdUsuario.Trim(), Convert.ToInt32(txtDiasDefault.Text), Convert.ToInt32(txtDiasMaxima.Text), Convert.ToInt32(txtDiasMinima.Text), Convert.ToDecimal(txtDiferenciaDefault.Text), Convert.ToDecimal(txtDiferenciaMaxima.Text), Convert.ToDecimal(txtDiferenciaMinima.Text));
         ConsultaGruposConciliacion();
         GenerarTablaGruposConciliacion();
         LlenaGridViewGrupos();
@@ -584,44 +597,50 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     }
     protected void grvGrupoStatusConcepto_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         if (hdfGrupoConciliacionSeleccionado.Value != null)
         {
+            CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
             GrupoConciliacion gc =
-                CatalogoConciliacion.App.Consultas.ObtieneGrupoPorId(2,
+                objAppCat.Consultas.ObtieneGrupoPorId(2,
                     Convert.ToInt32(hdfGrupoConciliacionSeleccionado.Value));
             int statusconcepto = Convert.ToInt32(grvGrupoStatusConcepto.DataKeys[e.RowIndex].Values["StatusConcepto"]);
             if (!gc.QuitarStatusConcepto(statusconcepto)) return;
-            App.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
+
+            objApp.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
             CargarComboStatusConcepto(grupoConciliacionId);
             ConsultaStatusConceptoGrupo(gc.GrupoConciliacionId);
             GenerarTablaStatusConceptoGrupo();
             LlenaGridViewStatusConceptoGrupo();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Error al leer el Grupo de Conciliacion Seleccionado. Recargue la vista.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al leer el Grupo de Conciliacion Seleccionado. Recargue la vista.");
 
     }
     protected void btnAgregarStatusConcepto_Click(object sender, EventArgs e)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         if (hdfGrupoConciliacionSeleccionado.Value != null)
         {
+            CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
             GrupoConciliacion gc =
-                CatalogoConciliacion.App.Consultas.ObtieneGrupoPorId(2,
+                objAppCat.Consultas.ObtieneGrupoPorId(2,
                     Convert.ToInt32(hdfGrupoConciliacionSeleccionado.Value));
             int statusconcepto = Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value);
             if (!gc.AñadirStatusConcepto(statusconcepto)) return;
-            App.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
+
+            objApp.ImplementadorMensajes.MostrarMensaje("Registro Modificado Con éxito");
             CargarComboStatusConcepto(grupoConciliacionId);
             ConsultaStatusConceptoGrupo(gc.GrupoConciliacionId);
             GenerarTablaStatusConceptoGrupo();
             LlenaGridViewStatusConceptoGrupo();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Error al leer el Grupo de Conciliacion Seleccionado. Recargue la vista.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al leer el Grupo de Conciliacion Seleccionado. Recargue la vista.");
     }
     protected void grvGrupoStatusConcepto_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         try
         {
             grvGrupoStatusConcepto.PageIndex = e.NewPageIndex;
@@ -629,7 +648,7 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n"+ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n"+ex.Message);
         }
     }
 }

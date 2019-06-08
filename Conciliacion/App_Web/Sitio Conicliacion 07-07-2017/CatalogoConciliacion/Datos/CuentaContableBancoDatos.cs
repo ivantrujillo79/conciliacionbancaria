@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CatalogoConciliacion.ReglasNegocio;
-using Conciliacion.Migracion.Runtime;
+using Conciliacion.RunTime;
 
 namespace CatalogoConciliacion.Datos
 {
@@ -12,7 +12,7 @@ namespace CatalogoConciliacion.Datos
     {
 
 
-        public CuentaContableBancoDatos(IMensajesImplementacion implementadorMensajes)
+        public CuentaContableBancoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }

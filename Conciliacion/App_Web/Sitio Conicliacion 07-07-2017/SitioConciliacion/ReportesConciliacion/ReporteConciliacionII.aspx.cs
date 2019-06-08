@@ -14,6 +14,7 @@ using Conciliacion.Migracion.Runtime;
 
 public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
@@ -36,7 +37,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
     {
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
             if (HttpContext.Current.Request.UrlReferrer != null)
@@ -72,7 +73,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
 
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -110,7 +111,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
     {
         try
         {
-            this.ddlAño.DataSource = Conciliacion.RunTime.App.Consultas.ConsultaAños();
+            this.ddlAño.DataSource = objApp.Consultas.ConsultaAños();
             this.ddlAño.DataValueField = "Identificador";
             this.ddlAño.DataTextField = "Descripcion";
             this.ddlAño.DataBind();
@@ -118,7 +119,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -142,7 +143,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
     /// </summary>
     public string fechaMaximaConciliacion()
     {
-        return Conciliacion.RunTime.App.Consultas.ConsultaFechaActualInicial();
+        return objApp.Consultas.ConsultaFechaActualInicial();
     }
     /// <summary>
     /// Llena el Combo de las Empresas por Usuario
@@ -164,7 +165,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -174,7 +175,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = "Identificador";
             this.ddlSucursal.DataTextField = "Descripcion";
@@ -183,7 +184,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -195,13 +196,13 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
         {
             ddlBanco.DataValueField = "Identificador";
             ddlBanco.DataTextField = "Descripcion";
-            ddlBanco.DataSource = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            ddlBanco.DataSource = objApp.Consultas.ConsultaBancos(corporativo);
             ddlBanco.DataBind();
             //ddlBanco.SelectedIndex = 0;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -218,7 +219,7 @@ public partial class ReportesConciliacion_ReporteConciliacionII : System.Web.UI.
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 

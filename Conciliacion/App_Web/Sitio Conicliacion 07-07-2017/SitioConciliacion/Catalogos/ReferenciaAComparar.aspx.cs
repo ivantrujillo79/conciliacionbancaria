@@ -11,6 +11,8 @@ using System.Data;
 
 public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     #endregion
@@ -24,7 +26,6 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
     private List<ListaCombo> listColumnaDestinoExt = new List<ListaCombo>();
     private List<ListaCombo> listColumnaDestinoInt = new List<ListaCombo>();
 
-
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -34,8 +35,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-      
-        CatalogoConciliacion.App.ImplementadorMensajes.ContenedorActual = this;
+        objAppCat.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
             ConsultaReferenciasAComparar();
@@ -47,7 +47,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
     public void CargarCombos()
     { 
         //Combo Tipo Conciliacion 
-        listTipoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Todos, "");
+        listTipoConciliacion = objApp.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Todos, "");
         ddlTipoConciliacion.DataSource = listTipoConciliacion;
         ddlTipoConciliacion.DataValueField = "Identificador";
         ddlTipoConciliacion.DataTextField = "Descripcion";
@@ -55,7 +55,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
         ddlTipoConciliacion.Dispose();
 
         //Combo columna externa
-        listColumnaDestinoExt = CatalogoConciliacion.App.Consultas.ObtieneColumnas(2, 0, "");
+        listColumnaDestinoExt =  objAppCat.Consultas.ObtieneColumnas(2, 0, "");
         ddlColumnaDestExt.DataSource = listColumnaDestinoExt;
         ddlColumnaDestExt.DataValueField = "Descripcion";//"Identificador";
         ddlColumnaDestExt.DataTextField = "Descripcion";
@@ -63,7 +63,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
         ddlColumnaDestExt.Dispose();
 
         //Combo columan interna
-        listColumnaDestinoInt = CatalogoConciliacion.App.Consultas.ObtieneColumnas(2, 0, "");
+        listColumnaDestinoInt =  objAppCat.Consultas.ObtieneColumnas(2, 0, "");
         ddlColumnaDestInt.DataSource = listColumnaDestinoInt;
         ddlColumnaDestInt.DataValueField = "Descripcion";//"Identificador";
         ddlColumnaDestInt.DataTextField = "Descripcion";
@@ -73,7 +73,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
 
     public void ConsultaReferenciasAComparar()
     {
-        listaReferencias = CatalogoConciliacion.App.Consultas.ObtieneReferencias(1);
+        listaReferencias =  objAppCat.Consultas.ObtieneReferencias(1);
         GenerarTablaReferenciasAComparar();
     }
 
@@ -128,22 +128,22 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
     {
         try
         {
-        listColumnaDestinoExt = CatalogoConciliacion.App.Consultas.ObtieneColumnas(2, 0, "");
-        listColumnaDestinoInt = CatalogoConciliacion.App.Consultas.ObtieneColumnas(2, 0, "");
+        listColumnaDestinoExt =  objAppCat.Consultas.ObtieneColumnas(2, 0, "");
+        listColumnaDestinoInt =  objAppCat.Consultas.ObtieneColumnas(2, 0, "");
         if (listColumnaDestinoExt[ddlColumnaDestExt.SelectedIndex].Campo1 != listColumnaDestinoInt[ddlColumnaDestInt.SelectedIndex].Campo1)
         {
             Mensaje("Agregar referencia", "Los tipos de datos no coinciden, no se puede agregar");
         }
         else
         {
-            listaReferenciaExistente = CatalogoConciliacion.App.Consultas.ObtieneReferenciaPorIdLista(3, Convert.ToInt32(ddlTipoConciliacion.SelectedItem.Value), 0, ddlColumnaDestExt.SelectedItem.Value, ddlColumnaDestInt.SelectedItem.Value);
+            listaReferenciaExistente =  objAppCat.Consultas.ObtieneReferenciaPorIdLista(3, Convert.ToInt32(ddlTipoConciliacion.SelectedItem.Value), 0, ddlColumnaDestExt.SelectedItem.Value, ddlColumnaDestInt.SelectedItem.Value);
             if (listaReferenciaExistente.Count > 0)
             {
                 Mensaje("Agregar referencia", "La combinación ya existe, no se puede agregar");
             }
             else
             {
-                ReferenciaAComparar rc = CatalogoConciliacion.App.ReferenciaAComparar;
+                ReferenciaAComparar rc =  objAppCat.ReferenciaAComparar;
                 rc.TipoConciliacion = Convert.ToInt32(ddlTipoConciliacion.SelectedItem.Value);
                 rc.ColumnaDestinoExt = ddlColumnaDestExt.SelectedItem.Value;
                 rc.ColumnaDestinoInt = ddlColumnaDestInt.SelectedItem.Value;
@@ -154,7 +154,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
             LlenaGridReferenciasAComparar();
         }
         }
-        catch (Exception ex) { App.ImplementadorMensajes.MostrarMensaje(ex.Message); }
+        catch (Exception ex) { objApp.ImplementadorMensajes.MostrarMensaje(ex.Message); }
     }
 
     protected void grdReferencias_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -162,7 +162,7 @@ public partial class Catalogos_ReferenciaAComparar : System.Web.UI.Page
         if (e.CommandName.Equals("CAMBIARSTATUS"))
         {
             GridViewRow gRow = (GridViewRow)(e.CommandSource as Button).Parent.Parent;
-            CatalogoConciliacion.App.ReferenciaAComparar.CambiarStatus(Convert.ToInt16(grdReferencias.DataKeys[gRow.RowIndex].Values["TipoConciliacion"]), Convert.ToInt16(grdReferencias.DataKeys[gRow.RowIndex].Values["Secuencia"]));
+             objAppCat.ReferenciaAComparar.CambiarStatus(Convert.ToInt16(grdReferencias.DataKeys[gRow.RowIndex].Values["TipoConciliacion"]), Convert.ToInt16(grdReferencias.DataKeys[gRow.RowIndex].Values["Secuencia"]));
             ConsultaReferenciasAComparar();
             LlenaGridReferenciasAComparar();
         }

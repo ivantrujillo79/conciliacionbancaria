@@ -23,6 +23,7 @@ public partial class ImportacionArchivos_FuenteInformacion : System.Web.UI.Page
     #endregion
 
     StringBuilder mensaje;
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -34,7 +35,7 @@ public partial class ImportacionArchivos_FuenteInformacion : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
        
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
             LlenarCombos();

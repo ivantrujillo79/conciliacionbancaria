@@ -31,6 +31,8 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     List<FuenteInformacion> fuenteInformacion;
 
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
     protected override void OnPreInit(EventArgs e)
     {
 
@@ -42,7 +44,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
             if (!IsPostBack)
@@ -52,7 +54,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -129,7 +131,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -163,7 +165,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -184,7 +186,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -337,7 +339,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -411,7 +413,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -433,7 +435,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -449,7 +451,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
             //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
             //    @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
             //    + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -465,7 +467,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -537,7 +539,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -549,7 +551,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -561,7 +563,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -573,7 +575,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -585,7 +587,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -600,7 +602,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -622,7 +624,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -634,7 +636,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -652,7 +654,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -680,7 +682,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -742,7 +744,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -754,7 +756,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -769,7 +771,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -793,7 +795,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -813,7 +815,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -826,7 +828,7 @@ public partial class ImportacionArchivos_Mapeo : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 }

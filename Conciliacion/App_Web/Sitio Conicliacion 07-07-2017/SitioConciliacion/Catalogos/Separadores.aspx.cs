@@ -21,11 +21,11 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     #endregion
-
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     private void Limpiar()
     {
         this.txtSeparador.Text = string.Empty;
-        this.grvSeparadores.DataSource = App.Consultas.ObtieneListaSeparador();
+        this.grvSeparadores.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
         this.grvSeparadores.DataBind();
     }
     protected override void OnPreInit(EventArgs e)
@@ -38,11 +38,11 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
       
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
 
-            this.grvSeparadores.DataSource = App.Consultas.ObtieneListaSeparador();
+            this.grvSeparadores.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
             this.grvSeparadores.DataBind();
         }
     }
@@ -52,13 +52,13 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
         {
             try
             {
-                Separador separador = App.Separador;
+                Separador separador = Conciliacion.Migracion.Runtime.App.Separador;
                 separador.Descripcion = this.txtSeparador.Text;
                 separador.Status = "ACTIVO";
-                App.implementadorMensajes.MensajesActivos = false;
+                Conciliacion.Migracion.Runtime.App.implementadorMensajes.MensajesActivos = false;
                 if (separador.Guardar())
                 {
-                    this.grvSeparadores.DataSource = App.Consultas.ObtieneListaSeparador();
+                    this.grvSeparadores.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
                     this.grvSeparadores.DataBind();
                     Limpiar();
                 }
@@ -80,7 +80,7 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert('Escriba la descripción del separador.')", true);
         }
-        App.implementadorMensajes.MensajesActivos = true;
+        Conciliacion.Migracion.Runtime.App.implementadorMensajes.MensajesActivos = true;
     }
     protected void btnDelete_Click(object sender, ImageClickEventArgs e)
     {
@@ -89,11 +89,11 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
         GridViewRow row = imgButton.Parent.Parent as GridViewRow;
         Label lblReferencia = (Label)row.FindControl("lblGVSeparador");
 
-        App.Separador.Descripcion = lblReferencia.Text.Trim();
-        App.Separador.Status = "INACTIVO";
+        Conciliacion.Migracion.Runtime.App.Separador.Descripcion = lblReferencia.Text.Trim();
+        Conciliacion.Migracion.Runtime.App.Separador.Status = "INACTIVO";
         if (App.Separador.Actualizar())
         {
-            this.grvSeparadores.DataSource = App.Consultas.ObtieneListaSeparador();
+            this.grvSeparadores.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
             this.grvSeparadores.DataBind();
         }
     }
@@ -106,7 +106,7 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
         try
         {
             this.grvSeparadores.PageIndex = e.NewPageIndex;
-            this.grvSeparadores.DataSource = App.Consultas.ObtieneListaSeparador();
+            this.grvSeparadores.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
             this.grvSeparadores.DataBind();
         }
         catch (Exception)
@@ -137,7 +137,7 @@ public partial class ImportacionArchivos_Separadores : System.Web.UI.Page
                                     iNumPag <= grvSeparadores.PageCount
                                         ? iNumPag - 1
                                         : 0;
-        this.grvSeparadores.DataSource = App.Consultas.ObtieneListaSeparador();
+        this.grvSeparadores.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
         this.grvSeparadores.DataBind();
     }
 

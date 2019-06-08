@@ -18,7 +18,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public FacturasComplemento(IMensajesImplementacion implementadorMensajes)
+        public FacturasComplemento(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativoConciliacion=0;
@@ -29,7 +29,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
         public FacturasComplemento(int corporativoConciliacion, int sucursalConciliacion, int anioConciliacion, int mesConciliacion,
-            int folioConciliacion, IMensajesImplementacion implementadorMensajes)
+            int folioConciliacion, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativoConciliacion = corporativoConciliacion;
@@ -86,7 +86,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

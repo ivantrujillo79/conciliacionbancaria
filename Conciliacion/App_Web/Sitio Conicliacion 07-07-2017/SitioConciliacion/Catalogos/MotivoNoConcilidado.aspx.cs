@@ -9,6 +9,7 @@ using System.Data;
 
 public partial class Catalogos_MotivoNoConcilidado : System.Web.UI.Page
 {
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
@@ -27,7 +28,7 @@ public partial class Catalogos_MotivoNoConcilidado : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
       
-        CatalogoConciliacion.App.ImplementadorMensajes.ContenedorActual = this;
+         objAppCat.ImplementadorMensajes.ContenedorActual = this;
 
         if (!IsPostBack)
         {
@@ -41,7 +42,7 @@ public partial class Catalogos_MotivoNoConcilidado : System.Web.UI.Page
     // Consulta los motivos de la base de datos
     public void ConsultaMotivosNoConciliacion()
     {
-        listaMotivos = CatalogoConciliacion.App.Consultas.ObtieneMotivos(1, 0);
+        listaMotivos =  objAppCat.Consultas.ObtieneMotivos(1, 0);
         GenerarTablaMotivosNoConciliados();
     }
 
@@ -100,7 +101,7 @@ public partial class Catalogos_MotivoNoConcilidado : System.Web.UI.Page
     {
         //if (txtDescripcion.Text != "")
         //{
-        MotivoNoConciliado mnc = CatalogoConciliacion.App.MotivoNoConciliado;
+        MotivoNoConciliado mnc =  objAppCat.MotivoNoConciliado;
         mnc.MotivoNoConciliadoId = 0;
         mnc.Descripcion = txtDescripcion.Text;
         mnc.Status = "ACTIVO";
@@ -173,7 +174,7 @@ public partial class Catalogos_MotivoNoConcilidado : System.Web.UI.Page
         if (e.CommandName.Equals("CAMBIARSTATUS"))
         {
             GridViewRow gRow = (GridViewRow)(e.CommandSource as Button).Parent.Parent;
-            CatalogoConciliacion.App.MotivoNoConciliado.CambiarStatus(Convert.ToInt16(grdMotivos.DataKeys[gRow.RowIndex].Values["MotivoNoConciliadoId"]));
+             objAppCat.MotivoNoConciliado.CambiarStatus(Convert.ToInt16(grdMotivos.DataKeys[gRow.RowIndex].Values["MotivoNoConciliadoId"]));
             ConsultaMotivosNoConciliacion();
             LlenaGridViewMotivosNoConciliados();
         }

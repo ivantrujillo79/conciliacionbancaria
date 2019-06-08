@@ -39,7 +39,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string usuariostatusconcepto;
         private DateTime fstatusconcepto;
 
-        public ConciliacionReferencia(IMensajesImplementacion implementadorMensajes)
+        public ConciliacionReferencia(MensajesImplementacion implementadorMensajes)
         {
             this.corporativoconciliacion = 0;
             this.sucursalconciliacion = 0;
@@ -105,7 +105,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
           DateTime falta,
           string descripcion,
           string usuariostatusconcepto,
-          DateTime fstatusconcepto, IMensajesImplementacion implementadorMensajes)
+          DateTime fstatusconcepto, MensajesImplementacion implementadorMensajes)
         {
             this.corporativoconciliacion = corporativoconciliacion;
             this.sucursalconciliacion = sucursalconciliacion;
@@ -140,6 +140,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.fstatusconcepto = fstatusconcepto;
             this.implementadorMensajes = implementadorMensajes;
         }
+
+        //protected ConciliacionReferencia(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         public byte CorporativoConciliacion
         {

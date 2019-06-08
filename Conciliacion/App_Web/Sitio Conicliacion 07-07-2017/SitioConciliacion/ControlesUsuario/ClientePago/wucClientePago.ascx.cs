@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 
 public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI.UserControl
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     private object controlcontenedor;
     private List<int> clientes;
     //private string clienteseleccionado;
@@ -75,7 +76,7 @@ public partial class ControlesUsuario_ClientePago_wucClientePago : System.Web.UI
             foreach (int cli in Clientes)
             {
                 //validar y cargar datos
-                Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+                Cliente objCliente = objApp.Cliente.CrearObjeto();
                 Conciliacion.RunTime.DatosSQL.Conexion conexion = new Conciliacion.RunTime.DatosSQL.Conexion();
                 conexion.AbrirConexion(true);
                 objCliente.Referencia = cli.ToString();

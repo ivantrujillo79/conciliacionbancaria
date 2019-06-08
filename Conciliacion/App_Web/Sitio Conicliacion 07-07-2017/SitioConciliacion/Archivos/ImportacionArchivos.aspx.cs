@@ -14,6 +14,9 @@ using System.Globalization;
 
 public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
 
@@ -36,7 +39,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
             Server.ScriptTimeout = 500;
@@ -62,7 +65,8 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     /// </summary>
     public string fechaMaximaConciliacion()
     {
-        return Conciliacion.RunTime.App.Consultas.ConsultaFechaActualInicial();
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        return objApp.Consultas.ConsultaFechaActualInicial();
     }
     private bool ValidarDatos()
     {
@@ -148,7 +152,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         HttpContext.Current.Session["IController"] = null;
         if (this.cboTipoFuenteInformacion.Items.Count > 0)
         {
-            finformacion = App.Consultas.ObtieneFuenteInformacionPorId(Convert.ToInt32(this.cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedValue.ToString(), Convert.ToInt32(this.cboTipoFuenteInformacion.SelectedValue));
+            finformacion = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneFuenteInformacionPorId(Convert.ToInt32(this.cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedValue.ToString(), Convert.ToInt32(this.cboTipoFuenteInformacion.SelectedValue));
             HttpContext.Current.Session["FInformacion"] = finformacion;
         }
     }
@@ -158,7 +162,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
 
         cboTipoFuenteInformacion.Items.Clear();
-        List<FuenteInformacion> fuenteInformacion = App.Consultas.ObtieneListaFuenteInformacionPorBancoCuenta(Convert.ToInt32(this.cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedValue.ToString());
+        List<FuenteInformacion> fuenteInformacion = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaFuenteInformacionPorBancoCuenta(Convert.ToInt32(this.cboBancoFinanciero.SelectedValue), cboCuentaFinanciero.SelectedValue.ToString());
         if (fuenteInformacion.Count > 0)
         {
             cboTipoFuenteInformacion.DataValueField = "IdFuenteInformacion";
@@ -203,14 +207,14 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
         this.cboCorporativo.DataValueField = "Id";
         this.cboCorporativo.DataTextField = "Nombre";
-        this.cboCorporativo.DataSource = App.Consultas.ObtieneListaCorporativo(((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario);
+        this.cboCorporativo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaCorporativo(((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario);
         this.cboCorporativo.DataBind();
         this.PosicionarComboCorporativo();
 
         this.cboCuentaFinanciero.DataValueField = "Descripcion";
         this.cboCuentaFinanciero.DataTextField = "Descripcion";
 
-        this.cboAnio.DataSource = App.Consultas.ObtieneListaAnios();
+        this.cboAnio.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaAnios();
         this.cboAnio.DataBind();
         this.cboAnio.SelectedIndex = 0;
 
@@ -238,7 +242,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                             tablaDestino.IdCorporativo = Convert.ToInt32(this.cboCorporativo.SelectedValue);
                             tablaDestino.IdSucursal = Convert.ToInt32(this.cboSucursal.SelectedValue);
                             tablaDestino.Anio = Convert.ToInt32(this.cboAnio.SelectedValue);
-                            tablaDestino.Folio = App.Consultas.ObtieneTablaDestinoNumeroMaximo(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue), Convert.ToInt32(this.cboAnio.SelectedValue)) + 1;
+                            tablaDestino.Folio = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneTablaDestinoNumeroMaximo(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue), Convert.ToInt32(this.cboAnio.SelectedValue)) + 1;
                             tablaDestino.IdFrecuencia = 1;
                             //tablaDestino.FInicial = Convert.ToDateTime(dpFInicial.Text);
                             //tablaDestino.FFinal = Convert.ToDateTime(dpFFinal.Text);
@@ -249,7 +253,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                             tablaDestino.IdTipoFuenteInformacion = finformacion.IdTipoFuenteInformacion;
                             ImportacionController importador = new ImportacionController(finformacion, rutaCompleta, int.Parse(cboBancoFinanciero.SelectedValue.ToString()));
                             //ImportacionController importador = new ImportacionController(finformacion, rutaCompleta,0);
-
+                            App.ImplementadorMensajes.ContenedorActual = this;
 
                             if (importador.ImportarArchivo(tablaDestino))
                                 Limpiar();
@@ -284,7 +288,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         catch (Exception ex)
         {
             //ScriptManager.RegisterStartupScript(this, this.GetType(), Guid.NewGuid().ToString(), "alert(" + ex.Message + "');", true);
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
 
@@ -351,7 +355,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     protected void cboBancoFinanciero_SelectedIndexChanged(object sender, EventArgs e)
     {
 
-        cboCuentaFinanciero.DataSource = App.Consultas.ObtieneListaCuentaFinancieroPorBanco(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(cboBancoFinanciero.SelectedValue));
+        cboCuentaFinanciero.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaCuentaFinancieroPorBanco(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(cboBancoFinanciero.SelectedValue));
         cboCuentaFinanciero.DataBind();
         LlenarComboConsecutivo();
         ConfigurarImportacion();
@@ -378,14 +382,14 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
     {
         cboBancoFinanciero.DataValueField = "Id";
         cboBancoFinanciero.DataTextField = "Descripcion";
-        cboBancoFinanciero.DataSource = App.Consultas.ObtieneListaBancoFinanciero(Convert.ToInt32(cboCorporativo.SelectedValue));
+        cboBancoFinanciero.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaBancoFinanciero(Convert.ToInt32(cboCorporativo.SelectedValue));
         cboBancoFinanciero.DataBind();
         cboBancoFinanciero.SelectedIndex = 0;
 
 
         this.cboSucursal.DataValueField = "Id";
         this.cboSucursal.DataTextField = "Descripcion";
-        this.cboSucursal.DataSource = App.Consultas.ObtieneListaSucursalPorCorporativo(Convert.ToInt32(this.cboCorporativo.SelectedValue));
+        this.cboSucursal.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSucursalPorCorporativo(Convert.ToInt32(this.cboCorporativo.SelectedValue));
         cboSucursal.DataBind();
         int sucursal = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).Sucursal;
         cboSucursal.SelectedIndex = buscarItem(cboSucursal.Items, sucursal.ToString());
@@ -468,12 +472,12 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
 
     public void Carga_ImportacionAplicaciones(int sucursal, string cuentaBancaria)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         int j = 0;
         try
         {
-
             listImportacionAplicacion = new List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion>();
-            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp1 = Conciliacion.RunTime.App.Consultas.ConsultaImportacionesAplicacion(sucursal, cuentaBancaria); ;
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp1 = objApp.Consultas.ConsultaImportacionesAplicacion(sucursal, cuentaBancaria); ;
 
             for (int i = 0; i < listImportacionAplicacionTemp1.Count; i++)
             {
@@ -482,7 +486,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
 
 
 
-            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp2 = Conciliacion.RunTime.App.Consultas.ConsultaImportacionAplicacion(sucursal); ;
+            List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> listImportacionAplicacionTemp2 = objApp.Consultas.ConsultaImportacionAplicacion(sucursal); ;
             for (int i = 0; i < listImportacionAplicacionTemp2.Count; i++)
             {
                 foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion importacionObjeto in listImportacionAplicacionTemp1)
@@ -521,7 +525,8 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     protected void btnGuardarAplicacion_Click(object sender, EventArgs e)
@@ -551,7 +556,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 DateTime ff = DateTime.ParseExact(txtFFinal.Text, "MM/dd/yyyy", culture);
                 //DateTime fa = DateTime.ParseExact(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss"), "MM/dd/yyyy hh:mm:ss", culture);
                 DateTime fa = DateTime.Now;
-                int folio = App.Consultas.ObtieneTablaDestinoNumeroMaximo(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue), Convert.ToInt32(this.cboAnio.SelectedValue)) + 1;
+                int folio = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneTablaDestinoNumeroMaximo(Convert.ToInt32(this.cboCorporativo.SelectedValue), Convert.ToInt32(this.cboSucursal.SelectedValue), Convert.ToInt32(this.cboAnio.SelectedValue)) + 1;
                 string usuario = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario.Trim();
 
                 SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
@@ -593,7 +598,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 foreach (Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion extractor in listadoExtractores)
                 {
                     TipoFuenteInformacion = extractor.TipoFuenteInformacion;
-                    Existe = App.Consultas.VerificarArchivo(Convert.ToInt32(this.cboCorporativo.SelectedValue),
+                    Existe = Conciliacion.Migracion.Runtime.App.Consultas.VerificarArchivo(Convert.ToInt32(this.cboCorporativo.SelectedValue),
                                                             Convert.ToInt32(this.cboSucursal.SelectedValue),
                                                             Convert.ToInt32(this.cboAnio.SelectedValue),
                                                             this.cboCuentaFinanciero.SelectedValue,
@@ -605,16 +610,16 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
                 {
                     if (ia.GuardaEnTablaDestinoDetalle())
                     {
-                        App.ImplementadorMensajes.MostrarMensaje("Guardado con Exito.");
+                        objApp.ImplementadorMensajes.MostrarMensaje("Guardado con Exito.");
                         Limpiar();
                         txtFInicial.Text = txtFFinal.Text = String.Empty;
                         ia = null;
                     }
                     else
-                        { App.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
+                        { objApp.ImplementadorMensajes.MostrarMensaje("Ocurrieron conflictos al Guardar desde Aplicaci�n. \n Posibles Razones:\n1. Tabla Destino no fue encontrada. \n2. El extractor no ha devuelto ningun registro."); }
                 }
                 else
-                    { App.ImplementadorMensajes.MostrarMensaje("El periodo de fechas ya esta ocupado. Tipo Fuente Informacion: "+ TipoFuenteInformacion.ToString()); }
+                    { objApp.ImplementadorMensajes.MostrarMensaje("El periodo de fechas ya esta ocupado. Tipo Fuente Informacion: "+ TipoFuenteInformacion.ToString()); }
             }
             else
             {
@@ -639,7 +644,7 @@ public partial class ImportacionArchivos_ImportacionArchivos : System.Web.UI.Pag
         catch (Exception ex)
         {
 
-            App.ImplementadorMensajes.MostrarMensaje("Error: \n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: \n" + ex.Message);
         }
 
     }

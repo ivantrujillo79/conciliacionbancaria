@@ -17,7 +17,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public RelacionCobranza(IMensajesImplementacion implementadorMensajes)
+        public RelacionCobranza(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
         }
@@ -28,6 +28,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.ObjMovimientoCajaDatos = objMovientoCajaDatos;
             this.ConBoveda = ConBoveda;
         }
+
+        //protected RelacionCobranza(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
         #endregion
 
         #region Propiedades
@@ -71,8 +76,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
-            set { App.CadenaConexion = value; }
+            get
+            {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
+            }
+            set
+            {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                objApp.CadenaConexion = value;
+            }
         }
     }
 }

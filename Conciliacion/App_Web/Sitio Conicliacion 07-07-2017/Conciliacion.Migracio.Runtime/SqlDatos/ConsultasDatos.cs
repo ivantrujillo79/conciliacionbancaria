@@ -13,6 +13,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
 {
     public class ConsultasDatos : Consultas
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
         private int ObtieneTipoCobro(List<PalabraClaveTipoCobro> listaPalabraClaveTipoCobro, string DescripcionEstadoCta, string ConceptoEstadoCta)
         {
@@ -660,7 +661,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
             List<BancoFinanciero> lista = new List<BancoFinanciero>();
 
-            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = objApp.Consultas.ConsultaBancos(corporativo);
 
             foreach (Conciliacion.RunTime.ReglasDeNegocio.ListaCombo item in listaCombo)
             {
@@ -706,7 +707,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
 
             List<CuentaFinanciero> lista = new List<CuentaFinanciero>();
 
-            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = Conciliacion.RunTime.App.Consultas.ConsultaCuentasBancaria(corporativo, Convert.ToInt16(idBanco));
+            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = objApp.Consultas.ConsultaCuentasBancaria(corporativo, Convert.ToInt16(idBanco));
 
             foreach (Conciliacion.RunTime.ReglasDeNegocio.ListaCombo item in listaCombo)
             {
@@ -1042,7 +1043,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         {
             List<Sucursal> lista = new List<Sucursal>();
 
-            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0, corporativo);
+            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0, corporativo);
 
             foreach (Conciliacion.RunTime.ReglasDeNegocio.ListaCombo item in listaCombo)
             {
@@ -1112,7 +1113,7 @@ namespace Conciliacion.Migracion.Runtime.SqlDatos
         public override List<int> ObtieneListaAnios()
         {
             List<int> lista = new List<int>();
-            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = Conciliacion.RunTime.App.Consultas.ConsultaAños();
+            List<Conciliacion.RunTime.ReglasDeNegocio.ListaCombo> listaCombo = objApp.Consultas.ConsultaAños();
             foreach (Conciliacion.RunTime.ReglasDeNegocio.ListaCombo item in listaCombo)
             {
                 lista.Add(Convert.ToInt32(item.Descripcion));

@@ -13,7 +13,7 @@ namespace CatalogoConciliacion.Datos
     {
         #region Constructores
 
-        public CuentaTransferenciaDatos(IMensajesImplementacion implementadorMensajes)
+        public CuentaTransferenciaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -22,7 +22,7 @@ namespace CatalogoConciliacion.Datos
                                   string cuentaBancoOrigen, int bancoOrigen, string bancoNombreOrigen, string corporativoDestinoDesc,
                                   short corporativoDestino, string sucursalDestinoDesc, int sucursalDestino, string cuentaBancoDestino,
                                   int bancoDestino, string bancoNombreDestino, string status, string usuarioAlta,
-                                  DateTime FAlta, IMensajesImplementacion implemntadorMensajes)
+                                  DateTime FAlta, MensajesImplementacion implemntadorMensajes)
             : base(cuentaTransferencia, corporativoOrigenDesc, corporativoOrigen, sucursalOrigenDesc, sucursalOrigen, cuentaBancoOrigen, bancoOrigen, bancoNombreOrigen,
                     corporativoDestinoDesc, corporativoDestino, sucursalDestinoDesc, sucursalDestino, cuentaBancoDestino, bancoDestino, bancoNombreDestino, status, usuarioAlta, FAlta, implemntadorMensajes)
         {

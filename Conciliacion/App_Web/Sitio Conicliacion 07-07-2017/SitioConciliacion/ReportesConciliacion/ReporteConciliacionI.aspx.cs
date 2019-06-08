@@ -32,6 +32,8 @@ using Image = System.Web.UI.WebControls.Image;
 
 public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.Page
 {
+
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
 
     private SeguridadCB.Public.Operaciones operaciones;
@@ -75,7 +77,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
              *      arreglar bug de FileUpload Control dentro de Update Panel    */
             ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
             
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
             if (HttpContext.Current.Request.UrlReferrer != null)
@@ -121,7 +123,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: Cargar la Pagina\n" + ex.Message);
         }
     }
 
@@ -153,7 +155,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             foreach (ReferenciaNoConciliada Ref in Referencia)
             {
-                ReferenciaPedido = Conciliacion.RunTime.App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                ReferenciaPedido = objApp.ReferenciaNoConciliadaPedido.CrearObjeto();
                 ReferenciaPedido.Corporativo = Ref.Corporativo;
                 ReferenciaPedido.Sucursal = Ref.Sucursal;
                 ReferenciaPedido.SucursalDes = Ref.SucursalDes;
@@ -168,7 +170,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 ReferenciaPedido.FOperacion = Ref.FOperacion;
                 ReferenciaPedido.FMovimiento = Ref.FMovimiento;
                 ReferenciaPedido.Diferencia = Ref.Diferencia;
-                //ReferenciaPedido.ImplementadorMensajes = App.ImplementadorMensajes.ContenedorActual();
+                //ReferenciaPedido.ImplementadorMensajes = objApp.ImplementadorMensajes.ContenedorActual();
 
                 ListaReferenciaPedido.Add(ReferenciaPedido);
             }
@@ -212,7 +214,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
-            List<ListaCombo> status = Conciliacion.RunTime.App.Consultas.ConsultaStatusConciliacion();
+            List<ListaCombo> status = objApp.Consultas.ConsultaStatusConciliacion();
             ddlStatus.DataValueField = "Descripcion";
             ddlStatus.DataTextField = "Descripcion";
             ddlStatus.DataSource = status;
@@ -225,7 +227,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -282,7 +284,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al enlazar las imagenes de los status. Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al enlazar las imagenes de los status. Error:\n" + ex.Message);
         }
     }
     private bool FiltroCorrecto()
@@ -372,7 +374,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -384,7 +386,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             listSucursales =
-                Conciliacion.RunTime.App.Consultas.ConsultaSucursales(
+                objApp.Consultas.ConsultaSucursales(
                     Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = "Identificador";
@@ -394,7 +396,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -407,13 +409,13 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             ddlBanco.DataValueField = "Identificador";
             ddlBanco.DataTextField = "Descripcion";
-            ddlBanco.DataSource = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            ddlBanco.DataSource = objApp.Consultas.ConsultaBancos(corporativo);
             ddlBanco.DataBind();
             //ddlBanco.SelectedIndex = 0;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -431,7 +433,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -439,7 +441,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     /// </summary>
     public void cargar_ComboCampoFiltroDestino(short configuracion)
     {
-        listCamposDestino = Conciliacion.RunTime.App.Consultas.ConsultaDestinoCompartidoExternoInterno(configuracion);
+        listCamposDestino = objApp.Consultas.ConsultaDestinoCompartidoExternoInterno(configuracion);
 
     }
     /// <summary>
@@ -516,7 +518,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 }
                 catch (Exception ex)
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                    objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
                 }
             }
 
@@ -562,7 +564,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     private string getSortDirectionString(string columna)
@@ -708,7 +710,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     //**************** FILTRO *********************************************
@@ -755,7 +757,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("La operacion no se puede realizar para el tipo de campo que selecciono. Favor de verificar su selección.\nError:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("La operacion no se puede realizar para el tipo de campo que selecciono. Favor de verificar su selección.\nError:\n" + ex.Message);
             resultado = false;
             mpeFiltrar.Hide();
         }
@@ -834,7 +836,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
         return Expression.Constant(valor);
     }
@@ -863,7 +865,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
             hfStatusConciliacionFD.Value = "TODOS";
         }
 
@@ -888,7 +890,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Verifique:\n- Valor no valido por tipo de Campo seleccionado.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique:\n- Valor no valido por tipo de Campo seleccionado.");
         }
         return "";
     }
@@ -910,7 +912,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /////////////////////// BUSQUEDA ////////////////////////
@@ -938,7 +940,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -981,7 +983,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer las facturas del Cliente.\nMensaje: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer las facturas del Cliente.\nMensaje: " + ex.Message);
             mpeBusquedaFactura.Hide();
             mpeBusquedaFactura.Dispose();
 
@@ -1083,12 +1085,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Error: Generar Reporte\n" + ex.Message);
+                objApp.ImplementadorMensajes.MostrarMensaje("Error: Generar Reporte\n" + ex.Message);
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: Leer Valores.\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: Leer Valores.\n" + ex.Message);
         }
     }
     protected void Nueva_Ventana(string pagina, string titulo, int ancho, int alto, int x, int y)
@@ -1109,7 +1111,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
     public GrupoConciliacionUsuario LeerGrupoConciliacionUsuarioEspecifico(string usuario)
     {
-        return CatalogoConciliacion.App.Consultas.ObtieneGrupoConciliacionUsuarioEspecifico(usuario);
+        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+        return objAppCat.Consultas.ObtieneGrupoConciliacionUsuarioEspecifico(usuario);
     }
     public void ConsultaMovimientosConciliacionCompartida(bool accesoTotal, int corporativo, int sucursal,
         string cuentaBancaria, DateTime finicial, DateTime ffinal)
@@ -1127,7 +1130,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             else//RRV
                 statusconciliacion = hdfStatusConciliacionSel.Value;//RRV
             listMovimientos =
-                Conciliacion.RunTime.App.Consultas.ConsultaMovimientosConciliacionCompartida(accesoTotal, corporativo,
+                objApp.Consultas.ConsultaMovimientosConciliacionCompartida(accesoTotal, corporativo,
                     sucursal, cuentaBancaria, finicial, ffinal, statusconciliacion);
 
             //Session["MOVIMIENTOS"] = listMovimientos;
@@ -1139,7 +1142,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             
             if (_URLGateway != "")
             {
-                BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, Conciliacion.RunTime.App.ImplementadorMensajes);
+                BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, objApp.ImplementadorMensajes);
 
                 int indice;
                 foreach (ReferenciaNoConciliada obj in listMovimientos)
@@ -1196,7 +1199,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -1492,7 +1495,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al generar el radioButton. Recargue la vista.\n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al generar el radioButton. Recargue la vista.\n" +
                                                      ex.Message);
         }
     }
@@ -1509,7 +1512,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al cargar el Status Concepto. Recargue la vista.\n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al cargar el Status Concepto. Recargue la vista.\n" +
                                                      ex.Message);
         }
     }
@@ -1544,7 +1547,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al cargar el Status Concepto. Recargue la vista.\n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al cargar el Status Concepto. Recargue la vista.\n" +
                                                      ex.Message);
         }
     }
@@ -1576,12 +1579,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 ActualizarPopUp_CargaArchivo();
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
+                objApp.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje + ".\nVerifique su Selección");
         }
         catch (Exception ex)
         {
 
-            App.ImplementadorMensajes.MostrarMensaje("Error al Consultar los Movimientos:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al Consultar los Movimientos:\n" + ex.Message);
         }
     }
 
@@ -1636,7 +1639,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje(
+                objApp.ImplementadorMensajes.MostrarMensaje(
                     "Ocurrio un error al tratar de Cambiar Status Concepto y/o Descripcion del Movimientos. Recargue la vista actual. \nError:[" +
                     ex.Message + "]");
 
@@ -1661,16 +1664,16 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     }
 
                     else
-                        App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje +
+                        objApp.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: " + mensaje +
                                                                  ".\nVerifique su Selección");
 
-                    App.ImplementadorMensajes.MostrarMensaje("Datos actualizados exitosamente.");
+                    objApp.ImplementadorMensajes.MostrarMensaje("Datos actualizados exitosamente.");
                 }
 
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje(
+                objApp.ImplementadorMensajes.MostrarMensaje(
                     "Ocurrio un error al tratar de Actualizar la Vista. Recargue manualmente la vista actual. \nError:[" +
                     ex.Message + "]");
 
@@ -1678,7 +1681,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("No existen datos en la Vista Actual.");
+            objApp.ImplementadorMensajes.MostrarMensaje("No existen datos en la Vista Actual.");
         }
     }
     private string obtenerNombreMesNumero(int numeroMes)
@@ -1699,7 +1702,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
 
         if (grvConciliacionCompartida.Rows.Count <= 0)
         {
-            App.ImplementadorMensajes.MostrarMensaje("No existen datos necesarios para identificar el mes a cerrrar.");
+            objApp.ImplementadorMensajes.MostrarMensaje("No existen datos necesarios para identificar el mes a cerrrar.");
             return;
         }
         mpeMesAño.Show();
@@ -1725,34 +1728,34 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                 {
                     if (CerrarMesConciliacion(2, corporativo, sucursal, año, mes, usuario.IdUsuario.Trim()))
                     {
-                        App.ImplementadorMensajes.MostrarMensaje(String.Format("El MES : {0}/{1} se ha CERRADO exitosamente.", obtenerNombreMesNumero(mes), año)); mpeMesAño.Hide(); mpeMesAño.Dispose();
+                        objApp.ImplementadorMensajes.MostrarMensaje(String.Format("El MES : {0}/{1} se ha CERRADO exitosamente.", obtenerNombreMesNumero(mes), año)); mpeMesAño.Hide(); mpeMesAño.Dispose();
                     }
-                    else App.ImplementadorMensajes.MostrarMensaje("Ocurrio un error al intentar cerrar el mes. Favor de recargar la vista.");
+                    else objApp.ImplementadorMensajes.MostrarMensaje("Ocurrio un error al intentar cerrar el mes. Favor de recargar la vista.");
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje(String.Format("No es posible CERRAR el Mes : {0}/{1} pues existen Conciliaciones ABIERTAS.", obtenerNombreMesNumero(mes), año));
+                    objApp.ImplementadorMensajes.MostrarMensaje(String.Format("No es posible CERRAR el Mes : {0}/{1} pues existen Conciliaciones ABIERTAS.", obtenerNombreMesNumero(mes), año));
             }
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje(String.Format("El mes {0}/{1} ya está CERRADO.", obtenerNombreMesNumero(mes), año));
+                objApp.ImplementadorMensajes.MostrarMensaje(String.Format("El mes {0}/{1} ya está CERRADO.", obtenerNombreMesNumero(mes), año));
                 mpeMesAño.Hide(); mpeMesAño.Dispose();
             }
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
 
     public bool MesValidoParaCerrar(short config, int corporativo, int sucursal, int año, short mes, string usuariocierre)
     {
-        return Conciliacion.RunTime.App.Consultas.ValidarCierreMes(config, corporativo, sucursal, año, mes, usuariocierre);
+        return objApp.Consultas.ValidarCierreMes(config, corporativo, sucursal, año, mes, usuariocierre);
     }
     public bool CerrarMesConciliacion(short config, int corporativo, int sucursal, int año, short mes, string usuariocierre)
     {
-        return Conciliacion.RunTime.App.Consultas.CierreMesConciliacion(config, corporativo, sucursal, año, mes, usuariocierre);
+        return objApp.Consultas.CierreMesConciliacion(config, corporativo, sucursal, año, mes, usuariocierre);
     }
 
     public ReferenciaNoConciliada LeerReferenciaConciliadaCompartida(int index)
@@ -1789,7 +1792,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al tratar de leer los movimientos seleccionados. Recargue la Vista Actual.\nError: [" + ex.Message + "]");
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al tratar de leer los movimientos seleccionados. Recargue la Vista Actual.\nError: [" + ex.Message + "]");
             throw;
         }
     }
@@ -1808,7 +1811,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al tratar de leer los movimientos seleccionados. Recargue la Vista Actual.\nError: [" + ex.Message + "]");
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al tratar de leer los movimientos seleccionados. Recargue la Vista Actual.\nError: [" + ex.Message + "]");
             throw;
         }
     }
@@ -1828,14 +1831,14 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             Int64 cli = Convert.ToInt64(cliente);
-            ListaCombo clt = Conciliacion.RunTime.App.Consultas.ConsultaDatosCliente(cli);
+            ListaCombo clt = objApp.Consultas.ConsultaDatosCliente(cli);
             ClienteRetorno.Cliente = clt.Identificador;
 
             lblCliente.Text = clt != null ? clt.Descripcion : "Cliente no Identificado";
 
             //if (_URLGateway != "")
             //{
-            //    BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, Conciliacion.RunTime.App.ImplementadorMensajes);
+            //    BusquedaClientesCRM clientesCRM = new BusquedaClientesCRM(_URLGateway, objApp.ImplementadorMensajes);
 
             //    try
             //    {
@@ -1852,18 +1855,18 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         catch (FormatException e)
         {
             resultado = false;
-            App.ImplementadorMensajes.MostrarMensaje("Cliente no es Valido, verifique su consulta.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es Valido, verifique su consulta.");
 
         }
         catch (OverflowException e)
         {
             resultado = false;
-            App.ImplementadorMensajes.MostrarMensaje("Cliente no es Valido, verifique su consulta.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es Valido, verifique su consulta.");
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Mensaje de Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Mensaje de Error:\n" + ex.Message);
         }
 
         return ClienteRetorno;
@@ -1880,7 +1883,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             listaReferenciaPedidos =
-                Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(Consultas.BusquedaPedido.Todos,
+                objApp.Consultas.ConciliacionBusquedaPedido(Consultas.BusquedaPedido.Todos,
                                                                               corporativoconciliacion,
                                                                               sucursalconciliacion, añoconciliacion,
                                                                               mesconciliacion, folioconciliacion,
@@ -1890,7 +1893,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -1905,7 +1908,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         try
         {
             listaReferenciaPedidos =
-                Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(Consultas.BusquedaPedido.Todos,
+                objApp.Consultas.ConciliacionBusquedaPedido(Consultas.BusquedaPedido.Todos,
                                                                               corporativoconciliacion,
                                                                               sucursalconciliacion, añoconciliacion,
                                                                               mesconciliacion, folioconciliacion,
@@ -1915,7 +1918,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -1930,12 +1933,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
 
             listaReferenciaFacturaConsulta =
-            Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaFacturaManual(cliente, clientepadre, factura, fechaIni, fechaFin);
+            objApp.Consultas.ConciliacionBusquedaFacturaManual(cliente, clientepadre, factura, fechaIni, fechaFin);
             Session["FACTURAS_CONSULTAR_LISTA"] = listaReferenciaFacturaConsulta;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -1952,7 +1955,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -1962,7 +1965,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
         AppSettingsReader settings = new AppSettingsReader();
         string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
-        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+        Cliente cliente = objApp.Cliente.CrearObjeto();
         //tblPedidos = new DataTable("ReferenciasInternas");
         //tblPedidos.Columns.Add("Pedido", typeof(int));
         //tblPedidos.Columns.Add("PedidoReferencia", typeof(int));
@@ -2016,7 +2019,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
         AppSettingsReader settings = new AppSettingsReader();
         string _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
-        Cliente cliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+        Cliente cliente = objApp.Cliente.CrearObjeto();
 
         tblPedidos = new DataTable("FacturasManual");
         tblPedidos.Columns.Add("Cliente", typeof(string));
@@ -2137,12 +2140,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             }
             catch (FormatException)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, verifique su consulta.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, verifique su consulta.");
                 return;
             }
             catch (OverflowException)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, verifique su consulta.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, verifique su consulta.");
                 return;
             }
 
@@ -2151,7 +2154,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             {
                 conexion.AbrirConexion(true);
 
-                Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+                Cliente objCliente = objApp.Cliente.CrearObjeto();
                 objCliente.Referencia = clienteBuscar.ToString();
                 if (objCliente.ValidaClienteExiste(conexion))
                 {
@@ -2184,7 +2187,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             this.hfVisibleConciliar.Value = "";     // No mostrar Popup popUpConciliarMovPedido
             this.popUpConciliarMovPedido.Hide();
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
 
@@ -2195,7 +2198,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     {
         try
         {
-            PagoAnticipado Pago = Conciliacion.RunTime.App.PagoAnticipado.CrearObjeto();
+            PagoAnticipado Pago = objApp.PagoAnticipado.CrearObjeto();
             return Pago.ValidarClientePagoAnticipado(conexion, Cliente);
         }
         catch (Exception ex)
@@ -2210,7 +2213,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         {
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
-            PagoAnticipado Pago = Conciliacion.RunTime.App.PagoAnticipado.CrearObjeto();
+            PagoAnticipado Pago = objApp.PagoAnticipado.CrearObjeto();
             Pago.CorporativoConciliacion        = Referencia.Corporativo;
             Pago.SucursalConciliacion           = Referencia.SucursalConciliacion;
             Pago.AñoConciliacion                = Referencia.AñoConciliacion;
@@ -2264,7 +2267,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         const int TIPOMOVIMIENTO = 3;       // Pago anticipado
         int iCliente = 0;
         
-        SaldoAFavor obSaldoAFavor = Conciliacion.RunTime.App.SaldoAFavor.CrearObjeto();
+        SaldoAFavor obSaldoAFavor = objApp.SaldoAFavor.CrearObjeto();
         
         int.TryParse(hdfClienteBuscar.Value, out iCliente);
         if (iCliente <= 0) return false;
@@ -2339,7 +2342,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     decimal montoInterno            = rfFactura.Total;
                     string concepto                 = rfFactura.Concepto;
 
-                    FacturaManual facturaManual = new FacturaManualDatos(Conciliacion.RunTime.App.ImplementadorMensajes);
+                    FacturaManual facturaManual = new FacturaManualDatos(objApp.ImplementadorMensajes);
                     byte corporativoConciliacion    = Convert.ToByte(rfExterna.CorporativoConciliacion);
                     byte sucursalConciliacion       = Convert.ToByte(rfExterna.SucursalConciliacion);
                     int añoConciliacion             = rfExterna.AñoConciliacion;
@@ -2445,17 +2448,17 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                     LlenaGridViewConciliacionCompartida();
                 }
 
-                App.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
+                objApp.ImplementadorMensajes.MostrarMensaje("La factura se concilió exitosamente.");
             }
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje("Para conciliar una factura manual primero debe buscarla por criterio de fecha o por su identificador.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Para conciliar una factura manual primero debe buscarla por criterio de fecha o por su identificador.");
             }
         }
         catch (Exception ex)
         {
             conexion.RollBackTransaction();
-            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
         finally
         {
@@ -2472,7 +2475,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             rnc.BorrarReferenciaConciliada();
             if (!ConciliarMovExterno(rnc)) return;
             popUpConciliarMovPedido.Hide(); popUpConciliarMovPedido.Dispose();
-            App.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Movimiento Conciliado con Éxito.");
             //Recargar la Vista con los datos
             if (FiltroCorrecto())
             {
@@ -2490,12 +2493,12 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             }
 
             else
-                App.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: [" + mensaje + "].\nVerifique su Selección");
+                objApp.ImplementadorMensajes.MostrarMensaje("Dato Incorrecto: [" + mensaje + "].\nVerifique su Selección");
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al obtener el movimiento seleccionado.\n[" + ex.Message + "]\nRefresque nuevamente la vista");
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al obtener el movimiento seleccionado.\n[" + ex.Message + "]\nRefresque nuevamente la vista");
         }
     }
 
@@ -2533,7 +2536,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
             popUpConciliarMovPedido.Hide();
             popUpConciliarMovPedido.Dispose();
 
@@ -2572,7 +2575,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
             popUpConciliarMovPedido.Hide();
             popUpConciliarMovPedido.Dispose();
 
@@ -2612,7 +2615,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
             popUpConciliarMovPedido.Hide();
             popUpConciliarMovPedido.Dispose();
 
@@ -2643,7 +2646,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un error al leer los pedidos del Cliente.\nMensaje: " + ex.Message);
             popUpConciliarMovPedido.Hide();
             popUpConciliarMovPedido.Dispose();
 
@@ -2686,7 +2689,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                            .ToList();
             if (pedidosSeleccionados.Count <= 0)
             {
-                App.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ningún Pedido. Verifique su selección.");
+                objApp.ImplementadorMensajes.MostrarMensaje("No ha seleccionado ningún Pedido. Verifique su selección.");
                 return false;
             }
             foreach (GridViewRow grv in pedidosSeleccionados)
@@ -2705,7 +2708,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento.\n" + ex.Message + "\nRecargue su selección.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Ha ocurrido un conflicto al Conciliar el Movimiento.\n" + ex.Message + "\nRecargue su selección.");
             resultado = false;
         }
         return resultado;
@@ -2744,7 +2747,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Ocurrió un problema al cargar los datos para el Filtro.\nError: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Ocurrió un problema al cargar los datos para el Filtro.\nError: " + ex.Message);
         }
 
     }

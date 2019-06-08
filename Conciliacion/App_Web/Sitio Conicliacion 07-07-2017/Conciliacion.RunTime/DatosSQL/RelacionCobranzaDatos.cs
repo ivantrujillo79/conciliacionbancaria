@@ -16,7 +16,7 @@ namespace Conciliacion.RunTime.DatosSQL
             return new RelacionCobranzaDatos(objMovientoCajaDatos,ConBoveda);
         }
 
-        public RelacionCobranzaDatos(IMensajesImplementacion implementadorMensajes)
+        public RelacionCobranzaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }

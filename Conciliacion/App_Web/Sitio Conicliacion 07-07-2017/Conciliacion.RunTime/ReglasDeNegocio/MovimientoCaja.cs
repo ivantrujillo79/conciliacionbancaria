@@ -36,7 +36,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             
         }
 
-        public MovimientoCaja(IMensajesImplementacion implementadorMensajes)
+        public MovimientoCaja(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.caja = 0;
@@ -49,7 +49,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.saldoafavor = 0;
         }
 
-        public MovimientoCaja(short caja, DateTime foperacion, short consecutivo, int folio, DateTime fmovimiento, decimal total, string usuario, int empleado, string observaciones,decimal saldoafavor, List<Cobro> listacobros, IMensajesImplementacion implementadorMensajes)
+        public MovimientoCaja(short caja, DateTime foperacion, short consecutivo, int folio, DateTime fmovimiento, decimal total, string usuario, int empleado, string observaciones,decimal saldoafavor, List<Cobro> listacobros, MensajesImplementacion implementadorMensajes)
         {
             this.listacobros = listacobros;
             this.ImplementadorMensajes = implementadorMensajes;
@@ -165,9 +165,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
-            set { App.CadenaConexion = value; }
+            set {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                objApp.CadenaConexion = value; }
         }
 
     }

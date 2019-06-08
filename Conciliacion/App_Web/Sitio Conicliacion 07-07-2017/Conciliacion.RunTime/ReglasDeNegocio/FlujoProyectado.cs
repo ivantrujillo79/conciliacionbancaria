@@ -82,7 +82,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
         #endregion
         #region Constructores
-        public FlujoProyectado(IMensajesImplementacion implementadorMensajes)
+        public FlujoProyectado(MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = 0;
             this.año = 0;

@@ -43,7 +43,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno,DateTime foperacionint, DateTime fmovimientoint,
                                     string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
                                     int añoexterno, int añointerno,
-                                    IMensajesImplementacion implementadorMensajes)
+                                    MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext, chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno, implementadorMensajes)
         {
             this.añoconciliacion = añoconciliacion;
@@ -76,7 +76,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
                                     string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
                                     int añoexterno, int añointerno,string SerieFactura, string ClienteReferencia,
-                                    IMensajesImplementacion implementadorMensajes)
+                                    MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext, chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno, implementadorMensajes)
         {
             this.añoconciliacion = añoconciliacion;
@@ -112,7 +112,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
                                     string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
                                     int añoexterno, int añointerno, int TipoCobro, int TipoCobroAnterior,
-                                    IMensajesImplementacion implementadorMensajes)
+                                    MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext, chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno, implementadorMensajes)
         {
             this.añoconciliacion = añoconciliacion;
@@ -143,7 +143,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.TipoCobroAnterior = TipoCobroAnterior;
         }
 
-        public ReferenciaConciliada(IMensajesImplementacion implementadorMensajes): base(implementadorMensajes)
+        public ReferenciaConciliada(MensajesImplementacion implementadorMensajes): base(implementadorMensajes)
         {
             this.añoconciliacion = 0;
             this.mesconciliacion = 0;
@@ -319,7 +319,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

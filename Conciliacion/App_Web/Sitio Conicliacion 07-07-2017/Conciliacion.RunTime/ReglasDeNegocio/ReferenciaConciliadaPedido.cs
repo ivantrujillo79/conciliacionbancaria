@@ -48,7 +48,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion,DateTime foperacionext, DateTime fmovimientoext,
                                     string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                     int sucursalpedido,string sucursalpedidodes,int celulapedido,int añopedido, int pedido,int remisionpedido, string seriepedido,int foliosat,string seriesat, string conceptopedido, decimal total, string statusmovimiento,
-                                    int cliente, string nombre,int añoexterno, IMensajesImplementacion implementadorMensajes)
+                                    int cliente, string nombre,int añoexterno, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalext, sucursalextdes,añoexterno,folioext,secuenciaext,conceptoext,montoconciliado,diferencia,formaconciliacion,statusconcepto,statusconciliacion,foperacionext,fmovimientoext,
             chequeexterno,referenciaexterno,descripcionexterno,nombreterceroexterno,rfcterceroexterno,depositoexterno,retiroexterno,
             implementadorMensajes)
@@ -81,7 +81,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     DateTime foperacionext, DateTime fmovimientoext,
                                     string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                     int sucursalpedido, string sucursalpedidodes, int celulapedido, int añopedido, int pedido, int remisionpedido, string seriepedido, int foliosat, string seriesat, string conceptopedido, decimal total, string statusmovimiento,
-                                    int cliente, string nombre, string pedidoreferencia, int añoexterno, IMensajesImplementacion implementadorMensajes)
+                                    int cliente, string nombre, string pedidoreferencia, int añoexterno, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
             chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
             implementadorMensajes)
@@ -115,7 +115,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                     DateTime foperacionext, DateTime fmovimientoext,
                                     string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                     int sucursalpedido, string sucursalpedidodes, int celulapedido, int añopedido, int pedido, int remisionpedido, string seriepedido, int foliosat, string seriesat, string conceptopedido, decimal total, string statusmovimiento,
-                                    int cliente, string nombre, string pedidoreferencia, decimal saldo, int añoexterno, IMensajesImplementacion implementadorMensajes)
+                                    int cliente, string nombre, string pedidoreferencia, decimal saldo, int añoexterno, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalext, sucursalextdes, añoexterno, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
             chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
             implementadorMensajes)
@@ -147,7 +147,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
       
 
-        public ReferenciaConciliadaPedido(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaConciliadaPedido(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
             this.añoconciliacion = 0;
@@ -173,6 +173,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.tipoproducto = 0;
             this.portatil = false;
         }
+
+        //protected ReferenciaConciliadaPedido(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         #endregion
 
@@ -349,7 +354,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

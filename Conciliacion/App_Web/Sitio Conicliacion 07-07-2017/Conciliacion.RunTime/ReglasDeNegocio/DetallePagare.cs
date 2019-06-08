@@ -23,7 +23,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private decimal importe;
         private string conciliada;
 
-        public DetallePagare(IMensajesImplementacion implementadorMensajes)
+        public DetallePagare(MensajesImplementacion implementadorMensajes)
         {
             this.conexion = null;
             this.Seleccionado = false;
@@ -40,7 +40,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.Conciliada = "";
         }
 
-        public DetallePagare(bool seleccionado, int folio, int año, string cliente, string nombrecliente, string cuentabancaria, string banco, string sucursal, string tipocargo, bool global, DateTime fsaldo, decimal importe, string conciliada, IMensajesImplementacion implementadorMensajes)
+        public DetallePagare(bool seleccionado, int folio, int año, string cliente, string nombrecliente, string cuentabancaria, string banco, string sucursal, string tipocargo, bool global, DateTime fsaldo, decimal importe, string conciliada, MensajesImplementacion implementadorMensajes)
         {
             this.seleccionado = false;
             this.folio = 0;
@@ -58,6 +58,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
+        //protected DetallePagare(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
+
         public abstract DetallePagare CrearObjeto();
         //public abstract List<DetallePagare> ConsultaSaldoAFavor(string FInicial, string FFinal, string Cliente, decimal monto, short TipoMovimientoAConciliar, Conexion conexion);
         public abstract List<DetallePagare> ConsultaSaldoAFavor(DateTime FInicial, DateTime FFinal, int Cliente, Decimal Monto, short TipoMovimientoAConciliar);
@@ -66,7 +71,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get
+            {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
+            }
         }
         public bool Seleccionado
         {

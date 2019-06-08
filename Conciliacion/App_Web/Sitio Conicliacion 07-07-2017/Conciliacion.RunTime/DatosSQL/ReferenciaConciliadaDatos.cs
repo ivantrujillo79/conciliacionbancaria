@@ -10,13 +10,15 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ReferenciaConciliadaDatos: ReferenciaConciliada
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
         public ReferenciaConciliadaDatos(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion,
                                     int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
                                     string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                     int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
                                     string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
                                     int añoexterno, int añointerno, 
-                                    IMensajesImplementacion implementadorMensajes)
+                                    MensajesImplementacion implementadorMensajes)
             : base(corporativo,añoconciliacion, mesconciliacion,folioconciliacion,sucursalext,sucursalextdes,folioext,secuenciaext,conceptoext,montoconciliado,diferencia,formaconciliacion,statusconcepto,statusconciliacion,foperacionext,fmovimientoext,
             chequeexterno,referenciaexterno, descripcionexterno,nombreterceroexterno,rfcterceroexterno,depositoexterno,retiroexterno,
             sucursalinterno,sucursalintdes,foliointerno,secuenciainterno,conceptointerno,montointerno,foperacionint,fmovimientoint,
@@ -32,7 +34,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                     int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
                                     string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
                                     int añoexterno, int añointerno, string SerieFactura, string ClienteReferencia,
-                                    IMensajesImplementacion implementadorMensajes)
+                                    MensajesImplementacion implementadorMensajes)
             : base(corporativo, añoconciliacion, mesconciliacion, folioconciliacion, sucursalext, sucursalextdes, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
             chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
             sucursalinterno, sucursalintdes, foliointerno, secuenciainterno, conceptointerno, montointerno, foperacionint, fmovimientoint,
@@ -48,7 +50,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             int sucursalinterno, string sucursalintdes, int foliointerno, int secuenciainterno, string conceptointerno, decimal montointerno, DateTime foperacionint, DateTime fmovimientoint,
                             string chequeinterno, string referenciainterno, string descripcioninterno, string nombretercerointerno, string rfctercerointerno, decimal depositointerno, decimal retirointerno,
                             int añoexterno, int añointerno, int tipocobro, int tipocobroAnterior,
-                            IMensajesImplementacion implementadorMensajes)
+                            MensajesImplementacion implementadorMensajes)
             : base(corporativo, añoconciliacion, mesconciliacion, folioconciliacion, sucursalext, sucursalextdes, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
             chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
             sucursalinterno, sucursalintdes, foliointerno, secuenciainterno, conceptointerno, montointerno, foperacionint, fmovimientoint,
@@ -58,7 +60,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
-        public ReferenciaConciliadaDatos(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaConciliadaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
             
@@ -66,7 +68,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override ReferenciaConciliada CrearObjeto()
         {
-            return new ReferenciaConciliadaDatos(App.ImplementadorMensajes);
+            return new ReferenciaConciliadaDatos(objApp.ImplementadorMensajes);
         }
 
         public override bool Guardar()
@@ -74,7 +76,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);

@@ -23,8 +23,9 @@ namespace CatalogoConciliacion.Datos
         //OBTIENE LOS DATOS DE UN MOTIVO ESPECIFICO
         public override MotivoNoConciliado ObtieneMotivoPorId(int configuracion, int idMotivoNoConciliado)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             MotivoNoConciliado motivo = new MotivoNoConciliadoDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaMotivoNoConciliado", cnn);
@@ -45,9 +46,9 @@ namespace CatalogoConciliacion.Datos
 
         public override List<Bancos> ObtieneBancos()
         {
-           
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<Bancos> ListaBancos = new List<Bancos>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaBancos", cnn);
@@ -67,9 +68,9 @@ namespace CatalogoConciliacion.Datos
 
             public override List<CuentaContableBanco> ObtieneCuentaContableBanco(int Banco)
         {
-
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<CuentaContableBanco> ListaCuentaContableBanco = new List<CuentaContableBanco>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaCuentaContable", cnn);
@@ -88,9 +89,9 @@ namespace CatalogoConciliacion.Datos
 
         public override List<TipoCobro> ObtieneTipoCobro()
         {
-
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<TipoCobro> ListaTipoCobro = new List<TipoCobro>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaTtipoCobro", cnn);
@@ -107,9 +108,9 @@ namespace CatalogoConciliacion.Datos
 
         public override List<ColumnaDestino> ObtieneColumnaDestino()
         {
-
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<ColumnaDestino> ListaColumnaDestino = new List<ColumnaDestino>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaColumnaDestino", cnn);
@@ -126,8 +127,9 @@ namespace CatalogoConciliacion.Datos
 
         public override List<PalabrasClave> ConsultarPalabrasClave(int Banco,string CuentaBanco,int TipoCobro, string columnadestino)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<PalabrasClave> ListaPalabrasClave = new List<PalabrasClave>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaPalabrasClave", cnn);
@@ -156,8 +158,9 @@ namespace CatalogoConciliacion.Datos
         //OBTIENE LOS DATOS DE UN GRUPO ESPECIFICO
         public override GrupoConciliacion ObtieneGrupoPorId(int configuracion, int idGrupoConciliacion)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             GrupoConciliacion grupo = new GrupoConciliacionDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaGrupoConciliacion", cnn);
@@ -182,8 +185,9 @@ namespace CatalogoConciliacion.Datos
         public override List<GrupoConciliacionUsuario> ObtieneUsuariosPorGrupo(int configuracion,
                                                                                int idGrupoConciliacion)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<GrupoConciliacionUsuario> usuarios = new List<GrupoConciliacionUsuario>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaGrupoConciliacionUsuario", cnn);
@@ -209,8 +213,9 @@ namespace CatalogoConciliacion.Datos
         //OBTIENE TODOS LOS MOTIVOS
         public override List<MotivoNoConciliado> ObtieneMotivos(int configuracion, int idMotivoNoConciliado)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<MotivoNoConciliado> motivos = new List<MotivoNoConciliado>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaMotivoNoConciliado", cnn);
@@ -239,8 +244,9 @@ namespace CatalogoConciliacion.Datos
         //OBTIENE TODOS LOS GRUPOS
         public override List<GrupoConciliacion> ObtieneGrupos(int configuracion, int idGrupoConciliacion)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<GrupoConciliacion> grupos = new List<GrupoConciliacion>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaGrupoConciliacion", cnn);
@@ -276,8 +282,9 @@ namespace CatalogoConciliacion.Datos
         // Llena el combo empleado 
         public override List<ListaCombo> ObtieneEmpleados(int configuracion, int grupo)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBCargarComboEmpleado", cnn);
@@ -302,8 +309,9 @@ namespace CatalogoConciliacion.Datos
         //OBTIENE TODAS LAS REFERNCIAS
         public override List<ReferenciaAComparar> ObtieneReferencias(int configuracion)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<ReferenciaAComparar> referencias = new List<ReferenciaAComparar>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaReferenciaAComparar", cnn);
@@ -337,8 +345,9 @@ namespace CatalogoConciliacion.Datos
                                                                               int secuencia, string columnaext,
                                                                               string columnain)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<ReferenciaAComparar> referencias = new List<ReferenciaAComparar>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaReferenciaAComparar", cnn);
@@ -370,8 +379,9 @@ namespace CatalogoConciliacion.Datos
         public override ReferenciaAComparar ObtieneReferenciaPorId(int configuracion, int tipoconciliacion,
                                                                    int secuencia)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             ReferenciaAComparar referencia = new ReferenciaACompararDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaReferenciaAComparar", cnn);
@@ -398,8 +408,9 @@ namespace CatalogoConciliacion.Datos
         // Llena el combo columnas
         public override List<ListaCombo> ObtieneColumnas(int configuracion, int tipoconciliacion, string campoexterno)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBCargarComboDestino", cnn);
@@ -425,8 +436,9 @@ namespace CatalogoConciliacion.Datos
                                                                                 int sucursalOrigen,
                                                                                 string cuentaBancoOrigen, int banco)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<CuentaTransferencia> datos = new List<CuentaTransferencia>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaCuentaTransferencia", cnn);
@@ -470,8 +482,9 @@ namespace CatalogoConciliacion.Datos
                                                                                 int sucursalOrigen,
                                                                                 string cuentaBancoOrigen, int banco)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<CuentaTransferencia> datos = new List<CuentaTransferencia>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaCuentaTransferencia", cnn);
@@ -512,8 +525,9 @@ namespace CatalogoConciliacion.Datos
         }
         public override GrupoConciliacionUsuario ObtieneGrupoConciliacionUsuarioEspecifico(string usuario)
         {
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             GrupoConciliacionUsuario dato = new GrupoConciliacionUsuarioDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -550,9 +564,9 @@ namespace CatalogoConciliacion.Datos
         public override List<CuentaBancoSaldo> ConsultaCuentaBancariaSaldoFinalDia(int corporativo, int sucursal, int banco,//,int grupoconciliacion
             string cuentabancaria, DateTime fconsulta)
         {
-
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<CuentaBancoSaldo> datos = new List<CuentaBancoSaldo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBConsultaSaldoFinalCuentaBanco", cnn);
@@ -586,9 +600,9 @@ namespace CatalogoConciliacion.Datos
 
         public override List<DepositoFacturaCom> ConsultaDepositoFacturaComp(int TipoFecha, DateTime FechaIni, DateTime FechaFin)
         {
-
+            CatalogoConciliacion.App objApp = new CatalogoConciliacion.App();
             List<DepositoFacturaCom> datos = new List<DepositoFacturaCom>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBReporteConsultaFacturasComplemento", cnn);

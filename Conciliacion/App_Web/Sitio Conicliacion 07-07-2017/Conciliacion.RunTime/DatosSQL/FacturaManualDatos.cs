@@ -10,7 +10,7 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class FacturaManualDatos : FacturaManual
     {
-        public FacturaManualDatos(IMensajesImplementacion implementadorMensajes)
+        public FacturaManualDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -41,7 +41,7 @@ namespace Conciliacion.RunTime.DatosSQL
              string descripcion, // 00
              string usuariostatusconcepto,
              DateTime fstatusconcepto,
-            IMensajesImplementacion implementadorMensajes
+            MensajesImplementacion implementadorMensajes
             )
             : base(
                 corporativoconciliacion,

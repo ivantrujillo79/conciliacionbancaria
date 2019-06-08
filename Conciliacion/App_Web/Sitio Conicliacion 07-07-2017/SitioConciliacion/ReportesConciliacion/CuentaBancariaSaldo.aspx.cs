@@ -12,6 +12,8 @@ using SeguridadCB.Public;
 
 public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
     #region "Propiedades Globales"
 
     private SeguridadCB.Public.Operaciones operaciones;
@@ -35,7 +37,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
     {
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
             if (HttpContext.Current.Request.UrlReferrer != null)
@@ -56,7 +58,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -79,7 +81,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -91,7 +93,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         try
         {
             listSucursales =
-                Conciliacion.RunTime.App.Consultas.ConsultaSucursales(
+                objApp.Consultas.ConsultaSucursales(
                     Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
 
             this.ddlSucursal.DataSource = listSucursales;
@@ -102,7 +104,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -116,14 +118,14 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
 
             ddlBanco.DataValueField = "Identificador";
             ddlBanco.DataTextField = "Descripcion";
-            ddlBanco.DataSource = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            ddlBanco.DataSource = objApp.Consultas.ConsultaBancos(corporativo);
             ddlBanco.DataBind();
             //ddlBanco.SelectedIndex = 0;
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -143,7 +145,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -153,13 +155,13 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
     {
         try
         {
-            listaCuentaBancoSaldo = CatalogoConciliacion.App.Consultas.ConsultaCuentaBancariaSaldoFinalDia(corporativo,
+            listaCuentaBancoSaldo = objAppCat.Consultas.ConsultaCuentaBancariaSaldoFinalDia(corporativo,
                 sucursal, banco, cuentabancaria, fconsula);//,grupoconciliacion
             Session["SALDOFINAL"] = listaCuentaBancoSaldo;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     public void GenerarTablaCuentaBancariaSaldoFinal()
@@ -345,7 +347,7 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -416,11 +418,11 @@ public partial class ReportesConciliacion_CuentaBancariaSaldo : System.Web.UI.Pa
             if (grvCuentaBancoSaldoFinalDia.Rows.Count > 0)
                 ExporttoExcel(grvCuentaBancoSaldoFinalDia);
             else
-                App.ImplementadorMensajes.MostrarMensaje("No existe ningun resultado para exportar. Realice una consulta.");
+                objApp.ImplementadorMensajes.MostrarMensaje("No existe ningun resultado para exportar. Realice una consulta.");
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     protected void imgBuscar_Click(object sender, ImageClickEventArgs e)

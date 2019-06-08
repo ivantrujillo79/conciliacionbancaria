@@ -12,7 +12,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 
 public partial class Archivos_Consultar : System.Web.UI.Page
 {
-
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Usuario usuario;
     private SeguridadCB.Public.Operaciones operaciones;
@@ -44,8 +44,8 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     {
         try
         {
-            
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             if (!IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
@@ -81,6 +81,7 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     //Consulta transacciones conciliadas
     public void Consulta_FoliosTablaDestino(int corporativo, int sucursal, int añoF, short mesF, string cuentabancaria, short tipofuenteinformacion)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
         System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
         if (Connection.State == ConnectionState.Closed)
@@ -90,11 +91,11 @@ public partial class Archivos_Consultar : System.Web.UI.Page
         }
         try
         {
-            listFoliosExternoInternos = Conciliacion.RunTime.App.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
+            listFoliosExternoInternos = objApp.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
     //Genera la tabla de transacciones Conciliadas
@@ -133,6 +134,7 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     /// </summary>
     public void Consulta_TablaDestinoDetalle(Conciliacion.RunTime.ReglasDeNegocio.Consultas.Configuracion configuracion, int empresa, int sucursal, int año, int folioExterno)//Lee el metodo que llena la lista con las conciliaciones
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
 
         System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
@@ -143,7 +145,7 @@ public partial class Archivos_Consultar : System.Web.UI.Page
         }
         try
         {
-            listaDestinoDetalle = Conciliacion.RunTime.App.Consultas.ConsultaTablaDestinoDetalle(
+            listaDestinoDetalle = objApp.Consultas.ConsultaTablaDestinoDetalle(
                         configuracion,
                         empresa,
                         sucursal,
@@ -152,7 +154,7 @@ public partial class Archivos_Consultar : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -227,7 +229,8 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = "Identificador";
             this.ddlSucursal.DataTextField = "Descripcion";
@@ -245,8 +248,8 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     {
         try
         {
-
-            listBancos = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            listBancos = objApp.Consultas.ConsultaBancos(corporativo);
             this.cboBancoFinanciero.DataSource = listBancos;
             this.cboBancoFinanciero.DataValueField = "Identificador";
             this.cboBancoFinanciero.DataTextField = "Descripcion";
@@ -264,8 +267,8 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     {
         try
         {
-
-            listCuentaBancaria = Conciliacion.RunTime.App.Consultas.ConsultaCuentasBancaria(corporativo, banco);
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            listCuentaBancaria = objApp.Consultas.ConsultaCuentasBancaria(corporativo, banco);
             this.cboCuentaFinanciero.DataSource = listCuentaBancaria;
             this.cboCuentaFinanciero.DataValueField = "Identificador";
             this.cboCuentaFinanciero.DataTextField = "Descripcion";
@@ -286,8 +289,8 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     {
         try
         {
-
-            listAñoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaAños();
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            listAñoConciliacion = objApp.Consultas.ConsultaAños();
             this.ddlAnio.DataSource = listAñoConciliacion;
             this.ddlAnio.DataValueField = "Identificador";
             this.ddlAnio.DataTextField = "Descripcion";
@@ -300,10 +303,11 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     }
     public void Carga_TipoFuenteInformacion()
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         try
         {
 
-            listTipoFuenteInformacion = Conciliacion.RunTime.App.Consultas.ConsultaTipoInformacionDatos(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacion);
+            listTipoFuenteInformacion = objApp.Consultas.ConsultaTipoInformacionDatos(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacion);
             this.ddlTipoFuente.DataSource = listTipoFuenteInformacion;
             this.ddlTipoFuente.DataValueField = "Identificador";
             this.ddlTipoFuente.DataTextField = "Descripcion";
@@ -350,6 +354,7 @@ public partial class Archivos_Consultar : System.Web.UI.Page
     }
     protected void ddlConfiguracionDetalle_SelectedIndexChanged(object sender, EventArgs e)
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         try
         {
             Consulta_TablaDestinoDetalle(ObtenerConfiguracionDestinoDetalle(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value),
@@ -361,7 +366,7 @@ public partial class Archivos_Consultar : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }

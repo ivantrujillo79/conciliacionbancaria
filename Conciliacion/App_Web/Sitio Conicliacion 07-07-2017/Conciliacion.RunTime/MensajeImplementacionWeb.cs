@@ -8,7 +8,7 @@ using System.Web.UI.HtmlControls;
 
 namespace Conciliacion.RunTime
 {
-    public class MensajeImplementacionWeb : IMensajesImplementacion
+    public class MensajesImplementacion
     {
         private object contenedor;
         public void MostrarMensaje(string texto)
@@ -58,7 +58,7 @@ namespace Conciliacion.RunTime
 
 
 
-        #region IMensajesImplementacion Members
+        #region MensajesImplementacion Members
 
         private bool mensajesActivos = true;
         public bool MensajesActivos

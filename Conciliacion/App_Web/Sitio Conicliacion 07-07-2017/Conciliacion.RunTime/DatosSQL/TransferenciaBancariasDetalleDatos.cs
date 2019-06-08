@@ -11,7 +11,7 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     class TransferenciaBancariasDetalleDatos:TransferenciaBancariasDetalle
     {
-        public TransferenciaBancariasDetalleDatos(IMensajesImplementacion implementadorMensajes)
+        public TransferenciaBancariasDetalleDatos(MensajesImplementacion implementadorMensajes)
             :base(implementadorMensajes)
         {
 
@@ -20,7 +20,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public TransferenciaBancariasDetalleDatos(short corporativo, int sucursal, int año, int folio, int secuencia,
                                              short corporativoDeatalle, int sucursalDetalle,
                                              string cuentaBanco, short entrada, decimal cargo, decimal abono,
-                                             IMensajesImplementacion implementadorMensajes)
+                                             MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, año, folio, secuencia, corporativoDeatalle, sucursalDetalle, cuentaBanco, entrada, cargo,
                 abono, implementadorMensajes)
         {

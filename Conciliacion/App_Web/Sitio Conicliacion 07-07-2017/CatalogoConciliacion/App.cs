@@ -24,138 +24,149 @@ namespace CatalogoConciliacion
 
     public class App
     {
-        private static TipoMovimientoCuenta tipoMovimientoCuenta;
-        private static MotivoNoConciliado motivoNoConciliado;
-        private static GrupoConciliacion grupoConciliacion;
-        private static GrupoConciliacionUsuario grupoConciliacionUsuario;
-        private static TipoConciliacionUsuario tipoConciliacionUsuario;
-        private static ReferenciaAComparar referenciaAComparar;
-        private static CuentaTransferencia referenciaCuentaTransferencia;
-        private static ParametroAplicacion parametro;
+        private  TipoMovimientoCuenta tipoMovimientoCuenta;
+        private  MotivoNoConciliado motivoNoConciliado;
+        private  GrupoConciliacion grupoConciliacion;
+        private  GrupoConciliacionUsuario grupoConciliacionUsuario;
+        private  TipoConciliacionUsuario tipoConciliacionUsuario;
+        private  ReferenciaAComparar referenciaAComparar;
+        private  CuentaTransferencia referenciaCuentaTransferencia;
+        private  ParametroAplicacion parametro;
 
 
-
-        private static IMensajesImplementacion implementadorMensajes;
-        public static IMensajesImplementacion ImplementadorMensajes
+        private MensajesImplementacion implementadorMensajes;
+        public MensajesImplementacion ImplementadorMensajes
         {
             get
             {
-                if (implementadorMensajes == null)
-                    implementadorMensajes = App.ImplementadorMensajesFactory();
+                //if (implementadorMensajes == null)
+                //    implementadorMensajes = App.ImplementadorMensajesFactory();
+                //MensajesImplementacion implementadorMensajes = new MensajesImplementacion();
                 return implementadorMensajes;
             }
         }
 
-
-        private static IMensajesImplementacion ImplementadorMensajesFactory()
-        {
-            if (System.Web.HttpContext.Current == null)
-                return new MensajeImplemantacionForm();
-            else
-            return new MensajeImplementacionWeb();
-        }
-
-        private static IMensajesImplementacion ImplementadorMensajesFactory(TipoMensaje entorno)
-        {
-            switch (entorno)
-            {
-                case TipoMensaje.consola:
-                    return new MensajeImplementacionConsola();
-                case TipoMensaje.window:
-                    return new MensajeImplemantacionForm();
-                case TipoMensaje.web:
-                    return new MensajeImplementacionWeb();
-            }
-            return null;
-        }
+        //private  MensajesImplementacion implementadorMensajes;
+        //public  MensajesImplementacion ImplementadorMensajes
+        //{
+        //    get
+        //    {
+        //        if (implementadorMensajes == null)
+        //            implementadorMensajes = App.ImplementadorMensajesFactory();
+        //        return implementadorMensajes;
+        //    }
+        //}
 
 
-        private static Consultas consultas;
+        //private  MensajesImplementacion ImplementadorMensajesFactory()
+        //{
+        //    if (System.Web.HttpContext.Current == null)
+        //        return new MensajeImplemantacionForm();
+        //    else
+        //    return new MensajeImplementacionWeb();
+        //}
 
-        public static MotivoNoConciliado MotivoNoConciliado
+        //private  MensajesImplementacion ImplementadorMensajesFactory(TipoMensaje entorno)
+        //{
+        //    switch (entorno)
+        //    {
+        //        case TipoMensaje.consola:
+        //            return new MensajeImplementacionConsola();
+        //        case TipoMensaje.window:
+        //            return new MensajeImplemantacionForm();
+        //        case TipoMensaje.web:
+        //            return new MensajeImplementacionWeb();
+        //    }
+        //    return null;
+        //}
+
+
+        private Consultas consultas;
+
+        public MotivoNoConciliado MotivoNoConciliado
         {
             get
             {
                 if (motivoNoConciliado == null)
-                    motivoNoConciliado = new MotivoNoConciliadoDatos(App.ImplementadorMensajes);
+                    motivoNoConciliado = new MotivoNoConciliadoDatos(ImplementadorMensajes);
                 return motivoNoConciliado;
             }
         }
 
 
-        public static GrupoConciliacion GrupoConciliacion
+        public  GrupoConciliacion GrupoConciliacion
         {
             get
             {
                 if (grupoConciliacion == null)
-                    grupoConciliacion = new GrupoConciliacionDatos(App.ImplementadorMensajes);
+                    grupoConciliacion = new GrupoConciliacionDatos(ImplementadorMensajes);
                 return grupoConciliacion;
             }
         }
 
 
-        public static GrupoConciliacionUsuario GrupoConciliacionUsuario
+        public  GrupoConciliacionUsuario GrupoConciliacionUsuario
         {
             get
             {
                 if (grupoConciliacionUsuario == null)
-                    grupoConciliacionUsuario = new GrupoConciliacionUsuarioDatos(App.ImplementadorMensajes);
+                    grupoConciliacionUsuario = new GrupoConciliacionUsuarioDatos(ImplementadorMensajes);
                 return grupoConciliacionUsuario;
             }
         }
 
-        public static TipoConciliacionUsuario TipoConciliacionUsuario
+        public  TipoConciliacionUsuario TipoConciliacionUsuario
         {
             get
             {
                 if (tipoConciliacionUsuario == null)
-                    tipoConciliacionUsuario = new TipoConciliacionUsuarioDatos(App.ImplementadorMensajes);
+                    tipoConciliacionUsuario = new TipoConciliacionUsuarioDatos(ImplementadorMensajes);
                 return tipoConciliacionUsuario;
             }
         }
 
-        public static ReferenciaAComparar ReferenciaAComparar
+        public  ReferenciaAComparar ReferenciaAComparar
         {
             get
             {
                 if (referenciaAComparar == null)
-                    referenciaAComparar = new ReferenciaACompararDatos(App.ImplementadorMensajes);
+                    referenciaAComparar = new ReferenciaACompararDatos(ImplementadorMensajes);
                 return referenciaAComparar;
             }
         }
 
-        public static TipoMovimientoCuenta TipoMovimientoCuenta
+        public  TipoMovimientoCuenta TipoMovimientoCuenta
         {
             get
             {
                 if (tipoMovimientoCuenta == null)
-                    tipoMovimientoCuenta = new TipoMovimientoCuentaDatos(App.ImplementadorMensajes);
+                    tipoMovimientoCuenta = new TipoMovimientoCuentaDatos(ImplementadorMensajes);
                 return tipoMovimientoCuenta;
             }
         }
 
         //Agregada
-        public static CuentaTransferencia ReferenciaCuentaTransferencia
+        public  CuentaTransferencia ReferenciaCuentaTransferencia
         {
             get
             {
                 if (referenciaCuentaTransferencia == null)
-                    referenciaCuentaTransferencia = new CuentaTransferenciaDatos(App.ImplementadorMensajes);
+                    referenciaCuentaTransferencia = new CuentaTransferenciaDatos(ImplementadorMensajes);
                 return referenciaCuentaTransferencia;
             }
         }
 
-        public static ParametroAplicacion Parametro
+        public  ParametroAplicacion Parametro
         {
             get
             {
                 if (parametro == null)
-                    parametro = new ParametroAplicacionDatos(App.ImplementadorMensajes);
+                    parametro = new ParametroAplicacionDatos(ImplementadorMensajes);
                 return parametro;
             }
         }
 
-        public static Consultas Consultas
+        public  Consultas Consultas
         {
             get
             {
@@ -168,10 +179,10 @@ namespace CatalogoConciliacion
 
 
 
-        private static string cadenaconexion;
+        private  string cadenaconexion;
       
 
-        public static string CadenaConexion
+        public  string CadenaConexion
         {
             get
             {

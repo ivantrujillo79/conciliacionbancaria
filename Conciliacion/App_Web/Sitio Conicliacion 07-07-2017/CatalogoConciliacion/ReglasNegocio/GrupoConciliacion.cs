@@ -19,7 +19,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         #region constructores
 
-        public GrupoConciliacion(IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacion(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.grupoConciliacion = this.diasDefault = this.diasMaxima = this.diasMinima=0 ;
@@ -31,7 +31,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         }
 
-        public GrupoConciliacion(int grupoConciliacion, string descripcion, string usuario, string status, DateTime fAlta, int diasDefault, int diasMaxima, int diasMinima, decimal diferenciaDefault, decimal diferenciaMaxima, decimal diferenciaMinima, IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacion(int grupoConciliacion, string descripcion, string usuario, string status, DateTime fAlta, int diasDefault, int diasMaxima, int diasMinima, decimal diferenciaDefault, decimal diferenciaMaxima, decimal diferenciaMinima, MensajesImplementacion implementadorMensajes)
         {
             this.grupoConciliacion = grupoConciliacion;
             this.descripcion = descripcion;
@@ -119,7 +119,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

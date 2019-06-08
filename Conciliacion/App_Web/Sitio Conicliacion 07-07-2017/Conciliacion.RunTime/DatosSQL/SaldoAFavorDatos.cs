@@ -11,8 +11,8 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class SaldoAFavorDatos : SaldoAFavor
     {
-
-        public SaldoAFavorDatos(IMensajesImplementacion implementadorMensajes)
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        public SaldoAFavorDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -45,7 +45,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int SucursalExterno, 
             int AñoExterno, 
             int FolioExterno, 
-            int SecuenciaExterno,IMensajesImplementacion implementadorMensajes)
+            int SecuenciaExterno,MensajesImplementacion implementadorMensajes)
             : base(FolioMovimiento,
                     AñoMovimiento,
                     TipoMovimientoAConciliar,
@@ -88,7 +88,7 @@ namespace Conciliacion.RunTime.DatosSQL
             List<DetalleSaldoAFavor> ListaRetorno = new List<DetalleSaldoAFavor>();
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBConsultaSaldosAFavor", cnn);

@@ -16,8 +16,9 @@ namespace Conciliacion.RunTime.DatosSQL
     public class ClienteDatos : Cliente
     {
         private string _URLGateway;
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
-        public ClienteDatos(IMensajesImplementacion implementadorMensajes)
+        public ClienteDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -36,7 +37,7 @@ namespace Conciliacion.RunTime.DatosSQL
             decimal saldo,
             string email,
             string direccion,
-            string tipo, IMensajesImplementacion implementadorMensajes)
+            string tipo, MensajesImplementacion implementadorMensajes)
             : base(celula,
             digitoverificador,
             nombre,
@@ -165,7 +166,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToString(reader["Concepto"]), Convert.ToDecimal(reader["Monto"]),
                                 Convert.ToInt16(reader["FormaConciliacion"]), Convert.ToInt16(reader["StatusConcepto"]),
                                 Convert.ToString(reader["StatusConciliacion"]), Convert.ToDateTime(reader["FOperacion"]),
-                                Convert.ToDateTime(reader["FMovimiento"]), 0, this.implementadorMensajes);
+                                Convert.ToDateTime(reader["FMovimiento"]), 0,this.implementadorMensajes);
                         lstRefenciaNoConciliada.Add(dato);
                     }
                     reader.Close();
@@ -297,12 +298,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 AppSettingsReader settings = new AppSettingsReader();
                 SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                string cadenaconexion = App.CadenaConexion;
+                string cadenaconexion = objApp.CadenaConexion;
                 ParallelOptions options = new ParallelOptions();
                 options.MaxDegreeOfParallelism = 3;
                 Parallel.ForEach(listadistintos, options, (client) => {
                     Cliente cliente;
-                    cliente = App.Cliente.CrearObjeto();
+                    cliente = objApp.Cliente.CrearObjeto();
                     cliente.NumCliente = client;
                     cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, _URLGateway );
                     lstClientes.Add(cliente);
@@ -332,7 +333,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     AppSettingsReader settings = new AppSettingsReader();
                     SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
-                    Gateway = new RTGMGateway.RTGMGateway(modulo,App.CadenaConexion); 
+                    Gateway = new RTGMGateway.RTGMGateway(modulo,objApp.CadenaConexion); 
                     Gateway.URLServicio = _URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.IDCliente = cliente;                    
@@ -361,7 +362,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     AppSettingsReader settings = new AppSettingsReader();
                     SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
-                    Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, objApp.CadenaConexion);
                     Gateway.URLServicio = URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.IDCliente = cliente;
