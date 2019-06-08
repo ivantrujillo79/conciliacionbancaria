@@ -129,9 +129,6 @@
     <Compile Include="DetalleValidacion.cs" />
     <Compile Include="EmisorMensajes.cs" />
     <Compile Include="ExportadorInformeInternosAFuturo.cs" />
-    <Compile Include="IMensajesImplementacion.cs" />
-    <Compile Include="MensajeImplemantacionForm.cs" />
-    <Compile Include="MensajeImplementacionConsola.cs" />
     <Compile Include="MensajeImplementacionWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReglasDeNegocio\BusquedaClienteDatosBancarios.cs" />

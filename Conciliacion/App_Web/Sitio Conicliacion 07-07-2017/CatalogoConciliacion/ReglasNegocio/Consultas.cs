@@ -54,7 +54,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

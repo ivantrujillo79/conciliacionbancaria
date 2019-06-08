@@ -14,13 +14,13 @@ using Conciliacion.RunTime.DatosSQL;
 
 public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Usuario usuario;
     private SeguridadCB.Public.Parametros parametros;
-    private Conciliacion.RunTime.ReglasDeNegocio.cConciliacion conciliacion = App.Conciliacion;
+    //private Conciliacion.RunTime.ReglasDeNegocio.cConciliacion conciliacion = App.Conciliacion;
     private Conciliacion.RunTime.ReglasDeNegocio.DatosArchivo datosArchivoExterno = null;
     private Conciliacion.RunTime.ReglasDeNegocio.DatosArchivo datosArchivoInterno = null;
-
     #endregion
 
     #region "Propiedades privadas"
@@ -46,7 +46,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
             if (HttpContext.Current.Request.UrlReferrer != null)
@@ -84,7 +84,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: Cargar Vista" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: Cargar Vista" + ex.Message);
         }
     }
     //Limpian variables de Session
@@ -101,11 +101,11 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     #region Funciones Privadas
     public string fechaMaximaConciliacion()
     {
-        return Conciliacion.RunTime.App.Consultas.ConsultaFechaActualInicial();
+        return objApp.Consultas.ConsultaFechaActualInicial();
     }
     public string fechaMinimaConciliacion(string numMesesAnterior, string fechaMaximaActual)
     {
-        return Conciliacion.RunTime.App.Consultas.ConsultaFechaPermitidoConciliacion(numMesesAnterior, fechaMaximaActual);
+        return objApp.Consultas.ConsultaFechaPermitidoConciliacion(numMesesAnterior, fechaMaximaActual);
     }
     public string leerMes()
     {
@@ -163,7 +163,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(config, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(config, corporativo);
 
             this.ddlSucursalInterno.DataSource = listSucursales;
             this.ddlSucursalInterno.DataValueField = "Identificador";
@@ -183,7 +183,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         try
         {
 
-            listBancos = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            listBancos = objApp.Consultas.ConsultaBancos(corporativo);
             this.ddlBanco.DataSource = listBancos;
             this.ddlBanco.DataValueField = "Identificador";
             this.ddlBanco.DataTextField = "Descripcion";
@@ -202,7 +202,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         try
         {
 
-            listCuentaBancaria = Conciliacion.RunTime.App.Consultas.ConsultaCuentasBancaria(corporativo, banco);
+            listCuentaBancaria = objApp.Consultas.ConsultaCuentasBancaria(corporativo, banco);
             this.ddlCuentaBancaria.DataSource = listCuentaBancaria;
             this.ddlCuentaBancaria.DataValueField = "Identificador";
             this.ddlCuentaBancaria.DataTextField = "Descripcion";
@@ -226,7 +226,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     {
         try
         {
-            listTipoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, usuario);
+            listTipoConciliacion = objApp.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, usuario);
             this.ddlTipoConciliacion.DataSource = listTipoConciliacion;
             this.ddlTipoConciliacion.DataValueField = "Identificador";
             this.ddlTipoConciliacion.DataTextField = "Descripcion";
@@ -244,7 +244,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     {
         try
         {
-            listGrupoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaGruposConciliacion(configuracion, usuario);
+            listGrupoConciliacion = objApp.Consultas.ConsultaGruposConciliacion(configuracion, usuario);
             this.ddlGrupoConciliacion.DataSource = listGrupoConciliacion;
             this.ddlGrupoConciliacion.DataValueField = "Identificador";
             this.ddlGrupoConciliacion.DataTextField = "Descripcion";
@@ -266,7 +266,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
             {
                 case Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionExterno:
 
-                    listTipoFuenteInformacionExternoInterno = Conciliacion.RunTime.App.Consultas.ConsultaTipoInformacionDatos(tipo);
+                    listTipoFuenteInformacionExternoInterno = objApp.Consultas.ConsultaTipoInformacionDatos(tipo);
                     this.ddlTipoFuenteInfoExterno.DataSource = listTipoFuenteInformacionExternoInterno;
                     this.ddlTipoFuenteInfoExterno.DataValueField = "Identificador";
                     this.ddlTipoFuenteInfoExterno.DataTextField = "Descripcion";
@@ -276,7 +276,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
 
                 case Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionTipoFuente.TipoFuenteInformacionInterno:
 
-                    listTipoFuenteInformacionExternoInterno = Conciliacion.RunTime.App.Consultas.ConsultaTipoInformacionDatos(tipo);
+                    listTipoFuenteInformacionExternoInterno = objApp.Consultas.ConsultaTipoInformacionDatos(tipo);
                     this.ddlTipoFuenteInfoInterno.DataSource = listTipoFuenteInformacionExternoInterno;
                     this.ddlTipoFuenteInfoInterno.DataValueField = "Identificador";
                     this.ddlTipoFuenteInfoInterno.DataTextField = "Descripcion";
@@ -297,13 +297,13 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     {
         try
         {
-            listFoliosExterno = Conciliacion.RunTime.App.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
+            listFoliosExterno = objApp.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
             //HttpContext.Current.Session["listFoliosExternos"] = listFoliosExterno;
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:CargaExterno\n " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:CargaExterno\n " + ex.Message);
         }
     }
 
@@ -322,7 +322,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:Enlace con FolioExterno\n " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:Enlace con FolioExterno\n " + ex.Message);
         }
     }
     /// <summary>
@@ -330,7 +330,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     /// </summary>
     private void LlenaGridViewFoliosAgregados()
     {
-        this.grvAgregados.DataSource = conciliacion.ListaArchivos;
+        this.grvAgregados.DataSource = objApp.Conciliacion.ListaArchivos;
         this.grvAgregados.DataBind();
 
     }
@@ -347,7 +347,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         try
         {
-            listaDestinoDetalleExterno = Conciliacion.RunTime.App.Consultas.ConsultaTablaDestinoDetalle(
+            listaDestinoDetalleExterno = objApp.Consultas.ConsultaTablaDestinoDetalle(
                         configuracion,
                         empresa,
                         sucursal,
@@ -405,12 +405,12 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     {
         try
         {
-             listFoliosInterno = Conciliacion.RunTime.App.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
+             listFoliosInterno = objApp.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
             //HttpContext.Current.Session["listFoliosInterno"] = listFoliosInterno;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:FolioIn\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:FolioIn\n" + ex.Message);
         }
     }
 
@@ -438,7 +438,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         try
         {
-            listaDestinoDetalleInterno = Conciliacion.RunTime.App.Consultas.ConsultaTablaDestinoDetalle(
+            listaDestinoDetalleInterno = objApp.Consultas.ConsultaTablaDestinoDetalle(
                         configuracion,
                         empresa,
                         sucursal,
@@ -500,25 +500,25 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
             ddlCuentaBancaria.SelectedItem.Text,
             Convert.ToSByte(ddlTipoFuenteInfoExterno.SelectedItem.Value));
 
-        datosArchivoExterno = App.DatosArchivo;
+        datosArchivoExterno = objApp.DatosArchivo;
         datosArchivoExterno.Folio = Convert.ToInt32(ddlFolioExterno.SelectedItem.Text);
         datosArchivoExterno.Sucursal = Convert.ToInt32(listFoliosExterno[ddlFolioExterno.SelectedIndex].Campo2);
-        return conciliacion.AgregarArhivoExterno(datosArchivoExterno);
+        return objApp.Conciliacion.AgregarArhivoExterno(datosArchivoExterno);
     }
     /// <summary>
     /// Guardar Conciliacion Creada
     /// </summary>
     public bool GuardarConciliacion(string usuarioID)
     {
-        conciliacion.Corporativo = Convert.ToInt32(ddlEmpresa.SelectedItem.Value);
-        conciliacion.Sucursal = datosArchivoExterno.Sucursal;
-        conciliacion.CuentaBancaria = ddlCuentaBancaria.SelectedItem.Text.Trim();
-        conciliacion.TipoConciliacion = Convert.ToSByte(ddlTipoConciliacion.SelectedItem.Value);
-        conciliacion.GrupoConciliacion = Convert.ToInt32(ddlGrupoConciliacion.SelectedItem.Value);
-        conciliacion.Mes = Convert.ToSByte(leerMes());
-        conciliacion.Año = Convert.ToInt32(leerAño());
+        objApp.Conciliacion.Corporativo = Convert.ToInt32(ddlEmpresa.SelectedItem.Value);
+        objApp.Conciliacion.Sucursal = datosArchivoExterno.Sucursal;
+        objApp.Conciliacion.CuentaBancaria = ddlCuentaBancaria.SelectedItem.Text.Trim();
+        objApp.Conciliacion.TipoConciliacion = Convert.ToSByte(ddlTipoConciliacion.SelectedItem.Value);
+        objApp.Conciliacion.GrupoConciliacion = Convert.ToInt32(ddlGrupoConciliacion.SelectedItem.Value);
+        objApp.Conciliacion.Mes = Convert.ToSByte(leerMes());
+        objApp.Conciliacion.Año = Convert.ToInt32(leerAño());
 
-        return conciliacion.Guardar(usuarioID) ? BorrarTransaccionesNoCorrespondidas(conciliacion) : false;
+        return objApp.Conciliacion.Guardar(usuarioID) ? BorrarTransaccionesNoCorrespondidas(objApp.Conciliacion) : false;
 
     }
     /// <summary>
@@ -526,15 +526,15 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     /// </summary>
     public bool GuardarConciliacionSinInterno(string usuarioID)
     {
-        conciliacion.Corporativo = Convert.ToInt32(ddlEmpresa.SelectedItem.Value);
-        conciliacion.Sucursal = datosArchivoExterno.Sucursal;
-        conciliacion.CuentaBancaria = ddlCuentaBancaria.SelectedItem.Text.Trim();
-        conciliacion.TipoConciliacion = Convert.ToSByte(ddlTipoConciliacion.SelectedItem.Value);
-        conciliacion.GrupoConciliacion = Convert.ToInt32(ddlGrupoConciliacion.SelectedItem.Value);
-        conciliacion.Mes = Convert.ToSByte(leerMes());
-        conciliacion.Año = Convert.ToInt32(leerAño());
+        objApp.Conciliacion.Corporativo = Convert.ToInt32(ddlEmpresa.SelectedItem.Value);
+        objApp.Conciliacion.Sucursal = datosArchivoExterno.Sucursal;
+        objApp.Conciliacion.CuentaBancaria = ddlCuentaBancaria.SelectedItem.Text.Trim();
+        objApp.Conciliacion.TipoConciliacion = Convert.ToSByte(ddlTipoConciliacion.SelectedItem.Value);
+        objApp.Conciliacion.GrupoConciliacion = Convert.ToInt32(ddlGrupoConciliacion.SelectedItem.Value);
+        objApp.Conciliacion.Mes = Convert.ToSByte(leerMes());
+        objApp.Conciliacion.Año = Convert.ToInt32(leerAño());
 
-        return conciliacion.GuardarSinInterno(usuarioID) ? BorrarTransaccionesNoCorrespondidas(conciliacion) : false;
+        return objApp.Conciliacion.GuardarSinInterno(usuarioID) ? BorrarTransaccionesNoCorrespondidas(objApp.Conciliacion) : false;
 
     }
     public bool BorrarTransaccionesNoCorrespondidas(cConciliacion conciliacion)
@@ -547,8 +547,8 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         try
         {
-            return Conciliacion.RunTime.App.Consultas.BorrarTransaccionesNoCorrespondidas(
-                conciliacion.Corporativo, Convert.ToInt16(conciliacion.Sucursal), conciliacion.Año, conciliacion.Mes, conciliacion.Folio);
+            return objApp.Consultas.BorrarTransaccionesNoCorrespondidas(
+                objApp.Conciliacion.Corporativo, Convert.ToInt16(objApp.Conciliacion.Sucursal), objApp.Conciliacion.Año, objApp.Conciliacion.Mes, objApp.Conciliacion.Folio);
         }
         catch (Exception)
         {
@@ -637,7 +637,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     }
     protected void btnAtrasExterno_Click(object sender, EventArgs e)
     {
-        if (conciliacion.ListaArchivos.Count > 0)
+        if (objApp.Conciliacion.ListaArchivos.Count > 0)
         {
             mpeMensageRegreso.Show();
         }
@@ -723,9 +723,9 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         else
         {
-            if (conciliacion.ListaArchivos.Count < 1)
+            if (objApp.Conciliacion.ListaArchivos.Count < 1)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Aún no ha agregado ningún archivo interno.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Aún no ha agregado ningún archivo interno.");
             }
             else
             {
@@ -733,7 +733,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
                 {
                     if (GuardarConciliacion(usuario.IdUsuario))
                     {
-                        conciliacion.ListaArchivos.Clear();
+                        objApp.Conciliacion.ListaArchivos.Clear();
                         limpiarVariablesSession();
                         Response.Redirect("~/Inicio.aspx");
                     }
@@ -777,23 +777,23 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     }
     protected void btnAñadirFolio_Click(object sender, ImageClickEventArgs e)
     {
-        datosArchivoInterno = App.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
+        datosArchivoInterno = objApp.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
         datosArchivoInterno.Folio = Convert.ToInt32(ddlFolioInterno.SelectedItem.Value);
         datosArchivoInterno.Corporativo = Convert.ToInt32(ddlEmpresa.SelectedItem.Value);
         datosArchivoInterno.Sucursal = Convert.ToInt32(ddlSucursalInterno.SelectedItem.Value);
         datosArchivoInterno.Año = Convert.ToInt32(leerAño());
         datosArchivoInterno.MesConciliacion = Convert.ToSByte(leerMes());
-        conciliacion.AgregarArchivo(datosArchivoInterno, cConciliacion.Operacion.Nueva);
+        objApp.Conciliacion.AgregarArchivo(datosArchivoInterno, cConciliacion.Operacion.Nueva);
         LlenaGridViewFoliosAgregados();
     }
     protected void grvAgregados_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        conciliacion.QuitarArchivo(conciliacion.ListaArchivos.Single(x => x.Folio == Convert.ToInt32(grvAgregados.DataKeys[e.RowIndex].Value)), cConciliacion.Operacion.Nueva);
+        objApp.Conciliacion.QuitarArchivo(objApp.Conciliacion.ListaArchivos.Single(x => x.Folio == Convert.ToInt32(grvAgregados.DataKeys[e.RowIndex].Value)), cConciliacion.Operacion.Nueva);
         LlenaGridViewFoliosAgregados();
     }
     protected void btnAceptarRegreso_Click(object sender, EventArgs e)
     {
-        conciliacion.ListaArchivos.Clear();
+        objApp.Conciliacion.ListaArchivos.Clear();
         tabNuevaConciliacion.Tabs[0].Enabled = true;
         tabNuevaConciliacion.Tabs[1].Enabled = false;
         tabNuevaConciliacion.ActiveTab = tabNuevaConciliacion.Tabs[0];
@@ -884,7 +884,7 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         catch (Exception ex)
         {
 
-            App.ImplementadorMensajes.MostrarMensaje("Error: Seleccion de Cuenta Bancaria\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: Seleccion de Cuenta Bancaria\n" + ex.Message);
         }
     }
     protected void ddlCuentaBancaria_DataBound(object sender, EventArgs e)
@@ -911,11 +911,11 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
         }
         catch (NullReferenceException ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("El Banco Seleccionado no tiene asociada ninguna Cuenta Bancaria.");
+            objApp.ImplementadorMensajes.MostrarMensaje("El Banco Seleccionado no tiene asociada ninguna Cuenta Bancaria.");
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error Cargar Cuenta Bancaria:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error Cargar Cuenta Bancaria:\n" + ex.Message);
         }
 
     }

@@ -35,7 +35,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public Cobro(IMensajesImplementacion implementadorMensajes)
+        public Cobro(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.añocobro = 0;
@@ -62,7 +62,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public Cobro(short añocobro, int numcobro, string numerocheque, decimal total, decimal saldo, string numerocuenta, string numerocuentadestino,
             DateTime fcheque, int cliente, short banco, short bancoorigen, string observaciones, string status, short tipocobro, Boolean alta,
-            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, IMensajesImplementacion implementadorMensajes)
+            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.añocobro = añocobro;
@@ -236,7 +236,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
     }

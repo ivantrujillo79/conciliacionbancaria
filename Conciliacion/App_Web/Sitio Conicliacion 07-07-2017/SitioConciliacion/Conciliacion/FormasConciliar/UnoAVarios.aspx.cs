@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 
 public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
 
     private SeguridadCB.Public.Parametros parametros;
@@ -177,7 +178,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);
         hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
         /*      Registrar PostBackControl en la página para 
@@ -197,7 +198,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         GuardarSeleccionadosPedidos();
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
                 if ((!HttpContext.Current.Request.UrlReferrer.AbsoluteUri.Contains("SitioConciliacion")) ||
@@ -542,7 +543,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (SqlException ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
 
             if (ex.Class >= 20)
             {
@@ -631,7 +632,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         wucCargaExcelCyC.ConsultaPedido         = ConsultaPedido;
         wucCargaExcelCyC.URLGateway             = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
         wucCargaExcelCyC.Modulo                 = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-        wucCargaExcelCyC.CadenaConexion         = App.CadenaConexion;
+        wucCargaExcelCyC.CadenaConexion         = objApp.CadenaConexion;
         wucCargaExcelCyC.Corporativo = corporativo;
         wucCargaExcelCyC.Sucursal = Convert.ToInt16(sucursal);
     }
@@ -771,7 +772,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 DSC.MontoSaldoAFavor = dSaldoAFavor;
                 //refExterna.DetalleSaldo = (?);
 
-                SaldoAFavor saldoAFavor = App.SaldoAFavor.CrearObjeto();
+                SaldoAFavor saldoAFavor = objApp.SaldoAFavor.CrearObjeto();
                 saldoAFavor.FolioMovimiento             = -1;
                 saldoAFavor.AñoMovimiento               = DateTime.Now.Year;
                 saldoAFavor.TipoMovimientoAConciliar    = 1;
@@ -1001,10 +1002,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            GrupoConciliacionDiasDiferencia gcd = App.GrupoConciliacionDias(grupoC);
+            GrupoConciliacionDiasDiferencia gcd = objApp.GrupoConciliacionDias(grupoC);
             if (!gcd.CargarDatos())
             {
-                App.ImplementadorMensajes.MostrarMensaje("Conflicto al leer Grupo Conciliación");
+                objApp.ImplementadorMensajes.MostrarMensaje("Conflicto al leer Grupo Conciliación");
                 return;
             }
             txtDias.Text = Convert.ToString(gcd.DiferenciaDiasDefault);
@@ -1038,10 +1039,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             listCamposDestino = filtrarEn.Equals("Externos") || filtrarEn.Equals("Conciliados")
-                                ? Conciliacion.RunTime.App.Consultas.ConsultaDestino()
+                                ? objApp.Consultas.ConsultaDestino()
                                 : (tConciliacion != 2
-                                       ? Conciliacion.RunTime.App.Consultas.ConsultaDestino()
-                                       : Conciliacion.RunTime.App.Consultas.ConsultaDestinoPedido());
+                                       ? objApp.Consultas.ConsultaDestino()
+                                       : objApp.Consultas.ConsultaDestinoPedido());
         }
         catch (SqlException ex)
         {
@@ -1074,7 +1075,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            listMotivosNoConciliados = Conciliacion.RunTime.App.Consultas.ConsultaMotivoNoConciliado();
+            listMotivosNoConciliados = objApp.Consultas.ConsultaMotivoNoConciliado();
             this.ddlMotivosNoConciliado.DataSource = listMotivosNoConciliados;
             this.ddlMotivosNoConciliado.DataValueField = "Identificador";
             this.ddlMotivosNoConciliado.DataTextField = "Descripcion";
@@ -1121,7 +1122,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+            cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             lblFolio.Text = c.Folio.ToString();
             lblBanco.Text = c.BancoStr;
             lblCuenta.Text = c.CuentaBancaria;
@@ -1256,7 +1257,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     ReferenciasPedidoExcel = wucCargaExcelCyC.ReferenciasPorConciliarPedidoExcel;
 
 
-                    ClienteDatos objCliente = new ClienteDatos(App.ImplementadorMensajes);
+                    ClienteDatos objCliente = new ClienteDatos(objApp.ImplementadorMensajes);
                     Conexion _conexion = new Conexion();
                     _conexion.AbrirConexion(false);
                     RNC.BorrarReferenciaConciliada(); //listareferenciaconciliada
@@ -1366,7 +1367,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-        listStatusConcepto = Conciliacion.RunTime.App.Consultas.ConsultaStatusConcepto(cConcepto);
+        listStatusConcepto = objApp.Consultas.ConsultaStatusConcepto(cConcepto);
         this.ddlStatusConcepto.DataSource = listStatusConcepto;
         this.ddlStatusConcepto.DataValueField = "Identificador";
         this.ddlStatusConcepto.DataTextField = "Descripcion";
@@ -1391,7 +1392,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             listSucursales =
-                Conciliacion.RunTime.App.Consultas.ConsultaSucursales(
+                objApp.Consultas.ConsultaSucursales(
                     Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = this.ddlSucursalInterno.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = this.ddlSucursalInterno.DataValueField = "Identificador";
@@ -1420,7 +1421,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-        listCelulas = Conciliacion.RunTime.App.Consultas.ConsultaCelula(corporativo);
+        listCelulas = objApp.Consultas.ConsultaCelula(corporativo);
         this.ddlCelula.DataSource = listCelulas;
         this.ddlCelula.DataValueField = "Identificador";
         this.ddlCelula.DataTextField = "Descripcion";
@@ -1588,7 +1589,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             listaTransaccionesConciliadas =
-                Conciliacion.RunTime.App.Consultas.ConsultaTransaccionesConciliadas(corporativoconciliacion,
+                objApp.Consultas.ConsultaTransaccionesConciliadas(corporativoconciliacion,
                                                                                     sucursalconciliacion,
                                                                                     añoconciliacion, mesconciliacion,
                                                                                     folioconciliacion,
@@ -1839,7 +1840,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
 
@@ -2113,7 +2114,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Verifique selección de referencia interna.\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique selección de referencia interna.\n" + ex.Message);
         }
     }
 
@@ -2156,7 +2157,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         //}
         //catch (Exception ex)
         //{
-        //   // App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+        //   // objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         //}
     }
 
@@ -2198,7 +2199,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                         if (referencia.DescripcionInterno == DESCRIPCION_PAGARE)
                         {
-                            DetallePagare Pagare = new DetallePagareDatos(App.ImplementadorMensajes);
+                            DetallePagare Pagare = new DetallePagareDatos(objApp.ImplementadorMensajes);
                             Pagare.ActualizarStatusMovimientoAConciliar(Folio, Año);
                         }
                         if (referencia.DescripcionInterno == DESCRIPCION_SAF)
@@ -2389,13 +2390,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         }
                     }
                     else
-                        App.ImplementadorMensajes.MostrarMensaje("No se ha agregado ninguna referencia interna");
+                        objApp.ImplementadorMensajes.MostrarMensaje("No se ha agregado ninguna referencia interna");
                 }
                 else
-                    App.ImplementadorMensajes.MostrarMensaje("El archivo externo ya fue Conciliado");
+                    objApp.ImplementadorMensajes.MostrarMensaje("El archivo externo ya fue Conciliado");
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("No existe ningun archivo externo a conciliar");
+                objApp.ImplementadorMensajes.MostrarMensaje("No existe ningun archivo externo a conciliar");
         }
         catch(Exception ex)
         {
@@ -2410,7 +2411,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         const short STATUSCONCEPTO = 28;    // Depósito por pago anticipado
         try
         {
-            ReferenciaConciliadaCompartida RConciliadaCompartida = new ReferenciaConciliadaCompartidaDatos(App.ImplementadorMensajes);
+            ReferenciaConciliadaCompartida RConciliadaCompartida = new ReferenciaConciliadaCompartidaDatos(objApp.ImplementadorMensajes);
             //      PK
             RConciliadaCompartida.Corporativo           = RExterna.Corporativo;
             RConciliadaCompartida.Sucursal              = RExterna.Sucursal;
@@ -2439,7 +2440,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         const string COMENTARIONOCONCILIADO = "SALDO DE PAGO ANTICIPADO";
         try
         {
-            ConciliacionReferencia _ConciliacionReferencia = new ConciliacionReferenciaDatos(App.ImplementadorMensajes);
+            ConciliacionReferencia _ConciliacionReferencia = new ConciliacionReferenciaDatos(objApp.ImplementadorMensajes);
             byte CorporativoConciliacion        = Convert.ToByte(RExterna.Corporativo);
             byte SucursalConciliacion           = Convert.ToByte(RExterna.Sucursal);
             int AñoConciliacion                 = RExterna.AñoConciliacion;
@@ -2620,7 +2621,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (hdfInternosControl.Value.Equals("PENDIENTES"))
             {
                 listaReferenciaArchivosInternos =
-                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleInternoPendienteAFuturo(
+                    objApp.Consultas.ConsultaDetalleInternoPendienteAFuturo(
                         FInicio, FFinal,
                         obtenerConfiguracionInterno(),
                         corporativoconciliacion,
@@ -2637,7 +2638,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             else
             {
                 listaReferenciaArchivosInternos =
-                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleInternoCanceladoPendiente(
+                    objApp.Consultas.ConsultaDetalleInternoCanceladoPendiente(
                         obtenerConfiguracionInterno(),
                         corporativoconciliacion,
                         sucursalconciliacion,
@@ -2676,7 +2677,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (hdfInternosControl.Value.Equals("PENDIENTES"))
             {
                 listaReferenciaArchivosInternos =
-                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleInternoPendiente(
+                    objApp.Consultas.ConsultaDetalleInternoPendiente(
                         obtenerConfiguracionInterno(),
                         corporativoconciliacion,
                         sucursalconciliacion,
@@ -2692,7 +2693,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             else
             {
                 listaReferenciaArchivosInternos =
-                    Conciliacion.RunTime.App.Consultas.ConsultaDetalleInternoCanceladoPendiente(
+                    objApp.Consultas.ConsultaDetalleInternoCanceladoPendiente(
                         obtenerConfiguracionInterno(),
                         corporativoconciliacion,
                         sucursalconciliacion,
@@ -2728,7 +2729,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             listaReferenciaPedidos =
-                Conciliacion.RunTime.App.Consultas.ConciliacionBusquedaPedido(obtenerConfiguracionPedido(),
+                objApp.Consultas.ConciliacionBusquedaPedido(obtenerConfiguracionPedido(),
                                                                               corporativoconciliacion,
                                                                               sucursalconciliacion, añoconciliacion,
                                                                               mesconciliacion, folioconciliacion,
@@ -2984,14 +2985,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             listaReferenciaExternas =
                 tipoConciliacion == 2 || tipoConciliacion == 6
-                    ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoCanceladoPendiente
+                    ? objApp.Consultas.ConsultaDetalleExternoCanceladoPendiente
                           (chkReferenciaEx.Checked
                                ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
                            corporativoconciliacion, sucursalconciliacion, añoconciliacion, mesconciliacion,
                            folioconciliacion, sucursalInterno, folioInterno, secuenciaInterno, statusConcepto,
                            diferencia)
-                    : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoCanceladoPendiente
+                    : objApp.Consultas.ConsultaDetalleExternoCanceladoPendiente
                           (chkReferenciaEx.Checked
                                ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno
                                : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.TodoInterno,
@@ -3003,7 +3004,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -3100,7 +3101,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 AppSettingsReader settings = new AppSettingsReader();
                 SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString() );
-                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                Gateway = new RTGMGateway.RTGMGateway(modulo, objApp.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.IDCliente = cliente;
@@ -3110,7 +3111,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         catch (Exception ex)
         {
             //throw ex;
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
         if (DireccionEntrega != null && DireccionEntrega.Nombre != null)
             return DireccionEntrega.Nombre.Trim();
@@ -3184,7 +3185,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //AppSettingsReader settings = new AppSettingsReader();
                 //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// objApp.CadenaConexion);
                 Gateway.URLServicio = URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.IDCliente = cliente;
@@ -3280,7 +3281,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -3289,7 +3290,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         RTGMGateway.RTGMGateway oGateway;
         RTGMGateway.SolicitudGateway oSolicitud;
         AppSettingsReader settings = new AppSettingsReader();
-        string cadena = App.CadenaConexion;
+        string cadena = objApp.CadenaConexion;
         try
         {
             SeguridadCB.Public.Parametros parametros;
@@ -3298,7 +3299,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (_URLGateway != string.Empty)
             { 
                 SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-                oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+                oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), objApp.CadenaConexion);//,_URLGateway);
                 oGateway.ListaCliente = listadistintos;
                 oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
                 oGateway.eListaEntregas += completarListaEntregas;
@@ -3313,7 +3314,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -3477,7 +3478,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
             }
         //}
     }
@@ -3498,12 +3499,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             AppSettingsReader settings = new AppSettingsReader();
             SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-            string cadenaconexion = App.CadenaConexion;
+            string cadenaconexion = objApp.CadenaConexion;
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 3;
             System.Threading.Tasks.Parallel.ForEach(listadistintos, options, (client) => {
                 Cliente cliente;
-                cliente = App.Cliente.CrearObjeto();
+                cliente = objApp.Cliente.CrearObjeto();
                 cliente.NumCliente = client;
                 cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, _URLGateway);
                 lstClientes.Add(cliente);
@@ -3796,14 +3797,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             listaReferenciaExternas = tipoConciliacion == 2 || tipoConciliacion == 6
-                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
+                                          ? objApp.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
                                                 (FInicio, FFinal,
                                                  chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                                      : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
                                                  corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
                                                  esDeposito)
-                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
+                                          : objApp.Consultas.ConsultaDetalleExternoPendienteDepositoAFuturo
                                                 (FInicio, FFinal,
                                                  chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno
@@ -3838,15 +3839,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         try
         {
-            cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+            cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             listaReferenciaExternas = tipoConciliacion == 2 || tipoConciliacion == 6
-                                          ? Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+                                          ? objApp.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosConReferenciaPedido
                                                      : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.DepositosPedido,
                                                  corporativo, sucursal, año, mes, folio, diferencia, statusConcepto,
                                                  esDeposito, cboCuentaBanco.SelectedIndex, lblCuenta.Text.Trim())
-                                          : Conciliacion.RunTime.App.Consultas.ConsultaDetalleExternoPendienteDeposito
+                                          : objApp.Consultas.ConsultaDetalleExternoPendienteDeposito
                                                 (chkReferenciaEx.Checked
                                                      ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.ConReferenciaInterno
                                                      : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConsultaExterno.TodoInterno,
@@ -4085,7 +4086,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     return;
                 if (validarcliente)
                 { 
-                    bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
+                    bool clientevalido = objApp.Consultas.ClienteValido(rfEx.Referencia.Trim());
                     string cliente = "-1";
                     if (clientevalido)
                     {
@@ -4097,18 +4098,18 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         }
                         catch (FormatException e)
                         {
-                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamente.");
+                            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamente.");
                         }
                         catch (Exception e)
                         {
-                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
+                            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
                         }
 
                     }
                     else
                         if (!(objControlPostBack == "btnFiltraCliente" || objControlPostBack == "btnAgregarPedido" || objControlPostBack == "btnQuitarInterno"))
                         {
-                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
+                            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es válido, tendrá que agregar el pedido directamente.");
                         }
                     if (ddlCelula.SelectedItem != null)
                     {
@@ -4235,7 +4236,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 if (validarcliente)
                 {
-                    bool clientevalido = App.Consultas.ClienteValido(rfEx.Referencia.Trim());
+                    bool clientevalido = objApp.Consultas.ClienteValido(rfEx.Referencia.Trim());
                     string cliente = "-1";
                     if (clientevalido)
                     {
@@ -4249,14 +4250,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         {
                             /**Modifico: CNSM 
                              Fecha: 08/06/2017
-                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
+                            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
                              **/
                         }
                         catch (Exception e)
                         {
                             /**Modifico: CNSM 
                             Fecha: 08/06/2017
-                            App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
+                            objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");
                              **/
                         }
 
@@ -4264,7 +4265,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     /**Modifico: CNSM 
                        Fecha: 08/06/2017
                     else
-                    App.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");**/
+                    objApp.ImplementadorMensajes.MostrarMensaje("Cliente no es valido, tendra que agregar el pedido directamenete.");**/
                     int Celula;
                     SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
                     tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
@@ -4578,7 +4579,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+                objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
             }
         }
         catch(Exception ex)
@@ -4721,12 +4722,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     }
                     else
-                        App.ImplementadorMensajes.MostrarMensaje(
+                        objApp.ImplementadorMensajes.MostrarMensaje(
                             "NO SE PUEDE COMPLETAR LA ACCION \nLA REFERENCIA EXTERNA ESTA CANCELADA");
                 }
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
+                objApp.ImplementadorMensajes.MostrarMensaje("NO EXISTEN NINGUNA TRANSACCION EXTERNA");
         }
         catch (Exception ex)
         {
@@ -5212,7 +5213,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Verifique:\n- Valor no valido por tipo de Campo seleccionado.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique:\n- Valor no valido por tipo de Campo seleccionado.");
         }
         return "";
         //return tipoCampo.Equals("Cadena")
@@ -5322,11 +5323,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 ConsultarArchivosInternos();
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Referencia Externa Cancelada");
+                objApp.ImplementadorMensajes.MostrarMensaje("Referencia Externa Cancelada");
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("NO EXISTEN TRANSACCIONES EXTERNAS");
+            objApp.ImplementadorMensajes.MostrarMensaje("NO EXISTEN TRANSACCIONES EXTERNAS");
         }
     }
 
@@ -5340,7 +5341,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 if (grvPedidos.Rows.Count <= 0)
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("No hay pedido origen");
+                    objApp.ImplementadorMensajes.MostrarMensaje("No hay pedido origen");
                     return;
                 }
                 Consulta_ExternosPendientesCancelados(corporativo, sucursal, año,
@@ -5352,7 +5353,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 if (grvInternos.Rows.Count <= 0)
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("No hay archivo Interno seleccionado");
+                    objApp.ImplementadorMensajes.MostrarMensaje("No hay archivo Interno seleccionado");
                     return;
                 }
                 ReferenciaNoConciliada rfIn = leerReferenciaInternaSeleccionada();
@@ -5364,7 +5365,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                                           Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
                 else
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("Referencia Interna Cancelada");
+                    objApp.ImplementadorMensajes.MostrarMensaje("Referencia Interna Cancelada");
                     return;
                 }
 
@@ -5381,7 +5382,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.StackTrace);
         }
     }
 
@@ -5446,7 +5447,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             int secuenciaExterno;
             int folioExterno;
-            ReferenciaNoConciliada rfExterno = App.ReferenciaNoConciliada.CrearObjeto();
+            ReferenciaNoConciliada rfExterno = objApp.ReferenciaNoConciliada.CrearObjeto();
             listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
             foreach (GridViewRow fila in rowsSeleccionados)
             {
@@ -5504,7 +5505,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ActualizarTotalesAgregados();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
                                                      "1. No existe ninguna referencia externa seleccionada. \n" +
                                                      "2. Ninguna de las referencias externas seleccionadas estan CANCELADAS");
     }
@@ -5520,7 +5521,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             mpeStatusTransaccion.Show();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
                                                      "1. No existe ninguna referencia externa seleccionada. \n" +
                                                      "2. Ninguna de las referencias externas seleccionadas estan EN PROCESO DE CONCILIACIÓN");
     }
@@ -5623,7 +5624,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ConsultarArchivosInternos();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
                                                      "1. No existe ninguna referencia interna seleccionada. \n" +
                                                      "2. Ninguna de las referencias internas seleccionadas estan CANCELADAS");
 
@@ -5640,7 +5641,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             mpeStatusTransaccion.Show();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
+            objApp.ImplementadorMensajes.MostrarMensaje("Verifique su selección , siguientes razones: \n" +
                                                      "1. No existe ninguna referencia interna seleccionada. \n" +
                                                      "2. Ninguna de las referencias internas seleccionadas estan EN PROCESO DE CONCILIACIÓN");
 
@@ -5766,12 +5767,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             catch (Exception ex)
             {
-                App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+                objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -5780,10 +5781,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         //Cargar Info Actual Conciliacion
         cargarInfoConciliacionActual();
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         if (c.CerrarConciliacion(usuario.IdUsuario))
         {
-            App.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
+            objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
             System.Threading.Thread.Sleep(3000);
             Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
                               "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
@@ -5791,7 +5792,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("ERRORES AL CERRAR LA CONCILIACIÓN");
+            objApp.ImplementadorMensajes.MostrarMensaje("ERRORES AL CERRAR LA CONCILIACIÓN");
         }
     }
 
@@ -5800,16 +5801,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         //Cargar Info Actual Conciliacion
         cargarInfoConciliacionActual();
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         if (c.CancelarConciliacion(usuario.IdUsuario))
         {
-            App.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CANCELADA EXITOSAMENTE");
+            objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CANCELADA EXITOSAMENTE");
             System.Threading.Thread.Sleep(3000);
             Response.Redirect("~/Inicio.aspx");
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("ERRORES AL CANCELAR LA CONCILIACIÓN");
+            objApp.ImplementadorMensajes.MostrarMensaje("ERRORES AL CANCELAR LA CONCILIACIÓN");
         }
     }
 
@@ -6026,10 +6027,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 //Leer la InfoActual Conciliacion
                 cargarInfoConciliacionActual();
-                if (App.Consultas.ValidaPedidoEspecifico(rce.Corporativo, rce.Sucursal,
+                if (objApp.Consultas.ValidaPedidoEspecifico(rce.Corporativo, rce.Sucursal,
                     txtPedido.Text.Trim()))
                 {
-                    ReferenciaNoConciliadaPedido rncP = App.Consultas.ConsultaPedidoReferenciaEspecifico(corporativo,
+                    ReferenciaNoConciliadaPedido rncP = objApp.Consultas.ConsultaPedidoReferenciaEspecifico(corporativo,
                         sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), txtPedido.Text.Trim());
                     if (rncP != null)
                     {
@@ -6040,15 +6041,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             ConsultarPedidosInternos(true);
                         }
                         else
-                            App.ImplementadorMensajes.MostrarMensaje("El pedido ya fue agregado al Movimiento Externo");
+                            objApp.ImplementadorMensajes.MostrarMensaje("El pedido ya fue agregado al Movimiento Externo");
                     }
 
                     else
-                        App.ImplementadorMensajes.MostrarMensaje("Ocurrio algun error al leer el pedido. Consulte de nuevo.");
+                        objApp.ImplementadorMensajes.MostrarMensaje("Ocurrio algun error al leer el pedido. Consulte de nuevo.");
                 }
                 else
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("El PedidoReferencia no se encuentran en Pedidos por Abonar");
+                    objApp.ImplementadorMensajes.MostrarMensaje("El PedidoReferencia no se encuentran en Pedidos por Abonar");
                 }
                 //ReferenciaNoConciliadaPedido rncP =
                 //        listaReferenciaPedidos.Where(
@@ -6059,7 +6060,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             catch (Exception)
             {
-                App.ImplementadorMensajes.MostrarMensaje("El pedido no se encuentra DISPONIBLE, o ya fue AGREGADO");
+                objApp.ImplementadorMensajes.MostrarMensaje("El pedido no se encuentra DISPONIBLE, o ya fue AGREGADO");
             }
             txtPedido.Text = String.Empty;
         }
@@ -6098,7 +6099,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 else
                 if (hdfUltimoBotonPresionado.Value == "btnFiltraPedidoReferencia") 
                 {
-                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
                     tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 }
                 else
@@ -6307,7 +6308,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     if (drPedido.RowState == DataRowState.Unchanged)
                     {
-                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = objApp.ReferenciaNoConciliadaPedido.CrearObjeto();
                         string sDocumento = drPedido["Documento"].ToString();
                         decimal dMonto = Convert.ToDecimal(drPedido["Total"].ToString());
                         RefNoConciliadaPedido.PedidoReferencia = sDocumento;
@@ -6342,7 +6343,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 //if (drPedido.RowState != DataRowState.Deleted)
                 //{
-                ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                ReferenciaNoConciliadaPedido RefNoConciliadaPedido = objApp.ReferenciaNoConciliadaPedido.CrearObjeto();
                 if (drPedido.Table.Columns.Contains("PedidoReferencia"))
                     sDocumento = drPedido["PedidoReferencia"].ToString();
                 if (drPedido.Table.Columns.Contains("Documento"))
@@ -6417,7 +6418,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje(
+                objApp.ImplementadorMensajes.MostrarMensaje(
                     "NO SE PUEDE COMPLETAR LA ACCION \nLA REFERENCIA EXTERNA ESTA CANCELADA");
         }
     }
@@ -6493,7 +6494,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
 
-            listTipoFuenteInformacionExternoInterno = Conciliacion.RunTime.App.Consultas.ConsultaTipoInformacionDatos(tipo);
+            listTipoFuenteInformacionExternoInterno = objApp.Consultas.ConsultaTipoInformacionDatos(tipo);
             this.ddlTipoFuenteInfoInterno.DataSource = listTipoFuenteInformacionExternoInterno;
             this.ddlTipoFuenteInfoInterno.DataValueField = "Identificador";
             this.ddlTipoFuenteInfoInterno.DataTextField = "Descripcion";
@@ -6549,12 +6550,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
-            listFoliosInterno = Conciliacion.RunTime.App.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
+            listFoliosInterno = objApp.Consultas.ConsultaFoliosTablaDestino(corporativo, sucursal, añoF, mesF, cuentabancaria, tipofuenteinformacion);
             //HttpContext.Current.Session["listFoliosInterno"] = listFoliosInterno;
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -6612,15 +6613,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         if (listArchivosInternos != null && listArchivosInternos.Exists(x => x.Folio == Convert.ToInt32(ddlFolioInterno.SelectedItem.Value)))
         {
-            App.ImplementadorMensajes.MostrarMensaje("Este Folio Interno ya esta Agregado");
+            objApp.ImplementadorMensajes.MostrarMensaje("Este Folio Interno ya esta Agregado");
         }
         else
         {
             //Leer Variables URL 
             cargarInfoConciliacionActual();
 
-            cConciliacion conciliacion = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
-            DatosArchivo datosArchivoInterno = App.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
+            cConciliacion conciliacion = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+            DatosArchivo datosArchivoInterno = objApp.DatosArchivo.CrearObjeto();//new DatosArchivoDatos(App.ImplementadorMensajes); //App.DatosArchivo
 
             datosArchivoInterno.FolioConciliacion = conciliacion.Folio;
             datosArchivoInterno.SucursalConciliacion = conciliacion.Sucursal;
@@ -6669,7 +6670,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //Leer Variables URL 
             cargarInfoConciliacionActual();
 
-            cConciliacion conciliacion = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+            cConciliacion conciliacion = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
             listArchivosInternos.ForEach(x => resultado = conciliacion.AgregarArchivo(x, cConciliacion.Operacion.Edicion));
 
             if (resultado)
@@ -6677,11 +6678,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //ACTUALIZAR GRID INTERNOS
                 LlenarBarraEstado();
                 ConsultarArchivosInternos();
-                App.ImplementadorMensajes.MostrarMensaje("Agregado de Folios Internos exitoso.");
+                objApp.ImplementadorMensajes.MostrarMensaje("Agregado de Folios Internos exitoso.");
 
             }
             else
-                App.ImplementadorMensajes.MostrarMensaje("Ocurrieron problemas al agregar el nuevo Folio");
+                objApp.ImplementadorMensajes.MostrarMensaje("Ocurrieron problemas al agregar el nuevo Folio");
             //Limpiar Remover Variable (Session) de Internos 
             limpiarVistaImportarInterno();
 
@@ -6691,7 +6692,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         else
         {
-            App.ImplementadorMensajes.MostrarMensaje("No se ha agregado un nuevo Archivo Interno");
+            objApp.ImplementadorMensajes.MostrarMensaje("No se ha agregado un nuevo Archivo Interno");
         }
     }
     protected void grvAgregados_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -6739,7 +6740,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         try
         {
-            listaDestinoDetalleInterno = Conciliacion.RunTime.App.Consultas.ConsultaTablaDestinoDetalle(
+            listaDestinoDetalleInterno = objApp.Consultas.ConsultaTablaDestinoDetalle(
                         configuracion,
                         empresa,
                         sucursal,
@@ -6748,7 +6749,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error al Consultar Detalle.\r\nError" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error al Consultar Detalle.\r\nError" + ex.Message);
         }
     }
     /// <summary>
@@ -6860,11 +6861,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     public void Carga_Corporativo()
     {
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         try
         {
             listaCorporativoTransferencia =
-                Conciliacion.RunTime.App.Consultas.ConsultaCorporativoTransferencia(
+                objApp.Consultas.ConsultaCorporativoTransferencia(
                     rdbVerDepositoRetiro.SelectedValue.Equals("DEPOSITOS") ? 0 : 1, Convert.ToInt32(c.Corporativo), Convert.ToInt32(c.Sucursal),
                     Convert.ToInt32(c.Banco), c.CuentaBancaria);
             this.cboCorporativo.DataSource = listaCorporativoTransferencia;
@@ -6883,12 +6884,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void Carga_Sucursal()
     {
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         try
         {
 
             listaSucursalTransferencia =
-                  Conciliacion.RunTime.App.Consultas.ConsultaSucursalTransferencia(
+                  objApp.Consultas.ConsultaSucursalTransferencia(
                       rdbVerDepositoRetiro.SelectedValue.Equals("DEPOSITOS") ? 2 : 3, Convert.ToInt32(c.Corporativo), Convert.ToInt32(c.Sucursal),
                         Convert.ToInt32(c.Banco), c.CuentaBancaria, Convert.ToInt32(cboCorporativo.SelectedItem.Value));
             this.cboSucursal.DataSource = listaSucursalTransferencia;
@@ -6907,11 +6908,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void Carga_NombreBanco()
     {
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         try
         {
             listaNombreBancoTransferencia =
-                   Conciliacion.RunTime.App.Consultas.ConsultaNombreBancoTransferencia(
+                   objApp.Consultas.ConsultaNombreBancoTransferencia(
                        rdbVerDepositoRetiro.SelectedValue.Equals("DEPOSITOS") ? 4 : 5, Convert.ToInt32(c.Corporativo), Convert.ToInt32(c.Sucursal),
                        Convert.ToInt32(c.Banco), c.CuentaBancaria, Convert.ToInt32(cboCorporativo.SelectedItem.Value), Convert.ToInt32(cboSucursal.SelectedItem.Value));
             this.cboNombreBanco.DataSource = listaNombreBancoTransferencia;
@@ -6931,11 +6932,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private void Carga_CuentaBanco()
     {
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         try
         {
             listaCuentaBancoTransferencia =
-                Conciliacion.RunTime.App.Consultas.ConsultaCuentaBancoTransferencia(
+                objApp.Consultas.ConsultaCuentaBancoTransferencia(
                     rdbVerDepositoRetiro.SelectedValue.Equals("DEPOSITOS") ? 6 : 7, Convert.ToInt32(c.Corporativo), Convert.ToInt32(c.Sucursal),
                     Convert.ToInt32(c.Banco), c.CuentaBancaria, Convert.ToInt32(cboCorporativo.SelectedItem.Value), Convert.ToInt32(cboSucursal.SelectedItem.Value), Convert.ToInt32(cboNombreBanco.SelectedItem.Value));
             this.cboCuentaBanco.DataSource = listaCuentaBancoTransferencia;
@@ -6951,7 +6952,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             this.cboCuentaBanco.DataBind();
             this.cboCuentaBanco.Dispose();
 
-            App.ImplementadorMensajes.MostrarMensaje(
+            objApp.ImplementadorMensajes.MostrarMensaje(
                          "No es posible realizar un traspaso entre cuentas si el numero de la cuenta bancaria no está dado de alta en el Catalogo Cuenta Transferencia.");
         }
     }
@@ -6975,11 +6976,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             {
                 Boolean resultado = false;
                 cargarInfoConciliacionActual();
-                cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+                cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
 
                 foreach (GridViewRow row in rowSeleccionadas)
                 {
-                    resultado = Conciliacion.RunTime.App.Consultas.ObtieneExternosTransferencia(
+                    resultado = objApp.Consultas.ObtieneExternosTransferencia(
                         Convert.ToSByte(grvExternos.DataKeys[row.RowIndex].Values["Corporativo"]),
                         Convert.ToSByte(grvExternos.DataKeys[row.RowIndex].Values["Sucursal"]),
                         Convert.ToInt32(grvExternos.DataKeys[row.RowIndex].Values["Año"]),
@@ -7063,20 +7064,20 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     else
                     {
-                        App.ImplementadorMensajes.MostrarMensaje(
+                        objApp.ImplementadorMensajes.MostrarMensaje(
                             "No se posible realizar un traspaso entre cuentas sin un monto de retiro o deposito.");
                     }
                 }
                 else
                 {
 
-                    App.ImplementadorMensajes.MostrarMensaje(
+                    objApp.ImplementadorMensajes.MostrarMensaje(
                            "No se posible realizar un traspaso entre cuentas si un registro ya pertenece a alguna transferencia bancaria");
                 }
             }
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje(
+                objApp.ImplementadorMensajes.MostrarMensaje(
                 "No se posible realizar un traspaso entre cuentas sobre un registro cancelado. Verifique.");
             }
 
@@ -7084,7 +7085,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         else
         {
 
-            App.ImplementadorMensajes.MostrarMensaje(
+            objApp.ImplementadorMensajes.MostrarMensaje(
                     "No es posible realizar un traspaso entre cuentas si no se ha seleccionado una conciliación");
         }
     }
@@ -7098,12 +7099,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Cargar Info Actual Conciliacion
                 cargarInfoConciliacionActual();
 
-                cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+                cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
 
                 usuario = (SeguridadCB.Public.Usuario) HttpContext.Current.Session["Usuario"];
-                TransferenciaBancarias tb = Conciliacion.RunTime.App.TransferenciaBancarias.CrearObjeto();
-                TransferenciaBancariasDetalle tbd = Conciliacion.RunTime.App.TransferenciaBancariasDetalle.CrearObjeto();
-                TransferenciaBancariaOrigen tbo = Conciliacion.RunTime.App.TransferenciaBancariaOrigen.CrearObjeto();
+                TransferenciaBancarias tb = objApp.TransferenciaBancarias.CrearObjeto();
+                TransferenciaBancariasDetalle tbd = objApp.TransferenciaBancariasDetalle.CrearObjeto();
+                TransferenciaBancariaOrigen tbo = objApp.TransferenciaBancariaOrigen.CrearObjeto();
 
                 tb.Corporativo = Convert.ToInt16(c.Corporativo);
                 tb.Sucursal = Convert.ToInt16(c.Sucursal);
@@ -7197,13 +7198,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje(
+                objApp.ImplementadorMensajes.MostrarMensaje(
                     "Las cantidades de el cargo y el abono deben de ser iguales");
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }*/
@@ -7218,10 +7219,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Cargar Info Actual Conciliacion
                 cargarInfoConciliacionActual();
 
-                cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+                cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
 
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                TransferenciaBancarias tb = Conciliacion.RunTime.App.TransferenciaBancarias.CrearObjeto();
+                TransferenciaBancarias tb = objApp.TransferenciaBancarias.CrearObjeto();
                
 
                 /*TransferenciaBancarias*/
@@ -7243,7 +7244,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 /*TransferenciaBancariasDetalle*/
 
-                TransferenciaBancariasDetalle tbd = Conciliacion.RunTime.App.TransferenciaBancariasDetalle.CrearObjeto();
+                TransferenciaBancariasDetalle tbd = objApp.TransferenciaBancariasDetalle.CrearObjeto();
 
                 tbd.Corporativo = tb.Corporativo;
                 tbd.Sucursal = tb.Sucursal;
@@ -7270,7 +7271,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 /*TransferenciaBancariasDetalle*/
 
-                tbd = Conciliacion.RunTime.App.TransferenciaBancariasDetalle.CrearObjeto();
+                tbd = objApp.TransferenciaBancariasDetalle.CrearObjeto();
 
                 tbd.Corporativo = tb.Corporativo;
                 tbd.Sucursal = tb.Sucursal;
@@ -7301,7 +7302,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 List<GridViewRow> rowSeleccionadas = filasSeleccionadasExternos();
                 foreach (GridViewRow row in rowSeleccionadas)
                 {
-                    TransferenciaBancariaOrigen tbo = Conciliacion.RunTime.App.TransferenciaBancariaOrigen.CrearObjeto();
+                    TransferenciaBancariaOrigen tbo = objApp.TransferenciaBancariaOrigen.CrearObjeto();
 
                     tbo.CorporativoTD =
                         Convert.ToSByte(grvExternos.DataKeys[row.RowIndex].Values["Corporativo"]);
@@ -7329,13 +7330,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje(
+                objApp.ImplementadorMensajes.MostrarMensaje(
                     "Las cantidades de el cargo y el abono deben de ser iguales");
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -7560,13 +7561,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             listaReferenciaArchivosInternos.Clear();
             if (hfActivaPagoOSaldo.Value == "SALDO")
             {
-                List<DetalleSaldoAFavor> ListaDetalle = Conciliacion.RunTime.App.Consultas.ConsultaDetalleSaldoAFavor(
+                List<DetalleSaldoAFavor> ListaDetalle = objApp.Consultas.ConsultaDetalleSaldoAFavor(
                                                 FInicio, FFin, iCliente, dMonto, SALDO);
                 
                 int secuencia = 1;
                 foreach (DetalleSaldoAFavor dsaf in ListaDetalle)
                 {
-                    ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
+                    ReferenciaNoConciliada rc = objApp.ReferenciaNoConciliada.CrearObjeto();
                     rc.Secuencia            = secuencia;
                     rc.Folio                = dsaf.Folio;
                     rc.Sucursal             = sucursal;
@@ -7595,13 +7596,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else if (hfActivaPagoOSaldo.Value == "PAGARE")
             {
-                List<DetallePagare> ListaDetalle = Conciliacion.RunTime.App.DetallePagare.ConsultaSaldoAFavor(
+                List<DetallePagare> ListaDetalle = objApp.DetallePagare.ConsultaSaldoAFavor(
                                                 FInicio, FFin, iCliente, dMonto, PAGARE);
                 
                 int secuencia = 1;
                 foreach (DetallePagare objPagare in ListaDetalle)
                 {
-                    ReferenciaNoConciliada rc = Conciliacion.RunTime.App.ReferenciaNoConciliada.CrearObjeto();
+                    ReferenciaNoConciliada rc = objApp.ReferenciaNoConciliada.CrearObjeto();
                     rc.Secuencia            = secuencia;
                     rc.Folio                = objPagare.Folio;
                     rc.Sucursal             = sucursal;
@@ -7658,8 +7659,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if(txtPedidoReferencia.Text.Trim() != "")
         {
             wucBuscaClientesFacturas.TablaFacturas = null;
-            //grvPedidos.DataSource = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
-            DataTable tablePedidoRefer = App.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+            //grvPedidos.DataSource = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+            DataTable tablePedidoRefer = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
             tablePedidoRefer = EliminarPedidosAgregados(tablePedidoRefer);
             try
             {
@@ -7721,7 +7722,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         string dato;
         int tipoBusqueda;
-        BusquedaClienteDatosBancarios obBusquedaCliente = App.BusquedaClienteDatosBancarios.CrearObjeto();
+        BusquedaClienteDatosBancarios obBusquedaCliente = objApp.BusquedaClienteDatosBancarios.CrearObjeto();
         List<Cliente> Clientes;
 
         try
@@ -7757,7 +7758,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     private DataTable BuscarPedidosPorCliente(int cliente)
     {
-        Cliente obCliente = App.Cliente.CrearObjeto();
+        Cliente obCliente = objApp.Cliente.CrearObjeto();
         Conexion conexion = new Conexion();
         DataTable dtPedidos;
 
@@ -7906,7 +7907,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
         var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
         if (txtAFuturo_FInicio.Text.Trim() == string.Empty)
@@ -7933,7 +7934,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         folio = Convert.ToInt32(Request.QueryString["Folio"]);
         mes = Convert.ToSByte(Request.QueryString["Mes"]);
 
-        cConciliacion c = App.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
+        cConciliacion c = objApp.Consultas.ConsultaConciliacionDetalle(corporativo, sucursal, año, mes, folio);
         var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
         var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 

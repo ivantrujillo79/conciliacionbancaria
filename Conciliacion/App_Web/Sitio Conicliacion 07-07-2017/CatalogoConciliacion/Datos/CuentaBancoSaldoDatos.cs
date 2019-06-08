@@ -12,14 +12,14 @@ namespace CatalogoConciliacion.Datos
 {
   public  class CuentaBancoSaldoDatos:CuentaBancoSaldo
     {
-       public CuentaBancoSaldoDatos(IMensajesImplementacion implementadorMensajes)
+       public CuentaBancoSaldoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
 
        public CuentaBancoSaldoDatos(int corporativo, int sucursal, int banco, string bancodes, string cuentabancaria,
-                                decimal saldoinicialmes, decimal saldofinal, IMensajesImplementacion implemntadorMensajes)
+                                decimal saldoinicialmes, decimal saldofinal, MensajesImplementacion implemntadorMensajes)
             : base(corporativo,  sucursal,  banco,  bancodes,  cuentabancaria,
                                  saldoinicialmes,  saldofinal,  implemntadorMensajes)
         {

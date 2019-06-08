@@ -11,7 +11,7 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class FacturasComplementoDatos: FacturasComplemento
     {
-        public FacturasComplementoDatos(IMensajesImplementacion implementadorMensajes)
+        public FacturasComplementoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -19,7 +19,7 @@ namespace Conciliacion.RunTime.DatosSQL
        
 
         public FacturasComplementoDatos(int corporativoConciliacion, int sucursalConciliacion, int anioConciliacion, int mesConciliacion,
-           int folioConciliacion, IMensajesImplementacion implementadorMensajes)
+           int folioConciliacion, MensajesImplementacion implementadorMensajes)
         :base(corporativoConciliacion, sucursalConciliacion, anioConciliacion, mesConciliacion, folioConciliacion, implementadorMensajes)
         {
         }

@@ -18,7 +18,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int año;
         private int folio;
 
-        public TransferenciaBancariaOrigen(IMensajesImplementacion implementadorMensajes)
+        public TransferenciaBancariaOrigen(MensajesImplementacion implementadorMensajes)
         {
             this.corporativoTD = 0;
             this.sucursalTD = 0;
@@ -33,7 +33,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public TransferenciaBancariaOrigen(short corporativoTD, short sucursalTD, int añoTD, int folioTD,
                                            int secuenciaTD,
-                                           short corporativo, short sucursal, int año, int folio, IMensajesImplementacion implementadorMensajes)
+                                           short corporativo, short sucursal, int año, int folio, MensajesImplementacion implementadorMensajes)
         {
             this.corporativoTD = corporativoTD;
             this.sucursalTD = sucursalTD;
@@ -45,6 +45,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.año = año;
             this.folio = folio;
         }
+
+        //protected TransferenciaBancariaOrigen(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         #region Propiedades
         public short CorporativoTD
@@ -103,7 +108,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get { Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App(); return objApp.CadenaConexion; }
         }
 #endregion
 

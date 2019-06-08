@@ -9,6 +9,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class SaldoAFavor : EmisorMensajes
     {
+
         private int foliomovimiento;
         private int añomovimiento;
         private Int16 tipomovimientoaconciliar;
@@ -39,7 +40,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int secuenciaexterno;
         private int cliente;            // RM-29/05/2018, se agrega el miembro cliente
 
-        public SaldoAFavor(IMensajesImplementacion implementadorMensajes)
+        public SaldoAFavor(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.folioconciliacion = 0;
@@ -101,7 +102,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             int añoexterno,
             int folioexterno,
             int secuenciaexterno,            
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.folioconciliacion = folioconciliacion;
@@ -133,6 +134,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.folioexterno = folioexterno;
             this.secuenciaexterno = secuenciaexterno;
         }
+
+        //protected SaldoAFavor(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         public int FolioMovimiento
         {
@@ -292,7 +298,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion; }
         }
 
     }
@@ -321,10 +329,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public void ActualizarStatusMovimientoAConciliar(int Folio, int Año)
         {
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
             if (Folio <= 0 || Año <= 0)
                 throw new Exception("Parámetros incorrectos.");
 
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {

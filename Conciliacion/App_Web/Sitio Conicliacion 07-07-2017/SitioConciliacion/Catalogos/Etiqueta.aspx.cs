@@ -21,7 +21,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
     #endregion
-
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     StringBuilder mensaje;
     protected override void OnPreInit(EventArgs e)
     {
@@ -33,11 +33,11 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
             LlenarCombos();
-            this.grvEtiquetas.DataSource = App.Consultas.ObtieneListaEtiqueta();
+            this.grvEtiquetas.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiqueta();
             this.grvEtiquetas.DataBind();
 
         }
@@ -48,7 +48,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
 
         this.cboBancoFinanciero.DataValueField = "Id";
         this.cboBancoFinanciero.DataTextField = "Descripcion";
-        this.cboBancoFinanciero.DataSource = App.Consultas.ObtieneListaBancoFinanciero(((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).Corporativo);
+        this.cboBancoFinanciero.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaBancoFinanciero(((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).Corporativo);
         this.cboBancoFinanciero.DataBind();
         this.cboBancoFinanciero.SelectedIndex = 0;
 
@@ -56,18 +56,18 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
 
         this.cboTipoFuenteInformacion.DataValueField = "Id";
         this.cboTipoFuenteInformacion.DataTextField = "Descripcion";
-        this.cboTipoFuenteInformacion.DataSource = App.Consultas.ObtieneListaTipoFuenteDeInformacion();
+        this.cboTipoFuenteInformacion.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoFuenteDeInformacion();
         this.cboTipoFuenteInformacion.DataBind();
         this.cboTipoFuenteInformacion.SelectedIndex = 0;
 
         this.cboTipoDato.DataValueField = "Descripcion";
         this.cboTipoDato.DataTextField = "Descripcion";
-        this.cboTipoDato.DataSource = App.Consultas.ObtieneListaTipoDato();
+        this.cboTipoDato.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoDato();
         this.cboTipoDato.DataBind();
         this.cboTipoDato.SelectedIndex = 0;
 
 
-        this.cboTabla.DataSource = App.Consultas.ObtieneListaDiferentesTablasDestino();
+        this.cboTabla.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaDiferentesTablasDestino();
         this.cboTabla.DataBind();
         this.cboTabla.SelectedIndex = 0;
 
@@ -79,7 +79,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
     {
         cboColumna.DataValueField = "ColumnaDestino";
         cboColumna.DataTextField = "ColumnaDestino";
-        cboColumna.DataSource = App.Consultas.ObtieneDestinoPorTabla(this.cboTabla.SelectedValue.ToString());
+        cboColumna.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneDestinoPorTabla(this.cboTabla.SelectedValue.ToString());
         cboColumna.DataBind();
         cboColumna.SelectedIndex = 0;
     }
@@ -100,7 +100,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
         if (ValidarDatos())
         {
             Etiqueta etiqueta = (Etiqueta)App.Etiqueta.CrearObjeto();
-            etiqueta.Id = App.Consultas.ObtieneNumeroMaximoEtiqueta() + 1;
+            etiqueta.Id = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneNumeroMaximoEtiqueta() + 1;
             etiqueta.IdBancoFinanciero = Convert.ToInt32(this.cboBancoFinanciero.SelectedValue);
             etiqueta.IdTipoFuenteInformacion = Convert.ToInt32(this.cboTipoFuenteInformacion.SelectedValue);
             etiqueta.Descripcion = this.txtDescripcion.Text;
@@ -115,7 +115,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
             etiqueta.ConcatenaEtiqueta = chkConcatenar.Checked;
             if (etiqueta.Guardar())
             {
-                this.grvEtiquetas.DataSource = App.Consultas.ObtieneListaEtiqueta();
+                this.grvEtiquetas.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiqueta();
                 this.grvEtiquetas.DataBind();
                 Limpiar();
             }
@@ -133,11 +133,11 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
         ImageButton imgButton = (sender as ImageButton);
         GridViewRow row = imgButton.Parent.Parent as GridViewRow;
         Label lblReferencia = (Label)row.FindControl("lblGVIdEtiqueta");
-        Etiqueta etiqueta = App.Consultas.ObtieneEtiquetaPorId(Convert.ToInt32(lblReferencia.Text.Trim()));
+        Etiqueta etiqueta = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneEtiquetaPorId(Convert.ToInt32(lblReferencia.Text.Trim()));
         etiqueta.Status = "INACTIVO";
         if (etiqueta.Actualizar())
         {
-            this.grvEtiquetas.DataSource = App.Consultas.ObtieneListaEtiqueta();
+            this.grvEtiquetas.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiqueta();
             this.grvEtiquetas.DataBind();
             Limpiar();
         }
@@ -231,7 +231,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
         try
         {
             grvEtiquetas.PageIndex = e.NewPageIndex;
-            this.grvEtiquetas.DataSource = App.Consultas.ObtieneListaEtiqueta();
+            this.grvEtiquetas.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiqueta();
             this.grvEtiquetas.DataBind();
         }
         catch (Exception)
@@ -263,7 +263,7 @@ public partial class ImportacionArchivos_Etiqueta : System.Web.UI.Page
                                     iNumPag <= grvEtiquetas.PageCount
                                         ? iNumPag - 1
                                         : 0;
-        this.grvEtiquetas.DataSource = App.Consultas.ObtieneListaEtiqueta();
+        this.grvEtiquetas.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiqueta();
         this.grvEtiquetas.DataBind();
     }
 }

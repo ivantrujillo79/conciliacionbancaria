@@ -14,9 +14,11 @@ using CatalogoConciliacion;
 using Conciliacion.Migracion.Runtime;
 public partial class Acceso_Login : System.Web.UI.UserControl
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected void Page_Load(object sender, EventArgs e)
     {
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        //Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         Page.ClientScript.RegisterOnSubmitStatement(this.GetType(), "ValidaEnvio", "return ValidaEnvio();");
     }
     #region "Variables globales"
@@ -125,6 +127,8 @@ public partial class Acceso_Login : System.Web.UI.UserControl
 
     private void ConfiguraConexion()
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
         Conciliacion.Migracion.Runtime.App.UsuarioActual = txtUsuario.Text.Trim();
 
         AppSettingsReader settings = new AppSettingsReader();
@@ -143,8 +147,8 @@ public partial class Acceso_Login : System.Web.UI.UserControl
             this.baseDatos + "; User ID = " + this.txtUsuario.Text.Trim() + "; Password = " + this.txtClave.Text.Trim();
 
         Conciliacion.Migracion.Runtime.App.CadenaConexion = cn.ConnectionString;
-        Conciliacion.RunTime.App.CadenaConexion = cn.ConnectionString;
-        CatalogoConciliacion.App.CadenaConexion = cn.ConnectionString;
+        objApp.CadenaConexion = cn.ConnectionString;
+        objApp.CadenaConexion = cn.ConnectionString;
         
     }
 

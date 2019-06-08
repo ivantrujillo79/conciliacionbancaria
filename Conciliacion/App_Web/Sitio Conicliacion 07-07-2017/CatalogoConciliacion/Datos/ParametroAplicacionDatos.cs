@@ -12,12 +12,12 @@ namespace CatalogoConciliacion.Datos
     public class ParametroAplicacionDatos : ParametroAplicacion
     {
 
-         public ParametroAplicacionDatos(IMensajesImplementacion implementadorMensajes)
+         public ParametroAplicacionDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-        public ParametroAplicacionDatos(string parametro, string valor, string observaciones, IMensajesImplementacion implementadorMensajes)
+        public ParametroAplicacionDatos(string parametro, string valor, string observaciones, MensajesImplementacion implementadorMensajes)
             : base(parametro, valor, observaciones, implementadorMensajes)
         {
         }

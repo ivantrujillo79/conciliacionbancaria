@@ -9,14 +9,14 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     class GrupoConciliacionDiasDiferenciaDatos : GrupoConciliacionDiasDiferencia
     {
-
-        public GrupoConciliacionDiasDiferenciaDatos(short grupoconciliacion,IMensajesImplementacion implementadorMensajes):
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        public GrupoConciliacionDiasDiferenciaDatos(short grupoconciliacion,MensajesImplementacion implementadorMensajes):
             base(grupoconciliacion,implementadorMensajes)
         {
 
         }
 
-        public GrupoConciliacionDiasDiferenciaDatos(short grupoconciliacion, short diferenciadiasminima, short diferenciadiasmaxima, short diferenciadiasdefault, decimal diferenciacentavosminima, decimal diferenciacentavosmaxima, decimal diferenciacentavosdefault, IMensajesImplementacion implementadorMensajes) : 
+        public GrupoConciliacionDiasDiferenciaDatos(short grupoconciliacion, short diferenciadiasminima, short diferenciadiasmaxima, short diferenciadiasdefault, decimal diferenciacentavosminima, decimal diferenciacentavosmaxima, decimal diferenciacentavosdefault, MensajesImplementacion implementadorMensajes) : 
          base(grupoconciliacion,diferenciadiasminima,diferenciadiasmaxima,diferenciadiasdefault,diferenciacentavosminima,diferenciacentavosmaxima,diferenciacentavosdefault,implementadorMensajes)
         {
 
@@ -24,7 +24,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override GrupoConciliacionDiasDiferencia CrearObjeto(short grupoconciliacion)
         {
-            return new GrupoConciliacionDiasDiferenciaDatos(grupoconciliacion,App.ImplementadorMensajes);
+            return new GrupoConciliacionDiasDiferenciaDatos(grupoconciliacion,ImplementadorMensajes);
         }
 
         public override bool CargarDatos()
@@ -32,7 +32,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBConsultaGrupoConciliacion", cnn);

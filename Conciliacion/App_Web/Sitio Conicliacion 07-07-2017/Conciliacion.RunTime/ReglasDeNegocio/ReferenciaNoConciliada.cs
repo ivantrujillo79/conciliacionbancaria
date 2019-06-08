@@ -109,7 +109,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
            short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
            short mesconciliacion, decimal diferencia, bool coninterno,
            string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
-           int año, IMensajesImplementacion implementadorMensajes)
+           int año, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -158,7 +158,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
            short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
            short mesconciliacion, decimal diferencia, bool coninterno,
            string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
-           int año, string statusMovimiento, IMensajesImplementacion implementadorMensajes)
+           int año, string statusMovimiento, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -209,7 +209,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
           short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion,
           short mesconciliacion, decimal diferencia, bool coninterno,
           string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
-          int año, IMensajesImplementacion implementadorMensajes)
+          int año, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -259,7 +259,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
           short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion,
           short mesconciliacion, decimal diferencia, bool coninterno,
           string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
-          int año, int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+          int año, int tipocobro, int tipocobroanterior, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -312,7 +312,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
           short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
            short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
            string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
-           int año, IMensajesImplementacion implementadorMensajes)
+           int año, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -362,7 +362,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
            short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
             short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
             string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string ubicacionicono,
-            int año, DetalleSaldoAFavor DetalleSaldo, IMensajesImplementacion implementadorMensajes)
+            int año, DetalleSaldoAFavor DetalleSaldo, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -415,7 +415,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                                      decimal deposito, decimal retiro, decimal saldo, int caja, string sucursalbancaria,
                                      string tipotraspaso, decimal? montotraspaso, int? corporativotraspaso, int? sucursaltraspaso, int? añotraspaso, int? foliotraspaso,//int motivonoconciliado,string comentarionoconciliado,
                                      List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida,
-                                     IMensajesImplementacion implementadorMensajes)
+                                     MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -462,7 +462,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         }
 
-        public ReferenciaNoConciliada(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliada(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativo = 0;
@@ -496,7 +496,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.DetalleSaldo = null;
         }
 
-        public ReferenciaNoConciliada(int corporativo, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativoex, int sucursalex, int añoex, int folioex, int secuenciaex, int consecutivoflujo, bool coninterno, short statusconcepto, string statusconciliacion, string ubicacionicono, DateTime foperacion, DateTime fmovimiento, string referencia, string descripcion, decimal deposito, decimal retiro, decimal saldo, int caja, string sucursalbancaria, string tipotraspaso, decimal? montotraspaso, int? corporativotraspaso, int? sucursaltraspaso, int? añotraspaso, int? foliotraspaso, List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida, DetalleSaldoAFavor detalleSaldo, IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliada(int corporativo, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativoex, int sucursalex, int añoex, int folioex, int secuenciaex, int consecutivoflujo, bool coninterno, short statusconcepto, string statusconciliacion, string ubicacionicono, DateTime foperacion, DateTime fmovimiento, string referencia, string descripcion, decimal deposito, decimal retiro, decimal saldo, int caja, string sucursalbancaria, string tipotraspaso, decimal? montotraspaso, int? corporativotraspaso, int? sucursaltraspaso, int? añotraspaso, int? foliotraspaso, List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida, DetalleSaldoAFavor detalleSaldo, MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursalconciliacion = sucursalconciliacion;
@@ -533,7 +533,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string ubicacionicono, int año, int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string ubicacionicono, int año, int tipocobro, int tipocobroanterior, MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursal = sucursal;
@@ -566,7 +566,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente, int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente, int tipocobro, int tipocobroanterior, MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursal = sucursal;
@@ -600,6 +600,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
+        //protected ReferenciaNoConciliada(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
+
         #endregion
 
         public abstract bool Guardar();
@@ -617,6 +622,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract ReferenciaNoConciliada CrearObjeto();
 
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
         #region Propiedades
 
@@ -999,7 +1005,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
 
                 ReferenciaConciliada RefConciliada;
-                RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliada.CrearObjeto();
+                RefConciliada = objApp.ReferenciaConciliada.CrearObjeto();
 
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion
                 RefConciliada.Sucursal = this.sucursalconciliacion;//SucursalConciliacion
@@ -1057,7 +1063,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 //    return false;
                 //}
                 ReferenciaConciliada RefConciliada;
-                RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliada.CrearObjeto();
+                RefConciliada = objApp.ReferenciaConciliada.CrearObjeto();
 
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion
                 RefConciliada.Sucursal = this.sucursalconciliacion;//SucursalConciliacion
@@ -1120,7 +1126,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     return false;
                 }
                 ReferenciaConciliadaPedido RefConciliada;
-                RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliadaPedido.CrearObjeto();
+                RefConciliada = objApp.ReferenciaConciliadaPedido.CrearObjeto();
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion
                 RefConciliada.Sucursal = this.sucursalconciliacion;//SucursalConciliacion
                 RefConciliada.AñoConciliacion = this.AñoConciliacion; //AñoConciliacion
@@ -1173,7 +1179,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             try
             {
                 ReferenciaConciliadaPedido RefConciliada;
-                RefConciliada = Conciliacion.RunTime.App.ReferenciaConciliadaPedido.CrearObjeto();
+                RefConciliada = objApp.ReferenciaConciliadaPedido.CrearObjeto();
                 RefConciliada.Corporativo = this.corporativo; //CoporrativoConcialicion
                 RefConciliada.Sucursal = this.sucursalconciliacion;//SucursalConciliacion
                 RefConciliada.AñoConciliacion = this.AñoConciliacion; //AñoConciliacion
@@ -1348,7 +1354,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //    {
         //        foreach (ReferenciaConciliada referen in this.ListaReferenciaConciliada)
         //        {
-        //            ReferenciaNoConciliada dato = App.ReferenciaNoConciliada;
+        //            ReferenciaNoConciliada dato = objApp.ReferenciaNoConciliada;
         //            dato.Corporativo = referen.Corporativo;
         //            dato.Sucursal = referen.SucursalInterno;
         //            dato.SucursalDes = referen.SucursalIntDes;
@@ -1385,7 +1391,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //    {
         //        foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
         //        {
-        //            ReferenciaNoConciliadaPedido dato = App.ReferenciaNoConciliadaPedido;
+        //            ReferenciaNoConciliadaPedido dato = objApp.ReferenciaNoConciliadaPedido;
         //            dato.Corporativo = referen.Corporativo;
         //            dato.Sucursal = referen.Sucursal;
         //            dato.SucursalDes = referen.SucursalDes;
@@ -1463,7 +1469,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             {
                 resultado = false;
                 this.Completo = false;
-                App.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
+                objApp.ImplementadorMensajes.MostrarMensaje(ex.StackTrace);
             }
 
 
@@ -1532,7 +1538,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                return objApp.CadenaConexion;
             }
         }
 

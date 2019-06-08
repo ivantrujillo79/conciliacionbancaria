@@ -9,7 +9,9 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ConciliacionReferenciaDatos: ConciliacionReferencia
     {
-        public ConciliacionReferenciaDatos(IMensajesImplementacion implementadorMensajes)
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
+        public ConciliacionReferenciaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -46,7 +48,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //    string descripcion,
         //    string usuariostatusconcepto,
         //    DateTime fstatusconcepto,
-        //    IMensajesImplementacion implementadorMensajes)
+        //    MensajesImplementacion implementadorMensajes)
         //    : base( corporativoconciliacion,
         //            sucursalconciliacion,
         //            añoconciliacion,
@@ -82,7 +84,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override void ActualizaPagoAnticipado(byte CorporativoConciliacion, byte SucursalConciliacion, int AñoConciliacion, int MesConciliacion, int FolioConciliacion, int SecuenciaRelacion, int StatusConcepto, string StatusConciliacion, byte MotivoNoConciliado, string ComentarioNoConciliado, decimal MontoExterno)
         {
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {

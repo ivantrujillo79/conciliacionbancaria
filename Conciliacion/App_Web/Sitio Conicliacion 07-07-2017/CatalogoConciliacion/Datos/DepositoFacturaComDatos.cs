@@ -9,7 +9,7 @@ namespace CatalogoConciliacion.Datos
 {
     public class DepositoFacturaComDatos:DepositoFacturaCom
     {
-        public DepositoFacturaComDatos(IMensajesImplementacion implementadorMensajes)
+        public DepositoFacturaComDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -17,7 +17,7 @@ namespace CatalogoConciliacion.Datos
         public DepositoFacturaComDatos(string cuentabancofinanciero, string cuentabanco, string fdeposito, string deposito,
             string foliocomple, string seriecomple, string ftimbradocomple,
             string totalcomple, string uuidcomple, string folio, string serie, string ftimbrado,
-            string total, string uuid, string rfcliente, IMensajesImplementacion implemntadorMensajes)
+            string total, string uuid, string rfcliente, MensajesImplementacion implemntadorMensajes)
             : base(cuentabancofinanciero, cuentabanco, fdeposito, deposito,
             foliocomple, seriecomple, ftimbradocomple,
             totalcomple, uuidcomple, folio, serie, ftimbrado,

@@ -36,7 +36,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.descripcion = descripcion;
         }
 
-        public EstadoDeCuenta(IMensajesImplementacion implementadorMensajes)
+        public EstadoDeCuenta(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.añoconciliacion = 0;
@@ -114,7 +114,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { descripcion = value; }
         }
 
-        private IMensajesImplementacion implementadorMensajes;
+        private MensajesImplementacion implementadorMensajes;
 
     }
 }

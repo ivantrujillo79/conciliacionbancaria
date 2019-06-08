@@ -14,12 +14,12 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public   class InformeBancarioDatos : InformeBancario
     {
-        public InformeBancarioDatos(IMensajesImplementacion implementadorMensajes)
+        public InformeBancarioDatos(MensajesImplementacion implementadorMensajes)
                     : base(implementadorMensajes)
         {
         }
 
-        public InformeBancarioDatos(DetallePosicionDiariaBancos detalleposiciondiariabancos, IMensajesImplementacion implementadorMensajes)
+        public InformeBancarioDatos(DetallePosicionDiariaBancos detalleposiciondiariabancos, MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }

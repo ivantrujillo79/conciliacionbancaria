@@ -34,7 +34,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string usuariostatusconcepto;
         private DateTime fstatusconcepto;
 
-        public FacturaManual(IMensajesImplementacion implementadorMensajes)
+        public FacturaManual(MensajesImplementacion implementadorMensajes)
         {
             this.corporativoconciliacion = 0;
             this.sucursalconciliacion = 0;
@@ -64,7 +64,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public FacturaManual(byte corporativoconciliacion, byte sucursalconciliacion, int añoconciliacion, int mesconciliacion, int folioconciliacion, int secuenciarelacion, int factura, byte corporativoexterno, byte sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno, string concepto, decimal montoconciliado, decimal montoexterno, int montointerno, int formaconciliacion, int statusconcepto, string statusconciliacion, string statusmovimiento, string usuario, DateTime falta, string descripcion, string usuariostatusconcepto, DateTime fstatusconcepto, IMensajesImplementacion implementadorMensajes)
+        public FacturaManual(byte corporativoconciliacion, byte sucursalconciliacion, int añoconciliacion, int mesconciliacion, int folioconciliacion, int secuenciarelacion, int factura, byte corporativoexterno, byte sucursalexterno, int añoexterno, int folioexterno, int secuenciaexterno, string concepto, decimal montoconciliado, decimal montoexterno, int montointerno, int formaconciliacion, int statusconcepto, string statusconciliacion, string statusmovimiento, string usuario, DateTime falta, string descripcion, string usuariostatusconcepto, DateTime fstatusconcepto, MensajesImplementacion implementadorMensajes)
         {
             this.corporativoconciliacion = corporativoconciliacion;
             this.sucursalconciliacion = sucursalconciliacion;
@@ -98,7 +98,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
+            }
         }
 
         public abstract bool Guardar(Conexion _conexion,

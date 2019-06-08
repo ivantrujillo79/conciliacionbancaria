@@ -10,7 +10,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 {
     public abstract class Consultas : EmisorMensajes
     {
-        public Consultas(IMensajesImplementacion implementadorMensajes)
+
+        //public Consultas(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.ImplementadorMensajes = implementadorMensajes;
+        //}
+
+        public Consultas(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
         }
@@ -363,7 +369,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

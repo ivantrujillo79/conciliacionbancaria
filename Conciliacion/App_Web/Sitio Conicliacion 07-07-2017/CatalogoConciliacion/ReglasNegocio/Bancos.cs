@@ -12,7 +12,7 @@ namespace CatalogoConciliacion.ReglasNegocio
         string descripcion;
 
 
-        public Bancos(IMensajesImplementacion implementadorMensajes)
+        public Bancos(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
         }

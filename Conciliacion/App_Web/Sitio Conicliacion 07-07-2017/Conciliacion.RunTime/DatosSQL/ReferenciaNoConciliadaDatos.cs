@@ -13,12 +13,12 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     class ReferenciaNoConciliadaDatos :ReferenciaNoConciliada 
     {
-
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         public ReferenciaNoConciliadaDatos
             (int corporativo, int sucursal,string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion,string concepto,decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
              DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
              string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente,
-             IMensajesImplementacion implementadorMensajes)
+             MensajesImplementacion implementadorMensajes)
             : base(corporativo,sucursal, sucursaldes,añoconciliacion,folio,secuencia,descripcion,concepto,deposito, retiro,formaconciliacion,statusconcepto,statusconciliacion, foperacion,fmovimiento, folioconciliacion,mesconciliacion,diferencia,coninterno,
             cheque,referencia,nombretercero,rfctercero,sucursalconciliacion,año, 
             implementadorMensajes)
@@ -29,7 +29,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //   public ReferenciaNoConciliadaDatos(int corporativo, int sucursal, string sucursaldes, int año, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
         //DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
         //       string cheque, string referencia, string nombretercero, string rfctercero,
-        //       IMensajesImplementacion implementadorMensajes)
+        //       MensajesImplementacion implementadorMensajes)
         //       : base(corporativo, sucursal, sucursaldes, año, folio, secuencia, descripcion, concepto,deposito,retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento,folioconciliacion,mesconciliacion,diferencia,coninterno, 
         //       cheque,referencia,nombretercero,rfctercero,
         //       implementadorMensajes)
@@ -41,7 +41,7 @@ namespace Conciliacion.RunTime.DatosSQL
 (int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
 DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
 string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente,
-IMensajesImplementacion implementadorMensajes)
+MensajesImplementacion implementadorMensajes)
 : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, ubicacionicono, folioconciliacion, mesconciliacion, diferencia, coninterno,
 cheque, referencia, nombretercero, rfctercero, sucursalconciliacion, año,
 implementadorMensajes)
@@ -53,7 +53,7 @@ implementadorMensajes)
 (int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
 DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno,
             string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente,
-            int tipocobro, int tipocobroanterior, IMensajesImplementacion implementadorMensajes)
+            int tipocobro, int tipocobroanterior, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, ubicacionicono, folioconciliacion, mesconciliacion, diferencia, coninterno,
             cheque,referencia,nombretercero,rfctercero,sucursalconciliacion, año,
             tipocobro, tipocobroanterior, implementadorMensajes)
@@ -66,7 +66,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
   (int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
    DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
             string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente,
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, folioconciliacion,
             mesconciliacion, coninterno, listareferenciaconciliada,
             cheque, referencia, nombretercero, rfctercero, sucursalconciliacion,año, 
@@ -80,7 +80,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
                 string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string tipo, string ubicacionicono, int año, int cliente,
                 DetalleSaldoAFavor DetalleSaldo,
-                IMensajesImplementacion implementadorMensajes)
+                MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, folioconciliacion,
             mesconciliacion, coninterno, listareferenciaconciliada,
             cheque, referencia, nombretercero, rfctercero, sucursalconciliacion, ubicacionicono,año, 
@@ -121,7 +121,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
         //    int cliente,
         //    int tipocobro,
         //    int tipocobroanterior,
-        //    IMensajesImplementacion implementadorMensajes)
+        //    MensajesImplementacion implementadorMensajes)
         //    : base(corporativo,
         //        sucursal,
         //        sucursaldes,
@@ -166,7 +166,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             decimal deposito, decimal retiro, decimal saldo, int caja, string sucursalbancaria,
             string tipotraspaso, decimal? montotraspaso,int? corporativotraspaso,int? sucursaltraspaso,int? añotraspaso,int? foliotraspaso,
             List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida,
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
             : base(  corporativo,    sucursalconciliacion,   añoconciliacion,  mesconciliacion,    folioconciliacion,
                      corporativoex,   sucursalex,  añoex,  folioex,   secuenciaex,  consecutivoflujo,
                      coninterno,  statusconcepto,  statusconciliacion,  ubicacionicono,
@@ -187,7 +187,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             string tipotraspaso, decimal? montotraspaso, int? corporativotraspaso, int? sucursaltraspaso, int? añotraspaso, int? foliotraspaso,
             List<ReferenciaConciliadaCompartida> listareferenciaconciliadacompartida,
             DetalleSaldoAFavor DetalleSaldo,
-            IMensajesImplementacion implementadorMensajes)
+            MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursalconciliacion, añoconciliacion, mesconciliacion, folioconciliacion,
                      corporativoex, sucursalex, añoex, folioex, secuenciaex, consecutivoflujo,
                      coninterno, statusconcepto, statusconciliacion, ubicacionicono,
@@ -200,7 +200,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
         }
 
         
-        public ReferenciaNoConciliadaDatos(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliadaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
             
@@ -208,7 +208,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
 
         public override ReferenciaNoConciliada CrearObjeto()
         {
-            return new ReferenciaNoConciliadaDatos(App.ImplementadorMensajes);
+            return new ReferenciaNoConciliadaDatos(objApp.ImplementadorMensajes);
         }
 
         public override bool Guardar()
@@ -235,7 +235,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             if (PedidoMultiple == "1")
             {
                 PedidoReferencia = PedidoReferencia.Trim();
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBExisteConciliacionPedido", cnn);
@@ -258,7 +258,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
         public override bool EliminarReferenciaConciliada()
         {
             bool resultado = false;
-            using (SqlConnection cnnInt = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnnInt = new SqlConnection(objApp.CadenaConexion))
             {
                 cnnInt.Open();
                 SqlTransaction transactionInt = cnnInt.BeginTransaction();
@@ -277,7 +277,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                         comandoInt.Transaction = transactionInt;
                         comandoInt.ExecuteNonQuery();
                     }
-                    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                     {
                         try
                         {
@@ -351,7 +351,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionPedido", cnn);
@@ -405,7 +405,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);
@@ -460,7 +460,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionPedido", cnn);
@@ -513,7 +513,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);
@@ -567,7 +567,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionReferencia", cnn);
@@ -622,7 +622,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
           decimal centavos, short statusconcepto, string campoexterno, string campopedido)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -642,7 +642,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
 
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.VarChar).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.VarChar).Value = statusconcepto;
-                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = App.Consultas.ObtenerCadenaDeEtiquetas(0, this.Corporativo, this.SucursalConciliacion, this.AñoConciliacion, this.MesConciliacion, this.FolioConciliacion, statusconcepto);
+                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = objApp.Consultas.ObtenerCadenaDeEtiquetas(0, this.Corporativo, this.SucursalConciliacion, this.AñoConciliacion, this.MesConciliacion, this.FolioConciliacion, statusconcepto);
                     comando.Parameters.Add("@CampoExterno", System.Data.SqlDbType.VarChar).Value = campoexterno;
                     comando.Parameters.Add("@CampoPedido", System.Data.SqlDbType.VarChar).Value = campopedido;
 
@@ -715,7 +715,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
           decimal centavos, short statusconcepto, string campoexterno, string campopedido)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -735,7 +735,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
 
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.VarChar).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.VarChar).Value = statusconcepto;
-                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = App.Consultas.ObtenerCadenaDeEtiquetas(0, this.Corporativo, this.SucursalConciliacion, this.AñoConciliacion, this.MesConciliacion, this.FolioConciliacion, statusconcepto);
+                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = objApp.Consultas.ObtenerCadenaDeEtiquetas(0, this.Corporativo, this.SucursalConciliacion, this.AñoConciliacion, this.MesConciliacion, this.FolioConciliacion, statusconcepto);
                     comando.Parameters.Add("@CampoExterno", System.Data.SqlDbType.VarChar).Value = campoexterno;
                     comando.Parameters.Add("@CampoPedido", System.Data.SqlDbType.VarChar).Value = campopedido;
 
@@ -807,7 +807,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
          decimal centavos, short statusconcepto, string campoexterno, string campopedido)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -827,7 +827,7 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
 
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.VarChar).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.VarChar).Value = statusconcepto;
-                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = App.Consultas.ObtenerCadenaDeEtiquetas(0, this.Corporativo, this.SucursalConciliacion, this.AñoConciliacion, this.MesConciliacion, this.FolioConciliacion, statusconcepto);
+                    comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = objApp.Consultas.ObtenerCadenaDeEtiquetas(0, this.Corporativo, this.SucursalConciliacion, this.AñoConciliacion, this.MesConciliacion, this.FolioConciliacion, statusconcepto);
                     comando.Parameters.Add("@CampoExterno", System.Data.SqlDbType.VarChar).Value = campoexterno;
                     comando.Parameters.Add("@CampoPedido", System.Data.SqlDbType.VarChar).Value = campopedido;
 

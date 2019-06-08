@@ -14,6 +14,8 @@ using CatalogoConciliacion;
 
 public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 {
+    CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
     #region "Propiedades Globales"
     private SeguridadCB.Public.Usuario usuario;
@@ -37,7 +39,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
            
@@ -46,7 +48,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
             if (!IsPostBack)
             {
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-                objParametro = CatalogoConciliacion.App.Parametro.CrearObjeto();
+                objParametro = objAppCat.Parametro.CrearObjeto();
 
                 objParametro.Parametro = "NumeroDocumentosTRANSBAN";
 
@@ -58,7 +60,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-           App.ImplementadorMensajes.MostrarMensaje("Error\n"+ex.Message);
+           objApp.ImplementadorMensajes.MostrarMensaje("Error\n"+ex.Message);
         }
 
     }
@@ -77,7 +79,7 @@ public partial class Catalogos_TipoMovimientoPorCuenta : System.Web.UI.Page
         try
         {
             // if (cboCorporativo.Items.Count == 0 && cboCorporativoDestino_.Items.Count == 0)
-            objParametro = CatalogoConciliacion.App.Parametro.CrearObjeto();
+            objParametro = objAppCat.Parametro.CrearObjeto();
 
             objParametro.Parametro = "NumeroDocumentosTRANSBAN";
             objParametro.Valor = tbValor.Text;

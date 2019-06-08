@@ -12,13 +12,13 @@ namespace CatalogoConciliacion.Datos
     public class TipoConciliacionUsuarioDatos : TipoConciliacionUsuario
     {
 
-         public TipoConciliacionUsuarioDatos(IMensajesImplementacion implementadorMensajes)
+         public TipoConciliacionUsuarioDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
 
-         public TipoConciliacionUsuarioDatos(int tipoConciliacion, string usuario, IMensajesImplementacion implementadorMensajes)
+         public TipoConciliacionUsuarioDatos(int tipoConciliacion, string usuario, MensajesImplementacion implementadorMensajes)
             : base(tipoConciliacion,  usuario,  implementadorMensajes)
         {
         }

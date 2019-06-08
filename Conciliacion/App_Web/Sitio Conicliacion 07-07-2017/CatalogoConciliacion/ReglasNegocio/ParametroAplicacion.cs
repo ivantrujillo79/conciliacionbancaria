@@ -16,7 +16,7 @@ namespace CatalogoConciliacion.ReglasNegocio
         #region Constructores
 
 
-        public ParametroAplicacion(IMensajesImplementacion implementadorMensajes)
+        public ParametroAplicacion(MensajesImplementacion implementadorMensajes)
         {       
             this.parametro = string.Empty;
             this.valor = string.Empty;
@@ -24,7 +24,7 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public ParametroAplicacion(string parametro, string valor, string observaciones, IMensajesImplementacion implementadorMensajes)
+        public ParametroAplicacion(string parametro, string valor, string observaciones, MensajesImplementacion implementadorMensajes)
         {
             this.parametro = parametro;
             this.valor = valor;
@@ -59,7 +59,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

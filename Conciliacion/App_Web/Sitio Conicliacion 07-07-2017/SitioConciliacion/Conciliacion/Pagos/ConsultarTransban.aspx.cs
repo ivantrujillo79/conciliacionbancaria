@@ -16,7 +16,7 @@ public partial class Conciliacion_Pagos_ConsultarTransban : System.Web.UI.Page
     private SeguridadCB.Public.Usuario usuario;
 
     #endregion
-
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -40,7 +40,7 @@ public partial class Conciliacion_Pagos_ConsultarTransban : System.Web.UI.Page
         catch (Exception ex)
         {
 
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -77,7 +77,7 @@ public partial class Conciliacion_Pagos_ConsultarTransban : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
     }
 

@@ -19,9 +19,11 @@ namespace Conciliacion.RunTime.DatosSQL
             //(4, "Referencia de pago");
 
             List<Cliente> Clientes = new List<Cliente>();
-            Cliente objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
-            {
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            Cliente objCliente = objApp.Cliente;
+
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
+            { 
                 try
                 {
                     cnn.Open();
@@ -32,7 +34,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     SqlDataReader reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
-                        objCliente = Conciliacion.RunTime.App.Cliente.CrearObjeto();
+                        objCliente = objApp.Cliente.CrearObjeto();
                         objCliente.NumCliente = Convert.ToInt32(reader["Cliente"]);
                         objCliente.Nombre = Convert.ToString(reader["Nombre"]);
                         objCliente.RazonSocial = Convert.ToString(reader["razonsocial"]);
@@ -53,13 +55,13 @@ namespace Conciliacion.RunTime.DatosSQL
 
         }
 
-        public BusquedaClienteDatosBancariosDatos(IMensajesImplementacion implementadorMensajes)
+        public BusquedaClienteDatosBancariosDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
 
-        public BusquedaClienteDatosBancariosDatos(List<int> clientes, IMensajesImplementacion implementadorMensajes)
+        public BusquedaClienteDatosBancariosDatos(List<int> clientes, MensajesImplementacion implementadorMensajes)
             : base(clientes, implementadorMensajes)
         {
         }

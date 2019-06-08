@@ -14,11 +14,12 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ReferenciaConciliadaPedidoDatos : ReferenciaConciliadaPedido
     {
-          public ReferenciaConciliadaPedidoDatos(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion,
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        public ReferenciaConciliadaPedidoDatos(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion,
                                     int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
                                     string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                     int sucursalpedido, string sucursalpedidodes, int celulapedido, int añopedido, int pedido, int remisionpedido, string seriepedido, int foliosat, string seriesat, string conceptopedido, decimal total, string statusmovimiento,
-                                    int cliente, string nombre,int añoexterno, IMensajesImplementacion implementadorMensajes)
+                                    int cliente, string nombre,int añoexterno, MensajesImplementacion implementadorMensajes)
             : base(corporativo, añoconciliacion, mesconciliacion, folioconciliacion, sucursalext, sucursalextdes, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
              chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
              sucursalpedido,  sucursalpedidodes,  celulapedido,  añopedido,  pedido,  remisionpedido,  seriepedido,  foliosat,  seriesat, conceptopedido, total, statusmovimiento, cliente,nombre,añoexterno, implementadorMensajes)
@@ -30,7 +31,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                      int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
                                      string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                      int sucursalpedido, string sucursalpedidodes, int celulapedido, int añopedido, int pedido, int remisionpedido, string seriepedido, int foliosat, string seriesat, string conceptopedido, decimal total, string statusmovimiento,
-                                     int cliente, string nombre, string pedidoreferencia, int añoexterno, IMensajesImplementacion implementadorMensajes)
+                                     int cliente, string nombre, string pedidoreferencia, int añoexterno, MensajesImplementacion implementadorMensajes)
               : base(corporativo, añoconciliacion, mesconciliacion, folioconciliacion, sucursalext, sucursalextdes, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
               chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
                sucursalpedido, sucursalpedidodes, celulapedido, añopedido, pedido, remisionpedido, seriepedido, foliosat, seriesat, conceptopedido, total, statusmovimiento, cliente, nombre, pedidoreferencia,  añoexterno, implementadorMensajes)
@@ -42,7 +43,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                      int sucursalext, string sucursalextdes, int folioext, int secuenciaext, string conceptoext, decimal montoconciliado, decimal diferencia, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacionext, DateTime fmovimientoext,
                                      string chequeexterno, string referenciaexterno, string descripcionexterno, string nombreterceroexterno, string rfcterceroexterno, decimal depositoexterno, decimal retiroexterno,
                                      int sucursalpedido, string sucursalpedidodes, int celulapedido, int añopedido, int pedido, int remisionpedido, string seriepedido, int foliosat, string seriesat, string conceptopedido, decimal total, string statusmovimiento,
-                                     int cliente, string nombre, string pedidoreferencia, decimal saldo, int añoexterno, IMensajesImplementacion implementadorMensajes)
+                                     int cliente, string nombre, string pedidoreferencia, decimal saldo, int añoexterno, MensajesImplementacion implementadorMensajes)
               : base(corporativo, añoconciliacion, mesconciliacion, folioconciliacion, sucursalext, sucursalextdes, folioext, secuenciaext, conceptoext, montoconciliado, diferencia, formaconciliacion, statusconcepto, statusconciliacion, foperacionext, fmovimientoext,
               chequeexterno, referenciaexterno, descripcionexterno, nombreterceroexterno, rfcterceroexterno, depositoexterno, retiroexterno,
                sucursalpedido, sucursalpedidodes, celulapedido, añopedido, pedido, remisionpedido, seriepedido, foliosat, seriesat, conceptopedido, total, statusmovimiento, cliente, nombre, pedidoreferencia, saldo, añoexterno, implementadorMensajes)
@@ -50,15 +51,15 @@ namespace Conciliacion.RunTime.DatosSQL
 
           }
 
-        public ReferenciaConciliadaPedidoDatos(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaConciliadaPedidoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
             
         }
-
+        
         public override ReferenciaConciliadaPedido CrearObjeto()
         {
-            return new ReferenciaConciliadaPedidoDatos(App.ImplementadorMensajes);
+            return new ReferenciaConciliadaPedidoDatos(ImplementadorMensajes);
         }
 
         public override bool Guardar2(Conexion _conexion)
@@ -125,7 +126,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
                 try
                 {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionPedido", cnn);
@@ -327,7 +328,7 @@ namespace Conciliacion.RunTime.DatosSQL
             byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
             byte corporativo = ((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).Corporativo;
 
-            RTGMActualizarPedido obActualizar = new RTGMActualizarPedido(modulo, App.CadenaConexion);
+            RTGMActualizarPedido obActualizar = new RTGMActualizarPedido(modulo, objApp.CadenaConexion);
             //bool resultado = false;
             List<RTGMCore.Pedido> PedidosRespuesta = new List<RTGMCore.Pedido>();
             try

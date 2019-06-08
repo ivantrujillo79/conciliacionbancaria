@@ -17,7 +17,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
 #region Constructores
 
-        public MotivoNoConciliado(IMensajesImplementacion implementadorMensajes)
+        public MotivoNoConciliado(MensajesImplementacion implementadorMensajes)
         {
             this.motivoNoConciliado = 0;
             this.descripcion = "";
@@ -25,7 +25,7 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public MotivoNoConciliado(int motivoNoConciliado, string descripcion, string status, IMensajesImplementacion implementadorMensajes)
+        public MotivoNoConciliado(int motivoNoConciliado, string descripcion, string status, MensajesImplementacion implementadorMensajes)
         {
             this.motivoNoConciliado = motivoNoConciliado;
             this.descripcion = descripcion ;
@@ -33,9 +33,9 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.ImplementadorMensajes = implementadorMensajes;
         }
 
-#endregion
+        #endregion
 
-#region Propiedades
+        #region Propiedades
         public int MotivoNoConciliadoId
         {
             get { return motivoNoConciliado; }
@@ -59,7 +59,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

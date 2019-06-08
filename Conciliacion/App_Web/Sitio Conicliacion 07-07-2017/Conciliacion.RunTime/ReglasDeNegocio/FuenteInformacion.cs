@@ -19,7 +19,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public cFuenteInformacion(IMensajesImplementacion implementadorMensajes)
+        public cFuenteInformacion(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.fuenteinformacion=0;
@@ -34,7 +34,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
         public cFuenteInformacion(int fuenteinformacion, string rutaarchivo, string cuentabancofinanciero,short tipofuenteinformacion, 
-            string tipofuenteinformaciondes,short tipofuente, string tipofuentedes, short tipoarchivo, string tipoarchivodes, IMensajesImplementacion implementadorMensajes)
+            string tipofuenteinformaciondes,short tipofuente, string tipofuentedes, short tipoarchivo, string tipoarchivodes, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.fuenteinformacion = fuenteinformacion;
@@ -112,7 +112,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

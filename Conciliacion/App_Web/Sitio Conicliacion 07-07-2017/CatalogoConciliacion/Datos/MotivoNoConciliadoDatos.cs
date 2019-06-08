@@ -13,12 +13,12 @@ namespace CatalogoConciliacion.Datos
     public class MotivoNoConciliadoDatos : MotivoNoConciliado
     {
 
-        public MotivoNoConciliadoDatos(IMensajesImplementacion implementadorMensajes)
+        public MotivoNoConciliadoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-        public MotivoNoConciliadoDatos(int motivonoconciliado, string descripcion, string status, IMensajesImplementacion implementadorMensajes)
+        public MotivoNoConciliadoDatos(int motivonoconciliado, string descripcion, string status, MensajesImplementacion implementadorMensajes)
             : base(motivonoconciliado, descripcion, status, implementadorMensajes)
         {
         }

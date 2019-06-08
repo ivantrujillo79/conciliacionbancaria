@@ -12,12 +12,12 @@ namespace CatalogoConciliacion.Datos
     public class ReferenciaACompararDatos : ReferenciaAComparar
     {
 
-         public ReferenciaACompararDatos(IMensajesImplementacion implementadorMensajes)
+         public ReferenciaACompararDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-         public ReferenciaACompararDatos( int tipoConciliacion, string tipoConciliaciondescripcion, int secuencia, string columnaDestinoExt, string columnaDestinoInt, string status, IMensajesImplementacion implementadorMensajes)
+         public ReferenciaACompararDatos( int tipoConciliacion, string tipoConciliaciondescripcion, int secuencia, string columnaDestinoExt, string columnaDestinoInt, string status, MensajesImplementacion implementadorMensajes)
             : base( tipoConciliacion, tipoConciliaciondescripcion, secuencia, columnaDestinoExt,columnaDestinoInt,status, implementadorMensajes)
         {
         }

@@ -20,7 +20,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
 #region Constructores
 
-        public ReferenciaAComparar(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaAComparar(MensajesImplementacion implementadorMensajes)
         {
             this.secuencia = 0;
             this.columnaDestinoExt="";
@@ -30,7 +30,7 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public ReferenciaAComparar(int tipoConciliacion, string tipoConciliaciondescripcion, int secuencia,string columnaDestinoExt,string columnaDestinoInt,string status, IMensajesImplementacion implementadorMensajes)
+        public ReferenciaAComparar(int tipoConciliacion, string tipoConciliaciondescripcion, int secuencia,string columnaDestinoExt,string columnaDestinoInt,string status, MensajesImplementacion implementadorMensajes)
         {
             this.secuencia = secuencia;
             this.columnaDestinoExt=columnaDestinoExt;
@@ -89,7 +89,8 @@ namespace CatalogoConciliacion.ReglasNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

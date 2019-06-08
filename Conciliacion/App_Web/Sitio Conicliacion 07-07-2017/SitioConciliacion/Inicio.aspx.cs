@@ -15,6 +15,7 @@ using System.IO;
 
 public partial class Inicio : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Operaciones operaciones;
     private SeguridadCB.Public.Usuario usuario;
@@ -48,7 +49,7 @@ public partial class Inicio : System.Web.UI.Page
 
         try
         {
-            Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+            objApp.ImplementadorMensajes.ContenedorActual = this;
 
             if (HttpContext.Current.Request.UrlReferrer != null)
             {
@@ -105,7 +106,7 @@ public partial class Inicio : System.Web.UI.Page
 
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     #endregion
@@ -164,7 +165,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -187,7 +188,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -197,7 +198,7 @@ public partial class Inicio : System.Web.UI.Page
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(tipoConciliacion != 2 ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0 : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(tipoConciliacion != 2 ? Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Con0 : Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.ddlSucursal.DataSource = listSucursales;
             this.ddlSucursal.DataValueField = "Identificador";
             this.ddlSucursal.DataTextField = "Descripcion";
@@ -206,7 +207,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
     /// <summary>
@@ -216,7 +217,7 @@ public partial class Inicio : System.Web.UI.Page
     {
         try
         {
-            listGrupoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaGruposConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, usuario);
+            listGrupoConciliacion = objApp.Consultas.ConsultaGruposConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, usuario);
             this.ddlGrupo.DataSource = listGrupoConciliacion;
             this.ddlGrupo.DataValueField = "Identificador";
             this.ddlGrupo.DataTextField = "Descripcion";
@@ -225,7 +226,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -235,7 +236,7 @@ public partial class Inicio : System.Web.UI.Page
     {
         try
         {
-            listTipoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, usuario);
+            listTipoConciliacion = objApp.Consultas.ConsultaTipoConciliacion(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionGrupo.Asignados, usuario);
             this.ddlTipoConciliacion.DataSource = listTipoConciliacion;
             this.ddlTipoConciliacion.DataValueField = "Identificador";
             this.ddlTipoConciliacion.DataTextField = "Descripcion";
@@ -244,7 +245,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -254,7 +255,7 @@ public partial class Inicio : System.Web.UI.Page
     {
         try
         {
-            listAñoConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaAños();
+            listAñoConciliacion = objApp.Consultas.ConsultaAños();
             this.ddlAñoConciliacion.DataSource = listAñoConciliacion;
             this.ddlAñoConciliacion.DataValueField = "Identificador";
             this.ddlAñoConciliacion.DataTextField = "Descripcion";
@@ -263,7 +264,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -289,7 +290,7 @@ public partial class Inicio : System.Web.UI.Page
     {
         try
         {
-            listStatusConciliacion = Conciliacion.RunTime.App.Consultas.ConsultaStatusConciliacion();
+            listStatusConciliacion = objApp.Consultas.ConsultaStatusConciliacion();
             this.ddlStatusConciliacion.DataSource = listStatusConciliacion;
             this.ddlStatusConciliacion.DataValueField = "Identificador";
             this.ddlStatusConciliacion.DataTextField = "Descripcion";
@@ -301,7 +302,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
     }
     /// <summary>
@@ -371,7 +372,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         try
         {
-            listaConciliaciones = Conciliacion.RunTime.App.Consultas.ConsultaConciliacion(
+            listaConciliaciones = objApp.Consultas.ConsultaConciliacion(
                         Convert.ToInt32(ddlEmpresa.SelectedItem.Value),
                         Convert.ToInt32(ddlSucursal.SelectedItem.Value),
                         Convert.ToInt32(this.ddlGrupo.SelectedItem.Value),
@@ -386,7 +387,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
 
     }
@@ -395,7 +396,7 @@ public partial class Inicio : System.Web.UI.Page
     /// </summary>
     public string fechaMaximaConciliacion()
     {
-        return Conciliacion.RunTime.App.Consultas.ConsultaFechaActualInicial();
+        return objApp.Consultas.ConsultaFechaActualInicial();
     }
     /// <summary>
     /// Obtiene la direccion de ordebamiento ASC o DESC
@@ -512,7 +513,7 @@ public partial class Inicio : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error: " + ex.Message);
         }
     }
 
@@ -629,7 +630,7 @@ public partial class Inicio : System.Web.UI.Page
             txtFinicio.Text = DateTime.Now.AddMonths(-1).ToShortDateString();
         if (txtFfinal.Text == "")
             txtFfinal.Text = DateTime.Now.ToShortDateString();
-        List<EstadoDeCuenta> listaEstadoCuenta = Conciliacion.RunTime.App.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), 
+        List<EstadoDeCuenta> listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), 
             decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked,0,0,0,0,0);
         grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
         if (listaEstadoCuenta.Count > 0)

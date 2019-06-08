@@ -10,8 +10,8 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class FlujoProyectadoDatos : FlujoProyectado
     {
-
-        public FlujoProyectadoDatos(IMensajesImplementacion implementadorMensajes)
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        public FlujoProyectadoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -26,7 +26,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
 
                     cnn.Open();

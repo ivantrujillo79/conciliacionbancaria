@@ -374,6 +374,8 @@ namespace ValidacionArchivosConciliacion
 
         private DetalleValidacion ValidaDocumentoReferencia()
         {
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
             DetalleValidacion detallevalidacion = new DetalleValidacion();
 
             bool Exito = true;
@@ -385,7 +387,7 @@ namespace ValidacionArchivosConciliacion
                 rowNo = rowNo + 1;
 
                 //if ( ! Conciliacion.RunTime.App.Consultas.VerificaPedidoReferenciaExiste(row[colDoc].ToString()) )
-                ReferenciaNoConciliadaPedido ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, row[colDoc].ToString());
+                ReferenciaNoConciliadaPedido ReferenciaNoConciliada = objApp.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, row[colDoc].ToString());
                 if (ReferenciaNoConciliada.Pedido == 0 || ReferenciaNoConciliada.CelulaPedido == 0 || ReferenciaNoConciliada.AñoPedido == 0)
                 {
                     Exito = false;
@@ -531,6 +533,8 @@ namespace ValidacionArchivosConciliacion
 
         public DetalleValidacion ValidaParentezco()
         {
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
             DetalleValidacion detallevalidacion = new DetalleValidacion();
             string Pedidoreferencia = "";
             var ListaPedidoCliente = CrearListaGenerica(new {PedidoReferencia = "", Cliente = ""});
@@ -544,7 +548,7 @@ namespace ValidacionArchivosConciliacion
                 foreach (DataRow row in dtArchivo.Rows)
                 {
                     Pedidoreferencia = row[colDoc].ToString();
-                    DataTable dtDetallePedido = Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                    DataTable dtDetallePedido = objApp.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
                     if (dtDetallePedido.Rows.Count > 0)
                     {
                         ListaPedidoCliente.Add(new { PedidoReferencia = dtDetallePedido.Rows[0]["PedidoReferencia"].ToString().Trim(), Cliente = dtDetallePedido.Rows[0]["Cliente"].ToString().Trim() });
@@ -554,7 +558,7 @@ namespace ValidacionArchivosConciliacion
             DataTable dtClienteFamilia;
             if (ListaPedidoCliente.Count > 0)
             { 
-                dtClienteFamilia = Conciliacion.RunTime.App.Consultas.FamiliaresCliente(Convert.ToInt32(ListaPedidoCliente[0].Cliente));
+                dtClienteFamilia = objApp.Consultas.FamiliaresCliente(Convert.ToInt32(ListaPedidoCliente[0].Cliente));
                 List<string> ListaFamilia = (from DataRow row in dtClienteFamilia.Rows select row["Cliente"].ToString()).Distinct().ToList();
                 foreach (var Cliente in ListaPedidoCliente)
                 {
@@ -585,6 +589,8 @@ namespace ValidacionArchivosConciliacion
 
         public DetalleValidacion ValidaParentezcoCRM()
         {
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
             string Pedidoreferencia = "";
             string PedidoNoEncontradoError = "";
             string DetalleError = "";
@@ -598,7 +604,7 @@ namespace ValidacionArchivosConciliacion
             foreach (DataRow row in dtArchivo.Rows)
             {
                 Pedidoreferencia = row[colDoc].ToString();
-                DataTable dtDetallePedido = Conciliacion.RunTime.App.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
+                DataTable dtDetallePedido = objApp.Consultas.PedidoReferenciaDetalle(Pedidoreferencia);
                 if (dtDetallePedido.Rows.Count > 0)
                 {
                     ListaPedidoCliente.Add(new

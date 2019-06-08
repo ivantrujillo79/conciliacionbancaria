@@ -22,12 +22,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public DatosArchivoDetalle(IMensajesImplementacion implementadorMensajes)
+        public DatosArchivoDetalle(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        public DatosArchivoDetalle(int corporativo, int sucursal, int año, int folio, int secuencia, DateTime foperacion, DateTime fmovimiento, string referencia, string descripcion, decimal deposito, decimal retiro, string concepto, IMensajesImplementacion implementadorMensajes)
+        public DatosArchivoDetalle(int corporativo, int sucursal, int año, int folio, int secuencia, DateTime foperacion, DateTime fmovimiento, string referencia, string descripcion, decimal deposito, decimal retiro, string concepto, MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursal = sucursal;
@@ -127,7 +127,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

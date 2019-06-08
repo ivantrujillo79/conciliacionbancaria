@@ -63,7 +63,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             short mesconciliacion, int celulapedido,int añopedido, int pedido, string pedidoreferencia, int cliente, string nombre,int remisionpedido, string seriepedido,
             int foliosat, string seriesat, string concepto,decimal total, short formaconciliacion, short statusconcepto, 
                 string statusconciliacion, DateTime foperacion, DateTime fmovimiento, 
-            decimal diferencia,IMensajesImplementacion implementadorMensajes)
+            decimal diferencia,MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -102,7 +102,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
 
 
-        public ReferenciaNoConciliadaPedido(DateTime ffactura, int cliente, string nombrecliente, string foliofacturaserie, string serie, string foliofactura, IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliadaPedido(DateTime ffactura, int cliente, string nombrecliente, string foliofacturaserie, string serie, string foliofactura, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.ffactura = ffactura;
@@ -114,7 +114,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         }
         //public ReferenciaNoConciliadaPedido(int corporativo, int sucursal, string sucursaldes, int año, int folio, int secuencia, string concepto, decimal deposito, decimal retiro, 
         //    short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime fmovimiento, DateTime foperacion, int folioconciliacion, short mes, 
-        //    decimal diferencia, IMensajesImplementacion implementadorMensajes)
+        //    decimal diferencia, MensajesImplementacion implementadorMensajes)
         //{
         //    this.ImplementadorMensajes = implementadorMensajes;
 
@@ -146,7 +146,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             short mesconciliacion, int celulapedido, int añopedido, int pedido, string pedidoreferencia, int cliente, string nombre, int remisionpedido, string seriepedido,
             int foliosat, string seriesat, string concepto, decimal total, short formaconciliacion, short statusconcepto,
                 string statusconciliacion, DateTime foperacion, DateTime fmovimiento,
-            decimal diferencia, DetalleSaldoAFavor DetalleSaldo, IMensajesImplementacion implementadorMensajes)
+            decimal diferencia, DetalleSaldoAFavor DetalleSaldo, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -186,7 +186,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.DetalleSaldo = DetalleSaldo;
         }
 
-        public ReferenciaNoConciliadaPedido(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliadaPedido(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativo = 0;
@@ -213,6 +213,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.selecciona = false;
 
         }
+
+        //protected ReferenciaNoConciliadaPedido(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         #endregion
 
@@ -448,7 +453,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

@@ -10,7 +10,7 @@ namespace Conciliacion.RunTime.DatosSQL
     public class PedidoCobranzaDatos : PedidoCobranza
     {
       
-         public PedidoCobranzaDatos(IMensajesImplementacion implementadorMensajes)
+         public PedidoCobranzaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
@@ -20,7 +20,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int pedido,
             int cobranza,
             decimal saldo,
-            Int16 gestionInicial, IMensajesImplementacion implementadorMensajes)
+            Int16 gestionInicial, MensajesImplementacion implementadorMensajes)
             : base(anioPed,
                 celula,
                 pedido,

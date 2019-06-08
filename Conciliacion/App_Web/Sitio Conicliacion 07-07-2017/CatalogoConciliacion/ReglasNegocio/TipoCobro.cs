@@ -1,4 +1,4 @@
-﻿using Conciliacion.Migracion.Runtime;
+﻿using Conciliacion.RunTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace CatalogoConciliacion.ReglasNegocio
         string descripcion;
 
 
-        public TipoCobro(IMensajesImplementacion implementadorMensajes)
+        public TipoCobro(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
         }

@@ -10,13 +10,19 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class DatosArchivoDatos : DatosArchivo
     {
-        public DatosArchivoDatos(IMensajesImplementacion implementadorMensajes)
-            : base(implementadorMensajes)
+        //public DatosArchivoDatos(MensajesImplementacion implementadorMensajes)
+        //    : base(implementadorMensajes)
+        //{
+
+        //}
+        
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+        public DatosArchivoDatos(MensajesImplementacion implementadorMensajes) : base(implementadorMensajes)
         {
 
         }
 
-        public DatosArchivoDatos(int corporativo, int sucursal, int año, int folio, string cuentabanco, DateTime finicial, DateTime ffinal, short tipofuenteinformacion, string tipofuenteinformaciondes, string statusconciliacion, short tipofuente, string tipofuentedes, int sucursalconciliacion, int folioconciliacion, short mesconciliacion, IMensajesImplementacion implementadorMensajes)
+        public DatosArchivoDatos(int corporativo, int sucursal, int año, int folio, string cuentabanco, DateTime finicial, DateTime ffinal, short tipofuenteinformacion, string tipofuenteinformaciondes, string statusconciliacion, short tipofuente, string tipofuentedes, int sucursalconciliacion, int folioconciliacion, short mesconciliacion, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, año, folio, cuentabanco, finicial, ffinal, tipofuenteinformacion, tipofuenteinformaciondes, statusconciliacion, tipofuente, tipofuentedes, sucursalconciliacion, folioconciliacion, mesconciliacion, implementadorMensajes)
         {
 
@@ -27,7 +33,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionArchivo", cnn);
@@ -59,7 +65,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionArchivo", cnn);
@@ -95,7 +101,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacionArchivo", cnn);

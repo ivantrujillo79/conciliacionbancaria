@@ -18,216 +18,213 @@ namespace Conciliacion.RunTime
 
     public enum TipoSeguridad : byte { SQL = 0, NT = 1 }
 
+    //public class MensajesImplementacion
+    //{
+    //    public object ContenedorActual { get; set; }
+    //    bool MensajesActivos { get; set; }
+
+    //    public MensajesImplementacion() { }
+
+    //    public void MostrarMensaje(string texto)
+    //    {
+    //    }
+    //    public void MostrarMensajeError(string Mensaje)
+    //    {
+    //    }
+    //    public void MostrarMensajeExito(string Mensaje)
+    //    {
+    //    }
+    //}
+
     public class App
     {
-        private static IMensajesImplementacion implementadorMensajes;
-        public static IMensajesImplementacion ImplementadorMensajes
+
+        private MensajesImplementacion implementadorMensajes;
+        public MensajesImplementacion ImplementadorMensajes
         {
             get
             {
                 if (implementadorMensajes == null)
-                    implementadorMensajes = App.ImplementadorMensajesFactory();
+                    implementadorMensajes = new Conciliacion.RunTime.MensajesImplementacion();
                 return implementadorMensajes;
             }
         }
 
-
-        private static IMensajesImplementacion ImplementadorMensajesFactory()
-        {
-            if (System.Web.HttpContext.Current == null)
-                return new MensajeImplemantacionForm();
-            else
-                return new MensajeImplementacionWeb();
-        }
-        private static IMensajesImplementacion ImplementadorMensajesFactory(TipoMensaje entorno)
-        {
-            switch (entorno)
-            {
-                case TipoMensaje.consola:
-                    return new MensajeImplementacionConsola();
-                case TipoMensaje.window:
-                    return new MensajeImplemantacionForm();
-                case TipoMensaje.web:
-                    return new MensajeImplementacionWeb();
-            }
-            return null;
-        }
-
-        private static Consultas consultas;
-        public static Consultas Consultas
+        private Consultas consultas;
+        public Consultas Consultas
         {
             get
             {
                 if (consultas == null)
-                    consultas = new ConsultaDatos(App.ImplementadorMensajes);
+                    consultas = new ConsultaDatos(ImplementadorMensajes);
                 return consultas;
 
             }
         }
 
-        private static cConciliacion conciliacion;
-        public static cConciliacion Conciliacion
+        private   cConciliacion conciliacion;
+        public   cConciliacion Conciliacion
         {
             get
             {
                 if (conciliacion == null)
-                    conciliacion = new ConciliacionDatos(App.ImplementadorMensajes);
+                    conciliacion = new ConciliacionDatos(ImplementadorMensajes);
                 return conciliacion;
 
             }
         }
 
-        private static DatosArchivo datosarchivo;
-        public static DatosArchivo DatosArchivo
+        private   DatosArchivo datosarchivo;
+        public   DatosArchivo DatosArchivo
         {
             get
             {
                 if (datosarchivo == null)
-                    datosarchivo = new DatosArchivoDatos(App.ImplementadorMensajes);
+                    datosarchivo = new DatosArchivoDatos(ImplementadorMensajes);
                 return datosarchivo;
 
             }
         }
 
-        private static DatosArchivoDetalle datosarchivodetalle;
-        public static DatosArchivoDetalle DatosArchivoDetalle
+        private   DatosArchivoDetalle datosarchivodetalle;
+        public   DatosArchivoDetalle DatosArchivoDetalle
         {
             get
             {
                 if (datosarchivodetalle == null)
-                    datosarchivodetalle = new DatosArchivoDetalleDatos(App.ImplementadorMensajes);
+                    datosarchivodetalle = new DatosArchivoDetalleDatos(ImplementadorMensajes);
                 return datosarchivodetalle;
 
             }
         }
 
-        private static cFuenteInformacion fuenteinformacion;
-        public static cFuenteInformacion FuenteInformacion
+        private   cFuenteInformacion fuenteinformacion;
+        public   cFuenteInformacion FuenteInformacion
         {
             get
             {
                 if (fuenteinformacion == null)
-                    fuenteinformacion = new FuenteInformacionDatos(App.ImplementadorMensajes);
+                    fuenteinformacion = new FuenteInformacionDatos(ImplementadorMensajes);
                 return fuenteinformacion;
 
             }
         }
 
-        private static FacturasComplemento facturasComplemento;
-        public static FacturasComplemento FacturasComplemento
+        private   FacturasComplemento facturasComplemento;
+        public   FacturasComplemento FacturasComplemento
         {
             get
             {
                 if (facturasComplemento == null)
-                    facturasComplemento = new FacturasComplementoDatos(App.ImplementadorMensajes);
+                    facturasComplemento = new FacturasComplementoDatos(ImplementadorMensajes);
                 return facturasComplemento;
 
             }
         }
 
-        private static ReferenciaConciliada referenciaconciliada;
-        public static ReferenciaConciliada ReferenciaConciliada
+        private   ReferenciaConciliada referenciaconciliada;
+        public   ReferenciaConciliada ReferenciaConciliada
         {
             get
             {
                 if (referenciaconciliada == null)
-                    referenciaconciliada = new ReferenciaConciliadaDatos(App.ImplementadorMensajes);
+                    referenciaconciliada = new ReferenciaConciliadaDatos(ImplementadorMensajes);
                 return referenciaconciliada;
 
             }
         }
 
-        private static ReferenciaNoConciliada referencianoconciliada;
-        public static ReferenciaNoConciliada ReferenciaNoConciliada
+        private   ReferenciaNoConciliada referencianoconciliada;
+        public   ReferenciaNoConciliada ReferenciaNoConciliada
         {
             get
             {
                 if (referencianoconciliada == null)
-                    referencianoconciliada = new ReferenciaNoConciliadaDatos(App.ImplementadorMensajes);
+                    referencianoconciliada = new ReferenciaNoConciliadaDatos(ImplementadorMensajes);
                 return referencianoconciliada;
 
             }
         }
 
 
-        private static ReferenciaConciliadaPedido referenciaconciliadapedido;
-        public static ReferenciaConciliadaPedido ReferenciaConciliadaPedido
+        private   ReferenciaConciliadaPedido referenciaconciliadapedido;
+        public   ReferenciaConciliadaPedido ReferenciaConciliadaPedido
         {
             get
             {
                 if (referenciaconciliadapedido == null)
-                    referenciaconciliadapedido = new ReferenciaConciliadaPedidoDatos(App.ImplementadorMensajes);
+                    referenciaconciliadapedido = new ReferenciaConciliadaPedidoDatos(ImplementadorMensajes);
                 return referenciaconciliadapedido;
 
             }
         }
 
-        private static ReferenciaNoConciliadaPedido referencianoconciliadapedido;
-        public static ReferenciaNoConciliadaPedido ReferenciaNoConciliadaPedido
+        private   ReferenciaNoConciliadaPedido referencianoconciliadapedido;
+        public   ReferenciaNoConciliadaPedido ReferenciaNoConciliadaPedido
         {
             get
             {
                 if (referencianoconciliadapedido == null)
-                    referencianoconciliadapedido = new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
+                    referencianoconciliadapedido = new ReferenciaNoConciliadaPedidoDatos(ImplementadorMensajes);
                 return referencianoconciliadapedido;
 
             }
         }
 
-        private static GrupoConciliacionDiasDiferencia grupoconciliaciondias;
-        public static GrupoConciliacionDiasDiferencia GrupoConciliacionDias(short grupoconciliacion)
+        private   GrupoConciliacionDiasDiferencia grupoconciliaciondias;
+        public   GrupoConciliacionDiasDiferencia GrupoConciliacionDias(short grupoconciliacion)
         {
             {
                 if (grupoconciliaciondias == null)
-                    grupoconciliaciondias = new GrupoConciliacionDiasDiferenciaDatos(grupoconciliacion,App.ImplementadorMensajes);
+                    grupoconciliaciondias = new GrupoConciliacionDiasDiferenciaDatos(grupoconciliacion,ImplementadorMensajes);
                 return grupoconciliaciondias;
             }
         }
 
         //Agregado
-        private static TransferenciaBancarias transferenciabancarias;
-        public static TransferenciaBancarias TransferenciaBancarias
+        private   TransferenciaBancarias transferenciabancarias;
+        public   TransferenciaBancarias TransferenciaBancarias
         {
             get
             {
                 if(transferenciabancarias==null)
-                    transferenciabancarias=new TransferenciaBancariasDatos(App.ImplementadorMensajes);
+                    transferenciabancarias=new TransferenciaBancariasDatos(ImplementadorMensajes);
                 return transferenciabancarias;
             }
 
         }
 
-        private static TransferenciaBancariasDetalle transferenciabancariasdetalle;
-        public static TransferenciaBancariasDetalle TransferenciaBancariasDetalle
+        private   TransferenciaBancariasDetalle transferenciabancariasdetalle;
+        public   TransferenciaBancariasDetalle TransferenciaBancariasDetalle
         {
             get
             {
                 if (transferenciabancariasdetalle == null)
-                    transferenciabancariasdetalle = new TransferenciaBancariasDetalleDatos(App.ImplementadorMensajes);
+                    transferenciabancariasdetalle = new TransferenciaBancariasDetalleDatos(ImplementadorMensajes);
                 return transferenciabancariasdetalle;
             }
 
         }
-        private static TransferenciaBancariaOrigen transferenciabancariaorigen;
-        public static TransferenciaBancariaOrigen TransferenciaBancariaOrigen
+        private   TransferenciaBancariaOrigen transferenciabancariaorigen;
+        public   TransferenciaBancariaOrigen TransferenciaBancariaOrigen
         {
             get
             {
                 if (transferenciabancariaorigen == null)
-                    transferenciabancariaorigen = new TransferenciaBancariaOrigenDatos(App.ImplementadorMensajes);
+                    transferenciabancariaorigen = new TransferenciaBancariaOrigenDatos(ImplementadorMensajes);
                 return transferenciabancariaorigen;
             }
 
         }
 
-        private static RelacionCobranza relacionCobranza;
-        public static RelacionCobranza RelCobranza
+        private   RelacionCobranza relacionCobranza;
+        public   RelacionCobranza RelCobranza
         {
             get
             {
                 if (relacionCobranza == null)
                 {
-                    relacionCobranza = new RelacionCobranzaDatos(App.ImplementadorMensajes);
+                    relacionCobranza = new RelacionCobranzaDatos(ImplementadorMensajes);
                     //relacionCobranza.CadenaConexion = App.CadenaConexion;                   
 
                 }
@@ -235,124 +232,124 @@ namespace Conciliacion.RunTime
             }
         }
 
-        private static Cobranza cobranza;
-        public static Cobranza Cobranza
+        private   Cobranza cobranza;
+        public   Cobranza Cobranza
         {
             get
             {
                 if (cobranza == null)
-                    cobranza = new CobranzaDatos(App.ImplementadorMensajes);
+                    cobranza = new CobranzaDatos(ImplementadorMensajes);
                 return cobranza;
             }
 
         }
 
-        private static PagoAnticipado pagoAnticipado;
-        public static PagoAnticipado PagoAnticipado
+        private   PagoAnticipado pagoAnticipado;
+        public   PagoAnticipado PagoAnticipado
         {
             get
             {
                 if (pagoAnticipado == null)
-                    pagoAnticipado = new PagoAnticipadoDatos(App.ImplementadorMensajes);
+                    pagoAnticipado = new PagoAnticipadoDatos(ImplementadorMensajes);
                 return pagoAnticipado;
             }
         }
 
-        private static PedidoCobranza pedidoCobranza;
-        public static PedidoCobranza PedidoCobranza
+        private   PedidoCobranza pedidoCobranza;
+        public   PedidoCobranza PedidoCobranza
         {
             get
             {
                 if (pedidoCobranza == null)
-                    pedidoCobranza = new PedidoCobranzaDatos(App.ImplementadorMensajes);
+                    pedidoCobranza = new PedidoCobranzaDatos(ImplementadorMensajes);
                 return pedidoCobranza;
             }
 
         }
 
-        private static Cliente cliente;
-        public static Cliente Cliente
+        private   Cliente cliente;
+        public   Cliente Cliente
         {
             get
             {
                 if (cliente == null)
-                    cliente = new ClienteDatos(App.ImplementadorMensajes);
+                    cliente = new ClienteDatos(ImplementadorMensajes);
                 return cliente;
             }
 
         }
 
-        private static PagoAreasComunes pagoAreasComunes;
-        public static PagoAreasComunes PagoAreasComunes
+        private   PagoAreasComunes pagoAreasComunes;
+        public   PagoAreasComunes PagoAreasComunes
         {
             get
             {
                 if (pagoAreasComunes == null)
-                    pagoAreasComunes = new PagoAreasComunesDatos(App.ImplementadorMensajes);
+                    pagoAreasComunes = new PagoAreasComunesDatos(ImplementadorMensajes);
                 return pagoAreasComunes;
             }
 
         }
 
-        private static Pagare pagare;
-        public static Pagare Pagare
+        private   Pagare pagare;
+        public   Pagare Pagare
         {
             get
             {
                 if (pagare == null)
-                    pagare = new PagareDatos(App.ImplementadorMensajes);
+                    pagare = new PagareDatos(ImplementadorMensajes);
                 return pagare;
             }
         }
 
-        private static DetallePagare detallepagare;
-        public static DetallePagare DetallePagare
+        private   DetallePagare detallepagare;
+        public   DetallePagare DetallePagare
         {
             get
             {
                 if (detallepagare == null)
-                    detallepagare = new DetallePagareDatos(App.ImplementadorMensajes);
+                    detallepagare = new DetallePagareDatos(ImplementadorMensajes);
                 return detallepagare;
             }
         }
 
-        private static SaldoAFavor saldoafavor;
-        public static SaldoAFavor SaldoAFavor
+        private   SaldoAFavor saldoafavor;
+        public   SaldoAFavor SaldoAFavor
         {
             get
             {
                 if (saldoafavor == null)
-                    saldoafavor = new SaldoAFavorDatos(App.ImplementadorMensajes);
+                    saldoafavor = new SaldoAFavorDatos(ImplementadorMensajes);
                 return saldoafavor;
             }
         }
 
-        private static ConciliacionReferencia conciliacionrefencia;
-        public static ConciliacionReferencia ConciliacionReferencia
+        private   ConciliacionReferencia conciliacionrefencia;
+        public   ConciliacionReferencia ConciliacionReferencia
         {
             get
             {
                 if (conciliacionrefencia  == null)
-                    conciliacionrefencia = new ConciliacionReferenciaDatos(App.ImplementadorMensajes);
+                    conciliacionrefencia = new ConciliacionReferenciaDatos(ImplementadorMensajes);
                 return conciliacionrefencia;
             }
         }
 
-        private static BusquedaClienteDatosBancarios busquedaclientedatosbancarios;
-        public static BusquedaClienteDatosBancarios BusquedaClienteDatosBancarios
+        private   BusquedaClienteDatosBancarios busquedaclientedatosbancarios;
+        public   BusquedaClienteDatosBancarios BusquedaClienteDatosBancarios
         {
             get
             {
                 if (busquedaclientedatosbancarios == null)
-                    busquedaclientedatosbancarios = new BusquedaClienteDatosBancariosDatos(App.ImplementadorMensajes);
+                    busquedaclientedatosbancarios = new BusquedaClienteDatosBancariosDatos(ImplementadorMensajes);
                 return busquedaclientedatosbancarios;
             }
         }
 
-        private static string cadenaconexion;
+        private   string cadenaconexion;
        
         
-        public static string CadenaConexion
+        public   string CadenaConexion
         {
             get
             {
@@ -384,4 +381,5 @@ namespace Conciliacion.RunTime
         }
 
     }
+
 }

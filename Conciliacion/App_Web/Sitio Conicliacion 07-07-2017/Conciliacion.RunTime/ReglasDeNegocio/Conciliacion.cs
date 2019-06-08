@@ -50,18 +50,28 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public cConciliacion(IMensajesImplementacion implementadorMensajes)
+        //public cConciliacion(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.ImplementadorMensajes = implementadorMensajes;
+        //    this.corporativo = 0;
+        //    this.sucursal = 0;
+        //    this.año = 0;
+        //    this.mes = 0;
+        //    this.folio = 0;
+
+        //}
+
+        protected cConciliacion(MensajesImplementacion implementadorMensajes)
         {
-            this.ImplementadorMensajes = implementadorMensajes;
+            this.implementadorMensajes = implementadorMensajes;
             this.corporativo = 0;
             this.sucursal = 0;
             this.año = 0;
             this.mes = 0;
             this.folio = 0;
-
         }
 
-        //public cConciliacion(int corporativo, int sucursal, int año, short mes, int folio, IMensajesImplementacion implementadorMensajes)
+        //public cConciliacion(int corporativo, int sucursal, int año, short mes, int folio, MensajesImplementacion implementadorMensajes)
         //{
         //    this.ImplementadorMensajes = implementadorMensajes;
         //    this.corporativo = corporativo;
@@ -74,7 +84,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public cConciliacion(int corporativo, int sucursal, int año, short mes, int folio, DateTime finicial, DateTime ffinal, string statusconciliacion,
             int grupoconciliacion, short tipoconciliacion, int transaccionesinternas, int conciliadasinternas, int transaccionesexternas, int conciliadasexternas, decimal montoTotalExterno, decimal montoTotalInterno,
-            string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes, string sucursaldes, IMensajesImplementacion implementadorMensajes)
+            string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes, string sucursaldes, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativo = corporativo;
@@ -102,7 +112,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public cConciliacion(int corporativo, int sucursal, int año, short mes, int folio, DateTime finicial, DateTime ffinal, string statusconciliacion,
            int grupoconciliacion, short tipoconciliacion, int transaccionesinternas, int conciliadasinternas, int transaccionesexternas, int conciliadasexternas, decimal montoTotalExterno, decimal montoTotalInterno,
-           string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes,string sucursaldes, string bancostr, string ubicacionicono, IMensajesImplementacion implementadorMensajes)
+           string grupoconciliacionstr, bool accesototal, string cuentabancaria, string corporativodes,string sucursaldes, string bancostr, string ubicacionicono, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.corporativo = corporativo;

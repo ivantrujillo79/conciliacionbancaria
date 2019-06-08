@@ -22,6 +22,7 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
     #endregion
 
     StringBuilder mensaje;
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -33,15 +34,15 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
       
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
             //HttpContext.Current.Session["Usuario"] = HttpContext.Current.Session["Usuario"].ToString();
             this.cboSeparador.DataValueField = "Descripcion";
             this.cboSeparador.DataTextField = "Descripcion";
-            this.cboSeparador.DataSource = App.Consultas.ObtieneListaSeparador();
+            this.cboSeparador.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaSeparador();
             this.cboSeparador.DataBind();
-            this.grvTipoArchivo.DataSource = App.Consultas.ObtieneListaTipoArchivo();
+            this.grvTipoArchivo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoArchivo();
             this.grvTipoArchivo.DataBind();
 
         }
@@ -51,8 +52,8 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
     {
         if (ValidarDatos())
         {
-            TipoArchivo tipoArchivo = App.TipoArchivo;
-            tipoArchivo.IdTipoArchivo = App.Consultas.ObtieneTipoArchivoNumeroMaximo() + 1;
+            TipoArchivo tipoArchivo = Conciliacion.Migracion.Runtime.App.TipoArchivo;
+            tipoArchivo.IdTipoArchivo = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneTipoArchivoNumeroMaximo() + 1;
             tipoArchivo.Descripcion = this.txtDescripcion.Text;
             tipoArchivo.FormatoFecha = this.txtFormatoFecha.Text;
             tipoArchivo.FormatoMoneda = this.txtFormatoMoneda.Text;
@@ -62,7 +63,7 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
             tipoArchivo.FAlta = DateTime.Now;
             if (tipoArchivo.Guardar())
             {
-                this.grvTipoArchivo.DataSource = App.Consultas.ObtieneListaTipoArchivo();
+                this.grvTipoArchivo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoArchivo();
                 this.grvTipoArchivo.DataBind();
                 Limpiar();
             }
@@ -87,12 +88,12 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
         ImageButton imgButton = (sender as ImageButton);
         GridViewRow row = imgButton.Parent.Parent as GridViewRow;
         Label lblReferencia = (Label)row.FindControl("lblGVIdTipoArchivo");
-        TipoArchivo tipoArchivo = App.Consultas.ObtieneTipoArchivoPorId(Convert.ToInt32(lblReferencia.Text.Trim()));
+        TipoArchivo tipoArchivo = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneTipoArchivoPorId(Convert.ToInt32(lblReferencia.Text.Trim()));
         tipoArchivo.Status = "INACTIVO";
 
         if (tipoArchivo.Actualizar())
         {
-            this.grvTipoArchivo.DataSource = App.Consultas.ObtieneListaTipoArchivo();
+            this.grvTipoArchivo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoArchivo();
             this.grvTipoArchivo.DataBind();
             Limpiar();
         }
@@ -241,7 +242,7 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
         try
         {
             grvTipoArchivo.PageIndex = e.NewPageIndex;
-            this.grvTipoArchivo.DataSource = App.Consultas.ObtieneListaTipoArchivo();
+            this.grvTipoArchivo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoArchivo();
             this.grvTipoArchivo.DataBind();
         }
         catch (Exception)
@@ -275,7 +276,7 @@ public partial class ImportacionArchivos_TipoArchivo : System.Web.UI.Page
         else
             grvTipoArchivo.PageIndex = 0;
 
-        this.grvTipoArchivo.DataSource = App.Consultas.ObtieneListaTipoArchivo();
+        this.grvTipoArchivo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaTipoArchivo();
         this.grvTipoArchivo.DataBind();
     }
 }

@@ -27,7 +27,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 		private string direccion;
         private string tipo;
 
-        public Cliente(IMensajesImplementacion implementadorMensajes)
+        public Cliente(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.celula = 0;
@@ -59,7 +59,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                        decimal saldo, 
                        string email, 
                        string direccion, 
-                       string tipo, IMensajesImplementacion implementadorMensajes)
+                       string tipo, MensajesImplementacion implementadorMensajes)
         {
             this.celula = celula;
             this.digitoverificador = digitoverificador;
@@ -77,6 +77,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.tipo = tipo;
             this.implementadorMensajes = implementadorMensajes;            
         }
+
+        //protected Cliente(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         #region Propiedades
         public byte Celula

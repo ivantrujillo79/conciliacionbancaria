@@ -1,4 +1,4 @@
-﻿using Conciliacion.Migracion.Runtime;
+﻿using Conciliacion.RunTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace CatalogoConciliacion.ReglasNegocio
         string dscColumnaDestino;
 
   
-        public ColumnaDestino(IMensajesImplementacion implementadorMensajes)
+        public ColumnaDestino(MensajesImplementacion implementadorMensajes)
     {
         this.implementadorMensajes = implementadorMensajes;
     }

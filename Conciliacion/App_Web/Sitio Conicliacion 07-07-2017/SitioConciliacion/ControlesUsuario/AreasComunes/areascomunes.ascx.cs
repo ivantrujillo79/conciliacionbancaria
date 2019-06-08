@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.UserControl
 {
-
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     private int _clientePadre;
     private decimal _monto;
 
@@ -242,7 +242,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
         try
         {            
             conexion.AbrirConexion(false);
-            PagoAreasComunes objAC = Conciliacion.RunTime.App.PagoAreasComunes.CrearObjeto();
+            PagoAreasComunes objAC = objApp.PagoAreasComunes.CrearObjeto();
             objAC.ClientePadre = ClientePadre;
 
             switch (opcion)
@@ -285,7 +285,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
             {
                 if (fuenteCRM != "" & urlGateway != "")
                 {
-                    Cliente clienteCRM = new ClienteDatos(Conciliacion.RunTime.App.ImplementadorMensajes);
+                    Cliente clienteCRM = new ClienteDatos(objApp.ImplementadorMensajes);
                     int numeroCliente;
 
                     objCliente = new claseCliente();
@@ -580,7 +580,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
                                                     ClientePadre,
                                                     "",
                                                     Convert.ToInt32(filaTabla["AñoExterno"]),
-                                                    Conciliacion.RunTime.App.ImplementadorMensajes);
+                                                    objApp.ImplementadorMensajes);
 
                 objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
                 objRCP.Guardar2(conexion);

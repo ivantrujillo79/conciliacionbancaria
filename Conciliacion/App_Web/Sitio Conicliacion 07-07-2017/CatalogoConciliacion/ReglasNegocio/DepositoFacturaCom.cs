@@ -24,10 +24,10 @@ namespace CatalogoConciliacion.ReglasNegocio
         public string total;
         public string uuid;
         public string rfcliente;
-        public Conciliacion.RunTime.IMensajesImplementacion implementadorMensajes;
+        public Conciliacion.RunTime.MensajesImplementacion implementadorMensajes;
 
         #region constructores
-        public DepositoFacturaCom(Conciliacion.RunTime.IMensajesImplementacion implemntadorMensajes)
+        public DepositoFacturaCom(Conciliacion.RunTime.MensajesImplementacion implemntadorMensajes)
         {
             this.cuentabancofinanciero = "";
             this.cuentabanco = "";
@@ -49,7 +49,7 @@ namespace CatalogoConciliacion.ReglasNegocio
         public DepositoFacturaCom(string cuentabancofinanciero, string cuentabanco, string fdeposito, string deposito, 
             string foliocomple, string seriecomple, string ftimbradocomple, 
             string totalcomple, string uuidcomple, string folio, string serie, string ftimbrado, 
-            string total, string uuid, string rfcliente, Conciliacion.RunTime.IMensajesImplementacion implemntadorMensajes)
+            string total, string uuid, string rfcliente, Conciliacion.RunTime.MensajesImplementacion implemntadorMensajes)
         {
             this.cuentabancofinanciero = cuentabancofinanciero;
             this.cuentabanco = cuentabanco;
@@ -69,7 +69,7 @@ namespace CatalogoConciliacion.ReglasNegocio
             this.implementadorMensajes = implemntadorMensajes;
         }
 
-        //public DepositoFacturaCom(Conciliacion.RunTime.IMensajesImplementacion implementadorMensajes)
+        //public DepositoFacturaCom(Conciliacion.RunTime.MensajesImplementacion implementadorMensajes)
         //{
         //    this.implementadorMensajes = implementadorMensajes;
         //}

@@ -14,7 +14,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public ReferenciaNoConciliadaPedidoDatos
             (int corporativo, int sucursal, string sucursaldes, int año, int folio, short mes, int celula, int añoped, int pedido, string pedidoreferencia, int cliente, string nombre, int remisionpedido, string seriepedido,
             int foliosat, string seriesat, string concepto, decimal total, short formaconciliacion, short statusconcepto, string statusconciliacion,DateTime foperacion, DateTime fmovimiento,
-            decimal diferencia,  IMensajesImplementacion implementadorMensajes)
+            decimal diferencia,  MensajesImplementacion implementadorMensajes)
 
             : base(corporativo,sucursal, sucursaldes,año,folio,mes, celula, añoped, pedido, pedidoreferencia, cliente,nombre, remisionpedido,seriepedido, foliosat, seriesat,concepto,total,formaconciliacion,
                     statusconcepto,statusconciliacion, foperacion,fmovimiento, diferencia, implementadorMensajes)
@@ -23,7 +23,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
 
-        public ReferenciaNoConciliadaPedidoDatos(DateTime ffactura, int cliente, string nombrecliente, string foliofactura, string serie, string folio, IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliadaPedidoDatos(DateTime ffactura, int cliente, string nombrecliente, string foliofactura, string serie, string folio, MensajesImplementacion implementadorMensajes)
             : base(ffactura, cliente, nombrecliente, foliofactura, serie, foliofactura, implementadorMensajes)
         {
 
@@ -33,7 +33,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //public ReferenciaNoConciliadaPedidoDatos
         //    (int corporativo, int sucursal, string sucursaldes, int año, int folio, int secuencia, string concepto, decimal deposito, decimal retiro, 
         //    short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime fmovimiento, DateTime foperacion, int folioconciliacion, short mes, 
-        //    decimal diferencia, IMensajesImplementacion implementadorMensajes)
+        //    decimal diferencia, MensajesImplementacion implementadorMensajes)
 
         //    : base(corporativo, sucursal, sucursaldes, año, folio,  secuencia,  concepto,  deposito,  retiro, 
         //     formaconciliacion,  statusconcepto,  statusconciliacion,  fmovimiento, foperacion,  folioconciliacion,  mes, 
@@ -43,7 +43,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //}
 
 
-        public ReferenciaNoConciliadaPedidoDatos(IMensajesImplementacion implementadorMensajes)
+        public ReferenciaNoConciliadaPedidoDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
             
@@ -52,7 +52,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public ReferenciaNoConciliadaPedidoDatos
             (int corporativo, int sucursal, string sucursaldes, int año, int folio, short mes, int celula, int añoped, int pedido, string pedidoreferencia, int cliente, string nombre, int remisionpedido, string seriepedido,
             int foliosat, string seriesat, string concepto, decimal total, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento,
-            decimal diferencia, DetalleSaldoAFavor DetalleSaldo, IMensajesImplementacion implementadorMensajes)
+            decimal diferencia, DetalleSaldoAFavor DetalleSaldo, MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, año, folio, mes, celula, añoped, pedido, pedidoreferencia, cliente, nombre, remisionpedido, seriepedido, foliosat, seriesat, concepto, total, formaconciliacion,
                     statusconcepto, statusconciliacion, foperacion, fmovimiento, diferencia, DetalleSaldo, implementadorMensajes)
         {
@@ -61,7 +61,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override ReferenciaNoConciliadaPedido CrearObjeto()
         {
-            return new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
+            return new ReferenciaNoConciliadaPedidoDatos(ImplementadorMensajes);
         }
 
   

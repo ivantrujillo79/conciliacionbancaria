@@ -8,13 +8,14 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Web;
 using System.Web.UI;
+using Conciliacion.RunTime;
 
 namespace CatalogoConciliacion.Datos
 {
     public class PalabrasClaveDatos : PalabrasClave
     {
 
-        public PalabrasClaveDatos(IMensajesImplementacion implementadorMensajes)
+        public PalabrasClaveDatos(MensajesImplementacion implementadorMensajes)
         : base(implementadorMensajes)
     {
     }
@@ -45,8 +46,8 @@ namespace CatalogoConciliacion.Datos
                 this.ImplementadorMensajes.MostrarMensaje("Existen palabras clave repetidas, corrija para continuar.");
                 resultado = false;
             }
-
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {

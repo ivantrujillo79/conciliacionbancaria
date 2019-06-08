@@ -14,7 +14,7 @@ namespace Conciliacion.RunTime.DatosSQL
     {
         #region Constructores
 
-        public TransferenciaBancariasDatos(IMensajesImplementacion implementadorMensajes)
+        public TransferenciaBancariasDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
 
@@ -25,7 +25,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                       string usuarioCaptura,DateTime fCaptura, string usuariooAprobo, DateTime fAprobado,
                                       string status, string descripcion,string bancoNombreOrigen, string cuentaBancoOrigen,
                                       string bancoNombreDestino, string cuentaBancoDestino, decimal monto, short entrada,//decimal abono,decimal cargo, 
-                                      IMensajesImplementacion implementadorMensajes)
+                                      MensajesImplementacion implementadorMensajes)
             : base( corporativo,  sucursal,  año,  folio, nombreCorporativo,nombreSucursal, tipoTransferencia,
                                        referencia,  fMovimiento,  fAplicacion,
                                        usuarioCaptura, fCaptura,  usuariooAprobo,  fAprobado,

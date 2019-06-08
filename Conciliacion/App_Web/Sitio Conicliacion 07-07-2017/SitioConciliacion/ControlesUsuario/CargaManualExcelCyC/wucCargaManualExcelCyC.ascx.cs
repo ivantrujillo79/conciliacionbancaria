@@ -17,6 +17,7 @@ using System.Configuration;
 
 public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region Propiedades
     private int totalRegistrosCargados;
     public int TotalRegistrosCargados
@@ -383,7 +384,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 AppSettingsReader settings = new AppSettingsReader();
                 SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 byte modulo = byte.Parse( settings.GetValue("Modulo", typeof(string)).ToString() );
-                Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                Gateway = new RTGMGateway.RTGMGateway(modulo, objApp.CadenaConexion);
                 Gateway.URLServicio = _URLGateway;
                 Solicitud = new RTGMGateway.SolicitudGateway();
                 Solicitud.IDCliente = cliente;
@@ -504,22 +505,22 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                     }
                     else
                     {
-                        App.ImplementadorMensajes.MostrarMensaje("El archivo no existe en el servidor.");
+                        objApp.ImplementadorMensajes.MostrarMensaje("El archivo no existe en el servidor.");
                     }
                 }
                 else
                 {
-                    App.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLSX");
+                    objApp.ImplementadorMensajes.MostrarMensaje("El archivo a cargar debe ser de formato Excel, con extensión de archivo XLSX");
                 }
             }// fupSeleccionar.HasFile
             else
             {
-                App.ImplementadorMensajes.MostrarMensaje("El componente de carga no reconoce el archivo.");
+                objApp.ImplementadorMensajes.MostrarMensaje("El componente de carga no reconoce el archivo.");
             }
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
     }
 
@@ -556,7 +557,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
         finally
         {
@@ -632,7 +633,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -641,14 +642,14 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         RTGMGateway.RTGMGateway oGateway;
         RTGMGateway.SolicitudGateway oSolicitud;
         AppSettingsReader settings = new AppSettingsReader();
-        string cadena = App.CadenaConexion;
+        string cadena = objApp.CadenaConexion;
         try
         {
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
             SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), objApp.CadenaConexion);//,_URLGateway);
             oGateway.ListaCliente = listadistintos;
             oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
             oGateway.eListaEntregas += completarListaEntregas;
@@ -686,7 +687,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                 {
                     sDocumento = row["Documento"].ToString();
                     dMonto = Convert.ToDecimal(row["Monto"].ToString());
-                    ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
+                    ReferenciaNoConciliada = objApp.Consultas.ConsultaPedidoReferenciaEspecifico(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
 
                     pago = new PagoPropuesto();
                     pago.MontoPropuesto = dMonto;
@@ -839,9 +840,9 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         sDocumento = row["Documento"].ToString();
                         dMonto = Convert.ToDecimal(row["Monto"].ToString());
 
-                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = App.ReferenciaNoConciliadaPedido.CrearObjeto();
+                        ReferenciaNoConciliadaPedido RefNoConciliadaPedido = objApp.ReferenciaNoConciliadaPedido.CrearObjeto();
 
-                        ReferenciaNoConciliada = App.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
+                        ReferenciaNoConciliada = objApp.Consultas.ConsultaPedidoReferenciaEspecificoCliente(Corporativo, Sucursal, 1, 1, 1, 1, sDocumento);
 
 
                         RefNoConciliadaPedido.PedidoReferencia = sDocumento;
@@ -878,7 +879,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
                         sDocumento = row["Documento"].ToString();
                         dMonto = Convert.ToDecimal(row["Monto"].ToString());
 
-                        RefNoConciliada = App.ReferenciaNoConciliada.CrearObjeto();
+                        RefNoConciliada = objApp.ReferenciaNoConciliada.CrearObjeto();
                         RefNoConciliada.Referencia = sDocumento;
                         RefNoConciliada.Monto = dMonto;
 
@@ -906,7 +907,7 @@ public partial class wucCargaManualExcelCyC : System.Web.UI.UserControl
         }
         catch(Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.ToString());
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.ToString());
         }
         HttpContext.Current.Session["_referenciasPorConciliarExcel"] = _referenciasPorConciliarExcel;
         this._referenciasPorConciliarExcel = _referenciasPorConciliarExcel;

@@ -14,6 +14,7 @@ using System.Globalization;
 
 public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -85,7 +86,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
             conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultarBancos(conexion, 1, Usuario);
         }
@@ -117,7 +118,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
 
-            ListaCuentas = Conciliacion.RunTime.App.Consultas.ConsultaCuentasUsuario(usuario.IdUsuario.Trim());
+            ListaCuentas = objApp.Consultas.ConsultaCuentasUsuario(usuario.IdUsuario.Trim());
             foreach (Cuenta item in ListaCuentas)
             {
                 if (item.Banco == Banco || (Banco == 0 && item.Banco == 0))
@@ -149,7 +150,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
 
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
             DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             conexion.AbrirConexion(false);
@@ -227,7 +228,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                 registrofinal = WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count - 1;
                 for (int i = 0; i <= WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count() - 1; i++)
                 {
-                    var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+                    var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
                     if (registrofinal == i)
                         esfinal = true;
                     conexion.AbrirConexion(false);
@@ -249,7 +250,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
         }
         catch (Exception ex)
         {
-            //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);

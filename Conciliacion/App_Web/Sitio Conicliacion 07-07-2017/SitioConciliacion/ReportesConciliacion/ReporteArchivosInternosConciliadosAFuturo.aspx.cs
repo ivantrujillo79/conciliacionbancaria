@@ -15,6 +15,7 @@ using System.IO;
 
 public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFuturo : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -64,7 +65,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
             usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
 
 
-            ListaCuentas = Conciliacion.RunTime.App.Consultas.ConsultaCuentasUsuario(usuario.IdUsuario.Trim());
+            ListaCuentas = objApp.Consultas.ConsultaCuentasUsuario(usuario.IdUsuario.Trim());
             foreach (Cuenta item in ListaCuentas)
             {
                 if (item.Banco == Banco || (Banco == 0 && item.Banco == 0))
@@ -110,7 +111,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
 
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
             conexion.AbrirConexion(false);
             lstDetalle = informeBancario.consultarBancos(conexion, 1, Usuario);
         }
@@ -181,7 +182,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
                 }
                 catch (Exception ex)
                 {
-                    //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                    //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
                     ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                         @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                         + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -209,7 +210,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
                 }
                 catch (Exception ex)
                 {
-                    //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                    //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
                     ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                         @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                         + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -247,7 +248,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
                 }
                 catch (Exception ex)
                 {
-                    //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+                    //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
                     ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                         @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                         + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -265,7 +266,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
         string Banco = btnlista.SelectedItem.Text;
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
             conexion.AbrirConexion(false);
@@ -292,7 +293,7 @@ public partial class ReportesConciliacion_ReporteArchivosInternosConciliadosAFut
 
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
             DateTime fechaInicio = Convert.ToDateTime(txtFInicial.Text);
             DateTime fechaFin = Convert.ToDateTime(txtFFinal.Text);
             conexion.AbrirConexion(false);

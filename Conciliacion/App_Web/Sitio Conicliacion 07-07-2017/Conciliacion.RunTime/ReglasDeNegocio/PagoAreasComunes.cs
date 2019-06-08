@@ -21,7 +21,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         #region Constructores
 
-        public PagoAreasComunes(IMensajesImplementacion implementadorMensajes)
+        public PagoAreasComunes(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this._clientePadre= -1;
@@ -35,7 +35,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         } 
 
-        public PagoAreasComunes(int clientePadre, IMensajesImplementacion implementadorMensajes)
+        public PagoAreasComunes(int clientePadre, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.ClientePadre = clientePadre;
@@ -47,6 +47,11 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this._pagos = null;
             this._monto = 0;
         }
+
+        //protected PagoAreasComunes(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         #endregion
 
@@ -106,7 +111,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Conciliacion.RunTime
 {
-    public class MensajeImplementacionConsola : IMensajesImplementacion
+    public class MensajeImplementacionConsola : MensajesImplementacion
     {
         private object contenedor;
         public void MostrarMensaje(string texto)

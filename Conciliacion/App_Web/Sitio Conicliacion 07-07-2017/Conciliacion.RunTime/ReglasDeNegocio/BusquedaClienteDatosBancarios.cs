@@ -11,17 +11,22 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         List<int> clientes;
 
         #region constructores
-        public BusquedaClienteDatosBancarios(IMensajesImplementacion implementadorMensajes)
+        public BusquedaClienteDatosBancarios(MensajesImplementacion implementadorMensajes)
         {
             this.implementadorMensajes = implementadorMensajes;
             this.clientes = new List<int>();
         }
 
-        public BusquedaClienteDatosBancarios(List<int> Clientes, IMensajesImplementacion implementadorMensajes)
+        public BusquedaClienteDatosBancarios(List<int> Clientes, MensajesImplementacion implementadorMensajes)
         {
             this.clientes = Clientes;
             this.implementadorMensajes = implementadorMensajes;
         }
+
+        //protected BusquedaClienteDatosBancarios(MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
         #endregion
 
         public List<int> Clientes

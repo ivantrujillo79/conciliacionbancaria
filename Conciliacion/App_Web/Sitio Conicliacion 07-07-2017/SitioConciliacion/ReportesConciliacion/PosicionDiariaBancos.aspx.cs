@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using System.Globalization;
 public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -119,7 +120,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         }
         catch (Exception ex)
         {
-            //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -136,7 +137,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
             try
         {                     
                
-                var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+                var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
 
             DateTime fechaInicio = DateTime.ParseExact(txtFInicial.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime fechaFin = DateTime.ParseExact(txtFFinal.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);

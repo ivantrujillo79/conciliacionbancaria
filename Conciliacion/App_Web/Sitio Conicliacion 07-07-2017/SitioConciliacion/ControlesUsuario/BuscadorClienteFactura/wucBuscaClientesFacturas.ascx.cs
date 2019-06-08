@@ -30,6 +30,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     private List<int> listaClientesEnviados;
     private List<int> listaClientes = new List<int>();
     private string _URLGateway;
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
 
     public string Cliente {
         get { return txtCliente.Text.Trim(); }
@@ -148,7 +149,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
 
             if (txtCliente.Text.Trim() != "")
             {
-                Cliente cliente = App.Cliente.CrearObjeto();
+                Cliente cliente = objApp.Cliente.CrearObjeto();
 
                 Conexion conexion = new Conexion();
                 conexion.AbrirConexion(true);
@@ -181,7 +182,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         DataTable tbPedidosPorFactura = null;
         if (NumeroFactura != string.Empty)
         { 
-            tbPedidosPorFactura = App.Consultas.CBPedidosPorFactura(NumeroFactura);
+            tbPedidosPorFactura = objApp.Consultas.CBPedidosPorFactura(NumeroFactura);
             if (Session["TABLADEAGREGADOS"] != null && tbPedidosPorFactura.Rows.Count > 0)
             {   //quita pedidos que ya estan en el grid de preconciliados
                 GridView grvAgregados = (GridView)Session["TABLADEAGREGADOS"];
@@ -289,7 +290,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
         finally
         {
@@ -365,7 +366,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
         }
     }
 
@@ -374,14 +375,14 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         RTGMGateway.RTGMGateway oGateway;
         RTGMGateway.SolicitudGateway oSolicitud;
         AppSettingsReader settings = new AppSettingsReader();
-        string cadena = App.CadenaConexion;
+        string cadena = objApp.CadenaConexion;
         try
         {
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
             SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), App.CadenaConexion);//,_URLGateway);
+            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), objApp.CadenaConexion);//,_URLGateway);
             oGateway.ListaCliente = listadistintos;
             oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
             oGateway.eListaEntregas += completarListaEntregas;

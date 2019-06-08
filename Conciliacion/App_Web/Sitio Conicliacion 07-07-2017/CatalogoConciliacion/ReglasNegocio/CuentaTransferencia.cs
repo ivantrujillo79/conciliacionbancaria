@@ -31,7 +31,7 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         #region constructores
 
-        public CuentaTransferencia(IMensajesImplementacion implemntadorMensajes)
+        public CuentaTransferencia(MensajesImplementacion implemntadorMensajes)
         {
             this.cuentaTransferencia = 0;
             this.corporativoOrigenDesc = "";
@@ -58,7 +58,7 @@ namespace CatalogoConciliacion.ReglasNegocio
                                    string cuentaBancoOrigen, int bancoOrigen, string bancoNombreOrigen, string corporativoDestinoDesc,
                                    short corporativoDestino, string sucursalDestinoDesc, int sucursalDestino, string cuentaBancoDestino,
                                    int bancoDestino, string bancoNombreDestino, string status, string usuarioAlta,
-                                   DateTime FAlta, IMensajesImplementacion implemntadorMensajes)
+                                   DateTime FAlta, MensajesImplementacion implemntadorMensajes)
         {
             
             this.cuentaTransferencia = cuentaTransferencia;
@@ -197,7 +197,11 @@ namespace CatalogoConciliacion.ReglasNegocio
 
         public virtual string CadenaConexion
         {
-            get { return App.CadenaConexion; }
+            get
+            {
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
+            }
         }
 
         #endregion

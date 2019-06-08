@@ -17,7 +17,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int consecutivo;
         int folio;
 
-        public ConsultarMultiplesDocumentosTransBan(IMensajesImplementacion implementadorMensajes)
+        public ConsultarMultiplesDocumentosTransBan(MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.clave="";

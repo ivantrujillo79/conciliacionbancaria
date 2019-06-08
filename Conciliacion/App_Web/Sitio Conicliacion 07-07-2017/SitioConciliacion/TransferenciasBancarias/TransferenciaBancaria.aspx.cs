@@ -11,6 +11,7 @@ using Conciliacion.RunTime;
 
 public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
     private SeguridadCB.Public.Usuario usuario;
     #endregion
@@ -40,10 +41,10 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
     protected void Page_Load(object sender, EventArgs e)
     {
        
-        Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {
-           Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
+           objApp.ImplementadorMensajes.ContenedorActual = this;
             
             if (!IsPostBack)
             {
@@ -91,13 +92,13 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         }
         try
         {
-            listTransferenciasBancarias = Conciliacion.RunTime.App.Consultas.ObtenieneTransferenciasBancarias(corporativoorigen, sucursalorigen,  cuentabancoorigen, año, mes, status);
+            listTransferenciasBancarias = objApp.Consultas.ObtenieneTransferenciasBancarias(corporativoorigen, sucursalorigen,  cuentabancoorigen, año, mes, status);
 
 
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -206,7 +207,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -214,7 +215,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
     {
         try
         {
-            listSucursales = Conciliacion.RunTime.App.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
+            listSucursales = objApp.Consultas.ConsultaSucursales(Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionIden0.Sin0, corporativo);
             this.cboSucursal.DataSource = listSucursales;
             this.cboSucursal.DataValueField = "Identificador";
             this.cboSucursal.DataTextField = "Descripcion";
@@ -233,7 +234,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         try
         {
 
-            listBancos = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            listBancos = objApp.Consultas.ConsultaBancos(corporativo);
             this.cboNombreBanco.DataSource = listBancos;
             this.cboNombreBanco.DataValueField = "Identificador";
             this.cboNombreBanco.DataTextField = "Descripcion";
@@ -242,7 +243,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.Message);
         }
     }
 
@@ -251,7 +252,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         try
         {
 
-            listCuentaBancaria = Conciliacion.RunTime.App.Consultas.ConsultaCuentasBancaria(corporativo, banco);
+            listCuentaBancaria = objApp.Consultas.ConsultaCuentasBancaria(corporativo, banco);
             this.cboCuentaBancoOrigen.DataSource = listCuentaBancaria;
             this.cboCuentaBancoOrigen.DataValueField = "Identificador";
             this.cboCuentaBancoOrigen.DataTextField = "Descripcion";
@@ -302,7 +303,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+            objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
         }
 
     }
@@ -314,7 +315,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         if (e.CommandName.Equals("CANCELARSTATUS"))
         {
             GridViewRow gRow = (GridViewRow)(e.CommandSource as ImageButton).Parent.Parent;
-            Conciliacion.RunTime.App.TransferenciaBancarias.CambiarStatus
+            objApp.TransferenciaBancarias.CambiarStatus
                 (Convert.ToInt16(grdTranferenciBancaria.DataKeys[gRow.RowIndex].Values["CorporativoId"]), 
                 Convert.ToInt16(grdTranferenciBancaria.DataKeys[gRow.RowIndex].Values["SucursalId"]),
                 Convert.ToInt32(grdTranferenciBancaria.DataKeys[gRow.RowIndex].Values["AñoId"]),
@@ -325,7 +326,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         else if (e.CommandName.Equals("AUTORIZARSTATUS"))
         {
             GridViewRow gRow = (GridViewRow)(e.CommandSource as ImageButton).Parent.Parent;
-            Conciliacion.RunTime.App.TransferenciaBancarias.CambiarStatus
+            objApp.TransferenciaBancarias.CambiarStatus
                 (Convert.ToInt16(grdTranferenciBancaria.DataKeys[gRow.RowIndex].Values["CorporativoId"]),
                 Convert.ToInt16(grdTranferenciBancaria.DataKeys[gRow.RowIndex].Values["SucursalId"]),
                 Convert.ToInt32(grdTranferenciBancaria.DataKeys[gRow.RowIndex].Values["AñoId"]),
@@ -357,7 +358,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
         }
         catch (Exception ex)
         {
-            App.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.StackTrace);
+            objApp.ImplementadorMensajes.MostrarMensaje("Error\n" + ex.StackTrace);
         }
     }
 }

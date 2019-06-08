@@ -45,9 +45,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         private List<claseCliente> listaClientes;
         private string _urlGateway;
-        IMensajesImplementacion _implementadorMensajes;
+        MensajesImplementacion _implementadorMensajes;
 
-        public BusquedaClientesCRM(string _urlGateway, IMensajesImplementacion implementadorMensajes)
+        public BusquedaClientesCRM(string _urlGateway, MensajesImplementacion implementadorMensajes)
         {
             this._urlGateway = _urlGateway;
             this._implementadorMensajes = implementadorMensajes;

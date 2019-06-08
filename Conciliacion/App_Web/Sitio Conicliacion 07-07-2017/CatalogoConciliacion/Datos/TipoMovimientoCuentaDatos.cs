@@ -12,12 +12,12 @@ namespace CatalogoConciliacion.Datos
     public class TipoMovimientoCuentaDatos : TipoMovimientoCuenta
     {
 
-         public TipoMovimientoCuentaDatos(IMensajesImplementacion implementadorMensajes)
+         public TipoMovimientoCuentaDatos(MensajesImplementacion implementadorMensajes)
             : base(implementadorMensajes)
         {
         }
 
-        public TipoMovimientoCuentaDatos(int tipoMovimiento, string cuenta, IMensajesImplementacion implementadorMensajes)
+        public TipoMovimientoCuentaDatos(int tipoMovimiento, string cuenta, MensajesImplementacion implementadorMensajes)
             : base(tipoMovimiento, cuenta, implementadorMensajes)
         {
         }

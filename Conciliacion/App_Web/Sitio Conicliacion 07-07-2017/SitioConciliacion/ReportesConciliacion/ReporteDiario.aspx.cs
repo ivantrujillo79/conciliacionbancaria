@@ -11,6 +11,7 @@ using DetalleReporteEstadoCuentaDia = Conciliacion.RunTime.DatosSQL.InformeBanca
 
 public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
 {
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -57,7 +58,7 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-        //    App.ImplementadorMensajes.MostrarMensaje(ex.Message);
+        //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
@@ -74,7 +75,7 @@ public partial class ReportesConciliacion_ReporteDiario : System.Web.UI.Page
 
         try
         {
-            var informeBancario = new InformeBancarioDatos(App.ImplementadorMensajes);
+            var informeBancario = new InformeBancarioDatos(objApp.ImplementadorMensajes);
             DateTime fechaInicio = Convert.ToDateTime("01/01/2018");
             DateTime fechaFin = Convert.ToDateTime("17/01/2018");
             conexion.AbrirConexion(false);

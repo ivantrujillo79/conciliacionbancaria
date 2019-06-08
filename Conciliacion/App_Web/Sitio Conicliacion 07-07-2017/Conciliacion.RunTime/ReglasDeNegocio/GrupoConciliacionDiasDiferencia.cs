@@ -15,7 +15,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         decimal diferenciacentavosmaxima;
         decimal diferenciacentavosdefault;
 
-        public GrupoConciliacionDiasDiferencia(short grupoconciliacion, IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacionDiasDiferencia(short grupoconciliacion, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.grupoconciliacion = grupoconciliacion;
@@ -25,7 +25,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.diferenciacentavosminima = this.diferenciacentavosmaxima = this.diferenciacentavosdefault = 0.0M;
         }
 
-        public GrupoConciliacionDiasDiferencia(short grupoconciliacion, short diferenciadiasminima, short diferenciadiasmaxima, short diferenciadiasdefault, decimal diferenciacentavosminima, decimal diferenciacentavosmaxima, decimal diferenciacentavosdefault, IMensajesImplementacion implementadorMensajes)
+        public GrupoConciliacionDiasDiferencia(short grupoconciliacion, short diferenciadiasminima, short diferenciadiasmaxima, short diferenciadiasdefault, decimal diferenciacentavosminima, decimal diferenciacentavosmaxima, decimal diferenciacentavosdefault, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.grupoconciliacion=grupoconciliacion;
@@ -36,6 +36,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.diferenciacentavosmaxima=diferenciacentavosmaxima;
             this.diferenciacentavosdefault = diferenciacentavosdefault;
         }
+
+        //protected GrupoConciliacionDiasDiferencia(short grupoconciliacion, MensajesImplementacion implementadorMensajes)
+        //{
+        //    this.grupoconciliacion = grupoconciliacion;
+        //    this.implementadorMensajes = implementadorMensajes;
+        //}
 
         public short GrupoConciliacion
         {
@@ -86,7 +92,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get
             {
-                return App.CadenaConexion;
+                Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+                return objApp.CadenaConexion;
             }
         }
         

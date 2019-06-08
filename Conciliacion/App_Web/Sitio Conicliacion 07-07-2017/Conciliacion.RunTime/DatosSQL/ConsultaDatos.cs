@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -15,23 +16,30 @@ namespace Conciliacion.RunTime.DatosSQL
 {
     public class ConsultaDatos : Consultas
     {
+        Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         string _URLGateway;
 
-        public ConsultaDatos(IMensajesImplementacion implementadorMensajes)
-            : base(implementadorMensajes)
+        //public ConsultaDatos(MensajesImplementacion implementadorMensajes)
+        //    : base(implementadorMensajes)
+        //{
+        //}
+
+        public ConsultaDatos(MensajesImplementacion implementadorMensajes) : base(implementadorMensajes)
         {
         }
 
         public override Consultas CrearObjeto()
         {
-            return new ConsultaDatos(App.ImplementadorMensajes);
+            //return new ConsultaDatos(objApp.ImplementadorMensajes);
+            //return new ConsultaDatos(objApp.ImplementadorMensajes);
+            return null;
         }
 
         public override List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito, 
             int corporativo, int sucursal, int año, int mes, int folio)
         {
             List<EstadoDeCuenta> datos = new List<EstadoDeCuenta>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBBuscaPagoEdoCta", cnn);
@@ -72,6 +80,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override string consultaClienteCRM(int cliente)
         {
+            
             RTGMGateway.RTGMGateway Gateway;
             RTGMGateway.SolicitudGateway Solicitud;
             RTGMCore.DireccionEntrega DireccionEntrega = new RTGMCore.DireccionEntrega();
@@ -82,7 +91,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     AppSettingsReader settings = new AppSettingsReader();
                     SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                    Gateway = new RTGMGateway.RTGMGateway(modulo, App.CadenaConexion);
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, objApp.CadenaConexion);
                     Gateway.URLServicio = _URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.IDCliente = cliente;
@@ -115,7 +124,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     //AppSettingsReader settings = new AppSettingsReader();
                     //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     //byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                    Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// App.CadenaConexion);
+                    Gateway = new RTGMGateway.RTGMGateway(modulo, cadenaconexion);// objApp.CadenaConexion);
                     Gateway.URLServicio = URLGateway;
                     Solicitud = new RTGMGateway.SolicitudGateway();
                     Solicitud.IDCliente = cliente;
@@ -145,6 +154,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         private List<Cliente> ConsultaCLienteCRMdt(DataTable dt)
         {
+            
             List<Cliente> lstClientes = new List<Cliente>();
             List<int> listadistintos = new List<int>();
             try
@@ -159,12 +169,12 @@ namespace Conciliacion.RunTime.DatosSQL
                 AppSettingsReader settings = new AppSettingsReader();
                 SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 byte modulo = byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString());
-                string cadenaconexion = App.CadenaConexion;
+                string cadenaconexion = objApp.CadenaConexion;
                 ParallelOptions options = new ParallelOptions();
                 options.MaxDegreeOfParallelism = 3;
                 Parallel.ForEach(listadistintos, options, (client) => {
                     Cliente cliente;
-                    cliente = App.Cliente.CrearObjeto();
+                    cliente = objApp.Cliente.CrearObjeto();
                     cliente.NumCliente = client;
                     cliente.Nombre = consultaClienteCRM(client, usuario, modulo, cadenaconexion, _URLGateway);
                     lstClientes.Add(cliente);
@@ -184,13 +194,14 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override DataTable CBPedidosPorFactura(string SerieFactura)
         {
+            
             DataTable dtResultados = null;
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             AppSettingsReader settings = new AppSettingsReader();
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
 
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -220,7 +231,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     //        {
                     //            fila["Nombre"] = cliente.Nombre;
                     //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                    //            //cliente = App.Cliente.CrearObjeto();
+                    //            //cliente = objApp.Cliente.CrearObjeto();
                     //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
                     //            //cliente.Nombre = fila["Nombre"].ToString();
                     //            //lstClientes.Add(cliente);
@@ -247,13 +258,14 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia)
         {
+            
             DataTable dtResultados = null;
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             AppSettingsReader settings = new AppSettingsReader();
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
             string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -287,7 +299,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     //        {
                     //            fila["Nombre"] = cliente.Nombre;
                     //            //fila["Nombre"] = consultaClienteCRM(int.Parse(fila["cliente"].ToString()));
-                    //            //cliente = App.Cliente.CrearObjeto();
+                    //            //cliente = objApp.Cliente.CrearObjeto();
                     //            //cliente.NumCliente = int.Parse(fila["cliente"].ToString());
                     //            //cliente.Nombre = fila["Nombre"].ToString();
                     //            //lstClientes.Add(cliente);
@@ -314,8 +326,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> ObtieneImportacionAplicacion(int sucursal, string cuentabancaria)
         {
+            
             List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion> datos = new List<Conciliacion.RunTime.ReglasDeNegocio.ImportacionAplicacion>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 cnn.Open();
                 SqlCommand comando = new SqlCommand("spCBImportacionAplicacion", cnn);
@@ -349,8 +362,9 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ConsultarMultiplesDocumentosTransBan> ConsultaConsultarMultiplesDocumentosTransBan
         (int corporativo, int sucursal, int anio, int mes, int folio)
         {
+            
             List<ConsultarMultiplesDocumentosTransBan> lista = new List<ConsultarMultiplesDocumentosTransBan>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -381,7 +395,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     /*
                     for (int i = 0; i < 14; i++)
                     {
-                        ConsultarMultiplesDocumentosTransBan dato2 = new ConsultarMultiplesDocumentosTransBanDatos(App.ImplementadorMensajes);
+                        ConsultarMultiplesDocumentosTransBan dato2 = new ConsultarMultiplesDocumentosTransBanDatos(objApp.ImplementadorMensajes);
                         dato2.Clave =Convert.ToString(i + 1);
                         dato2.FMovimiento = DateTime.Now;
                         dato2.CajaDescripcion = "CajaDescripcion " + Convert.ToString(i);
@@ -408,8 +422,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ImportacionAplicacion> ConsultaImportacionesAplicacion(int sucursal, string cuentaBancaria)
         {
+            
             List<ImportacionAplicacion> datos = new List<ImportacionAplicacion>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -451,8 +466,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override DatosArchivo ObtieneArchivoExterno(int corporativo, int sucursal, int año, short mes, int folio)
         {
+            
             DatosArchivo archivo = new DatosArchivoDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -495,8 +511,9 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                  int año, short mes, short tipoconciliacion,
                                                                  string statusconciliacion, string usuario)
         {
+            
             List<cConciliacion> conciliaciones = new List<cConciliacion>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -561,8 +578,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaAños()
         {
+            
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -595,7 +613,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaSucursales(ConfiguracionIden0 configuracion, int corporativo)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -631,8 +649,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaSucursales(ConfiguracionIden0 configuracion, int corporativo)
         {
+            
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -667,8 +686,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaGruposConciliacion(ConfiguracionGrupo configuracion, string usuario)
         {
+            
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -702,8 +722,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaTipoConciliacion(ConfiguracionGrupo configuracion, string usuario)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -738,8 +760,9 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaStatusConciliacion()
         {
+            
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -772,7 +795,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaTipoInformacionDatos(ConfiguracionTipoFuente configuracion)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -806,8 +829,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaTipoInformacionDatos(ConfiguracionTipoFuente configuracion)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -840,8 +865,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaBancos(int corporativo)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -876,8 +903,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaCuentasBancaria(int corporativo, short banco)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -918,8 +947,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaFoliosTablaDestino(int corporativo, int sucursal, int año, short mes,
                                                                     string cuentabancaria, short tipofuenteinformacion)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -962,7 +993,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaDestinoExterno(short tipoconciliacion)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -999,8 +1030,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaDestinoExterno(short tipoconciliacion)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1035,8 +1068,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaDestinoInterno(short tipoconciliacion, string campoexterno)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1073,7 +1108,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaDestino()
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1110,8 +1145,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaDestino()
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1147,7 +1184,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaDestinoPedido()
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1183,8 +1220,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaDestinoPedido()
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1219,8 +1258,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaDestinoCompartidoExternoInterno(short configuracion)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1256,7 +1297,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaFormaConciliacion(short tipoconciliacion)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1288,8 +1329,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaFormaConciliacion(short tipoconciliacion)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1322,8 +1365,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> CargarFormaConciliacion(short tipoconciliacion)
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1356,8 +1401,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override string ObtieneURLSolicitud(short TipoConciliacion, short FormaConciliacion)
         {
+            
+
             string URLDestino = "";
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1398,7 +1445,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaMotivoNoConciliado()
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1429,8 +1476,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public override List<ListaCombo> ConsultaMotivoNoConciliado()
         {
+            
+
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1462,7 +1511,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaCelula(int corporativo)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1495,7 +1544,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaCelula(int corporativo)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1528,7 +1577,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ImportacionAplicacion> ConsultaImportacionAplicacion(int sucursal)
         {
             List<ImportacionAplicacion> datos = new List<ImportacionAplicacion>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1569,7 +1618,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override List<ListaCombo> ConsultaStatusConcepto(ConfiguracionStatusConcepto configuracion)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1611,7 +1660,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaStatusConcepto(ConfiguracionStatusConcepto configuracion)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1647,7 +1696,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                            short mes, short tipofuenteinformacion)
         {
             List<DatosArchivo> datos = new List<DatosArchivo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1699,7 +1748,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                            short tipofuenteinformacion)
         {
             List<cFuenteInformacion> datos = new List<cFuenteInformacion>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1748,7 +1797,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                               int folio)
         {
             List<DatosArchivoDetalle> datos = new List<DatosArchivoDetalle>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1800,7 +1849,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      int statusconcepto)
         {
             List<ReferenciaConciliada> datos = new List<ReferenciaConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1816,9 +1865,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.Decimal).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@CadenaExterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@CadenaInterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -1892,7 +1941,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      int statusconcepto)
         {
             List<ReferenciaConciliada> datos = new List<ReferenciaConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -1908,9 +1957,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.Decimal).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@CadenaExterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@CadenaInterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -1984,7 +2033,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                            short mes, int folio)
         {
             List<ReferenciaConciliada> datos = new List<ReferenciaConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2070,7 +2119,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                   int statusconcepto)
         {
             List<ReferenciaConciliada> datos = new List<ReferenciaConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2088,9 +2137,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@CampoInterno", System.Data.SqlDbType.VarChar).Value = campointerno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@CadenaExterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@CadenaInterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -2166,7 +2215,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                   int statusconcepto)
         {
             List<ReferenciaConciliada> datos = new List<ReferenciaConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2184,9 +2233,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@CampoInterno", System.Data.SqlDbType.VarChar).Value = campointerno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@CadenaExterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@CadenaInterno", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativo, sucursal, año, mes, folio, statusconcepto);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -2266,7 +2315,7 @@ namespace Conciliacion.RunTime.DatosSQL
                   configuracion == ConsultaExterno.DepositosPedido);
 
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2281,7 +2330,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -2339,7 +2388,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      int statusconcepto)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2360,7 +2409,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
 
@@ -2422,7 +2471,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      int statusconcepto)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2443,7 +2492,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
 
@@ -2505,7 +2554,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                      int statusconcepto)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2526,7 +2575,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
                     comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value = FInicio;
@@ -2583,7 +2632,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                           string tipocampo, decimal diferencia)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2654,7 +2703,7 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             List<String> etiquetas = new List<String>();
             String cadena = "";
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2713,7 +2762,7 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             List<String> etiquetas = new List<String>();
             String cadena = "";
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2768,7 +2817,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override string ConsultaFechaActualInicial()
         {
             string fecha = String.Empty;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2797,7 +2846,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override string ConsultaFechaPermitidoConciliacion(string numMesesAnterior, string fechaMaxActual)
         {
             string fecha = String.Empty;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2834,7 +2883,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                                    string campopedido)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2849,7 +2898,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.Decimal).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@CampoExterno", System.Data.SqlDbType.VarChar).Value = campoexterno;
                     comando.Parameters.Add("@CampoPedido", System.Data.SqlDbType.VarChar).Value = campopedido;
                     comando.CommandTimeout = 900;
@@ -2923,7 +2972,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                          int statusconcepto)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -2938,7 +2987,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.Decimal).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.CommandTimeout = 900;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -3010,7 +3059,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                          int statusconcepto)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3025,7 +3074,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@Centavos", System.Data.SqlDbType.Decimal).Value = centavos;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.CommandTimeout = 900;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -3093,7 +3142,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //public override List<ReferenciaNoConciliadaPedido> ConsultaDetallePedidoPendiente(ConfiguracionPedido configuracion, int corporativoconciliacion, int sucursalconciliacion, int añoconciliacion, short mesconciliacion, int folioconciliacion, int folioexterno, int secuenciaexterno, int sucursalinterno)
         //{
         //    List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //    {
         //        cnn.Open();
         //        SqlCommand comando = new SqlCommand("spCBConciliacionBusquedaInternaPedido", cnn);
@@ -3133,7 +3182,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //public override List<ReferenciaNoConciliadaPedido> ConsultaDetalleExternoPendientePedido(ConsultaExterno configuracion, int corporativo, int sucursal, int año, short mes, int folio, decimal diferencia)
         //{
         //    List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //    {
         //        cnn.Open();
         //        SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExterno", cnn);
@@ -3177,7 +3226,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                       bool clientepadre)
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3247,7 +3296,7 @@ namespace Conciliacion.RunTime.DatosSQL
             AppSettingsReader settings = new AppSettingsReader();
             string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3320,7 +3369,7 @@ namespace Conciliacion.RunTime.DatosSQL
             )
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3382,7 +3431,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                               DateTime fechaFin)
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3430,7 +3479,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool ValidaPedidoEspecifico(int corporativo, int sucursal, string pedidoReferencia)
         {
             bool resultado = false;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3467,8 +3516,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      decimal diferencia,
                                                                                      string pedidoReferencia)
         {
-            ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(objApp.ImplementadorMensajes);
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3527,8 +3576,8 @@ namespace Conciliacion.RunTime.DatosSQL
             AppSettingsReader settings = new AppSettingsReader();
             string PedidoMultiple = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ConcPedidoMultiple");
 
-            ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(App.ImplementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            ReferenciaNoConciliadaPedido pedido = new ReferenciaNoConciliadaPedidoDatos(objApp.ImplementadorMensajes);
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3585,7 +3634,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int celula)
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3642,7 +3691,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int celula)
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3699,7 +3748,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int celula)
         {
             List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3751,7 +3800,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //public override List<ReferenciaNoConciliadaPedido> ConciliacionBusquedaExternoPedido(int corporativo, int sucursal, int año, short mes, int folio, String campo, string operacion, string valor, string tipocampo, decimal diferencia)
         //{
         //    List<ReferenciaNoConciliadaPedido> datos = new List<ReferenciaNoConciliadaPedido>();
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //    {
         //        if (operacion == "LIKE")
         //        {
@@ -3794,7 +3843,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                       int formaconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3866,7 +3915,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                       int formaconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -3949,7 +3998,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             List<cReferencia> datos = new List<cReferencia>();
 
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4077,7 +4126,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                   int folioconciliacion)
         {
             cConciliacion conciliacion = new ConciliacionDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4135,7 +4184,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                   int folioconciliacion)
         {
             cConciliacion conciliacion = new ConciliacionDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4193,7 +4242,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int statusconcepto, decimal diferencia)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4212,7 +4261,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SecuenciaInterno", System.Data.SqlDbType.VarChar).Value = secuenciainterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
                     comando.Parameters.Add("@Diferencia", System.Data.SqlDbType.Decimal).Value = diferencia;
@@ -4268,7 +4317,7 @@ namespace Conciliacion.RunTime.DatosSQL
             short formaconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4385,7 +4434,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                             int statusconcepto)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4400,7 +4449,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folioconciliacion;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
 
@@ -4457,7 +4506,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                              int sucursalinterno)
          {
              List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-             using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+             using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
              {
                  try
                  {
@@ -4474,7 +4523,7 @@ namespace Conciliacion.RunTime.DatosSQL
                      comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                      comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                      comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                         App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                         objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                 añoconciliacion, mesconciliacion, folioconciliacion,
                                                                 statusconcepto);
 
@@ -4531,7 +4580,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                             int sucursalinterno)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4548,7 +4597,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
                     
@@ -4604,7 +4653,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                     int sucursalinterno)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4621,7 +4670,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
                     comando.Parameters.Add("@FInicio", System.Data.SqlDbType.DateTime).Value = FInicio;
@@ -4674,7 +4723,7 @@ namespace Conciliacion.RunTime.DatosSQL
             decimal diferencia)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4743,7 +4792,7 @@ namespace Conciliacion.RunTime.DatosSQL
             decimal diferencia)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4848,7 +4897,7 @@ namespace Conciliacion.RunTime.DatosSQL
         {
 
             bool resultado = false;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -4896,7 +4945,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                  int año, short mes, int folio, string usuario)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5000,7 +5049,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                         string usuario)
         {
             List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5096,7 +5145,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                       short mes, int folio, string usuario)
         {
             List<Cobro> datos = new List<Cobro>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5208,7 +5257,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                   int folio, string usuario)
         {
             MovimientoCajaDatos movimiento = new MovimientoCajaDatos(this.implementadorMensajes);
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5285,7 +5334,7 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacion", cnn);
@@ -5328,7 +5377,7 @@ namespace Conciliacion.RunTime.DatosSQL
                   configuracion == ConsultaExterno.DepositosPedido);
 
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5343,7 +5392,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
@@ -5394,7 +5443,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //     int resultado = 0;
         //     SqlCommand comando = new SqlCommand("spCBConciliacionPendienteExternoTipo", cnn);
 
-        //     using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //     using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //     {
         //         try
         //         {
@@ -5434,7 +5483,7 @@ namespace Conciliacion.RunTime.DatosSQL
                   configuracion == ConsultaExterno.DepositosPedido);
 
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5449,7 +5498,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
                     comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = CuentaBancaria;
                     comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
@@ -5511,7 +5560,7 @@ namespace Conciliacion.RunTime.DatosSQL
                   configuracion == ConsultaExterno.DepositosPedido);
 
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5526,7 +5575,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
                     comando.Parameters.Add("@CuentaBancaria", System.Data.SqlDbType.VarChar).Value = CuentaBancaria;
                     comando.Parameters.Add("@Banco", System.Data.SqlDbType.Int).Value = Banco;
@@ -5586,7 +5635,7 @@ namespace Conciliacion.RunTime.DatosSQL
                   configuracion == ConsultaExterno.DepositosPedido);
 
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5601,7 +5650,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = folio;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
                     comando.Parameters.Add("@Deposito", System.Data.SqlDbType.Bit).Value = deposito;
                     comando.Parameters.Add("@FechaIni", System.Data.SqlDbType.DateTime).Value = FInicio;
                     comando.Parameters.Add("@FechaFin", System.Data.SqlDbType.DateTime).Value = FFinal;
@@ -5656,7 +5705,7 @@ namespace Conciliacion.RunTime.DatosSQL
             decimal diferencia, int statusconcepto, decimal monto, bool deposito, DateTime fminima, DateTime fmaxima)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5675,7 +5724,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     comando.Parameters.Add("@SucursalInterno", System.Data.SqlDbType.Int).Value = sucursalinterno;
                     comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.Int).Value = statusconcepto;
                     comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value =
-                        App.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
+                        objApp.Consultas.ObtenerCadenaDeEtiquetas(1, corporativoconciliacion, sucursalconciliacion,
                                                                añoconciliacion, mesconciliacion, folioconciliacion,
                                                                statusconcepto);
                     comando.Parameters.Add("@Monto", System.Data.SqlDbType.Decimal).Value = monto;
@@ -5733,7 +5782,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                       short mes, string status)
         {
             List<TransferenciaBancarias> datos = new List<TransferenciaBancarias>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5799,7 +5848,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaCorporativoTransferencia(int configuracion, int corporativo, int sucursal, int banco, string cuentabanco)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5842,7 +5891,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaSucursalTransferencia(int configuracion, int corporativo, int sucursal, int banco, string cuentabanco, int cbocorporativo)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5884,7 +5933,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaNombreBancoTransferencia(int configuracion, int corporativo, int sucursal, int banco, string cuentabanco, int cbocorporativo, int cbosucursal)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5926,7 +5975,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<ListaCombo> ConsultaCuentaBancoTransferencia(int configuracion, int corporativo, int sucursal, int banco, string cuentabanco, int cbocorporativo, int cbosucursal, int cbobanco)
         {
             List<ListaCombo> datos = new List<ListaCombo>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -5973,7 +6022,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //   decimal centavos, short statusconcepto, string campoexterno, string campopedido)
         //{
         //    List<ReferenciaConciliadaPedido> datos = new List<ReferenciaConciliadaPedido>();
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //    {
         //        try
         //        {
@@ -5993,7 +6042,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
         //            comando.Parameters.Add("@Centavos", System.Data.SqlDbType.VarChar).Value = centavos;
         //            comando.Parameters.Add("@StatusConcepto", System.Data.SqlDbType.VarChar).Value = statusconcepto;
-        //            comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = App.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
+        //            comando.Parameters.Add("@Cadena", System.Data.SqlDbType.VarChar).Value = objApp.Consultas.ObtenerCadenaDeEtiquetas(0, corporativo, sucursal, año, mes, folio, statusconcepto);
         //            comando.Parameters.Add("@CampoExterno", System.Data.SqlDbType.VarChar).Value = campoexterno;
         //            comando.Parameters.Add("@CampoPedido", System.Data.SqlDbType.VarChar).Value = campopedido;
 
@@ -6003,7 +6052,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //            while (reader.Read())
         //            {
 
-        //                ReferenciaConciliadaPedido dato = App.ReferenciaConciliadaPedido.CrearObjeto();
+        //                ReferenciaConciliadaPedido dato = objApp.ReferenciaConciliadaPedido.CrearObjeto();
         //                //Convert.ToInt16(reader["CorporativoConciliacion"]),
         //                //Convert.ToInt32(reader["AñoConciliacion"]),
         //                //Convert.ToInt16(reader["MesConciliacion"]),
@@ -6096,7 +6145,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //    string cuentaBancaria, DateTime finicial, DateTime ffinal)
         //{
         //    List<ReferenciaConciliadaCompartida> datos = new List<ReferenciaConciliadaCompartida>();
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //    {
         //        try
         //        {
@@ -6205,7 +6254,7 @@ namespace Conciliacion.RunTime.DatosSQL
            string cuentaBancaria, DateTime finicial, DateTime ffinal, string statusconciliacion)
         {
             List<ReferenciaNoConciliada> datos = new List<ReferenciaNoConciliada>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6305,7 +6354,7 @@ namespace Conciliacion.RunTime.DatosSQL
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int corporativo, int sucursal, int año, int folio, int secuencia)
         {
             List<ReferenciaConciliadaCompartida> datos = new List<ReferenciaConciliadaCompartida>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6412,7 +6461,7 @@ namespace Conciliacion.RunTime.DatosSQL
         //public override bool AccesoTotalFlujoEfectivo(string usuario)
         //{
         //    bool accesoTotal = false;
-        //    using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+        //    using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
         //    {
         //        try
         //        {
@@ -6438,7 +6487,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool ValidarCierreMes(short config, int corporativo, int sucursal, int año, short mes, string usuariocierre)
         {
             bool cierremes = false;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6478,7 +6527,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool CierreMesConciliacion(short config, int corporativo, int sucursal, int año, short mes, string usuariocierre)
         {
             bool cierremes = false;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6519,7 +6568,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override decimal CalculaImporteRealFlujoEfectivo(int corporativo, short mes, DateTime fconsulta, int statusconcepto)
         {
             decimal resultado = 0;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6560,7 +6609,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<FlujoProyectado> ConsultaFlujoEfectivo(int corporativo, int sucursal, TipoTransferencia tipotransferencia, DateTime fInicial, DateTime fFinal)
         {
             List<FlujoProyectado> datos = new List<FlujoProyectado>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6618,7 +6667,7 @@ namespace Conciliacion.RunTime.DatosSQL
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway");
 
             ListaCombo dato = null;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6664,7 +6713,7 @@ namespace Conciliacion.RunTime.DatosSQL
         /*public override bool ClienteValido(string cliente)
         {
             bool resultado = false;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6702,7 +6751,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool ClienteValido(string cliente)
         {
             bool resultado = false;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6730,7 +6779,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool VerificaPedidoReferenciaExiste(string PedidoReferencia)
         {
             Boolean resultado = true;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6764,7 +6813,7 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             DataTable dtPedidoReferenciaDetalle = null;
 
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6804,7 +6853,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             DataTable dtPedidoReferenciaDetalle = null;
 
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6849,7 +6898,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                      int añoTD, int folioTD, int secuenciaTD)
         {
             Boolean resultado = true;
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6888,7 +6937,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<DetalleSaldoAFavor> ConsultaDetalleSaldoAFavor(DateTime FInicio, DateTime FFin, int Cliente, Decimal Monto, short TipoMovimiento)
         {
             List<DetalleSaldoAFavor> ListaDSAF = new List<DetalleSaldoAFavor>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6945,7 +6994,7 @@ namespace Conciliacion.RunTime.DatosSQL
         public override List<Cuenta> ConsultaCuentasUsuario (string Usuario)
         {
             List<Cuenta> lista = new List<Cuenta>();
-            using (SqlConnection cnn = new SqlConnection(App.CadenaConexion))
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
                 try
                 {
@@ -6977,9 +7026,6 @@ namespace Conciliacion.RunTime.DatosSQL
             return lista;
         }
     }
-
-
-    
 
 }
 

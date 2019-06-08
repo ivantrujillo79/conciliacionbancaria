@@ -27,6 +27,9 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
     public static List<Etiqueta> listEtiquetasStatusConcepto = new List<Etiqueta>();
     public static List<Etiqueta> listEtiquetasBanco = new List<Etiqueta>();
     public static StatusConcepto statusConceptoActual;
+
+    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+
     protected override void OnPreInit(EventArgs e)
     {
         if (HttpContext.Current.Session["Operaciones"] == null)
@@ -38,7 +41,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
     {
 
        
-        App.ImplementadorMensajes.ContenedorActual = this;
+        objApp.ImplementadorMensajes.ContenedorActual = this;
         if (!IsPostBack)
         {
 
@@ -47,7 +50,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
 
             ConsultaCorporativo();
 
-            statusConceptoActual = App.StatusConcepto.CrearObjeto();
+            statusConceptoActual = Conciliacion.Migracion.Runtime.App.StatusConcepto.CrearObjeto();
         }
 
     }
@@ -72,7 +75,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
         }
         try
         {
-            listStatusConcepto = App.Consultas.ConsultaStatusConcepto(
+            listStatusConcepto = Conciliacion.Migracion.Runtime.App.Consultas.ConsultaStatusConcepto(
                          Conciliacion.RunTime.ReglasDeNegocio.Consultas.ConfiguracionStatusConcepto.Todos);
         }
         catch (Exception)
@@ -93,7 +96,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
         {
             this.ddlCorporativo.DataValueField = "Id";
             this.ddlCorporativo.DataTextField = "Nombre";
-            this.ddlCorporativo.DataSource = App.Consultas.ObtieneListaCorporativo(((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario);
+            this.ddlCorporativo.DataSource = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaCorporativo(((SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"]).IdUsuario);
             this.ddlCorporativo.DataBind();
         }
         catch
@@ -107,7 +110,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
     {
         try
         {
-            this.ddlBancoFinanciero.DataSource = Conciliacion.RunTime.App.Consultas.ConsultaBancos(corporativo);
+            this.ddlBancoFinanciero.DataSource = objApp.Consultas.ConsultaBancos(corporativo);
             this.ddlBancoFinanciero.DataValueField = "Identificador";
             this.ddlBancoFinanciero.DataTextField = "Descripcion";
             this.ddlBancoFinanciero.DataBind();
@@ -129,7 +132,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
         }
         try
         {
-            listEtiquetasStatusConcepto = App.Consultas.ObtieneListaEtiquetaStatusConcepto(statusConcepto);
+            listEtiquetasStatusConcepto = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiquetaStatusConcepto(statusConcepto);
         }
         catch (Exception)
         {
@@ -154,7 +157,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
         }
         try
         {
-            listEtiquetasBanco = App.Consultas.ObtieneListaEtiquetaBanco(banco);
+            listEtiquetasBanco = Conciliacion.Migracion.Runtime.App.Consultas.ObtieneListaEtiquetaBanco(banco);
             listEtiquetasBanco.RemoveAll(delegate(Etiqueta etiq)
             {
                 return listEtiquetasStatusConcepto.Exists(x => x.Id == etiq.Id);
@@ -260,7 +263,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
     protected void btnGuardarStatusConcepto_Click(object sender, EventArgs e)
     {
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
-        StatusConcepto nuevoStatusConcepto = App.StatusConcepto.CrearObjeto();
+        StatusConcepto nuevoStatusConcepto = Conciliacion.Migracion.Runtime.App.StatusConcepto.CrearObjeto();
         nuevoStatusConcepto.Descripcion = txtDescripcion.Text;
         nuevoStatusConcepto.Usuario = usuario.IdUsuario.Trim();
         if (nuevoStatusConcepto.Guardar())
@@ -272,7 +275,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
 
     protected void btnModificar_Click(object sender, EventArgs e)
     {
-        if (indiceSeleccionadoGrupo < 0) { App.ImplementadorMensajes.MostrarMensaje("Elija un Status Concepto"); return; }
+        if (indiceSeleccionadoGrupo < 0) { objApp.ImplementadorMensajes.MostrarMensaje("Elija un Status Concepto"); return; }
         bool statusActivo = Convert.ToString(grvStatusConcepto.DataKeys[indiceSeleccionadoGrupo].Values["Status"]).Equals("ACTIVO");
         if (statusActivo)
         {
@@ -286,7 +289,7 @@ public partial class Catalogos_StatusConcepto : System.Web.UI.Page
             popUpEtiquetas.Show();
         }
         else
-            App.ImplementadorMensajes.MostrarMensaje("Status Concepto INACTIVO. Verifique su selección.");
+            objApp.ImplementadorMensajes.MostrarMensaje("Status Concepto INACTIVO. Verifique su selección.");
     }
     protected void ddlCorpotativo_SelectedIndexChanged(object sender, EventArgs e)
     {
