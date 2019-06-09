@@ -5511,7 +5511,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         //ObtieneTipoCobroPorCuentaBancaria(cnn, corporativo, Banco, CuentaBancaria);
-                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 10 : Convert.ToInt16(reader["TipoCobro"]);
+                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 0 : Convert.ToInt16(reader["TipoCobro"]);
                         ReferenciaNoConciliada dato =
                             new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
                                 Convert.ToInt16(reader["Sucursal"]),
@@ -5586,7 +5586,7 @@ namespace Conciliacion.RunTime.DatosSQL
                     while (reader.Read())
                     {
                         //ObtieneTipoCobroPorCuentaBancaria(cnn, corporativo, Banco, CuentaBancaria);
-                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 10 : Convert.ToInt16(reader["TipoCobro"]);
+                        tcobro = reader["TipoCobro"].ToString() == string.Empty ? 0 : Convert.ToInt16(reader["TipoCobro"]);
                         ReferenciaNoConciliada dato =
                             new ReferenciaNoConciliadaDatos(Convert.ToInt16(reader["Corporativo"]),
                                 Convert.ToInt16(reader["Sucursal"]),
@@ -7024,6 +7024,38 @@ namespace Conciliacion.RunTime.DatosSQL
                 }
             }
             return lista;
+        }
+
+        public override int CuentaBancariaTipoCobroDefault(int corporativo, int banco, string cuenta)
+        {
+            int tipoCobro = 0;
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
+            {
+                try
+                {
+                    cnn.Open();
+                    SqlCommand comando = new SqlCommand("spCBCuentaBancariaTipoCobroDefault", cnn);
+                    comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.Char).Value = corporativo;
+                    comando.Parameters.Add("@Banco", System.Data.SqlDbType.Char).Value = banco;
+                    comando.Parameters.Add("@cuenta", System.Data.SqlDbType.Char).Value = cuenta;
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlDataReader reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        tipoCobro = Convert.ToInt32(reader["TIpoCobroDefault"]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Erros al consultar la informacion.\n\rClase :" +
+                                                              this.GetType().Name + "\n\r" + "Metodo :" +
+                                                              stackTrace.GetFrame(0).GetMethod().Name + "\n\r" +
+                                                              "Error :" + ex.Message);
+                    stackTrace = null;
+                }
+            }
+            return tipoCobro;
         }
     }
 

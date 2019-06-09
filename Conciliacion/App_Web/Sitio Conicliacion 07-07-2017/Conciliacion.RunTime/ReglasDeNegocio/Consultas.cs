@@ -352,7 +352,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         //public abstract bool AccesoTotalFlujoEfectivo(string usuario);
         public abstract bool ValidarCierreMes(short config, int corporativo, int sucursal, int año, short mes, string usuariocierre);
         public abstract bool CierreMesConciliacion(short config, int corporativo, int sucursal, int año, short mes,string usuariocierre);
-        
+
+        public abstract int CuentaBancariaTipoCobroDefault(int corporativo, int banco, string cuenta);
 
         public abstract ListaCombo ConsultaDatosCliente(Int64 cliente);
         public abstract bool ClienteValido(string cliente);

@@ -96,6 +96,12 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.Cache.SetNoStore();
+        Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+        Response.Expires = -1;
+        Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
         short _FormaConciliacion = Asigna_FormaConciliacionActual();
         //short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         //if (_FormaConciliacion == 0)
@@ -372,6 +378,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             lblMontoTotalInterno.Text = c.MontoTotalInterno.ToString("C2");
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
+            ViewState["TipoCobroDefault"] = objApp.Consultas.CuentaBancariaTipoCobroDefault(corporativo, c.Banco, c.CuentaBancaria);
         }
         catch (SqlException ex)
         {
@@ -1249,11 +1256,6 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 {
                     rc.TipoCobro = rnc.TipoCobro;
                     rc.TipoCobroAnterior = rnc.TipoCobro;
-                    //if (rnc.TipoCobro == 0)
-                    //{
-                    //    rc.TipoCobro = 10;
-                    //    rc.TipoCobroAnterior = 10;
-                    //}
                     if (listaTransaccionesConciliadas != null)
                         resultado =
                             listaTransaccionesConciliadas.SelectMany(
@@ -1407,9 +1409,14 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 //e.Row.Attributes.Add("onmouseover", "this.className='bg-color-grisClaro02'");
                 //dd.Attributes.Add("onmouseover", "this.className='bg-color-grisClaro02'");
                 if (lb.Text == "0")
+                {
+                    dd.SelectedValue = ViewState["TipoCobroDefault"].ToString();
                     dd.CssClass = "select-css-rojo";
+                }
                 else
+                {
                     dd.CssClass = "select-css";
+                }
             }
         }
 

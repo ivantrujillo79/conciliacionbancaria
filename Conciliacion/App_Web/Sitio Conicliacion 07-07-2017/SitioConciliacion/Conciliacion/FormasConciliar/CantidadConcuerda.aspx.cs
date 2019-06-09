@@ -102,6 +102,12 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.Cache.SetNoStore();
+        Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+        Response.Expires = -1;
+        Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
         Session["BLOQUEO_ORIGEN"] = "CANTIDADCONCUERDA";
         short _FormaConciliacion = ObtieneFormaConciliacion();
         objApp.ImplementadorMensajes.ContenedorActual = this;
