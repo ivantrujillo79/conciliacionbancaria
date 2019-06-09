@@ -398,9 +398,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     this.ImplementadorMensajes.MostrarMensaje("No se puede guardar el registro. El monto conciliados es: " + this.MontoConciliado + ", debe estar entre: " + (this.MontoExterno - this.Diferencia) + " y " + (this.MontoExterno + this.Diferencia));
                     return false;
                 }
-
+                
                 foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                 {
+                    referen.Usuario = this.Usuario;
                     referen.Guardar();
                     this.Completo = true;
                 }

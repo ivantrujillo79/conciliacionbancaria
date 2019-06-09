@@ -147,6 +147,12 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.Cache.SetNoStore();
+        Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+        Response.Expires = -1;
+        Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
         objControlPostBack = GetPostBackControlId(this.Page);
         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
         objApp.ImplementadorMensajes.ContenedorActual = this;
@@ -600,6 +606,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             txtAFuturo_FInicioInternos.Text = txtAFuturo_FInicioExternos.Text;
             txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInalExternos.Text;
 
+            ViewState["TipoCobroDefault"] = objApp.Consultas.CuentaBancariaTipoCobroDefault(corporativo, c.Banco, c.CuentaBancaria);
         }
         catch (SqlException ex)
         {
@@ -1274,9 +1281,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                         ex.ConInterno = true;
 
                     if (ex.TipoCobro == 0)
-                        ex.TipoCobro = 10;
+                        ex.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
                     if (ex.TipoCobroAnterior == 0)
-                        ex.TipoCobroAnterior = 10;
+                        ex.TipoCobroAnterior = int.Parse(ViewState["TipoCobroDefault"].ToString());
                     ex.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
 
                     ex.ListaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
@@ -2806,15 +2813,17 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
 
-        if (rfEx.TipoCobro == 0 || rfEx.TipoCobro == 10)
+        if (rfEx.TipoCobro == 0)
         {
-            rfEx.TipoCobro = 10;
+            //rfEx.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
             ddlTiposDeCobro.CssClass = "select-css-rojo";
+            ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
         }
         else
+        { 
             ddlTiposDeCobro.CssClass = "select-css";
-        ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
-
+            ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
+        }
         if (chk.Checked)
         {
             //if (rfEx.StatusConciliacion == "CONCILIACION CANCELADA")

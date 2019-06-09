@@ -96,6 +96,12 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.Cache.SetNoStore();
+        Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+        Response.Expires = -1;
+        Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
         short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (_FormaConciliacion == 0)
         {

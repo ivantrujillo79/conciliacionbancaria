@@ -178,6 +178,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.Cache.SetNoStore();
+        Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+        Response.Expires = -1;
+        Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
         objApp.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);
         hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
@@ -447,10 +453,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 indiceExternoSeleccionado = 0;
                 ReferenciaNoConciliada rfExTc = leerReferenciaExternaSeleccionada();
                 ddlTiposDeCobro.SelectedValue = rfExTc.TipoCobro.ToString();
-                if (ddlTiposDeCobro.SelectedValue == "0" || ddlTiposDeCobro.SelectedValue == "10")
-                    ddlTiposDeCobro.CssClass = "select-css-rojo";
-                else
+                if (rfExTc.TipoCobro != 0)  //  || ddlTiposDeCobro.SelectedValue == ViewState["TipoCobroDefault"] as string)
+                {
+                    ddlTiposDeCobro.SelectedValue = rfExTc.TipoCobro.ToString();
                     ddlTiposDeCobro.CssClass = "select-css";
+                }
+                else
+                {
+                    ddlTiposDeCobro.CssClass = "select-css-rojo";
+                    ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
+                }
+
                 btnMuestraAFuturoInterno.Visible = objSolicitdConciliacion.ConsultaArchivo();
             }
             else //!Postback
@@ -1149,11 +1162,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
             var firstDayOfMonth = new DateTime(c.Año, c.Mes, 1);
             var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-            txtAFuturo_FInicio.Text = "01/"+c.Mes.ToString()+"/"+c.Año;
+            txtAFuturo_FInicio.Text = "01/" + c.Mes.ToString() + "/" + c.Año;
             txtAFuturo_FFInal.Text = lastDayOfMonth.ToString("dd/MM/yyyy");
             txtAFuturo_FInicioInternos.Text = txtAFuturo_FInicio.Text;
             txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInal.Text;
 
+            ViewState["TipoCobroDefault"] = objApp.Consultas.CuentaBancariaTipoCobroDefault(corporativo, c.Banco, c.CuentaBancaria);
         }
         catch (SqlException ex)
         {
@@ -2291,7 +2305,15 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         }
                         AgregarComisionAExterno(rfExterno);
                         if (objSolicitdConciliacion.ConsultaPedido())
+                        {
+                            if (rfExterno.TipoCobro == 0)
+                            {
+                                rfExterno.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
+                                rfExterno.TipoCobroAnterior = int.Parse(ViewState["TipoCobroDefault"].ToString());
+                            }
+                            rfExterno.TipoCobroAnterior = rfExterno.TipoCobro;
                             rfExterno.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue);
+                        }
                         //ITL-12/12/2017: La propiedad ConInterno = true si la forma y tipo de conciliación sólo soportan archivos internos
                         //ConInterno = false si la forma y tipo de conciliación sólo soportan pedidos (sin importar la célula)
                         rfExterno.ConInterno = objSolicitdConciliacion.ConsultaArchivo();
@@ -3901,18 +3923,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (rfEx.TipoCobro != 0)
             {
                 ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
-                rfEx.TipoCobroAnterior = rfEx.TipoCobro;
+                ddlTiposDeCobro.CssClass = "select-css";
             }
             else
             {
-                ddlTiposDeCobro.SelectedValue = "10";
-                rfEx.TipoCobroAnterior = 10;
-                rfEx.TipoCobro = 10;
-            }
-            if (ddlTiposDeCobro.SelectedValue == "0" || ddlTiposDeCobro.SelectedValue == "10")
+                ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
                 ddlTiposDeCobro.CssClass = "select-css-rojo";
-            else
-                ddlTiposDeCobro.CssClass = "select-css";
+            }
 
             statusFiltro = false;
             Session["StatusFiltro"] = statusFiltro;
@@ -7925,8 +7942,23 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void ddlTiposDeCobro_SelectedIndexChanged(object sender, EventArgs e)
     {
-        
+        ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+        rfEx.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
     }
+
+    //if (rfEx.TipoCobro != 0)
+    //{
+    //    //ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
+    //    //rfEx.TipoCobroAnterior = rfEx.TipoCobro;
+    //    ddlTiposDeCobro.CssClass = "select-css";
+    //}
+    //else
+    //{
+    //    //ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
+    //    //rfEx.TipoCobroAnterior = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+    //    //rfEx.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
+    //    ddlTiposDeCobro.CssClass = "select-css-rojo";
+    //}
 
     protected void btnFiltraAFuturoInterno_Click(object sender, ImageClickEventArgs e)
     {

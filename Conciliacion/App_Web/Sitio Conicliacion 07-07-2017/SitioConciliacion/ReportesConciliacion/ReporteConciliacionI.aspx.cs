@@ -2703,7 +2703,8 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
                    s => s.Pedido == pedido && s.CelulaPedido == celulaPedido && s.AñoPedido == añoPedido);
                 if (!rfExterna.AgregarReferenciaConciliadaSinVerificacion(rfPedido)) return false;
             }
-
+            Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            rfExterna.Usuario = usuario.IdUsuario;
             resultado = rfExterna.GuardarReferenciaConciliada();
         }
         catch (Exception ex)
