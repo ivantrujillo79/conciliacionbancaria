@@ -379,6 +379,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             lblStatusConciliacion.Text = c.StatusConciliacion;
             imgStatusConciliacion.ImageUrl = c.UbicacionIcono;
             ViewState["TipoCobroDefault"] = objApp.Consultas.CuentaBancariaTipoCobroDefault(corporativo, c.Banco, c.CuentaBancaria);
+            if (ViewState["TipoCobroDefault"].ToString() == "0")
+                ViewState["TipoCobroDefault"] = "10";
         }
         catch (SqlException ex)
         {
@@ -1254,6 +1256,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 listaTransaccionesConciliadas = Session["CONCILIADAS"] as List<ReferenciaNoConciliada>;
                 foreach (ReferenciaConciliadaPedido rc in listResultado)
                 {
+                    if (rnc.TipoCobro == 0)
+                        rnc.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
                     rc.TipoCobro = rnc.TipoCobro;
                     rc.TipoCobroAnterior = rnc.TipoCobro;
                     if (listaTransaccionesConciliadas != null)
