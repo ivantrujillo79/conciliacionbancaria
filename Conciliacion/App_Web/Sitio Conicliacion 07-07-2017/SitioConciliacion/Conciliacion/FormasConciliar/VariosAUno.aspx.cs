@@ -607,6 +607,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             txtAFuturo_FFInalInternos.Text = txtAFuturo_FFInalExternos.Text;
 
             ViewState["TipoCobroDefault"] = objApp.Consultas.CuentaBancariaTipoCobroDefault(corporativo, c.Banco, c.CuentaBancaria);
+            if (ViewState["TipoCobroDefault"].ToString() == "0")
+                ViewState["TipoCobroDefault"] = "10";
         }
         catch (SqlException ex)
         {
@@ -2817,7 +2819,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         {
             //rfEx.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
             ddlTiposDeCobro.CssClass = "select-css-rojo";
-            ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
+            if (ViewState["TipoCobroDefault"].ToString() != string.Empty && ViewState["TipoCobroDefault"].ToString() != "0")
+                ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
         }
         else
         { 
