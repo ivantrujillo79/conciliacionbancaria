@@ -1082,7 +1082,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                             x.Sucursal == listaReferenciaConciliadaPedido[filaindex].Sucursal &&
                                                                             x.Año == listaReferenciaConciliadaPedido[filaindex].Año &&
                                                                             x.Folio == listaReferenciaConciliadaPedido[filaindex].Folio &&
-                                                                            x.Secuencia == listaReferenciaConciliadaPedido[filaindex].Secuencia);
+                                                                            x.Secuencia == listaReferenciaConciliadaPedido[filaindex].Secuencia &&
+                                                                            x.Monto == listaReferenciaConciliadaPedido[filaindex].MontoConciliado);
                             fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
                         }
                     }
@@ -1096,7 +1097,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                             x.Sucursal == listaReferenciaConciliada[filaindex].Sucursal &&
                                                                             x.Año == listaReferenciaConciliada[filaindex].Año &&
                                                                             x.Folio == listaReferenciaConciliada[filaindex].Folio &&
-                                                                            x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia);
+                                                                            x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia &&
+                                                                            x.Monto == listaReferenciaConciliada[filaindex].MontoConciliado);
                             fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = !Existen;
                         }
                     }
@@ -2600,7 +2602,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                                 x.Sucursal == listaReferenciaConciliadaPedido[filaindex].Sucursal &&
                                                                                 x.Año == listaReferenciaConciliadaPedido[filaindex].Año &&
                                                                                 x.Folio == listaReferenciaConciliadaPedido[filaindex].Folio &&
-                                                                                x.Secuencia == listaReferenciaConciliadaPedido[filaindex].Secuencia);
+                                                                                x.Secuencia == listaReferenciaConciliadaPedido[filaindex].Secuencia &&
+                                                                                x.Monto == listaReferenciaConciliadaPedido[filaindex].MontoConciliado);
                         }
                     }
                     else
@@ -2612,7 +2615,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                                 x.Sucursal == listaReferenciaConciliada[filaindex].Sucursal &&
                                                                                 x.Año == listaReferenciaConciliada[filaindex].Año &&
                                                                                 x.Folio == listaReferenciaConciliada[filaindex].Folio &&
-                                                                                x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia);
+                                                                                x.Secuencia == listaReferenciaConciliada[filaindex].Secuencia &&
+                                                                                x.Monto == listaReferenciaConciliadaPedido[filaindex].MontoConciliado);
                         }
                     }
                     if (Existen)
@@ -3366,7 +3370,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                 x.Sucursal == rfEx.Sucursal &&
                                                                 x.Año == rfEx.Año &&
                                                                 x.Folio == rfEx.Folio &&
-                                                                x.Secuencia == rfEx.Secuencia);
+                                                                x.Secuencia == rfEx.Secuencia &&
+                                                                x.Monto == rfEx.MontoConciliado);
             }
             else //if (objSolicitdConciliacion.ConsultaArchivo())
             {
@@ -3375,7 +3380,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                 x.Sucursal == rfEx.Sucursal &&
                                                                 x.Año == rfEx.Año &&
                                                                 x.Folio == rfEx.Folio &&
-                                                                x.Secuencia == rfEx.Secuencia);
+                                                                x.Secuencia == rfEx.Secuencia &&
+                                                                x.Monto == rfEx.MontoConciliado);
             }
         }
         else
@@ -3393,7 +3399,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                    x.Sucursal == rfEx.Sucursal &&
                                                                    x.Año == rfEx.Año &&
                                                                    x.Folio == rfEx.Folio &&
-                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                                                                   x.Secuencia == rfEx.Secuencia &&
+                                                                   x.Monto == rfEx.MontoConciliado).ToList()[0]
                     );
             }
         }
@@ -3413,7 +3420,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                                                                    x.Sucursal == rfEx.Sucursal &&
                                                                    x.Año == rfEx.Año &&
                                                                    x.Folio == rfEx.Folio &&
-                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                                                                   x.Secuencia == rfEx.Secuencia &&
+                                                                   x.Monto == rfEx.MontoConciliado).ToList()[0]
                     );
             }
         }

@@ -544,7 +544,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //    Confirma_Pedido_Multiple();
 
                 
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios",@"Calendarios();", true);
+               // ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios",@"Calendarios();", true);
 
             }
 

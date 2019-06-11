@@ -325,7 +325,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     selectedListItem.Selected = true;
                 }
                 //Selecciona el primer externo
-
+                LockerExterno.EliminarBloqueos(Session.SessionID);
                 foreach (GridViewRow fila in grvExternos.Rows.Cast<GridViewRow>().Where(fila => fila.RowType == DataControlRowType.DataRow))
                 {
                     fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked = true;
@@ -1217,18 +1217,34 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         btnRegresarExternos.Visible = false;
         try
         {
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+
             hfTipoCobroSeleccionado.Value = ddlTiposDeCobro.SelectedValue;
             //Leer info actual de la conciliación.
             cargarInfoConciliacionActual();
 
             List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
+            int numRegInter = 0;
+            if (objSolicitdConciliacion.ConsultaPedido())
+                numRegInter = grvPedidos.Rows.Count;
+            if (objSolicitdConciliacion.ConsultaArchivo())
+                numRegInter = grvInternos.Rows.Count;
+
+            if (extSeleccionados[0].MontoConciliado == 0 || numRegInter == 0)
+            {
+                foreach (GridViewRow fila in grvPedidos.Rows.Cast<GridViewRow>().Where(fila => fila.RowType == DataControlRowType.DataRow))
+                {
+                    fila.Cells[0].Controls.OfType<RadioButton>().FirstOrDefault().Checked = true;
+                    rdbPedido_CheckedChanged(fila.Cells[0].Controls.OfType<RadioButton>().FirstOrDefault(), null);
+                    break;
+                }
+            }
             /*          Asignar forma de conciliación "Varios a Uno" o  "Varios a Uno Pedidos"           */
             short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
             
-            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-            objSolicitdConciliacion.FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
-
             if (extSeleccionados.Count == 0)
             {
                 throw new Exception(" Seleccione transacciones válidas para continuar.");
@@ -1266,12 +1282,6 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 }
             }
 
-            //int numRegInter = tipoConciliacion == 4 ? grvPedidos.Rows.Count : grvInternos.Rows.Count;
-            int numRegInter = 0;
-            if (objSolicitdConciliacion.ConsultaPedido())
-                numRegInter = grvPedidos.Rows.Count;
-            if (objSolicitdConciliacion.ConsultaArchivo())
-                numRegInter = grvInternos.Rows.Count;
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
             {
                 usuario = (Usuario)HttpContext.Current.Session["Usuario"];
@@ -2777,11 +2787,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
             ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
 
-            return LockerExterno.ExternoBloqueado.Exists(x =>   x.Corporativo == rfEx.Corporativo &&
-                                                                x.Sucursal == rfEx.Sucursal &&
-                                                                x.Año == rfEx.Año &&
-                                                                x.Folio == rfEx.Folio &&
-                                                                x.Secuencia == rfEx.Secuencia);
+            return LockerExterno.ExternoBloqueado.Exists(x =>   x.Corporativo == rfEx.Corporativo && x.Sucursal == rfEx.Sucursal && x.Año == rfEx.Año && x.Folio == rfEx.Folio && x.Secuencia == rfEx.Secuencia && x.SessionID != Session.SessionID);
         }
         else
             return false;
@@ -3341,93 +3347,72 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         {
             short formaConciliacion = Convert.ToInt16(ddlCriteriosConciliacion.SelectedValue);
 
-            //if (tipoConciliacion == 2)
-            //{
-            //    if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-            //        grvPrima = (GridView)Session["TABLADEAGREGADOS"];
-            //}
-            //else
-            //{
-                if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
-                    grvPrima = (GridView)Session["TABLADEINTERNOS"];
 
-                grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
-                if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
+            if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
+                grvPrima = (GridView)Session["TABLADEINTERNOS"];
+
+            grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
+            if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
+            {
+                dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
+                dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
+                if (dtPedidos.Rows.Count == 0) return;
+                List<int> listadistintos = new List<int>();
+                listaClientesEnviados = new List<int>();
+                try
                 {
-                    dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
-                    dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
-                    if (dtPedidos.Rows.Count == 0) return;
-                    List<int> listadistintos = new List<int>();
-                    listaClientesEnviados = new List<int>();
-                    try
+                    listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
+                    if (listaDireccinEntrega == null)
                     {
-                        listaDireccinEntrega = ViewState["LISTAENTREGA"] as List<RTGMCore.DireccionEntrega>;
-                        if (listaDireccinEntrega == null)
-                        {
-                            listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
-                        }
+                        listaDireccinEntrega = new List<RTGMCore.DireccionEntrega>();
                     }
-                    catch (Exception)
-                    {
+                }
+                catch (Exception)
+                {
 
-                    }
-                    foreach (DataRow item in dtPedidos.Rows)
+                }
+                foreach (DataRow item in dtPedidos.Rows)
+                {
+                    if (item["Cliente"].ToString() != string.Empty)
                     {
-                        if (item["Cliente"].ToString() != string.Empty)
+                        if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
                         {
-                            if (!listaDireccinEntrega.Exists(x => x.IDDireccionEntrega == int.Parse(item["Cliente"].ToString())))
+                            if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
                             {
-                                if (!listadistintos.Exists(x => x == int.Parse(item["Cliente"].ToString())))
-                                {
-                                    listadistintos.Add(int.Parse(item["Cliente"].ToString()));
-                                }
+                                listadistintos.Add(int.Parse(item["Cliente"].ToString()));
                             }
                         }
                     }
-                    try
-                    {
-                        ViewState["Entrar"] = "Ok";
-                        ViewState["tipo"] = "2";
-                        ViewState["POR_CONCILIAR"] = dtPedidos;
-                        if (listadistintos.Count > 0)
-                        {
-                            validarPeticion = true;
-                            ObtieneNombreCliente(listadistintos);
-                        }
-                        else
-                        {
-                            llenarListaEntrega();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                    //grvPedidos.DataSource = dtPedidos;
-                    //grvPedidos.DataBind();
-                    ///*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
-                    //ListPedidos = new List<ReferenciaNoConciliadaPedido>();
-                    //foreach (DataRow tr in dtPedidos.Rows)
-                    //{
-                    //    rp = objApp.ReferenciaNoConciliadaPedido.CrearObjeto();
-                    //    rp.AñoPedido = Convert.ToInt32(tr["AñoPed"]);
-                    //    rp.CelulaPedido = Convert.ToInt32(tr["Celula"]);
-                    //    rp.Pedido = Convert.ToInt32(tr["Pedido"]);
-                    //    rp.Total = Convert.ToDecimal(tr["Total"]);
-                    //    rp.Foliofactura = tr["FolioFactura"].ToString();
-                    //    rp.Cliente = Convert.ToInt32(tr["Cliente"]);
-                    //    rp.Nombre = tr["Nombre"].ToString();
-                    //    rp.FormaConciliacion = formaConciliacion;
-                    //    rp.FSuministro = Convert.ToDateTime(tr["FSuministro"]);
-                    //    ListPedidos.Add(rp);
-                    //}
-                    //Session["POR_CONCILIAR_PEDIDO"] = ListPedidos;
-                    //dvExpera.Visible = grvPedidos.Rows.Count == 0;
-                    return;
                 }
-                grvInternos.DataBind();
-                grvInternos.DataBind();
-            //}
+                try
+                {
+                    ViewState["Entrar"] = "Ok";
+                    ViewState["tipo"] = "2";
+                    ViewState["POR_CONCILIAR"] = dtPedidos;
+                    if (listadistintos.Count > 0)
+                    {
+                        validarPeticion = true;
+                        ObtieneNombreCliente(listadistintos);
+                    }
+                    else
+                    {
+                        llenarListaEntrega();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                // rdbSecuenciaIn_CheckedChanged(btnFiltraCliente, null);
+
+                return;
+            }
+            //else
+            //    rdbSecuenciaIn_CheckedChanged(btnFiltraCliente, null);
+            grvInternos.DataBind();
+            grvInternos.DataBind();
+            
             dvExpera.Visible = grvPedidos.Rows.Count == 0;
         }
         catch(Exception ex)
