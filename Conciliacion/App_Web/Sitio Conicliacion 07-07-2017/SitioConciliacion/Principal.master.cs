@@ -84,25 +84,25 @@ public partial class Principal : System.Web.UI.MasterPage
                 {
                     if (! this.Request.UrlReferrer.ToString().Contains(Request.Url.AbsolutePath.ToString()))
                     {
-                        if (this.Request.UrlReferrer.ToString().ToUpper().Contains("MANUAL.ASPX"))
-                            LockerExterno.EliminarBloqueos(Session.SessionID, "MANUAL");
-                        else
-                        if (this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX"))
-                            LockerExterno.EliminarBloqueos(Session.SessionID, "UNOAVARIOS");
-                        else
-                        if (this.Request.UrlReferrer.ToString().ToUpper().Contains("CANTIDADCONCUERDA.ASPX"))
-                            LockerExterno.EliminarBloqueos(Session.SessionID, "CANTIDADCONCUERDA");
-                        else
-                        if (this.Request.UrlReferrer.ToString().ToUpper().Contains("CANTIDADYREFERENCIACONCUERDA.ASPX"))
-                            LockerExterno.EliminarBloqueos(Session.SessionID, "CANTIDADYREFERENCIACONCUERDA");
-                        else
-                        if (this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX"))
-                            LockerExterno.EliminarBloqueos(Session.SessionID, "UNOAVARIOS");
-                        else
-                        if (this.Request.UrlReferrer.ToString().ToUpper().Contains("VARIOSAUNO.ASPX"))
-                            LockerExterno.EliminarBloqueos(Session.SessionID, "VARIOSAUNO");
+                        //if (this.Request.UrlReferrer.ToString().ToUpper().Contains("MANUAL.ASPX"))
+                        //    LockerExterno.EliminarBloqueos(Session.SessionID, "MANUAL");
                         //else
-                        //    LockerExterno.EliminarBloqueos(Session.SessionID);
+                        //if (this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX"))
+                        //    LockerExterno.EliminarBloqueos(Session.SessionID, "UNOAVARIOS");
+                        //else
+                        //if (this.Request.UrlReferrer.ToString().ToUpper().Contains("CANTIDADCONCUERDA.ASPX"))
+                        //    LockerExterno.EliminarBloqueos(Session.SessionID, "CANTIDADCONCUERDA");
+                        //else
+                        //if (this.Request.UrlReferrer.ToString().ToUpper().Contains("CANTIDADYREFERENCIACONCUERDA.ASPX"))
+                        //    LockerExterno.EliminarBloqueos(Session.SessionID, "CANTIDADYREFERENCIACONCUERDA");
+                        //else
+                        //if (this.Request.UrlReferrer.ToString().ToUpper().Contains("UNOAVARIOS.ASPX"))
+                        //    LockerExterno.EliminarBloqueos(Session.SessionID, "UNOAVARIOS");
+                        //else
+                        //if (this.Request.UrlReferrer.ToString().ToUpper().Contains("VARIOSAUNO.ASPX"))
+                        //    LockerExterno.EliminarBloqueos(Session.SessionID, "VARIOSAUNO");
+                        //else
+                        LockerExterno.EliminarBloqueos(Session.SessionID);
                     }
                 }
 
