@@ -39,9 +39,8 @@ namespace CatalogoConciliacion
         {
             get
             {
-                //if (implementadorMensajes == null)
-                //    implementadorMensajes = App.ImplementadorMensajesFactory();
-                //MensajesImplementacion implementadorMensajes = new MensajesImplementacion();
+                if (implementadorMensajes == null)
+                    implementadorMensajes = new Conciliacion.RunTime.MensajesImplementacion();
                 return implementadorMensajes;
             }
         }
@@ -197,10 +196,10 @@ namespace CatalogoConciliacion
                 else
                     seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
                 if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
-                    ConnectionString = "Application Name = Conciliación Bancaría" + " v.2.5.0.0" + "; Data Source = " + servidor + "; Initial Catalog = " +
+                    ConnectionString = "Application Name = Conciliacion Bancaria" + " v.2.5.0.0" + "; Data Source = " + servidor + "; Initial Catalog = " +
                                         baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Integrated Security = Yes";
                 else
-                    ConnectionString = "Application Name = " + "; Data Source = " + servidor + "; Initial Catalog = " +
+                    ConnectionString = "Application Name = Conciliacion Bancaria" + "; Data Source = " + servidor + "; Initial Catalog = " +
                                         baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Password = " + usuario.Clave;
                 return ConnectionString;
             }
