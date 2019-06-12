@@ -29,6 +29,7 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     private List<StatusConcepto> listStatusConceptosGrupo = new List<StatusConcepto>();
     private SeguridadCB.Public.Usuario usuario;
     StringBuilder mensaje;
+    CatalogoConciliacion.App objAppCat;
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -39,7 +40,7 @@ public partial class Catalogos_GrupoConciliacion : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        CatalogoConciliacion.App objAppCat = new CatalogoConciliacion.App();
+        objAppCat = new CatalogoConciliacion.App();
 
         objAppCat.ImplementadorMensajes.ContenedorActual = this;
         Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;

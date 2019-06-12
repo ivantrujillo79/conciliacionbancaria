@@ -18,24 +18,6 @@ namespace Conciliacion.RunTime
 
     public enum TipoSeguridad : byte { SQL = 0, NT = 1 }
 
-    //public class MensajesImplementacion
-    //{
-    //    public object ContenedorActual { get; set; }
-    //    bool MensajesActivos { get; set; }
-
-    //    public MensajesImplementacion() { }
-
-    //    public void MostrarMensaje(string texto)
-    //    {
-    //    }
-    //    public void MostrarMensajeError(string Mensaje)
-    //    {
-    //    }
-    //    public void MostrarMensajeExito(string Mensaje)
-    //    {
-    //    }
-    //}
-
     public class App
     {
         private MensajesImplementacion implementadorMensajes;
