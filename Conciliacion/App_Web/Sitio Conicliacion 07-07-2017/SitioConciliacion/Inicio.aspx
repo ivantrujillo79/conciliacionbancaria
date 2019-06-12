@@ -495,7 +495,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 1%; padding-left:3px"> 
-                                            <asp:CheckBox ID="chkBuscarEnDepositos" Text="Buscar en depositos" runat="server" />
+                                            <asp:CheckBox ID="chkBuscarEnDepositos" Text="Buscar en interno" runat="server" />
                                         </td>
                                         <td style="width: 1%;"> 
                                             <asp:Label ID="Label3" runat="server" Text="F. Final" CssClass="etiqueta fg-color-negro centradoMedio"></asp:Label>

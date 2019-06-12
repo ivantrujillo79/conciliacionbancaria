@@ -100,7 +100,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     public decimal dAbonoSeleccionado;
 
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    //private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
 
     private bool activepaging = true;
     public bool ActivePaging
@@ -183,6 +184,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
         Response.Expires = -1;
         Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
+        seguridad = new SeguridadCB.Seguridad();
 
         objApp.ImplementadorMensajes.ContenedorActual = this;
         objControlPostBack = GetPostBackControlId(this.Page);

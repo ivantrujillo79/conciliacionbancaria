@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -7,16 +8,22 @@ namespace SeguridadCB.DataLayer
     internal class SeguridadDataLayer
     {
         #region "Variables globales"
-        private static SqlConnection conexion;
-        private static string cadenaconexion;
+        private SqlConnection conexion;
+        private string cadenaconexion;
         #endregion
         #region "Propiedades"
-        public static SqlConnection Conexion
+        public SeguridadDataLayer()
+        {
+            conexion = new SqlConnection();
+            conexion.ConnectionString = (System.Web.HttpContext.Current.Session["AppCadenaConexion"]).ToString();
+        }
+
+        public SqlConnection Conexion
         {
             get { return conexion; }
         }
 
-        public static string CadenaConexion
+        public string CadenaConexion
         {
             get
             {
@@ -25,38 +32,60 @@ namespace SeguridadCB.DataLayer
         }
         #endregion
         #region "Funciones comunes"
-        public static void InicializaInterfase(SqlConnection conexion)
+        public void InicializaInterfase(SqlConnection conexion)
         {
-            DataLayer.SeguridadDataLayer.conexion = conexion;
-            DataLayer.SeguridadDataLayer.cadenaconexion = conexion.ConnectionString;
+            //DataLayer.this.conexion = conexion;
+            //DataLayer.this.cadenaconexion = conexion.ConnectionString;
+            this.conexion = conexion;
+            this.cadenaconexion = conexion.ConnectionString;
         }
-        public static void AbreConexion()
+        //private string configuraConexion()
+        //{
+        //    //SeguridadCB.Public.Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+        //    AppSettingsReader settings = new AppSettingsReader();
+        //    string servidor = settings.GetValue("Servidor", typeof(string)).ToString();
+        //    string baseDatos = settings.GetValue("Base", typeof(string)).ToString();
+        //    SeguridadCB.Seguridad.TipoSeguridad seguridad;
+        //    string ConnectionString = "";
+        //    if (settings.GetValue("Seguridad", typeof(string)).ToString() == "NT")
+        //        seguridad = SeguridadCB.Seguridad.TipoSeguridad.NT;
+        //    else
+        //        seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
+        //    if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
+        //        ConnectionString = "Application Name = Conciliacion Bancaria; Data Source=" + servidor + ";Initial Catalog=" + baseDatos + ";Integrated Security=SSPI;";
+        //    else
+        //        ConnectionString = "Application Name = Conciliacion Bancaria; Data Source = " + servidor + "; Initial Catalog = " +
+        //                            baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Password = " + usuario.Clave;
+        //    return ConnectionString;
+        //}
+        public void AbreConexion()
         {
-            if (SeguridadDataLayer.conexion.State != ConnectionState.Open)
+            if (this.conexion.State != ConnectionState.Open)
                 try
                 {
-                    SeguridadDataLayer.conexion.Open();
+                    //this.conexion.ConnectionString = configuraConexion();
+                    this.conexion.Open();
                 }
                 catch (SqlException ex)
                 {
                     throw ex;
                 }
         }
-        public static void CierraConexion()
+        public void CierraConexion()
         {
-            if (SeguridadDataLayer.conexion.State != ConnectionState.Closed)
+            if (this.conexion.State != ConnectionState.Closed)
                 try
                 {
-                    SeguridadDataLayer.conexion.Close();
+                    this.conexion.Close();
                 }
                 catch (SqlException ex)
                 {
                     throw ex;
                 }
         }
-        public static void IniciaConsulta()
+        public void IniciaConsulta()
         {
-            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED", this.conexion);
             try
             {
                 if (conexion.State == ConnectionState.Open)
@@ -67,9 +96,9 @@ namespace SeguridadCB.DataLayer
                 throw ex;
             }
         }
-        public static void TerminaConsulta()
+        public void TerminaConsulta()
         {
-            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED", this.conexion);
             try
             {
                 if (conexion.State == ConnectionState.Open)
@@ -81,13 +110,13 @@ namespace SeguridadCB.DataLayer
             }
         }
 
-        public static void IniciaConsulta(bool abrirConexion, bool cerrarConexion)
+        public  void IniciaConsulta(bool abrirConexion, bool cerrarConexion)
         {
-            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED", this.conexion);
             try
             {
                 if (abrirConexion)
-                    SeguridadDataLayer.AbreConexion();
+                    this.AbreConexion();
                 if (conexion.State == ConnectionState.Open)
                     cmd.ExecuteNonQuery();
             }
@@ -98,16 +127,16 @@ namespace SeguridadCB.DataLayer
             finally
             {
                 if (cerrarConexion)
-                    SeguridadDataLayer.CierraConexion();
+                    this.CierraConexion();
             }
         }
-        public static void TerminaConsulta(bool abrirConexion, bool cerrarConexion)
+        public  void TerminaConsulta(bool abrirConexion, bool cerrarConexion)
         {
-            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("SET TRANSACTION ISOLATION LEVEL READ COMMITTED", this.conexion);
             try
             {
                 if (abrirConexion)
-                    SeguridadDataLayer.AbreConexion();
+                    this.AbreConexion();
                 if (conexion.State == ConnectionState.Open)
                     cmd.ExecuteNonQuery();
             }
@@ -118,15 +147,15 @@ namespace SeguridadCB.DataLayer
             finally
             {
                 if (cerrarConexion)
-                    SeguridadDataLayer.CierraConexion();
+                    this.CierraConexion();
             }
         }
 
         #endregion
         #region "Funciones de seguridad"
-        public static bool ExisteUsuarioActivo(string usuario)
+        public  bool ExisteUsuarioActivo(string usuario)
         {
-            SqlCommand cmd = new SqlCommand("spSEGUsuarioActivo", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("spSEGUsuarioActivo", this.conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             bool res;
             cmd.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario;
@@ -146,9 +175,9 @@ namespace SeguridadCB.DataLayer
             }
         }
 
-        public static SqlDataReader DatosUsuario(string usuario)
+        public  SqlDataReader DatosUsuario(string usuario)
         {
-            SqlCommand cmd = new SqlCommand("spSEGDatosUsuario", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("spSEGDatosUsuario", this.conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader res;
             cmd.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario;
@@ -164,7 +193,7 @@ namespace SeguridadCB.DataLayer
             }
         }
 
-        public static DataTable ModulosUsuario(string usuario)
+        public  DataTable ModulosUsuario(string usuario)
         {
             SqlDataAdapter da = new SqlDataAdapter("spSEGUsuarioModulo", conexion);
             DataTable res = new DataTable("Modulos");
@@ -186,7 +215,7 @@ namespace SeguridadCB.DataLayer
             }
         }
 
-        //public static DataTable SucursalesCorporativos(ConfiguracionIden0 configuracion, int corporativo)
+        //public  DataTable SucursalesCorporativos(ConfiguracionIden0 configuracion, int corporativo)
         //{
         //    SqlDataAdapter da = new SqlDataAdapter("spCBCargarComboSucursal", conexion);
         //    DataTable res = new DataTable("Sucursales");
@@ -209,7 +238,7 @@ namespace SeguridadCB.DataLayer
         //    }
         //}
 
-        public static DataTable CorporativosUsuario(string usuario)
+        public  DataTable CorporativosUsuario(string usuario)
         {
             SqlDataAdapter da = new SqlDataAdapter("spCBCorporativosUsuario", conexion);
             DataTable res = new DataTable("Corporativos");
@@ -231,10 +260,10 @@ namespace SeguridadCB.DataLayer
             }
         }
 
-        public static string InicialCorporativosUsuario(string usuario)
+        public  string InicialCorporativosUsuario(string usuario)
         {
 
-            SqlCommand cmd = new SqlCommand("spCBCorporativosUsuarioInicial", SeguridadDataLayer.conexion);
+            SqlCommand cmd = new SqlCommand("spCBCorporativosUsuarioInicial", this.conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             string res;
             cmd.Parameters.Add("@Usuario", SqlDbType.VarChar, 15).Value = usuario;
@@ -256,7 +285,7 @@ namespace SeguridadCB.DataLayer
 
 
         //Se quito AreasUsuario
-        //public static DataTable AreasUsuario(string usuario)
+        //public  DataTable AreasUsuario(string usuario)
         //{
         //    SqlDataAdapter da = new SqlDataAdapter("spSEGAreasUsuario", conexion);
         //    DataTable res = new DataTable("Areas");
@@ -280,7 +309,7 @@ namespace SeguridadCB.DataLayer
         //}
 
 
-        public static DataTable OperacionesUsuarioModulo(string modulo, string usuario)
+        public  DataTable OperacionesUsuarioModulo(string modulo, string usuario)
         {
             SqlDataAdapter da = new SqlDataAdapter("spSEGPrivilegiosUsuario", conexion);
             DataTable res = new DataTable("Privilegios");
@@ -303,7 +332,7 @@ namespace SeguridadCB.DataLayer
             }
         }
         //Se cambio a solo un modulo, no lista de modulos
-        public static DataTable ParametrosModulo(string listamodulos, byte corporativo, int sucursal)
+        public  DataTable ParametrosModulo(string listamodulos, byte corporativo, int sucursal)
         {
             SqlDataAdapter da = new SqlDataAdapter("spSEGParametrosModulo", conexion);
             DataTable res = new DataTable("Parametros");

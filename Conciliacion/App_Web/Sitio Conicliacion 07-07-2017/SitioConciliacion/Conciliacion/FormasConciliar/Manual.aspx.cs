@@ -64,7 +64,7 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
     //public bool statusFiltro;
 
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
 
     private bool activepaging = true;
     public bool ActivePaging
@@ -101,6 +101,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
         Response.Expires = -1;
         Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
+
+        seguridad = new SeguridadCB.Seguridad();
 
         short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (_FormaConciliacion == 0)
