@@ -310,6 +310,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 GenerarTablaExternos();
                 LlenaGridViewExternos();
 
+
+
                 ActualizarTotalesAgregados();
 
                 if (objSolicitdConciliacion.ConsultaPedido())
@@ -591,6 +593,22 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
             }
         }
+
+        try
+        {
+            if (grvExternos.Rows.Count > 0)
+            {
+                RadioButton boton = ((RadioButton)grvExternos.Rows[0].FindControl("rdbSecuencia"));
+                boton.Checked = true;
+                rdbSecuencia_CheckedChanged(boton, null);
+            }
+        }
+        catch
+            {
+
+        }
+
+        
     }
 
     public bool activaPaginacion()

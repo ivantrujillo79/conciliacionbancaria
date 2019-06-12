@@ -56,7 +56,7 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
     private ReferenciaConciliadaCompartida movSeleccionado;
     public List<ListaCombo> listCamposDestino = new List<ListaCombo>();
     private List<StatusConcepto> listStatusConcepto = new List<StatusConcepto>();//RRV quita private string StatusConciliacionSel = "";
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
     #endregion
 
     
@@ -76,7 +76,9 @@ public partial class ReportesConciliacion_ReporteConciliacionI : System.Web.UI.P
             /*      Registrar PostBackControl en la página para 
              *      arreglar bug de FileUpload Control dentro de Update Panel    */
             ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(wucCargaExcelCyC.FindControl("btnSubirArchivo"));
-            
+
+            seguridad = new SeguridadCB.Seguridad();
+
             objApp.ImplementadorMensajes.ContenedorActual = this;
             Conciliacion.Migracion.Runtime.App.ImplementadorMensajes.ContenedorActual = this;
 
