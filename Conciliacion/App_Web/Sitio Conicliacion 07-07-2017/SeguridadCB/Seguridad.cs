@@ -8,34 +8,43 @@ namespace SeguridadCB
 {
     public class Seguridad
     {
+        private SqlConnection conexion;
         private string _InicialCorporativo = "";
+        SeguridadDataLayer seguridaddatalayer = new SeguridadDataLayer();
+
         public Seguridad()
         {
-
+            conexion = new SqlConnection();
+            conexion.ConnectionString = (System.Web.HttpContext.Current.Session["AppCadenaConexion"]).ToString();
         }
 
         public SqlConnection Conexion
         {
-            get { return SeguridadDataLayer.Conexion; }
-            set { SeguridadDataLayer.InicializaInterfase(value); }
+            get
+            {
+                return conexion;
+            }
+            //set { SeguridadDataLayer.InicializaInterfase(value); }
+            set
+            {
+                seguridaddatalayer.InicializaInterfase(value);
+            }
         }
 
         public bool ExisteUsuarioActivo(string usuario)
         {
-            return SeguridadDataLayer.ExisteUsuarioActivo(usuario);
+            return seguridaddatalayer.ExisteUsuarioActivo(usuario);
         }
 
         public Usuario DatosUsuario(string usuario)
         {
-            _InicialCorporativo = SeguridadDataLayer.InicialCorporativosUsuario(usuario);
+            _InicialCorporativo = seguridaddatalayer.InicialCorporativosUsuario(usuario);
             DataTable dtCorporativos = new DataTable("Corporativos");
-            dtCorporativos = SeguridadDataLayer.CorporativosUsuario(usuario);                          
-            //Se quitó AreasUsuario como parametro para la lectura de un usuario.
-            //DataTable dtAreas = SeguridadDataLayer.AreasUsuario(usuario);
+            dtCorporativos = seguridaddatalayer.CorporativosUsuario(usuario);                          
             SqlDataReader rdr = null;
             try
             {
-                rdr = SeguridadDataLayer.DatosUsuario(usuario);
+                rdr = seguridaddatalayer.DatosUsuario(usuario);
                 rdr.Read();
                 Encripter objEncrypter = new Encripter();
                 return  new Usuario(rdr["Usuario"].ToString(),
@@ -64,7 +73,7 @@ namespace SeguridadCB
             {
                 if (rdr != null)
                     rdr.Close();
-                SeguridadDataLayer.TerminaConsulta(false, true);
+                seguridaddatalayer.TerminaConsulta(false, true);
             }
         }
 
@@ -75,20 +84,20 @@ namespace SeguridadCB
 
         public Modulos Modulos(string usuario)
         {
-            DataTable dt = SeguridadDataLayer.ModulosUsuario(usuario);
+            DataTable dt = seguridaddatalayer.ModulosUsuario(usuario);
             return new Modulos(dt);
         }
 
         public Operaciones Operaciones(string modulo, string usuario)
         {
-            DataTable dt = SeguridadDataLayer.OperacionesUsuarioModulo(modulo, usuario);
+            DataTable dt = seguridaddatalayer.OperacionesUsuarioModulo(modulo, usuario);
             return new Operaciones(dt);
         }
 
         //Se cambio a solo un modulo, no lista
         public Parametros Parametros(string modulo, byte corporativo, int sucursal)
         {
-            DataTable dt = SeguridadDataLayer.ParametrosModulo(modulo, corporativo, sucursal);
+            DataTable dt = seguridaddatalayer.ParametrosModulo(modulo, corporativo, sucursal);
             return new Parametros(dt);
         }
        

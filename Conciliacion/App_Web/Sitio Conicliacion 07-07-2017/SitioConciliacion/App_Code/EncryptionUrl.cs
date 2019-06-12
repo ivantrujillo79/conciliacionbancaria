@@ -86,7 +86,7 @@ public class EncryptionUrl : IHttpModule
     /// Analiza la url actual y extrae la ruta virtual sin usar la queryString
     ///
     /// Ruta virtual de la url actual
-    private static string ObtenerRutaVirtual()
+    private string ObtenerRutaVirtual()
     {
         string ruta = HttpContext.Current.Request.RawUrl;
         ruta = ruta.Substring(0, ruta.IndexOf("?"));
@@ -99,7 +99,7 @@ public class EncryptionUrl : IHttpModule
     ///
     ///url a analizar
     /// QueryString sin signo "?"
-    private static string ExtraerCadena(string url)
+    private string ExtraerCadena(string url)
     {
         int indice = url.IndexOf("?") + 1;
         return url.Substring(indice);
@@ -110,7 +110,7 @@ public class EncryptionUrl : IHttpModule
     ///
     ///Cadena a encriptar
     /// Cadena encriptada Base64
-    public static string Encriptar(string cadenaEntrada)
+    public string Encriptar(string cadenaEntrada)
     {
         RijndaelManaged rijndaelCipher = new RijndaelManaged();
         byte[] textoPlano = Encoding.Unicode.GetBytes(cadenaEntrada);
@@ -135,7 +135,7 @@ public class EncryptionUrl : IHttpModule
     ///
     ///Cadena a desencriptar
     /// Cadena desencriptada
-    public static string Desencriptar(string cadenaEntrada)
+    public string Desencriptar(string cadenaEntrada)
     {
         try
         {

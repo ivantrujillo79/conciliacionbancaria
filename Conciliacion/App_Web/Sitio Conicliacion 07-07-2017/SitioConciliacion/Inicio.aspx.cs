@@ -12,6 +12,7 @@ using Conciliacion.RunTime;
 using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Collections.Generic;
 using System.IO;
+using System.Data.SqlClient;
 
 public partial class Inicio : System.Web.UI.Page
 {
@@ -364,6 +365,7 @@ public partial class Inicio : System.Web.UI.Page
     {
         SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
         System.Data.SqlClient.SqlConnection Connection = seguridad.Conexion;
+        seguridad.Conexion.ConnectionString = objApp.CadenaConexion;
         usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
         if (Connection.State == ConnectionState.Closed)
         {

@@ -51,8 +51,9 @@ public partial class Acceso_Login : System.Web.UI.UserControl
         {
             System.Threading.Thread.Sleep(2000);
             ConfiguraConexion();
+            Session["AppCadenaConexion"] = cn.ConnectionString;
             SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
-            seguridad.Conexion = cn;
+            //seguridad.Conexion = cn;
             try
             {
                 if (seguridad.ExisteUsuarioActivo(txtUsuario.Text.Trim()))
