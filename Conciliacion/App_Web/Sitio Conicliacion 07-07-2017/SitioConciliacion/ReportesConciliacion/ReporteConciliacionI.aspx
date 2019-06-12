@@ -922,7 +922,18 @@
                                         </ajaxToolkit:AccordionPane>
                                         <ajaxToolkit:AccordionPane ID="apGridPedidos" runat="server">
                                             <Header>PEDIDOS</Header>
-                                            <Content>                                                
+                                            <Content>     
+                                                 <table width="100%">
+                                                    <tr>
+						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
+							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
+								                                Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
+							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro fg-color-blanco"
+								                                Text="CANCELAR" OnClientClick="LimpiarCamposConciliarMovPedido(); HideModalPopupConciliarMovPedido(); popUpNoVisible();" 
+                                                                Width="100px" />
+						                                </td>	
+                                                    </tr>
+                                                </table>
                                                 <div style="width:100%; height:280px; overflow: scroll;">
                                                     <asp:GridView ID="grvPedidos" runat="server" AutoGenerateColumns="False" ShowHeader="False"
                                                         CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
@@ -1028,17 +1039,7 @@
                                                         <PagerStyle CssClass="grvPaginacionScroll" />
                                                     </asp:GridView>
                                                 </div>
-                                                <table width="100%">
-                                                    <tr>
-						                                <td class="centradoMedio datos-estilo;bg-color-grisClaro03" style="padding: 10px 10px 10px 10px">
-							                                <asp:Button ID="btnGuardar" runat="server" CssClass="boton bg-color-azulClaro fg-color-blanco"
-								                                Text="GUARDAR" OnClick="btnGuardar_Click" Width="100px" />
-							                                <asp:Button ID="btnCancelarConciliar" runat="server" CssClass="boton bg-color-grisClaro fg-color-blanco"
-								                                Text="CANCELAR" OnClientClick="LimpiarCamposConciliarMovPedido(); HideModalPopupConciliarMovPedido(); popUpNoVisible();" 
-                                                                Width="100px" />
-						                                </td>	
-                                                    </tr>
-                                                </table>
+                                               
                                             </Content>
                                         </ajaxToolkit:AccordionPane>
                                     </Panes>
