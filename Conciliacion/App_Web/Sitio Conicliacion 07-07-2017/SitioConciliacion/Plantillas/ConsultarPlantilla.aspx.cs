@@ -22,12 +22,12 @@ public partial class Plantillas_ConsultarPlantilla: System.Web.UI.Page
     private List<ListaCombo> listCuentaBancaria = new List<ListaCombo>();
     private List<cFuenteInformacion> listFuenteInformacion = new List<cFuenteInformacion>();
     private DataTable tblFuenteInformacion = new DataTable("FuenteInformacion");
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
     #endregion
 
     protected void Page_Load(object sender, EventArgs e)
     {
-      
+        seguridad = new SeguridadCB.Seguridad();
         try
         {
             objApp.ImplementadorMensajes.ContenedorActual = this;
