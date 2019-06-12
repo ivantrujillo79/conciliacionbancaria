@@ -28,7 +28,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
 
     private DataTable tblTransferenciaBancarias = new DataTable("TransferenciaBancarias");
 
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -40,7 +40,7 @@ public partial class TransferenciasBancarias_TransferenciaBancaria: System.Web.U
 
     protected void Page_Load(object sender, EventArgs e)
     {
-       
+        seguridad = new SeguridadCB.Seguridad();
         objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {

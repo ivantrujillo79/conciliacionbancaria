@@ -38,14 +38,14 @@ public partial class Conciliacion_NuevaConciliacion : System.Web.UI.Page
     private DataTable tblDestinoDetalleExterno = new DataTable("VistaFoliosExterno");
     private DataTable tblDestinoDetalleInterno = new DataTable("VistaFoliosInterno");
     public string NumMesesAnterior;
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
     #endregion
 
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        seguridad = new SeguridadCB.Seguridad();
         objApp.ImplementadorMensajes.ContenedorActual = this;
         try
         {

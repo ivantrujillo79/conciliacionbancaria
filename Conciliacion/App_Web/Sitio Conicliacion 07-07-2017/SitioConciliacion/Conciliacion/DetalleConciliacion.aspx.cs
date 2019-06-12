@@ -60,7 +60,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
     public short tipoConciliacion;
     private string NombreArchivo = "";
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
     private string _URLGateway;
 
     protected override void OnPreInit(EventArgs e)
@@ -72,7 +72,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        seguridad = new SeguridadCB.Seguridad();
         objApp.ImplementadorMensajes.ContenedorActual = this;
         //try
         //{

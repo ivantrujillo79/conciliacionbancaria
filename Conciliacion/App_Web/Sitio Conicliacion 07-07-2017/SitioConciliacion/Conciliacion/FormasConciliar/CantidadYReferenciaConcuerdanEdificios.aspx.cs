@@ -53,7 +53,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     private DataTable tblDestinoDetalleInterno;
     private List<DatosArchivoDetalle> listaDestinoDetalleInterno = new List<DatosArchivoDetalle>();
 
-    private SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
+    private SeguridadCB.Seguridad seguridad;
 
     #endregion
 
@@ -66,6 +66,7 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        seguridad = new SeguridadCB.Seguridad();
         short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (_FormaConciliacion == 0)
         {
