@@ -10,20 +10,20 @@ using Conciliacion.RunTime;
 
 public partial class Reporte_Reporte : System.Web.UI.Page
 {
-    Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    Conciliacion.RunTime.App objApp;
     private ReportDocument RepDoc = new ReportDocument();
     private int intPagMax = 0;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-     
+        objApp = new Conciliacion.RunTime.App();
         try
         {
             RepDoc = (ReportDocument)HttpContext.Current.Session["RepDoc"];
             crviewRep.ReportSource = RepDoc;
             crviewRep.Visible = true;
-            crviewRep.Width = Unit.Percentage(98);
-            crviewRep.Height = Unit.Percentage(98);
+            //crviewRep.Width = Unit.Percentage(98);
+            //crviewRep.Height = Unit.Percentage(98);
             crviewRep.RefreshReport();
             crviewRep.DisplayGroupTree = false;
             crviewRep.HasPrintButton = false;
