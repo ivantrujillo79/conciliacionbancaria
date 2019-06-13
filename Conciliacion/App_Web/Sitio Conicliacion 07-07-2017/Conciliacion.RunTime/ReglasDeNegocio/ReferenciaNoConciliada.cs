@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Web.UI;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
 {
@@ -994,13 +995,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public bool AgregarReferenciaConciliada(ReferenciaNoConciliada referencia)
         {
+            objApp.ImplementadorMensajes.ContenedorActual = this.implementadorMensajes.ContenedorActual;
             bool resultado = true;
             try
             {
 
                 if (this.MontoConciliado + referencia.Monto > this.monto + this.Diferencia)
                 {
-                    this.ImplementadorMensajes.MostrarMensaje("El folio " + referencia.Folio + " supera el monto a conciliar: " + this.monto);
+                    
+                    //ScriptManager.RegisterStartupScript(this.ImplementadorMensajes.ContenedorActual as System.Web.UI.Page, typeof(Page), "UpdateMsg",
+                    //    @"alertify.alert('Conciliaci&oacute;n bancaria',
+                    //    'Error: PRUEBA" + "', function(){ alertify.error('Error en la solicitud'); });", true);
+
+                    objApp.ImplementadorMensajes.MostrarMensaje("El folio " + referencia.Folio + " supera el monto a conciliar: " + this.monto);
                     return false;
                 }
 
