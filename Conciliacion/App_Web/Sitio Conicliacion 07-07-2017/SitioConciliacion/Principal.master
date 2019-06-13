@@ -78,7 +78,7 @@
         </div>
         <div id="piePagina">
             <asp:Label ID="lblInformacion" runat="server" Width="100%" CssClass="etiqueta fg-color-blanco"></asp:Label>
-            <asp:Label runat="server" ID="lblVersion" Text="   Ver. 2.5.167"  CssClass="etiqueta fg-color-blanco"></asp:Label>
+            <asp:Label runat="server" ID="lblVersion" Text="   Ver. 2.5.168"  CssClass="etiqueta fg-color-blanco"></asp:Label>
         </div>
     </div>
     </form>
