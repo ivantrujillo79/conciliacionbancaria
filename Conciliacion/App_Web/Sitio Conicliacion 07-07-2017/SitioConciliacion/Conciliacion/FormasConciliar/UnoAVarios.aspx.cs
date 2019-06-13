@@ -4004,7 +4004,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (LockerExterno.ExternoBloqueado == null)
                 return false;
 
-            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
+            ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada(false);
 
             return LockerExterno.ExternoBloqueado.Exists(x => x.SessionID != Session.SessionID &&
                                                                 x.Corporativo == rfEx.Corporativo &&
@@ -5458,6 +5458,37 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         {
             throw ex;
         }
+    }
+
+    public ReferenciaNoConciliada leerReferenciaExternaSeleccionada(bool MostrarAlertas)
+    {
+        int secuenciaExterno = 0;
+        int folioExterno = 0;
+        int añoo = 0;
+        try
+        {
+            listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
+            if (grvExternos.Rows.Count != 0)
+            {
+                secuenciaExterno =
+                    Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
+                folioExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Folio"]);
+                añoo = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Año"]);
+            }
+            else
+            {
+                if (MostrarAlertas)
+                    throw new Exception("No existen registros externos para el criterio elegido");
+            }
+            if (listaReferenciaExternas.Count > 0)
+                return listaReferenciaExternas.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno && x.Año == añoo);
+            else
+                return null; // listaReferenciaExternas.ToList();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
 
     }
 
@@ -5713,6 +5744,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                           tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
         GenerarTablaExternos();
         LlenaGridViewExternos();
+        Carga_SucursalCorporativo(corporativo);
         //Limpiar Referncias de Externos
         if (grvExternos.Rows.Count > 0)
         {
