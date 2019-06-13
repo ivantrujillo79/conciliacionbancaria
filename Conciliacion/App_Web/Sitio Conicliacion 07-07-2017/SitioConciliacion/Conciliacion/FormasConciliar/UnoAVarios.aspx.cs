@@ -594,19 +594,19 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
         }
 
-        try
-        {
-            if (grvExternos.Rows.Count > 0)
-            {
-                RadioButton boton = ((RadioButton)grvExternos.Rows[0].FindControl("rdbSecuencia"));
-                boton.Checked = true;
-                rdbSecuencia_CheckedChanged(boton, null);
-            }
-        }
-        catch
-            {
+        //try
+        //{
+        //    if (grvExternos.Rows.Count > 0)
+        //    {
+        //        RadioButton boton = ((RadioButton)grvExternos.Rows[0].FindControl("rdbSecuencia"));
+        //        boton.Checked = true;
+        //        rdbSecuencia_CheckedChanged(boton, null);
+        //    }
+        //}
+        //catch
+        //    {
 
-        }
+        //}
 
         
     }
@@ -4741,7 +4741,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     foreach(ReferenciaNoConciliada referencia in ListSeleccionadosInternos)
                     {
-                        rcp.AgregarReferenciaConciliada(referencia);
+                        if (!rcp.AgregarReferenciaConciliada(referencia))
+                        objApp.ImplementadorMensajes.MostrarMensaje("El folio " + referencia.Folio + " supera el monto a conciliar: " + referencia.Monto);
                     }
 
                     //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
@@ -4755,7 +4756,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     {
                         foreach (ReferenciaNoConciliada referencia in ListSeleccionadosInternos)
                         {
-                            rcp.AgregarReferenciaConciliada(referencia);
+                            if (!rcp.AgregarReferenciaConciliada(referencia))
+                                objApp.ImplementadorMensajes.MostrarMensaje("El folio " + referencia.Folio + " supera el monto a conciliar: " + referencia.Monto);
                         }
                         //Generar el GridView para las Referencias Internas(ARCHIVOS / PEDIDOS)
                         GenerarTablaAgregadosArchivosInternos(rcp, tipoConciliacion);
@@ -4777,6 +4779,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
+
     }
 
     /// <summary>

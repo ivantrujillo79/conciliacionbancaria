@@ -282,6 +282,7 @@
             document.getElementById("divExternos").scrollTop = document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value;
             if (document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro') != null)
                 document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
+            gridviewScroll();
         }
           
         $(document).keypress(function (e) {
@@ -2267,7 +2268,7 @@
                                             <asp:CheckBox runat="server" ID="chkInterno" />
                                         </ItemTemplate>
                                         <HeaderTemplate>
-                                            <asp:CheckBox runat="server" ID="chkTodosInternos" AutoPostBack="True" OnCheckedChanged="OnCheckedChangedInternos" />
+                                            <asp:CheckBox runat="server" ID="chkTodosInternos" Visible="false"  AutoPostBack="True" OnCheckedChanged="OnCheckedChangedInternos" />
                                         </HeaderTemplate>
                                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                         <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>
