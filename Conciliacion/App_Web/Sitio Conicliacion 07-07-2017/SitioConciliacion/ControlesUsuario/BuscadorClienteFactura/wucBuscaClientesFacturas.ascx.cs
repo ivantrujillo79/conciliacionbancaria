@@ -201,6 +201,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
             }
         }
         ViewState["POR_CONCILIAR"] = tbPedidosPorFactura;
+        HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tbPedidosPorFactura;
         ViewState["Entrar"] = "Ok";
         List<int> listadistintos = new List<int>();
         listaClientesEnviados = new List<int>();
