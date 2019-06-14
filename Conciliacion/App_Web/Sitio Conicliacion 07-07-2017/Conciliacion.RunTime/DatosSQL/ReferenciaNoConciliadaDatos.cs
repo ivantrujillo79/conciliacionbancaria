@@ -545,11 +545,6 @@ DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconci
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value =  this.ComentarioNoConciliado;
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
-                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null;
-
-                    //this.implementadorMensajes.MostrarMensaje("ESTA ES UNA PRUEBA");
-                    //Page pagina = HttpContext.Current.CurrentHandler as Page;
-                    //ScriptManager.RegisterStartupScript(pagina, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','ESTA ES UNA PRUEBA ALERTIFY', function(){ alertify.error('Error en la solicitud'); });", true);
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
