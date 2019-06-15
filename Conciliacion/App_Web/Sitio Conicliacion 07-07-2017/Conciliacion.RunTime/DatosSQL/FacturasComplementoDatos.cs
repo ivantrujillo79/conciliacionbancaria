@@ -43,7 +43,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.AnioConciliacion;
                 _conexion.Comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.Int).Value = this.MesConciliacion;
                 _conexion.Comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = this.FolioConciliacion;
-
+                //AQUI HACE FALTA @USUARIO
                 _conexion.Comando.ExecuteNonQuery();
                 resultado = true;
             }
