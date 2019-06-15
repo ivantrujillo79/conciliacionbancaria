@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SeguridadCB.Public;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 
 namespace Conciliacion.RunTime.ReglasDeNegocio
@@ -1302,7 +1304,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     //        "No se puede guardar el registro. " + this.MontoConciliado + ", debe ser mayor a: " + (this.monto) + " con diferencia de +- " + (this.Diferencia));
                     //    return false;
                     //}
-
+                    Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                     foreach (ReferenciaConciliada referen in this.ListaReferenciaConciliada)
                     {
                         if (referen.SucursalInterno == null || referen.SucursalInterno == 0)
@@ -1311,7 +1313,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         }
                         referen.TipoCobro = this.TipoCobro;
                         referen.TipoCobroAnterior = this.TipoCobroAnterior;
-                        
+                        referen.Usuario = usuario.IdUsuario;
                         referen.Guardar();
                         this.Completo = true;
                     }
