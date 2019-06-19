@@ -10,30 +10,56 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int añoconciliacion;
         private int mesconciliacion;
         private int folioconciliacion;
+        private string banco;
+        private string cuentabancaria;
         private int folioexterno;
+        private int secuenciaexterno;
         private string documento;
         private string transban;
         private DateTime fmovtransban;
-        private DateTime foperacion;
-        private decimal retiro;
-        private decimal deposito;
-        private string concepto;
-        private string descripcion;
 
-        public EstadoDeCuenta(int añoconciliacion, int mesconciliacion, int folioconciliacion, int folioexterno, string documento, string transban, DateTime fmovtransban, DateTime foperacion, decimal retiro, decimal deposito, string concepto, string descripcion)
+        private DateTime foperacionExt;
+        private decimal retiroExt;
+        private decimal depositoExt;
+        private string conceptoExt;
+        private string descripcionExt;
+
+        private DateTime foperacionInt;
+        private decimal retiroInt;
+        private decimal depositoInt;
+        private string conceptoInt;
+        private string descripcionInt;
+        private int motivoNoconciliado;
+
+        public EstadoDeCuenta(int añoconciliacion, int mesconciliacion, int folioconciliacion, 
+            string banco, string cuentabancaria,
+            int folioexterno, int secuenciaexterno, string documento, 
+            string transban, DateTime fmovtransban, 
+            DateTime foperacionExt, decimal retiroExt, decimal depositoExt, string conceptoExt, string descripcionExt,
+            DateTime foperacionInt, decimal retiroInt, decimal depositoInt, string conceptoInt, string descripcionInt,
+            int motivoNoconciliado)
         {
             this.añoconciliacion = añoconciliacion;
             this.mesconciliacion = mesconciliacion;
             this.folioconciliacion = folioconciliacion;
+            this.banco = banco;
+            this.cuentabancaria = cuentabancaria;
             this.folioexterno = folioexterno;
+            this.secuenciaexterno = secuenciaexterno;
             this.documento = documento;
             this.transban = transban;
             this.fmovtransban = fmovtransban;
-            this.foperacion = foperacion;
-            this.retiro = retiro;
-            this.deposito = deposito;
-            this.concepto = concepto;
-            this.descripcion = descripcion;
+            this.foperacionExt = foperacionExt;
+            this.retiroExt = retiroExt;
+            this.depositoExt = depositoExt;
+            this.conceptoExt = conceptoExt;
+            this.descripcionExt = descripcionExt;
+            this.foperacionInt = foperacionInt;
+            this.retiroInt = retiroInt;
+            this.depositoInt = depositoInt;
+            this.conceptoInt = conceptoInt;
+            this.descripcionInt = descripcionInt;
+            this.motivoNoconciliado = motivoNoconciliado;
         }
 
         public EstadoDeCuenta(MensajesImplementacion implementadorMensajes)
@@ -42,15 +68,24 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.añoconciliacion = 0;
             this.mesconciliacion = 0;
             this.folioconciliacion = 0;
+            this.banco = "";
+            this.cuentabancaria = "";
             this.folioexterno = 0;
+            this.secuenciaexterno = 0;
             this.documento = "";
             this.transban = "";
-            this.fmovtransban = DateTime.Now;
-            this.foperacion = DateTime.Now;
-            this.retiro = 0;
-            this.deposito = 0;
-            this.concepto = "";
-            this.descripcion = "";
+            this.fmovtransban = DateTime.MinValue; //DateTime.Now;
+            this.foperacionExt = DateTime.MinValue;
+            this.retiroExt = 0;
+            this.depositoExt = 0;
+            this.conceptoExt = "";
+            this.descripcionExt = "";
+            this.foperacionInt = DateTime.MinValue;
+            this.retiroInt = 0;
+            this.depositoInt = 0;
+            this.conceptoInt = "";
+            this.descripcionInt = "";
+            this.motivoNoconciliado = 0;
         }
 
         public int AñoConciliacion
@@ -67,6 +102,21 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return folioconciliacion; }
             set { folioconciliacion = value; }
+        }
+        public string Banco
+        {
+            get { return banco; }
+            set { banco = value; }
+        }
+        public string CuentaBancaria
+        {
+            get { return cuentabancaria; }
+            set { cuentabancaria = value; }
+        }
+        public int SecuenciaExterno
+        {
+            get { return secuenciaexterno; }
+            set { secuenciaexterno = value; }
         }
         public int FolioExterno
         {
@@ -88,30 +138,61 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return fmovtransban; }
             set { fmovtransban = value; }
         }
-        public DateTime FOperacion
+        public DateTime FOperacionExt
         {
-            get { return foperacion; }
-            set { foperacion = value; }
+            get { return foperacionExt; }
+            set { foperacionExt = value; }
         }
-        public decimal Retiro
+        public decimal RetiroExt
         {
-            get { return retiro; }
-            set { retiro = value; }
+            get { return retiroExt; }
+            set { retiroExt = value; }
         }
-        public decimal Deposito
+        public decimal DepositoExt
         {
-            get { return deposito; }
-            set { deposito = value; }
+            get { return depositoExt; }
+            set { depositoExt = value; }
         }
-        public string Concepto
+        public string ConceptoExt
         {
-            get { return concepto; }
-            set { concepto = value; }
+            get { return conceptoExt; }
+            set { conceptoExt = value; }
         }
-        public string Descripcion
+        public string DescripcionExt
         {
-            get { return descripcion; }
-            set { descripcion = value; }
+            get { return descripcionExt; }
+            set { descripcionExt = value; }
+        }
+
+        public DateTime FOperacionInt
+        {
+            get { return foperacionInt; }
+            set { foperacionInt = value; }
+        }
+        public decimal RetiroInt
+        {
+            get { return retiroInt; }
+            set { retiroInt = value; }
+        }
+        public decimal DepositoInt
+        {
+            get { return depositoInt; }
+            set { depositoInt = value; }
+        }
+        public string ConceptoInt
+        {
+            get { return conceptoInt; }
+            set { conceptoInt = value; }
+        }
+        public string DescripcionInt
+        {
+            get { return descripcionInt; }
+            set { descripcionInt = value; }
+        }
+        public int MotivoNoConciliado
+        {
+            get { return motivoNoconciliado; }
+            set { motivoNoconciliado = value; }
         }
 
         private MensajesImplementacion implementadorMensajes;

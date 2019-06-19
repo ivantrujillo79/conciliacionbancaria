@@ -59,19 +59,32 @@ namespace Conciliacion.RunTime.DatosSQL
                 {
                     EstadoDeCuenta dato =
                         new EstadoDeCuenta(
-                                                                                Convert.ToInt32(reader["AñoConciliacion"]),
-                                                                                Convert.ToInt32(reader["MesConciliacion"]),
-                                                                                Convert.ToInt32(reader["FolioConciliacion"]),
-                                                                                Convert.ToInt32(reader["FolioExterno"]),
-                                                                                Convert.ToString(reader["Documento"]),
-                                                                                Convert.ToString(reader["TransBan"] == DBNull.Value ? "": reader["TransBan"]),
-                                                                                Convert.ToDateTime(reader["FMovTransban"] == DBNull.Value ? "01/01/2000": reader["FMovTransban"]),
-                                                                                Convert.ToDateTime(reader["FOperacion"]),
-                                                                                Convert.ToDecimal(reader["Retiro"]),
-                                                                                Convert.ToDecimal(reader["Deposito"]),
-                                                                                Convert.ToString(reader["Concepto"]),
-                                                                                Convert.ToString(reader["Descripcion"])
-                                                                                );
+                                            Convert.ToInt32(reader["AñoCon"]),
+                                            Convert.ToInt32(reader["MesCon"]),
+                                            Convert.ToInt32(reader["FolioCon"]),
+                                            Convert.ToString(reader["Banco"]),
+                                            Convert.ToString(reader["CuentaBancaria"]),
+                                            Convert.ToInt32(reader["FolioExt"]),
+                                            Convert.ToInt32(reader["SecuenciaExt"]),
+                                            Convert.ToString(reader["Documento"]),
+                                            Convert.ToString(reader["TransBan"] == DBNull.Value ? "": reader["TransBan"]),
+                                            Convert.ToDateTime(reader["FMovTransban"] == DBNull.Value ? "01/01/2000": reader["FMovTransban"]),
+                                            
+                                            Convert.ToDateTime(reader["FOperacionExt"]),
+                                            Convert.ToDecimal(reader["RetiroExt"]),
+                                            Convert.ToDecimal(reader["DepositoExt"]),
+                                            Convert.ToString(reader["ConceptoExt"]),
+                                            Convert.ToString(reader["DescripcionExt"]),
+
+                                            Convert.ToDateTime(reader["FOperacionInt"]),
+                                            Convert.ToDecimal(reader["RetiroInt"]),
+                                            Convert.ToDecimal(reader["DepositoInt"]),
+                                            Convert.ToString(reader["ConceptoInt"]),
+                                            Convert.ToString(reader["DescripcionInt"]),
+                                            
+                                            Convert.ToInt32(reader["MotivoNoConciliado"] == DBNull.Value ? 0 : reader["MotivoNoConciliado"])
+
+                                            );
                     datos.Add(dato);
                 }
                 return datos;
