@@ -68,7 +68,9 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
 
     public void CargarGrid()
     {
-
+        List<EstadoDeCuenta> listaEstadoCuenta = new List<EstadoDeCuenta>();
+        grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
+        grvPagoEstadoCuenta.DataBind();
     }
 
     protected void btnAceptar_Click(object sender, EventArgs e)

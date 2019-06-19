@@ -306,6 +306,7 @@
 
         function clickBotonMuestraAFuturo() {
             $('#dvMuestraAFuturo').slideToggle();
+            Calendarios();
         }
         function clickBotonMuestraAFuturoInterno() {
             $('#dvMuestraAFuturoInternos').slideToggle();

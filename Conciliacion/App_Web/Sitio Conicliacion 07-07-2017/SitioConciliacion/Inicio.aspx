@@ -145,7 +145,7 @@
                         document.getElementById("ctl00_contenidoPrincipal_chkBuscaEnRetiros").checked = false;
                         document.getElementById("ctl00_contenidoPrincipal_chkBuscarEnDepositos").checked = false;
                         document.getElementById("ctl00_contenidoPrincipal_chkBuscarEnEsta").checked = false;
-                        $find('ModalBehaviorBuscadorPagoEdoCta').show();
+                        //$find('ModalBehaviorBuscadorPagoEdoCta').show();
                     }
                 });
 

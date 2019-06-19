@@ -152,7 +152,7 @@
                         </EmptyDataTemplate>
                         <HeaderStyle HorizontalAlign="Center" />
                         <Columns>
-                            <asp:TemplateField HeaderText="AñoConciliacion" >
+                            <asp:TemplateField HeaderText="AñoCon" >
                                 <ItemTemplate>
                                     <asp:Label ID="lblAñoConciliacion" runat="server" Text='<%# Eval("AñoConciliacion").ToString() %>'></asp:Label>
                                 </ItemTemplate>
@@ -160,7 +160,7 @@
                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="MesConciliacion" >
+                            <asp:TemplateField HeaderText="MesCon" >
                                 <ItemTemplate>
                                     <asp:Label ID="lblMesConciliacion" runat="server" Text='<%# Eval("MesConciliacion").ToString() %>'></asp:Label>
                                 </ItemTemplate>
@@ -168,7 +168,7 @@
                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="FolioConciliacion" >
+                            <asp:TemplateField HeaderText="FolioCon" >
                                 <ItemTemplate>
                                     <asp:Label ID="lblFolioConciliacion" runat="server" Text='<%# Eval("FolioConciliacion").ToString() %>'></asp:Label>
                                 </ItemTemplate>
@@ -176,13 +176,38 @@
                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="FolioExterno" >
+                            <asp:TemplateField HeaderText="Banco" >
                                 <ItemTemplate>
-                                    <asp:Label ID="lblFolioExterno" runat="server" Text='<%# Eval("FolioExterno").ToString() %>'></asp:Label>
+                                    <asp:Label ID="lblBanco" runat="server" Text='<%# Eval("Banco").ToString() %>'></asp:Label>
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                             </asp:TemplateField>
+
+                            <asp:TemplateField HeaderText="CuentaBancaria" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblCuentaBancaria" runat="server" Text='<%# Eval("CuentaBancaria").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+
+                            <asp:TemplateField HeaderText="FolioExt" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblFolioExt" runat="server" Text='<%# Eval("FolioExterno").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+
+                            <asp:TemplateField HeaderText="SecuenciaExt" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblSecuenciaExt" runat="server" Text='<%# Eval("SecuenciaExterno").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+
                             <asp:TemplateField HeaderText="Documento" >
                                 <ItemTemplate>
                                     <asp:Label ID="lblDocumento" runat="server" Text='<%# Eval("Documento").ToString() %>'></asp:Label>
@@ -204,45 +229,87 @@
                                 <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
                                 <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="FOperacion" >
-                                <ItemTemplate>
-                                    <asp:Label ID="lblFOperacion" runat="server" Text='<%# Eval("FOperacion").ToString() %>'></asp:Label>
-                                </ItemTemplate>
-                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Retiro" >
-                                <ItemTemplate>
-                                    <asp:Label ID="lblRetiro" runat="server" Text='<%# Eval("Retiro").ToString() %>'></asp:Label>
-                                </ItemTemplate>
-                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Deposito" >
-                                <ItemTemplate>
-                                    <asp:Label ID="lblDeposito" runat="server" Text='<%# Eval("Deposito").ToString() %>'></asp:Label>
-                                </ItemTemplate>
-                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Concepto" >
-                                <ItemTemplate>
-                                    <asp:Label ID="lblConcepto" runat="server" Text='<%# Eval("Concepto").ToString() %>'></asp:Label>
-                                </ItemTemplate>
-                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Descripcion" >
-                                <ItemTemplate>
-                                    <asp:Label ID="lblDescripcion" runat="server" Text='<%# Eval("Descripcion").ToString() %>'></asp:Label>
-                                </ItemTemplate>
-                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
-                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
-                            </asp:TemplateField>
                             
-                        </Columns>
+                            <asp:TemplateField HeaderText="FOperacion Ext" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblFOperacionExt" runat="server" Text='<%# Eval("FOperacionExt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Retiro Ext" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblRetiroExt" runat="server" Text='<%# Eval("RetiroExt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Deposito Ext" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblDepositoExt" runat="server" Text='<%# Eval("DepositoExt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="ConceptoExt" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblConceptoExt" runat="server" Text='<%# Eval("ConceptoExt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="DescripcionExt" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblDescripcionExt" runat="server" Text='<%# Eval("DescripcionExt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+
+                            <asp:TemplateField HeaderText="FOperacion Int" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblFOperacionInt" runat="server" Text='<%# Eval("FOperacionInt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Retiro Int" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblRetiroExt" runat="server" Text='<%# Eval("RetiroInt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <%--<asp:TemplateField HeaderText="Deposito Int" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblDepositoInt" runat="server" Text='<%# Eval("DepositoInt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="ConceptoInt" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblConceptoInt" runat="server" Text='<%# Eval("ConceptoInt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="DescripcionInt" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblDescripcionInt" runat="server" Text='<%# Eval("DescripcionInt").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>
+
+                            <asp:TemplateField HeaderText="MotivoNoConciliado" >
+                                <ItemTemplate>
+                                    <asp:Label ID="lblMotivoNoConciliado" runat="server" Text='<%# Eval("MotivoNoConciliado").ToString() %>'></asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" Width="100px"></ItemStyle>
+                                <HeaderStyle HorizontalAlign="Center" Width="100px"></HeaderStyle>
+                            </asp:TemplateField>--%>
+                            </Columns>
                         <PagerStyle CssClass="grvPaginacionScroll" />
                     </asp:GridView>
                 </div>
