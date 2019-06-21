@@ -64,11 +64,24 @@ public partial class Inicio : System.Web.UI.Page
             //wucBuscadorPagoEstadoCuenta.Contenedor = mpeBuscadorPagoEdoCta;
             if (!Page.IsPostBack)
             {
+                //if (HttpContext.Current.Session["ddlEmpresa"] != null)
+                //    ddlEmpresa.SelectedValue = HttpContext.Current.Session["ddlEmpresa"].ToString();
+                //if (HttpContext.Current.Session["ddlSucursal"] != null)
+                //    ddlSucursal.SelectedValue = HttpContext.Current.Session["ddlSucursal"].ToString();
+                //if (HttpContext.Current.Session["ddlGrupo"] != null)
+                //    ddlGrupo.SelectedValue = HttpContext.Current.Session["ddlGrupo"].ToString();
+                //if (HttpContext.Current.Session["ddlTipoConciliacion"] != null)
+                //    ddlTipoConciliacion.SelectedValue = HttpContext.Current.Session["ddlTipoConciliacion"].ToString();
+                //if (HttpContext.Current.Session["ddlStatusConciliacion"] != null)
+                //    ddlStatusConciliacion.SelectedValue = HttpContext.Current.Session["ddlStatusConciliacion"].ToString();
+                //if (HttpContext.Current.Session["ddlMesConciliacion"] != null)
+                //    ddlMesConciliacion.SelectedValue = HttpContext.Current.Session["ddlMesConciliacion"].ToString();
+                //if (HttpContext.Current.Session["ddlAñoConciliacion"] != null)
+                //    ddlAñoConciliacion.SelectedValue = HttpContext.Current.Session["ddlAñoConciliacion"].ToString();
+
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 //Inicializacion de Propiedades
                 //listaConciliaciones = new List<cConciliacion>();
-
-                
 
                 Carga_TipoConciliacion(usuario.IdUsuario.Trim());
                 if (ddlEmpresa.Items.Count == 0) Carga_Corporativo();
@@ -78,11 +91,10 @@ public partial class Inicio : System.Web.UI.Page
                 Carga_StatusConciliacion();
 
                 ddlMesConciliacion.SelectedValue = leerMes();
-                ddlAñoConciliacion.SelectedValue = leerAño();                
-               
+                ddlAñoConciliacion.SelectedValue = leerAño();
+
                 if (HttpContext.Current.Session["filtros"] != null)
                 {
-
                     ClaseFiltros filtros = new ClaseFiltros();
                     filtros = (ClaseFiltros)HttpContext.Current.Session["filtros"];
                     ddlEmpresa.SelectedIndex = filtros.Empresa-1;
@@ -92,7 +104,7 @@ public partial class Inicio : System.Web.UI.Page
                     ddlStatusConciliacion.SelectedIndex = filtros.Status;
                     ddlAñoConciliacion.SelectedIndex = filtros.Anio;
                     ddlMesConciliacion.SelectedIndex = filtros.Mes;                    
-                    HttpContext.Current.Session.Remove("filtros");
+                    //HttpContext.Current.Session.Remove("filtros");
                 }
                 Consulta_Conciliacion();
                 GenerarTablaConciliaciones();
@@ -577,6 +589,15 @@ public partial class Inicio : System.Web.UI.Page
         Consulta_Conciliacion();
         GenerarTablaConciliaciones();
         LlenaGridViewConciliaciones();
+        //HttpContext.Current.Session["ddlEmpresa"] = ddlEmpresa.SelectedValue;
+        //HttpContext.Current.Session["ddlTipoConciliacion"] = ddlTipoConciliacion.SelectedValue;
+        //HttpContext.Current.Session["ddlSucursal"] = ddlSucursal.SelectedValue;
+        //HttpContext.Current.Session["ddlGrupo"] = ddlGrupo.SelectedValue;
+        //HttpContext.Current.Session["ddlTipoConciliacion"] = ddlTipoConciliacion.SelectedValue;
+        //HttpContext.Current.Session["ddlStatusConciliacion"] = ddlStatusConciliacion.SelectedValue;
+        //HttpContext.Current.Session["ddlMesConciliacion"] = ddlMesConciliacion.SelectedValue;
+        //HttpContext.Current.Session["ddlAñoConciliacion"] = ddlAñoConciliacion.SelectedValue;
+        GuardarUltimaConsulta();
     }
     protected void grvConciliacion_RowCreated(object sender, GridViewRowEventArgs e)
     {
@@ -598,11 +619,8 @@ public partial class Inicio : System.Web.UI.Page
 
     #endregion
 
-
-
-    protected void lnkConsultar_Click(object sender, EventArgs e)
+    private void GuardarUltimaConsulta()
     {
-        //consultar documentos trans ban                
         ClaseFiltros filtros = new ClaseFiltros();
         filtros.Empresa = ddlEmpresa.SelectedIndex;
         filtros.Sucursal = ddlSucursal.SelectedIndex;
@@ -611,10 +629,16 @@ public partial class Inicio : System.Web.UI.Page
         filtros.Status = ddlStatusConciliacion.SelectedIndex;
         filtros.Anio = ddlAñoConciliacion.SelectedIndex;
         filtros.Mes = ddlMesConciliacion.SelectedIndex;
-        filtros.Folio= Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
+        //filtros.Folio = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == filtros.Folio);
         filtros.Conciliacion = conciliacion;
         HttpContext.Current.Session["filtros"] = filtros;
+    }
+
+    protected void lnkConsultar_Click(object sender, EventArgs e)
+    {
+        //consultar documentos trans ban                
+        GuardarUltimaConsulta();
         Response.Redirect("~/Conciliacion/ConsultarDocumentos.aspx");
     }
 

@@ -63,6 +63,7 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
             chkBuscarEnDepositos.Checked = false;
             chkBuscarEnEsta.Checked = false;
         }
+        grvPagoEstadoCuenta.Visible = true;
         chkBuscarEnEsta.Enabled = true; // ActivaEstaConciliacion;
     }
 
@@ -83,39 +84,49 @@ public partial class ControlesUsuario_ClientePago_wucBuscadorPagoEstadoCuenta : 
     protected void btnBuscar_Click(object sender, EventArgs e)
     {
         Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
-        grvPagoEstadoCuenta.Visible = true;
-        if (txtMonto.Text.Trim() == "")
-            txtMonto.Text = "0";
-        List<EstadoDeCuenta> listaEstadoCuenta;
-        if (chkBuscarEnEsta.Checked)
-            listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
-                decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked,
-                corporativo,
-                sucursal,
-                año,
-                mes,
-                folio);
-        else
-            listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
-                decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked,
-                0,
-                0,
-                0,
-                0,
-                0);
-
-        grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
-        if (listaEstadoCuenta.Count > 0)
-            grvPagoEstadoCuenta.DataBind();
-        else
+        if (txtMonto.Text.Count(s => s == '.') > 1)
         {
             ModalPopupExtender objContenedor;
             objContenedor = (ModalPopupExtender)this.Contenedor;
             objContenedor.Hide();
             ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
-                    @"alertify.alert('Conciliaci&oacute;n bancaria','No se encontr&oacute; registro que coincida con los par&aacute;metros de b&uacute;squeda proporcionados.', function(){ });", true);
-
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El valor de monto no es v&aacute;lido..', function(){ });", true);
         }
+        else
+        { 
+            grvPagoEstadoCuenta.Visible = true;
+            if (txtMonto.Text.Trim() == "")
+                txtMonto.Text = "0";
+            List<EstadoDeCuenta> listaEstadoCuenta;
+            if (chkBuscarEnEsta.Checked)
+                listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
+                    decimal.Parse(txtMonto.Text),chkBuscaEnRetiros.Checked,chkBuscarEnDepositos.Checked,
+                    corporativo,
+                    sucursal,
+                    año,
+                    mes,
+                    folio);
+            else
+                listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
+                    decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0);
 
+            grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
+            if (listaEstadoCuenta.Count > 0)
+                grvPagoEstadoCuenta.DataBind();
+            else
+            {
+                ModalPopupExtender objContenedor;
+                objContenedor = (ModalPopupExtender)this.Contenedor;
+                objContenedor.Hide();
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','No se encontr&oacute; registro que coincida con los par&aacute;metros de b&uacute;squeda proporcionados.', function(){ });", true);
+
+            }
+        }
     }
 }
