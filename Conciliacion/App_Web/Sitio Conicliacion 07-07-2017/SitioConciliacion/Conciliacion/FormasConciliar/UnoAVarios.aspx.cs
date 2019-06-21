@@ -6160,7 +6160,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
         objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
         objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
-
+        chkSeleccionarInternosTodos.Checked = false;
         try
         {
             if (objSolicitdConciliacion.ConsultaPedido())

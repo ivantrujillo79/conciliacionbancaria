@@ -24,6 +24,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private string conceptoExt;
         private string descripcionExt;
 
+        private int foliointerno;
+        private int secuenciainterno;
         private DateTime foperacionInt;
         private decimal retiroInt;
         private decimal depositoInt;
@@ -34,8 +36,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public EstadoDeCuenta(int añoconciliacion, int mesconciliacion, int folioconciliacion, 
             string banco, string cuentabancaria,
             int folioexterno, int secuenciaexterno, string documento, 
-            string transban, DateTime fmovtransban, 
+            string transban, DateTime fmovtransban,
             DateTime foperacionExt, decimal retiroExt, decimal depositoExt, string conceptoExt, string descripcionExt,
+            int foliointerno, int secuenciainterno,
             DateTime foperacionInt, decimal retiroInt, decimal depositoInt, string conceptoInt, string descripcionInt,
             int motivoNoconciliado)
         {
@@ -54,6 +57,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.depositoExt = depositoExt;
             this.conceptoExt = conceptoExt;
             this.descripcionExt = descripcionExt;
+            this.foliointerno = foliointerno;
+            this.secuenciainterno = secuenciainterno;
             this.foperacionInt = foperacionInt;
             this.retiroInt = retiroInt;
             this.depositoInt = depositoInt;
@@ -80,6 +85,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.depositoExt = 0;
             this.conceptoExt = "";
             this.descripcionExt = "";
+            this.foliointerno = 0;
+            this.secuenciainterno = 0;
             this.foperacionInt = DateTime.MinValue;
             this.retiroInt = 0;
             this.depositoInt = 0;
@@ -164,6 +171,16 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { descripcionExt = value; }
         }
 
+        public int FolioInterno
+        {
+            get { return foliointerno; }
+            set { foliointerno = value; }
+        }
+        public int SecuenciaInterno
+        {
+            get { return secuenciainterno; }
+            set { secuenciainterno = value; }
+        }
         public DateTime FOperacionInt
         {
             get { return foperacionInt; }

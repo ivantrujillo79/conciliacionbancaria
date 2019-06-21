@@ -76,6 +76,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                             Convert.ToString(reader["ConceptoExt"]),
                                             Convert.ToString(reader["DescripcionExt"]),
 
+                                            Convert.ToInt32(reader["FolioInt"]),
+                                            Convert.ToInt32(reader["SecuenciaInt"]),
                                             Convert.ToDateTime(reader["FOperacionInt"]),
                                             Convert.ToDecimal(reader["RetiroInt"]),
                                             Convert.ToDecimal(reader["DepositoInt"]),

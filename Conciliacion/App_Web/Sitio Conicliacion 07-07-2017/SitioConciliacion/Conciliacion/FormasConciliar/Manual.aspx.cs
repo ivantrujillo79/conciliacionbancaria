@@ -2130,7 +2130,14 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
     public List<ReferenciaNoConciliada> filasSeleccionadasExternos(string status)
     {
         listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
-        return listaReferenciaExternas.Where(fila => fila.Selecciona == false && fila.StatusConciliacion.Equals(status)).ToList();
+        if (status == "EN PROCESO DE CONCILIACION")
+            return listaReferenciaExternas.Where(fila => 
+                (fila.Selecciona == false && fila.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION")) || 
+                (fila.Selecciona == false && fila.StatusConciliacion.Equals("CONCILIACION CANCELADA") && fila.MotivoNoConciliado == 1)
+                ).ToList();
+        else
+            return listaReferenciaExternas.Where(fila => fila.Selecciona == false && fila.StatusConciliacion.Equals(status)).ToList();
+
     }
     public List<ReferenciaNoConciliada> filasSeleccionadasInternos(string status)
     {
@@ -2763,7 +2770,9 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             {
                 rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
                 GenerarTablaExternos();
-                if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+
+                List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
+                if (extSeleccionados != null)//(rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
                 {
                     decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
                     int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
@@ -2778,7 +2787,9 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         {
             rfEx.Selecciona = true;
             GenerarTablaExternos();
-            if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+            //if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+            List<ReferenciaNoConciliada> extSeleccionados = filasSeleccionadasExternos("EN PROCESO DE CONCILIACION");
+            if (extSeleccionados != null)
             {
                 decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
                 int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
