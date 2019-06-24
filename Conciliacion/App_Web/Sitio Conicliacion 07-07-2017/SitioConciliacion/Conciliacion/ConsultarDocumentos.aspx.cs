@@ -31,15 +31,16 @@ public partial class Conciliacion_ConsultarDocumentos : System.Web.UI.Page
 
     private void Consultar_Documentos()
     {
-        try
-        {
-            listaDocumentos = objApp.Consultas.ConsultaConsultarMultiplesDocumentosTransBan(filtros.Conciliacion.Corporativo,filtros.Conciliacion.Sucursal,filtros.Conciliacion.Año,filtros.Conciliacion.Mes,filtros.Folio);
-            HttpContext.Current.Session["LISTA_DOCUMENTOS"] = listaDocumentos;
-        }
-        catch (Exception ex)
-        {
-            objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
-        }
+        if (filtros.Conciliacion != null)
+            try
+            {
+                listaDocumentos = objApp.Consultas.ConsultaConsultarMultiplesDocumentosTransBan(filtros.Conciliacion.Corporativo,filtros.Conciliacion.Sucursal,filtros.Conciliacion.Año,filtros.Conciliacion.Mes,filtros.Folio);
+                HttpContext.Current.Session["LISTA_DOCUMENTOS"] = listaDocumentos;
+            }
+            catch (Exception ex)
+            {
+                objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+            }
     }
     private void GenerarTabla()
     {

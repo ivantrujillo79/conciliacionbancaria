@@ -262,7 +262,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
           short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion,
           short mesconciliacion, decimal diferencia, bool coninterno,
           string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion,
-          int año, int tipocobro, int tipocobroanterior, MensajesImplementacion implementadorMensajes)
+          int año, int tipocobro, int tipocobroanterior, int motivonoconciliado,
+          MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -293,7 +294,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.diferencia = diferencia;
             this.coninterno = coninterno;
             this.ubicacionicono = ubicacionicono;
-            this.motivonoconciliado = 0;
+            this.motivonoconciliado = motivonoconciliado;
             this.comentarionoconciliado = "";
 
             this.cheque = cheque;
@@ -569,7 +570,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.implementadorMensajes = implementadorMensajes;
         }
 
-        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente, int tipocobro, int tipocobroanterior, MensajesImplementacion implementadorMensajes)
+        protected ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, string ubicacionicono, int folioconciliacion, short mesconciliacion, decimal diferencia, bool coninterno, string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, int año, int cliente, int tipocobro, int tipocobroanterior, int motivonoconciliado, MensajesImplementacion implementadorMensajes)
         {
             this.corporativo = corporativo;
             this.sucursal = sucursal;
@@ -600,6 +601,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.cliente = cliente;
             this.tipoCobro = tipocobro;
             this.tipoCobroAnterior = tipocobroanterior;
+            this.motivonoconciliado = motivonoconciliado;
             this.implementadorMensajes = implementadorMensajes;
         }
 

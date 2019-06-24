@@ -97,9 +97,9 @@ public partial class Inicio : System.Web.UI.Page
                 {
                     ClaseFiltros filtros = new ClaseFiltros();
                     filtros = (ClaseFiltros)HttpContext.Current.Session["filtros"];
-                    ddlEmpresa.SelectedIndex = filtros.Empresa-1;
+                    ddlEmpresa.SelectedIndex = filtros.Empresa;
                     ddlSucursal.SelectedIndex = filtros.Sucursal;
-                    ddlGrupo.SelectedIndex = filtros.Grupo-1;
+                    ddlGrupo.SelectedIndex = filtros.Grupo;
                     ddlTipoConciliacion.SelectedIndex = filtros.TipoConciliacion;
                     ddlStatusConciliacion.SelectedIndex = filtros.Status;
                     ddlAñoConciliacion.SelectedIndex = filtros.Anio;
@@ -629,7 +629,8 @@ public partial class Inicio : System.Web.UI.Page
         filtros.Status = ddlStatusConciliacion.SelectedIndex;
         filtros.Anio = ddlAñoConciliacion.SelectedIndex;
         filtros.Mes = ddlMesConciliacion.SelectedIndex;
-        //filtros.Folio = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
+        if (fldIndiceConcilacion.Value.Trim() != string.Empty)
+            filtros.Folio = Convert.ToInt32(grvConciliacion.DataKeys[Convert.ToInt32(fldIndiceConcilacion.Value.Trim())].Value);
         cConciliacion conciliacion = listaConciliaciones.Find(x => x.Folio == filtros.Folio);
         filtros.Conciliacion = conciliacion;
         HttpContext.Current.Session["filtros"] = filtros;
