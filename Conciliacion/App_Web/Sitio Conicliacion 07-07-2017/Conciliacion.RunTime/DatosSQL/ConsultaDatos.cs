@@ -5550,6 +5550,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToString(reader["RFCTercero"]), sucursal,
                                 Convert.ToInt16(reader["Año"]), 1,
                                 tcobro, tcobro,
+                                Convert.ToInt16(reader["MotivoNoConciliado"]),
                                 this.implementadorMensajes);
                         datos.Add(dato);
                     }
@@ -5625,6 +5626,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToString(reader["RFCTercero"]), sucursal,
                                 Convert.ToInt16(reader["Año"]), 1,
                                 tcobro, tcobro,
+                                Convert.ToInt32(reader["MotivoNoConciliado"] == DBNull.Value ? 0 : reader["MotivoNoConciliado"]),
                                 this.implementadorMensajes);
                         datos.Add(dato);
                     }
@@ -5698,6 +5700,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 Convert.ToString(reader["RFCTercero"]), sucursal,
                                 Convert.ToInt16(reader["Año"]), 1,
                                 tcobro, tcobro,
+                                Convert.ToInt16(reader["MotivoNoConciliado"]),
                                 this.implementadorMensajes);
                         datos.Add(dato);
                     }

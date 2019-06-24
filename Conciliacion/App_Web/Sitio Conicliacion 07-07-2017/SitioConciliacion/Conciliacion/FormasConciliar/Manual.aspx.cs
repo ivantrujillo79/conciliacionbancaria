@@ -2142,7 +2142,14 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
     public List<ReferenciaNoConciliada> filasSeleccionadasInternos(string status)
     {
         listaReferenciaArchivosInternos = Session["POR_CONCILIAR_INTERNO"] as List<ReferenciaNoConciliada>;
-        return listaReferenciaArchivosInternos.Where(fila => fila.Selecciona == false && fila.StatusConciliacion.Equals(status)).ToList();
+        if (status == "EN PROCESO DE CONCILIACION")
+            return listaReferenciaArchivosInternos.Where(fila =>
+                (fila.Selecciona == false && fila.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION")) ||
+                (fila.Selecciona == false && fila.StatusConciliacion.Equals("CONCILIACION CANCELADA") && fila.MotivoNoConciliado == 1)
+            ).ToList();
+        else
+            return listaReferenciaArchivosInternos.Where(fila => fila.Selecciona == false && fila.StatusConciliacion.Equals(status)).ToList();
+
     }
     public List<ReferenciaNoConciliadaPedido> filasSeleccionadasPedidos()
     {
