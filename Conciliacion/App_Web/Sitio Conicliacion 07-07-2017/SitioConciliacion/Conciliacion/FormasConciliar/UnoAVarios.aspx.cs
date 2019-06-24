@@ -1312,7 +1312,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                     GenerarTablaAgregadosArchivosInternosExcel(RNC, tipoConciliacion);
                     //ActualizarTotalesAgregados();
-                    ActualizarTotalesAgregadosExcel(grvAgregadosPedidos);
+                    //ActualizarTotalesAgregadosExcel(grvAgregadosPedidos);
+                    ActualizarTotalesAgregadosExcel(RNC.ListaReferenciaConciliada);
 
                     this.hdfVisibleCargaArchivo.Value = "0";
                 }
@@ -1396,6 +1397,44 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblResto.Text                   = dResto.ToString("C2");
 
             //lblAbono.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+        }
+    }
+
+    private void ActualizarTotalesAgregadosExcel(List<cReferencia> Grid)
+    {
+        Decimal MontoConciliado;
+        //DataTable dt = (DataTable)Grid.DataSource;
+        if (Grid.Count > 0)
+        {
+            MontoConciliado = 0;
+            foreach (cReferencia gvRow in Grid)
+            {
+                //if (gvRow[7].ToString().Trim() != string.Empty)
+                    MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow.MontoConciliado);
+            }
+
+            decimal dAbono = 0;
+            decimal dComision = 0;
+            if (txtComision.Text.Trim() == "") txtComision.Text = "0.00";
+            if (chkComision.Checked)
+            {
+                dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
+                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency) + dComision;
+            }
+            else
+            {
+                dComision = 0;
+                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+            }
+
+            decimal dAcumulado = Decimal.Round(MontoConciliado, 2);
+            decimal dResto = (dAbono > 0 ? dAbono - dAcumulado : 0);
+            dResto = (dResto <= 0 ? 0 : dResto);
+
+            lblMontoAcumuladoInterno.Text = dAcumulado.ToString("C2");
+            lblAgregadosInternos.Text = Grid.Count.ToString();
+            lblResto.Text = dResto.ToString("C2");
+
         }
     }
 
