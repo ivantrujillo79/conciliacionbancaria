@@ -105,6 +105,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int secuenciaex;
         private int tipoCobro;
         private int tipoCobroAnterior;
+
+        private string usuario;
+
         #region Constructores
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -254,7 +257,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = sucursalconciliacion;
 
             this.selecciona = true;
-            
+
         }
 
         public ReferenciaNoConciliada(int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia,
@@ -357,7 +360,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.sucursalconciliacion = sucursalconciliacion;
 
             this.selecciona = true;
-            
+
         }
 
 
@@ -763,6 +766,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return pedido; }
             set { pedido = value; }
+        }
+
+        public string Usuario
+        {
+            get { return usuario; }
+            set { usuario = value; }
         }
 
         public decimal MontoConciliado

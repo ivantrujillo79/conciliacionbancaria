@@ -8,6 +8,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Configuration;
 using System.Web;
 using System.Web.UI;
+using SeguridadCB.Public;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -312,6 +313,8 @@ implementadorMensajes)
         public override bool EliminarReferenciaConciliada()
         {
             bool resultado = false;
+            Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            this.Usuario = usuario.IdUsuario;
             using (SqlConnection cnnInt = new SqlConnection(objApp.CadenaConexion))
             {
                 cnnInt.Open();
@@ -366,7 +369,7 @@ implementadorMensajes)
                             comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                             comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                             comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
-                            //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null ;
+                            comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario;
 
                             comando.CommandType = System.Data.CommandType.StoredProcedure;
                             comando.Transaction = transaction;
@@ -405,6 +408,8 @@ implementadorMensajes)
             bool resultado = false;
             try
             {
+                Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                this.Usuario = usuario.IdUsuario;
                 using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
@@ -437,7 +442,7 @@ implementadorMensajes)
                     comando.Parameters.Add("@StatusMovimiento", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
-                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null; // this.Usuario == "" ? null : this.Usuario;
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -459,6 +464,8 @@ implementadorMensajes)
             bool resultado = false;
             try
             {
+                Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                this.Usuario = usuario.IdUsuario;
                 using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
@@ -491,7 +498,7 @@ implementadorMensajes)
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = 0;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = "";
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
-                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null;
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -514,6 +521,8 @@ implementadorMensajes)
             bool resultado = false;
             try
             {
+                Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                this.Usuario = usuario.IdUsuario;
                 using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
@@ -545,7 +554,7 @@ implementadorMensajes)
                     comando.Parameters.Add("@StatusMovimiento", System.Data.SqlDbType.VarChar).Value = "PENDIENTE";
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = this.ComentarioNoConciliado;
-                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null; //this.Usuario == "" ? null : this.Usuario;
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -567,6 +576,8 @@ implementadorMensajes)
             bool resultado = false;
             try
             {
+                Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                this.Usuario = usuario.IdUsuario;
                 using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
@@ -599,6 +610,7 @@ implementadorMensajes)
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value =  this.ComentarioNoConciliado;
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario == "" ? null : this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
@@ -620,6 +632,8 @@ implementadorMensajes)
             bool resultado = false;
             try
             {
+                Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                this.Usuario = usuario.IdUsuario;
                 using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
                 {
                     cnn.Open();
@@ -652,7 +666,7 @@ implementadorMensajes)
                     comando.Parameters.Add("@MotivoNoConciliado", System.Data.SqlDbType.Int).Value = this.MotivoNoConciliado;
                     comando.Parameters.Add("@ComentarioNoConciliado", System.Data.SqlDbType.VarChar).Value = this.ComentarioNoConciliado;
                     comando.Parameters.Add("@Descripcion", System.Data.SqlDbType.VarChar).Value = "";
-                    //comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = null;
+                    comando.Parameters.Add("@UsuarioAlta", System.Data.SqlDbType.VarChar).Value = this.Usuario;
 
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
                     SqlDataReader reader = comando.ExecuteReader();
