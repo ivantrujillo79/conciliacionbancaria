@@ -13,6 +13,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using System.Collections.Generic;
 using System.IO;
 using System.Data.SqlClient;
+using System.Linq;
 
 public partial class Inicio : System.Web.UI.Page
 {
@@ -651,23 +652,33 @@ public partial class Inicio : System.Web.UI.Page
 
     protected void btnBuscaEdoCtaBuscar_Click(object sender, EventArgs e)
     {
-        if (txtMonto.Text.Trim() == "")
-            txtMonto.Text = "0";
-        if (txtFinicio.Text == "")
-            txtFinicio.Text = DateTime.Now.AddMonths(-1).ToShortDateString();
-        if (txtFfinal.Text == "")
-            txtFfinal.Text = DateTime.Now.ToShortDateString();
-        List<EstadoDeCuenta> listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text), 
-            decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked,0,0,0,0,0);
-        grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
-        if (listaEstadoCuenta.Count > 0)
-            grvPagoEstadoCuenta.DataBind();
-        else
+        if (txtMonto.Text.Count(s => s == '.') > 1)
         {
             mpeBuscadorPagoEdoCta.Hide();
             ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
-                    @"alertify.alert('Conciliaci&oacute;n bancaria','No se encontr&oacute; registro que coincida con los par&aacute;metros de b&uacute;squeda proporcionados.', function(){ });", true);
+                    @"alertify.alert('Conciliaci&oacute;n bancaria','El valor de monto no es v&aacute;lido..', function(){ });", true);
+        }
+        else
+        {
 
+            if (txtMonto.Text.Trim() == "")
+                txtMonto.Text = "0";
+            if (txtFinicio.Text == "")
+                txtFinicio.Text = DateTime.Now.AddMonths(-1).ToShortDateString();
+            if (txtFfinal.Text == "")
+                txtFfinal.Text = DateTime.Now.ToShortDateString();
+            List<EstadoDeCuenta> listaEstadoCuenta = objApp.Consultas.BuscarPagoEstadoCuenta(DateTime.Parse(txtFinicio.Text), DateTime.Parse(txtFfinal.Text),
+                decimal.Parse(txtMonto.Text), chkBuscaEnRetiros.Checked, chkBuscarEnDepositos.Checked, 0, 0, 0, 0, 0);
+            grvPagoEstadoCuenta.DataSource = listaEstadoCuenta;
+            if (listaEstadoCuenta.Count > 0)
+                grvPagoEstadoCuenta.DataBind();
+            else
+            {
+                mpeBuscadorPagoEdoCta.Hide();
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','No se encontr&oacute; registro que coincida con los par&aacute;metros de b&uacute;squeda proporcionados.', function(){ });", true);
+
+            }
         }
     }
 }
