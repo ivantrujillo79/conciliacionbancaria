@@ -9,6 +9,7 @@ using Conciliacion.RunTime.ReglasDeNegocio;
 using RTGMGateway;
 using System.Configuration;
 using System.Web;
+using SeguridadCB.Public;
 
 namespace Conciliacion.RunTime.DatosSQL
 {
@@ -65,6 +66,10 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool Guardar2(Conexion _conexion)
         {
             bool resultado = true;
+
+            Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+            this.Usuario = usuario.IdUsuario;
+
             _conexion.Comando.CommandType = CommandType.StoredProcedure;
             _conexion.Comando.CommandText = "spCBActualizaConciliacionPedido";
             _conexion.Comando.Parameters.Clear();
