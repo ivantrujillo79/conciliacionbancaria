@@ -344,7 +344,8 @@
                 grv = document.getElementById('ctl00_contenidoPrincipal_grvInternos');
                 chkVal = document.getElementById('ctl00_contenidoPrincipal_chkSeleccionarInternosTodos').checked;
                 for (indice = 1; indice < grv.rows.length; indice++) {
-                    grv.rows[indice].cells[1].children[0].checked = chkVal;
+                    if (grv.rows[indice].cells[1] != undefined)
+                        grv.rows[indice].cells[1].children[0].checked = chkVal;
                 }
             }
         }
@@ -753,7 +754,7 @@
 
                 });
             }
-            $('#<%=grvPedidos.ClientID%>').gridviewScroll({
+            <%--$('#<%=grvPedidos.ClientID%>').gridviewScroll({
                     width: 595,
                     height: 250,
                     freezesize: 0,
@@ -762,13 +763,15 @@
                     varrowbottomimg: '../../App_Scripts/ScrollGridView/Images/arrowvb.png',
                     harrowleftimg: '../../App_Scripts/ScrollGridView/Images/arrowhl.png',
                     harrowrightimg: '../../App_Scripts/ScrollGridView/Images/arrowhr.png',
-                    headerrowcount: 1,
+                    headerrowcount: 1,--%>
+
                     <%--startVertical: $("#<%=hfInternosSV.ClientID%>").val(), 
                     startHorizontal: $("#<%=hfInternosSH.ClientID%>").val(), 
                     onScrollVertical: function (delta) { $("#<%=hfInternosSV.ClientID%>").val(delta); }, 
                     onScrollHorizontal: function (delta) { $("#<%=hfInternosSH.ClientID%>").val(delta);}--%>
+            <%--
             });
-            
+            --%>
         }
         function mensajeAsincrono(faltante) {
             var pre = document.createElement('pre');pre.style.maxHeight = '400px';
@@ -2398,11 +2401,13 @@
                             <%-- <br />--%>
                             <div id="seccionGridPedidos">
                                 <asp:GridView ID="grvPedidos" runat="server" 
-                                AllowPaging='<%# ActivePaging %>' PageSize="3" AutoGenerateColumns="False" ShowHeader="True"
-                                CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
-                                ShowHeaderWhenEmpty="True" OnSorting="grvPedidos_Sorting" OnRowDataBound="grvPedidos_RowDataBound"
-                                OnRowCommand="grvPedidos_RowCommand" OnPageIndexChanging="grvPedidos_PageIndexChanging"
-                                DataKeyNames="Celula,Pedido,AñoPed,Cliente" > 
+                                    AllowPaging="True" PageSize="3" AutoGenerateColumns="False" ShowHeader="True"
+                                    CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
+                                    ShowHeaderWhenEmpty="True" 
+                                    DataKeyNames="Celula,Pedido,AñoPed,Cliente"
+                                    OnSorting="grvPedidos_Sorting"
+                                    OnRowCommand="grvPedidos_RowCommand" 
+                                    OnPageIndexChanging="grvPedidos_PageIndexChanging"> 
                                 <HeaderStyle HorizontalAlign="Center" />
                                 <Columns>
                                     <asp:TemplateField>

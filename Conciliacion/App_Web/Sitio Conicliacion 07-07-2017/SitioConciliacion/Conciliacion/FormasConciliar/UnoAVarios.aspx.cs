@@ -1564,12 +1564,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void grvPedidos_RowDataBound(object sender, GridViewRowEventArgs e)
     {
-        //btnAgregarPedido. btnAgregarPedido_Click
     }
 
     protected void grvPedidos_RowCommand(object sender, GridViewCommandEventArgs e)
     {
-        Response.Write(e.CommandArgument);
+        //Response.Write(e.CommandArgument);
         if (e.CommandName == "AgregarPedidoAConciliacion")
         {
             int index = Convert.ToInt32(e.CommandArgument);
@@ -4752,6 +4751,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         List<ReferenciaNoConciliada> ListSeleccionadosInternos = new List<ReferenciaNoConciliada>();
         try
         {
+            chkSeleccionarInternosTodos.Checked = false;
             if (grvExternos.Rows.Count > 0)
             {
                 /*          Obtener registro donde se presionó el botón         */
@@ -7583,13 +7583,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 else
                 if (Convert.ToString(HttpContext.Current.Session["criterioConciliacion"]) == "VariosAUno")
                     grvPrima = (GridView)Session["TABLADEINTERNOS"];
-
+                
                 grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
                     DataTable tableBuscaCliente = wucBuscaClientesFacturas.BuscaCliente();
                     ViewState["POR_CONCILIAR"] = tableBuscaCliente;
                     DataTable tableBuscaCliente_AX = tableBuscaCliente.Copy();
+                    Session["TAB_INTERNOS_AX"] = tableBuscaCliente_AX;
                     if (tableBuscaCliente.Rows.Count > 0)
                         tableBuscaCliente = EliminarPedidosAgregados(tableBuscaCliente);
                     HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = tableBuscaCliente;
