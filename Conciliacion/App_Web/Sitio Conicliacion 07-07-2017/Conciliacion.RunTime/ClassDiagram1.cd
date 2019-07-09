@@ -152,11 +152,11 @@
       <FileName>DatosSQL\ReferenciaNoConciliadaDatos.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="Conciliacion.RunTime.IMensajesImplementacion">
+  <Interface Name="Conciliacion.RunTime.MensajesImplementacion">
     <Position X="9.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IMensajesImplementacion.cs</FileName>
+      <FileName>MensajesImplementacion.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Conciliacion.RunTime.ReglasDeNegocio.IConciliacion">

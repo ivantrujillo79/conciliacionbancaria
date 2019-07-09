@@ -96,25 +96,6 @@ C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Coni
 C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CopyComplete
 C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
 C:\Users\valdma05\Documents\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\SeguridadCB.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\EPPlus.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\log4net.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\SeguridadCB.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\EPPlus.xml
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.pdb
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.dll.config
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\log4net.xml
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csprojAssemblyReference.cache
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CoreCompileInputs.cache
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CopyComplete
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
-C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
 C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.dll
 C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.pdb
 C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.dll
@@ -134,3 +115,22 @@ C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Si
 C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CopyComplete
 C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
 C:\Users\Developer2\Documents\GitLab\GasMetropolitano\CB\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTimeTests1.pdb
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\EPPlus.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\SeguridadCB.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\log4net.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\Conciliacion.RunTime.pdb
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.pdb
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\RTGMGateway.dll.config
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\EPPlus.xml
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\SeguridadCB.pdb
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\bin\Debug\log4net.xml
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csprojAssemblyReference.cache
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CoreCompileInputs.cache
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.csproj.CopyComplete
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.dll
+C:\Users\Ricardo Rojas\Source\Repos\conciliacionbancaria\Conciliacion\App_Web\Sitio Conicliacion 07-07-2017\Conciliacion.RunTimeTests1\obj\Debug\Conciliacion.RunTimeTests1.pdb
