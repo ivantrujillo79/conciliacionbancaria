@@ -2401,7 +2401,7 @@
                             <%-- <br />--%>
                             <div id="seccionGridPedidos">
                                 <asp:GridView ID="grvPedidos" runat="server" 
-                                    AllowPaging="True" PageSize="3" AutoGenerateColumns="False" ShowHeader="True"
+                                    AllowPaging='<%# ActivePaging %>' PageSize="3" AutoGenerateColumns="False" ShowHeader="True"
                                     CssClass="grvResultadoConsultaCss" AllowSorting="True" ShowFooter="False" Width="100%"
                                     ShowHeaderWhenEmpty="True" 
                                     DataKeyNames="Celula,Pedido,AñoPed,Cliente"

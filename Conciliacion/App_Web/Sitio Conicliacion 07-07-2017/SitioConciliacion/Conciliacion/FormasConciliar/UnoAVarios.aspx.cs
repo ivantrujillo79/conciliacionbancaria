@@ -4623,7 +4623,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             ReferenciaNoConciliada objReferencia = listaTransaccionesConciliadas[indice];
             int pedido = objReferencia.Pedido;
 
-
             tranDesconciliar = listaTransaccionesConciliadas.Single(
                 x => x.Corporativo == corporativoConcilacion &&
                      x.Sucursal == sucursalConciliacion &&
