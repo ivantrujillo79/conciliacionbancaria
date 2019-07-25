@@ -480,6 +480,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 if (hdfCargaAgregado.Value == "1")
                 {
+                    ViewState["tipo"] = 1;
                     GenerarAgregadosExcel();
                 }
                 MostrarPopUp_ConciliacionManual();
@@ -2919,7 +2920,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     }
                     try
                     {
-                        ViewState["tipo"] = "4";
+                        //if (hdfCargaAgregado.Value == "1")
+                        //    ViewState["tipo"] = "1";
+                        //else
+                            ViewState["tipo"] = "4";
                         ViewState["POR_CONCILIAR"] = tablaReferenciasP;
                         if (listadistintos.Count > 0)
                         {
@@ -3029,7 +3033,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 try
                 {
-                    ViewState["tipo"] = "4";
+                    //if (hdfCargaAgregado.Value == "1")
+                    //    ViewState["tipo"] = "1";
+                    //else
+                        ViewState["tipo"] = "4";
                     ViewState["POR_CONCILIAR"] = tablaReferenciasP;
                     if (listadistintos.Count > 0)
                     {
@@ -3438,8 +3445,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                     grvAgregadosPedidos.DataBind();
                     Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
-                    string valor = ViewState["valor"] as string;
-                    if (valor == "1")
+                    tipo = ViewState["tipo"] as string;//string valor = ViewState["valor"] as string;
+                    if (tipo == "1")//if (valor == "1")
                     {
                         grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
                         grvAgregadosPedidos.DataBind();
@@ -3627,6 +3634,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (objSolicitdConciliacion.ConsultaPedido())
             {
                 ViewState["Valor"] = 1;
+                ViewState["tipo"] = 1;
                 tblReferenciaAgregadasInternas.Columns.Add("Pedido", typeof(int));
                 tblReferenciaAgregadasInternas.Columns.Add("AñoPed", typeof(int));
                 tblReferenciaAgregadasInternas.Columns.Add("Celula", typeof(int));
@@ -3653,8 +3661,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         );
                 }
                 RellenaColumnaNombreClienteDeCRM(tblReferenciaAgregadasInternas);
-                //grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
-                //grvAgregadosPedidos.DataBind();
+                grvAgregadosPedidos.DataSource = tblReferenciaAgregadasInternas;
+                grvAgregadosPedidos.DataBind();
                 //Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
                 //wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
             }
