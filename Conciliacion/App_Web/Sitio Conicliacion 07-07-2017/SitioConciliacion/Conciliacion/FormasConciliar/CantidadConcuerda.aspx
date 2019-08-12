@@ -1836,11 +1836,11 @@
         <asp:UpdatePanel ID="upBuscadorPagoEdoCta" runat="server">
             <ContentTemplate>
                 <asp:HiddenField runat="server" ID="hdfBuscadorPagoEdoCtaMostrar" Value=""/>
-                <div>
+                <div id="divBusquedaEdoCta" style="width:1190px; max-height:500px; overflow:auto;" >
                     <table style="width:100%;">
                         <tr class="bg-color-grisOscuro">
                             <td style="padding: 5px 5px 5px 5px;" class="etiqueta">
-                                <div class="floatDerecha bg-color-grisClaro01">
+                                <div class="floatIzquierda bg-color-grisClaro01">
                                     <asp:ImageButton runat="server" ID="btnCerrar_BuscadorPagoEdoCta" CssClass="iconoPequeño bg-color-rojo" 
                                         ImageUrl="~/App_Themes/GasMetropolitanoSkin/Iconos/Cerrar.png" Width="20px" Height="20px" 
                                         OnClientClick="OcultarPopUpBuscadorPagoEdoCta();"/>

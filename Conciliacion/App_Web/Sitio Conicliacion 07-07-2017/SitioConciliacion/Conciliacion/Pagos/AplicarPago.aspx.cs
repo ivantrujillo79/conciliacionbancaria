@@ -528,6 +528,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                     HttpContext.Current.Session["CONCILIAR_PAGOS"] = listaReferenciaConciliadaPagos;
                     validarPeticion = true;
                     ObtieneNombreCliente(listadistintos);
+                    llenarListaEntrega();
                 }
                 else
                 {
