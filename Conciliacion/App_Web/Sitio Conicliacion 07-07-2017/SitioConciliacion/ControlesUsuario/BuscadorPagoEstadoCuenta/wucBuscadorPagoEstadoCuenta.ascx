@@ -135,7 +135,7 @@
         <tr>
             <td class="etiqueta centradoMedio" style="width: 100%;">
 
-                <div class="etiqueta centradoMedio" style="height:270px;overflow:auto;"> <!--width:800px-->
+               <!-- <div class="etiqueta centradoMedio" style="height:270px;overflow:auto;">  -->
                     <asp:GridView ID="grvPagoEstadoCuenta" runat="server" 
                         AutoGenerateColumns="False" 
                         ShowHeader="True"
@@ -322,7 +322,7 @@
                             </Columns>
                         <PagerStyle CssClass="grvPaginacionScroll" />
                     </asp:GridView>
-                </div>
+                 <!--</div> -->
 
                 <asp:Button ID="btnAceptar" runat="server"
                     CssClass="boton bg-color-azulOscuro fg-color-blanco"
