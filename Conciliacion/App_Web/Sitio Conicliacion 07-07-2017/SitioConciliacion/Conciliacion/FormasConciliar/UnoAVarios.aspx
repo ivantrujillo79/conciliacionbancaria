@@ -442,6 +442,7 @@
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
             if (document.getElementById('<%= txtComision.ClientID %>').value == "")
+            //if ($('#<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
             if (chkComisionActivado)
@@ -522,6 +523,7 @@
         }
 
         function MostrarTxtComision() {
+            //debugger;
             if ($('#<%= hfTxtComisionVisible.ClientID %>').val() == "0") {
                 $('#<%= hfTxtComisionVisible.ClientID %>').val('1');
                 $('#<%= txtComision.ClientID %>').show(250);
@@ -1939,9 +1941,10 @@
                                             </td>
                                             <td class="centradoIzquierda" style="width:1%;">
                                                 <asp:TextBox ID="txtComision" runat="server" Width="70px" CssClass="cajaTextoPequeño" 
-                                                    style="margin-left:3px; display:none;" 
+                                                    style="margin-left:3px; display:normal" 
                                                     onkeypress="return ValidNumDecimal(event);" 
                                                     onchange="ActualizaMonto();" />
+                                                <%--display:none;--%>
                                                 <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
                                             </td>
                                             <%--    Fin comisiones  --%>

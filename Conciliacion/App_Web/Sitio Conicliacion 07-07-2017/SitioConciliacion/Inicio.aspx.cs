@@ -599,8 +599,12 @@ public partial class Inicio : System.Web.UI.Page
         //HttpContext.Current.Session["ddlMesConciliacion"] = ddlMesConciliacion.SelectedValue;
         //HttpContext.Current.Session["ddlAñoConciliacion"] = ddlAñoConciliacion.SelectedValue;
         GuardarUltimaConsulta();
+        if (ddlStatusConciliacion.SelectedValue == "4") //"CONCILIACION CERRADA")
+            lnkVerM.Visible = false;
+        else
+            lnkVerM.Visible = true;
     }
-    protected void grvConciliacion_RowCreated(object sender, GridViewRowEventArgs e)
+protected void grvConciliacion_RowCreated(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType != DataControlRowType.DataRow) return;
         e.Row.Attributes["onmouseover"] = string.Format("RowMouseOver({0});", e.Row.RowIndex);
