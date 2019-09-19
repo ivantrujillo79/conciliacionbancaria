@@ -252,6 +252,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             wucBuscadorPagoEstadoCuenta.Folio = folio;
             if (!Page.IsPostBack)
             {
+                //txtComision.Visible = chkComision.Checked;
+
                 limpiarVariablesSession();
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -474,6 +476,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else //!Postback
             {
+                //txtComision.Visible = chkComision.Checked;
+
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
                 objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
@@ -548,12 +552,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
                 //if (objControlPostBack == "btnQuitarInterno")
                 //    Confirma_Pedido_Multiple();
-
                 
                ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios",@"Calendarios();", true);
-
             }
-
+            
             ActualizarDatos_wucCargaExcel();
             if (HttpContext.Current.Session["wucBuscaClientesFacturasVisible"] != null && int.Parse(HttpContext.Current.Session["wucBuscaClientesFacturasVisible"].ToString()) == 1)
                 btnFiltraCliente.Visible = true;
@@ -945,13 +947,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
         if (obSolicitud.ConsultaPedido() && comisionesEDENRED == 1)
         {
-            chkComision.Visible =
-                txtComision.Visible = true;
+            chkComision.Visible = txtComision.Visible = true;
         }
         else
         {
-            chkComision.Visible =
-                txtComision.Visible = false;
+            chkComision.Visible = txtComision.Visible = false;
         }
     }
 
@@ -1300,7 +1300,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     ClienteDatos objCliente = new ClienteDatos(objApp.ImplementadorMensajes);
                     Conexion _conexion = new Conexion();
                     _conexion.AbrirConexion(false);
-                    RNC.BorrarReferenciaConciliada(); //listareferenciaconciliada
+                    //RNC.BorrarReferenciaConciliada(); //listareferenciaconciliada
+                    if (txtComision.Text.Trim() == string.Empty)
+                        txtComision.Text = "0.00";
+                    if (chkComision.Checked)
+                        RNC.Comision = decimal.Parse(txtComision.Text);
+                    else
+                        RNC.Comision = 0;
                     foreach (ReferenciaNoConciliadaPedido ReferenciaPedido in ReferenciasPedidoExcel)
                     {
                         DetalleClientePedidoExcel objDetalleCliente = objCliente.ObtieneDetalleClientePedidoExcel(ReferenciaPedido.PedidoReferencia, _conexion);
@@ -1420,12 +1426,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (chkComision.Checked)
             {
                 dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
-                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency) + dComision;
+                //dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency) + dComision;
             }
             else
             {
                 dComision = 0;
-                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+                //dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
             }
 
             decimal dAcumulado = Decimal.Round(MontoConciliado, 2);
@@ -2057,6 +2063,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
                     dAbono = rE.Monto + dComision;
+                    hfTxtComisionVisible.Value = "1"; txtComision.Visible = true;
                 }
                 else
                 {
