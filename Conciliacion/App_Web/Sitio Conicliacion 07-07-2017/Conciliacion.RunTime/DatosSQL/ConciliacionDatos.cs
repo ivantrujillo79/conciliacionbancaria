@@ -50,11 +50,11 @@ namespace Conciliacion.RunTime.DatosSQL
         {
             bool resultado = false;
             Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
-            try
+            using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
             {
-                using (SqlConnection cnn = new SqlConnection(objApp.CadenaConexion))
+                cnn.Open();
+                try
                 {
-                    cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBActualizaConciliacion", cnn);
                     comando.Parameters.Add("@Configuracion", System.Data.SqlDbType.SmallInt).Value = 0;
                     comando.Parameters.Add("@Corporativo", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
@@ -83,22 +83,54 @@ namespace Conciliacion.RunTime.DatosSQL
                             Archivo.FolioConciliacion = this.Folio;
                             resultado = Archivo.GuardarArchivoInterno();
                         }
+
+                        using (SqlConnection cnn2 = new SqlConnection(objApp.CadenaConexion))
+                        {
+                            cnn2.Open();
+                            try
+                            {
+                                SqlCommand cmd2 = new SqlCommand("spCBConciliaPorEtiqueta", cnn2);
+                                cmd2.CommandType = System.Data.CommandType.StoredProcedure;
+                                cmd2.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
+                                cmd2.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = this.Sucursal;
+                                cmd2.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.Año;
+                                cmd2.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.Int).Value = this.Mes;
+                                cmd2.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = this.Folio;
+                                cmd2.CommandTimeout = 60 * 3;
+                                cmd2.ExecuteNonQuery();
+                            }
+                            catch (Exception ex)
+                            {
+                                this.BorrarConciliacion();
+                                stackTrace = new StackTrace();
+                                this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                                stackTrace = null;
+                                resultado = false;
+                            }
+                        }
+
                         if (resultado)
+                        {
                             this.ImplementadorMensajes.MostrarMensaje("El Registro se guardo con éxito.");
+                        }
                         else
                             this.BorrarConciliacion();
                     }
                     else
+                    {
                         resultado = true;
+                    }
+                        
                 }
-            }
-            catch (SqlException ex)
-            {
-                this.BorrarConciliacion();
+                catch (Exception ex)
+                {
+                    this.BorrarConciliacion();
+                    stackTrace = new StackTrace();
+                    this.ImplementadorMensajes.MostrarMensaje("Clase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
+                    stackTrace = null;
+                    resultado = false;
+                }
 
-                stackTrace = new StackTrace();
-                this.ImplementadorMensajes.MostrarMensaje("No se pudo guardar el registro.\n\rClase :" + this.GetType().Name + "\n\r" + "Metodo :" + stackTrace.GetFrame(0).GetMethod().Name + "\n\r" + "Error :" + ex.Message);
-                stackTrace = null;
             }
             return resultado;
         }
@@ -256,6 +288,20 @@ namespace Conciliacion.RunTime.DatosSQL
                         {
                             this.StatusConciliacion = Convert.ToString(reader["StatusConciliacion"]);
                             resultado = true;
+                        }
+                        
+                        using (SqlConnection cnn2 = new SqlConnection(objApp.CadenaConexion))
+                        {    
+                            cnn2.Open();
+                            SqlCommand cmdFacturaComplemento = new SqlCommand("spCBFacturaComplementoAltaModificaInternos", cnn2);
+                            cmdFacturaComplemento.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
+                            cmdFacturaComplemento.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.Int).Value = this.Sucursal;
+                            cmdFacturaComplemento.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.Año;
+                            cmdFacturaComplemento.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.Int).Value = this.Mes;
+                            cmdFacturaComplemento.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = this.Folio;
+                            cmdFacturaComplemento.CommandType = System.Data.CommandType.StoredProcedure;
+                            cmdFacturaComplemento.CommandTimeout = 60 * 3;
+                            cmdFacturaComplemento.ExecuteNonQuery();
                         }
                     }
                 }
