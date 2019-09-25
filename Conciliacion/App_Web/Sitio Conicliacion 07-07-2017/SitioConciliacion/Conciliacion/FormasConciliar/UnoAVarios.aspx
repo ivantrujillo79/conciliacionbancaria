@@ -442,7 +442,8 @@
             var dAbono = 0;
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
-            console.log(document.getElementById('<%= chkComision.ClientID %>').checked);
+            //console.log(document.getElementById('<%= chkComision.ClientID %>').checked);
+
             if ($('#<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
@@ -453,8 +454,8 @@
 
             dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
-            console.log(dComision);
-            console.log(dAbono);
+            //console.log(dComision);
+            //console.log(dAbono);
             //PENDIENTE ACTUALIZAR VARIABLE SUMAPRE CONCILIADAS
             var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
             var dResto = 0;
@@ -531,10 +532,10 @@
                 $('#<%= txtComision.ClientID %>').show(250);
 
             }
-            else {
+            <%--else {
                 $('#<%= hfTxtComisionVisible.ClientID %>').val('0');
                 $('#<%= txtComision.ClientID %>').hide(250);
-            }
+            }--%>
         }
 
         //Funcion para mostrar el calendar

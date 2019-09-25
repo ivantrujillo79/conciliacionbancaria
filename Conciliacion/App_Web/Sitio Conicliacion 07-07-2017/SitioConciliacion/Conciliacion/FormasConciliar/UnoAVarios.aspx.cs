@@ -2065,7 +2065,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
                     dAbono = rE.Monto + dComision;
-                    hfTxtComisionVisible.Value = "1"; txtComision.Visible = true;
+                    hfTxtComisionVisible.Value = "1"; //txtComision.Visible = true;
                 }
                 else
                 {
