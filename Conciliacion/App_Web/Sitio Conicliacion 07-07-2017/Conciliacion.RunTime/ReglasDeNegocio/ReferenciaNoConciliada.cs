@@ -741,7 +741,14 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public decimal Resto
         {
-            get { return (this.monto + this.Diferencia) - this.MontoConciliado; }
+            //get { return (this.monto + this.Diferencia) - this.MontoConciliado; }
+            get {
+                resto = (this.Deposito + this.Comision) - this.MontoConciliado;
+                if (resto >= 0)
+                    return resto;
+                else
+                    return 0;
+            }
         }
 
         public decimal Deposito
