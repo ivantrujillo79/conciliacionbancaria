@@ -279,6 +279,7 @@
             activarDatePickers();
             MuestraSaldoAFavor();
             MostrarTxtComisionInicio();
+            ActualizaMonto();
             document.getElementById("divExternos").scrollTop = document.getElementById('ctl00_contenidoPrincipal_hfDivExternosScrollPos').value;
             if (document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro') != null)
                 document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
@@ -437,12 +438,12 @@
 
         var dAbonoSel;
         function ActualizaMonto(){
-            //debugger;
+            debugger;
             var dAbono = 0;
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
-            if (document.getElementById('<%= txtComision.ClientID %>').value == "")
-            //if ($('#<%= txtComision.ClientID %>').value == "")
+            console.log(document.getElementById('<%= chkComision.ClientID %>').checked);
+            if ($('#<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
             if (chkComisionActivado)
@@ -452,7 +453,8 @@
 
             dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
-
+            console.log(dComision);
+            console.log(dAbono);
             //PENDIENTE ACTUALIZAR VARIABLE SUMAPRE CONCILIADAS
             var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
             var dResto = 0;
