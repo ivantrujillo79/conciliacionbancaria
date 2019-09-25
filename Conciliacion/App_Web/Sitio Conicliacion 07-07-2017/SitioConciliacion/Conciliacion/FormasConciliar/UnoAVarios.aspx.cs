@@ -252,8 +252,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             wucBuscadorPagoEstadoCuenta.Folio = folio;
             if (!Page.IsPostBack)
             {
-                //txtComision.Visible = chkComision.Checked;
-
                 limpiarVariablesSession();
 
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -550,8 +548,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
                 txtDias.Enabled = true;
 
-                //if (objControlPostBack == "btnQuitarInterno")
-                //    Confirma_Pedido_Multiple();
+                if (chkComision.Checked)
+                    ActualizarTotalesAgregados();
                 
                ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios",@"Calendarios();", true);
             }
@@ -648,7 +646,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if (grvExternos.Rows.Count > 0)
         {
             decimal monto = Convert.ToDecimal(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Deposito"].ToString());
-            wucCargaExcelCyC.MontoPago = monto;
+            if (chkComision.Checked)
+            {
+                if (txtComision.Text.Trim() == string.Empty)
+                    txtComision.Text = "0.00";
+                wucCargaExcelCyC.MontoPago = monto + decimal.Parse(txtComision.Text);
+            }
+            else
+                wucCargaExcelCyC.MontoPago = monto;
         }
     }
 
@@ -799,7 +804,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Conexion conexion = new Conexion();
         try
         {
-            decimal dSaldoAFavor = refExterna.Resto - refExterna.Diferencia;
+            decimal dSaldoAFavor = Math.Abs(refExterna.Resto - refExterna.Diferencia);
             decimal minSaldoAFavor = Decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
 
             if (dSaldoAFavor > 0 && dSaldoAFavor > minSaldoAFavor)
@@ -1373,26 +1378,21 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow[7]);
             }
 
-            //if (comisionSeleccionada)
-            //{
-            //    comisionValida = decimal.TryParse(txtComision.Text, out dComision);
-            //    MontoConciliado += dComision;
-            //}
-            decimal dAbono = 0;
             decimal dComision = 0;
             if (txtComision.Text.Trim() == "") txtComision.Text = "0.00";
             if (chkComision.Checked)
             {
                 dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
-                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency) + dComision;
+                //dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency) + dComision;
             }
             else
             {
                 dComision = 0;
-                dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+                //dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
             }
 
-            //decimal dAbono      = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
+            ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
+            decimal dAbono = rE.Monto + dComision;
             decimal dAcumulado  = Decimal.Round(MontoConciliado, 2);
             decimal dResto      = (dAbono > 0 ? dAbono - dAcumulado : 0);
             dResto = (dResto <= 0 ? 0 : dResto);
@@ -1403,7 +1403,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblAgregadosInternos.Text       = dt.Rows.Count.ToString();
             lblResto.Text                   = dResto.ToString("C2");
 
-            //lblAbono.Text = Decimal.Round(rE.Resto, 2).ToString("C2");
+            lblAbono.Text = Decimal.Round(dAbono, 2).ToString("C2");
         }
     }
 
@@ -1420,7 +1420,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     MontoConciliado = MontoConciliado + Convert.ToDecimal(gvRow.MontoConciliado);
             }
 
-            decimal dAbono = 0;
+            //decimal dAbono = 0;
             decimal dComision = 0;
             if (txtComision.Text.Trim() == "") txtComision.Text = "0.00";
             if (chkComision.Checked)
@@ -1433,6 +1433,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 dComision = 0;
                 //dAbono = Decimal.Parse(lblAbono.Text, NumberStyles.Currency);
             }
+            ReferenciaNoConciliada rE = leerReferenciaExternaSeleccionada();
+            decimal dAbono = rE.Monto + dComision;
 
             decimal dAcumulado = Decimal.Round(MontoConciliado, 2);
             decimal dResto = (dAbono > 0 ? dAbono - dAcumulado : 0);
@@ -1441,7 +1443,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             lblMontoAcumuladoInterno.Text = dAcumulado.ToString("C2");
             lblAgregadosInternos.Text = Grid.Count.ToString();
             lblResto.Text = dResto.ToString("C2");
-
+            lblAbono.Text = dAbono.ToString("C2");
         }
     }
 
@@ -3972,6 +3974,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
     {
         try
         {
+            chkComision.Checked = false;
             int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
             indiceExternoSeleccionado = ((GridViewRow)(sender as RadioButton).Parent.Parent).RowIndex;
 
