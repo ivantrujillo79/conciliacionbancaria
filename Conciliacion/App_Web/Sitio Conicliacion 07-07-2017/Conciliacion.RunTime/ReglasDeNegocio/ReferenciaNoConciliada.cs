@@ -743,7 +743,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             //get { return (this.monto + this.Diferencia) - this.MontoConciliado; }
             get {
-                resto = (this.Deposito + this.Comision) - this.MontoConciliado;
+                //resto = (this.Deposito + this.Comision) - this.MontoConciliado;
+                resto = (this.monto + this.Comision) - this.MontoConciliado;
                 if (resto >= 0)
                     return resto;
                 else
