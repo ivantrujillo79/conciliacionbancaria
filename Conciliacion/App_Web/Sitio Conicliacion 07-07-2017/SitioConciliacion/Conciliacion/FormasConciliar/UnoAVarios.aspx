@@ -444,6 +444,7 @@
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
             //console.log(document.getElementById('<%= chkComision.ClientID %>').checked);
 
+            //document.getElementById('<%= txtComision.ClientID %>').visible = chkComisionActivado;
             if ($('#<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
@@ -532,10 +533,10 @@
                 $('#<%= txtComision.ClientID %>').show(250);
 
             }
-            <%--else {
+            else {
                 $('#<%= hfTxtComisionVisible.ClientID %>').val('0');
                 $('#<%= txtComision.ClientID %>').hide(250);
-            }--%>
+            }
         }
 
         //Funcion para mostrar el calendar
@@ -1930,12 +1931,12 @@
                                             <td style="width:1%; white-space:nowrap; height:27px; padding-left:1px"
                                                 runat="server" class="centradoIzquierda">
                                                 <asp:CheckBox ID="chkComision" Text="Comisión:" CssClass="etiqueta fg-color-blanco" runat="server"
-                                                    style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();"
+                                                    style="margin-left:3px;" Visible="false" onclick="MostrarTxtComision();" 
                                                     onchange="ActualizaMonto();"/>
                                             </td>
                                             <td class="centradoIzquierda" style="width:1%;">
                                                 <asp:TextBox ID="txtComision" runat="server" Width="70px" CssClass="cajaTextoPequeño" 
-                                                    style="margin-left:3px; display:normal" 
+                                                    style="margin-left:3px;display:none"
                                                     onkeypress="return ValidNumDecimal(event);" 
                                                     onchange="ActualizaMonto();" />
                                                 <%--display:none;--%>

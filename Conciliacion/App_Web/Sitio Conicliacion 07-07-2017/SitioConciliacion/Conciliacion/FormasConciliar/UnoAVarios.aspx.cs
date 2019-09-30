@@ -474,7 +474,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else //!Postback
             {
-                //txtComision.Visible = chkComision.Checked;
+                //if (chkComision.Checked)
+                //    txtComision.CssClass = "display: normal";
 
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -646,7 +647,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if (grvExternos.Rows.Count > 0)
         {
             decimal monto = Convert.ToDecimal(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Deposito"].ToString());
-            if (chkComision.Checked)
+           if (chkComision.Checked)
             {
                 if (txtComision.Text.Trim() == string.Empty)
                     txtComision.Text = "0.00";
@@ -2071,6 +2072,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 {
                     dComision = 0;
                     dAbono = Decimal.Round(rE.Monto, 2);
+                    hfTxtComisionVisible.Value = "0";
                 }
                 if (objSolicitdConciliacion.ConsultaArchivo())
                     dAcumulado = Decimal.Round(rE.MontoConciliado, 2);
@@ -3975,6 +3977,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             chkComision.Checked = false;
+            hfTxtComisionVisible.Value = "0";
             int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
             indiceExternoSeleccionado = ((GridViewRow)(sender as RadioButton).Parent.Parent).RowIndex;
 
@@ -6153,6 +6156,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarPedidoDirecto_Click(object sender, ImageClickEventArgs e)
     {
+        chkComision.Checked = false;
+        hfTxtComisionVisible.Value = "0";
+        //txtComision.CssClass = "margin-left:3px;display:none";
+        txtComision.Text = "0.00";
+        ActualizarTotalesAgregados();
         if (grvExternos.Rows.Count > 0)
         {
             //Leer Referencia Externa
@@ -6204,6 +6212,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarPedido_Click(object sender, EventArgs e)
     {
+        chkComision.Checked = false;
+        hfTxtComisionVisible.Value = "0";
+        //txtComision.CssClass = "margin-left:3px;display:none";
+        txtComision.Text = "0.00";
+        ActualizarTotalesAgregados();
+
         List<ReferenciaNoConciliadaPedido> ListSeleccionadosPedidos = new List<ReferenciaNoConciliadaPedido>();
 
         SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
@@ -7533,6 +7547,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void imgCargar_Click(object sender, ImageClickEventArgs e)
     {
+        chkComision.Checked = false;
+        hfTxtComisionVisible.Value = "0";
+        //txtComision.CssClass = "margin-left:3px;display:none";
+        txtComision.Text = "0.00";
+        ActualizarTotalesAgregados();
         try
         {
             if (grvExternos.Rows.Count != 0)
@@ -7577,6 +7596,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
+        chkComision.Checked = false;
+        hfTxtComisionVisible.Value = "0";
+        //txtComision.CssClass = "margin-left:3px;display:none";
+        txtComision.Text = "0.00";
+        ActualizarTotalesAgregados();
         GridView grvPrima = null;
         SeguridadCB.Public.Parametros parametros;
         AppSettingsReader settings = new AppSettingsReader();
@@ -7791,7 +7815,12 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnFiltraPedidoReferencia_Click(object sender, ImageClickEventArgs e)
     {
-        if(txtPedidoReferencia.Text.Trim() != "")
+        chkComision.Checked = false;
+        hfTxtComisionVisible.Value = "0";
+        //txtComision.CssClass = "margin-left:3px;display:none";
+        txtComision.Text = "0.00";
+        ActualizarTotalesAgregados();
+        if (txtPedidoReferencia.Text.Trim() != "")
         {
             wucBuscaClientesFacturas.TablaFacturas = null;
             //grvPedidos.DataSource = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
