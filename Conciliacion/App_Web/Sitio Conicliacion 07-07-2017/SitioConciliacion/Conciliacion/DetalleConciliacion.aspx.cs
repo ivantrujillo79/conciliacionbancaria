@@ -1392,30 +1392,52 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
                 secuencia = Convert.ToInt32(grvConciliadas.DataKeys[gr.RowIndex].Values["Secuencia"]);
                 tipo = Convert.ToString(grvConciliadas.DataKeys[gr.RowIndex].Values["Tipo"]);
 
-                if (tipo.Equals("CONCILIADO") || tipo.Equals("CANCELADO EXTERNO") || tipo.Equals("CONCILIADO S/REFERENCIA"))
-                {
+                //int indice = gr.DataItemIndex;
+                //cReferencia objReferencia = listaTransaccionesConciliadas[indice].ListaReferenciaConciliada[0];
+                ////int pedido = objReferencia.Pedido;
+                //int pedido = listaTransaccionesConciliadas[indice].Pedido;
+                //pedido = ((Conciliacion.RunTime.ReglasDeNegocio.ReferenciaConciliadaPedido)objReferencia).Pedido;
 
-                    resultado = listaTransaccionesConciliadas.First(
-                       x => x.Corporativo == corporativoCon &&
-                       x.Sucursal == sucursalCon &&
-                       x.Año == añoCon &&
-                       x.MesConciliacion == mesCon &&
-                       x.FolioConciliacion == folioCon &&
-                       x.Folio == folio &&
-                       x.Secuencia == secuencia).DesConciliar();
+                ReferenciaNoConciliada tranDesconciliar = listaTransaccionesConciliadas.First(
+                    x => x.Corporativo == corporativoCon &&
+                         x.Sucursal == sucursalCon &&
+                         x.Año == añoCon &&
+                         x.MesConciliacion == mesCon &&
+                         x.FolioConciliacion == folioCon &&
+                         x.Folio == folio && //Externo
+                         x.Secuencia == secuencia //Externo
+                         );
+                string status = tranDesconciliar.StatusMovimiento;
+                if (status.CompareTo("APLICADO") != 0)
+                {
+                    if (tipo.Equals("CONCILIADO") || tipo.Equals("CANCELADO EXTERNO") || tipo.Equals("CONCILIADO S/REFERENCIA"))
+                    {
+
+                        resultado = listaTransaccionesConciliadas.First(
+                           x => x.Corporativo == corporativoCon &&
+                           x.Sucursal == sucursalCon &&
+                           x.Año == añoCon &&
+                           x.MesConciliacion == mesCon &&
+                           x.FolioConciliacion == folioCon &&
+                           x.Folio == folio &&
+                           x.Secuencia == secuencia).DesConciliar();
+                    }
+                    else
+                    {
+                        resultado = listaTransaccionesConciliadas.First(
+                            x => x.Corporativo == corporativoCon &&
+                            x.Sucursal == sucursalCon &&
+                            x.Año == añoCon &&
+                            x.MesConciliacion == mesCon &&
+                            x.FolioConciliacion == folioCon &&
+                            x.Folio == folio &&
+                            x.Secuencia == secuencia).EliminarReferenciaConciliadaInterno();
+                    }
                 }
                 else
                 {
-                    resultado = listaTransaccionesConciliadas.First(
-                        x => x.Corporativo == corporativoCon &&
-                        x.Sucursal == sucursalCon &&
-                        x.Año == añoCon &&
-                        x.MesConciliacion == mesCon &&
-                        x.FolioConciliacion == folioCon &&
-                        x.Folio == folio &&
-                        x.Secuencia == secuencia).EliminarReferenciaConciliadaInterno();
+                    objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
                 }
-
             }
 
             Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToSByte(ddlCriteriosConciliacion.SelectedItem.Value), tipoConciliacion);

@@ -4327,7 +4327,7 @@ namespace Conciliacion.RunTime.DatosSQL
         }
 
         public override List<ReferenciaNoConciliada> ConsultaTransaccionesRegistradas(
-            ConfiguracionConsultaConciliaciones configuracion, int corporativoconciliacion, int sucursalconciliacion,
+            ConfiguracionConsultaConciliaciones  configuracion, int corporativoconciliacion, int sucursalconciliacion,
             int añoconciliacion, short mesconciliacion, int folioconciliacion, int statusconcepto,
             short formaconciliacion)
         {
@@ -4381,7 +4381,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 Convert.ToString(reader["RFCTercero"]),
                                                                 sucursalconciliacion, Convert.ToString(reader["Tipo"]),
                                                                 Convert.ToString(reader["UbicacionIcono"]),
-                                                                Convert.ToInt16(reader["Año"]), 1, null,
+                                                                Convert.ToInt16(reader["Año"]), 1, null, 
+                                                                Convert.ToString(reader["StatusMovimiento"]),
                                                                 this.implementadorMensajes);
                             datos.Add(dato);
                         }
@@ -4422,6 +4423,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                 sucursalconciliacion, Convert.ToString(reader["Tipo"]),
                                                                 Convert.ToString(reader["UbicacionIcono"]),
                                                                 Convert.ToInt16(reader["Año"]), 1, null,
+                                                                Convert.ToString(reader["StatusMovimiento"]),
                                                                 this.implementadorMensajes);
                             datos.Add(dato);
                         }

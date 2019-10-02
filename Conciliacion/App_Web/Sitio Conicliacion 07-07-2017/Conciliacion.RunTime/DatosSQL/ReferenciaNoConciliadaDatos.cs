@@ -134,12 +134,12 @@ implementadorMensajes)
             (int corporativo, int sucursal, string sucursaldes, int añoconciliacion, int folio, int secuencia, string descripcion, string concepto, decimal deposito, decimal retiro, short formaconciliacion, short statusconcepto, string statusconciliacion,
             DateTime foperacion, DateTime fmovimiento, int folioconciliacion, short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
                 string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string tipo, string ubicacionicono, int año, int cliente,
-                DetalleSaldoAFavor DetalleSaldo,
+                DetalleSaldoAFavor DetalleSaldo, string StatusMovimiento,
                 MensajesImplementacion implementadorMensajes)
             : base(corporativo, sucursal, sucursaldes, añoconciliacion, folio, secuencia, descripcion, concepto, deposito, retiro, formaconciliacion, statusconcepto, statusconciliacion, foperacion, fmovimiento, folioconciliacion,
             mesconciliacion, coninterno, listareferenciaconciliada,
             cheque, referencia, nombretercero, rfctercero, sucursalconciliacion, ubicacionicono,año, 
-            DetalleSaldo,
+            DetalleSaldo, StatusMovimiento,
             implementadorMensajes)
         {
             this.Tipo = tipo;
