@@ -369,7 +369,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
            short statusconcepto, string statusconciliacion, DateTime foperacion, DateTime fmovimiento, int folioconciliacion,
             short mesconciliacion, bool coninterno, List<cReferencia> listareferenciaconciliada,
             string cheque, string referencia, string nombretercero, string rfctercero, int sucursalconciliacion, string ubicacionicono,
-            int año, DetalleSaldoAFavor DetalleSaldo, MensajesImplementacion implementadorMensajes)
+            int año, DetalleSaldoAFavor DetalleSaldo, string statusmovimiento, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
 
@@ -412,6 +412,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             this.selecciona = true;
 
             this.DetalleSaldo = DetalleSaldo;
+            this.StatusMovimiento = statusmovimiento;
         }
 
         //************************ NUEVO CONSTRUCTOR CONCILIACION COMPARTIDA***********************************************
