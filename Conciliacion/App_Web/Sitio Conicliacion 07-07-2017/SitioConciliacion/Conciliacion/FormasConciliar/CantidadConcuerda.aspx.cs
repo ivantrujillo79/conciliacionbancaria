@@ -1137,23 +1137,29 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                      x.Folio == folioEx &&
                      x.Secuencia == secuenciaEx);
 
-            tranDesconciliar.DesConciliar();
-            //Leer Variables URL 
-            cargarInfoConciliacionActual();
-
-
-            Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-            GenerarTablaConciliados();
-            LlenaGridViewConciliadas();
-            LlenarBarraEstado();
-            //Cargo de nuevo las ReferenciasCantidadConcuerda
-            Consulta_ConciliarPorCantidad(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, tipoConciliacion, Convert.ToSByte(txtDias.Text),
-                                                                Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-            if (tipoConciliacion == 2)
-                GenerarTablaReferenciasAConciliarPedidos();
+            string status = tranDesconciliar.StatusMovimiento;
+            if (status.CompareTo("APLICADO") != 0)
+            {
+                tranDesconciliar.DesConciliar();
+                //Leer Variables URL 
+                cargarInfoConciliacionActual();
+                Consulta_TransaccionesConciliadas(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                GenerarTablaConciliados();
+                LlenaGridViewConciliadas();
+                LlenarBarraEstado();
+                //Cargo de nuevo las ReferenciasCantidadConcuerda
+                Consulta_ConciliarPorCantidad(corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, tipoConciliacion, Convert.ToSByte(txtDias.Text),
+                                                                    Convert.ToDecimal(txtDiferencia.Text), Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                if (tipoConciliacion == 2)
+                    GenerarTablaReferenciasAConciliarPedidos();
+                else
+                    GenerarTablaReferenciasAConciliarInternos();
+                LlenaGridViewReferenciasConciliadas(tipoConciliacion);
+            }
             else
-                GenerarTablaReferenciasAConciliarInternos();
-            LlenaGridViewReferenciasConciliadas(tipoConciliacion);
+            {
+                objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+            }
         }
         catch (Exception ex)
         {

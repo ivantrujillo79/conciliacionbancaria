@@ -1944,43 +1944,51 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     x.Folio == folioExterno &&
                     x.Secuencia == secuenciaExterno);
 
-            tranDesconciliar.DesConciliar();
-            //Leer Variables URL 
-            cargarInfoConciliacionActual();
-
-            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-            GenerarTablaConciliados();
-            LlenaGridViewConciliadas();
-            LlenarBarraEstado();
-            //Cargo y refresco nuevamente los archivos externos
-
-            short _FormaConciliacion = Asigna_FormaConciliacionActual();
-            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
-            //if (tipoConciliacion != 2)
-            if (objSolicitdConciliacion.ConsultaArchivo())
+            string status = tranDesconciliar.StatusMovimiento;
+            if (status.CompareTo("APLICADO") != 0)
             {
-                Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
-                                                             Convert.ToSByte(txtDias.Text),
-                                                             Convert.ToDecimal(txtDiferencia.Text),
-                                                             ddlCampoExterno.SelectedItem.Text,
-                                                             ddlCampoInterno.SelectedItem.Text,
-                                                             Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
-                GenerarTablaReferenciasAConciliarArchivos();
-            }
-            if (objSolicitdConciliacion.ConsultaPedido())
-            {
-                //cargarInfoConciliacionActual();
-                Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
+                tranDesconciliar.DesConciliar();
+                //Leer Variables URL 
+                cargarInfoConciliacionActual();
 
-                Consulta_ConciliarPedidosCantidadReferencia(
-                                                            Convert.ToDecimal(txtDiferencia.Text),
-                                                            Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value),
-                                                            ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
-                GenerarTablaReferenciasAConciliarPedidos();
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                GenerarTablaConciliados();
+                LlenaGridViewConciliadas();
+                LlenarBarraEstado();
+
+                //Cargo y refresco nuevamente los archivos externos
+                short _FormaConciliacion = Asigna_FormaConciliacionActual();
+                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+                //if (tipoConciliacion != 2)
+                if (objSolicitdConciliacion.ConsultaArchivo())
+                {
+                    Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
+                                                                 Convert.ToSByte(txtDias.Text),
+                                                                 Convert.ToDecimal(txtDiferencia.Text),
+                                                                 ddlCampoExterno.SelectedItem.Text,
+                                                                 ddlCampoInterno.SelectedItem.Text,
+                                                                 Convert.ToInt32(ddlStatusConcepto.SelectedItem.Value));
+                    GenerarTablaReferenciasAConciliarArchivos();
+                }
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    //cargarInfoConciliacionActual();
+                    Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), true);
+
+                    Consulta_ConciliarPedidosCantidadReferencia(
+                                                                Convert.ToDecimal(txtDiferencia.Text),
+                                                                Convert.ToSByte(ddlStatusConcepto.SelectedItem.Value),
+                                                                ddlCampoExterno.SelectedItem.Text, ddlCampoInterno.SelectedItem.Text);
+                    GenerarTablaReferenciasAConciliarPedidos();
+                }
+                LlenaGridViewReferenciasConciliadas(tipoConciliacion);
             }
-            LlenaGridViewReferenciasConciliadas(tipoConciliacion);
+            else
+            {
+                objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+            }
         }
         catch (Exception ex) { objApp.ImplementadorMensajes.MostrarMensaje(ex.Message); }
 
