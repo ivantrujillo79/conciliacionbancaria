@@ -1870,19 +1870,27 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
                     x.Folio == folioExterno &&
                     x.Secuencia == secuenciaExterno);
 
-            tranDesconciliar.DesConciliar();
-            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-            GenerarTablaConciliados();
-            LlenaGridViewConciliadas();
-            LlenarBarraEstado();
-            //Cargo y refresco nuevamente los archvos externos
-            Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
-            GenerarTablaExternos();
-            LlenaGridViewExternos();
-            if (tipoConciliacion == 2)
-                ConsultarPedidosInternos();
+            string status = tranDesconciliar.StatusMovimiento;
+            if (status.CompareTo("APLICADO") != 0)
+            {
+                tranDesconciliar.DesConciliar();
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                GenerarTablaConciliados();
+                LlenaGridViewConciliadas();
+                LlenarBarraEstado();
+                //Cargo y refresco nuevamente los archvos externos
+                Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+                GenerarTablaExternos();
+                LlenaGridViewExternos();
+                if (tipoConciliacion == 2)
+                    ConsultarPedidosInternos();
+                else
+                    ConsultarArchivosInternos();
+            }
             else
-                ConsultarArchivosInternos();
+            {
+                objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+            }
         }
     }
 

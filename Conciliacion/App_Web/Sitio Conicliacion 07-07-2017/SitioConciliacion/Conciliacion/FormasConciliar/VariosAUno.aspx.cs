@@ -1962,16 +1962,25 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     x.Folio == folioExterno &&
                     x.Secuencia == secuenciaExterno);
 
-            tranDesconciliar.DesConciliar();
-            //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
-            Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, formaConciliacion);
-            GenerarTablaConciliados();
-            LlenaGridViewConciliadas();
-            LlenarBarraEstado();
-            //Cargo y refresco nuevamente los archvos externos
-            Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
-            GenerarTablaExternos();
-            LlenaGridViewExternos();
+            string status = tranDesconciliar.StatusMovimiento;
+
+            if (status.CompareTo("APLICADO") != 0)
+            {
+                tranDesconciliar.DesConciliar();
+                //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));
+                Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, formaConciliacion);
+                GenerarTablaConciliados();
+                LlenaGridViewConciliadas();
+                LlenarBarraEstado();
+                //Cargo y refresco nuevamente los archvos externos
+                Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
+                GenerarTablaExternos();
+                LlenaGridViewExternos();
+            }
+            else
+            {
+                objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
+            }
         }
     }
 
@@ -3393,6 +3402,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     {
                         validarPeticion = true;
                         ObtieneNombreCliente(listadistintos);
+                        llenarListaEntrega();
                     }
                     else
                     {
@@ -3595,17 +3605,20 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
             _URLGateway = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "URLGateway").Trim();
-            SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
-            oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), objApp.CadenaConexion);//,_URLGateway);
-            oGateway.ListaCliente = listadistintos;
-            oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
-            oGateway.eListaEntregas += completarListaEntregas;
-            oSolicitud = new RTGMGateway.SolicitudGateway();
-            listaClientesEnviados = listadistintos;
-            foreach (var item in listadistintos)
-            {
-                oSolicitud.IDCliente = item;
-                oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+            if (_URLGateway != string.Empty)
+            { 
+                SeguridadCB.Public.Usuario user = (SeguridadCB.Public.Usuario)Session["Usuario"];
+                oGateway = new RTGMGateway.RTGMGateway(byte.Parse(settings.GetValue("Modulo", typeof(string)).ToString()), objApp.CadenaConexion);//,_URLGateway);
+                oGateway.ListaCliente = listadistintos;
+                oGateway.URLServicio = _URLGateway;//"http://192.168.1.21:88/GasMetropolitanoRuntimeService.svc";//URLGateway;
+                oGateway.eListaEntregas += completarListaEntregas;
+                oSolicitud = new RTGMGateway.SolicitudGateway();
+                listaClientesEnviados = listadistintos;
+                foreach (var item in listadistintos)
+                {
+                    oSolicitud.IDCliente = item;
+                    oGateway.busquedaDireccionEntregaAsync(oSolicitud);
+                }
             }
         }
         catch (Exception ex)
@@ -3646,6 +3659,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                 ReferenciaNoConciliadaPedido rp;
                 grvPedidos.DataSource = dttemp;
                 grvPedidos.DataBind();
+                grvPedidos.DataBind();
                 /*          Convertir DataTable a List<ReferenciaNoConciliadaPedido>            */
                 ListPedidos = new List<ReferenciaNoConciliadaPedido>();
                 foreach (DataRow tr in dttemp.Rows)
@@ -3669,6 +3683,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             {
                 grvPedidos.PageIndex = 0;
                 grvPedidos.DataSource = dttemp;
+                grvPedidos.DataBind();
                 grvPedidos.DataBind();
             }
 

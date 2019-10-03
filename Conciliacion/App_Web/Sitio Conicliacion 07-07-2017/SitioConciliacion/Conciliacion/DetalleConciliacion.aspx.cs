@@ -1408,6 +1408,7 @@ public partial class Conciliacion_DetalleConciliacion : System.Web.UI.Page
                          x.Secuencia == secuencia //Externo
                          );
                 string status = tranDesconciliar.StatusMovimiento;
+
                 if (status.CompareTo("APLICADO") != 0)
                 {
                     if (tipo.Equals("CONCILIADO") || tipo.Equals("CANCELADO EXTERNO") || tipo.Equals("CONCILIADO S/REFERENCIA"))

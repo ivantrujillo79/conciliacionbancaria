@@ -4676,7 +4676,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 else
                     ConsultarArchivosInternos();
             }
-
             else
             {
                 objApp.ImplementadorMensajes.MostrarMensaje("Esta partida ya se generó su transban, no es posible cancelarla");
