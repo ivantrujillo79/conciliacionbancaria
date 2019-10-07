@@ -2067,12 +2067,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                     dComision = Decimal.Round(Decimal.Parse(txtComision.Text), 2);
                     dAbono = rE.Monto + dComision;
                     hfTxtComisionVisible.Value = "1"; //txtComision.Visible = true;
+                    txtComision.Attributes.CssStyle.Value = "margin-left:3px;display:normal";
                 }
                 else
                 {
                     dComision = 0;
                     dAbono = Decimal.Round(rE.Monto, 2);
                     hfTxtComisionVisible.Value = "0";
+                    txtComision.Attributes.CssStyle.Value = "margin-left:3px;display:none";
                 }
                 if (objSolicitdConciliacion.ConsultaArchivo())
                     dAcumulado = Decimal.Round(rE.MontoConciliado, 2);
@@ -2394,7 +2396,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         
                         grvPedidos.DataSource = null;
                         grvPedidos.DataBind();
-
+                        if (chkComision.Checked)
+                            rfExterno.Comision = decimal.Parse(txtComision.Text);
+                        else
+                            rfExterno.Comision = 0;
                         if (rfExterno.GuardarReferenciaConciliada())
                         {
                             // Guardar externo para pasarlo al método GuardarSaldoAFavor()
@@ -6155,10 +6160,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarPedidoDirecto_Click(object sender, ImageClickEventArgs e)
     {
-        chkComision.Checked = false;
-        hfTxtComisionVisible.Value = "0";
-        //txtComision.CssClass = "margin-left:3px;display:none";
-        txtComision.Text = "0.00";
+        //hfTxtComisionVisible.Value = "0";
+        ////txtComision.CssClass = "margin-left:3px;display:none";
+        //txtComision.Text = "0.00";
         ActualizarTotalesAgregados();
         if (grvExternos.Rows.Count > 0)
         {
@@ -6211,10 +6215,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnAgregarPedido_Click(object sender, EventArgs e)
     {
-        chkComision.Checked = false;
-        hfTxtComisionVisible.Value = "0";
-        //txtComision.CssClass = "margin-left:3px;display:none";
-        txtComision.Text = "0.00";
+        //chkComision.Checked = false;
+        //hfTxtComisionVisible.Value = "0";
+        ////txtComision.CssClass = "margin-left:3px;display:none";
+        //txtComision.Text = "0.00";
         ActualizarTotalesAgregados();
 
         List<ReferenciaNoConciliadaPedido> ListSeleccionadosPedidos = new List<ReferenciaNoConciliadaPedido>();
@@ -7546,10 +7550,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void imgCargar_Click(object sender, ImageClickEventArgs e)
     {
-        chkComision.Checked = false;
-        hfTxtComisionVisible.Value = "0";
+        //chkComision.Checked = false;
+        //hfTxtComisionVisible.Value = "0";
         //txtComision.CssClass = "margin-left:3px;display:none";
-        txtComision.Text = "0.00";
+        //txtComision.Text = "0.00";
         ActualizarTotalesAgregados();
         try
         {
