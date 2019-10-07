@@ -1939,7 +1939,6 @@
                                                     style="margin-left:3px;display:none"
                                                     onkeypress="return ValidNumDecimal(event);" 
                                                     onchange="ActualizaMonto();" />
-                                                <%--display:none;--%>
                                                 <asp:HiddenField ID="hfTxtComisionVisible" runat="server" Value="0"/>
                                             </td>
                                             <%--    Fin comisiones  --%>
