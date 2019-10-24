@@ -1796,10 +1796,11 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         if (c.CerrarConciliacion(usuario.IdUsuario))
         {
             objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
-                                    "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
-                                    mesConciliacion + "&TipoConciliacion=" + tipoConciliacion);
+            //System.Threading.Thread.Sleep(3000);
+            //Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folioConciliacion + "&Corporativo=" + corporativoConciliacion +
+            //                        "&Sucursal=" + sucursalConciliacion + "&Año=" + añoConciliacion + "&Mes=" +
+            //                        mesConciliacion + "&TipoConciliacion=" + tipoConciliacion);
+            Response.Redirect("~/Inicio.aspx");
         }
         else
         {

@@ -42,6 +42,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int clientePadre;
         String _iDPedidoCRM;
 
+        //decimal saldodeposito;
+
         #region Constructores
 
         public ReferenciaConciliadaPedido(int corporativo, int añoconciliacion, short mesconciliacion, int folioconciliacion, 
@@ -336,10 +338,17 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { tipoCobroAnterior = value; }
         }
 
+        //public decimal SaldoDeposito
+        //{
+        //    get { return saldodeposito; }
+        //    set { saldodeposito = value; }
+        //}
+
         #endregion
 
 
         public abstract bool CobroPedidoAlta(short añocobro, int cobro, Conexion _conexion);
+        public abstract bool CobroPedidoAlta(short añocobro, int cobro, decimal total, Conexion _conexion);
 
         public abstract bool PedidoActualizaSaldo(Conexion _conexion);
 

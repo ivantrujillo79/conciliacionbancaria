@@ -471,6 +471,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 }
 
                 btnMuestraAFuturoInterno.Visible = objSolicitdConciliacion.ConsultaArchivo();
+
             }
             else //!Postback
             {
@@ -805,7 +806,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         Conexion conexion = new Conexion();
         try
         {
-            decimal dSaldoAFavor = Math.Abs(refExterna.Resto - refExterna.Diferencia);
+            decimal dSaldoAFavor = refExterna.Resto - refExterna.Diferencia;
             decimal minSaldoAFavor = Decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
 
             if (dSaldoAFavor > 0 && dSaldoAFavor > minSaldoAFavor)
@@ -5926,10 +5927,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         if (c.CerrarConciliacion(usuario.IdUsuario))
         {
             objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
-                              "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                              mes + "&TipoConciliacion=" + tipoConciliacion);
+            //System.Threading.Thread.Sleep(3000);
+            //Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
+            //                  "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
+            //                  mes + "&TipoConciliacion=" + tipoConciliacion);
+            Response.Redirect("~/Inicio.aspx");
         }
         else
         {

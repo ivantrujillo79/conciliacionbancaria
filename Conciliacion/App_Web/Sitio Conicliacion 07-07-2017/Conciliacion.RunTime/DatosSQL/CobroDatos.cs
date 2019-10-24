@@ -19,10 +19,10 @@ namespace Conciliacion.RunTime.DatosSQL
 
         public CobroDatos(short añocobro, int numcobro, string numerocheque, decimal total, decimal saldo, string numerocuenta, string numerocuentadestino,
             DateTime fcheque, int cliente, short banco, short bancoorigen, string observaciones, string status, short tipocobro, Boolean alta,
-            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, MensajesImplementacion implementadorMensajes)
+            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, decimal ImporteComision, decimal IvaComision, MensajesImplementacion implementadorMensajes)
             : base(añocobro, numcobro, numerocheque, total, saldo, numerocuenta, numerocuentadestino,
              fcheque, cliente, banco, bancoorigen, observaciones, status, tipocobro, alta,
-             usuario, saldoafavor, sucursalbancaria, descripcion, clientepago, listapedidos, implementadorMensajes)
+             usuario, saldoafavor, sucursalbancaria, descripcion, clientepago, listapedidos, ImporteComision, IvaComision, implementadorMensajes)
         {
         }
 
@@ -98,8 +98,9 @@ namespace Conciliacion.RunTime.DatosSQL
                     this.NumeroCheque;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Total", System.Data.SqlDbType.Decimal)).Value =
                     this.Total;
-                _conexion.Comando.Parameters.Add(new SqlParameter("@Saldo", System.Data.SqlDbType.Decimal)).Value =
-                    this.Saldo;
+
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Saldo", System.Data.SqlDbType.Decimal)).Value = this.Saldo;
+
                 _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroCuenta", System.Data.SqlDbType.Char)).Value =
                     this.NumeroCuenta;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@NumeroCuentaDestino", System.Data.SqlDbType.Char))

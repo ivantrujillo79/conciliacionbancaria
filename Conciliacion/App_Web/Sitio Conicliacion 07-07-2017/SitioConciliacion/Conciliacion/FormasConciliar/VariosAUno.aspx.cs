@@ -50,6 +50,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
     #endregion
 
+    private SeguridadCB.Public.Parametros parametros;
     private string DiferenciaDiasMaxima, DiferenciaDiasMinima, DiferenciaCentavosMaxima, DiferenciaCentavosMinima;
     public int corporativo, año, folio, sucursal;
     public short mes, tipoConciliacion, grupoConciliacion, formaConciliacion;
@@ -99,6 +100,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             Response.Redirect("~/Acceso/Acceso.aspx", true);
         else
             operaciones = (SeguridadCB.Public.Operaciones)HttpContext.Current.Session["Operaciones"];
+        if (HttpContext.Current.Session["Parametros"] == null)
+            Response.Redirect("~/Acceso/Acceso.aspx", true);
+        else
+            parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
     }
 
     public static string GetPostBackControlId(Page page)
@@ -156,6 +161,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         objControlPostBack = GetPostBackControlId(this.Page);
         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
         objApp.ImplementadorMensajes.ContenedorActual = this;
+        hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
         short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
         if (_FormaConciliacion == 0)
         {
@@ -333,6 +339,10 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     break;
                 }
                 btnMuestraAFuturoInterno.Visible = objSolicitdConciliacion.ConsultaArchivo();
+                if (objSolicitdConciliacion.ConsultaPedido())
+                {
+                    this.hdfEsPedido.Value = "1";
+                }
             }
             else
             {
@@ -354,7 +364,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             //}
             //
             //;
-            
+
         }
         catch (SqlException ex)
         {
@@ -1209,6 +1219,68 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         return tipoConciliacion == 2;
     }
 
+    private void GuardarSaldoAFavor(ReferenciaNoConciliada refExterna, int Cliente)
+    {
+        Conexion conexion = new Conexion();
+        try
+        {
+            //decimal dSaldoAFavor = Math.Abs(refExterna.Resto - refExterna.Diferencia);
+            decimal dSaldoAFavor = decimal.Parse(lblMontoAcumuladoExterno.Text.Replace("$", "").Replace(",", "")) - decimal.Parse(lblMontoInterno.Text.Replace("$", "").Replace(",", ""));
+
+            decimal minSaldoAFavor = Decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
+
+            if (dSaldoAFavor > 0 && dSaldoAFavor > minSaldoAFavor)
+            {
+                conexion.AbrirConexion(false);
+                DetalleSaldoConciliacion DSC = new DetalleSaldoConciliacion();
+                DSC.Cliente = Cliente;
+                DSC.MontoSaldoAFavor = dSaldoAFavor;
+                //refExterna.DetalleSaldo = (?);
+
+                SaldoAFavor saldoAFavor = objApp.SaldoAFavor.CrearObjeto();
+                saldoAFavor.FolioMovimiento = -1;
+                saldoAFavor.AñoMovimiento = DateTime.Now.Year;
+                saldoAFavor.TipoMovimientoAConciliar = 1;
+                saldoAFavor.EmpresaContable = 0;
+                saldoAFavor.Caja = 0;
+                saldoAFavor.FOperacion = DateTime.Now;
+                saldoAFavor.TipoFicha = 0;
+                saldoAFavor.Consecutivo = 0;
+                saldoAFavor.TipoAplicacionIngreso = 0;
+                saldoAFavor.ConsecutivoTipoAplicacion = 0;
+                saldoAFavor.Factura = 0;
+                saldoAFavor.AñoCobro = 0;
+                saldoAFavor.Cobro = 0;
+                saldoAFavor.Monto = dSaldoAFavor;  /*          cambiar por refExterna.DetalleSaldo.MontoConciliado         */
+                saldoAFavor.StatusMovimiento = "REGISTRADO";
+                saldoAFavor.FMovimiento = DateTime.Now;
+                saldoAFavor.StatusConciliacion = "CONCILIADA";
+                saldoAFavor.FConciliacion = DateTime.Now;
+                saldoAFavor.CorporativoConciliacion = refExterna.Corporativo;
+                saldoAFavor.SucursalConciliacion = refExterna.SucursalConciliacion;
+                saldoAFavor.AñoConciliacion = refExterna.AñoConciliacion;
+                saldoAFavor.MesConciliacion = refExterna.MesConciliacion;
+                saldoAFavor.FolioConciliacion = refExterna.FolioConciliacion;
+                saldoAFavor.CorporativoExterno = refExterna.Corporativo;
+                saldoAFavor.SucursalExterno = refExterna.Sucursal;
+                saldoAFavor.AñoExterno = refExterna.Año;
+                saldoAFavor.FolioExterno = refExterna.Folio;
+                saldoAFavor.SecuenciaExterno = refExterna.Secuencia;
+                saldoAFavor.Cliente = Cliente;
+
+                saldoAFavor.Guardar(conexion);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            conexion.CerrarConexion();
+        }
+    }
+
     protected void btnGuardarVariosAUno_Click(object sender, EventArgs e)
     {
         bool resultado = false;
@@ -1284,6 +1356,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
             if (extSeleccionados[0].MontoConciliado > 0 && numRegInter > 0)
             {
+                bool EjecutaSAF = true;
                 usuario = (Usuario)HttpContext.Current.Session["Usuario"];
                 foreach (ReferenciaNoConciliada ex in extSeleccionados)
                 {
@@ -1299,11 +1372,19 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     ex.TipoCobro = int.Parse(ddlTiposDeCobro.SelectedValue.ToString());
 
                     ex.ListaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
-
-                    //throw new Exception("STOP");
-
+                    
                     if (ex.GuardarReferenciaConciliada())
                     {
+                        if (EjecutaSAF && hdfEsPedido.Value == "1")
+                        {
+                            EjecutaSAF = false;
+                            ReferenciaNoConciliadaPedido pedSeleccionado = leerReferenciaPedidoSeleccionada();
+                            //if (hdfClientePagoAceptar.Value == "1" && hdfAceptaAplicarSaldoAFavor.Value == "Aceptado")
+                            GuardarSaldoAFavor(ex, pedSeleccionado.Cliente);
+                            hdfClientePagoAceptar.Value = "0";
+                            hdfAceptaAplicarSaldoAFavor.Value = "";
+                        }
+
                         Consulta_Externos(corporativo, sucursal, año, mes, folio, Convert.ToDecimal(txtDiferencia.Text), tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
                         GenerarTablaExternos();
                         LlenaGridViewExternos();
@@ -1935,6 +2016,8 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
     {
         if (e.CommandName.Equals("DESCONCILIAR"))
         {
+            lblAgregadosExternos.Text = "0";
+            lblMontoAcumuladoExterno.Text = "0.00";
             //Leer info actual de la conciliación.
             cargarInfoConciliacionActual();
 
@@ -2606,10 +2689,11 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         if (c.CerrarConciliacion(usuario.IdUsuario))
         {
             objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
-                                    "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                    mes + "&TipoConciliacion=" + tipoConciliacion);
+            //System.Threading.Thread.Sleep(3000);
+            //Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
+            //                        "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
+            //                        mes + "&TipoConciliacion=" + tipoConciliacion);
+            Response.Redirect("~/Inicio.aspx");
         }
         else
         {

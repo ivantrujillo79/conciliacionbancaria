@@ -96,7 +96,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                 cmd2.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.Int).Value = this.Año;
                                 cmd2.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.Int).Value = this.Mes;
                                 cmd2.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = this.Folio;
-                                cmd2.CommandTimeout = 60 * 3;
+                                cmd2.CommandTimeout = 60 * 30;
                                 cmd2.ExecuteNonQuery();
                             }
                             catch (Exception ex)
@@ -289,9 +289,9 @@ namespace Conciliacion.RunTime.DatosSQL
                             this.StatusConciliacion = Convert.ToString(reader["StatusConciliacion"]);
                             resultado = true;
                         }
-                        
+
                         using (SqlConnection cnn2 = new SqlConnection(objApp.CadenaConexion))
-                        {    
+                        {
                             cnn2.Open();
                             SqlCommand cmdFacturaComplemento = new SqlCommand("spCBFacturaComplementoAltaModificaInternos", cnn2);
                             cmdFacturaComplemento.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.TinyInt).Value = this.Corporativo;
@@ -300,7 +300,7 @@ namespace Conciliacion.RunTime.DatosSQL
                             cmdFacturaComplemento.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.Int).Value = this.Mes;
                             cmdFacturaComplemento.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.Int).Value = this.Folio;
                             cmdFacturaComplemento.CommandType = System.Data.CommandType.StoredProcedure;
-                            cmdFacturaComplemento.CommandTimeout = 60 * 3;
+                            cmdFacturaComplemento.CommandTimeout = 60 * 30;
                             cmdFacturaComplemento.ExecuteNonQuery();
                         }
                     }

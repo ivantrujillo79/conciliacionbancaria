@@ -225,6 +225,13 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             }
             else
             {                //No se supera el máximo configurado
+                _saldoAFavor = ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Diferencia > 0).Sum(x => x.Diferencia);
+                _total = ObjMovimientoCajaDatos.ListaPedidos.Where(x => x.Total > 0).Sum(x => x.Total);
+                if (_saldoAFavor > 0)
+                {
+                    //ObjMovimientoCajaDatos.Total = ObjMovimientoCajaDatos.Total + _total;
+                    ObjMovimientoCajaDatos.SaldoAFavor = _saldoAFavor;
+                }
                 lstMovimientoCajaDatos.Add(ObjMovimientoCajaDatos);
             }
             return lstMovimientoCajaDatos;

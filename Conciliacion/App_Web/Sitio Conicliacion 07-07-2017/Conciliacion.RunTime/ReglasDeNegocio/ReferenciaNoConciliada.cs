@@ -896,6 +896,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                     referen.ClientePago = clientepago;
                 }
             }
+            get
+            {
+                foreach (ReferenciaConciliadaPedido referen in this.listareferenciaconciliada)
+                {
+                    referen.ClientePago = clientepago;
+                    break;
+                }
+                return clientepago;
+            }
         }
 
         public string Cheque
@@ -1340,12 +1349,25 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 }
                 else
                 {
+                    decimal saldoDeposito = this.Deposito + this.Comision;
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {
-                        
+
+                        if (saldoDeposito < 0)
+                            referen.MontoConciliado = 0;
+                        else
+                        if (saldoDeposito > referen.Total)
+                            referen.MontoConciliado = referen.Total;
+                        else
+                        if (saldoDeposito < referen.Total)
+                            referen.MontoConciliado = saldoDeposito;
+
                         referen.TipoCobro = this.TipoCobro;
                         referen.TipoCobroAnterior = this.TipoCobroAnterior;
                         referen.Guardar();
+
+                        saldoDeposito = saldoDeposito - referen.Total;
+
                         this.Completo = true;
                     }
                 }

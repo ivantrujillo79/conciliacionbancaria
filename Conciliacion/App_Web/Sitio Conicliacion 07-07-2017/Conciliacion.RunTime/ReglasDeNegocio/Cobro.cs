@@ -29,6 +29,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         int sucursalbancaria;
         string descripcion;
         int clientepago;
+        decimal importecomision;
+        decimal ivacomision;
 
         private List<ReferenciaConciliadaPedido> listapedidos = new List<ReferenciaConciliadaPedido>();
         
@@ -58,11 +60,15 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             this.sucursalbancaria = 0;
             this.descripcion = "";
+
+            this.ImporteComision = 0;
+            this.IvaComision = 0;
         } 
 
         public Cobro(short añocobro, int numcobro, string numerocheque, decimal total, decimal saldo, string numerocuenta, string numerocuentadestino,
             DateTime fcheque, int cliente, short banco, short bancoorigen, string observaciones, string status, short tipocobro, Boolean alta,
-            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos, MensajesImplementacion implementadorMensajes)
+            string usuario, Boolean saldoafavor, int sucursalbancaria, string descripcion, int clientepago, List<ReferenciaConciliadaPedido> listapedidos,
+            decimal importecomision, decimal ivacomision, MensajesImplementacion implementadorMensajes)
         {
             this.ImplementadorMensajes = implementadorMensajes;
             this.añocobro = añocobro;
@@ -87,6 +93,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
             this.sucursalbancaria = sucursalbancaria;
             this.descripcion = descripcion;
+
+            this.ImporteComision = importecomision;
+            this.IvaComision = ivacomision;
         }
 
 
@@ -221,8 +230,19 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             get { return clientepago; }
             set { clientepago = value; }
         }
-        #endregion
 
+        public decimal ImporteComision
+        {
+            get { return importecomision; }
+            set { importecomision = value; }
+        }
+
+        public decimal IvaComision
+        {
+            get { return ivacomision; }
+            set { ivacomision = value; }
+        }
+        #endregion
 
         public abstract bool ChequeTarjetaAltaModifica(Conexion _conexion);
         public abstract bool MovimientoCajaCobroAlta(short caja, DateTime foperacion, short consecutivo, int folio, Conexion _conexion);
