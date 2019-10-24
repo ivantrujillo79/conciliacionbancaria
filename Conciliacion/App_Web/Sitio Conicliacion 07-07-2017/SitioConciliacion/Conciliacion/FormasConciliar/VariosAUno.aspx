@@ -249,6 +249,28 @@
                 document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value = document.getElementById('ctl00_contenidoPrincipal_ddlTiposDeCobro').value;
         }
 
+        function ConfirmarSaldoAFavor() {
+            
+            var externo = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoExterno').innerHTML.replace('$', '').replace(',', '').trim();
+            var InternoPedido = document.getElementById('ctl00_contenidoPrincipal_lblMontoInterno').innerHTML.replace('$', '').replace(',', '').trim();
+            if (externo === "0.00" || externo === "undefined" || InternoPedido === "0.00" || InternoPedido === "undefined") {
+                alert("No se ha agregado ninguna referencia interna.");
+                return false;
+            }
+            else {
+                var MontoSAF = parseFloat(externo).toFixed(2) - parseFloat(InternoPedido).toFixed(2);
+                var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
+
+                if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
+                    if (MontoSAF.toFixed(2) >= parseFloat(ValorParametro).toFixed(2)) {
+                        alert('El monto depositado genera un saldo a favor por ' + MontoSAF);
+                        document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Aceptado';
+                    }
+                }
+                return true;
+            }
+        }
+
         $(document).keypress(function (e) {
             if (e.which == 2) {
                 console.log("ctrl B");
@@ -527,6 +549,7 @@
 
     <asp:UpdatePanel runat="server" ID="upBarraEstado" UpdateMode="Always">
         <ContentTemplate>
+            <asp:HiddenField ID="hdfEsPedido" runat="server" />
             <table id="BarraEstado" class="BarraEstado bg-color-grisOscuro">
                 <tr>
                     <td class="DatoConciliacion lineaVertical" rowspan="2" style="vertical-align: middle">
@@ -1377,7 +1400,8 @@
                                     </td>
                                     <td class="etiqueta lineaVertical centradoMedio" style="width: 1%;">
                                         <asp:Button runat="server" ID="btnGuardarVariosAUno" CssClass="boton bg-color-azulOscuro fg-color-blanco"
-                                            Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarVariosAUno_Click" />
+                                            Text="GUARDAR" Style="margin: 0 0 0 0;" ToolTip="GUARDAR" OnClick="btnGuardarVariosAUno_Click" 
+                                            OnClientClick="return ConfirmarSaldoAFavor();"/>
                                     </td>
                                 </tr>
                             </table>
@@ -2386,6 +2410,10 @@
         </asp:UpdatePanel>
     </asp:Panel>
     <%--FIN POPUP BUSCADORPAGOESTADO DE CUENTA--%>
+
+    <asp:HiddenField ID="hdfAceptaAplicarSaldoAFavor" runat="server" /> 
+    <asp:HiddenField ID="hdfSaldoAFavor" runat="server" />
+    <asp:HiddenField runat="server" ID="hdfClientePagoAceptar" Value=""/>
 
     <asp:UpdateProgress ID="panelBloqueo" runat="server">
         <ProgressTemplate>

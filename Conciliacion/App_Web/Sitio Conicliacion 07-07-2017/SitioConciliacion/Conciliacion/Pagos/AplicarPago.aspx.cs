@@ -204,17 +204,21 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 //LlenaGridViewReferenciasPagos();
 
                 decimal totalTemp = 0;
-                
-                foreach (ReferenciaConciliadaPedido objReferencia in listaReferenciaConciliadaPagos)
-                {
-                    totalTemp = totalTemp + objReferencia.MontoConciliado;
-                }
+                //foreach (ReferenciaConciliadaPedido objReferencia in listaReferenciaConciliadaPagos)
+                //{
+                //    totalTemp = totalTemp + objReferencia.MontoConciliado;
+                //}
                 HttpContext.Current.Session["TipoMovimientoCaja"]= Convert.ToInt32(Request.QueryString["tipoMovimientoCaja"]);
 
                 movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
+                foreach (Cobro objmcCobros in movimientoCajaAlta.ListaCobros)
+                {
+                    totalTemp = totalTemp + objmcCobros.Total;
+                }
                 movimientoCajaAlta.StatusAltaMC = status;
                 movimientoCajaAlta.Total = totalTemp;
                 movimientoCajaAlta.TipoMovimientoCaja = 3;
+                movimientoCajaAlta.SaldoAFavor = listaReferenciaConciliadaPagos.Sum(x => x.Diferencia);
                 HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
                 
                 tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
@@ -1410,6 +1414,13 @@ private string TipoCobroDescripcion(int tipoCobro)
                 objApp.ImplementadorMensajes.MostrarMensaje("Pagos ya aplicados");
                 return;
             }
+            decimal totalTemp = 0;
+            movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
+            foreach (Cobro objmcCobros in movimientoCajaAlta.ListaCobros)
+            {
+                totalTemp = totalTemp + objmcCobros.Total;
+            }
+            movimientoCajaAlta.Total = totalTemp;
 
             conexion.AbrirConexion(true,true);
 

@@ -2511,10 +2511,11 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
         if (c.CerrarConciliacion(usuario.IdUsuario))
         {
             objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
-                                    "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                    mes + "&TipoConciliacion=" + tipoConciliacion);
+            //System.Threading.Thread.Sleep(3000);
+            //Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
+            //                        "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
+            //                        mes + "&TipoConciliacion=" + tipoConciliacion);
+            Response.Redirect("~/Inicio.aspx");
         }
         else
         {
@@ -2762,6 +2763,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
 
     protected void chkExterno_CheckedChanged(object sender, EventArgs e)
     {
+        //DateTime Inicio = DateTime.Now;
+
         CheckBox chk = sender as CheckBox;
         GridViewRow grv = (GridViewRow)chk.Parent.Parent;
 
@@ -2814,6 +2817,10 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             despintarFilaSeleccionadaExterno(grv.RowIndex);
             DesBloquea(rfEx);
         }
+
+        //ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+        //    @"alertify.alert('Conciliaci&oacute;n bancaria','"+ ((DateTime.Now - Inicio).TotalSeconds).ToString() + "', function(){ });", true);
+
     }
     protected void chkInterno_CheckedChanged(object sender, EventArgs e)
     {

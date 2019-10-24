@@ -198,25 +198,47 @@ namespace Conciliacion.RunTime.DatosSQL
                     Cobro.MovimientoCajaEntradaAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
                     Cobro.ActualizaPagoReferenciado(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
 
-
                     //List<ReferenciaConciliadaPedido> Pedidos =
                     //    Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
                     List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.ToList();
 
-                    foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                    if (Cobros.Count >= 1 && Pedidos.Count == 1) //varios a uno
                     {
-                        Pedido.MontoConciliado =
-                            Cobro.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
-                        Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
-
-                        //PedidoActualizaSaldo() NO se debe ejecutar
-                        //cuando el status emitido y sea diferente de tipo c 2, 
-                        //solo cuando status sea validado 
-                        if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
+                        foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
                         {
-                            Pedido.PedidoActualizaSaldo(_conexion);
+
+                            Pedido.MontoConciliado = this.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+
+                            //Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, Cobro.Total, _conexion); //ID 
+                            Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, Pedido.MontoConciliado, _conexion);
+
+                            //PedidoActualizaSaldo() NO se debe ejecutar
+                            //cuando el status emitido y sea diferente de tipo c 2, 
+                            //solo cuando status sea validado 
+                            if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
+                            {
+                                Pedido.PedidoActualizaSaldo(_conexion);
+                            }
+                            Pedido.ActualizaPagosPorAplicar(_conexion);
                         }
-                        Pedido.ActualizaPagosPorAplicar(_conexion);
+                    }
+                    else//Uno a varios
+                    {
+                        foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
+                        {
+                            Pedido.MontoConciliado =
+                                Cobro.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+                            Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
+
+                            //PedidoActualizaSaldo() NO se debe ejecutar
+                            //cuando el status emitido y sea diferente de tipo c 2, 
+                            //solo cuando status sea validado 
+                            if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
+                            {
+                                Pedido.PedidoActualizaSaldo(_conexion);
+                            }
+                            Pedido.ActualizaPagosPorAplicar(_conexion);
+                        }
                     }
                 }
             }

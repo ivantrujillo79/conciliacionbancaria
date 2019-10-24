@@ -2755,7 +2755,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     if (listaReferenciaConciliada != null)
                     {
                         listaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
-                        listaReferenciaConciliada.ForEach(x => resultado = x.Guardar());
+                        List < ReferenciaConciliada > listaReferenciaConciliadaSeleccionados = listaReferenciaConciliada.Where(x=>x.Selecciona).ToList();
+                        listaReferenciaConciliadaSeleccionados.ForEach(x => resultado = x.Guardar());
                     }
                     else
                         objApp.ImplementadorMensajes.MostrarMensaje("No existe ninguna referencia a conciliar. Verifique");
@@ -2903,10 +2904,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
             // LlenarBarraEstado();
             objApp.ImplementadorMensajes.MostrarMensaje("CONCILIACIÓN CERRADA EXITOSAMENTE");
             mpeConfirmarCerrar.Hide();
-            System.Threading.Thread.Sleep(3000);
-            Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
-                                    "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
-                                    mes + "&TipoConciliacion=" + tipoConciliacion);
+            //System.Threading.Thread.Sleep(3000);
+            //Response.Redirect("~/Conciliacion/DetalleConciliacion.aspx?Folio=" + folio + "&Corporativo=" + corporativo +
+            //                        "&Sucursal=" + sucursal + "&Año=" + año + "&Mes=" +
+            //                        mes + "&TipoConciliacion=" + tipoConciliacion);
+            Response.Redirect("~/Inicio.aspx");
         }
         else
         {

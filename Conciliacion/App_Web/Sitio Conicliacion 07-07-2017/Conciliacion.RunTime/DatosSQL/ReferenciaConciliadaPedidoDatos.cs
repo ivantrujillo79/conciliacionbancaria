@@ -264,6 +264,39 @@ namespace Conciliacion.RunTime.DatosSQL
             return resultado;
         }
 
+        public override bool CobroPedidoAlta(short añocobro, int cobro, decimal total, Conexion _conexion)
+        {
+            bool resultado = false;
+            try
+            {
+
+
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBCobroPedidoAlta";
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Celula", System.Data.SqlDbType.SmallInt)).Value = this.CelulaPedido;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AnoCobro", System.Data.SqlDbType.SmallInt)).Value = añocobro;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Cobro", System.Data.SqlDbType.Int)).Value = cobro;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AnoPed", System.Data.SqlDbType.SmallInt)).Value = this.AñoPedido;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = this.Pedido;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Total", System.Data.SqlDbType.Decimal)).Value = total; //this.Total
+
+                _conexion.Comando.ExecuteNonQuery();
+
+                resultado = true;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
         /*public override bool PedidoActualizaSaldo()
         {
             bool resultado = false;
@@ -292,7 +325,7 @@ namespace Conciliacion.RunTime.DatosSQL
 
             return resultado;
         }*/
-        
+
         public override bool PedidoActualizaSaldo(Conexion _conexion)
         {
             bool resultado = false;

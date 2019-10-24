@@ -5250,6 +5250,8 @@ namespace Conciliacion.RunTime.DatosSQL
                                                                                    Convert.ToInt32(reader["Año"]),
                                                                                    Convert.ToInt32(reader["Folio"]),
                                                                                    Convert.ToInt32(reader["Secuencia"]), usuario),
+                                                    Convert.ToDecimal(reader["ImporteComision"]),
+                                                    Convert.ToDecimal(reader["IvaComision"]),
                                                     this.implementadorMensajes);
                         datos.Add(dato);
 
