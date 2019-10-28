@@ -2914,63 +2914,82 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
 
-        if (rfEx.TipoCobro == 0)
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
+        try
         {
-            //rfEx.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
-            ddlTiposDeCobro.CssClass = "select-css-rojo";
-            if (ViewState["TipoCobroDefault"].ToString() != string.Empty && ViewState["TipoCobroDefault"].ToString() != "0")
-                ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
-        }
-        else
-        { 
-            ddlTiposDeCobro.CssClass = "select-css";
-            ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
-        }
-        if (chk.Checked)
-        {
-            //if (rfEx.StatusConciliacion == "CONCILIACION CANCELADA")
-            //{
-            //    chk.Checked = false;
-            //    objApp.ImplementadorMensajes.MostrarMensaje(rfEx.StatusConciliacion + ". Seleccione otra para continuar.");
-            //}
-            if (!ExisteExternoBloqueado())
+            if (objSolicitdConciliacion.ConsultaPedido() & rfEx.Retiro > 0 & chk.Checked)
             {
-                rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+                chk.Checked = false;
+                throw new Exception("No puede seleccionar un retiro con pedidos.");
+            }
+            if (rfEx.TipoCobro == 0)
+            {
+                //rfEx.TipoCobro = int.Parse(ViewState["TipoCobroDefault"].ToString());
+                ddlTiposDeCobro.CssClass = "select-css-rojo";
+                if (ViewState["TipoCobroDefault"].ToString() != string.Empty && ViewState["TipoCobroDefault"].ToString() != "0")
+                    ddlTiposDeCobro.SelectedValue = ViewState["TipoCobroDefault"].ToString();
+            }
+            else
+            { 
+                ddlTiposDeCobro.CssClass = "select-css";
+                ddlTiposDeCobro.SelectedValue = rfEx.TipoCobro.ToString();
+            }
+            if (chk.Checked)
+            {
+                //if (rfEx.StatusConciliacion == "CONCILIACION CANCELADA")
+                //{
+                //    chk.Checked = false;
+                //    objApp.ImplementadorMensajes.MostrarMensaje(rfEx.StatusConciliacion + ". Seleccione otra para continuar.");
+                //}
+                if (!ExisteExternoBloqueado())
+                {
+                    rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.
+                    GenerarTablaExternos();
+                    if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
+                    {
+                        decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
+                        int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
+                        lblAgregadosExternos.Text = Convert.ToString(extAgregados + 1);
+                        lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
+                    }
+                    pintarFilaSeleccionadaExterno(grv.RowIndex);
+                    BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
+                }
+                else
+                {
+                    CheckBox checkbox = sender as CheckBox;
+                    checkbox.Checked = false;
+                    rfEx.Selecciona = true;//no seleccionado
+                    GenerarTablaExternos();
+                    despintarFilaSeleccionadaExterno(grv.RowIndex);
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
+                        @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
+                }
+            }
+            else
+            {
+                DesBloquea(rfEx);
+                rfEx.Selecciona = true;
                 GenerarTablaExternos();
                 if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
                 {
                     decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
                     int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
-                    lblAgregadosExternos.Text = Convert.ToString(extAgregados + 1);
-                    lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado + rfEx.Monto), 2).ToString();
+                    lblAgregadosExternos.Text = Convert.ToString(extAgregados - 1);
+                    lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado - rfEx.Monto), 2).ToString();
                 }
-                pintarFilaSeleccionadaExterno(grv.RowIndex);
-                BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
-            }
-            else
-            {
-                CheckBox checkbox = sender as CheckBox;
-                checkbox.Checked = false;
-                rfEx.Selecciona = true;//no seleccionado
-                GenerarTablaExternos();
                 despintarFilaSeleccionadaExterno(grv.RowIndex);
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "Mensaje",
-                    @"alertify.alert('Conciliaci&oacute;n bancaria','El registro no se puede Guardar, el externo seleccionado ya ha sido conciliado por otro usuario.', function(){ });", true);
             }
         }
-        else
+        catch (Exception ex)
         {
-            DesBloquea(rfEx);
-            rfEx.Selecciona = true;
-            GenerarTablaExternos();
-            if (rfEx.StatusConciliacion.Equals("EN PROCESO DE CONCILIACION"))
-            {
-                decimal montoAcumulado = Convert.ToDecimal(lblMontoAcumuladoExterno.Text);
-                int extAgregados = Convert.ToInt32(lblAgregadosExternos.Text);
-                lblAgregadosExternos.Text = Convert.ToString(extAgregados - 1);
-                lblMontoAcumuladoExterno.Text = Decimal.Round((montoAcumulado - rfEx.Monto), 2).ToString();
-            }
-            despintarFilaSeleccionadaExterno(grv.RowIndex);
+            ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
+                + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);
         }
     }
     protected void btnVerInternos_Click(object sender, ImageClickEventArgs e)

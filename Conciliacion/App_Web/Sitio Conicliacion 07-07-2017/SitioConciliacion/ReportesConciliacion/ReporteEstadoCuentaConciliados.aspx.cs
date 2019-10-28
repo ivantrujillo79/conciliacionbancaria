@@ -247,6 +247,10 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                 }
                 contador = contador + 1;
             }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + "Seleccione una cuenta bancaria" + "', function(){ alertify.error('Error en la solicitud'); });", true);
+            }
         }
         catch (Exception ex)
         {

@@ -61,16 +61,21 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 try
                 {
                     ExcelPackage excelPackage = inicializar();
-                    for (int i = 0; i <= _ReporteEstadoCuentaDia.Count-1; i++)
+                    if (_ReporteEstadoCuentaDia.Count > 0)
                     {
-                            crearEncabezado(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString(), "","");
+                        for (int i = 0; i <= _ReporteEstadoCuentaDia.Count - 1; i++)
+                        {
+                            crearEncabezado(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString(), "", "");
                             exportarDatos(excelPackage, _ReporteEstadoCuentaDia[i][0].CuentaBancoFinanciero.ToString(), 5, _ReporteEstadoCuentaDia[i]);
+                        }
+                        excelPackage.Save();
                     }
-                    excelPackage.Save();
+                    else
+                        throw new Exception("No existen datos para generar el reporte.");
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Ocurrió un error en la creación del reporte: <br/>" + ex.Message);
+                    throw new Exception("Error en la creación del reporte: <br/>" + ex.Message);
                 }
                 finally
                 {

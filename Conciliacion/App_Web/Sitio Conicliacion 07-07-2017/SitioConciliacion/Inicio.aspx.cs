@@ -110,7 +110,10 @@ public partial class Inicio : System.Web.UI.Page
                 Consulta_Conciliacion();
                 GenerarTablaConciliaciones();
                 LlenaGridViewConciliaciones();
-                //wucBuscadorPagoEstadoCuenta.ActivaEstaConciliacion = false;
+                if (ddlStatusConciliacion.SelectedValue == "4") //"CONCILIACION CERRADA")
+                    lnkVerM.Visible = false;
+                else
+                    lnkVerM.Visible = true;
                 txtFinicio.Text = (DateTime.Today.AddMonths(-1)).ToShortDateString();
                 txtFfinal.Text = DateTime.Today.ToShortDateString();
             }
