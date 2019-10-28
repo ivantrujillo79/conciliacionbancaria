@@ -3449,6 +3449,18 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         indiceExternoSeleccionado = grv.RowIndex;
         ReferenciaConciliadaPedido rfEx = leerReferenciaExternaSeleccionada();
 
+        SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+        tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+        short _FormaConciliacion = Asigna_FormaConciliacionActual();
+        objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+        objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
+        if (objSolicitdConciliacion.ConsultaPedido() & rfEx.Retiro > 0 & chk.Checked)
+        {
+            chk.Checked = false;
+            throw new Exception("No puede seleccionar un retiro con pedidos.");
+        }
+
         if (chk.Checked)
         {
             rfEx.Selecciona = false;//Es solo para guardar la REFERENCIA SELECCIONADA..FALSE porq se hace un ! negacion..al cargar el Externos..para no modificar otra cosa.

@@ -74,7 +74,7 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
         int contador = 0;
         try
         {
-            if (wucListadoCajas1.CajasSeleccionadas.Count > 0)
+            if (wucListadoCajas1.CajasSeleccionadas != null && wucListadoCajas1.CajasSeleccionadas.Count > 0)
             {
                 List<DateTime> lstFechasPeriodo = new List<DateTime>();
                 if (File.Exists(rutaCompleta+ Archivo)) File.Delete(rutaCompleta+ Archivo);
@@ -109,18 +109,15 @@ public partial class ReportesConciliacion_PosicionDiariaBancos : System.Web.UI.P
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                                @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
             }
-
             else
             {
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
-                               @"alertify.alert('Conciliaci&oacute;n bancaria','Error: lista de cajas vacia "
-                               , true);
-
+                //ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
+                //               @"alertify.alert('Conciliaci&oacute;n bancaria','Error: lista de cajas vacia ", true);
+                throw new Exception("Lista de cajas vacia.");
             }
         }
         catch (Exception ex)
         {
-            //    objApp.ImplementadorMensajes.MostrarMensaje(ex.Message);
             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                 @"alertify.alert('Conciliaci&oacute;n bancaria','Error: "
                 + ex.Message + "', function(){ alertify.error('Error en la solicitud'); });", true);

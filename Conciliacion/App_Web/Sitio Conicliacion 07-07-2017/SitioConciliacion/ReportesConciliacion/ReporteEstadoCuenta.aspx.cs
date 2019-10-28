@@ -159,10 +159,8 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                 var   Archivo = "EdoCta" + usuario.InicialCorporativo + cero + fechaInicio.Month + fechaInicio.Year + ".xlsx";
                 try
                  {
-                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas!=null)// mcc 2018 0503
+                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas!=null && WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)// mcc 2018 0503
                     {
-                        if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
-                        {
                             if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
                             foreach (Cuenta cuenta in WUCListadoCuentasBancarias1.CuentasSeleccionadas)
                             {                            
@@ -174,7 +172,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                             }
                             ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                                 @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe estado cuenta generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
-                        }
+
                     }
                     else
                     {
@@ -210,6 +208,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                             @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
                     }
+                    else
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + "Seleccione una cuenta bancaria" + "', function(){ alertify.error('Error en la solicitud'); });", true);
+                    //                        throw new Exception("Falta seleccione al menos una cuenta.");
                 }
                 catch (Exception ex)
                 {
@@ -232,7 +233,7 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                 {
                     var Archivo = "InternosConciliarFuturo" + string.Format("{0:ddMMyyyy}", DateTime.Now) + ".xlsx";
 
-                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
+                    if (WUCListadoCuentasBancarias1.CuentasSeleccionadas != null && WUCListadoCuentasBancarias1.CuentasSeleccionadas.Count > 0)
                     {
                         if (File.Exists(rutaCompleta + Archivo)) File.Delete(rutaCompleta + Archivo);
 
@@ -247,6 +248,9 @@ public partial class ReportesConciliacion_ReporteEstadoCuenta : System.Web.UI.Pa
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                             @"alertify.alert('Conciliaci&oacute;n bancaria','¡Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
                     }
+                    else
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','Error: " + "Seleccione una cuenta bancaria" + "', function(){ alertify.error('Error en la solicitud'); });", true);
+                    //                        throw new Exception("Falta seleccione al menos una cuenta.");
                 }
                 catch (Exception ex)
                 {

@@ -2366,6 +2366,9 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             if (grvExternos.Rows.Count > 0)
             {
                 ReferenciaNoConciliada rfExterno = leerReferenciaExternaSeleccionada();
+                if (objSolicitdConciliacion.ConsultaPedido() & rfExterno.Retiro > 0)
+                    throw new Exception("No puede seleccionar un retiro con pedidos.");
+
                 if (!rfExterno.Completo)
                 {
                     if (rfExterno.ListaReferenciaConciliada.Count > 0)
@@ -3985,6 +3988,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             chkComision.Checked = false;
             hfTxtComisionVisible.Value = "0";
             int respaldoIndiceSeleccionado = indiceExternoSeleccionado;
+            grvInternos.DataSource = null;
+            grvInternos.DataBind();
+            grvPedidos.DataSource = null;
+            grvPedidos.DataBind();
             indiceExternoSeleccionado = ((GridViewRow)(sender as RadioButton).Parent.Parent).RowIndex;
 
             LockerExterno.EliminarBloqueos(Session.SessionID);
@@ -4004,10 +4011,16 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             GridViewRow grv = (GridViewRow)rdb.Parent.Parent;
             pintarFilaSeleccionadaExterno(grv.RowIndex);
 
-            //indiceExternoSeleccionado = grv.RowIndex;
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
+
             ReferenciaNoConciliada rfEx = leerReferenciaExternaSeleccionada();
             //Limpiar Listas de Referencia de demas Externos
             LimpiarExternosReferencia(rfEx);
+            if (objSolicitdConciliacion.ConsultaPedido() & rfEx.Retiro > 0)
+                throw new Exception("No puede seleccionar un retiro con pedidos.");
 
             if (rfEx.TipoCobro != 0)
             {
@@ -4026,12 +4039,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             Session["TipoFiltro"] = tipoFiltro;
 
             BloquearExterno(Session.SessionID, rfEx.Corporativo, rfEx.Sucursal, rfEx.Año, rfEx.Folio, rfEx.Secuencia, rfEx.Descripcion, rfEx.Monto);
-
-            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-            //Leer el tipoConciliacion URL
-            tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
-            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-            objSolicitdConciliacion.FormaConciliacion = formaConciliacion;
 
             if (objSolicitdConciliacion.ConsultaPedido())
                 ConsultarPedidosInternos(true);
