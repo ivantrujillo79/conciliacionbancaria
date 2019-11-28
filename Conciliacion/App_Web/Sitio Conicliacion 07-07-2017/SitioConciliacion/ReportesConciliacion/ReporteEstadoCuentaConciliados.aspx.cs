@@ -243,7 +243,8 @@ public partial class ReportesConciliacion_ReporteEstadoCuentaConciliados : Syste
                     if (lstDetalle.Count > 0)
                         ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg",
                             @"alertify.alert('Conciliaci&oacute;n bancaria','Informe generado con éxito!', function(){document.getElementById('LigaDescarga').click(); });", true);
-
+                    else
+                        ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", @"alertify.alert('Conciliaci&oacute;n bancaria','No existen datos en el periodo seleccionado.', function(){ alertify.error('Error en la solicitud'); });", true);
                 }
                 contador = contador + 1;
             }

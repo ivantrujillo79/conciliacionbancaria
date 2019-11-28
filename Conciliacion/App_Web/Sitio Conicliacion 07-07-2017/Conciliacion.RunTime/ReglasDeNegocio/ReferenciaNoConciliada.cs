@@ -1185,6 +1185,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                 RefConciliada.Diferencia = this.Monto - referencia.Total; //Monto del externo - Monto del interno
 
+                //if (RefConciliada.FormaConciliacion == 9 && RefConciliada.Diferencia < 0) //es varios a uno
+                //    RefConciliada.Diferencia = 0;
+
                 RefConciliada.Folio = this.folio; //Folio del externo
                 RefConciliada.Secuencia = this.secuencia; //Secuencia del externo
                 RefConciliada.Año = this.año; //Año externo
@@ -1367,6 +1370,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                         referen.Guardar();
 
                         saldoDeposito = saldoDeposito - referen.Total;
+
+                        if (this.FormaConciliacion == 9)
+                            referen.Total = Math.Abs(saldoDeposito);
 
                         this.Completo = true;
                     }

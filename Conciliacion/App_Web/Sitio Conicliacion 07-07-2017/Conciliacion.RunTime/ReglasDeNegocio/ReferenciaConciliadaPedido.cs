@@ -24,6 +24,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         string seriesat;
         string conceptopedido;
         decimal total;
+        decimal totalsaldo;
         string statusmovimiento;
 
         Boolean selecciona;
@@ -284,6 +285,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
             set { total = value; }
         }
 
+        public decimal TotalSaldo
+        {
+            get { return totalsaldo; }
+            set { totalsaldo = value; }
+        }
+
         public Boolean Selecciona
         {
             get { return selecciona; }
@@ -351,6 +358,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool CobroPedidoAlta(short añocobro, int cobro, decimal total, Conexion _conexion);
 
         public abstract bool PedidoActualizaSaldo(Conexion _conexion);
+        public abstract bool PedidoActualizaSaldo(Conexion _conexion, decimal MontoConciliado);
 
         public abstract bool ActualizaPagosPorAplicar(Conexion _conexion);
 

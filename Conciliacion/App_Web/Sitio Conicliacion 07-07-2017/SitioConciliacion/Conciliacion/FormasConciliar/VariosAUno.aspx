@@ -262,7 +262,7 @@
                 var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
 
                 if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
-                    if (MontoSAF.toFixed(2) >= parseFloat(ValorParametro).toFixed(2)) {
+                    if ( 1*parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2) > 0 ) {
                         alert('El monto depositado genera un saldo a favor por ' + MontoSAF);
                         document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Aceptado';
                     }

@@ -236,8 +236,6 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-
-
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
                 _conexion.Comando.CommandText = "spCBCobroPedidoAlta";
                 _conexion.Comando.Parameters.Clear();
@@ -269,8 +267,6 @@ namespace Conciliacion.RunTime.DatosSQL
             bool resultado = false;
             try
             {
-
-
                 _conexion.Comando.CommandType = CommandType.StoredProcedure;
                 _conexion.Comando.CommandText = "spCBCobroPedidoAlta";
                 _conexion.Comando.Parameters.Clear();
@@ -280,9 +276,7 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AnoPed", System.Data.SqlDbType.SmallInt)).Value = this.AñoPedido;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = this.Pedido;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Total", System.Data.SqlDbType.Decimal)).Value = total; //this.Total
-
                 _conexion.Comando.ExecuteNonQuery();
-
                 resultado = true;
             }
             catch (SqlException ex)
@@ -339,6 +333,37 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.Parameters.Add(new SqlParameter("@AnoPed", System.Data.SqlDbType.SmallInt)).Value = this.AñoPedido;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = this.Pedido;
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Abono", System.Data.SqlDbType.Decimal)).Value = this.MontoConciliado;
+                _conexion.Comando.CommandTimeout = 900;
+
+                _conexion.Comando.ExecuteNonQuery();
+
+                resultado = true;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return resultado;
+        }
+
+        public override bool PedidoActualizaSaldo(Conexion _conexion, decimal MontoConciliado)
+        {
+            bool resultado = false;
+            try
+            {
+
+                _conexion.Comando.CommandType = CommandType.StoredProcedure;
+                _conexion.Comando.CommandText = "spCBPedidoActualizaSaldo";
+                _conexion.Comando.Parameters.Clear();
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Celula", System.Data.SqlDbType.SmallInt)).Value = this.CelulaPedido;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@AnoPed", System.Data.SqlDbType.SmallInt)).Value = this.AñoPedido;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Pedido", System.Data.SqlDbType.Int)).Value = this.Pedido;
+                _conexion.Comando.Parameters.Add(new SqlParameter("@Abono", System.Data.SqlDbType.Decimal)).Value = MontoConciliado;
                 _conexion.Comando.CommandTimeout = 900;
 
                 _conexion.Comando.ExecuteNonQuery();

@@ -187,9 +187,22 @@ namespace Conciliacion.RunTime.DatosSQL
         public override bool AplicarCobros(Conexion _conexion, short tipoConciliacion)
         {
             bool resultado = false;
+            bool EsVariosAUno = false;
             try
             {
                 List<Cobro> Cobros = this.ListaCobros;
+                // decimal AplicadoAPedido = 0;
+                List<ReferenciaConciliadaPedido> PedidosActualizaSaldo = new List<ReferenciaConciliadaPedido>();
+
+                foreach (Cobro Cobro in Cobros)
+                {
+                    List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.ToList();
+                    if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
+                    {
+                        PedidosActualizaSaldo.AddRange(Pedidos);
+                    }
+                }
+
                 foreach (Cobro Cobro in Cobros)
                 {
                     Cobro.Usuario = this.Usuario;
@@ -198,27 +211,13 @@ namespace Conciliacion.RunTime.DatosSQL
                     Cobro.MovimientoCajaEntradaAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
                     Cobro.ActualizaPagoReferenciado(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
 
-                    //List<ReferenciaConciliadaPedido> Pedidos =
-                    //    Cobro.ListaPedidos.GroupBy(s => s.Pedido).Select(s => s.First()).ToList();
                     List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.ToList();
-
-                    if (Cobros.Count >= 1 && Pedidos.Count == 1) //varios a uno
+                    EsVariosAUno = Cobros.Count >= 1 && Pedidos.Count == 1;
+                    if (EsVariosAUno) //varios a uno
                     {
                         foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
                         {
-
-                            Pedido.MontoConciliado = this.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
-
-                            //Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, Cobro.Total, _conexion); //ID 
-                            Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, Pedido.MontoConciliado, _conexion);
-
-                            //PedidoActualizaSaldo() NO se debe ejecutar
-                            //cuando el status emitido y sea diferente de tipo c 2, 
-                            //solo cuando status sea validado 
-                            if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
-                            {
-                                Pedido.PedidoActualizaSaldo(_conexion);
-                            }
+                            Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, Cobro.Total - Cobro.Saldo, _conexion);
                             Pedido.ActualizaPagosPorAplicar(_conexion);
                         }
                     }
@@ -241,6 +240,32 @@ namespace Conciliacion.RunTime.DatosSQL
                         }
                     }
                 }
+
+                if (EsVariosAUno) //varios a uno
+                {
+                    if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
+                    {
+                        int numpedidos = 0;
+                        var PedidosOrdenados =
+                            PedidosActualizaSaldo.GroupBy(f => new { f.Pedido }).Select(group => new { pedido = group.Key.Pedido, suma = group.Sum(f => f.MontoConciliado) }).ToList();
+                        foreach (ReferenciaConciliadaPedido Pedido in PedidosActualizaSaldo)
+                        {
+                            foreach (var p in PedidosOrdenados)
+                            {
+                                if (p.pedido == Pedido.Pedido)
+                                {
+                                    Pedido.PedidoActualizaSaldo(_conexion, p.suma);
+                                    numpedidos++;
+                                }
+                            }
+                            if (numpedidos >= PedidosOrdenados.Count)
+                                break;
+                        }
+                    }
+                }
+
+                // throw new Exception("PRUEBA");
+
             }
             catch (Exception ex)
             {

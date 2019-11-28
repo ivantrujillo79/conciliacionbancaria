@@ -218,7 +218,7 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
                 movimientoCajaAlta.StatusAltaMC = status;
                 movimientoCajaAlta.Total = totalTemp;
                 movimientoCajaAlta.TipoMovimientoCaja = 3;
-                movimientoCajaAlta.SaldoAFavor = listaReferenciaConciliadaPagos.Sum(x => x.Diferencia);
+                //movimientoCajaAlta.SaldoAFavor = listaReferenciaConciliadaPagos.Sum(x => x.Diferencia);
                 HttpContext.Current.Session["MovimientoCaja"] = movimientoCajaAlta;
                 
                 tdExportar.Attributes.Add("class", "iconoOpcion bg-color-grisClaro02");
@@ -1415,11 +1415,14 @@ private string TipoCobroDescripcion(int tipoCobro)
                 return;
             }
             decimal totalTemp = 0;
+            decimal safTemp = 0;
             movimientoCajaAlta = HttpContext.Current.Session["MovimientoCaja"] as MovimientoCajaDatos;
             foreach (Cobro objmcCobros in movimientoCajaAlta.ListaCobros)
             {
                 totalTemp = totalTemp + objmcCobros.Total;
+                safTemp = safTemp + objmcCobros.Saldo;
             }
+            movimientoCajaAlta.SaldoAFavor = safTemp;
             movimientoCajaAlta.Total = totalTemp;
 
             conexion.AbrirConexion(true,true);
@@ -1494,7 +1497,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                             rCobranzaE = rCobranza.CreaRelacionCobranza(conexion);
                             if (!rCobranzaE.DetalleExcepcion.VerificacionValida)
                             {
-                               objApp.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
+                                objApp.ImplementadorMensajes.MostrarMensaje("Error: " + rCobranzaE.DetalleExcepcion.Mensaje + ", Código: " + rCobranzaE.DetalleExcepcion.CodigoError);
                             }
                         }
                         catch (Exception ex)
@@ -1508,7 +1511,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                     }
 
                     MovimientoCajaConciliacion objMCC = new MovimientoCajaConciliacionDatos(objMovimientoCaja.Caja, objMovimientoCaja.FOperacion, objMovimientoCaja.Consecutivo, objMovimientoCaja.Folio,
-                         corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza, 
+                         corporativoConciliacion, sucursalConciliacion, añoConciliacion, mesConciliacion, folioConciliacion, "ABIERTO", idCobranza,
                          new MensajesImplementacion());
                     objMCC.Guardar(conexion);
 
@@ -1518,14 +1521,14 @@ private string TipoCobroDescripcion(int tipoCobro)
                     {
                         SaldoAFavor objSaldoAFavor = objApp.SaldoAFavor.CrearObjeto();
 
-                        foreach(ReferenciaConciliadaPedido referencia in ListaConciliados)
+                        foreach (ReferenciaConciliadaPedido referencia in ListaConciliados)
                         {
                             // FK TablaDestinoDetalle
-                            objSaldoAFavor.CorporativoExterno   = referencia.Corporativo;
-                            objSaldoAFavor.SucursalExterno      = referencia.Sucursal;
-                            objSaldoAFavor.AñoExterno           = referencia.Año;
-                            objSaldoAFavor.FolioExterno         = referencia.Folio;
-                            objSaldoAFavor.SecuenciaExterno     = referencia.Secuencia;
+                            objSaldoAFavor.CorporativoExterno = referencia.Corporativo;
+                            objSaldoAFavor.SucursalExterno = referencia.Sucursal;
+                            objSaldoAFavor.AñoExterno = referencia.Año;
+                            objSaldoAFavor.FolioExterno = referencia.Folio;
+                            objSaldoAFavor.SecuenciaExterno = referencia.Secuencia;
 
                             objSaldoAFavor.AñoCobro = 0;
                             objSaldoAFavor.Cobro = 0;
@@ -1557,8 +1560,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                     throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
 
-          //  conexion.AbrirConexion(true);
-         
+
             if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Validado)
             {
                 FacturasComplemento objFacturasComplemento = objApp.FacturasComplemento;
@@ -1571,16 +1573,6 @@ private string TipoCobroDescripcion(int tipoCobro)
             }
 
 
-            //if ( ! EjecutaActualizaPedidoRTGM() )
-            //    throw new Exception("Ocurrió un error en GMGateway.");
-
-            //if (_URLGateway != string.Empty)
-            //    if (_listaReferenciaConciliadaPagos != null)
-            //        foreach (ReferenciaConciliadaPedido objPedido in _listaReferenciaConciliadaPagos)
-            //            if ( !objPedido.PedidoActualizaSaldoCRM(_URLGateway) )
-            //                throw new Exception("Ocurrio un error al actualizar saldo en CRM");
-
-           
             if (conexion.Comando.Transaction != null)
             {
                 conexion.Comando.Transaction.Commit();

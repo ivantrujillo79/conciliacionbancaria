@@ -5226,7 +5226,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     Convert.ToInt32(reader["Cobro"]),
                                                     Convert.ToString(reader["NumeroCheque"]),
                                                     _total,
-                                                    (reader["Saldo"] == System.DBNull.Value ? Convert.ToDecimal(0) : Convert.ToDecimal(reader["Saldo"])),
+                                                    (reader["SaldoAFavorCorregido"] == System.DBNull.Value ? Convert.ToDecimal(0) : Convert.ToDecimal(reader["SaldoAFavorCorregido"])),
                                                     Convert.ToString(reader["NumeroCuenta"]),
                                                     Convert.ToString(reader["NumeroCuentaDestino"]),
                                                     Convert.ToDateTime(reader["FCheque"]),
@@ -5253,6 +5253,7 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     Convert.ToDecimal(reader["ImporteComision"]),
                                                     Convert.ToDecimal(reader["IvaComision"]),
                                                     this.implementadorMensajes);
+                        dato.SaldoAFavor = dato.Saldo > 0;
                         datos.Add(dato);
 
 
