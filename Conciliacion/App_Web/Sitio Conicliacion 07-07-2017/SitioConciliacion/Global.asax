@@ -1,6 +1,10 @@
-﻿<%@ Application Language="C#" %>
+﻿
+
+<%@ Application Language="C#" %>
+
 
 <script runat="server">
+
     void Application_Start(object sender, EventArgs e)
     {
         // Código que se ejecuta al iniciarse la aplicación
@@ -27,6 +31,13 @@
 
     void Session_End(object sender, EventArgs e)
     {
+        //Borrar el archivo de viewstate
+        string filePath = Session["viewstateFilePath"] as string;
+        if (!string.IsNullOrEmpty(filePath) && System.IO.File.Exists(filePath))
+        {
+            System.IO.File.Delete(filePath);
+        }
+
         // Código que se ejecuta cuando finaliza una sesión. 
         // Nota: el evento Session_End se produce solamente con el modo sessionstate
         // se establece como InProc en el archivo Web.config. Si el modo de sesión se establece como StateServer

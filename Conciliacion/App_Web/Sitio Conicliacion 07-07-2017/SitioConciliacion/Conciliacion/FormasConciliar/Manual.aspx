@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Principal.master" AutoEventWireup="true"
-    CodeFile="Manual.aspx.cs" Inherits="Conciliacion_FormasConciliar_Manual" MaintainScrollPositionOnPostback="false" %>
+    CodeFile="Manual.aspx.cs" Inherits="Conciliacion_FormasConciliar_Manual" MaintainScrollPositionOnPostback="false" 
+    EnableViewState="true" ViewStateMode="Enabled"
+    %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Src="~/ControlesUsuario/BuscadorPagoEstadoCuenta/wucBuscadorPagoEstadoCuenta.ascx" TagPrefix="uc1" TagName="wucBuscadorPagoEstadoCuenta" %>
@@ -699,6 +701,7 @@
                     <ContentTemplate>
                         <div style="width:1200px; height:250px; overflow:auto;">
                             <asp:GridView ID="grvConciliadas" runat="server" 
+                                AutoPostBack="False" 
                                 AllowPaging='<%# ActivePaging %>' PageSize="5"
                                 AutoGenerateColumns="False" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
                             OnPageIndexChanging="grvConciliadas_PageIndexChanging" OnRowDataBound="grvConciliadas_RowDataBound"
@@ -973,10 +976,13 @@
 	                        </table>
                         </div>
 
+                        <%--<asp:HiddenField ID="hfvSFileName_" runat="server" />--%>
+
                         <div style="height:500px; width:600px; overflow:auto;">                            
-                            <asp:GridView ID="grvExternos" runat="server" 
+                            <asp:GridView ID="grvExternos"         
+                                runat="server"                                 
                                 AllowPaging='<%# ActivePaging %>' PageSize="10" 
-                                AutoGenerateColumns="False" ViewStateMode="Enabled"
+                                AutoGenerateColumns="False" 
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
                             OnSorting="grvExternos_Sorting" OnPageIndexChanging="grvExternos_PageIndexChanging">
@@ -986,6 +992,7 @@
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:CheckBox runat="server" ID="chkExterno" 
+                                            
                                             OnClick='<%# String.Concat("chkExterno_clic(this,", Eval("Deposito"), ",", Eval("Retiro"), ");") %>'
                                             OnCheckedChanged="chkExterno_CheckedChanged"
                                             AutoPostBack="True" Checked='<%# Bind("Selecciona") %>' />
@@ -1094,7 +1101,10 @@
                         </asp:GridView>                        
                         </div>
                         <asp:HiddenField ID="hfExternosSV" runat="server" />
+                        <asp:HiddenField ID="hfvSFileName_" runat="server" />
+                        <asp:HiddenField ID="HiddenField1" runat="server" />
                         <asp:HiddenField ID="hfExternosSH" runat="server" />
+
                     </td>
                     <td style="vertical-align: top" colspan="2">
                         <div id="configuracionInternosPedidos" class="bg-color-grisClaro">
@@ -1477,7 +1487,7 @@
 
     <asp:HiddenField runat="server" ID="hdfCerrarBuscar" />
     <asp:ModalPopupExtender ID="mpeBuscar" runat="server" BackgroundCssClass="ModalBackground"
-        DropShadow="False" EnableViewState="false" PopupControlID="pnlBuscar" TargetControlID="hdfCerrarBuscar"
+        DropShadow="False" PopupControlID="pnlBuscar" TargetControlID="hdfCerrarBuscar"
         CancelControlID="btnCerrarBuscar" BehaviorID="mpeBuscar">
     </asp:ModalPopupExtender>
     <asp:Panel ID="pnlBuscar" runat="server" CssClass="ModalPopup" Width="400px" Style="display: none">
@@ -1524,10 +1534,10 @@
             <%--No puede ser manejado desde JavaScript--%>
             <asp:HiddenField runat="server" ID="hdfCerrarDetalle" />
             <asp:ModalPopupExtender ID="mpeLanzarDetalle" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlDetalle" TargetControlID="hdfCerrarDetalle"
+                DropShadow="False" PopupControlID="pnlDetalle" TargetControlID="hdfCerrarDetalle"
                 CancelControlID="btnCerrarDetalle">
             </asp:ModalPopupExtender>
-            <asp:Panel ID="pnlDetalle" runat="server" CssClass="ModalPopup" EnableViewState="true"
+            <asp:Panel ID="pnlDetalle" runat="server" CssClass="ModalPopup" 
                 Width="1010px" Style="display: none">
                 <table style="width: 100%">
                     <tr class="bg-color-grisOscuro">
@@ -1684,7 +1694,7 @@
 
             <asp:HiddenField runat="server" ID="hdfStatusTransaccion" />
             <asp:ModalPopupExtender ID="mpeStatusTransaccion" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlStatusTransaccion"
+                DropShadow="False" PopupControlID="pnlStatusTransaccion"
                 TargetControlID="hdfStatusTransaccion" CancelControlID="btnCerrarCambiar">
             </asp:ModalPopupExtender>
             <asp:Panel ID="pnlStatusTransaccion" runat="server" CssClass="ModalPopup" Width="350px"
@@ -1751,7 +1761,7 @@
 
             <asp:HiddenField runat="server" ID="hdfCerrar" />
             <asp:ModalPopupExtender ID="mpeFiltrar" runat="server" BackgroundCssClass="ModalBackground"
-                DropShadow="False" EnableViewState="false" PopupControlID="pnlFiltrar" TargetControlID="hdfCerrar"
+                DropShadow="False" PopupControlID="pnlFiltrar" TargetControlID="hdfCerrar"
                 CancelControlID="btnCerrar">
             </asp:ModalPopupExtender>
             <asp:Panel ID="pnlFiltrar" runat="server" CssClass="ModalPopup" Width="500px" Style="display: none">
@@ -1965,7 +1975,7 @@
         BackgroundCssClass="ModalBackground" BehaviorID="ModalBehaviourInterno">
     </asp:ModalPopupExtender>
     <asp:Panel runat="server" ID="pnlVistaRapidaInterno" HorizontalAlign="Center" CssClass="ModalPopup"
-        EnableViewState="False" Style="display: none">
+        Style="display: none">
         <asp:UpdatePanel ID="upDetalleInterno" runat="server">
             <ContentTemplate>
                 <table style="width: 100%;">

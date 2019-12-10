@@ -82,10 +82,10 @@
       </siteMapNode>-->
       <siteMapNode title="Depositos y facturas Complemento" description="Depositos y facturas Complemento" resourceKey="3" url="~/ReportesConciliacion/DepositoFacturaComp.aspx">
       </siteMapNode>
-      
+      <!--
       <siteMapNode title="Consulta de saldos a favor" description="Consulta de saldos a favor" resourceKey="4" url="~/ReportesConciliacion/ConsultaSaldoAFavor.aspx">
       </siteMapNode>
-
+      -->
       <siteMapNode title="Informes" description="Informes" resourceKey="1" url="">
         <siteMapNode title="Posición diaria de bancos" description="Reporte posición diaria de bancos" resourceKey="27" url="~/ReportesConciliacion/PosicionDiariaBancos.aspx">
         </siteMapNode>
