@@ -250,7 +250,6 @@
         }
 
         function ConfirmarSaldoAFavor() {
-            
             var externo = document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoExterno').innerHTML.replace('$', '').replace(',', '').trim();
             var InternoPedido = document.getElementById('ctl00_contenidoPrincipal_lblMontoInterno').innerHTML.replace('$', '').replace(',', '').trim();
             if (externo === "0.00" || externo === "undefined" || InternoPedido === "0.00" || InternoPedido === "undefined") {
@@ -258,11 +257,11 @@
                 return false;
             }
             else {
-                var MontoSAF = parseFloat(externo).toFixed(2) - parseFloat(InternoPedido).toFixed(2);
-                var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
+                var MontoSAF = 1 * parseFloat(externo).toFixed(2) - parseFloat(InternoPedido).toFixed(2);
+                //var ValorParametro = document.getElementById('ctl00_contenidoPrincipal_hdfSaldoAFavor').value;
 
                 if ($('#<%= hdfEsPedido.ClientID %>').val() == "1") {
-                    if ( 1*parseFloat(MontoSAF.replace('$', '').replace(',', '').trim()).toFixed(2) > 0 ) {
+                    if ( MontoSAF > 0 ) {
                         alert('El monto depositado genera un saldo a favor por ' + MontoSAF);
                         document.getElementById('ctl00_contenidoPrincipal_hdfAceptaAplicarSaldoAFavor').value = 'Aceptado';
                     }

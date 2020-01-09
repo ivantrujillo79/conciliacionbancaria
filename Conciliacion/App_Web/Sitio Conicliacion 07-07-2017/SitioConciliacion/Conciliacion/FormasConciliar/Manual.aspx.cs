@@ -18,7 +18,7 @@ using System.Web.Services;
 using Locker;
 using SeguridadCB.Public;
 
-public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
+public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnArchivo //: System.Web.UI.Page 
 {
     Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
     #region "Propiedades Globales"
@@ -186,6 +186,8 @@ public partial class Conciliacion_FormasConciliar_Manual : System.Web.UI.Page
             else
             {
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios", @"Calendarios();", true);
+                LlenaGridViewConciliadas();
+                LlenaGridViewExternos();
             }
         }
         catch (SqlException ex)
