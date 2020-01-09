@@ -809,7 +809,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             decimal dSaldoAFavor = refExterna.Resto - refExterna.Diferencia;
             decimal minSaldoAFavor = Decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor"));
 
-            if (dSaldoAFavor > 0 && dSaldoAFavor > minSaldoAFavor)
+            if (dSaldoAFavor > 0) 
             {
                 conexion.AbrirConexion(false);
                 DetalleSaldoConciliacion DSC = new DetalleSaldoConciliacion();
@@ -820,7 +820,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 SaldoAFavor saldoAFavor = objApp.SaldoAFavor.CrearObjeto();
                 saldoAFavor.FolioMovimiento             = -1;
                 saldoAFavor.AñoMovimiento               = DateTime.Now.Year;
-                saldoAFavor.TipoMovimientoAConciliar    = 1;
+                if (dSaldoAFavor > minSaldoAFavor)
+                    saldoAFavor.TipoMovimientoAConciliar = 1;
+                else
+                    saldoAFavor.TipoMovimientoAConciliar = 4;
                 saldoAFavor.EmpresaContable             = 0;
                 saldoAFavor.Caja                        = 0;
                 saldoAFavor.FOperacion                  = DateTime.Now;
