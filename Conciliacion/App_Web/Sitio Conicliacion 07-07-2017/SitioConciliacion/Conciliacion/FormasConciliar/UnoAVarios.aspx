@@ -332,7 +332,7 @@
                 for (indice = 1; indice < grv.rows.length; indice++) {
                     if (grv.rows[indice].cells[1] != undefined) {
                         grv.rows[indice].cells[1].children[0].checked = chkVal;
-                        res = btnAgregarPedidoConciliacion(grv, indice);
+                        res = chkPedidoSeleccionado(grv, indice);
                         if (res == false) {
                             document.getElementById('ctl00_contenidoPrincipal_grvPedidos').rows[indice].cells[1].children[0].checked = false;
                             break;
@@ -350,8 +350,8 @@
                 }
             }
         }
-
-        function btnAgregarPedidoConciliacion(grid, fila) {
+        
+        function chkPedidoSeleccionado(grid, fila) {
             //debugger;
             dResto = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML);
             //var total = parseFloat(0).toFixed(2);
@@ -383,10 +383,9 @@
             }
 
             var dResto = 0.0;
-            sumapreconciliadas = dAgregados; //+ dChequeados;
+            sumapreconciliadas = dAgregados; // + dChequeados;
             if (parseFloat(dChequeados) > 0.01)
             {    
-                
                 //if (dChequeados < sumapreconciliadas) {                    
                 //    sumapreconciliadas = dChequeados;
                 //}
@@ -438,13 +437,13 @@
 
         var dAbonoSel;
         function ActualizaMonto(){
-            debugger;
+            //debugger;
             var dAbono = 0;
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
             //console.log(document.getElementById('<%= chkComision.ClientID %>').checked);
 
-            //document.getElementById('<%= txtComision.ClientID %>').visible = chkComisionActivado;
+
             if ($('#<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
@@ -455,19 +454,35 @@
 
             dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
-            //console.log(dComision);
-            //console.log(dAbono);
-            //PENDIENTE ACTUALIZAR VARIABLE SUMAPRE CONCILIADAS
-            var sumapreconciliadas = parseFloat(document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML.replace(',', '').replace('$', '').trim());
+
+
+            var sumapreconciliadas = 0.0;
+            if (document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos') != null) {
+                grvPreCon = document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos');
+                for (i = 0; i < grvPreCon.rows.length; i++) {
+                    if (grvPreCon.rows[i].cells[5] != undefined)
+                        sumapreconciliadas  = parseFloat(sumapreconciliadas) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
+                }
+            }
+            debugger;
+            var dChequeados = 0.0;
+            grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
+            for (i = 1; i < grv.rows.length; i++) {
+                if (grv.rows[i].cells[1] != undefined && grv.rows[i].cells[1].children[0].checked == true)
+                    dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$','').trim());
+            }
+
+            //AQUI
+            document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML =
+                currencyFormat(parseFloat(sumapreconciliadas) + parseFloat(dChequeados));
+
             var dResto = 0;
-            
-            document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML = currencyFormat(dAbono); //dAbono.toFixed(2);
+            document.getElementById('ctl00_contenidoPrincipal_lblAbono').innerHTML = currencyFormat(dAbono); 
             if (dAbono > 0)
                 dResto      = parseFloat(dAbono - sumapreconciliadas);
             if (dResto <= 0)
                 dResto      = 0;
-            document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = currencyFormat(dResto); //dResto.toFixed(2);            
-
+            document.getElementById('ctl00_contenidoPrincipal_lblResto').innerHTML = currencyFormat(dResto); 
         }
 
         function MuestraSaldoAFavor() {
@@ -2420,7 +2435,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:CheckBox runat="server" ID="chkPedido" OnClick="return btnAgregarPedidoConciliacion(this,this.parentNode.parentNode.rowIndex);" />
+                                            <asp:CheckBox runat="server" ID="chkPedido" OnClick="return chkPedidoSeleccionado(this,this.parentNode.parentNode.rowIndex);" />
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" BackColor="#ebecec"></ItemStyle>
                                         <HeaderStyle HorizontalAlign="Center" Width="20px"></HeaderStyle>

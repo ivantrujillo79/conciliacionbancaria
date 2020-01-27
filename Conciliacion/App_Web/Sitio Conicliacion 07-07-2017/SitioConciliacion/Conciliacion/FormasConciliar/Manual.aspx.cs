@@ -71,6 +71,19 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
     {
         get { return activaPaginacion(); }
     }
+    private int tamanopagina = 250;
+    public int TamanoPagina
+    {
+        get { return obtieneTamanoPagina(); }
+    }
+
+    public int obtieneTamanoPagina()
+    {
+        if (activaPaginacion())
+            return 10;
+        else
+            return 250;
+    }
 
     public bool activaPaginacion()
     {
@@ -82,7 +95,7 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
         activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "ESTADOPAGINADORES") == "1";
         if (usuario.Area == 8) //el usuario es de metropoli
             activar = parametros.ValorParametro(Convert.ToSByte(settings.GetValue("Modulo", typeof(sbyte))), "METROPOLIPAGINADORES") == "1";
-
+        
         return activar;
     }
 
@@ -186,8 +199,9 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
             else
             {
                 ScriptManager.RegisterStartupScript(this, typeof(Page), "Inicializarcalendarios", @"Calendarios();", true);
-                LlenaGridViewConciliadas();
+                LlenaGridViewArchivosInternos();
                 LlenaGridViewExternos();
+                LlenaGridViewConciliadas();
             }
         }
         catch (SqlException ex)
@@ -1086,13 +1100,13 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
         {
             if (Locker.LockerExterno.ExternoBloqueado != null && Locker.LockerExterno.ExternoBloqueado.Count > 0)
             {
-                 LockerExterno.ExternoBloqueado.Remove(
-                        Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
-                                                                    x.Sucursal == rfEx.Sucursal &&
-                                                                    x.Año == rfEx.Año &&
-                                                                    x.Folio == rfEx.Folio &&
-                                                                    x.Secuencia == rfEx.Secuencia).ToList()[0]
-                     );
+                LockerExterno.ExternoBloqueado.Remove(
+                       Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(x => x.Corporativo == rfEx.Corporativo &&
+                                                                   x.Sucursal == rfEx.Sucursal &&
+                                                                   x.Año == rfEx.Año &&
+                                                                   x.Folio == rfEx.Folio &&
+                                                                   x.Secuencia == rfEx.Secuencia).ToList()[0]
+                    );
             }
         }
         catch (Exception)
@@ -1872,8 +1886,13 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
                     x.Folio == folioExterno &&
                     x.Secuencia == secuenciaExterno);
 
+            short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
             string status = tranDesconciliar.StatusMovimiento;
-            if (status.CompareTo("APLICADO") != 0)
+            if (objSolicitdConciliacion.ConsultaArchivo() || objSolicitdConciliacion.ConsultaPedido() && status.CompareTo("APLICADO") != 0) 
             {
                 tranDesconciliar.DesConciliar();
                 Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio, Convert.ToInt32(ddlCriteriosConciliacion.SelectedValue));

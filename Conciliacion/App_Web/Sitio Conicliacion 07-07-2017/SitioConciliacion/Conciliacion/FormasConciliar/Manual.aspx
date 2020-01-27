@@ -701,6 +701,7 @@
                     <ContentTemplate>
                         <div style="width:1200px; height:250px; overflow:auto;">
                             <asp:GridView ID="grvConciliadas" runat="server" 
+                                ViewStateMode="Disabled" EnableViewState="false"
                                 AutoPostBack="False" 
                                 AllowPaging='<%# ActivePaging %>' PageSize="5"
                                 AutoGenerateColumns="False" Width="100%" CssClass="grvResultadoConsultaCss" ShowHeaderWhenEmpty="True"
@@ -980,8 +981,9 @@
 
                         <div style="height:500px; width:600px; overflow:auto;">                            
                             <asp:GridView ID="grvExternos"         
-                                runat="server"                                 
-                                AllowPaging='<%# ActivePaging %>' PageSize="10" 
+                                runat="server"          
+                                ViewStateMode="Disabled" EnableViewState="false"
+                                AllowPaging="true" PageSize='<%# TamanoPagina %>' 
                                 AutoGenerateColumns="False" 
                             OnRowDataBound="grvExternos_RowDataBound" ShowHeaderWhenEmpty="True" Width="100%"
                             DataKeyNames="Secuencia,Folio" AllowSorting="True" CssClass="grvResultadoConsultaCss"
@@ -1273,7 +1275,8 @@
                         </div>
                         <div style="height:500px; width:590px; overflow:auto;">
                             <asp:GridView ID="grvInternos" runat="server" 
-                                AllowPaging='<%# ActivePaging %>' PageSize="10"
+                                ViewStateMode="Disabled" EnableViewState="false"
+                                AllowPaging="true" PageSize='<%# TamanoPagina %>' 
                                 AutoGenerateColumns="False" ShowHeader="True"
                                 CssClass="grvResultadoConsultaCss" AllowSorting="True"
                                 OnRowDataBound="grvInternos_RowDataBound" 
