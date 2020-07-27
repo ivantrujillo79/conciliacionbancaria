@@ -1353,9 +1353,10 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
                 else
                 {
                     decimal saldoDeposito = this.Deposito + this.Comision;
+                    decimal SumaComision = this.Comision;
                     foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
                     {
-
+                        referen.MontoConciliado = referen.Total;
                         if (saldoDeposito < 0)
                             referen.MontoConciliado = 0;
                         else
@@ -1367,12 +1368,78 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
                         referen.TipoCobro = this.TipoCobro;
                         referen.TipoCobroAnterior = this.TipoCobroAnterior;
+
+                        referen.AplicaComision = SumaComision > 0;
+                        SumaComision = SumaComision - referen.Total;
+                        if (SumaComision < 0)
+                            SumaComision = 0;
+
                         referen.Guardar();
 
                         saldoDeposito = saldoDeposito - referen.Total;
 
                         if (this.FormaConciliacion == 9)
                             referen.Total = Math.Abs(saldoDeposito);
+
+                        this.Completo = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+                this.Completo = false;
+                throw (ex);
+            }
+
+
+            return resultado;
+        }
+
+        public bool GuardarReferenciaConciliadaVariosAUno()
+        {
+            bool resultado = true;
+            try
+            {
+                if (this.coninterno)
+                {
+                    Usuario usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
+                    foreach (ReferenciaConciliada referen in this.ListaReferenciaConciliada)
+                    {
+                        if (referen.SucursalInterno == null || referen.SucursalInterno == 0)
+                        {
+                            referen.SucursalInterno = this.sucursal;
+                        }
+                        referen.TipoCobro = this.TipoCobro;
+                        referen.TipoCobroAnterior = this.TipoCobroAnterior;
+                        referen.Usuario = usuario.IdUsuario;
+                        referen.Guardar();
+                        this.Completo = true;
+                    }
+                }
+                else
+                {
+                    //decimal saldoDeposito = this.Deposito + this.Comision;
+                    foreach (ReferenciaConciliadaPedido referen in this.ListaReferenciaConciliada)
+                    {
+                        //referen.MontoConciliado = referen.Total;
+                        //if (saldoDeposito < 0)
+                        //    referen.MontoConciliado = 0;
+                        //else
+                        //if (saldoDeposito > referen.Total)
+                        //    referen.MontoConciliado = referen.Total;
+                        //else
+                        //if (saldoDeposito < referen.Total)
+                        //    referen.MontoConciliado = saldoDeposito;
+
+                        referen.TipoCobro = this.TipoCobro;
+                        referen.TipoCobroAnterior = this.TipoCobroAnterior;
+                        referen.Guardar();
+
+                        //saldoDeposito = saldoDeposito - referen.Total;
+
+                        //if (this.FormaConciliacion == 9)
+                        //    referen.Total = Math.Abs(saldoDeposito);
 
                         this.Completo = true;
                     }

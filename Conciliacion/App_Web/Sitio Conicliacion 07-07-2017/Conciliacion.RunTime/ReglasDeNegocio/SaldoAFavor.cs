@@ -39,6 +39,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int folioexterno;
         private int secuenciaexterno;
         private int cliente;            // RM-29/05/2018, se agrega el miembro cliente
+        private bool defactoraje;
 
         public SaldoAFavor(MensajesImplementacion implementadorMensajes)
         {
@@ -295,6 +296,8 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         public abstract bool RegistrarCobro(Conexion _conexion);
         
         public abstract bool ExisteExterno(Conexion _conexion);
+
+        public abstract bool AgregarCobro(Conexion _conexion);
 
         public virtual string CadenaConexion
         {

@@ -1115,6 +1115,11 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
         try
         {
             if (!e.CommandName.Equals("DESCONCILIAR")) return;
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = ObtieneFormaConciliacion();
+
             Button imgDesconciliar = e.CommandSource as Button;
             GridViewRow gRowConciliado = (GridViewRow)(imgDesconciliar).Parent.Parent;
 
@@ -1138,7 +1143,8 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
                      x.Secuencia == secuenciaEx);
 
             string status = tranDesconciliar.StatusMovimiento;
-            if (status.CompareTo("APLICADO") != 0)
+            
+            if (objSolicitdConciliacion.ConsultaArchivo() || status.CompareTo("APLICADO") != 0)
             {
                 tranDesconciliar.DesConciliar();
                 //Leer Variables URL 
@@ -1419,6 +1425,11 @@ public partial class Conciliacion_FormasConciliar_CantidadConcuerda : System.Web
     }
     protected void imgAutomatica_Click(object sender, ImageClickEventArgs e)
     {
+        if (ddlCriteriosConciliacion.Text == "9")
+        {
+            objApp.ImplementadorMensajes.MostrarMensaje("Esta forma de conciliacion No esta disponible.");
+            return;
+        }
         //Leer Variables URL 
         cargarInfoConciliacionActual();
 

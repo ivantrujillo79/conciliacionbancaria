@@ -361,8 +361,8 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
             }
 
             TablaPagosPadre = objAC.Pagos;
-            
 
+            calcular();
         }
         catch (Exception ex)
         {
@@ -633,7 +633,7 @@ public partial class ControlesUsuario_AreasComunes_areascomunes : System.Web.UI.
             //    objRCP.TipoCobro = Convert.ToInt32(filaTabla["IdTipoCobro"]);
             //    objRCP.Guardar2(conexion);
             //}
-          // throw new Exception("Hola");
+            //throw new Exception("Hola");
             conexion.CommitTransaction();
         }
         catch (Exception ex)

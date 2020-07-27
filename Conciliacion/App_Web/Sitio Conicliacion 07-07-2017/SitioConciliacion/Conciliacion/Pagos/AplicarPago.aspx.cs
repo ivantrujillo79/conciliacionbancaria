@@ -128,6 +128,8 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
             }
             if (!Page.IsPostBack)
             {
+                limpiarVariablesSession();
+
                 usuario = (SeguridadCB.Public.Usuario)HttpContext.Current.Session["Usuario"];
                 parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
 
@@ -229,6 +231,18 @@ public partial class Conciliacion_Pagos_AplicarPago : System.Web.UI.Page
     }
 
     #endregion
+
+    public void limpiarVariablesSession()
+    {
+        HttpContext.Current.Session["MovimientoCaja"] = null;
+        HttpContext.Current.Session["MovimientoCaja"] = null;
+        HttpContext.Current.Session["LIST_REF_PAGAR"] = null;
+        HttpContext.Current.Session["CONCILIAR_PAGOS"] = null;
+        HttpContext.Current.Session["TAB_REF_PAGAR"] = null;
+        ViewState["TAB_REF_PAGAR"] = null; 
+        ViewState["LISTAENTREGA"] = null;
+        ViewState["LISTACLIENTES"] = null;
+    }
 
     #region Funciones Privadas
     //Cargar InfoConciliacion Actual
@@ -1534,32 +1548,35 @@ private string TipoCobroDescripcion(int tipoCobro)
                             objSaldoAFavor.Cobro = 0;
                             foreach (Cobro icobro in objMovimientoCaja.ListaCobros)
                             {
-                                foreach (ReferenciaConciliadaPedido iRefConPed in icobro.ListaPedidos)
-                                {
-                                    if (iRefConPed.Corporativo == referencia.Corporativo &&
-                                       iRefConPed.Sucursal == referencia.Sucursal &&
-                                       iRefConPed.Año == referencia.Año &&
-                                       iRefConPed.Folio == referencia.Folio &&
-                                       iRefConPed.Secuencia == referencia.Secuencia)
+                                if (icobro.TipoCobro != 23)
+                                { 
+                                    foreach (ReferenciaConciliadaPedido iRefConPed in icobro.ListaPedidos)
                                     {
-                                        objSaldoAFavor.AñoCobro = icobro.AñoCobro;
-                                        objSaldoAFavor.Cobro = icobro.NumCobro;
-                                        break;
+                                        if (iRefConPed.Corporativo == referencia.Corporativo &&
+                                           iRefConPed.Sucursal == referencia.Sucursal &&
+                                           iRefConPed.Año == referencia.Año &&
+                                           iRefConPed.Folio == referencia.Folio &&
+                                           iRefConPed.Secuencia == referencia.Secuencia)
+                                        {
+                                            objSaldoAFavor.AñoCobro = icobro.AñoCobro;
+                                            objSaldoAFavor.Cobro = icobro.NumCobro;
+                                            break;
+                                        }
                                     }
                                 }
                             }
 
                             if (objSaldoAFavor.ExisteExterno(conexion))
-                            {
+                            { 
                                 objSaldoAFavor.RegistrarCobro(conexion);
                             }
+
                         }
                     }
                 }
                 else
                     throw new Exception("Error al aplicar el pago de los pedidos, por favor verifique.");
             }
-
 
             if (movimientoCajaAlta.StatusAltaMC == StatusMovimientoCaja.Validado)
             {
@@ -1572,6 +1589,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                 objFacturasComplemento.Guardar(conexion);
             }
 
+  //throw new Exception("PRUEBA");
 
             if (conexion.Comando.Transaction != null)
             {
@@ -1599,7 +1617,6 @@ private string TipoCobroDescripcion(int tipoCobro)
             
         }
     }
-
 
     //private bool EjecutaActualizaPedidoRTGM()
     //{

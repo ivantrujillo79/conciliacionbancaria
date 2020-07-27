@@ -158,7 +158,13 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         Response.Expires = -1;
         Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0
 
-        objControlPostBack = GetPostBackControlId(this.Page);
+        //objApp.ImplementadorMensajes.MostrarMensaje("Esta forma de conciliacion No esta disponible.");
+        //Response.Redirect("~/Inicio.aspx", true);
+
+            
+
+
+            objControlPostBack = GetPostBackControlId(this.Page);
         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvInternos";
         objApp.ImplementadorMensajes.ContenedorActual = this;
         hdfSaldoAFavor.Value = decimal.Parse(parametros.ValorParametro(30, "MinimoSaldoAFavor")).ToString().Replace("$", "").Trim();
@@ -354,6 +360,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             else
                 btnFiltraCliente.Visible = false;
 
+            //throw new Exception("Esta forma de conciliacion No esta disponible.");
+
+
         }
         catch (SqlException ex)
         {
@@ -367,6 +376,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         catch (Exception ex)
         {
             objApp.ImplementadorMensajes.MostrarMensaje("Error:\n" + ex.Message);
+
+            Response.Redirect("~/Inicio.aspx", true);
+
         }
     }
 
@@ -1369,6 +1381,9 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
                     //}
                 }
                 usuario = (Usuario)HttpContext.Current.Session["Usuario"];
+                decimal dSaldoAFavor = decimal.Parse(lblMontoAcumuladoExterno.Text.Replace("$", "").Replace(",", "")) - decimal.Parse(lblMontoInterno.Text.Replace("$", "").Replace(",", ""));
+                extSeleccionados[0].ListaReferenciaConciliada[0].MontoConciliado = 
+                    extSeleccionados[0].ListaReferenciaConciliada[0].MontoConciliado - dSaldoAFavor;
                 foreach (ReferenciaNoConciliada ex in extSeleccionados)
                 {
                     if (objSolicitdConciliacion.ConsultaPedido())
@@ -1384,7 +1399,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
 
                     ex.ListaReferenciaConciliada.ForEach(x => x.Usuario = usuario.IdUsuario);
                     
-                    if (ex.GuardarReferenciaConciliada())
+                    if (ex.GuardarReferenciaConciliadaVariosAUno())
                     {
                         if (hdfEsPedido.Value == "1")
                         {
@@ -3485,7 +3500,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
             grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
             if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
             {
-                dtPedidos = wucBuscaClientesFacturas.BuscaCliente();
+                dtPedidos = wucBuscaClientesFacturas.BuscaCliente(corporativo, sucursal, mes, año, folio);
                 dvExpera.Visible = grvPedidos.Rows.Count == 0;//RRV
                 if (dtPedidos.Rows.Count == 0) return;
                 List<int> listadistintos = new List<int>();
@@ -3562,7 +3577,7 @@ public partial class Conciliacion_FormasConciliar_VariosAUno : System.Web.UI.Pag
         try
         {
             conexion.AbrirConexion(false);
-            dtPedidos = obCliente.ObtienePedidosCliente(cliente, conexion);
+            dtPedidos = obCliente.ObtienePedidosCliente(cliente, corporativo, sucursal, mes, año, folio, conexion);
 
             HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtPedidos;
             HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = dtPedidos;

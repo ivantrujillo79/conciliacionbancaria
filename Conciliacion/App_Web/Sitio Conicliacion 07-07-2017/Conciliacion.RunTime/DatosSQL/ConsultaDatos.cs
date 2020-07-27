@@ -207,9 +207,8 @@ namespace Conciliacion.RunTime.DatosSQL
             return lstClientes;
         }
 
-        public override DataTable CBPedidosPorFactura(string SerieFactura)
-        {
-            
+        public override DataTable CBPedidosPorFactura(string SerieFactura, int Corporativo, int Sucursal, int Mes, int Año, int FolioConciliacion)
+        {    
             DataTable dtResultados = null;
             SeguridadCB.Public.Parametros parametros;
             parametros = (SeguridadCB.Public.Parametros)HttpContext.Current.Session["Parametros"];
@@ -223,6 +222,11 @@ namespace Conciliacion.RunTime.DatosSQL
                     cnn.Open();
                     SqlCommand comando = new SqlCommand("spCBPedidosPorFactura", cnn);
                     comando.Parameters.Add("@SerieFactura", System.Data.SqlDbType.VarChar).Value = SerieFactura;
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.VarChar).Value = Corporativo;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.VarChar).Value = Sucursal;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.VarChar).Value = Mes;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.VarChar).Value = Año;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.VarChar).Value = FolioConciliacion;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
 
                     DataSet ds = new DataSet();
@@ -271,7 +275,7 @@ namespace Conciliacion.RunTime.DatosSQL
             return dtResultados;
         }
 
-        public override DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia)
+        public override DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia, int Corporativo, int Sucursal, int Mes, int Año, int FolioConciliacion)
         {
             
             DataTable dtResultados = null;
@@ -291,6 +295,11 @@ namespace Conciliacion.RunTime.DatosSQL
                     else
                         comando = new SqlCommand("spCBPedidosPorPedidoReferencia", cnn);
                     comando.Parameters.Add("@PedidoReferencia", System.Data.SqlDbType.VarChar).Value = PedidoReferencia;
+                    comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.VarChar).Value = Corporativo;
+                    comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.VarChar).Value = Sucursal;
+                    comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.VarChar).Value = Mes;
+                    comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.VarChar).Value = Año;
+                    comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.VarChar).Value = FolioConciliacion;
                     comando.CommandType = System.Data.CommandType.StoredProcedure;
 
                     DataSet ds = new DataSet();
@@ -5255,8 +5264,6 @@ namespace Conciliacion.RunTime.DatosSQL
                                                     this.implementadorMensajes);
                         dato.SaldoAFavor = dato.Saldo > 0;
                         datos.Add(dato);
-
-
 
                     }
                 }

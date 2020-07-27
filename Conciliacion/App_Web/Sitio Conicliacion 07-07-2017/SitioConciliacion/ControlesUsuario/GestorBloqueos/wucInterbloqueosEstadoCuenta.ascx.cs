@@ -207,32 +207,29 @@ public partial class ControlesUsuario_GestorBloqueos_wucInterbloqueosEstadoCuent
                 Seleccionados = Seleccionados+1;
             }
         }
-
-
-
+        
         if (Seleccionados >0)
         {
-                CheckBox chk = (sender as CheckBox);
+            CheckBox chk = (sender as CheckBox);
             foreach (
                    GridViewRow fila in
                        grdBloqueos.Rows.Cast<GridViewRow>()
                                                     .Where(fila => fila.RowType == DataControlRowType.DataRow))
             {
-
                 if (fila.Cells[0].Controls.OfType<CheckBox>().FirstOrDefault().Checked == true)
                 {
                     if (Locker.LockerExterno.ExternoBloqueado != null)
                     {
                         int J = Locker.LockerExterno.ExternoBloqueado.Count;
-                        for (int i = 0; i <= J-1; i++)
-                        {
-                            Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == fila.Cells[1].Text).ToList()[0]);
-                        }
+                        //for (int i = 0; i <= J - 1; i++)
+                        //{
+                            //if (fila.Cells[1].Text == )
+                            Locker.LockerExterno.ExternoBloqueado.Remove(Locker.LockerExterno.ExternoBloqueado.
+                                Where<Locker.RegistroExternoBloqueado>(s => s.SessionID == fila.Cells[1].Text && s.Año.ToString() == fila.Cells[4].Text && s.Folio.ToString() == fila.Cells[5].Text && s.Secuencia.ToString() == fila.Cells[6].Text).ToList()[0]);
+                        //}
                     }
                 }
-
             }
-
             grdBloqueos.DataSource = CargaBloqueos();
             grdBloqueos.DataBind();
         }

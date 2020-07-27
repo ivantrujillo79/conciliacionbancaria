@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Data.SqlClient;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Web.Security;
 
 public partial class Inicio : System.Web.UI.Page
 {
@@ -48,6 +50,15 @@ public partial class Inicio : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+
+
+        //var json = JsonConvert.SerializeObject("Hola");
+        //var ticket = new FormsAuthenticationTicket(1, "prueba", DateTime.Now, DateTime.Now.AddHours(2), true, json);
+        //var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
+        //cookie.Domain = "Concilia";//This should be parent Domain not Sub Domain. even if there is setting in your Web.Config you need to specify this  
+        
+        //Response.Cookies.Add(cookie);
+
 
         try
         {

@@ -31,6 +31,28 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
     private List<int> listaClientes = new List<int>();
     private string _URLGateway;
     Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
+    private int corporativo;
+    private int sucursal;
+    private int mes;
+    private int año;
+    private int folioconciliacion;
+
+    public int Corporativo {
+        get { return corporativo; } set { corporativo = value; }
+    }
+    public int Sucursal {
+        get { return sucursal; } set { sucursal = value; }
+    }
+    public int Mes {
+        get { return mes; } set { mes = value; }
+    }
+    public int Año {
+        get { return año; } set { año = value; }
+    }
+    public int FolioConciliacion {
+        get { return folioconciliacion; }
+        set { folioconciliacion = value; }
+    }
 
     public string Cliente {
         get { return txtCliente.Text.Trim(); }
@@ -140,7 +162,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         }
     }
 
-    public DataTable BuscaCliente()
+    public DataTable BuscaCliente(int corporativo, int sucursal, int mes, int año, int folioconciliacion)
     {
         try
         {
@@ -154,7 +176,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
                 Conexion conexion = new Conexion();
                 conexion.AbrirConexion(true);
 
-                dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt64(NumeroClienteFiltrar), conexion);
+                dtClientePedidos = cliente.ObtienePedidosCliente(Convert.ToInt64(NumeroClienteFiltrar), corporativo, sucursal, mes, año, folioconciliacion, conexion);
             }
 
             return dtClientePedidos;
@@ -182,7 +204,7 @@ public partial class ControlesUsuario_BuscadorClienteFactura_wucBuscaClientesFac
         DataTable tbPedidosPorFactura = null;
         if (NumeroFactura != string.Empty)
         { 
-            tbPedidosPorFactura = objApp.Consultas.CBPedidosPorFactura(NumeroFactura);
+            tbPedidosPorFactura = objApp.Consultas.CBPedidosPorFactura(NumeroFactura, Corporativo, Sucursal, Mes, Año, FolioConciliacion);
             if (Session["TABLADEAGREGADOS"] != null && tbPedidosPorFactura.Rows.Count > 0)
             {   //quita pedidos que ya estan en el grid de preconciliados
                 GridView grvAgregados = (GridView)Session["TABLADEAGREGADOS"];

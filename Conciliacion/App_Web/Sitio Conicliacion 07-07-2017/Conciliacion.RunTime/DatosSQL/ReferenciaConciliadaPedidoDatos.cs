@@ -175,6 +175,8 @@ namespace Conciliacion.RunTime.DatosSQL
                     {
                         comando.Parameters.Add("@IvaComision", System.Data.SqlDbType.Money).Value = this.IVAComision;
                     }
+                    comando.Parameters.Add("@AplicaComision", System.Data.SqlDbType.Bit).Value = this.AplicaComision;
+
                     if (this.TipoCobro == 0) //Si el usuario no selecciono nada, 
                         this.TipoCobro = 10; //se asigna el primer elemento del dropdownlist
                     //if (this.TipoCobroAnterior == 0) //Si el usuario no selecciono nada, 

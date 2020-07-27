@@ -42,6 +42,7 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         private int tipoCobroAnterior;
         int clientePadre;
         String _iDPedidoCRM;
+        bool aplicaComision;
 
         //decimal saldodeposito;
 
@@ -343,6 +344,12 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
         {
             get { return tipoCobroAnterior; }
             set { tipoCobroAnterior = value; }
+        }
+
+        public bool AplicaComision
+        {
+            get { return aplicaComision; }
+            set { aplicaComision = value; }
         }
 
         //public decimal SaldoDeposito

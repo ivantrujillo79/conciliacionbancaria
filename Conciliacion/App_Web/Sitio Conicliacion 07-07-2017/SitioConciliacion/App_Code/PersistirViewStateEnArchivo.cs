@@ -23,6 +23,7 @@ public class PersistirViewStateEnArchivo : System.Web.UI.Page
 		// TODO: Add constructor logic here
 		//
 	}
+
     protected override void SavePageStateToPersistenceMedium(object state)
     {
         LosFormatter los = new LosFormatter();
@@ -33,7 +34,7 @@ public class PersistirViewStateEnArchivo : System.Web.UI.Page
         w.Write(sw.ToString());
         w.Close();
         sw.Close();
-    
+
     }
 
     protected override object LoadPageStateFromPersistenceMedium()
@@ -53,7 +54,6 @@ public class PersistirViewStateEnArchivo : System.Web.UI.Page
             return los.Deserialize(viewStateString);
         }
     }
-
 
     public string ViewStateFilePath
     {

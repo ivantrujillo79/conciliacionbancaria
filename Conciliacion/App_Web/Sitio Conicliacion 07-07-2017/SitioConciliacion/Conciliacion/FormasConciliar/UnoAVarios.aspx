@@ -442,36 +442,48 @@
             var dComision = 0;
             var chkComisionActivado = document.getElementById('<%= chkComision.ClientID %>').checked;
             //console.log(document.getElementById('<%= chkComision.ClientID %>').checked);
-
-
+            //debugger;
+            dComision = 0;
             if ($('#<%= txtComision.ClientID %>').value == "")
                 dComision = 0;
             else
-            if (chkComisionActivado)
-                dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
+                if (chkComisionActivado) {
+                    if (document.getElementById('<%= txtComision.ClientID %>').value == "") {
+                        document.getElementById('<%= txtComision.ClientID %>').innerHTML == "0";
+                        dComision = 0;
+                    }
+                    else
+                        dComision = parseFloat(document.getElementById('<%= txtComision.ClientID %>').value);
+            }
             else
                 dComision = 0;
 
             dAbono = parseFloat(document.getElementById('<%= hdfAbonoSeleccionado.ClientID %>').value);
             dAbono = parseFloat(dAbono) + parseFloat(dComision);
 
-
             var sumapreconciliadas = 0.0;
             if (document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos') != null) {
                 grvPreCon = document.getElementById('ctl00_contenidoPrincipal_grvAgregadosPedidos');
-                for (i = 0; i < grvPreCon.rows.length; i++) {
-                    if (grvPreCon.rows[i].cells[5] != undefined)
-                        sumapreconciliadas  = parseFloat(sumapreconciliadas) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$','').trim());
+                if (grvPreCon.rows != null) {
+                    for (i = 0; i < grvPreCon.rows.length; i++) {
+                        if (grvPreCon.rows[i].cells[5] != undefined)
+                            sumapreconciliadas = parseFloat(sumapreconciliadas) + parseFloat(grvPreCon.rows[i].cells[5].innerText.replace(',', '').replace('$', '').trim());
+                    }
                 }
+                else console.log("grvAgregadosPedidos.rows null");
             }
-            debugger;
+            else console.log("grvAgregadosPedidos null");
+
             var dChequeados = 0.0;
             grv = document.getElementById('ctl00_contenidoPrincipal_grvPedidos');
-            for (i = 1; i < grv.rows.length; i++) {
-                if (grv.rows[i].cells[1] != undefined && grv.rows[i].cells[1].children[0].checked == true)
-                    dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$','').trim());
+            if (grv != null) {
+                if (grv.rows != null) {
+                    for (i = 1; i < grv.rows.length; i++) {
+                        if (grv.rows[i].cells[1] != undefined && grv.rows[i].cells[1].children[0].checked == true)
+                            dChequeados = parseFloat(dChequeados) + parseFloat(grv.rows[i].cells[3].innerText.replace(',', '').replace('$', '').trim());
+                    }
+                }
             }
-
             //AQUI
             document.getElementById('ctl00_contenidoPrincipal_lblMontoAcumuladoInterno').innerHTML =
                 currencyFormat(parseFloat(sumapreconciliadas) + parseFloat(dChequeados));
@@ -674,7 +686,7 @@
         }
 
         function ConfirmarSaldoAFavor() {
-            debugger;
+            //debugger;
             var numAgregados = document.getElementById('ctl00_contenidoPrincipal_lblAgregadosInternos').innerHTML
             if (numAgregados === "0" || numAgregados  === "undefined") {
                 alert("No se ha agregado ninguna referencia interna.");

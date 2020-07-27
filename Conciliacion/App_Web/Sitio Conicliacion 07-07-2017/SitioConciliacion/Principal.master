@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" Debug="true" CodeFile="Principal.master.cs"
+﻿    <%@ Master Language="C#" AutoEventWireup="true" Debug="true" CodeFile="Principal.master.cs"
     Inherits="Principal" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -78,7 +78,7 @@
         </div>
         <div id="piePagina">
             <asp:Label ID="lblInformacion" runat="server" Width="100%" CssClass="etiqueta fg-color-blanco"></asp:Label>
-            <asp:Label runat="server" ID="lblVersion" Text="   Ver. 2.5.215"  CssClass="etiqueta fg-color-blanco"></asp:Label>
+            <asp:Label runat="server" ID="lblVersion" Text="   Ver. 2.5.237"  CssClass="etiqueta fg-color-blanco"></asp:Label>
         </div>
     </div>
     </form>

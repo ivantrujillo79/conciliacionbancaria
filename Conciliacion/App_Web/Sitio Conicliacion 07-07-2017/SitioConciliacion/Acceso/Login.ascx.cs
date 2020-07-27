@@ -20,6 +20,7 @@ public partial class Acceso_Login : System.Web.UI.UserControl
         //Conciliacion.RunTime.App.ImplementadorMensajes.ContenedorActual = this;
         objApp.ImplementadorMensajes.ContenedorActual = this;
         Page.ClientScript.RegisterOnSubmitStatement(this.GetType(), "ValidaEnvio", "return ValidaEnvio();");
+        
     }
     #region "Variables globales"
     string servidor = string.Empty, baseDatos = string.Empty, modulo = string.Empty;
@@ -141,10 +142,10 @@ public partial class Acceso_Login : System.Web.UI.UserControl
         else
             this.seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
         if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
-            cn.ConnectionString = "Application Name = Conciliación Bancaría" + " v.1.0.0.0" + "; Data Source = " + this.servidor + "; Initial Catalog = " +
+            cn.ConnectionString = "Application Name = Conciliacion Bancaria" + " v.1.0.0.0" + "; Data Source = " + this.servidor + "; Initial Catalog = " +
             this.baseDatos + "; User ID = " + this.txtUsuario.Text.Trim() + "; Integrated Security = SSPI";
         else
-            cn.ConnectionString = "Application Name = " + "; Data Source = " + this.servidor + "; Initial Catalog = " +
+            cn.ConnectionString = "Application Name = Conciliacion Bancaria" + "; Data Source = " + this.servidor + "; Initial Catalog = " +
             this.baseDatos + "; User ID = " + this.txtUsuario.Text.Trim() + "; Password = " + this.txtClave.Text.Trim();
 
         Conciliacion.Migracion.Runtime.App.CadenaConexion = cn.ConnectionString;

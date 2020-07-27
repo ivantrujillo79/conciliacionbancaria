@@ -9,6 +9,8 @@ using System.Diagnostics;
 using RTGMGateway;
 using System.Configuration;
 using System.Web;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Conciliacion.RunTime.DatosSQL
 {    
@@ -183,24 +185,123 @@ namespace Conciliacion.RunTime.DatosSQL
             }
             return resultado;
         }*/
-        
+
+
+
         public override bool AplicarCobros(Conexion _conexion, short tipoConciliacion)
         {
             bool resultado = false;
             bool EsVariosAUno = false;
+            bool Factoraje = false;
             try
             {
                 List<Cobro> Cobros = this.ListaCobros;
-                // decimal AplicadoAPedido = 0;
+                List<Cobro> ListaCobroDuplicados = new List<Cobro>();
                 List<ReferenciaConciliadaPedido> PedidosActualizaSaldo = new List<ReferenciaConciliadaPedido>();
+                //Cobro cobroduplicado = null;
+                short TipoCobroFactoraje = 23;
+                decimal Comision;
+                List<ReferenciaConciliadaPedido> lstpedidosComsion = new List<ReferenciaConciliadaPedido>();
 
+                decimal SumaComision = Cobros.Sum(x => x.ImporteComision+x.IvaComision);
+                if (SumaComision > 0)
+                {
+                    foreach (Cobro Cobro in Cobros)
+                    {
+                        Comision = Cobro.ImporteComision + Cobro.IvaComision;
+                        Factoraje = Comision > 0;
+                        if (Factoraje)
+                        {
+                            decimal totalComision = Cobro.ImporteComision + Cobro.IvaComision;
+                            Cobro.Total = Cobro.Total - totalComision;
+                            Cobro.ImporteComision = 0;
+                            Cobro.IvaComision = 0;
+
+                            lstpedidosComsion.Clear();
+                            Cobro.ListaPedidos = Cobro.ListaPedidos.OrderBy(x => x.FMovimiento).ToList();
+
+                            foreach (ReferenciaConciliadaPedido o in Cobro.ListaPedidos)
+                            {
+                                lstpedidosComsion.Add(
+                                    new ReferenciaConciliadaPedidoDatos(o.Corporativo, o.Sucursal, o.MesConciliacion, o.FolioConciliacion,
+                                    o.Sucursal, o.SucursalDes, o.Folio, o.Secuencia, o.Concepto, o.MontoConciliado,
+                                    o.Diferencia, o.FormaConciliacion, o.StatusConcepto, o.StatusConciliacion, o.FOperacion,
+                                    o.FMovimiento, o.Cheque, o.Referencia, o.Descripcion,
+                                    o.NombreTercero, o.RFCTercero, o.Deposito, o.Retiro, o.SucursalPedido,
+                                    o.SucursalPedidoDes, o.CelulaPedido, o.AñoPedido, o.Pedido, o.RemisionPedido, o.SeriePedido, o.FolioSat,
+                                    o.SerieSat, o.ConceptoPedido, o.Total, o.StatusMovimiento, o.Cliente, o.Nombre,
+                                    o.Año, o.ImplementadorMensajes));
+                            }
+
+                            decimal sumCobroTotales = 0;
+                            int desde = 0;
+                            for (int i = 0; i < lstpedidosComsion.Count; i++)
+                            {
+                                desde = i + 1;
+                                sumCobroTotales = sumCobroTotales + lstpedidosComsion[i].Total;
+                                if (sumCobroTotales > Comision)
+                                    break;
+                            }
+                            lstpedidosComsion.RemoveRange(desde, lstpedidosComsion.Count - desde);
+
+                            decimal TotalCobroPedido = Comision;
+                            foreach (ReferenciaConciliadaPedido c in lstpedidosComsion)
+                            {
+                                if (TotalCobroPedido <= c.Total)
+                                {
+                                    c.Total = TotalCobroPedido;
+                                    c.MontoConciliado = TotalCobroPedido;
+                                    for (int i = 0; i < Cobro.ListaPedidos.Count; i++)
+                                        if (c.CelulaPedido == Cobro.ListaPedidos[i].CelulaPedido && c.AñoPedido == Cobro.ListaPedidos[i].AñoPedido && c.Pedido == Cobro.ListaPedidos[i].Pedido)
+                                        {
+                                            Cobro.ListaPedidos[i].Total = Cobro.ListaPedidos[i].Total - c.Total;
+                                            Cobro.ListaPedidos[i].MontoConciliado = Cobro.ListaPedidos[i].MontoConciliado - c.MontoConciliado;
+                                            break;
+                                        }
+                                }
+                                else
+                                {
+                                    TotalCobroPedido = TotalCobroPedido - c.Total;
+                                    for (int i = 0; i < Cobro.ListaPedidos.Count; i++)
+                                        if (c.CelulaPedido == Cobro.ListaPedidos[i].CelulaPedido && c.AñoPedido == Cobro.ListaPedidos[i].AñoPedido && c.Pedido == Cobro.ListaPedidos[i].Pedido)
+                                        {
+                                            Cobro.ListaPedidos.Remove(Cobro.ListaPedidos[i]);
+                                            break;
+                                        }
+                                }
+                            }
+                            ListaCobroDuplicados.Add(new CobroDatos(Cobro.AñoCobro, Cobro.NumCobro, Cobro.NumeroCheque,
+                                            totalComision, 0, Cobro.NumeroCuenta, Cobro.NumeroCuentaDestino, Cobro.FCheque, Cobro.Cliente,
+                                            Cobro.Banco, Cobro.BancoOrigen, Cobro.Observaciones, Cobro.Status, TipoCobroFactoraje, true,
+                                            Cobro.Usuario, false, //Cobro.SaldoAFavor,
+                                            Cobro.SucursalBancaria, Cobro.Descripcion, Cobro.ClientePago, lstpedidosComsion.ToList(), 0, 0, this.implementadorMensajes));
+                            lstpedidosComsion.Clear();
+                        }
+                    }
+                    if (ListaCobroDuplicados.Count > 0)
+                    {
+                        foreach (Cobro CobroDuplicado in ListaCobroDuplicados)
+                        {
+                            Cobros.Add(CobroDuplicado);
+                        }
+                    }
+                }
+
+                ////evalua SAF
+                ////decimal deposito = Cobro.Total;
+                ////decimal montopedido = Cobro.ListaPedidos.Sum(x => x.Total);
+                //foreach (Cobro Cobro in Cobros)
+                //{
+                //    if (Cobro.Total - Cobro.ListaPedidos.Sum(x => x.Total) > 0)
+                //        Cobro.Saldo = Cobro.Total - Cobro.ListaPedidos.Sum(x => x.Total);
+                //    Cobro.SaldoAFavor = Cobro.Saldo > 0;
+                //}
+                //suma los montos de los pedidos que se aplicaran
+                if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
                 foreach (Cobro Cobro in Cobros)
                 {
                     List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.ToList();
-                    if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
-                    {
-                        PedidosActualizaSaldo.AddRange(Pedidos);
-                    }
+                    PedidosActualizaSaldo.AddRange(Pedidos);
                 }
 
                 foreach (Cobro Cobro in Cobros)
@@ -210,61 +311,30 @@ namespace Conciliacion.RunTime.DatosSQL
                     Cobro.MovimientoCajaCobroAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
                     Cobro.MovimientoCajaEntradaAlta(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
                     Cobro.ActualizaPagoReferenciado(this.Caja, this.FOperacion, this.Consecutivo, this.Folio, _conexion);
-
+                    
                     List<ReferenciaConciliadaPedido> Pedidos = Cobro.ListaPedidos.ToList();
-                    EsVariosAUno = Cobros.Count >= 1 && Pedidos.Count == 1;
-                    if (EsVariosAUno) //varios a uno
+                    
+                    foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
                     {
-                        foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
-                        {
-                            Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, Cobro.Total - Cobro.Saldo, _conexion);
-                            Pedido.ActualizaPagosPorAplicar(_conexion);
-                        }
-                    }
-                    else//Uno a varios
-                    {
-                        foreach (ReferenciaConciliadaPedido Pedido in Pedidos)
-                        {
-                            Pedido.MontoConciliado =
-                                Cobro.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
-                            Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
+                        Pedido.MontoConciliado =
+                            Cobro.ListaPedidos.Where(y => y.AñoPedido == Pedido.AñoPedido && y.CelulaPedido == Pedido.CelulaPedido && y.Pedido == Pedido.Pedido).Sum(x => x.MontoConciliado);
+                        Pedido.CobroPedidoAlta(Cobro.AñoCobro, Cobro.NumCobro, _conexion);
 
-                            //PedidoActualizaSaldo() NO se debe ejecutar
-                            //cuando el status emitido y sea diferente de tipo c 2, 
-                            //solo cuando status sea validado 
-                            if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
-                            {
-                                Pedido.PedidoActualizaSaldo(_conexion);
-                            }
-                            Pedido.ActualizaPagosPorAplicar(_conexion);
-                        }
+                        Pedido.ActualizaPagosPorAplicar(_conexion);
                     }
                 }
 
-                if (EsVariosAUno) //varios a uno
+                if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
                 {
-                    if (this.StatusAltaMC == StatusMovimientoCaja.Validado || tipoConciliacion == 2)
+                    foreach (var Groupby in PedidosActualizaSaldo.GroupBy(g => g.Pedido).Select(s => new { Pedido = s.Key, Monto = s.Sum(g => g.MontoConciliado) }))
                     {
-                        int numpedidos = 0;
-                        var PedidosOrdenados =
-                            PedidosActualizaSaldo.GroupBy(f => new { f.Pedido }).Select(group => new { pedido = group.Key.Pedido, suma = group.Sum(f => f.MontoConciliado) }).ToList();
-                        foreach (ReferenciaConciliadaPedido Pedido in PedidosActualizaSaldo)
-                        {
-                            foreach (var p in PedidosOrdenados)
-                            {
-                                if (p.pedido == Pedido.Pedido)
-                                {
-                                    Pedido.PedidoActualizaSaldo(_conexion, p.suma);
-                                    numpedidos++;
-                                }
-                            }
-                            if (numpedidos >= PedidosOrdenados.Count)
-                                break;
-                        }
+                        List<ReferenciaConciliadaPedido> Pedido = PedidosActualizaSaldo.Where(p => p.Pedido == Groupby.Pedido).ToList();
+                        Pedido[0].MontoConciliado = Groupby.Monto;
+                        Pedido[0].PedidoActualizaSaldo(_conexion);
                     }
                 }
 
-                // throw new Exception("PRUEBA");
+                //throw new Exception("PRUEBA");
 
             }
             catch (Exception ex)

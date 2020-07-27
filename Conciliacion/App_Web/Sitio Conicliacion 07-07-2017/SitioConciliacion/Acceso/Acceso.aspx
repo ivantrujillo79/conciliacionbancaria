@@ -4,6 +4,8 @@
 <%@ MasterType TypeName="Sitio" %>
 <%@ Register Src="Login.ascx" TagName="Login" TagPrefix="uc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="titulo" runat="Server">
     ACCESO
 </asp:Content>
@@ -28,6 +30,8 @@
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="contenidoPrincipal" runat="Server">
+    
+
     <asp:ScriptManager ID="smAcceso" runat="server" AsyncPostBackTimeout="600">
     </asp:ScriptManager>
     <div id="header-site" style="height: 30px; width: 100%">

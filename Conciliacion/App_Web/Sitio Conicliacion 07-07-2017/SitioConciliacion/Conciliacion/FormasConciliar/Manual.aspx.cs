@@ -2288,6 +2288,7 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
         listaReferenciaExternas = Session["POR_CONCILIAR_EXTERNO"] as List<ReferenciaNoConciliada>;
         int secuenciaExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Secuencia"]);
         int folioExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Folio"]);
+        int añoExterno = Convert.ToInt32(grvExternos.DataKeys[indiceExternoSeleccionado].Values["Año"]);
         return listaReferenciaExternas.Single(x => x.Secuencia == secuenciaExterno && x.Folio == folioExterno);
     }
     public ReferenciaNoConciliada leerReferenciaInternaSeleccionada()
@@ -2443,6 +2444,11 @@ public partial class Conciliacion_FormasConciliar_Manual : PersistirViewStateEnA
     }
     protected void imgAutomatica_Click(object sender, ImageClickEventArgs e)
     {
+        if (ddlCriteriosConciliacion.Text == "9")
+        {
+            objApp.ImplementadorMensajes.MostrarMensaje("Esta forma de conciliacion No esta disponible.");
+            return;
+        }
         Enrutador objEnrutador = new Enrutador();
         string criterioConciliacion = "";
         criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),

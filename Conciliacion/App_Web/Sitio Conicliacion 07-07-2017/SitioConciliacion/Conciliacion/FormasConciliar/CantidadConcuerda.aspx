@@ -274,7 +274,7 @@
                                 <td>
                                     <asp:DropDownList runat="server" ID="ddlCriteriosConciliacion" CssClass="etiqueta dropDownPequeño"
                                         Width="150px" Style="margin-bottom: 3px; margin-right: 3px" AutoPostBack="False"
-                                        OnSelectedIndexChanged="ddlCriteriosConciliacion_SelectedIndexChanged" />
+                                        OnSelectedIndexChanged="ddlCriteriosConciliacion_SelectedIndexChanged"/>
                                 </td>
                             </tr>
                         </table>

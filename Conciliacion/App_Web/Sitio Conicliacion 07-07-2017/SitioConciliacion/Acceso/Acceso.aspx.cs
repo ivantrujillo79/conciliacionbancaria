@@ -9,6 +9,7 @@ public partial class Acceso_Acceso : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+
         Conciliacion.RunTime.App objApp = new Conciliacion.RunTime.App();
         objApp.ImplementadorMensajes.ContenedorActual = this;
         if (HttpContext.Current.Request.UrlReferrer != null)
@@ -20,10 +21,6 @@ public partial class Acceso_Acceso : System.Web.UI.Page
                 Response.Cache.SetExpires(DateTime.Now);
             }
         }
-
-        //SeguridadCB.Seguridad seguridad = new SeguridadCB.Seguridad();
-        //if (seguridad.Conexion != (null))
-        //    seguridad.Conexion.Close();
 
         if (Session.Count > 0)
         {
@@ -41,6 +38,7 @@ public partial class Acceso_Acceso : System.Web.UI.Page
 
         this.Master.lblInformacionGeneral = "© 2013 Grupo Metropolitano - Transforma Consultoria";
 
+        
     }
 
     private void CargaScriptsIniciales()
@@ -50,7 +48,7 @@ public partial class Acceso_Acceso : System.Web.UI.Page
     }
     protected void Login_Load(object sender, EventArgs e)
     {
-
+         
     }
    
 }

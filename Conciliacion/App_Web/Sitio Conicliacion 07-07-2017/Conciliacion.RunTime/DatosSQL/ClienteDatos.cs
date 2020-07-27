@@ -188,7 +188,7 @@ namespace Conciliacion.RunTime.DatosSQL
             }
         }
 
-        public override DataTable ObtienePedidosCliente(Int64 Cliente, Conexion _conexion)
+        public override DataTable ObtienePedidosCliente(Int64 Cliente, int Corporativo, int Sucursal, int Mes, int Año, int FolioConciliacion, Conexion _conexion)
         {
             DataTable dtRetorno = new DataTable();
             SeguridadCB.Public.Parametros parametros;
@@ -202,6 +202,11 @@ namespace Conciliacion.RunTime.DatosSQL
                 _conexion.Comando.CommandText = PedidoMultiple == "1" ? _conexion.Comando.CommandText = "spCBPedidosClienteOPadrePM" : _conexion.Comando.CommandText = "spCBPedidosClienteOPadre";
                 _conexion.Comando.Parameters.Clear();
                 _conexion.Comando.Parameters.Add(new SqlParameter("@Cliente", System.Data.SqlDbType.BigInt)).Value = Cliente;
+                _conexion.Comando.Parameters.Add("@CorporativoConciliacion", System.Data.SqlDbType.VarChar).Value = Corporativo;
+                _conexion.Comando.Parameters.Add("@SucursalConciliacion", System.Data.SqlDbType.VarChar).Value = Sucursal;
+                _conexion.Comando.Parameters.Add("@MesConciliacion", System.Data.SqlDbType.VarChar).Value = Mes;
+                _conexion.Comando.Parameters.Add("@AñoConciliacion", System.Data.SqlDbType.VarChar).Value = Año;
+                _conexion.Comando.Parameters.Add("@FolioConciliacion", System.Data.SqlDbType.VarChar).Value = FolioConciliacion;
 
                 SqlDataAdapter Dap = new SqlDataAdapter(_conexion.Comando);
                 Dap.Fill(dtRetorno);

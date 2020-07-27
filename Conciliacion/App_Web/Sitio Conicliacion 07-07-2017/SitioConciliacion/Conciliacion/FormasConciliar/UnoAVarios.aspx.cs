@@ -222,6 +222,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             wucBuscaClientesFacturas.grvPedidos = grvPedidos;
             wucBuscaClientesFacturas.grvAgregados = grvAgregadosPedidos;
             wucBuscaClientesFacturas.grvAgregados = grvAgregadosPedidos;
+            wucBuscaClientesFacturas.Corporativo = corporativo;
+            wucBuscaClientesFacturas.Sucursal = sucursal;
+            wucBuscaClientesFacturas.Mes = mes;
+            wucBuscaClientesFacturas.Año = año;
+            wucBuscaClientesFacturas.FolioConciliacion = folio;
 
             SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
             objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -373,6 +378,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                             wucBuscaClientesFacturas.HtmlIdGridCNodoID = "0";
                         }
                     }
+                    wucBuscaClientesFacturas.Corporativo = corporativo;
+                    wucBuscaClientesFacturas.Sucursal = sucursal;
+                    wucBuscaClientesFacturas.Mes = mes;
+                    wucBuscaClientesFacturas.Año = año;
+                    wucBuscaClientesFacturas.FolioConciliacion = folio;
 
                     if (objSolicitdConciliacion.ConsultaPedido())
                     {
@@ -475,8 +485,6 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else //!Postback
             {
-                //if (chkComision.Checked)
-                //    txtComision.CssClass = "display: normal";
 
                 tipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
                 objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
@@ -1021,6 +1029,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session["EXTERNO_SELECCIONADO"] = null;
         HttpContext.Current.Session["ImpuestoEDENRED"] = null;
         HttpContext.Current.Session["ComisionMaximaEDENRED"] = null;
+        HttpContext.Current.Session["chkComision"] = null;
 
         HttpContext.Current.Session.Remove("StatusFiltro");
         HttpContext.Current.Session.Remove("TipoFiltro");
@@ -1043,6 +1052,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         HttpContext.Current.Session.Remove("ImpuestoEDENRED");
         HttpContext.Current.Session.Remove("ComisionMaximaEDENRED");
         HttpContext.Current.Session.Remove("TABLADEAGREGADOS");
+        HttpContext.Current.Session.Remove("chkComision");
     }
     //Cargar Rango DiasMaximo-Minimio-Default
     public void CargarRangoDiasDiferenciaGrupo(short grupoC)
@@ -1149,7 +1159,8 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 { 5, "Efectivo" },
                 { 3, "Cheques" },
                 { 6, "Tarjeta de Crédito" },
-                { 19, "Tarjeta de Débito" }
+                { 19, "Tarjeta de Débito" },
+                { 23, "Tipo 23" }
             };
             this.ddlTiposDeCobro.DataSource = dictTiposDeCobro;
             this.ddlTiposDeCobro.DataTextField = "Value";
@@ -2329,7 +2340,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             //dtBuffer.Rows.Count == 0 ||
             if (dtBuffer == null)
             {
-                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente();
+                HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = wucBuscaClientesFacturas.BuscaCliente(corporativo, sucursal, mes, año, folio);
                 grvPedidos.DataSource = (DataTable) HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 grvPedidos.DataBind();
                 dtBuffer = (DataTable)grvPedidos.DataSource;
@@ -2363,8 +2374,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 //Se interrumpe el flujo de guardado puesto que existen pedidos que pueden y deben ser conciliados contra el pago realizado por el cliente
                 // se comenta porque exite un conflicto con saldo a favor
                 //throw new Exception("Existe(n) " + ListaVerificacionRemanente.Count.ToString() + " pedido(s) que pueden ser cubiertos con el monto remanente, el proceso de pago no se ejecutará.");
-                return;
+                //return; // se comenta por incidente 17/Abril/20 ver221
             }
+
+            //throw new Exception("DETENTE");
 
             if (grvExternos.Rows.Count > 0)
             {
@@ -2506,6 +2519,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
             }
             else
                 objApp.ImplementadorMensajes.MostrarMensaje("No existe ningun archivo externo a conciliar");
+
         }
         catch(Exception ex)
         {
@@ -3166,6 +3180,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvAgregadosPedidos.DataBind();
                 Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
                 wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                wucBuscaClientesFacturas.Corporativo = corporativo;
+                wucBuscaClientesFacturas.Sucursal = sucursal;
+                wucBuscaClientesFacturas.Mes = mes;
+                wucBuscaClientesFacturas.Año = año;
+                wucBuscaClientesFacturas.FolioConciliacion = folio;
             }
             else
             {
@@ -3475,6 +3494,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                         grvAgregadosPedidos.DataBind();
                         Session["TABLADEAGREGADOS"] = grvAgregadosPedidos;
                         wucBuscaClientesFacturas.HtmlIdGridRelacionado = "ctl00_contenidoPrincipal_grvAgregadosPedidos";
+                        wucBuscaClientesFacturas.Corporativo = corporativo;
+                        wucBuscaClientesFacturas.Sucursal = sucursal;
+                        wucBuscaClientesFacturas.Mes = mes;
+                        wucBuscaClientesFacturas.Año = año;
+                        wucBuscaClientesFacturas.FolioConciliacion = folio;
                     }
                 }
                 else if (tipo == "2")
@@ -5849,6 +5873,11 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void imgAutomatica_Click(object sender, ImageClickEventArgs e)
     {
+        if (ddlCriteriosConciliacion.Text == "9")
+        {
+            objApp.ImplementadorMensajes.MostrarMensaje("Esta forma de conciliacion No esta disponible.");
+            return;
+        }
         Enrutador objEnrutador = new Enrutador();
         string criterioConciliacion = "";
         criterioConciliacion = objEnrutador.ObtieneURLSolicitud(new SolicitudEnrutador(Convert.ToSByte(Request.QueryString["TipoConciliacion"]),
@@ -6262,7 +6291,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 else
                 if (hdfUltimoBotonPresionado.Value == "btnFiltraPedidoReferencia") 
                 {
-                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+                    HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim(), corporativo, sucursal, mes, año, folio);
                     tablaReferenciasP = (DataTable)HttpContext.Current.Session["PedidosBuscadosPorUsuario"];
                 }
                 else
@@ -7611,10 +7640,10 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnFiltraCliente_Click(object sender, ImageClickEventArgs e)
     {
-        chkComision.Checked = false;
-        hfTxtComisionVisible.Value = "0";
+        //chkComision.Checked = false;
+        //hfTxtComisionVisible.Value = "0";
         //txtComision.CssClass = "margin-left:3px;display:none";
-        txtComision.Text = "0.00";
+        //txtComision.Text = "0.00";
         ActualizarTotalesAgregados();
         GridView grvPrima = null;
         SeguridadCB.Public.Parametros parametros;
@@ -7643,7 +7672,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                 grvInternos.DataSource = wucBuscaClientesFacturas.FiltraCliente(grvPrima);
                 if (grvInternos.DataSource == null || (grvInternos.DataSource as DataTable).Rows.Count == 0)
                 {
-                    DataTable tableBuscaCliente = wucBuscaClientesFacturas.BuscaCliente();
+                    DataTable tableBuscaCliente = wucBuscaClientesFacturas.BuscaCliente(corporativo, sucursal, mes, año, folio);
                     ViewState["POR_CONCILIAR"] = tableBuscaCliente;
                     DataTable tableBuscaCliente_AX = tableBuscaCliente.Copy();
                     Session["TAB_INTERNOS_AX"] = tableBuscaCliente_AX;
@@ -7830,16 +7859,17 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
 
     protected void btnFiltraPedidoReferencia_Click(object sender, ImageClickEventArgs e)
     {
-        chkComision.Checked = false;
+        //chkComision.Checked = false;
         hfTxtComisionVisible.Value = "0";
         //txtComision.CssClass = "margin-left:3px;display:none";
-        txtComision.Text = "0.00";
+        //txtComision.Text = "0.00";
         ActualizarTotalesAgregados();
         if (txtPedidoReferencia.Text.Trim() != "")
         {
             wucBuscaClientesFacturas.TablaFacturas = null;
             //grvPedidos.DataSource = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
-            DataTable tablePedidoRefer = objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim());
+            DataTable tablePedidoRefer = 
+                objApp.Consultas.CBPedidosPorPedidoReferencia(txtPedidoReferencia.Text.Trim(), corporativo, sucursal, mes, año, folio);
             tablePedidoRefer = EliminarPedidosAgregados(tablePedidoRefer);
             try
             {
@@ -7944,7 +7974,7 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
         try
         {
             conexion.AbrirConexion(false);
-            dtPedidos = obCliente.ObtienePedidosCliente(cliente, conexion);
+            dtPedidos = obCliente.ObtienePedidosCliente(cliente, corporativo, sucursal, mes, año, folio, conexion);
 
             HttpContext.Current.Session["PedidosBuscadosPorUsuario"] = dtPedidos;
             HttpContext.Current.Session["PedidosBuscadosPorUsuario_AX"] = dtPedidos;
@@ -8098,6 +8128,13 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                                   tipoConciliacion, Convert.ToInt32(ddlStatusConcepto.SelectedValue), EsDepositoRetiro());
         GenerarTablaExternos();
         LlenaGridViewExternos();
+        if (grvExternos.Rows.Count > 0)
+            rdbSecuencia_CheckedChanged(grvExternos.Rows[0].Cells[0].FindControl("rdbSecuencia") as RadioButton, null);
+        else
+        {
+            lblAbono.Text = "0.00";
+            lblResto.Text = "0.00";
+        }
     }
 
     protected void ddlTiposDeCobro_SelectedIndexChanged(object sender, EventArgs e)

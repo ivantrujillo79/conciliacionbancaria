@@ -168,9 +168,9 @@ namespace Conciliacion.RunTime.ReglasDeNegocio
 
         public abstract List<ImportacionAplicacion> ConsultaImportacionesAplicacion(int sucursal, string cuentaBancaria);
 
-        public abstract DataTable CBPedidosPorFactura(string SerieFactura);
+        public abstract DataTable CBPedidosPorFactura(string SerieFactura, int Corporativo, int Sucursal, int Mes, int Año, int FolioConciliacion);
 
-        public abstract DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia);
+        public abstract DataTable CBPedidosPorPedidoReferencia(string PedidoReferencia, int Corporativo, int Sucursal, int Mes, int Año, int FolioConciliacion);
 
         public abstract List<EstadoDeCuenta> BuscarPagoEstadoCuenta(DateTime FInicio, DateTime FFinal, decimal Monto, bool BuscaEnRetiro, bool BuscaEnDeposito, int corporativo, int sucursal, int año, int mes, int folio);
 

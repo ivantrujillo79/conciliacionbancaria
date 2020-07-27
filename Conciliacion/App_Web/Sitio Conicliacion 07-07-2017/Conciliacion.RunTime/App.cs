@@ -345,9 +345,9 @@ namespace Conciliacion.RunTime
                 else
                     seguridad = SeguridadCB.Seguridad.TipoSeguridad.SQL;
                 if (seguridad == SeguridadCB.Seguridad.TipoSeguridad.NT)
-                    ConnectionString = "Application Name = Conciliacion Bancaria; Data Source=" + servidor + ";Initial Catalog=" + baseDatos + ";Integrated Security=SSPI;";
+                    ConnectionString = "Application Name = Conciliacion BancariaX; Data Source=" + servidor + ";Initial Catalog=" + baseDatos + ";Integrated Security=SSPI;";
                 else
-                    ConnectionString = "Application Name = Conciliacion Bancaria; Data Source = " + servidor + "; Initial Catalog = " +
+                    ConnectionString = "Application Name = Conciliacion BancariaX; Data Source = " + servidor + "; Initial Catalog = " +
                                         baseDatos + "; User ID = " + usuario.IdUsuario.Trim() + "; Password = " + usuario.Clave;
                 return ConnectionString;
             }

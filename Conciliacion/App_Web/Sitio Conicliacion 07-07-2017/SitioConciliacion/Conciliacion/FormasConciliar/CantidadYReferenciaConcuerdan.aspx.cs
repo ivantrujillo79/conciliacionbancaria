@@ -1921,6 +1921,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
         if (!e.CommandName.Equals("DESCONCILIAR")) return;
         try
         {
+
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = Convert.ToSByte(Request.QueryString["TipoConciliacion"]);
+            objSolicitdConciliacion.FormaConciliacion = Asigna_FormaConciliacionActual();
+
             Button imgDesconciliar = e.CommandSource as Button;
             GridViewRow gRowConciliado = (GridViewRow)(imgDesconciliar).Parent.Parent;
 
@@ -1945,7 +1950,8 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                     x.Secuencia == secuenciaExterno);
 
             string status = tranDesconciliar.StatusMovimiento;
-            if (status.CompareTo("APLICADO") != 0)
+            if (objSolicitdConciliacion.ConsultaArchivo() || status.CompareTo("APLICADO") != 0)
+            //if(status.CompareTo("APLICADO") != 0)
             {
                 tranDesconciliar.DesConciliar();
                 //Leer Variables URL 
@@ -1957,11 +1963,10 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
                 LlenarBarraEstado();
 
                 //Cargo y refresco nuevamente los archivos externos
-                short _FormaConciliacion = Asigna_FormaConciliacionActual();
-                SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
-                objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
-                objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
-                //if (tipoConciliacion != 2)
+                //short _FormaConciliacion = Asigna_FormaConciliacionActual();
+                //SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+                //objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+                //objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
                 if (objSolicitdConciliacion.ConsultaArchivo())
                 {
                     Consulta_ConciliarArchivosCantidadReferencia(corporativo, sucursal, año, mes, folio,
@@ -2422,6 +2427,11 @@ public partial class Conciliacion_FormasConciliar_CantidadYReferenciaConcuerdan 
     }
     protected void imgAutomatica_Click(object sender, ImageClickEventArgs e)
     {
+        if (ddlCriteriosConciliacion.Text == "9")
+        {
+            objApp.ImplementadorMensajes.MostrarMensaje("Esta forma de conciliacion No esta disponible.");
+            return;
+        }
         //Leer Variables URL 
         cargarInfoConciliacionActual();
         Enrutador objEnrutador = new Enrutador();
