@@ -4694,9 +4694,14 @@ public partial class Conciliacion_FormasConciliar_UnoAVarios : System.Web.UI.Pag
                      x.Secuencia == secuenciaExterno &&
                      x.Pedido == pedido);
 
+            short _FormaConciliacion = Convert.ToSByte(Request.QueryString["FormaConciliacion"]);
+            SolicitudConciliacion objSolicitdConciliacion = new SolicitudConciliacion();
+            objSolicitdConciliacion.TipoConciliacion = tipoConciliacion;
+            objSolicitdConciliacion.FormaConciliacion = _FormaConciliacion;
+
             string status = tranDesconciliar.StatusMovimiento;
 
-            if (status.CompareTo("APLICADO") != 0)
+            if (objSolicitdConciliacion.ConsultaArchivo() || objSolicitdConciliacion.ConsultaPedido() && status.CompareTo("APLICADO") != 0)  //if (status.CompareTo("APLICADO") != 0)
             {
                 tranDesconciliar.DesConciliar();
                 //Consulta_TransaccionesConciliadas(corporativo, sucursal, año, mes, folio,

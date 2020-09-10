@@ -1589,7 +1589,7 @@ private string TipoCobroDescripcion(int tipoCobro)
                 objFacturasComplemento.Guardar(conexion);
             }
 
-  //throw new Exception("PRUEBA");
+//throw new Exception("PRUEBA");
 
             if (conexion.Comando.Transaction != null)
             {
